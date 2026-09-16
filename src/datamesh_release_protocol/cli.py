@@ -51,6 +51,7 @@ def run_catalog(
     baseline_path: Path,
     output: Path,
     manifest: Path,
+    run_id: str,
     oracle_path: Path | None = None,
     metrics_path: Path | None = None,
 ) -> int:
@@ -62,7 +63,7 @@ def run_catalog(
     for scenario in scenarios:
         for mode in modes:
             started = time.perf_counter_ns()
-            release = engine.run(scenario, mode, run_id="pilot-v1")
+            release = engine.run(scenario, mode, run_id=run_id)
             duration_ms = (time.perf_counter_ns() - started) / 1_000_000
             results.append(
                 ScenarioRunResult(
@@ -86,7 +87,7 @@ def run_catalog(
         [result.model_dump(mode="json", exclude_none=True) for result in results],
     )
     manifest_payload = {
-        "run_id": "pilot-v1",
+        "run_id": run_id,
         "protocol_version": __version__,
         "scenario_count": len(scenarios),
         "mode_count": len(modes),
@@ -139,6 +140,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--output", type=Path, required=True)
     run.add_argument("--manifest", type=Path, required=True)
     run.add_argument("--metrics", type=Path)
+    run.add_argument("--run-id", required=True)
     return parser
 
 
@@ -151,6 +153,7 @@ def main() -> None:
                 baseline_path=args.baseline,
                 output=args.output,
                 manifest=args.manifest,
+                run_id=args.run_id,
                 oracle_path=args.oracle,
                 metrics_path=args.metrics,
             )

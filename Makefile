@@ -10,7 +10,9 @@ pilot:
 		--oracle oracles/development.yaml \
 		--output results/pilot-results.json \
 		--manifest results/run-manifest.json \
-		--metrics results/pilot-metrics.json
+		--metrics results/pilot-metrics.json \
+		--run-id development-pilot-0.3.0
+
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -r {} +

@@ -10,8 +10,8 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 0.6,
-      "median_latency_ms": 0.042034,
-      "p95_latency_ms": 0.150797
+      "median_latency_ms": 0.044822,
+      "p95_latency_ms": 0.182644
     },
     "V1-ind": {
       "scenario_count": 20,
@@ -23,8 +23,8 @@
       "false_block_rate": 0.1,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 0.84,
-      "median_latency_ms": 0.040115,
-      "p95_latency_ms": 0.111327
+      "median_latency_ms": 0.042995,
+      "p95_latency_ms": 0.068613
     },
     "V1-oracle": {
       "scenario_count": 20,
@@ -36,8 +36,8 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 1.0,
-      "median_latency_ms": 0.051833,
-      "p95_latency_ms": 0.098789
+      "median_latency_ms": 0.052784,
+      "p95_latency_ms": 0.123946
     },
     "V2": {
       "scenario_count": 20,
@@ -49,8 +49,8 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 1.0,
-      "median_latency_ms": 0.057621,
-      "p95_latency_ms": 0.085328
+      "median_latency_ms": 0.049109,
+      "p95_latency_ms": 0.082314
     }
   },
   "primary_comparison_v2_vs_v1_ind": {
