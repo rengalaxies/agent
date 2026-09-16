@@ -1,7 +1,6 @@
 scenario_id: P-02
 family_id: F6
 split: development
-scenario_class: admissible
 description: Добавлена новая цель при сохранении действующих целей потребления
 old_contract:
   product_id: mobility_context
@@ -38,10 +37,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [mobile_sessions]
     required_purposes: [risk_scoring]
-baseline_rules:
-  - rule_id: keep-risk-purpose
-    kind: required_purposes
-    value: [risk_scoring]
 migrations: []
-expected_decision: ACCEPT
-expected_consumer_decisions: {fintech-risk: ACCEPT}

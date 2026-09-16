@@ -1,7 +1,6 @@
 scenario_id: L-02
 family_id: F5
 split: development
-scenario_class: admissible
 description: Добавлен разрешённый источник при сохранённой формуле
 old_contract:
   product_id: purchase_behavior_profile
@@ -38,10 +37,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [crm, transactions, loyalty]
     required_purposes: [mobility_partner_offer]
-baseline_rules:
-  - rule_id: approved-lineage
-    kind: allowed_sources
-    value: [crm, transactions, loyalty]
 migrations: []
-expected_decision: ACCEPT
-expected_consumer_decisions: {mobility-offers: ACCEPT}

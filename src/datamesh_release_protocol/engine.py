@@ -4,6 +4,7 @@ import hashlib
 import json
 
 from .models import (
+    BaselinePolicy,
     ChangeProposal,
     Decision,
     ProtocolState,
@@ -19,7 +20,6 @@ def scenario_snapshot_id(scenario: Scenario) -> str:
         "old_contract": scenario.old_contract.model_dump(mode="json"),
         "new_contract": scenario.new_contract.model_dump(mode="json"),
         "obligations": [item.model_dump(mode="json") for item in scenario.obligations],
-        "baseline_rules": [item.model_dump(mode="json") for item in scenario.baseline_rules],
         "migrations": [item.model_dump(mode="json") for item in scenario.migrations],
     }
     canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
@@ -37,6 +37,9 @@ def finalize(decisions: list[Decision]) -> Decision:
 
 
 class ReleaseEngine:
+    def __init__(self, baseline_policy: BaselinePolicy) -> None:
+        self.baseline_policy = baseline_policy
+
     def run(self, scenario: Scenario, mode: ValidationMode, run_id: str) -> ReleaseDecision:
         trace = [ProtocolState.RECEIVED]
         snapshot_id = scenario_snapshot_id(scenario)
@@ -51,7 +54,7 @@ class ReleaseEngine:
             new_contract_version=scenario.new_contract.contract_version,
             snapshot_id=snapshot_id,
         )
-        local_verdicts = validate(scenario, mode)
+        local_verdicts = validate(scenario, mode, self.baseline_policy)
         trace.extend([ProtocolState.LOCALLY_VALIDATED, ProtocolState.NEGOTIATING])
         decision = finalize([verdict.decision for verdict in local_verdicts])
         trace.append(ProtocolState.DECIDED)

@@ -2,11 +2,15 @@ from pathlib import Path
 import unittest
 
 from datamesh_release_protocol.engine import ReleaseEngine, finalize
-from datamesh_release_protocol.loaders import load_scenario
+from datamesh_release_protocol.loaders import load_baseline_policy, load_scenario
 from datamesh_release_protocol.models import Decision, ValidationMode
 
 
 class FailSafeTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.engine = ReleaseEngine(load_baseline_policy(Path("policies/v1-ind.yaml")))
+
     def test_finalization_priority(self):
         self.assertEqual(finalize([Decision.ACCEPT, Decision.REJECT]), Decision.REJECT)
         self.assertEqual(
@@ -38,18 +42,17 @@ class FailSafeTest(unittest.TestCase):
                 "required_purposes",
             } else None
         scenario = type(base).model_validate(payload)
-        result = ReleaseEngine().run(scenario, ValidationMode.V2, run_id="test")
+        result = self.engine.run(scenario, ValidationMode.V2, run_id="test")
         self.assertEqual(result.decision, Decision.NEEDS_REVIEW)
         self.assertEqual(result.reason_codes, ["EMPTY_OBLIGATION"])
 
     def test_schema_break_is_rejected_by_every_mode(self):
         scenario = load_scenario(Path("scenarios/development/M-02.yaml"))
         scenario.new_contract.schema_fields.pop("gross_spend")
-        engine = ReleaseEngine()
         for mode in ValidationMode:
             with self.subTest(mode=mode):
                 self.assertEqual(
-                    engine.run(scenario, mode, run_id="test").decision,
+                    self.engine.run(scenario, mode, run_id="test").decision,
                     Decision.REJECT,
                 )
 

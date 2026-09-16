@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from .models import (
+    BaselinePolicy,
     BaselineRule,
     CheckResult,
     ConsumerObligation,
@@ -173,13 +174,17 @@ def _obligation_checks(
     return checks
 
 
-def validate(scenario: Scenario, mode: ValidationMode) -> list[LocalVerdict]:
+def validate(
+    scenario: Scenario,
+    mode: ValidationMode,
+    baseline_policy: BaselinePolicy,
+) -> list[LocalVerdict]:
     schema_checks = _schema_checks(scenario.old_contract, scenario.new_contract)
     by_domain: dict[str, list[ConsumerVerdict]] = {}
     for obligation in scenario.obligations:
         checks = list(schema_checks)
         if mode == ValidationMode.V1_IND:
-            for rule in scenario.baseline_rules:
+            for rule in baseline_policy.rules_for(scenario.family_id):
                 checks.extend(_baseline_rule_checks(scenario, rule))
         elif mode in {ValidationMode.V1_ORACLE, ValidationMode.V2}:
             checks.extend(_obligation_checks(scenario.new_contract, obligation, scenario.migrations))

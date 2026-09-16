@@ -1,0 +1,66 @@
+{
+  "by_mode": {
+    "V0": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 0.5,
+      "dangerous_safe_detection_rate": 0.0,
+      "dangerous_strict_reject_rate": 0.0,
+      "unsafe_accept_rate": 1.0,
+      "admissible_accept_rate": 1.0,
+      "false_block_rate": 0.0,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 0.6,
+      "median_latency_ms": 0.042034,
+      "p95_latency_ms": 0.150797
+    },
+    "V1-ind": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 0.8,
+      "dangerous_safe_detection_rate": 0.7,
+      "dangerous_strict_reject_rate": 0.7,
+      "unsafe_accept_rate": 0.3,
+      "admissible_accept_rate": 0.9,
+      "false_block_rate": 0.1,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 0.84,
+      "median_latency_ms": 0.040115,
+      "p95_latency_ms": 0.111327
+    },
+    "V1-oracle": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 1.0,
+      "dangerous_safe_detection_rate": 1.0,
+      "dangerous_strict_reject_rate": 1.0,
+      "unsafe_accept_rate": 0.0,
+      "admissible_accept_rate": 1.0,
+      "false_block_rate": 0.0,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 1.0,
+      "median_latency_ms": 0.051833,
+      "p95_latency_ms": 0.098789
+    },
+    "V2": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 1.0,
+      "dangerous_safe_detection_rate": 1.0,
+      "dangerous_strict_reject_rate": 1.0,
+      "unsafe_accept_rate": 0.0,
+      "admissible_accept_rate": 1.0,
+      "false_block_rate": 0.0,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 1.0,
+      "median_latency_ms": 0.057621,
+      "p95_latency_ms": 0.085328
+    }
+  },
+  "primary_comparison_v2_vs_v1_ind": {
+    "dangerous_scenario_count": 10,
+    "safe_detection_rate_delta": 0.3,
+    "paired_improvements": 3,
+    "paired_regressions": 0,
+    "exact_mcnemar_pvalue": 0.25,
+    "admissible_scenario_count": 10,
+    "false_block_rate_delta": -0.1
+  },
+  "interpretation": "development regression only; not confirmatory evidence for H1"
+}

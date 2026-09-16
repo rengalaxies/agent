@@ -1,7 +1,6 @@
 scenario_id: U-04
 family_id: F2
 split: development
-scenario_class: admissible
 description: Один потребитель читает новую единицу напрямую, второй получает проверенное преобразование
 old_contract:
   product_id: spending_activity_profile
@@ -56,14 +55,9 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions]
     required_purposes: [mobility_partner_offer]
-baseline_rules:
-  - rule_id: unit-change-requires-migration
-    kind: require_migration_on_unit_change
 migrations:
   - dimension: unit_scale
     source: kopeck:0
     target: RUB:2
     expression: value / 100
     validated_examples: 5
-expected_decision: ACCEPT
-expected_consumer_decisions: {retail-offers: ACCEPT, mobility-offers: ACCEPT}

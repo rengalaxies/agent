@@ -1,7 +1,6 @@
 scenario_id: I-02
 family_id: F4
 split: development
-scenario_class: admissible
 description: Область идентификатора изменена с проверенным взаимно-однозначным отображением
 old_contract:
   product_id: mobility_context
@@ -38,9 +37,6 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [mobile_sessions]
     required_purposes: [fraud_signal]
-baseline_rules:
-  - rule_id: identity-change-requires-migration
-    kind: require_migration_on_identity_change
 migrations:
   - dimension: identity_scope
     source: domain_customer_id
@@ -48,5 +44,3 @@ migrations:
     expression: identity_map_v1
     validated_examples: 3
     bijective: true
-expected_decision: ACCEPT
-expected_consumer_decisions: {fintech-risk: ACCEPT}

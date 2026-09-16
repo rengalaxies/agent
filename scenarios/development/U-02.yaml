@@ -1,7 +1,6 @@
 scenario_id: U-02
 family_id: F2
 split: development
-scenario_class: admissible
 description: RUB заменён на копейки с проверенной миграцией
 old_contract:
   product_id: spending_activity_profile
@@ -45,14 +44,9 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions]
     required_purposes: [retail_personalization]
-baseline_rules:
-  - rule_id: unit-change-requires-migration
-    kind: require_migration_on_unit_change
 migrations:
   - dimension: unit_scale
     source: kopeck:0
     target: RUB:2
     expression: value / 100
     validated_examples: 3
-expected_decision: ACCEPT
-expected_consumer_decisions: {retail-offers: ACCEPT}

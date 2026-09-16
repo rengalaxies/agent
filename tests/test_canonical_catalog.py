@@ -2,18 +2,29 @@ from pathlib import Path
 import unittest
 
 from datamesh_release_protocol.engine import ReleaseEngine, scenario_snapshot_id
-from datamesh_release_protocol.loaders import load_catalog
-from datamesh_release_protocol.models import Decision, ValidationMode
+from pydantic import ValidationError
+
+from datamesh_release_protocol.loaders import (
+    load_baseline_policy,
+    load_catalog,
+    load_oracle_catalog,
+    validate_oracle_coverage,
+)
+from datamesh_release_protocol.models import Decision, Scenario, ScenarioClass, ValidationMode
 
 
 CATALOG = Path("scenarios/development")
+BASELINE = Path("policies/v1-ind.yaml")
+ORACLE = Path("oracles/development.yaml")
 
 
 class CanonicalCatalogTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.scenarios = load_catalog(CATALOG)
-        cls.engine = ReleaseEngine()
+        cls.oracles = load_oracle_catalog(ORACLE)
+        validate_oracle_coverage(cls.scenarios, cls.oracles)
+        cls.engine = ReleaseEngine(load_baseline_policy(BASELINE))
 
     def test_catalog_has_twenty_unique_scenarios(self):
         self.assertEqual(len(self.scenarios), 20)
@@ -24,14 +35,18 @@ class CanonicalCatalogTest(unittest.TestCase):
         )
 
     def test_catalog_is_balanced_and_every_family_has_a_pair(self):
-        classes = [scenario.scenario_class.value for scenario in self.scenarios]
+        classes = [oracle.scenario_class.value for oracle in self.oracles.values()]
         self.assertEqual(classes.count("dangerous"), 10)
         self.assertEqual(classes.count("admissible"), 10)
         for family_id in {"F1", "F2", "F3", "F4", "F5", "F6"}:
-            family_classes = {
-                scenario.scenario_class.value
+            family_ids = {
+                scenario.scenario_id
                 for scenario in self.scenarios
                 if scenario.family_id == family_id
+            }
+            family_classes = {
+                self.oracles[scenario_id].scenario_class.value
+                for scenario_id in family_ids
             }
             self.assertEqual(family_classes, {"dangerous", "admissible"})
 
@@ -40,7 +55,10 @@ class CanonicalCatalogTest(unittest.TestCase):
             for scenario in self.scenarios:
                 with self.subTest(mode=mode, scenario=scenario.scenario_id):
                     result = self.engine.run(scenario, mode, run_id="test")
-                    self.assertEqual(result.decision, scenario.expected_decision)
+                    self.assertEqual(
+                        result.decision,
+                        self.oracles[scenario.scenario_id].expected_decision,
+                    )
 
     def test_v2_matches_every_expected_consumer_decision(self):
         for scenario in self.scenarios:
@@ -51,7 +69,10 @@ class CanonicalCatalogTest(unittest.TestCase):
                     for domain in result.local_verdicts
                     for consumer in domain.consumer_verdicts
                 }
-                self.assertEqual(actual, scenario.expected_consumer_decisions)
+                self.assertEqual(
+                    actual,
+                    self.oracles[scenario.scenario_id].expected_consumer_decisions,
+                )
 
     def test_v0_is_only_a_structural_lower_bound(self):
         decisions = {
@@ -103,13 +124,19 @@ class CanonicalCatalogTest(unittest.TestCase):
         )
 
     def test_expected_label_is_not_an_engine_input(self):
-        scenario = self.scenarios[0].model_copy(deep=True)
-        original = self.engine.run(scenario, ValidationMode.V2, run_id="test").decision
-        scenario.expected_decision = (
-            Decision.ACCEPT if scenario.expected_decision == Decision.REJECT else Decision.REJECT
-        )
-        changed_label = self.engine.run(scenario, ValidationMode.V2, run_id="test").decision
-        self.assertEqual(original, changed_label)
+        payload = self.scenarios[0].model_dump(mode="json")
+        payload["expected_decision"] = "ACCEPT"
+        with self.assertRaises(ValidationError):
+            Scenario.model_validate(payload)
+
+    def test_oracle_classes_match_global_decisions(self):
+        for oracle in self.oracles.values():
+            expected = (
+                Decision.REJECT
+                if oracle.scenario_class == ScenarioClass.DANGEROUS
+                else Decision.ACCEPT
+            )
+            self.assertEqual(oracle.expected_decision, expected)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,103 @@
+catalog_id: development-oracle-0.3.0
+split: development
+labels:
+  - scenario_id: I-01
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {fintech-risk: REJECT}
+    rationale: Потребитель требует global_user_id, а отображение из новой доменной области отсутствует.
+  - scenario_id: I-02
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {fintech-risk: ACCEPT}
+    rationale: Проверенное взаимно-однозначное отображение восстанавливает требуемую область идентичности.
+  - scenario_id: I-03
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {fintech-risk: REJECT}
+    rationale: Необратимое отображение не считается валидной миграцией идентичности.
+  - scenario_id: I-04
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {retail-availability: ACCEPT}
+    rationale: Активный потребитель явно принимает новую доменную область идентичности.
+  - scenario_id: L-01
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {mobility-offers: REJECT}
+    rationale: Новый рекламный источник отсутствует в разрешённом множестве потребителя.
+  - scenario_id: L-02
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {mobility-offers: ACCEPT}
+    rationale: Все источники нового контракта входят в разрешённое множество потребителя.
+  - scenario_id: L-03
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {mobility-offers: REJECT}
+    rationale: Наличие хотя бы одного запрещённого источника нарушает требование потребителя.
+  - scenario_id: L-04
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {mobility-offers: ACCEPT}
+    rationale: Сужение набора сохраняет только разрешённый источник и не меняет формулу.
+  - scenario_id: M-01
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {retail-offers: REJECT}
+    rationale: Смысл и формула меняются с gross_spend на net_spend при неизменной структуре поля.
+  - scenario_id: M-02
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {retail-offers: ACCEPT}
+    rationale: Меняется только документационное описание, а требуемые смысл и формула сохраняются.
+  - scenario_id: M-03
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {mobility-offers: REJECT, fintech-segmentation: ACCEPT}
+    rationale: Fintech принимает расширенный профиль, но Mobility требует формулу только по подтверждённым покупкам.
+  - scenario_id: P-01
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {fintech-risk: REJECT}
+    rationale: Из контракта удалена обязательная для активного потребителя цель risk_scoring.
+  - scenario_id: P-02
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {fintech-risk: ACCEPT}
+    rationale: Новая цель добавлена без удаления обязательной цели risk_scoring.
+  - scenario_id: T-01
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {retail-offers: REJECT, mobility-offers: ACCEPT}
+    rationale: Окно 7 дней подходит Mobility, но нарушает минимум 30 дней для Retail.
+  - scenario_id: T-02
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {retail-offers: ACCEPT, mobility-offers: ACCEPT}
+    rationale: Окно 7 дней удовлетворяет минимальным требованиям обоих потребителей.
+  - scenario_id: T-03
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {retail-offers: ACCEPT, mobility-offers: ACCEPT}
+    rationale: Увеличенное окно 30 дней не ниже минимума ни одного потребителя.
+  - scenario_id: U-01
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {retail-offers: REJECT}
+    rationale: Новая единица и масштаб не соответствуют обязательству, а миграция отсутствует.
+  - scenario_id: U-02
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {retail-offers: ACCEPT}
+    rationale: Проверенное преобразование из копеек в рубли восстанавливает ожидаемое представление.
+  - scenario_id: U-03
+    scenario_class: dangerous
+    expected_decision: REJECT
+    expected_consumer_decisions: {retail-offers: REJECT}
+    rationale: Масштаб изменён без преобразования в ожидаемый потребителем масштаб.
+  - scenario_id: U-04
+    scenario_class: admissible
+    expected_decision: ACCEPT
+    expected_consumer_decisions: {retail-offers: ACCEPT, mobility-offers: ACCEPT}
+    rationale: Mobility читает новое представление напрямую, а Retail получает валидную миграцию.

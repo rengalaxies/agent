@@ -1,7 +1,6 @@
 scenario_id: I-03
 family_id: F4
 split: development
-scenario_class: dangerous
 description: Объявлено необратимое отображение идентификатора, которое не позволяет восстановить область потребителя
 old_contract:
   product_id: mobility_context
@@ -38,9 +37,6 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [mobile_sessions]
     required_purposes: [fraud_signal]
-baseline_rules:
-  - rule_id: identity-change-requires-migration
-    kind: require_migration_on_identity_change
 migrations:
   - dimension: identity_scope
     source: hashed_device_id
@@ -48,5 +44,3 @@ migrations:
     expression: irreversible_hash_lookup
     validated_examples: 5
     bijective: false
-expected_decision: REJECT
-expected_consumer_decisions: {fintech-risk: REJECT}

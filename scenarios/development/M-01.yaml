@@ -1,7 +1,6 @@
 scenario_id: M-01
 family_id: F1
 split: development
-scenario_class: dangerous
 description: gross_spend заменён на net_spend при прежнем имени поля
 old_contract:
   product_id: spending_activity_profile
@@ -45,7 +44,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions]
     required_purposes: [retail_personalization]
-baseline_rules: []
 migrations: []
-expected_decision: REJECT
-expected_consumer_decisions: {retail-offers: REJECT}

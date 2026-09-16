@@ -1,7 +1,6 @@
 scenario_id: T-01
 family_id: F3
 split: development
-scenario_class: dangerous
 description: Окно сокращено с 30 до 7 дней при обязательстве одного потребителя на 30 дней
 old_contract:
   product_id: spending_activity_profile
@@ -56,7 +55,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions]
     required_purposes: [mobility_partner_offer]
-baseline_rules: []
 migrations: []
-expected_decision: REJECT
-expected_consumer_decisions: {retail-offers: REJECT, mobility-offers: ACCEPT}

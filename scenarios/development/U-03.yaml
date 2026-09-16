@@ -1,7 +1,6 @@
 scenario_id: U-03
 family_id: F2
 split: development
-scenario_class: dangerous
 description: Масштаб суммы изменён внутри одной единицы без миграции
 old_contract:
   product_id: spending_activity_profile
@@ -44,9 +43,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions]
     required_purposes: [retail_personalization]
-baseline_rules:
-  - rule_id: unit-change-requires-migration
-    kind: require_migration_on_unit_change
 migrations: []
-expected_decision: REJECT
-expected_consumer_decisions: {retail-offers: REJECT}

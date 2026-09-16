@@ -1,6 +1,8 @@
 experiment_id: development-catalog-pilot-v2
-protocol_version: 0.2.0
+protocol_version: 0.3.0
 scenario_directory: scenarios/development
+baseline_policy: policies/v1-ind.yaml
+oracle_catalog: oracles/development.yaml
 modes: [V0, V1-ind, V1-oracle, V2]
 expected_scenario_count: 20
 seed: 20260916

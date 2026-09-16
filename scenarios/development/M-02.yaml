@@ -1,7 +1,6 @@
 scenario_id: M-02
 family_id: F1
 split: development
-scenario_class: admissible
 description: Описание уточнено без изменения формулы и обязательств
 old_contract:
   product_id: spending_activity_profile
@@ -46,7 +45,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions]
     required_purposes: [retail_personalization]
-baseline_rules: []
 migrations: []
-expected_decision: ACCEPT
-expected_consumer_decisions: {retail-offers: ACCEPT}

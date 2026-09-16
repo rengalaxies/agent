@@ -106,22 +106,52 @@ class BaselineRule(StrictModel):
     value: Any | None = None
 
 
+class BaselinePolicy(StrictModel):
+    policy_id: str
+    version: str
+    family_rules: dict[
+        Literal["F1", "F2", "F3", "F4", "F5", "F6"],
+        list[BaselineRule],
+    ] = Field(default_factory=dict)
+
+    def rules_for(self, family_id: str) -> list[BaselineRule]:
+        return list(self.family_rules.get(family_id, []))
+
+    @model_validator(mode="after")
+    def check_complete_capability_matrix(self) -> "BaselinePolicy":
+        expected_families = {"F1", "F2", "F3", "F4", "F5", "F6"}
+        if set(self.family_rules) != expected_families:
+            raise ValueError("family_rules must define F1 through F6 exactly once")
+        rules = [rule for items in self.family_rules.values() for rule in items]
+        rule_ids = [rule.rule_id for rule in rules]
+        if len(rule_ids) != len(set(rule_ids)):
+            raise ValueError("baseline rule_id values must be unique")
+        for rule in rules:
+            if rule.kind in {"allowed_sources", "required_purposes"} and not isinstance(
+                rule.value, list
+            ):
+                raise ValueError(f"{rule.kind} requires a list value")
+            if rule.kind == "min_window_days" and (
+                not isinstance(rule.value, int) or rule.value < 1
+            ):
+                raise ValueError("min_window_days requires a positive integer value")
+            if rule.kind == "required_formula" and not isinstance(rule.value, str):
+                raise ValueError("required_formula requires a string value")
+        return self
+
+
 class Scenario(StrictModel):
     scenario_id: str
     family_id: Literal["F1", "F2", "F3", "F4", "F5", "F6"]
     split: Literal["development", "evaluation"]
-    scenario_class: ScenarioClass
     description: str
     old_contract: DataContract
     new_contract: DataContract
     obligations: list[ConsumerObligation] = Field(min_length=1)
-    baseline_rules: list[BaselineRule] = Field(default_factory=list)
     migrations: list[Migration] = Field(default_factory=list)
-    expected_decision: Decision
-    expected_consumer_decisions: dict[str, Decision]
 
     @model_validator(mode="after")
-    def check_product_and_expected_class(self) -> "Scenario":
+    def check_internal_consistency(self) -> "Scenario":
         product_ids = {
             self.old_contract.product_id,
             self.new_contract.product_id,
@@ -129,6 +159,26 @@ class Scenario(StrictModel):
         }
         if len(product_ids) != 1:
             raise ValueError("contract and obligation product_id values must match")
+        consumer_ids = [obligation.consumer_id for obligation in self.obligations]
+        if len(consumer_ids) != len(set(consumer_ids)):
+            raise ValueError("consumer_id values must be unique inside a scenario")
+        obligation_ids = [obligation.obligation_id for obligation in self.obligations]
+        if len(obligation_ids) != len(set(obligation_ids)):
+            raise ValueError("obligation_id values must be unique inside a scenario")
+        if self.old_contract.contract_version == self.new_contract.contract_version:
+            raise ValueError("old and new contract versions must differ")
+        return self
+
+
+class ScenarioOracle(StrictModel):
+    scenario_id: str
+    scenario_class: ScenarioClass
+    expected_decision: Decision
+    expected_consumer_decisions: dict[str, Decision]
+    rationale: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def check_expected_class(self) -> "ScenarioOracle":
         expected_from_class = (
             Decision.REJECT
             if self.scenario_class == ScenarioClass.DANGEROUS
@@ -136,9 +186,19 @@ class Scenario(StrictModel):
         )
         if self.expected_decision != expected_from_class:
             raise ValueError("expected_decision contradicts scenario_class")
-        consumer_ids = {obligation.consumer_id for obligation in self.obligations}
-        if set(self.expected_consumer_decisions) != consumer_ids:
-            raise ValueError("expected_consumer_decisions must cover every consumer exactly once")
+        return self
+
+
+class OracleCatalog(StrictModel):
+    catalog_id: str
+    split: Literal["development", "evaluation"]
+    labels: list[ScenarioOracle] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def check_unique_scenarios(self) -> "OracleCatalog":
+        identifiers = [label.scenario_id for label in self.labels]
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("oracle scenario_id values must be unique")
         return self
 
 
@@ -184,7 +244,8 @@ class ReleaseDecision(StrictModel):
 class ScenarioRunResult(StrictModel):
     scenario_id: str
     mode: ValidationMode
-    expected_decision: Decision
     actual_decision: Decision
-    matches_expected: bool
+    duration_ms: float = Field(ge=0)
     release: ReleaseDecision
+    expected_decision: Decision | None = None
+    matches_expected: bool | None = None

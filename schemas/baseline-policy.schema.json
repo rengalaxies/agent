@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:datamesh-release-protocol:baseline-policy:0.3.0",
+  "title": "Frozen V1-ind baseline policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policy_id", "version", "family_rules"],
+  "properties": {
+    "policy_id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "family_rules": {
+      "type": "object",
+      "propertyNames": {"enum": ["F1", "F2", "F3", "F4", "F5", "F6"]},
+      "additionalProperties": {
+        "type": "array",
+        "items": {"$ref": "#/$defs/rule"}
+      }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "kind"],
+      "properties": {
+        "rule_id": {"type": "string", "minLength": 1},
+        "kind": {
+          "enum": [
+            "require_migration_on_unit_change",
+            "require_migration_on_identity_change",
+            "allowed_sources",
+            "required_purposes",
+            "min_window_days",
+            "required_formula"
+          ]
+        },
+        "value": {}
+      }
+    }
+  }
+}

@@ -1,7 +1,6 @@
 scenario_id: M-03
 family_id: F1
 split: development
-scenario_class: dangerous
 description: В формулу покупательского признака добавлены просмотры; один из двух потребителей требует только подтверждённые покупки
 old_contract:
   product_id: purchase_behavior_profile
@@ -50,7 +49,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [transactions, web_events]
     required_purposes: [customer_segment]
-baseline_rules: []
 migrations: []
-expected_decision: REJECT
-expected_consumer_decisions: {mobility-offers: REJECT, fintech-segmentation: ACCEPT}

@@ -1,7 +1,6 @@
 scenario_id: I-01
 family_id: F4
 split: development
-scenario_class: dangerous
 description: global_user_id заменён на domain_customer_id без отображения
 old_contract:
   product_id: mobility_context
@@ -38,9 +37,4 @@ obligations:
     accepted_identity_scopes: [global_user_id]
     allowed_sources: [mobile_sessions]
     required_purposes: [fraud_signal]
-baseline_rules:
-  - rule_id: identity-change-requires-migration
-    kind: require_migration_on_identity_change
 migrations: []
-expected_decision: REJECT
-expected_consumer_decisions: {fintech-risk: REJECT}

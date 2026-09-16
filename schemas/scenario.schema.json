@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:datamesh-release-protocol:scenario:0.2.0",
+  "$id": "urn:datamesh-release-protocol:scenario:0.3.0",
   "title": "Canonical metadata change scenario",
   "type": "object",
   "additionalProperties": false,
@@ -8,35 +8,23 @@
     "scenario_id",
     "family_id",
     "split",
-    "scenario_class",
     "description",
     "old_contract",
     "new_contract",
     "obligations",
-    "baseline_rules",
-    "migrations",
-    "expected_decision",
-    "expected_consumer_decisions"
+    "migrations"
   ],
   "properties": {
     "scenario_id": {"type": "string", "pattern": "^[MUTILP]-[0-9]{2}$"},
     "family_id": {"enum": ["F1", "F2", "F3", "F4", "F5", "F6"]},
     "split": {"enum": ["development", "evaluation"]},
-    "scenario_class": {"enum": ["dangerous", "admissible"]},
     "description": {"type": "string", "minLength": 1},
     "old_contract": {"$ref": "#/$defs/contract"},
     "new_contract": {"$ref": "#/$defs/contract"},
     "obligations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/obligation"}},
-    "baseline_rules": {"type": "array", "items": {"type": "object"}},
-    "migrations": {"type": "array", "items": {"type": "object"}},
-    "expected_decision": {"$ref": "#/$defs/decision"},
-    "expected_consumer_decisions": {
-      "type": "object",
-      "additionalProperties": {"$ref": "#/$defs/decision"}
-    }
+    "migrations": {"type": "array", "items": {"type": "object"}}
   },
   "$defs": {
-    "decision": {"enum": ["ACCEPT", "REJECT", "NEEDS_REVIEW"]},
     "semantic": {
       "type": "object",
       "additionalProperties": false,
