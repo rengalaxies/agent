@@ -1,0 +1,61 @@
+scenario_id: U-14
+family_id: F2
+split: evaluation
+description: Активный потребитель напрямую принимает новый масштаб
+old_contract:
+  product_id: settled_amount_profile
+  contract_version: 1.4.0
+  owner_domain: fintech
+  schema_fields:
+    user_id: string
+    amount: decimal
+  semantic:
+    meaning: Сумма подтверждённых операций
+    formula: sum(settled_amount)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - risk_scoring
+    - partner_offer
+    unit: EUR
+    scale: 5
+new_contract:
+  product_id: settled_amount_profile
+  contract_version: 2.0.0
+  owner_domain: fintech
+  schema_fields:
+    user_id: string
+    amount: decimal
+  semantic:
+    meaning: Сумма подтверждённых операций
+    formula: sum(settled_amount)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - risk_scoring
+    - partner_offer
+    unit: EUR
+    scale: 2
+obligations:
+- obligation_id: u-14-risk-model
+  obligation_version: 1.0.0
+  consumer_id: risk-model
+  consumer_domain: retail
+  product_id: settled_amount_profile
+  required_formula: sum(settled_amount)
+  accepted_units:
+  - EUR
+  accepted_scales:
+  - 2
+  min_window_days: 30
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - transactions
+  required_purposes:
+  - partner_offer
+migrations: []

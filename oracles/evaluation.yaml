@@ -1,0 +1,254 @@
+catalog_id: evaluation-oracle-0.3.0
+split: evaluation
+labels:
+- scenario_id: M-11
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    mobility-offers: REJECT
+  rationale: Новая формула и смысл не соответствуют обязательству активного потребителя.
+- scenario_id: M-12
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+  rationale: Типизированные смысл и формула не изменились.
+- scenario_id: M-13
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    mobility-offers: REJECT
+    fintech-risk: ACCEPT
+  rationale: Хотя Fintech принимает новую формулу, обязательство Mobility нарушено.
+- scenario_id: M-14
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+    fintech-risk: ACCEPT
+  rationale: Новый смысл и формула совпадают с версиями обязательств обоих потребителей.
+- scenario_id: M-15
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    mobility-offers: REJECT
+  rationale: Семантика выборки изменилась, а обязательство осталось прежним.
+- scenario_id: M-16
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+  rationale: Версионированное обязательство потребителя соответствует новой семантике.
+- scenario_id: M-17
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    mobility-offers: REJECT
+  rationale: Заявленный смысл больше не соответствует обязательству, даже при прежней формуле.
+- scenario_id: M-18
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+    fintech-risk: ACCEPT
+  rationale: Изменилось только описание; проверяемые смысл и формула сохранены.
+- scenario_id: U-11
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+  rationale: Потребитель не может восстановить требуемое представление EUR:2.
+- scenario_id: U-12
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+  rationale: Проверенная миграция восстанавливает EUR:2.
+- scenario_id: U-13
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    risk-model: REJECT
+  rationale: Ожидаемый масштаб 5 не восстанавливается из нового EUR:2.
+- scenario_id: U-14
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    risk-model: ACCEPT
+  rationale: Новый формат напрямую входит в принятое потребителем множество.
+- scenario_id: U-15
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+  rationale: Миграция без проверенных примеров не считается валидной.
+- scenario_id: U-16
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+    mobility-billing: ACCEPT
+  rationale: Оба обязательства выполняются допустимыми способами.
+- scenario_id: U-17
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+  rationale: Преобразование EUR:2 в euro_cent:0 не восстанавливает требуемый формат из нового контракта.
+- scenario_id: U-18
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    risk-model: ACCEPT
+  rationale: Проверенное преобразование восстанавливает требуемый масштаб.
+- scenario_id: T-11
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+  rationale: Новое окно меньше минимального обязательства.
+- scenario_id: T-12
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+  rationale: Новое окно не ниже минимального требования.
+- scenario_id: T-13
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+    fintech-risk: ACCEPT
+  rationale: Окно подходит Fintech, но нарушает минимум Retail.
+- scenario_id: T-14
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+    fintech-risk: ACCEPT
+  rationale: Окно удовлетворяет обоим минимумам.
+- scenario_id: T-15
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    fintech-risk: REJECT
+  rationale: Трёхдневное окно нарушает обязательство потребителя.
+- scenario_id: T-16
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    fintech-risk: ACCEPT
+  rationale: Монотонное ограничение минимального окна выполняется.
+- scenario_id: I-11
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+  rationale: Требуемая глобальная область идентичности не восстанавливается.
+- scenario_id: I-12
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+  rationale: Проверенное взаимно-однозначное отображение восстанавливает global_user_id.
+- scenario_id: I-13
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-offers: REJECT
+  rationale: Необратимое отображение не считается валидной миграцией идентичности.
+- scenario_id: I-14
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+  rationale: Новая область явно разрешена действующим обязательством.
+- scenario_id: I-15
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    fintech-risk: REJECT
+  rationale: Отображение из global_user_id в tenant_user_id не восстанавливает ожидаемую область из нового контракта.
+- scenario_id: I-16
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    retail-offers: ACCEPT
+    fintech-risk: ACCEPT
+  rationale: Оба потребителя получают допустимую для них область идентичности.
+- scenario_id: L-11
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    mobility-offers: REJECT
+  rationale: Источник social_ads отсутствует в разрешённом множестве потребителя.
+- scenario_id: L-12
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+  rationale: Все источники входят в разрешённое множество.
+- scenario_id: L-13
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    mobility-offers: REJECT
+  rationale: Один запрещённый источник нарушает обязательство независимо от разрешённого источника.
+- scenario_id: L-14
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+  rationale: Оставшийся источник разрешён потребителем.
+- scenario_id: L-15
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    fintech-risk: REJECT
+  rationale: Новый источник не входит в разрешённое множество Fintech.
+- scenario_id: L-16
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    mobility-offers: ACCEPT
+    fintech-risk: ACCEPT
+  rationale: Новый источник входит в обязательства обоих активных потребителей.
+- scenario_id: P-11
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    fintech-risk: REJECT
+  rationale: Обязательная цель risk_scoring отсутствует в новой версии.
+- scenario_id: P-12
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    fintech-risk: ACCEPT
+  rationale: Обязательная цель сохранена.
+- scenario_id: P-13
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    fintech-risk: ACCEPT
+    retail-fraud: REJECT
+  rationale: Глобальная политика сохраняется, но обязательство Retail нарушено.
+- scenario_id: P-14
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    fintech-risk: ACCEPT
+    retail-audit: ACCEPT
+  rationale: Все обязательные цели остаются в контракте.
+- scenario_id: P-15
+  scenario_class: dangerous
+  expected_decision: REJECT
+  expected_consumer_decisions:
+    retail-retention: REJECT
+  rationale: Новая версия не содержит обязательную цель retention.
+- scenario_id: P-16
+  scenario_class: admissible
+  expected_decision: ACCEPT
+  expected_consumer_decisions:
+    fintech-risk: ACCEPT
+    retail-retention: ACCEPT
+  rationale: Расширение не удаляет ни одной обязательной цели.

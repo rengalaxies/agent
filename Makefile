@@ -1,4 +1,4 @@
-.PHONY: test pilot clean
+.PHONY: test pilot evaluation-check clean
 
 test:
 	PYTHONPATH=src python -m unittest discover -s tests -v
@@ -13,6 +13,8 @@ pilot:
 		--metrics results/pilot-metrics.json \
 		--run-id development-pilot-0.3.0
 
+evaluation-check:
+	PYTHONPATH=src python -m unittest tests.test_evaluation_catalog -v
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -r {} +

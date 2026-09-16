@@ -1,0 +1,78 @@
+scenario_id: T-14
+family_id: F3
+split: evaluation
+description: Окно увеличено с 10 до 20 дней для двух потребителей
+old_contract:
+  product_id: trip_frequency_profile
+  contract_version: 1.4.0
+  owner_domain: mobility
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Частота завершённых поездок
+    formula: count(completed_trip)
+    calculation_window_days: 10
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: count
+    scale: 0
+new_contract:
+  product_id: trip_frequency_profile
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Частота завершённых поездок
+    formula: count(completed_trip)
+    calculation_window_days: 20
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: count
+    scale: 0
+obligations:
+- obligation_id: t-14-retail-offers
+  obligation_version: 1.0.0
+  consumer_id: retail-offers
+  consumer_domain: retail
+  product_id: trip_frequency_profile
+  required_formula: count(completed_trip)
+  accepted_units:
+  - count
+  accepted_scales:
+  - 0
+  min_window_days: 10
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - transactions
+  required_purposes:
+  - partner_offer
+- obligation_id: t-14-fintech-risk
+  obligation_version: 1.0.0
+  consumer_id: fintech-risk
+  consumer_domain: fintech
+  product_id: trip_frequency_profile
+  required_formula: count(completed_trip)
+  accepted_units:
+  - count
+  accepted_scales:
+  - 0
+  min_window_days: 20
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - transactions
+  required_purposes:
+  - risk_scoring
+migrations: []

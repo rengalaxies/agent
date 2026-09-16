@@ -1,0 +1,61 @@
+scenario_id: T-12
+family_id: F3
+split: evaluation
+description: Окно увеличено с 28 до 56 дней при минимуме 28 дней
+old_contract:
+  product_id: trip_frequency_profile
+  contract_version: 1.4.0
+  owner_domain: mobility
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Частота завершённых поездок
+    formula: count(completed_trip)
+    calculation_window_days: 28
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: count
+    scale: 0
+new_contract:
+  product_id: trip_frequency_profile
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Частота завершённых поездок
+    formula: count(completed_trip)
+    calculation_window_days: 56
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: count
+    scale: 0
+obligations:
+- obligation_id: t-12-retail-offers
+  obligation_version: 1.0.0
+  consumer_id: retail-offers
+  consumer_domain: retail
+  product_id: trip_frequency_profile
+  required_formula: count(completed_trip)
+  accepted_units:
+  - count
+  accepted_scales:
+  - 0
+  min_window_days: 28
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - transactions
+  required_purposes:
+  - partner_offer
+migrations: []

@@ -1,0 +1,58 @@
+scenario_id: L-15
+family_id: F5
+split: evaluation
+description: Источник web_events заменён брокером местоположения
+old_contract:
+  product_id: offer_eligibility_signal
+  contract_version: 1.4.0
+  owner_domain: retail
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Признак допустимости предложения
+    formula: eligibility_score(events)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - web_events
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: score
+    scale: 4
+new_contract:
+  product_id: offer_eligibility_signal
+  contract_version: 2.0.0
+  owner_domain: retail
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Признак допустимости предложения
+    formula: eligibility_score(events)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - location_broker
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: score
+    scale: 4
+obligations:
+- obligation_id: l-15-fintech-risk
+  obligation_version: 1.0.0
+  consumer_id: fintech-risk
+  consumer_domain: fintech
+  product_id: offer_eligibility_signal
+  required_formula: eligibility_score(events)
+  min_window_days: 30
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - web_events
+  - crm
+  required_purposes:
+  - risk_scoring
+migrations: []
