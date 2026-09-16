@@ -1,0 +1,47 @@
+scenario_id: P-02
+family_id: F6
+split: development
+scenario_class: admissible
+description: Добавлена новая цель при сохранении действующих целей потребления
+old_contract:
+  product_id: mobility_context
+  contract_version: 1.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [mobile_sessions]
+    purposes: [risk_scoring, regional_availability]
+new_contract:
+  product_id: mobility_context
+  contract_version: 1.1.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [mobile_sessions]
+    purposes: [risk_scoring, regional_availability, partner_offer]
+obligations:
+  - obligation_id: fintech-risk-purpose
+    obligation_version: 1.0.0
+    consumer_id: fintech-risk
+    consumer_domain: fintech
+    product_id: mobility_context
+    required_formula: latest_known_zone(event_time)
+    min_window_days: 7
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [mobile_sessions]
+    required_purposes: [risk_scoring]
+baseline_rules:
+  - rule_id: keep-risk-purpose
+    kind: required_purposes
+    value: [risk_scoring]
+migrations: []
+expected_decision: ACCEPT
+expected_consumer_decisions: {fintech-risk: ACCEPT}

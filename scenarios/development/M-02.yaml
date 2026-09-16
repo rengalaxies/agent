@@ -1,0 +1,52 @@
+scenario_id: M-02
+family_id: F1
+split: development
+scenario_class: admissible
+description: Описание уточнено без изменения формулы и обязательств
+old_contract:
+  product_id: spending_activity_profile
+  contract_version: 1.0.0
+  owner_domain: fintech
+  schema_fields: {user_id: string, gross_spend: decimal}
+  semantic:
+    meaning: Сумма покупок до возвратов
+    description: Сумма операций покупки до применения возвратов
+    formula: sum(purchase_amount_before_refunds)
+    unit: RUB
+    scale: 2
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [retail_personalization, customer_support]
+new_contract:
+  product_id: spending_activity_profile
+  contract_version: 1.1.0
+  owner_domain: fintech
+  schema_fields: {user_id: string, gross_spend: decimal}
+  semantic:
+    meaning: Сумма покупок до возвратов
+    description: Сумма подтверждённых операций покупки до применения возвратов; формула не изменена
+    formula: sum(purchase_amount_before_refunds)
+    unit: RUB
+    scale: 2
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [retail_personalization, customer_support]
+obligations:
+  - obligation_id: retail-gross-spend
+    obligation_version: 1.1.0
+    consumer_id: retail-offers
+    consumer_domain: retail
+    product_id: spending_activity_profile
+    required_formula: sum(purchase_amount_before_refunds)
+    accepted_units: [RUB]
+    accepted_scales: [2]
+    min_window_days: 30
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [transactions]
+    required_purposes: [retail_personalization]
+baseline_rules: []
+migrations: []
+expected_decision: ACCEPT
+expected_consumer_decisions: {retail-offers: ACCEPT}

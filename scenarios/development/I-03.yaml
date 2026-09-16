@@ -1,0 +1,52 @@
+scenario_id: I-03
+family_id: F4
+split: development
+scenario_class: dangerous
+description: Объявлено необратимое отображение идентификатора, которое не позволяет восстановить область потребителя
+old_contract:
+  product_id: mobility_context
+  contract_version: 1.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [mobile_sessions]
+    purposes: [fraud_signal]
+new_contract:
+  product_id: mobility_context
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: hashed_device_id
+    allowed_sources: [mobile_sessions]
+    purposes: [fraud_signal]
+obligations:
+  - obligation_id: fintech-global-identity
+    obligation_version: 1.0.0
+    consumer_id: fintech-risk
+    consumer_domain: fintech
+    product_id: mobility_context
+    required_formula: latest_known_zone(event_time)
+    min_window_days: 7
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [mobile_sessions]
+    required_purposes: [fraud_signal]
+baseline_rules:
+  - rule_id: identity-change-requires-migration
+    kind: require_migration_on_identity_change
+migrations:
+  - dimension: identity_scope
+    source: hashed_device_id
+    target: global_user_id
+    expression: irreversible_hash_lookup
+    validated_examples: 5
+    bijective: false
+expected_decision: REJECT
+expected_consumer_decisions: {fintech-risk: REJECT}

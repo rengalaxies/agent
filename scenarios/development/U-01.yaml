@@ -1,0 +1,53 @@
+scenario_id: U-01
+family_id: F2
+split: development
+scenario_class: dangerous
+description: RUB заменён на копейки без миграции
+old_contract:
+  product_id: spending_activity_profile
+  contract_version: 1.0.0
+  owner_domain: fintech
+  schema_fields: {user_id: string, amount: decimal}
+  semantic:
+    meaning: Сумма покупок
+    formula: sum(purchase_amount)
+    unit: RUB
+    scale: 2
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [retail_personalization]
+new_contract:
+  product_id: spending_activity_profile
+  contract_version: 2.0.0
+  owner_domain: fintech
+  schema_fields: {user_id: string, amount: decimal}
+  semantic:
+    meaning: Сумма покупок
+    formula: sum(purchase_amount)
+    unit: kopeck
+    scale: 0
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [retail_personalization]
+obligations:
+  - obligation_id: retail-rub-amount
+    obligation_version: 1.0.0
+    consumer_id: retail-offers
+    consumer_domain: retail
+    product_id: spending_activity_profile
+    required_meaning: Сумма покупок
+    required_formula: sum(purchase_amount)
+    accepted_units: [RUB]
+    accepted_scales: [2]
+    min_window_days: 30
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [transactions]
+    required_purposes: [retail_personalization]
+baseline_rules:
+  - rule_id: unit-change-requires-migration
+    kind: require_migration_on_unit_change
+migrations: []
+expected_decision: REJECT
+expected_consumer_decisions: {retail-offers: REJECT}

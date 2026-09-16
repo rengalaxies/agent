@@ -1,0 +1,47 @@
+scenario_id: L-01
+family_id: F5
+split: development
+scenario_class: dangerous
+description: Разрешённые CRM и транзакции заменены на запрещённый рекламный источник
+old_contract:
+  product_id: purchase_behavior_profile
+  contract_version: 1.0.0
+  owner_domain: retail
+  schema_fields: {user_id: string, affinity_score: decimal}
+  semantic:
+    meaning: Синтетический индекс покупательской активности
+    formula: weighted_purchase_frequency(category)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [crm, transactions]
+    purposes: [mobility_partner_offer]
+new_contract:
+  product_id: purchase_behavior_profile
+  contract_version: 2.0.0
+  owner_domain: retail
+  schema_fields: {user_id: string, affinity_score: decimal}
+  semantic:
+    meaning: Синтетический индекс покупательской активности
+    formula: weighted_purchase_frequency(category)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [ad_network]
+    purposes: [mobility_partner_offer]
+obligations:
+  - obligation_id: mobility-approved-lineage
+    obligation_version: 1.0.0
+    consumer_id: mobility-offers
+    consumer_domain: mobility
+    product_id: purchase_behavior_profile
+    required_formula: weighted_purchase_frequency(category)
+    min_window_days: 30
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [crm, transactions, loyalty]
+    required_purposes: [mobility_partner_offer]
+baseline_rules:
+  - rule_id: approved-lineage
+    kind: allowed_sources
+    value: [crm, transactions, loyalty]
+migrations: []
+expected_decision: REJECT
+expected_consumer_decisions: {mobility-offers: REJECT}

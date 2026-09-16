@@ -1,0 +1,5 @@
+product_id: purchase_behavior_profile
+owner_domain: retail
+canonical_version: 1.0.0
+events: [PurchaseCompleted, BehaviorObserved]
+semantic_dimensions: [meaning, formula, calculation_window_days, identity_scope, allowed_sources, purposes]

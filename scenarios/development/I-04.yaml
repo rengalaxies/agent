@@ -1,0 +1,46 @@
+scenario_id: I-04
+family_id: F4
+split: development
+scenario_class: admissible
+description: Потребитель обновил обязательство и напрямую принимает новую доменную область идентификатора
+old_contract:
+  product_id: mobility_context
+  contract_version: 1.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [mobile_sessions]
+    purposes: [regional_availability]
+new_contract:
+  product_id: mobility_context
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: domain_customer_id
+    allowed_sources: [mobile_sessions]
+    purposes: [regional_availability]
+obligations:
+  - obligation_id: retail-domain-identity
+    obligation_version: 2.0.0
+    consumer_id: retail-availability
+    consumer_domain: retail
+    product_id: mobility_context
+    required_formula: latest_known_zone(event_time)
+    min_window_days: 7
+    accepted_identity_scopes: [domain_customer_id]
+    allowed_sources: [mobile_sessions]
+    required_purposes: [regional_availability]
+baseline_rules:
+  - rule_id: identity-change-requires-migration
+    kind: require_migration_on_identity_change
+migrations: []
+expected_decision: ACCEPT
+expected_consumer_decisions: {retail-availability: ACCEPT}

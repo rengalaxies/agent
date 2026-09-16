@@ -1,0 +1,56 @@
+scenario_id: M-03
+family_id: F1
+split: development
+scenario_class: dangerous
+description: В формулу покупательского признака добавлены просмотры; один из двух потребителей требует только подтверждённые покупки
+old_contract:
+  product_id: purchase_behavior_profile
+  contract_version: 1.0.0
+  owner_domain: retail
+  schema_fields: {user_id: string, affinity_score: decimal}
+  semantic:
+    meaning: Индекс покупательской активности по подтверждённым покупкам
+    formula: weighted_purchase_frequency(category)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [mobility_partner_offer, customer_segment]
+new_contract:
+  product_id: purchase_behavior_profile
+  contract_version: 2.0.0
+  owner_domain: retail
+  schema_fields: {user_id: string, affinity_score: decimal}
+  semantic:
+    meaning: Индекс покупательской и просмотровой активности
+    formula: weighted_purchase_frequency(category) + 0.1 * view_frequency(category)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions, web_events]
+    purposes: [mobility_partner_offer, customer_segment]
+obligations:
+  - obligation_id: mobility-purchase-only
+    obligation_version: 1.0.0
+    consumer_id: mobility-offers
+    consumer_domain: mobility
+    product_id: purchase_behavior_profile
+    required_meaning: Индекс покупательской активности по подтверждённым покупкам
+    required_formula: weighted_purchase_frequency(category)
+    min_window_days: 30
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [transactions, web_events]
+    required_purposes: [mobility_partner_offer]
+  - obligation_id: fintech-engagement-profile
+    obligation_version: 2.0.0
+    consumer_id: fintech-segmentation
+    consumer_domain: fintech
+    product_id: purchase_behavior_profile
+    required_meaning: Индекс покупательской и просмотровой активности
+    required_formula: weighted_purchase_frequency(category) + 0.1 * view_frequency(category)
+    min_window_days: 30
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [transactions, web_events]
+    required_purposes: [customer_segment]
+baseline_rules: []
+migrations: []
+expected_decision: REJECT
+expected_consumer_decisions: {mobility-offers: REJECT, fintech-segmentation: ACCEPT}

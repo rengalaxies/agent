@@ -1,0 +1,52 @@
+scenario_id: I-02
+family_id: F4
+split: development
+scenario_class: admissible
+description: Область идентификатора изменена с проверенным взаимно-однозначным отображением
+old_contract:
+  product_id: mobility_context
+  contract_version: 1.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [mobile_sessions]
+    purposes: [fraud_signal]
+new_contract:
+  product_id: mobility_context
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: domain_customer_id
+    allowed_sources: [mobile_sessions]
+    purposes: [fraud_signal]
+obligations:
+  - obligation_id: fintech-global-identity
+    obligation_version: 1.0.0
+    consumer_id: fintech-risk
+    consumer_domain: fintech
+    product_id: mobility_context
+    required_formula: latest_known_zone(event_time)
+    min_window_days: 7
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [mobile_sessions]
+    required_purposes: [fraud_signal]
+baseline_rules:
+  - rule_id: identity-change-requires-migration
+    kind: require_migration_on_identity_change
+migrations:
+  - dimension: identity_scope
+    source: domain_customer_id
+    target: global_user_id
+    expression: identity_map_v1
+    validated_examples: 3
+    bijective: true
+expected_decision: ACCEPT
+expected_consumer_decisions: {fintech-risk: ACCEPT}

@@ -1,0 +1,5 @@
+product_id: mobility_context
+owner_domain: mobility
+canonical_version: 1.0.0
+events: [SessionStarted, GeoZoneChanged]
+semantic_dimensions: [meaning, formula, calculation_window_days, identity_scope, allowed_sources, purposes]

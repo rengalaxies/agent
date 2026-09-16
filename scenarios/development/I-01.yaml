@@ -1,0 +1,46 @@
+scenario_id: I-01
+family_id: F4
+split: development
+scenario_class: dangerous
+description: global_user_id заменён на domain_customer_id без отображения
+old_contract:
+  product_id: mobility_context
+  contract_version: 1.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [mobile_sessions]
+    purposes: [fraud_signal]
+new_contract:
+  product_id: mobility_context
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields: {user_id: string, geo_zone: string}
+  semantic:
+    meaning: Актуальная синтетическая зона пользователя
+    formula: latest_known_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: domain_customer_id
+    allowed_sources: [mobile_sessions]
+    purposes: [fraud_signal]
+obligations:
+  - obligation_id: fintech-global-identity
+    obligation_version: 1.0.0
+    consumer_id: fintech-risk
+    consumer_domain: fintech
+    product_id: mobility_context
+    required_formula: latest_known_zone(event_time)
+    min_window_days: 7
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [mobile_sessions]
+    required_purposes: [fraud_signal]
+baseline_rules:
+  - rule_id: identity-change-requires-migration
+    kind: require_migration_on_identity_change
+migrations: []
+expected_decision: REJECT
+expected_consumer_decisions: {fintech-risk: REJECT}

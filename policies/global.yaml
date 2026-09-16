@@ -1,0 +1,15 @@
+policy_id: federated-release-invariants
+policy_version: 1.0.0
+finalization_priority: [REJECT, NEEDS_REVIEW, ACCEPT]
+accept_requires:
+  - all_required_local_verdicts_present
+  - no_false_checks
+  - no_unknown_checks
+  - unchanged_snapshot
+fail_safe_conditions:
+  - missing_required_verdict
+  - unknown_contract_version
+  - stale_snapshot
+  - technical_error
+  - timeout
+coordinator_may_override_local_verdict: false

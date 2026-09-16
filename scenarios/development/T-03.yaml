@@ -1,0 +1,62 @@
+scenario_id: T-03
+family_id: F3
+split: development
+scenario_class: admissible
+description: Окно увеличено с 7 до 30 дней и удовлетворяет двум различающимся минимумам
+old_contract:
+  product_id: spending_activity_profile
+  contract_version: 1.0.0
+  owner_domain: fintech
+  schema_fields: {user_id: string, amount: decimal}
+  semantic:
+    meaning: Сумма покупок за окно
+    formula: sum(purchase_amount)
+    unit: RUB
+    scale: 2
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [retail_personalization, mobility_partner_offer]
+new_contract:
+  product_id: spending_activity_profile
+  contract_version: 1.1.0
+  owner_domain: fintech
+  schema_fields: {user_id: string, amount: decimal}
+  semantic:
+    meaning: Сумма покупок за окно
+    formula: sum(purchase_amount)
+    unit: RUB
+    scale: 2
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources: [transactions]
+    purposes: [retail_personalization, mobility_partner_offer]
+obligations:
+  - obligation_id: retail-window-30d
+    obligation_version: 1.0.0
+    consumer_id: retail-offers
+    consumer_domain: retail
+    product_id: spending_activity_profile
+    required_formula: sum(purchase_amount)
+    accepted_units: [RUB]
+    accepted_scales: [2]
+    min_window_days: 30
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [transactions]
+    required_purposes: [retail_personalization]
+  - obligation_id: mobility-window-7d
+    obligation_version: 1.0.0
+    consumer_id: mobility-offers
+    consumer_domain: mobility
+    product_id: spending_activity_profile
+    required_formula: sum(purchase_amount)
+    accepted_units: [RUB]
+    accepted_scales: [2]
+    min_window_days: 7
+    accepted_identity_scopes: [global_user_id]
+    allowed_sources: [transactions]
+    required_purposes: [mobility_partner_offer]
+baseline_rules: []
+migrations: []
+expected_decision: ACCEPT
+expected_consumer_decisions: {retail-offers: ACCEPT, mobility-offers: ACCEPT}

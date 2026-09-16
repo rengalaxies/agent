@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datamesh-release-protocol"
+version = "0.2.0"
+description = "Deterministic consumer-aware metadata release protocol research prototype"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic>=2.10,<3",
+  "PyYAML>=6.0,<7",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.115,<1", "uvicorn>=0.34,<1"]
+
+[project.scripts]
+dmrp = "datamesh_release_protocol.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

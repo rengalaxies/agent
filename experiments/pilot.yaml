@@ -1,0 +1,9 @@
+experiment_id: development-catalog-pilot-v2
+protocol_version: 0.2.0
+scenario_directory: scenarios/development
+modes: [V0, V1-ind, V1-oracle, V2]
+expected_scenario_count: 20
+seed: 20260916
+expected_labels_exposed_to_validators: false
+primary_use: functional_validation
+not_for_confirmatory_inference: true
