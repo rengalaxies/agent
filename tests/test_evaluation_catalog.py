@@ -17,6 +17,8 @@ DEVELOPMENT = Path("scenarios/development")
 EVALUATION = Path("scenarios/evaluation")
 ORACLE = Path("oracles/evaluation.yaml")
 MANIFEST = Path("experiments/evaluation-catalog.yaml")
+EXPERIMENT = Path("experiments/evaluation.yaml")
+ANALYSIS_PLAN = Path("experiments/analysis-plan-0.3.1.yaml")
 
 ALLOWED_CHANGED_DIMENSIONS = {
     "F1": {"meaning", "description", "formula", "allowed_sources"},
@@ -77,18 +79,43 @@ class EvaluationCatalogTest(unittest.TestCase):
             {scenario.scenario_id for scenario in self.evaluation},
         )
 
-    def test_clusters_pair_dependent_dangerous_and_admissible_variants(self):
+    def test_clusters_group_scenarios_by_semantic_family(self):
         clusters = {}
         for scenario_id, cluster_id in self.cluster_ids.items():
             clusters.setdefault(cluster_id, []).append(scenario_id)
-        self.assertEqual(len(clusters), 20)
-        self.assertTrue(all(len(items) == 2 for items in clusters.values()))
-        for scenario_ids in clusters.values():
+        self.assertEqual(set(clusters), {f"eval-f{index}" for index in range(1, 7)})
+        for cluster_id, scenario_ids in clusters.items():
+            family_id = cluster_id.removeprefix("eval-").upper()
+            self.assertTrue(
+                all(
+                    next(
+                        scenario.family_id
+                        for scenario in self.evaluation
+                        if scenario.scenario_id == scenario_id
+                    )
+                    == family_id
+                    for scenario_id in scenario_ids
+                )
+            )
             classes = {
                 self.oracles[scenario_id].scenario_class.value
                 for scenario_id in scenario_ids
             }
             self.assertEqual(classes, {"dangerous", "admissible"})
+
+    def test_working_protocol_versions_are_consistent(self):
+        experiment = yaml.safe_load(EXPERIMENT.read_text(encoding="utf-8"))
+        analysis_plan = yaml.safe_load(ANALYSIS_PLAN.read_text(encoding="utf-8"))
+        oracle = yaml.safe_load(ORACLE.read_text(encoding="utf-8"))
+        self.assertEqual(self.manifest["catalog_id"], "evaluation-catalog-0.3.1")
+        self.assertEqual(self.manifest["protocol_version"], "0.3.1")
+        self.assertEqual(self.manifest["cluster_unit"], "semantic_family")
+        self.assertEqual(self.manifest["cluster_count"], 6)
+        self.assertEqual(experiment["protocol_version"], "0.3.1")
+        self.assertEqual(analysis_plan["protocol_line"], "0.3.1")
+        self.assertEqual(analysis_plan["cluster_unit"], "semantic_family")
+        self.assertEqual(analysis_plan["expected_cluster_count"], 6)
+        self.assertEqual(oracle["protocol_version"], "0.3.1")
 
     def test_no_exact_semantic_transition_is_reused_from_development(self):
         def fingerprint(scenario):

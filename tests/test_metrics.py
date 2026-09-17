@@ -75,7 +75,9 @@ class FrozenMetricsTest(unittest.TestCase):
         self.assertEqual(comparison["safe_detection_rate_delta"], 0.3)
         self.assertEqual(comparison["paired_improvements"], 3)
         self.assertEqual(comparison["paired_regressions"], 0)
-        self.assertEqual(comparison["exact_cluster_sign_flip_pvalue"], 0.25)
+        self.assertEqual(comparison["dangerous_cluster_count"], 6)
+        self.assertEqual(comparison["admissible_cluster_count"], 6)
+        self.assertEqual(comparison["exact_cluster_sign_flip_pvalue"], 0.5)
         self.assertEqual(comparison["unadjusted_exact_mcnemar_pvalue"], 0.25)
         self.assertEqual(comparison["false_block_rate_delta"], -0.1)
         self.assertEqual(

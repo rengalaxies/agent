@@ -9,7 +9,7 @@ pilot:
 		--baseline policies/v1-ind.yaml \
 		--output results/pilot-raw-results.json \
 		--manifest results/run-manifest.json \
-		--run-id development-pilot-0.3.1-dev3 \
+		--run-id development-pilot-0.3.1-dev4 \
 		--purpose development_regression
 	PYTHONPATH=src python -m datamesh_release_protocol.cli score-results \
 		--raw-results results/pilot-raw-results.json \

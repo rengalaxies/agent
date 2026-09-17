@@ -52,6 +52,8 @@ class AnalysisPlan(StrictModel):
     alpha: float = Field(gt=0, lt=1)
     cluster_bootstrap_resamples: int = Field(ge=1000)
     bootstrap_seed: int
+    cluster_unit: Literal["semantic_family"]
+    expected_cluster_count: int = Field(ge=2)
     h1_thresholds: H1Thresholds
 
     @model_validator(mode="after")
@@ -213,6 +215,7 @@ class ScenarioOracle(StrictModel):
 
 class OracleCatalog(StrictModel):
     catalog_id: str
+    protocol_version: str | None = None
     split: Literal["development", "evaluation"]
     labels: list[ScenarioOracle] = Field(min_length=1)
 

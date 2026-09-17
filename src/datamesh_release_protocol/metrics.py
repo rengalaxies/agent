@@ -138,10 +138,6 @@ def score_results(
             consumer_total += len(expected)
             consumer_exact += sum(actual.get(key) == value for key, value in expected.items())
         durations = [result.duration_ms for result in mode_results]
-        if len({cluster_ids[item.scenario_id] for item in dangerous}) != len(dangerous):
-            raise ValueError("dangerous scenarios must contribute at most once per cluster")
-        if len({cluster_ids[item.scenario_id] for item in admissible}) != len(admissible):
-            raise ValueError("admissible scenarios must contribute at most once per cluster")
         report[mode.value] = {
             "scenario_count": len(mode_results),
             "exact_decision_accuracy": _percent(exact, len(mode_results)),
@@ -278,7 +274,9 @@ def compare_v2_to_v1_ind(
             resamples=analysis_plan.cluster_bootstrap_resamples,
             seed=analysis_plan.bootstrap_seed + 1002,
         ),
-        "cluster_adjustment": "cluster_id from the scoring-only catalog manifest",
+        "cluster_adjustment": (
+            "semantic-family cluster_id from the scoring-only catalog manifest"
+        ),
     }
 
 
@@ -337,6 +335,12 @@ def build_metrics_report(
     }
     if purpose not in interpretations:
         raise ValueError(f"unsupported experiment purpose: {purpose}")
+    actual_cluster_count = len(set(cluster_ids.values()))
+    if actual_cluster_count != analysis_plan.expected_cluster_count:
+        raise ValueError(
+            "cluster count does not match the frozen analysis plan: "
+            f"expected {analysis_plan.expected_cluster_count}, got {actual_cluster_count}"
+        )
     by_mode = score_results(results, oracles, cluster_ids, analysis_plan)
     comparison = compare_v2_to_v1_ind(
         results, oracles, cluster_ids, analysis_plan

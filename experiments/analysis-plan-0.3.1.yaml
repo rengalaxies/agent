@@ -4,6 +4,8 @@ confidence_level: 0.95
 alpha: 0.05
 cluster_bootstrap_resamples: 10000
 bootstrap_seed: 20260917
+cluster_unit: semantic_family
+expected_cluster_count: 6
 h1_thresholds:
   minimum_safe_detection_rate_delta: 0.15
   maximum_false_block_rate: 0.10

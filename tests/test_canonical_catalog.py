@@ -38,6 +38,10 @@ class CanonicalCatalogTest(unittest.TestCase):
             {"F1", "F2", "F3", "F4", "F5", "F6"},
         )
         self.assertEqual(set(self.cluster_ids), {item.scenario_id for item in self.scenarios})
+        self.assertEqual(
+            set(self.cluster_ids.values()),
+            {f"dev-f{index}" for index in range(1, 7)},
+        )
 
     def test_catalog_is_balanced_and_every_family_has_a_pair(self):
         classes = [oracle.scenario_class.value for oracle in self.oracles.values()]

@@ -26,7 +26,7 @@ Raw results не содержат `expected_decision` и `matches_expected`. Run
 4. Проверить `run_id` и идентичность proposal для каждой записи.
 5. Отклонить raw results, если в них уже присутствуют поля scoring.
 
-После этих проверок процесс загружает scoring-only каталог с `cluster_id`, зафиксированный analysis plan и oracle, создаёт новый scored-файл и отчёт метрик. Raw results не перезаписываются.
+После этих проверок процесс загружает scoring-only каталог с шестью `cluster_id` семейств F1-F6, зафиксированный analysis plan и oracle, создаёт новый scored-файл и отчёт метрик. Raw results не перезаписываются.
 
 ## Цепочка доказательств
 

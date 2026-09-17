@@ -3,6 +3,6 @@
 from .engine import ReleaseEngine
 from .models import Decision, ValidationMode
 
-__version__ = "0.3.1.dev3"
+__version__ = "0.3.1.dev4"
 
 __all__ = ["Decision", "ReleaseEngine", "ValidationMode", "__version__"]

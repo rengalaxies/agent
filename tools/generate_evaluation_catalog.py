@@ -255,10 +255,9 @@ def catalog_hash(directory: Path) -> str:
     return digest.hexdigest()
 
 
-def cluster_id_for(scenario_id: str, family_id: str) -> str:
-    number = int(scenario_id.split("-")[1])
-    pair_number = ((number - 11) // 2) + 1
-    return f"eval-{family_id.lower()}-{pair_number:02d}"
+def cluster_id_for(family_id: str) -> str:
+    """Group scenarios that share the same semantic family and generator logic."""
+    return f"eval-{family_id.lower()}"
 
 
 def main() -> None:
@@ -275,14 +274,15 @@ def main() -> None:
     write_yaml(
         ORACLE_PATH,
         {
-            "catalog_id": "evaluation-oracle-0.3.0",
+            "catalog_id": "evaluation-oracle-0.3.1",
+            "protocol_version": "0.3.1",
             "split": "evaluation",
             "labels": [item["oracle"] for item in CASES],
         },
     )
     manifest = {
-            "catalog_id": "evaluation-catalog-0.3.0",
-            "protocol_version": "0.3.0",
+            "catalog_id": "evaluation-catalog-0.3.1",
+            "protocol_version": "0.3.1",
             "scenario_count": 40,
             "dangerous_count": 20,
             "admissible_count": 20,
@@ -291,6 +291,8 @@ def main() -> None:
             "group_split_rule": "template groups are evaluation-only and have no development counterpart",
             "oracle_exposed_to_validators": False,
             "scoring_only_metadata": True,
+            "cluster_unit": "semantic_family",
+            "cluster_count": 6,
             "main_e3_executed": False,
             "scenario_catalog_sha256": catalog_hash(SCENARIO_DIR),
             "oracle_sha256": file_hash(ORACLE_PATH),
@@ -300,10 +302,7 @@ def main() -> None:
                 {
                     "scenario_id": item["scenario"]["scenario_id"],
                     "family_id": item["scenario"]["family_id"],
-                    "cluster_id": cluster_id_for(
-                        item["scenario"]["scenario_id"],
-                        item["scenario"]["family_id"],
-                    ),
+                    "cluster_id": cluster_id_for(item["scenario"]["family_id"]),
                     "template_group": item["template_group"],
                     "consumer_count": len(item["scenario"]["obligations"]),
                 }

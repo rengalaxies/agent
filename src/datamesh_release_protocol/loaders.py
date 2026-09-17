@@ -38,6 +38,8 @@ def load_cluster_map(path: Path, scenarios: list[Scenario]) -> dict[str, str]:
     payload = load_document(path)
     if payload.get("scoring_only_metadata") is not True:
         raise ValueError("catalog manifest must declare scoring_only_metadata: true")
+    if payload.get("cluster_unit") != "semantic_family":
+        raise ValueError("catalog manifest must declare cluster_unit: semantic_family")
     entries = payload.get("scenarios")
     if not isinstance(entries, list):
         raise ValueError("catalog manifest scenarios must be an array")
@@ -73,6 +75,18 @@ def load_cluster_map(path: Path, scenarios: list[Scenario]) -> dict[str, str]:
         )
         if entry_family != scenario.family_id:
             raise ValueError(f"catalog family mismatch for {scenario.scenario_id}")
+    clusters_by_family: dict[str, set[str]] = {}
+    for scenario in scenarios:
+        clusters_by_family.setdefault(scenario.family_id, set()).add(
+            cluster_map[scenario.scenario_id]
+        )
+    if any(len(cluster_ids) != 1 for cluster_ids in clusters_by_family.values()):
+        raise ValueError("each semantic family must map to exactly one cluster")
+    actual_cluster_count = len(set(cluster_map.values()))
+    if payload.get("cluster_count") != actual_cluster_count:
+        raise ValueError(
+            "catalog cluster_count does not match the scoring-only cluster map"
+        )
     return cluster_map
 
 

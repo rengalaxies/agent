@@ -12,8 +12,8 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 0.6,
-      "median_latency_ms": 0.04295,
-      "p95_latency_ms": 0.08647,
+      "median_latency_ms": 0.045729,
+      "p95_latency_ms": 0.125529,
       "confidence_intervals_95": {
         "dangerous_safe_detection_rate": {
           "lower": 0.0,
@@ -48,8 +48,8 @@
       "false_block_rate": 0.1,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 0.84,
-      "median_latency_ms": 0.039485,
-      "p95_latency_ms": 0.069404,
+      "median_latency_ms": 0.040336,
+      "p95_latency_ms": 0.070597,
       "confidence_intervals_95": {
         "dangerous_safe_detection_rate": {
           "lower": 0.396778,
@@ -84,8 +84,8 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 1.0,
-      "median_latency_ms": 0.052749,
-      "p95_latency_ms": 0.070086,
+      "median_latency_ms": 0.051458,
+      "p95_latency_ms": 0.096195,
       "confidence_intervals_95": {
         "dangerous_safe_detection_rate": {
           "lower": 0.722467,
@@ -120,8 +120,8 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 1.0,
-      "median_latency_ms": 0.055033,
-      "p95_latency_ms": 0.095864,
+      "median_latency_ms": 0.064452,
+      "p95_latency_ms": 0.137457,
       "confidence_intervals_95": {
         "dangerous_safe_detection_rate": {
           "lower": 0.722467,
@@ -149,32 +149,32 @@
   },
   "primary_comparison_v2_vs_v1_ind": {
     "dangerous_scenario_count": 10,
-    "dangerous_cluster_count": 10,
+    "dangerous_cluster_count": 6,
     "safe_detection_rate_delta": 0.3,
     "safe_detection_rate_delta_ci95": {
       "lower": 0.0,
-      "upper": 0.6,
+      "upper": 0.714286,
       "confidence_level": 0.95,
       "method": "percentile_cluster_bootstrap",
-      "cluster_count": 10,
+      "cluster_count": 6,
       "resamples": 10000
     },
     "paired_improvements": 3,
     "paired_regressions": 0,
-    "exact_cluster_sign_flip_pvalue": 0.25,
+    "exact_cluster_sign_flip_pvalue": 0.5,
     "unadjusted_exact_mcnemar_pvalue": 0.25,
     "admissible_scenario_count": 10,
-    "admissible_cluster_count": 10,
+    "admissible_cluster_count": 6,
     "false_block_rate_delta": -0.1,
     "false_block_rate_delta_ci95": {
       "lower": -0.3,
       "upper": 0.0,
       "confidence_level": 0.95,
       "method": "percentile_cluster_bootstrap",
-      "cluster_count": 10,
+      "cluster_count": 6,
       "resamples": 10000
     },
-    "cluster_adjustment": "cluster_id from the scoring-only catalog manifest"
+    "cluster_adjustment": "semantic-family cluster_id from the scoring-only catalog manifest"
   },
   "h1_assessment": {
     "eligible_for_confirmatory_claim": false,
