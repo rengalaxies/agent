@@ -1,13 +1,17 @@
 {
-  "run_id": "development-pilot-0.3.1-dev1",
-  "protocol_version": "0.3.1.dev1",
+  "artifact_kind": "validator_run_manifest",
+  "status": "validators_completed_unscored",
+  "run_id": "development-pilot-0.3.1-dev2",
+  "purpose": "development_regression",
+  "protocol_version": "0.3.1.dev2",
   "scenario_count": 20,
   "mode_count": 4,
   "result_count": 80,
   "scenario_catalog_sha256": "239fd6d3c2469ffd1afc329052b74f05f58cfd1a494e94b1f275a02c1a99b4a8",
   "baseline_policy_sha256": "ff5c19c1a6cbbbb097648adbe74a6a59dfd55d068a8959c7e8ea0bc197d4c58d",
-  "oracle_sha256": "3539ce5edbb95af110d4b45f651c3d70eb5364230fdcc741e690c7d62cc10a2d",
-  "implementation_sha256": "5c55a50af9a7f8360600e15528dabf09ac8200d6c09fac07776eb9c06fbc052c",
+  "raw_results_sha256": "09359c406efadf97a61f3bed36949e537243c5e70769278fd6e303398bc0d168",
+  "oracle_sha256": null,
+  "implementation_sha256": "4feefff1a9f1ca2878dbb8e78f1cfe80962b8a3e666164e746b60f447449d16a",
   "schema_bundle_sha256": "701b656a142f42736dd3d293eaf364e745df23cf7cd6abed7569f6ba1bbb3aa2",
   "metrics_definition_sha256": "9d06da7b68129a62ff7f7876d82fb40e97688c32f0f23bf1dae1cec0dddc928d",
   "scenario_files": {
@@ -39,5 +43,5 @@
     "PyYAML": "6.0.3"
   },
   "expected_labels_exposed_to_validators": false,
-  "oracle_loaded_after_all_validator_runs": true
+  "oracle_loaded_by_validator_process": false
 }

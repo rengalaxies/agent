@@ -1,0 +1,14 @@
+{
+  "artifact_kind": "score_manifest",
+  "status": "scored_from_immutable_raw_results",
+  "run_id": "development-pilot-0.3.1-dev2",
+  "purpose": "development_regression",
+  "protocol_version": "0.3.1.dev2",
+  "raw_results_sha256": "09359c406efadf97a61f3bed36949e537243c5e70769278fd6e303398bc0d168",
+  "run_manifest_sha256": "8c258179ade4ad83e9065cf2881404e25c84b19294570210cc03083718f131d0",
+  "oracle_sha256": "3539ce5edbb95af110d4b45f651c3d70eb5364230fdcc741e690c7d62cc10a2d",
+  "scored_results_sha256": "50d0fb35176fcd7ca2f9444b8e0360f7a06b3549cd1a3df87a06d2b528fe0ad1",
+  "metrics_sha256": "79974933b67bb1d0482d042e5ee19ee738ee7bb773cf340d76449a841bf0d7e8",
+  "expected_labels_exposed_to_validators": false,
+  "oracle_loaded_by_scoring_process_only": true
+}

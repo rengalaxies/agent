@@ -57,6 +57,18 @@ class FrozenMetricsTest(unittest.TestCase):
         self.assertEqual(comparison["exact_mcnemar_pvalue"], 0.25)
         self.assertEqual(comparison["false_block_rate_delta"], -0.1)
 
+    def test_report_interpretation_depends_on_explicit_purpose(self):
+        development = build_metrics_report(
+            self.results, self.oracles, purpose="development_regression"
+        )
+        confirmatory = build_metrics_report(
+            self.results, self.oracles, purpose="confirmatory_e3"
+        )
+        self.assertEqual(development["purpose"], "development_regression")
+        self.assertEqual(confirmatory["purpose"], "confirmatory_e3")
+        self.assertIn("not confirmatory", development["interpretation"])
+        self.assertIn("confirmatory E3", confirmatory["interpretation"])
+
 
 if __name__ == "__main__":
     unittest.main()

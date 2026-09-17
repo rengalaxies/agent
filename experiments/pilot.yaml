@@ -1,6 +1,6 @@
-experiment_id: development-pilot-0.3.1-dev1
-run_id: development-pilot-0.3.1-dev1
-protocol_version: 0.3.1.dev1
+experiment_id: development-pilot-0.3.1-dev2
+run_id: development-pilot-0.3.1-dev2
+protocol_version: 0.3.1.dev2
 scenario_directory: scenarios/development
 baseline_policy: policies/v1-ind.yaml
 oracle_catalog: oracles/development.yaml
@@ -8,5 +8,6 @@ modes: [V0, V1-ind, V1-oracle, V2]
 expected_scenario_count: 20
 seed: 20260916
 expected_labels_exposed_to_validators: false
+execution_chain: unscored_run_then_separate_scoring
 primary_use: functional_validation
 not_for_confirmatory_inference: true

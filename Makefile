@@ -7,11 +7,18 @@ pilot:
 	PYTHONPATH=src python -m datamesh_release_protocol.cli run-catalog \
 		--scenarios scenarios/development \
 		--baseline policies/v1-ind.yaml \
+		--output results/pilot-raw-results.json \
+		--manifest results/run-manifest.json \
+		--run-id development-pilot-0.3.1-dev2 \
+		--purpose development_regression
+	PYTHONPATH=src python -m datamesh_release_protocol.cli score-results \
+		--raw-results results/pilot-raw-results.json \
+		--run-manifest results/run-manifest.json \
+		--scenarios scenarios/development \
 		--oracle oracles/development.yaml \
 		--output results/pilot-results.json \
-		--manifest results/run-manifest.json \
 		--metrics results/pilot-metrics.json \
-		--run-id development-pilot-0.3.1-dev1
+		--score-manifest results/pilot-score-manifest.json
 
 evaluation-check:
 	PYTHONPATH=src python -m unittest tests.test_evaluation_catalog -v
@@ -19,4 +26,4 @@ evaluation-check:
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -r {} +
 	find . -type f -name '*.pyc' -delete
-	rm -f results/pilot-results.json results/run-manifest.json results/pilot-metrics.json
+	rm -f results/pilot-raw-results.json results/pilot-results.json results/run-manifest.json results/pilot-score-manifest.json results/pilot-metrics.json

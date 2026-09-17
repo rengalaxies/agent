@@ -154,9 +154,17 @@ def compare_v2_to_v1_ind(
 def build_metrics_report(
     results: list[ScenarioRunResult],
     oracles: dict[str, ScenarioOracle],
+    purpose: str = "development_regression",
 ) -> dict[str, object]:
+    interpretations = {
+        "development_regression": "development regression only; not confirmatory evidence for H1",
+        "confirmatory_e3": "confirmatory E3 result; interpret only under the frozen protocol and stated validity limits",
+    }
+    if purpose not in interpretations:
+        raise ValueError(f"unsupported experiment purpose: {purpose}")
     return {
+        "purpose": purpose,
         "by_mode": score_results(results, oracles),
         "primary_comparison_v2_vs_v1_ind": compare_v2_to_v1_ind(results, oracles),
-        "interpretation": "development regression only; not confirmatory evidence for H1",
+        "interpretation": interpretations[purpose],
     }
