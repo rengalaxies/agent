@@ -116,6 +116,28 @@ class CanonicalCatalogTest(unittest.TestCase):
             {"mobility": Decision.ACCEPT, "retail": Decision.REJECT},
         )
 
+    def test_v1_oracle_and_v2_have_independent_audit_traces(self):
+        scenario = next(item for item in self.scenarios if item.scenario_id == "M-01")
+        oracle_result = self.engine.run(
+            scenario, ValidationMode.V1_ORACLE, run_id="oracle-trace"
+        )
+        v2_result = self.engine.run(scenario, ValidationMode.V2, run_id="v2-trace")
+
+        oracle_codes = set(oracle_result.reason_codes)
+        v2_codes = set(v2_result.reason_codes)
+        self.assertEqual(oracle_result.decision, v2_result.decision)
+        self.assertTrue(any(code.startswith("ORACLE_") for code in oracle_codes))
+        self.assertFalse(any(code.startswith("V2_") for code in oracle_codes))
+        self.assertTrue(any(code.startswith("V2_") for code in v2_codes))
+        self.assertFalse(any(code.startswith("ORACLE_") for code in v2_codes))
+
+    def test_v2_is_a_parallel_consumer_aware_strategy_not_v1_ind_plus(self):
+        scenario = next(item for item in self.scenarios if item.scenario_id == "I-04")
+        baseline = self.engine.run(scenario, ValidationMode.V1_IND, run_id="baseline")
+        v2 = self.engine.run(scenario, ValidationMode.V2, run_id="v2")
+        self.assertEqual(baseline.decision, Decision.REJECT)
+        self.assertEqual(v2.decision, Decision.ACCEPT)
+
     def test_snapshot_is_deterministic(self):
         first = self.scenarios[0]
         self.assertEqual(

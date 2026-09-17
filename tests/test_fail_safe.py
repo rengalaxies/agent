@@ -44,7 +44,7 @@ class FailSafeTest(unittest.TestCase):
         scenario = type(base).model_validate(payload)
         result = self.engine.run(scenario, ValidationMode.V2, run_id="test")
         self.assertEqual(result.decision, Decision.NEEDS_REVIEW)
-        self.assertEqual(result.reason_codes, ["EMPTY_OBLIGATION"])
+        self.assertEqual(result.reason_codes, ["V2_EMPTY_OBLIGATION"])
 
     def test_schema_break_is_rejected_by_every_mode(self):
         scenario = load_scenario(Path("scenarios/development/M-02.yaml"))

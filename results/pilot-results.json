@@ -1,4 +1,4 @@
-Warning: truncated output (original token count: 50571)
+Warning: truncated output (original token count: 51157)
 Total output lines: 6805
 
 [
@@ -6,11 +6,11 @@ Total output lines: 6805
     "scenario_id": "I-01",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.223415,
+    "duration_ms": 0.229048,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-01:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-01:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-01",
         "mode": "V0",
         "product_id": "mobility_context",
@@ -60,11 +60,11 @@ Total output lines: 6805
     "scenario_id": "I-01",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.068613,
+    "duration_ms": 0.091802,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-01:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-01:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-01",
         "mode": "V1-ind",
         "product_id": "mobility_context",
@@ -124,11 +124,11 @@ Total output lines: 6805
     "scenario_id": "I-01",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.062033,
+    "duration_ms": 0.083225,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-01:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-01:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-01",
         "mode": "V1-oracle",
         "product_id": "mobility_context",
@@ -159,13 +159,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -174,19 +174,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -195,7 +195,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_IDENTITY_SCOPE"
+        "ORACLE_CONSUMER_IDENTITY_SCOPE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -213,11 +213,11 @@ Total output lines: 6805
     "scenario_id": "I-01",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.062293,
+    "duration_ms": 0.116538,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-01:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-01:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-01",
         "mode": "V2",
         "product_id": "mobility_context",
@@ -248,13 +248,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -263,19 +263,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -284,7 +284,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_IDENTITY_SCOPE"
+        "V2_CONSUMER_IDENTITY_SCOPE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -302,11 +302,11 @@ Total output lines: 6805
     "scenario_id": "I-02",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.182644,
+    "duration_ms": 0.078968,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-02:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-02:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-02",
         "mode": "V0",
         "product_id": "mobility_context",
@@ -356,11 +356,11 @@ Total output lines: 6805
     "scenario_id": "I-02",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.055864,
+    "duration_ms": 0.068517,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-02:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-02:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-02",
         "mode": "V1-ind",
         "product_id": "mobility_context",
@@ -418,11 +418,11 @@ Total output lines: 6805
     "scenario_id": "I-02",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.055874,
+    "duration_ms": 0.079639,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-02:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-02:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-02",
         "mode": "V1-oracle",
         "product_id": "mobility_context",
@@ -453,13 +453,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -468,19 +468,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -505,11 +505,11 @@ Total output lines: 6805
     "scenario_id": "I-02",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.050105,
+    "duration_ms": 0.077125,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-02:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-02:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-02",
         "mode": "V2",
         "product_id": "mobility_context",
@@ -540,13 +540,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -555,19 +555,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -592,11 +592,11 @@ Total output lines: 6805
     "scenario_id": "I-03",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.044737,
+    "duration_ms": 0.063809,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-03:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-03:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-03",
         "mode": "V0",
         "product_id": "mobility_context",
@@ -646,11 +646,11 @@ Total output lines: 6805
     "scenario_id": "I-03",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.041993,
+    "duration_ms": 0.062126,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-03:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-03:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-03",
         "mode": "V1-ind",
         "product_id": "mobility_context",
@@ -710,11 +710,11 @@ Total output lines: 6805
     "scenario_id": "I-03",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.04686,
+    "duration_ms": 0.067015,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-03:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-03:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-03",
         "mode": "V1-oracle",
         "product_id": "mobility_context",
@@ -745,13 +745,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -760,19 +760,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -781,7 +781,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_IDENTITY_SCOPE"
+        "ORACLE_CONSUMER_IDENTITY_SCOPE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -799,11 +799,11 @@ Total output lines: 6805
     "scenario_id": "I-03",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.044727,
+    "duration_ms": 0.067897,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-03:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-03:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-03",
         "mode": "V2",
         "product_id": "mobility_context",
@@ -834,13 +834,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -849,19 +849,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -870,7 +870,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_IDENTITY_SCOPE"
+        "V2_CONSUMER_IDENTITY_SCOPE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -888,11 +888,11 @@ Total output lines: 6805
     "scenario_id": "I-04",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.054281,
+    "duration_ms": 0.05309,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-04:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-04:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-04",
         "mode": "V0",
         "product_id": "mobility_context",
@@ -942,11 +942,11 @@ Total output lines: 6805
     "scenario_id": "I-04",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.038818,
+    "duration_ms": 0.051356,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-04:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-04:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-04",
         "mode": "V1-ind",
         "product_id": "mobility_context",
@@ -1006,11 +1006,11 @@ Total output lines: 6805
     "scenario_id": "I-04",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.043035,
+    "duration_ms": 0.059321,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-04:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-04:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-04",
         "mode": "V1-oracle",
         "product_id": "mobility_context",
@@ -1041,13 +1041,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -1056,19 +1056,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1093,11 +1093,11 @@ Total output lines: 6805
     "scenario_id": "I-04",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.041242,
+    "duration_ms": 0.059792,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:I-04:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:I-04:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "I-04",
         "mode": "V2",
         "product_id": "mobility_context",
@@ -1128,13 +1128,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -1143,19 +1143,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1180,11 +1180,11 @@ Total output lines: 6805
     "scenario_id": "L-01",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.038688,
+    "duration_ms": 0.053801,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-01:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-01:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-01",
         "mode": "V0",
         "product_id": "purchase_behavior_profile",
@@ -1234,11 +1234,11 @@ Total output lines: 6805
     "scenario_id": "L-01",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.037867,
+    "duration_ms": 0.102752,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-01:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-01:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-01",
         "mode": "V1-ind",
         "product_id": "purchase_behavior_profile",
@@ -1300,11 +1300,11 @@ Total output lines: 6805
     "scenario_id": "L-01",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.044186,
+    "duration_ms": 0.073326,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-01:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-01:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-01",
         "mode": "V1-oracle",
         "product_id": "purchase_behavior_profile",
@@ -1335,13 +1335,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -1350,19 +1350,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1371,7 +1371,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_ALLOWED_SOURCES"
+        "ORACLE_CONSUMER_ALLOWED_SOURCES"
       ],
       "state_trace": [
         "RECEIVED",
@@ -1389,11 +1389,11 @@ Total output lines: 6805
     "scenario_id": "L-01",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.039299,
+    "duration_ms": 1.177061,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-01:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-01:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-01",
         "mode": "V2",
         "product_id": "purchase_behavior_profile",
@@ -1424,13 +1424,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -1439,19 +1439,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1460,7 +1460,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_ALLOWED_SOURCES"
+        "V2_CONSUMER_ALLOWED_SOURCES"
       ],
       "state_trace": [
         "RECEIVED",
@@ -1478,11 +1478,11 @@ Total output lines: 6805
     "scenario_id": "L-02",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.08015,
+    "duration_ms": 0.186939,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-02:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-02:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-02",
         "mode": "V0",
         "product_id": "purchase_behavior_profile",
@@ -1532,11 +1532,11 @@ Total output lines: 6805
     "scenario_id": "L-02",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.037206,
+    "duration_ms": 0.074439,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-02:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-02:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-02",
         "mode": "V1-ind",
         "product_id": "purchase_behavior_profile",
@@ -1598,11 +1598,11 @@ Total output lines: 6805
     "scenario_id": "L-02",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.085067,
+    "duration_ms": 0.11746,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-02:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-02:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-02",
         "mode": "V1-oracle",
         "product_id": "purchase_behavior_profile",
@@ -1633,13 +1633,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -1648,19 +1648,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1685,11 +1685,11 @@ Total output lines: 6805
     "scenario_id": "L-02",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.047431,
+    "duration_ms": 0.087013,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-02:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-02:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-02",
         "mode": "V2",
         "product_id": "purchase_behavior_profile",
@@ -1720,13 +1720,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -1735,19 +1735,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1772,11 +1772,11 @@ Total output lines: 6805
     "scenario_id": "L-03",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.035553,
+    "duration_ms": 0.055323,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-03:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-03:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-03",
         "mode": "V0",
         "product_id": "purchase_behavior_profile",
@@ -1826,11 +1826,11 @@ Total output lines: 6805
     "scenario_id": "L-03",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.035393,
+    "duration_ms": 0.053069,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-03:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-03:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-03",
         "mode": "V1-ind",
         "product_id": "purchase_behavior_profile",
@@ -1893,11 +1893,11 @@ Total output lines: 6805
     "scenario_id": "L-03",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.044337,
+    "duration_ms": 0.120485,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-03:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-03:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-03",
         "mode": "V1-oracle",
         "product_id": "purchase_behavior_profile",
@@ -1928,13 +1928,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -1943,19 +1943,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -1964,7 +1964,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_ALLOWED_SOURCES"
+        "ORACLE_CONSUMER_ALLOWED_SOURCES"
       ],
       "state_trace": [
         "RECEIVED",
@@ -1982,11 +1982,11 @@ Total output lines: 6805
     "scenario_id": "L-03",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.039629,
+    "duration_ms": 0.075912,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-03:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-03:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-03",
         "mode": "V2",
         "product_id": "purchase_behavior_profile",
@@ -2017,13 +2017,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2032,19 +2032,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2053,7 +2053,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_ALLOWED_SOURCES"
+        "V2_CONSUMER_ALLOWED_SOURCES"
       ],
       "state_trace": [
         "RECEIVED",
@@ -2071,11 +2071,11 @@ Total output lines: 6805
     "scenario_id": "L-04",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.033461,
+    "duration_ms": 0.055123,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-04:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-04:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-04",
         "mode": "V0",
         "product_id": "purchase_behavior_profile",
@@ -2125,11 +2125,11 @@ Total output lines: 6805
     "scenario_id": "L-04",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.03335,
+    "duration_ms": 0.052839,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-04:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-04:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-04",
         "mode": "V1-ind",
         "product_id": "purchase_behavior_profile",
@@ -2189,11 +2189,11 @@ Total output lines: 6805
     "scenario_id": "L-04",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.03975,
+    "duration_ms": 0.059772,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-04:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-04:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-04",
         "mode": "V1-oracle",
         "product_id": "purchase_behavior_profile",
@@ -2224,13 +2224,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2239,19 +2239,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2276,11 +2276,11 @@ Total output lines: 6805
     "scenario_id": "L-04",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.037206,
+    "duration_ms": 0.067867,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:L-04:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:L-04:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "L-04",
         "mode": "V2",
         "product_id": "purchase_behavior_profile",
@@ -2311,13 +2311,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2326,19 +2326,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2363,11 +2363,11 @@ Total output lines: 6805
     "scenario_id": "M-01",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.043195,
+    "duration_ms": 0.064721,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-01:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-01:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-01",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -2417,11 +2417,11 @@ Total output lines: 6805
     "scenario_id": "M-01",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.035553,
+    "duration_ms": 0.053831,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-01:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-01:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-01",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -2471,11 +2471,11 @@ Total output lines: 6805
     "scenario_id": "M-01",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.051076,
+    "duration_ms": 0.07496,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-01:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-01:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-01",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -2506,25 +2506,25 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "FALSE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "ORACLE_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "FALSE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2533,19 +2533,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2554,8 +2554,8 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "REQUIRED_FORMULA",
-        "REQUIRED_MEANING"
+        "ORACLE_REQUIRED_FORMULA",
+        "ORACLE_REQUIRED_MEANING"
       ],
       "state_trace": [
         "RECEIVED",
@@ -2573,11 +2573,11 @@ Total output lines: 6805
     "scenario_id": "M-01",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.048113,
+    "duration_ms": 0.383177,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-01:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-01:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-01",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -2608,25 +2608,25 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "FALSE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "V2_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "FALSE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2635,19 +2635,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2656,8 +2656,8 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "REQUIRED_FORMULA",
-        "REQUIRED_MEANING"
+        "V2_REQUIRED_FORMULA",
+        "V2_REQUIRED_MEANING"
       ],
       "state_trace": [
         "RECEIVED",
@@ -2675,11 +2675,11 @@ Total output lines: 6805
     "scenario_id": "M-02",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.036555,
+    "duration_ms": 0.137086,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-02:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-02:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-02",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -2729,11 +2729,11 @@ Total output lines: 6805
     "scenario_id": "M-02",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.031958,
+    "duration_ms": 0.081081,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-02:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-02:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-02",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -2783,11 +2783,11 @@ Total output lines: 6805
     "scenario_id": "M-02",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.04697,
+    "duration_ms": 0.100809,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-02:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-02:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-02",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -2818,19 +2818,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2839,19 +2839,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2876,11 +2876,11 @@ Total output lines: 6805
     "scenario_id": "M-02",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.078477,
+    "duration_ms": 0.122509,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-02:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-02:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-02",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -2911,19 +2911,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -2932,19 +2932,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -2969,11 +2969,11 @@ Total output lines: 6805
     "scenario_id": "M-03",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.052618,
+    "duration_ms": 0.084728,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-03:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-03:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-03",
         "mode": "V0",
         "product_id": "purchase_behavior_profile",
@@ -3044,11 +3044,11 @@ Total output lines: 6805
     "scenario_id": "M-03",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.116785,
+    "duration_ms": 0.068257,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-03:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-03:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-03",
         "mode": "V1-ind",
         "product_id": "purchase_behavior_profile",
@@ -3119,11 +3119,11 @@ Total output lines: 6805
     "scenario_id": "M-03",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.123946,
+    "duration_ms": 0.0962,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-03:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-03:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-03",
         "mode": "V1-oracle",
         "product_id": "purchase_behavior_profile",
@@ -3154,19 +3154,19 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "ORACLE_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -3175,19 +3175,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -3214,19 +3214,19 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "FALSE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "ORACLE_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "FALSE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -3235,19 +3235,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -3256,8 +3256,8 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "REQUIRED_FORMULA",
-        "REQUIRED_MEANING"
+        "ORACLE_REQUIRED_FORMULA",
+        "ORACLE_REQUIRED_MEANING"
       ],
       "state_trace": [
         "RECEIVED",
@@ -3275,11 +3275,11 @@ Total output lines: 6805
     "scenario_id": "M-03",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.072038,
+    "duration_ms": 0.379179,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:M-03:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:M-03:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "M-03",
         "mode": "V2",
         "product_id": "purchase_behavior_profile",
@@ -3310,19 +3310,19 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "V2_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -3331,102 +3331,20 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
-                  "evidence": {}
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "domain_id": "mobility",
-          "decision": "REJECT",
-          "consumer_verdicts": [
-            {
-              "consumer_id": "mobility-offers",
-              "decision": "REJECT",
-              "checks": [
-                {
-                  "dimension": "schema",
-                  "outcome": "TRUE",
-                  "reason_code": "SCHEMA_COMPATIBLE",
-                  "evidence": {
-                    "missing_fields": [],
-                    "incompatible_types": []
-                  }
-                },
-                {
-                  "dimension": "meaning",
-                  "outcome": "FALSE",
-                  "reason_code": "REQUIRED_MEANING",
-                  "evidence": {}
-                },
-                {
-                  "dimension": "formula",
-                  "outcome": "FALSE",
-                  "reason_code": "REQUIRED_FORMULA",
-                  "evidence": {}
-                },
-                {
-                  "dimension": "time_window",
-                  "outcome": "TRUE",
-                  "rea…571 tokens truncated…                "incompatible_types": []
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "reason_codes": [],
-      "state_trace": [
-        "RECEIVED",
-        "SNAPSHOT_LOCKED",
-        "LOCALLY_VALIDATED",
-        "NEGOTIATING",
-        "DECIDED",
-        "COMMITTED"
-      ]
-    },
-    "expected_decision": "REJECT",
-    "matches_expected": false
-  },
-  {
-    "scenario_id": "P-01",
-    "mode": "V1-ind",
-    "actual_decision": "REJECT",
-    "duration_ms": 0.059449,
-    "release": {
-      "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-01:V1-ind",
-        "run_id": "development-pilot-0.3.0",
-        "scenario_id": "P-01",
-        "mode": "V1-ind",
-        "product_id": "mobility_context",
-        "old_contract_version": "1.0.0",
-        "new_contract_version": "2.0.0",
-        "snapshot_id": "6e5900993de1a503bbe5ad486aadc5ec5255e12aa8770a6ebde3cc19608ec29e"
-      },
-      "decision": "REJECT",
-      "terminal_state": "QUARANTINED",
-      "local_verdicts": [
-        {
-          "domain_id": "fintech",
-          "decision": "REJECT",
-          "consumer_verdicts": [
-            {
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
+                  "evidence":…1157 tokens truncated…           {
               "consumer_id": "fintech-risk",
               "decision": "REJECT",
               "checks": [
@@ -3473,11 +3391,11 @@ Total output lines: 6805
     "scenario_id": "P-01",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.048913,
+    "duration_ms": 0.077425,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-01:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:P-01:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "P-01",
         "mode": "V1-oracle",
         "product_id": "mobility_context",
@@ -3508,13 +3426,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -3523,19 +3441,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -3544,7 +3462,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_REQUIRED_PURPOSES"
+        "ORACLE_CONSUMER_REQUIRED_PURPOSES"
       ],
       "state_trace": [
         "RECEIVED",
@@ -3562,11 +3480,11 @@ Total output lines: 6805
     "scenario_id": "P-01",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.043115,
+    "duration_ms": 0.073127,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-01:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:P-01:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "P-01",
         "mode": "V2",
         "product_id": "mobility_context",
@@ -3597,13 +3515,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -3612,19 +3530,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -3633,7 +3551,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_REQUIRED_PURPOSES"
+        "V2_CONSUMER_REQUIRED_PURPOSES"
       ],
       "state_trace": [
         "RECEIVED",
@@ -3651,11 +3569,11 @@ Total output lines: 6805
     "scenario_id": "P-02",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.034332,
+    "duration_ms": 0.126917,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-02:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:P-02:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "P-02",
         "mode": "V0",
         "product_id": "mobility_context",
@@ -3705,11 +3623,11 @@ Total output lines: 6805
     "scenario_id": "P-02",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.051908,
+    "duration_ms": 0.06452,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-02:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:P-02:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "P-02",
         "mode": "V1-ind",
         "product_id": "mobility_context",
@@ -3771,11 +3689,11 @@ Total output lines: 6805
     "scenario_id": "P-02",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.040902,
+    "duration_ms": 0.066975,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-02:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:P-02:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "P-02",
         "mode": "V1-oracle",
         "product_id": "mobility_context",
@@ -3806,13 +3724,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -3821,19 +3739,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -3858,11 +3776,11 @@ Total output lines: 6805
     "scenario_id": "P-02",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.039429,
+    "duration_ms": 0.066224,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:P-02:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:P-02:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "P-02",
         "mode": "V2",
         "product_id": "mobility_context",
@@ -3893,13 +3811,13 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -3908,19 +3826,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -3945,11 +3863,11 @@ Total output lines: 6805
     "scenario_id": "T-01",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.04651,
+    "duration_ms": 0.069781,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-01:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-01:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-01",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -4020,11 +3938,11 @@ Total output lines: 6805
     "scenario_id": "T-01",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.044707,
+    "duration_ms": 0.06416,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-01:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-01:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-01",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -4095,11 +4013,11 @@ Total output lines: 6805
     "scenario_id": "T-01",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.098427,
+    "duration_ms": 0.136655,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-01:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-01:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-01",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -4130,19 +4048,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -4151,19 +4069,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4190,19 +4108,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 30
@@ -4211,19 +4129,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4232,7 +4150,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_MIN_WINDOW"
+        "ORACLE_CONSUMER_MIN_WINDOW"
       ],
       "state_trace": [
         "RECEIVED",
@@ -4250,11 +4168,11 @@ Total output lines: 6805
     "scenario_id": "T-01",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.059629,
+    "duration_ms": 0.153207,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-01:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-01:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-01",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -4285,19 +4203,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -4306,19 +4224,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4345,19 +4263,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 30
@@ -4366,19 +4284,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4387,7 +4305,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_MIN_WINDOW"
+        "V2_CONSUMER_MIN_WINDOW"
       ],
       "state_trace": [
         "RECEIVED",
@@ -4405,11 +4323,11 @@ Total output lines: 6805
     "scenario_id": "T-02",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.042895,
+    "duration_ms": 0.076834,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-02:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-02:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-02",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -4480,11 +4398,11 @@ Total output lines: 6805
     "scenario_id": "T-02",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.042514,
+    "duration_ms": 0.063258,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-02:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-02:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-02",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -4555,11 +4473,11 @@ Total output lines: 6805
     "scenario_id": "T-02",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.058858,
+    "duration_ms": 0.231373,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-02:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-02:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-02",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -4590,19 +4508,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -4611,19 +4529,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4650,19 +4568,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -4671,19 +4589,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4708,11 +4626,11 @@ Total output lines: 6805
     "scenario_id": "T-02",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.076745,
+    "duration_ms": 0.270135,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-02:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-02:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-02",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -4743,19 +4661,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -4764,19 +4682,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4803,19 +4721,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 7,
                     "required": 7
@@ -4824,19 +4742,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -4861,11 +4779,11 @@ Total output lines: 6805
     "scenario_id": "T-03",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.044907,
+    "duration_ms": 0.094226,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-03:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-03:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-03",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -4936,11 +4854,11 @@ Total output lines: 6805
     "scenario_id": "T-03",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.038838,
+    "duration_ms": 0.078797,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-03:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-03:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-03",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -5011,11 +4929,11 @@ Total output lines: 6805
     "scenario_id": "T-03",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.412759,
+    "duration_ms": 0.102602,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-03:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-03:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-03",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -5046,19 +4964,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 7
@@ -5067,19 +4985,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5106,19 +5024,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -5127,19 +5045,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5164,11 +5082,11 @@ Total output lines: 6805
     "scenario_id": "T-03",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.105107,
+    "duration_ms": 0.0967,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:T-03:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:T-03:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "T-03",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -5199,19 +5117,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 7
@@ -5220,19 +5138,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5259,19 +5177,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -5280,19 +5198,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5317,11 +5235,11 @@ Total output lines: 6805
     "scenario_id": "U-01",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.049665,
+    "duration_ms": 0.062496,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-01:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-01:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-01",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -5371,11 +5289,11 @@ Total output lines: 6805
     "scenario_id": "U-01",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.046309,
+    "duration_ms": 0.053199,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-01:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-01:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-01",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -5435,11 +5353,11 @@ Total output lines: 6805
     "scenario_id": "U-01",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.054492,
+    "duration_ms": 0.243976,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-01:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-01:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-01",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -5470,25 +5388,25 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "ORACLE_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -5497,19 +5415,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5518,7 +5436,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_UNIT_SCALE"
+        "ORACLE_CONSUMER_UNIT_SCALE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -5536,11 +5454,11 @@ Total output lines: 6805
     "scenario_id": "U-01",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.082314,
+    "duration_ms": 0.25164,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-01:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-01:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-01",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -5571,25 +5489,25 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "V2_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -5598,19 +5516,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5619,7 +5537,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_UNIT_SCALE"
+        "V2_CONSUMER_UNIT_SCALE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -5637,11 +5555,11 @@ Total output lines: 6805
     "scenario_id": "U-02",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.045649,
+    "duration_ms": 0.06937,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-02:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-02:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-02",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -5691,11 +5609,11 @@ Total output lines: 6805
     "scenario_id": "U-02",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.047111,
+    "duration_ms": 0.066524,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-02:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-02:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-02",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -5753,11 +5671,11 @@ Total output lines: 6805
     "scenario_id": "U-02",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.098799,
+    "duration_ms": 0.08008,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-02:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-02:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-02",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -5788,25 +5706,25 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "ORACLE_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -5815,19 +5733,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5852,11 +5770,11 @@ Total output lines: 6805
     "scenario_id": "U-02",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.054792,
+    "duration_ms": 0.078186,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-02:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-02:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-02",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -5887,25 +5805,25 @@ Total output lines: 6805
                 {
                   "dimension": "meaning",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_MEANING",
+                  "reason_code": "V2_REQUIRED_MEANING",
                   "evidence": {}
                 },
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -5914,19 +5832,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -5951,11 +5869,11 @@ Total output lines: 6805
     "scenario_id": "U-03",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.036334,
+    "duration_ms": 0.057518,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-03:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-03:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-03",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -6005,11 +5923,11 @@ Total output lines: 6805
     "scenario_id": "U-03",
     "mode": "V1-ind",
     "actual_decision": "REJECT",
-    "duration_ms": 0.043475,
+    "duration_ms": 0.05861,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-03:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-03:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-03",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -6069,11 +5987,11 @@ Total output lines: 6805
     "scenario_id": "U-03",
     "mode": "V1-oracle",
     "actual_decision": "REJECT",
-    "duration_ms": 0.048453,
+    "duration_ms": 0.072315,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-03:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-03:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-03",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -6104,19 +6022,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -6125,19 +6043,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -6146,7 +6064,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_UNIT_SCALE"
+        "ORACLE_CONSUMER_UNIT_SCALE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -6164,11 +6082,11 @@ Total output lines: 6805
     "scenario_id": "U-03",
     "mode": "V2",
     "actual_decision": "REJECT",
-    "duration_ms": 0.04688,
+    "duration_ms": 0.071403,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-03:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-03:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-03",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -6199,19 +6117,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "FALSE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -6220,19 +6138,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -6241,7 +6159,7 @@ Total output lines: 6805
         }
       ],
       "reason_codes": [
-        "CONSUMER_UNIT_SCALE"
+        "V2_CONSUMER_UNIT_SCALE"
       ],
       "state_trace": [
         "RECEIVED",
@@ -6259,11 +6177,11 @@ Total output lines: 6805
     "scenario_id": "U-04",
     "mode": "V0",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.050196,
+    "duration_ms": 0.145062,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-04:V0",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-04:V0",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-04",
         "mode": "V0",
         "product_id": "spending_activity_profile",
@@ -6334,11 +6252,11 @@ Total output lines: 6805
     "scenario_id": "U-04",
     "mode": "V1-ind",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.051938,
+    "duration_ms": 0.098594,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-04:V1-ind",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-04:V1-ind",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-04",
         "mode": "V1-ind",
         "product_id": "spending_activity_profile",
@@ -6425,11 +6343,11 @@ Total output lines: 6805
     "scenario_id": "U-04",
     "mode": "V1-oracle",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.068072,
+    "duration_ms": 0.103193,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-04:V1-oracle",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-04:V1-oracle",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-04",
         "mode": "V1-oracle",
         "product_id": "spending_activity_profile",
@@ -6460,19 +6378,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -6481,19 +6399,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -6520,19 +6438,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "ORACLE_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "ORACLE_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "ORACLE_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -6541,19 +6459,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "ORACLE_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "ORACLE_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "ORACLE_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -6578,11 +6496,11 @@ Total output lines: 6805
     "scenario_id": "U-04",
     "mode": "V2",
     "actual_decision": "ACCEPT",
-    "duration_ms": 0.062724,
+    "duration_ms": 0.099526,
     "release": {
       "proposal": {
-        "proposal_id": "development-pilot-0.3.0:U-04:V2",
-        "run_id": "development-pilot-0.3.0",
+        "proposal_id": "development-pilot-0.3.1-dev1:U-04:V2",
+        "run_id": "development-pilot-0.3.1-dev1",
         "scenario_id": "U-04",
         "mode": "V2",
         "product_id": "spending_activity_profile",
@@ -6613,19 +6531,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -6634,19 +6552,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]
@@ -6673,19 +6591,19 @@ Total output lines: 6805
                 {
                   "dimension": "formula",
                   "outcome": "TRUE",
-                  "reason_code": "REQUIRED_FORMULA",
+                  "reason_code": "V2_REQUIRED_FORMULA",
                   "evidence": {}
                 },
                 {
                   "dimension": "unit_scale",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_UNIT_SCALE",
+                  "reason_code": "V2_CONSUMER_UNIT_SCALE",
                   "evidence": {}
                 },
                 {
                   "dimension": "time_window",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_MIN_WINDOW",
+                  "reason_code": "V2_CONSUMER_MIN_WINDOW",
                   "evidence": {
                     "actual": 30,
                     "required": 30
@@ -6694,19 +6612,19 @@ Total output lines: 6805
                 {
                   "dimension": "identity_scope",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_IDENTITY_SCOPE",
+                  "reason_code": "V2_CONSUMER_IDENTITY_SCOPE",
                   "evidence": {}
                 },
                 {
                   "dimension": "lineage",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_ALLOWED_SOURCES",
+                  "reason_code": "V2_CONSUMER_ALLOWED_SOURCES",
                   "evidence": {}
                 },
                 {
                   "dimension": "purpose",
                   "outcome": "TRUE",
-                  "reason_code": "CONSUMER_REQUIRED_PURPOSES",
+                  "reason_code": "V2_CONSUMER_REQUIRED_PURPOSES",
                   "evidence": {}
                 }
               ]

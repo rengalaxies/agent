@@ -11,7 +11,7 @@ pilot:
 		--output results/pilot-results.json \
 		--manifest results/run-manifest.json \
 		--metrics results/pilot-metrics.json \
-		--run-id development-pilot-0.3.0
+		--run-id development-pilot-0.3.1-dev1
 
 evaluation-check:
 	PYTHONPATH=src python -m unittest tests.test_evaluation_catalog -v
