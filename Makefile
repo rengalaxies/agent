@@ -9,12 +9,14 @@ pilot:
 		--baseline policies/v1-ind.yaml \
 		--output results/pilot-raw-results.json \
 		--manifest results/run-manifest.json \
-		--run-id development-pilot-0.3.1-dev2 \
+		--run-id development-pilot-0.3.1-dev3 \
 		--purpose development_regression
 	PYTHONPATH=src python -m datamesh_release_protocol.cli score-results \
 		--raw-results results/pilot-raw-results.json \
 		--run-manifest results/run-manifest.json \
 		--scenarios scenarios/development \
+		--catalog-manifest experiments/development-catalog.yaml \
+		--analysis-plan experiments/analysis-plan-0.3.1.yaml \
 		--oracle oracles/development.yaml \
 		--output results/pilot-results.json \
 		--metrics results/pilot-metrics.json \

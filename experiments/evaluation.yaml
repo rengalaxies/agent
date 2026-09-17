@@ -3,6 +3,7 @@ run_id: e3-evaluation-0.3.0
 protocol_version: 0.3.0
 scenario_directory: scenarios/evaluation
 catalog_manifest: experiments/evaluation-catalog.yaml
+analysis_plan: experiments/analysis-plan-0.3.1.yaml
 baseline_policy: policies/v1-ind.yaml
 oracle_catalog: oracles/evaluation.yaml
 modes: [V0, V1-ind, V1-oracle, V2]

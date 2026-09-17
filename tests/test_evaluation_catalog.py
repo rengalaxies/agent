@@ -7,6 +7,7 @@ import yaml
 
 from datamesh_release_protocol.loaders import (
     load_catalog,
+    load_cluster_map,
     load_oracle_catalog,
     validate_oracle_coverage,
 )
@@ -34,6 +35,7 @@ class EvaluationCatalogTest(unittest.TestCase):
         cls.evaluation = load_catalog(EVALUATION)
         cls.oracles = load_oracle_catalog(ORACLE)
         cls.manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+        cls.cluster_ids = load_cluster_map(MANIFEST, cls.evaluation)
 
     def test_catalog_has_forty_new_scenarios(self):
         self.assertEqual(len(self.evaluation), 40)
@@ -74,6 +76,19 @@ class EvaluationCatalogTest(unittest.TestCase):
             {entry["scenario_id"] for entry in entries},
             {scenario.scenario_id for scenario in self.evaluation},
         )
+
+    def test_clusters_pair_dependent_dangerous_and_admissible_variants(self):
+        clusters = {}
+        for scenario_id, cluster_id in self.cluster_ids.items():
+            clusters.setdefault(cluster_id, []).append(scenario_id)
+        self.assertEqual(len(clusters), 20)
+        self.assertTrue(all(len(items) == 2 for items in clusters.values()))
+        for scenario_ids in clusters.values():
+            classes = {
+                self.oracles[scenario_id].scenario_class.value
+                for scenario_id in scenario_ids
+            }
+            self.assertEqual(classes, {"dangerous", "admissible"})
 
     def test_no_exact_semantic_transition_is_reused_from_development(self):
         def fingerprint(scenario):

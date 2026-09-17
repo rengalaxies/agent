@@ -57,6 +57,8 @@ class OracleIsolationTest(unittest.TestCase):
                 raw_results_path=raw,
                 run_manifest_path=run_manifest,
                 scenarios_dir=Path("scenarios/development"),
+                catalog_manifest_path=Path("experiments/development-catalog.yaml"),
+                analysis_plan_path=Path("experiments/analysis-plan-0.3.1.yaml"),
                 oracle_path=Path("oracles/development.yaml"),
                 output=scored,
                 metrics_path=metrics,
@@ -76,6 +78,8 @@ class OracleIsolationTest(unittest.TestCase):
             )
             self.assertTrue(score_payload["oracle_loaded_by_scoring_process_only"])
             self.assertFalse(score_payload["expected_labels_exposed_to_validators"])
+            self.assertIn("catalog_manifest_sha256", score_payload)
+            self.assertIn("analysis_plan_sha256", score_payload)
             self.assertEqual(
                 json.loads(metrics.read_text(encoding="utf-8"))["purpose"],
                 "development_regression",
@@ -100,6 +104,8 @@ class OracleIsolationTest(unittest.TestCase):
                     raw_results_path=raw,
                     run_manifest_path=run_manifest,
                     scenarios_dir=Path("scenarios/development"),
+                    catalog_manifest_path=Path("experiments/development-catalog.yaml"),
+                    analysis_plan_path=Path("experiments/analysis-plan-0.3.1.yaml"),
                     oracle_path=Path("oracles/development.yaml"),
                     output=root / "scored.json",
                     metrics_path=root / "metrics.json",

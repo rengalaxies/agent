@@ -39,6 +39,28 @@ class ScenarioClass(StrEnum):
     ADMISSIBLE = "admissible"
 
 
+class H1Thresholds(StrictModel):
+    minimum_safe_detection_rate_delta: float = Field(ge=0, le=1)
+    maximum_false_block_rate: float = Field(ge=0, le=1)
+    maximum_needs_review_rate: float = Field(ge=0, le=1)
+
+
+class AnalysisPlan(StrictModel):
+    plan_id: str
+    protocol_line: str
+    confidence_level: float = Field(gt=0, lt=1)
+    alpha: float = Field(gt=0, lt=1)
+    cluster_bootstrap_resamples: int = Field(ge=1000)
+    bootstrap_seed: int
+    h1_thresholds: H1Thresholds
+
+    @model_validator(mode="after")
+    def check_confidence_matches_alpha(self) -> "AnalysisPlan":
+        if abs(self.confidence_level - (1 - self.alpha)) > 1e-9:
+            raise ValueError("confidence_level must equal 1 - alpha")
+        return self
+
+
 class SemanticProfile(StrictModel):
     meaning: str
     description: str | None = None

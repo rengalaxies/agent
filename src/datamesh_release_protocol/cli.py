@@ -12,8 +12,10 @@ from pathlib import Path
 from . import __version__
 from .engine import ReleaseEngine
 from .loaders import (
+    load_analysis_plan,
     load_baseline_policy,
     load_catalog,
+    load_cluster_map,
     load_oracle_catalog,
     validate_oracle_coverage,
 )
@@ -103,7 +105,7 @@ def run_catalog(
             [*Path("src").rglob("*.py"), Path("services/api.py")]
         ),
         "schema_bundle_sha256": _files_hash(list(Path("schemas").glob("*.json"))),
-        "metrics_definition_sha256": _file_hash(Path("docs/metrics-0.3.0.md")),
+        "metrics_definition_sha256": _file_hash(Path("docs/metrics-0.3.1.md")),
         "scenario_files": {
             path.name: _file_hash(path)
             for path in sorted(scenarios_dir.glob("*.yaml"))
@@ -185,6 +187,8 @@ def score_results(
     raw_results_path: Path,
     run_manifest_path: Path,
     scenarios_dir: Path,
+    catalog_manifest_path: Path,
+    analysis_plan_path: Path,
     oracle_path: Path,
     output: Path,
     metrics_path: Path,
@@ -205,6 +209,10 @@ def score_results(
     _validate_run_chain(results, scenarios_dir, run_manifest_payload)
 
     scenarios = load_catalog(scenarios_dir)
+    cluster_ids = load_cluster_map(catalog_manifest_path, scenarios)
+    analysis_plan = load_analysis_plan(analysis_plan_path)
+    if not __version__.startswith(analysis_plan.protocol_line):
+        raise ValueError("analysis plan protocol line differs from the implementation")
     oracles = load_oracle_catalog(oracle_path)
     validate_oracle_coverage(scenarios, oracles)
     for result in results:
@@ -219,7 +227,13 @@ def score_results(
     purpose = str(run_manifest_payload.get("purpose"))
     if purpose not in PURPOSES:
         raise ValueError(f"unsupported run manifest purpose: {purpose}")
-    report = build_metrics_report(results, oracles, purpose=purpose)
+    report = build_metrics_report(
+        results,
+        oracles,
+        cluster_ids,
+        analysis_plan,
+        purpose=purpose,
+    )
     _write_json(metrics_path, report)
 
     score_manifest = {
@@ -231,6 +245,8 @@ def score_results(
         "raw_results_sha256": actual_raw_hash,
         "run_manifest_sha256": _file_hash(run_manifest_path),
         "oracle_sha256": _file_hash(oracle_path),
+        "catalog_manifest_sha256": _file_hash(catalog_manifest_path),
+        "analysis_plan_sha256": _file_hash(analysis_plan_path),
         "scored_results_sha256": _file_hash(output),
         "metrics_sha256": _file_hash(metrics_path),
         "expected_labels_exposed_to_validators": False,
@@ -260,6 +276,8 @@ def build_parser() -> argparse.ArgumentParser:
     score.add_argument("--raw-results", type=Path, required=True)
     score.add_argument("--run-manifest", type=Path, required=True)
     score.add_argument("--scenarios", type=Path, required=True)
+    score.add_argument("--catalog-manifest", type=Path, required=True)
+    score.add_argument("--analysis-plan", type=Path, required=True)
     score.add_argument("--oracle", type=Path, required=True)
     score.add_argument("--output", type=Path, required=True)
     score.add_argument("--metrics", type=Path, required=True)
@@ -286,6 +304,8 @@ def main() -> None:
                 raw_results_path=args.raw_results,
                 run_manifest_path=args.run_manifest,
                 scenarios_dir=args.scenarios,
+                catalog_manifest_path=args.catalog_manifest,
+                analysis_plan_path=args.analysis_plan,
                 oracle_path=args.oracle,
                 output=args.output,
                 metrics_path=args.metrics,

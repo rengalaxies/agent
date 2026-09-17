@@ -1,0 +1,66 @@
+catalog_id: development-catalog-0.3.1
+protocol_version: 0.3.1
+split: development
+scenario_count: 20
+scoring_only_metadata: true
+scenarios:
+- scenario_id: M-01
+  family_id: F1
+  cluster_id: dev-f1-01
+- scenario_id: M-02
+  family_id: F1
+  cluster_id: dev-f1-01
+- scenario_id: M-03
+  family_id: F1
+  cluster_id: dev-f1-02
+- scenario_id: U-01
+  family_id: F2
+  cluster_id: dev-f2-01
+- scenario_id: U-02
+  family_id: F2
+  cluster_id: dev-f2-01
+- scenario_id: U-03
+  family_id: F2
+  cluster_id: dev-f2-02
+- scenario_id: U-04
+  family_id: F2
+  cluster_id: dev-f2-02
+- scenario_id: T-01
+  family_id: F3
+  cluster_id: dev-f3-01
+- scenario_id: T-02
+  family_id: F3
+  cluster_id: dev-f3-01
+- scenario_id: T-03
+  family_id: F3
+  cluster_id: dev-f3-02
+- scenario_id: I-01
+  family_id: F4
+  cluster_id: dev-f4-01
+- scenario_id: I-02
+  family_id: F4
+  cluster_id: dev-f4-01
+- scenario_id: I-03
+  family_id: F4
+  cluster_id: dev-f4-02
+- scenario_id: I-04
+  family_id: F4
+  cluster_id: dev-f4-02
+- scenario_id: L-01
+  family_id: F5
+  cluster_id: dev-f5-01
+- scenario_id: L-02
+  family_id: F5
+  cluster_id: dev-f5-01
+- scenario_id: L-03
+  family_id: F5
+  cluster_id: dev-f5-02
+- scenario_id: L-04
+  family_id: F5
+  cluster_id: dev-f5-02
+- scenario_id: P-01
+  family_id: F6
+  cluster_id: dev-f6-01
+- scenario_id: P-02
+  family_id: F6
+  cluster_id: dev-f6-01

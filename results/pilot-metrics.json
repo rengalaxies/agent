@@ -1,5 +1,6 @@
 {
   "purpose": "development_regression",
+  "analysis_plan_id": "h1-analysis-0.3.1",
   "by_mode": {
     "V0": {
       "scenario_count": 20,
@@ -11,8 +12,31 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 0.6,
-      "median_latency_ms": 0.056345,
-      "p95_latency_ms": 0.114281
+      "median_latency_ms": 0.04295,
+      "p95_latency_ms": 0.08647,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
     },
     "V1-ind": {
       "scenario_count": 20,
@@ -24,8 +48,31 @@
       "false_block_rate": 0.1,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 0.84,
-      "median_latency_ms": 0.05001,
-      "p95_latency_ms": 0.107652
+      "median_latency_ms": 0.039485,
+      "p95_latency_ms": 0.069404,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.396778,
+          "upper": 0.892209,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.017876,
+          "upper": 0.40415,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
     },
     "V1-oracle": {
       "scenario_count": 20,
@@ -37,8 +84,31 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 1.0,
-      "median_latency_ms": 0.06989,
-      "p95_latency_ms": 0.108803
+      "median_latency_ms": 0.052749,
+      "p95_latency_ms": 0.070086,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.722467,
+          "upper": 1.0,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
     },
     "V2": {
       "scenario_count": 20,
@@ -50,18 +120,79 @@
       "false_block_rate": 0.0,
       "needs_review_rate": 0.0,
       "consumer_decision_accuracy": 1.0,
-      "median_latency_ms": 0.072584,
-      "p95_latency_ms": 0.155783
+      "median_latency_ms": 0.055033,
+      "p95_latency_ms": 0.095864,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.722467,
+          "upper": 1.0,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
     }
   },
   "primary_comparison_v2_vs_v1_ind": {
     "dangerous_scenario_count": 10,
+    "dangerous_cluster_count": 10,
     "safe_detection_rate_delta": 0.3,
+    "safe_detection_rate_delta_ci95": {
+      "lower": 0.0,
+      "upper": 0.6,
+      "confidence_level": 0.95,
+      "method": "percentile_cluster_bootstrap",
+      "cluster_count": 10,
+      "resamples": 10000
+    },
     "paired_improvements": 3,
     "paired_regressions": 0,
-    "exact_mcnemar_pvalue": 0.25,
+    "exact_cluster_sign_flip_pvalue": 0.25,
+    "unadjusted_exact_mcnemar_pvalue": 0.25,
     "admissible_scenario_count": 10,
-    "false_block_rate_delta": -0.1
+    "admissible_cluster_count": 10,
+    "false_block_rate_delta": -0.1,
+    "false_block_rate_delta_ci95": {
+      "lower": -0.3,
+      "upper": 0.0,
+      "confidence_level": 0.95,
+      "method": "percentile_cluster_bootstrap",
+      "cluster_count": 10,
+      "resamples": 10000
+    },
+    "cluster_adjustment": "cluster_id from the scoring-only catalog manifest"
+  },
+  "h1_assessment": {
+    "eligible_for_confirmatory_claim": false,
+    "status": "not_assessed_development_only",
+    "all_criteria_met": false,
+    "criteria": {
+      "minimum_effect_met": true,
+      "ci_excludes_zero": false,
+      "cluster_adjusted_pvalue_met": false,
+      "false_block_bound_met": true,
+      "needs_review_bound_met": true
+    },
+    "thresholds": {
+      "minimum_safe_detection_rate_delta": 0.15,
+      "maximum_false_block_rate": 0.1,
+      "maximum_needs_review_rate": 0.1
+    },
+    "alpha": 0.05
   },
   "interpretation": "development regression only; not confirmatory evidence for H1"
 }

@@ -1,0 +1,10 @@
+plan_id: h1-analysis-0.3.1
+protocol_line: 0.3.1
+confidence_level: 0.95
+alpha: 0.05
+cluster_bootstrap_resamples: 10000
+bootstrap_seed: 20260917
+h1_thresholds:
+  minimum_safe_detection_rate_delta: 0.15
+  maximum_false_block_rate: 0.10
+  maximum_needs_review_rate: 0.10

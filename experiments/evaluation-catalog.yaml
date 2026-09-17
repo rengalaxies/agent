@@ -13,169 +13,210 @@ family_distribution:
 generation_seed: 20260916
 group_split_rule: template groups are evaluation-only and have no development counterpart
 oracle_exposed_to_validators: false
+scoring_only_metadata: true
 main_e3_executed: false
 scenario_catalog_sha256: 2aa2fc804352991cbb2541c872fcf8e021a2cf5e29aab1682ec6e3e3d296e1cb
 oracle_sha256: efcf7af34031f163363f3f951f715e2552f982c6b241ac35bd2bffa2dda862e3
 baseline_policy_sha256: ff5c19c1a6cbbbb097648adbe74a6a59dfd55d068a8959c7e8ea0bc197d4c58d
-generator_sha256: c570c6620e6b56eae32d4682f8a06fa3a5f6dae9cdc1dd29204c6a90b1702c0e
+generator_sha256: c3366b884a1bda85355a38096cde138c1afcbd0051769ea4b4c9f1e2765c4cd7
 scenarios:
 - scenario_id: M-11
   family_id: F1
+  cluster_id: eval-f1-01
   template_group: meaning-views-single
   consumer_count: 1
 - scenario_id: M-12
   family_id: F1
+  cluster_id: eval-f1-01
   template_group: meaning-description-single
   consumer_count: 1
 - scenario_id: M-13
   family_id: F1
+  cluster_id: eval-f1-02
   template_group: meaning-conflict-multi
   consumer_count: 2
 - scenario_id: M-14
   family_id: F1
+  cluster_id: eval-f1-02
   template_group: meaning-updated-multi
   consumer_count: 2
 - scenario_id: M-15
   family_id: F1
+  cluster_id: eval-f1-03
   template_group: meaning-filter-single
   consumer_count: 1
 - scenario_id: M-16
   family_id: F1
+  cluster_id: eval-f1-03
   template_group: meaning-filter-updated
   consumer_count: 1
 - scenario_id: M-17
   family_id: F1
+  cluster_id: eval-f1-04
   template_group: meaning-label-single
   consumer_count: 1
 - scenario_id: M-18
   family_id: F1
+  cluster_id: eval-f1-04
   template_group: meaning-description-multi
   consumer_count: 2
 - scenario_id: U-11
   family_id: F2
+  cluster_id: eval-f2-01
   template_group: unit-missing-migration
   consumer_count: 1
 - scenario_id: U-12
   family_id: F2
+  cluster_id: eval-f2-01
   template_group: unit-valid-migration
   consumer_count: 1
 - scenario_id: U-13
   family_id: F2
+  cluster_id: eval-f2-02
   template_group: scale-missing-migration
   consumer_count: 1
 - scenario_id: U-14
   family_id: F2
+  cluster_id: eval-f2-02
   template_group: scale-direct
   consumer_count: 1
 - scenario_id: U-15
   family_id: F2
+  cluster_id: eval-f2-03
   template_group: unit-unvalidated
   consumer_count: 1
 - scenario_id: U-16
   family_id: F2
+  cluster_id: eval-f2-03
   template_group: unit-mixed-multi
   consumer_count: 2
 - scenario_id: U-17
   family_id: F2
+  cluster_id: eval-f2-04
   template_group: unit-wrong-direction
   consumer_count: 1
 - scenario_id: U-18
   family_id: F2
+  cluster_id: eval-f2-04
   template_group: scale-valid-migration
   consumer_count: 1
 - scenario_id: T-11
   family_id: F3
+  cluster_id: eval-f3-01
   template_group: window-short-single
   consumer_count: 1
 - scenario_id: T-12
   family_id: F3
+  cluster_id: eval-f3-01
   template_group: window-long-single
   consumer_count: 1
 - scenario_id: T-13
   family_id: F3
+  cluster_id: eval-f3-02
   template_group: window-conflict-multi
   consumer_count: 2
 - scenario_id: T-14
   family_id: F3
+  cluster_id: eval-f3-02
   template_group: window-valid-multi
   consumer_count: 2
 - scenario_id: T-15
   family_id: F3
+  cluster_id: eval-f3-03
   template_group: window-three-days
   consumer_count: 1
 - scenario_id: T-16
   family_id: F3
+  cluster_id: eval-f3-03
   template_group: window-monotonic
   consumer_count: 1
 - scenario_id: I-11
   family_id: F4
+  cluster_id: eval-f4-01
   template_group: identity-missing-map
   consumer_count: 1
 - scenario_id: I-12
   family_id: F4
+  cluster_id: eval-f4-01
   template_group: identity-valid-map
   consumer_count: 1
 - scenario_id: I-13
   family_id: F4
+  cluster_id: eval-f4-02
   template_group: identity-nonbijective
   consumer_count: 1
 - scenario_id: I-14
   family_id: F4
+  cluster_id: eval-f4-02
   template_group: identity-direct
   consumer_count: 1
 - scenario_id: I-15
   family_id: F4
+  cluster_id: eval-f4-03
   template_group: identity-wrong-direction
   consumer_count: 1
 - scenario_id: I-16
   family_id: F4
+  cluster_id: eval-f4-03
   template_group: identity-mixed-multi
   consumer_count: 2
 - scenario_id: L-11
   family_id: F5
+  cluster_id: eval-f5-01
   template_group: lineage-forbidden-single
   consumer_count: 1
 - scenario_id: L-12
   family_id: F5
+  cluster_id: eval-f5-01
   template_group: lineage-approved-single
   consumer_count: 1
 - scenario_id: L-13
   family_id: F5
+  cluster_id: eval-f5-02
   template_group: lineage-mixed-single
   consumer_count: 1
 - scenario_id: L-14
   family_id: F5
+  cluster_id: eval-f5-02
   template_group: lineage-narrow
   consumer_count: 1
 - scenario_id: L-15
   family_id: F5
+  cluster_id: eval-f5-03
   template_group: lineage-replacement
   consumer_count: 1
 - scenario_id: L-16
   family_id: F5
+  cluster_id: eval-f5-03
   template_group: lineage-consumer-update-multi
   consumer_count: 2
 - scenario_id: P-11
   family_id: F6
+  cluster_id: eval-f6-01
   template_group: purpose-remove-risk
   consumer_count: 1
 - scenario_id: P-12
   family_id: F6
+  cluster_id: eval-f6-01
   template_group: purpose-add
   consumer_count: 1
 - scenario_id: P-13
   family_id: F6
+  cluster_id: eval-f6-02
   template_group: purpose-conflict-multi
   consumer_count: 2
 - scenario_id: P-14
   family_id: F6
+  cluster_id: eval-f6-02
   template_group: purpose-remove-optional
   consumer_count: 2
 - scenario_id: P-15
   family_id: F6
+  cluster_id: eval-f6-03
   template_group: purpose-replace
   consumer_count: 1
 - scenario_id: P-16
   family_id: F6
+  cluster_id: eval-f6-03
   template_group: purpose-add-multi
   consumer_count: 2

@@ -255,6 +255,12 @@ def catalog_hash(directory: Path) -> str:
     return digest.hexdigest()
 
 
+def cluster_id_for(scenario_id: str, family_id: str) -> str:
+    number = int(scenario_id.split("-")[1])
+    pair_number = ((number - 11) // 2) + 1
+    return f"eval-{family_id.lower()}-{pair_number:02d}"
+
+
 def main() -> None:
     if len(CASES) != 40:
         raise RuntimeError(f"expected 40 cases, got {len(CASES)}")
@@ -284,6 +290,7 @@ def main() -> None:
             "generation_seed": 20260916,
             "group_split_rule": "template groups are evaluation-only and have no development counterpart",
             "oracle_exposed_to_validators": False,
+            "scoring_only_metadata": True,
             "main_e3_executed": False,
             "scenario_catalog_sha256": catalog_hash(SCENARIO_DIR),
             "oracle_sha256": file_hash(ORACLE_PATH),
@@ -293,6 +300,10 @@ def main() -> None:
                 {
                     "scenario_id": item["scenario"]["scenario_id"],
                     "family_id": item["scenario"]["family_id"],
+                    "cluster_id": cluster_id_for(
+                        item["scenario"]["scenario_id"],
+                        item["scenario"]["family_id"],
+                    ),
                     "template_group": item["template_group"],
                     "consumer_count": len(item["scenario"]["obligations"]),
                 }

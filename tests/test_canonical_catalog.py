@@ -7,6 +7,7 @@ from pydantic import ValidationError
 from datamesh_release_protocol.loaders import (
     load_baseline_policy,
     load_catalog,
+    load_cluster_map,
     load_oracle_catalog,
     validate_oracle_coverage,
 )
@@ -23,6 +24,9 @@ class CanonicalCatalogTest(unittest.TestCase):
     def setUpClass(cls):
         cls.scenarios = load_catalog(CATALOG)
         cls.oracles = load_oracle_catalog(ORACLE)
+        cls.cluster_ids = load_cluster_map(
+            Path("experiments/development-catalog.yaml"), cls.scenarios
+        )
         validate_oracle_coverage(cls.scenarios, cls.oracles)
         cls.engine = ReleaseEngine(load_baseline_policy(BASELINE))
 
@@ -33,6 +37,7 @@ class CanonicalCatalogTest(unittest.TestCase):
             {scenario.family_id for scenario in self.scenarios},
             {"F1", "F2", "F3", "F4", "F5", "F6"},
         )
+        self.assertEqual(set(self.cluster_ids), {item.scenario_id for item in self.scenarios})
 
     def test_catalog_is_balanced_and_every_family_has_a_pair(self):
         classes = [oracle.scenario_class.value for oracle in self.oracles.values()]
