@@ -63,6 +63,45 @@ class AnalysisPlan(StrictModel):
         return self
 
 
+class BusinessCostScenario(StrictModel):
+    scenario_id: str
+    label: str
+    description: str
+    proposal_count: int = Field(gt=0)
+    dangerous_change_share: float = Field(ge=0, le=1)
+    escaped_dangerous_change_cost_reu: float = Field(ge=0)
+    false_reject_cost_reu: float = Field(ge=0)
+    manual_review_cost_reu: float = Field(ge=0)
+    fixed_cost_reu_by_mode: dict[ValidationMode, float]
+
+    @model_validator(mode="after")
+    def check_fixed_cost_modes(self) -> "BusinessCostScenario":
+        expected = {ValidationMode.V1_IND, ValidationMode.V2}
+        if set(self.fixed_cost_reu_by_mode) != expected:
+            raise ValueError("fixed_cost_reu_by_mode must define V1-ind and V2 exactly once")
+        if any(value < 0 for value in self.fixed_cost_reu_by_mode.values()):
+            raise ValueError("fixed costs must be non-negative")
+        return self
+
+
+class BusinessCaseModel(StrictModel):
+    model_id: str
+    model_version: str
+    cost_unit: Literal["manual_review_equivalent_unit"]
+    compared_modes: list[ValidationMode]
+    assumptions: list[str] = Field(min_length=1)
+    scenarios: list[BusinessCostScenario] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def check_business_model(self) -> "BusinessCaseModel":
+        if self.compared_modes != [ValidationMode.V1_IND, ValidationMode.V2]:
+            raise ValueError("compared_modes must be ordered as V1-ind, V2")
+        identifiers = [scenario.scenario_id for scenario in self.scenarios]
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("business scenario_id values must be unique")
+        return self
+
+
 class SemanticProfile(StrictModel):
     meaning: str
     description: str | None = None

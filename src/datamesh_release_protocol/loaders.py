@@ -6,7 +6,14 @@ from typing import Any
 
 import yaml
 
-from .models import AnalysisPlan, BaselinePolicy, OracleCatalog, Scenario, ScenarioOracle
+from .models import (
+    AnalysisPlan,
+    BaselinePolicy,
+    BusinessCaseModel,
+    OracleCatalog,
+    Scenario,
+    ScenarioOracle,
+)
 
 
 def load_document(path: Path) -> dict[str, Any]:
@@ -32,6 +39,10 @@ def load_baseline_policy(path: Path) -> BaselinePolicy:
 
 def load_analysis_plan(path: Path) -> AnalysisPlan:
     return AnalysisPlan.model_validate(load_document(path))
+
+
+def load_business_case_model(path: Path) -> BusinessCaseModel:
+    return BusinessCaseModel.model_validate(load_document(path))
 
 
 def load_cluster_map(path: Path, scenarios: list[Scenario]) -> dict[str, str]:

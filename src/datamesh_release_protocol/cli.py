@@ -9,11 +9,13 @@ import sys
 import time
 from pathlib import Path
 
+from .business_case import build_business_case_report
 from . import __version__
 from .engine import ReleaseEngine
 from .loaders import (
     load_analysis_plan,
     load_baseline_policy,
+    load_business_case_model,
     load_catalog,
     load_cluster_map,
     load_oracle_catalog,
@@ -146,6 +148,19 @@ def _load_unscored_results(path: Path) -> list[ScenarioRunResult]:
     return [ScenarioRunResult.model_validate(item) for item in payload]
 
 
+def _load_scored_results(path: Path) -> list[ScenarioRunResult]:
+    payload = _read_json(path)
+    if not isinstance(payload, list):
+        raise ValueError("scored results root must be an array")
+    results = [ScenarioRunResult.model_validate(item) for item in payload]
+    if any(
+        result.expected_decision is None or result.matches_expected is None
+        for result in results
+    ):
+        raise ValueError("business analysis requires scored results")
+    return results
+
+
 def _validate_run_chain(
     results: list[ScenarioRunResult],
     scenarios_dir: Path,
@@ -257,6 +272,25 @@ def score_results(
     return 0
 
 
+def evaluate_business_case(
+    scored_results_path: Path,
+    metrics_path: Path,
+    model_path: Path,
+    output_path: Path,
+) -> int:
+    metrics = _read_json(metrics_path)
+    if not isinstance(metrics, dict):
+        raise ValueError("metrics report root must be an object")
+    report = build_business_case_report(
+        _load_scored_results(scored_results_path),
+        metrics,
+        load_business_case_model(model_path),
+    )
+    _write_json(output_path, report)
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Data Mesh release protocol runner")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -282,6 +316,14 @@ def build_parser() -> argparse.ArgumentParser:
     score.add_argument("--output", type=Path, required=True)
     score.add_argument("--metrics", type=Path, required=True)
     score.add_argument("--score-manifest", type=Path, required=True)
+
+    business = subparsers.add_parser(
+        "business-case", help="calculate a scenario-based V1-ind versus V2 cost model"
+    )
+    business.add_argument("--scored-results", type=Path, required=True)
+    business.add_argument("--metrics", type=Path, required=True)
+    business.add_argument("--model", type=Path, required=True)
+    business.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -310,6 +352,15 @@ def main() -> None:
                 output=args.output,
                 metrics_path=args.metrics,
                 score_manifest_path=args.score_manifest,
+            )
+        )
+    if args.command == "business-case":
+        raise SystemExit(
+            evaluate_business_case(
+                scored_results_path=args.scored_results,
+                metrics_path=args.metrics,
+                model_path=args.model,
+                output_path=args.output,
             )
         )
     raise SystemExit(2)

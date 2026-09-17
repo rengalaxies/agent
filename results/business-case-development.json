@@ -1,0 +1,190 @@
+{
+  "artifact_kind": "business_case_sensitivity_report",
+  "model_id": "v1-ind-v2-business-sensitivity",
+  "model_version": "0.1",
+  "cost_unit": "manual_review_equivalent_unit",
+  "experiment_purpose": "development_regression",
+  "claim_scope": "scenario_analysis_only",
+  "realized_roi_supported": false,
+  "warning": "Development rates are regression evidence only; the report is not an E3 result or an empirical ROI estimate.",
+  "assumptions": [
+    "One REU is the internal cost of one standard manual review; it is not a currency amount.",
+    "The share of dangerous proposals is an external scenario assumption, not the dangerous/admissible balance of the evaluation catalog.",
+    "A dangerous ACCEPT incurs escaped-change cost; a dangerous REJECT prevents that cost.",
+    "NEEDS_REVIEW incurs review cost and is assumed to resolve before release; downstream incident cost is not added to the same proposal.",
+    "An admissible REJECT incurs delay and rework cost; an admissible NEEDS_REVIEW incurs review cost only.",
+    "Fixed mode cost is an incremental scenario input for ownership and operation during the modeled period.",
+    "Latency of the in-process prototype is not converted into money because it is not production process time."
+  ],
+  "observed_rates_by_mode": {
+    "V1-ind": {
+      "scenario_count": 20,
+      "dangerous_count": 10,
+      "admissible_count": 10,
+      "dangerous_accept_rate": 0.3,
+      "dangerous_reject_rate": 0.7,
+      "dangerous_review_rate": 0.0,
+      "admissible_accept_rate": 0.9,
+      "admissible_reject_rate": 0.1,
+      "admissible_review_rate": 0.0,
+      "false_block_rate": 0.1,
+      "needs_review_rate": 0.0
+    },
+    "V2": {
+      "scenario_count": 20,
+      "dangerous_count": 10,
+      "admissible_count": 10,
+      "dangerous_accept_rate": 0.0,
+      "dangerous_reject_rate": 1.0,
+      "dangerous_review_rate": 0.0,
+      "admissible_accept_rate": 1.0,
+      "admissible_reject_rate": 0.0,
+      "admissible_review_rate": 0.0,
+      "false_block_rate": 0.0,
+      "needs_review_rate": 0.0
+    }
+  },
+  "scenarios": [
+    {
+      "scenario_id": "low",
+      "label": "Low-impact",
+      "description": "Low prevalence and low consequence of dangerous changes.",
+      "assumptions": {
+        "proposal_count": 100,
+        "dangerous_change_share": 0.01,
+        "escaped_dangerous_change_cost_reu": 5.0,
+        "false_reject_cost_reu": 0.25,
+        "manual_review_cost_reu": 1.0,
+        "fixed_cost_reu_by_mode": {
+          "V1-ind": 0.0,
+          "V2": 20.0
+        }
+      },
+      "by_mode": {
+        "V1-ind": {
+          "expected_escaped_dangerous_changes": 0.3,
+          "expected_false_rejections": 9.9,
+          "expected_manual_reviews": 0.0,
+          "escaped_change_cost_reu": 1.5,
+          "false_reject_cost_reu": 2.475,
+          "manual_review_cost_reu": 0.0,
+          "fixed_cost_reu": 0.0,
+          "total_cost_reu": 3.975
+        },
+        "V2": {
+          "expected_escaped_dangerous_changes": 0.0,
+          "expected_false_rejections": 0.0,
+          "expected_manual_reviews": 0.0,
+          "escaped_change_cost_reu": 0.0,
+          "false_reject_cost_reu": 0.0,
+          "manual_review_cost_reu": 0.0,
+          "fixed_cost_reu": 20.0,
+          "total_cost_reu": 20.0
+        }
+      },
+      "comparison": {
+        "v2_savings_reu": -16.025,
+        "lower_cost_mode": "V1-ind"
+      },
+      "break_even": {
+        "status": "finite_threshold",
+        "escaped_changes_avoided": 0.3,
+        "incident_cost_reu": 58.416667
+      }
+    },
+    {
+      "scenario_id": "base",
+      "label": "Base",
+      "description": "Moderate prevalence and consequence of dangerous changes.",
+      "assumptions": {
+        "proposal_count": 100,
+        "dangerous_change_share": 0.05,
+        "escaped_dangerous_change_cost_reu": 50.0,
+        "false_reject_cost_reu": 1.0,
+        "manual_review_cost_reu": 1.0,
+        "fixed_cost_reu_by_mode": {
+          "V1-ind": 0.0,
+          "V2": 20.0
+        }
+      },
+      "by_mode": {
+        "V1-ind": {
+          "expected_escaped_dangerous_changes": 1.5,
+          "expected_false_rejections": 9.5,
+          "expected_manual_reviews": 0.0,
+          "escaped_change_cost_reu": 75.0,
+          "false_reject_cost_reu": 9.5,
+          "manual_review_cost_reu": 0.0,
+          "fixed_cost_reu": 0.0,
+          "total_cost_reu": 84.5
+        },
+        "V2": {
+          "expected_escaped_dangerous_changes": 0.0,
+          "expected_false_rejections": 0.0,
+          "expected_manual_reviews": 0.0,
+          "escaped_change_cost_reu": 0.0,
+          "false_reject_cost_reu": 0.0,
+          "manual_review_cost_reu": 0.0,
+          "fixed_cost_reu": 20.0,
+          "total_cost_reu": 20.0
+        }
+      },
+      "comparison": {
+        "v2_savings_reu": 64.5,
+        "lower_cost_mode": "V2"
+      },
+      "break_even": {
+        "status": "finite_threshold",
+        "escaped_changes_avoided": 1.5,
+        "incident_cost_reu": 7.0
+      }
+    },
+    {
+      "scenario_id": "high",
+      "label": "High-impact",
+      "description": "Higher prevalence and high consequence of dangerous changes.",
+      "assumptions": {
+        "proposal_count": 100,
+        "dangerous_change_share": 0.15,
+        "escaped_dangerous_change_cost_reu": 200.0,
+        "false_reject_cost_reu": 3.0,
+        "manual_review_cost_reu": 1.0,
+        "fixed_cost_reu_by_mode": {
+          "V1-ind": 0.0,
+          "V2": 20.0
+        }
+      },
+      "by_mode": {
+        "V1-ind": {
+          "expected_escaped_dangerous_changes": 4.5,
+          "expected_false_rejections": 8.5,
+          "expected_manual_reviews": 0.0,
+          "escaped_change_cost_reu": 900.0,
+          "false_reject_cost_reu": 25.5,
+          "manual_review_cost_reu": 0.0,
+          "fixed_cost_reu": 0.0,
+          "total_cost_reu": 925.5
+        },
+        "V2": {
+          "expected_escaped_dangerous_changes": 0.0,
+          "expected_false_rejections": 0.0,
+          "expected_manual_reviews": 0.0,
+          "escaped_change_cost_reu": 0.0,
+          "false_reject_cost_reu": 0.0,
+          "manual_review_cost_reu": 0.0,
+          "fixed_cost_reu": 20.0,
+          "total_cost_reu": 20.0
+        }
+      },
+      "comparison": {
+        "v2_savings_reu": 905.5,
+        "lower_cost_mode": "V2"
+      },
+      "break_even": {
+        "status": "v2_already_cheaper_at_zero_incident_cost",
+        "escaped_changes_avoided": 4.5,
+        "incident_cost_reu": 0
+      }
+    }
+  ]
+}

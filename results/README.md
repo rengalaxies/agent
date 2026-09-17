@@ -8,3 +8,5 @@
 2. `pilot-results.json`, `pilot-metrics.json` и `pilot-score-manifest.json` - отдельный scoring по oracle, scoring-only карте шести семантических семейств и зафиксированному analysis plan с хеш-связью всех входных и выходных артефактов.
 
 `pilot-score-manifest.json` не делает development-пилот подтверждающим экспериментом. Поле `purpose: development_regression` сохраняется и в run manifest, и в отчёте метрик.
+
+`make business-pilot` использует scored results и метрики как согласованную пару и создаёт `business-case-development.json`. Этот файл содержит только анализ чувствительности в относительных единицах REU. Он не является результатом E3 и не подтверждает фактический ROI.
