@@ -8,6 +8,7 @@ import multiprocessing as mp
 import queue
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from .engine import finalize, scenario_snapshot_id
 from .models import BaselinePolicy, Decision, LocalVerdict, Scenario, ValidationMode
@@ -67,14 +68,18 @@ class EventCollector:
         return finalize([item.decision for item in self.received.values()])
 
 
+def make_event(proposal_id: str, snapshot_id: str, verdict: LocalVerdict) -> dict:
+    payload = {"proposal_id": proposal_id, "snapshot_id": snapshot_id,
+               "domain_id": verdict.domain_id, "verdict": verdict.model_dump(mode="json")}
+    return {**payload, "event_id": _digest(payload)}
+
+
 def _worker(domain: str, scenario_json: dict, policy_json: dict, mode: str,
             proposal_id: str, snapshot_id: str, out: mp.Queue, delay_s: float) -> None:
     scenario = Scenario.model_validate(scenario_json)
     policy = BaselinePolicy.model_validate(policy_json)
     verdict = validate(scenario, ValidationMode(mode), policy)[0]
-    payload = {"proposal_id": proposal_id, "snapshot_id": snapshot_id,
-               "domain_id": domain, "verdict": verdict.model_dump(mode="json")}
-    payload["event_id"] = _digest(payload)
+    payload = make_event(proposal_id, snapshot_id, verdict)
     if delay_s:
         time.sleep(delay_s)
     out.put(payload)
@@ -84,7 +89,8 @@ def run_distributed(scenario: Scenario, policy: BaselinePolicy, *,
                     mode: ValidationMode = ValidationMode.V2, timeout_s: float = 0.5,
                     delays: dict[str, float] | None = None,
                     unavailable: frozenset[str] = frozenset(),
-                    duplicate: bool = False, reverse: bool = False) -> dict:
+                    duplicate: bool = False, reverse: bool = False,
+                    journal_path: Path | None = None) -> dict:
     """One process per consumer domain; a timeout is an escalation, never acceptance."""
     domains = frozenset(item.consumer_domain for item in scenario.obligations)
     if len(domains) < 2 or timeout_s <= 0 or unavailable - domains:
@@ -92,6 +98,11 @@ def run_distributed(scenario: Scenario, policy: BaselinePolicy, *,
     proposal_id = f"E4:{scenario.scenario_id}:{mode.value}"
     snapshot_id = scenario_snapshot_id(scenario)
     collector = EventCollector(proposal_id, snapshot_id, domains)
+    journal = None
+    if journal_path is not None:
+        from .journal import EventJournal
+        journal = EventJournal(journal_path, proposal_id, snapshot_id, domains)
+        collector = journal.replay()
     ctx = mp.get_context("spawn")
     out = ctx.Queue()
     workers = [ctx.Process(target=_worker, args=(domain, scenario.model_copy(update={
@@ -114,9 +125,11 @@ def run_distributed(scenario: Scenario, policy: BaselinePolicy, *,
             except queue.Empty:
                 break
         for event in reversed(events) if reverse else events:
-            collector.ingest(event)
-            if duplicate:
+            if journal is None or journal.append(event):
                 collector.ingest(event)
+            if duplicate:
+                if journal is None or journal.append(event):
+                    collector.ingest(event)
     finally:
         for worker in workers:
             if worker.is_alive():
@@ -124,11 +137,15 @@ def run_distributed(scenario: Scenario, policy: BaselinePolicy, *,
             worker.join(timeout=1)
         out.close()
         out.join_thread()
+    decision = journal.finalize() if journal else collector.decision
+    if journal:
+        collector = journal.replay()
+        journal.close()
     return {"scenario_id": scenario.scenario_id, "mode": mode.value,
             "proposal_id": proposal_id, "snapshot_id": snapshot_id,
             "expected_domains": sorted(domains), "received_domains": sorted(collector.received),
             "missing_domains": sorted(domains - collector.received.keys()),
-            "decision": collector.decision.value, "duplicates": collector.duplicates,
+            "decision": decision.value, "duplicates": collector.duplicates,
             "invalid_events": collector.invalid, "conflicts": sorted(collector.conflicts),
             "elapsed_ms": round((time.monotonic() - start) * 1000, 2),
             "worker_exitcodes": {domain: worker.exitcode for domain, worker in zip(sorted(domains - unavailable), workers)}}
