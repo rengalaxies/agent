@@ -19,7 +19,26 @@
       "invalid_events": 0,
       "conflicts": [],
       "transport_errors": {},
-      "elapsed_ms": 8.67,
+      "elapsed_ms": 7.41,
+      "confirmatory": false
+    },
+    "cli": {
+      "run_id": "cli",
+      "scenario_id": "E4-3D-DEV",
+      "proposal_id": "E4N:cli:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "decision": "ACCEPT",
+      "received_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "missing_domains": [],
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "transport_errors": {},
+      "elapsed_ms": 9.25,
       "confirmatory": false
     },
     "duplicate": {
@@ -38,7 +57,7 @@
       "invalid_events": 0,
       "conflicts": [],
       "transport_errors": {},
-      "elapsed_ms": 7.68,
+      "elapsed_ms": 4.82,
       "confirmatory": false
     },
     "delayed": {
@@ -60,7 +79,7 @@
       "transport_errors": {
         "mobility": "TimeoutError"
       },
-      "elapsed_ms": 404.59,
+      "elapsed_ms": 404.12,
       "confirmatory": false
     },
     "unavailable": {
@@ -82,16 +101,17 @@
       "transport_errors": {
         "mobility": "URLError"
       },
-      "elapsed_ms": 4.61,
+      "elapsed_ms": 4.31,
       "confirmatory": false
     }
   },
   "checks": {
     "three_processes_accept": true,
+    "documented_cli_accepts": true,
     "duplicate_is_idempotent": true,
     "deadline_fails_safe": true,
     "domain_outage_fails_safe": true
   },
-  "passed": 4,
-  "total": 4
+  "passed": 5,
+  "total": 5
 }
