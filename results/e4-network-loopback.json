@@ -1,0 +1,97 @@
+{
+  "experiment": "E4-N loopback process smoke",
+  "three_separate_environments": false,
+  "confirmatory": false,
+  "cases": {
+    "normal": {
+      "run_id": "normal",
+      "scenario_id": "E4-3D-DEV",
+      "proposal_id": "E4N:normal:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "decision": "ACCEPT",
+      "received_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "missing_domains": [],
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "transport_errors": {},
+      "elapsed_ms": 8.67,
+      "confirmatory": false
+    },
+    "duplicate": {
+      "run_id": "duplicate",
+      "scenario_id": "E4-3D-DEV",
+      "proposal_id": "E4N:duplicate:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "decision": "ACCEPT",
+      "received_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "missing_domains": [],
+      "duplicates": 3,
+      "invalid_events": 0,
+      "conflicts": [],
+      "transport_errors": {},
+      "elapsed_ms": 7.68,
+      "confirmatory": false
+    },
+    "delayed": {
+      "run_id": "delayed",
+      "scenario_id": "E4-3D-DEV",
+      "proposal_id": "E4N:delayed:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "decision": "NEEDS_REVIEW",
+      "received_domains": [
+        "fintech",
+        "retail"
+      ],
+      "missing_domains": [
+        "mobility"
+      ],
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "transport_errors": {
+        "mobility": "TimeoutError"
+      },
+      "elapsed_ms": 404.59,
+      "confirmatory": false
+    },
+    "unavailable": {
+      "run_id": "unavailable",
+      "scenario_id": "E4-3D-DEV",
+      "proposal_id": "E4N:unavailable:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "decision": "NEEDS_REVIEW",
+      "received_domains": [
+        "fintech",
+        "retail"
+      ],
+      "missing_domains": [
+        "mobility"
+      ],
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "transport_errors": {
+        "mobility": "URLError"
+      },
+      "elapsed_ms": 4.61,
+      "confirmatory": false
+    }
+  },
+  "checks": {
+    "three_processes_accept": true,
+    "duplicate_is_idempotent": true,
+    "deadline_fails_safe": true,
+    "domain_outage_fails_safe": true
+  },
+  "passed": 4,
+  "total": 4
+}
