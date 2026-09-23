@@ -46,9 +46,19 @@ def main() -> None:
                 raise RuntimeError(f"server {domain} did not start")
         scenario = three_domains()
         with tempfile.TemporaryDirectory(prefix="e4-network-") as temp:
+            config_path = Path(temp) / "config.json"
+            config_path.write_text(json.dumps({"domains": {
+                domain: {"url": urls[domain], "key_env": f"E4_{domain.upper()}_KEY"}
+                for domain in domains}}), encoding="utf-8")
             def run(case, **kwargs):
                 return coordinate(scenario, case, urls, keys, Path(temp) / f"{case}.sqlite", **kwargs)
             normal = run("normal", timeout_s=2)
+            cli_output = Path(temp) / "cli.json"
+            subprocess.run([sys.executable, "tools/e4_network.py", "run", "--config", str(config_path),
+                            "--run-id", "cli", "--journal", str(Path(temp) / "cli.sqlite"),
+                            "--output", str(cli_output), "--timeout", "2"],
+                           env=env, check=True, capture_output=True, text=True)
+            cli_result = json.loads(cli_output.read_text(encoding="utf-8"))
             duplicate = run("duplicate", timeout_s=2, duplicate=True)
             delayed = run("delayed", timeout_s=0.4, delays={"mobility": 1.0})
             processes["mobility"].terminate()
@@ -56,12 +66,13 @@ def main() -> None:
             unavailable = run("unavailable", timeout_s=1)
         checks = {
             "three_processes_accept": normal["decision"] == "ACCEPT" and len(normal["received_domains"]) == 3,
+            "documented_cli_accepts": cli_result["decision"] == "ACCEPT" and len(cli_result["received_domains"]) == 3,
             "duplicate_is_idempotent": duplicate["decision"] == "ACCEPT" and duplicate["duplicates"] == 3,
             "deadline_fails_safe": delayed["decision"] == "NEEDS_REVIEW" and delayed["missing_domains"] == ["mobility"],
             "domain_outage_fails_safe": unavailable["decision"] == "NEEDS_REVIEW" and unavailable["missing_domains"] == ["mobility"],
         }
         result = {"experiment": "E4-N loopback process smoke", "three_separate_environments": False,
-                  "confirmatory": False, "cases": {"normal": normal, "duplicate": duplicate,
+                  "confirmatory": False, "cases": {"normal": normal, "cli": cli_result, "duplicate": duplicate,
                   "delayed": delayed, "unavailable": unavailable}, "checks": checks,
                   "passed": sum(checks.values()), "total": len(checks)}
         dest = Path("results/e4-network-loopback.json")
