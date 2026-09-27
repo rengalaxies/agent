@@ -4,27 +4,27 @@
 
 ## Текст поста для LinkedIn (русский вариант)
 
-Помогите проверить кейсы для моей магистерской ВКР в МФТИ о Data Mesh.
+Я работаю над магистерским исследованием в МФТИ: как безопасно выпускать изменения смысла данных, которые используют несколько независимых команд.
 
-Пример: поле "активный клиент" осталось boolean, но правило расчёта изменилось. Один потребитель может продолжить работу, у другого ломается метрика. Как обнаружить это до выпуска?
+Например, признак "активный клиент" сохраняет название и тип, но производитель меняет правило расчёта. Для одной команды это допустимо, а у другой меняется смысл метрики. Обычная проверка схемы не обнаружит проблему.
 
-Мы сравниваем общие контрактные проверки с проверкой подтверждённых требований конкретных команд. Ищем архитекторов данных, дата-инженеров, владельцев продуктов данных и специалистов по data governance.
+Мы проектируем проверку до выпуска: сопоставляем изменение с подтверждёнными требованиями затронутых потребителей и формируем объяснимое решение - допустить, отклонить или направить на разбор. Карта доменных команд, продуктов и зависимостей помогает определить, чьи требования нужно учесть.
 
-Нужны две вещи: короткий отзыв, встречается ли проблема на практике, и желающие позже оценить синтетические сценарии (ACCEPT / REJECT / NEEDS_REVIEW). Доступ к рабочим системам и данным не нужен; объём задания сообщим заранее.
+Ищу архитекторов данных, дата-инженеров, владельцев продуктов данных и специалистов по Data Mesh / data governance. Буду благодарен за короткий отзыв о реалистичности проблемы и/или участие в независимой оценке синтетических сценариев. Рабочие данные и доступы не нужны; формат и ожидаемую нагрузку сообщим заранее.
 
-**Если готовы помочь, напишите в комментарии вашу роль и "отзыв", "сценарии" или "оба".** Буду рад и отметке коллеги с релевантным опытом.
+**Если готовы помочь, напишите в комментариях вашу роль и что вам ближе: обсудить постановку или оценить сценарии.** Можно также отметить коллегу с релевантным опытом.
 
 ## English version for Anton's international network
 
-I am looking for expert input on my MIPT master's research on Data Mesh.
+I am working on a master's research project at MIPT on safely releasing semantic changes to data products used by multiple independent teams.
 
-Example: an "active customer" field stays boolean, but its definition changes. One consumer is fine; another consumer's metric breaks. How should this be caught before release?
+For example, an "active customer" field keeps its name and type, but the producer changes its definition. One team can accept the change; another team's metric now means something different. Schema validation will not detect that risk.
 
-We compare general contract checks with checks against confirmed requirements of affected teams. I would value input from data architects, data engineers, data product owners, and data governance practitioners.
+We are designing a pre-release check against confirmed requirements of affected consumers. It produces an explainable decision: accept, reject, or request review. A map of domain teams, data products, and dependencies helps identify whose requirements apply.
 
-Two ways to help: a brief comment on whether this problem occurs in practice, or later review synthetic change scenarios (ACCEPT / REJECT / NEEDS_REVIEW). No company data or system access is needed; I will share the time commitment in advance.
+I would value input from data architects, data engineers, data product owners, and Data Mesh / data governance practitioners. You could give brief feedback on whether this reflects real practice and/or independently review synthetic change scenarios. No company data or system access is needed; we will share the format and expected time commitment in advance.
 
-**If interested, please comment with your role and "feedback", "scenarios", or "both".** Feel free to tag a colleague with relevant experience.
+**If interested, please comment with your role and whether you would prefer to discuss the problem or review scenarios.** Feel free to tag a colleague with relevant experience.
 
 ## Задание для экспертов: проект, не форма
 
