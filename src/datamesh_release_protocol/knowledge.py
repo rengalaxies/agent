@@ -5,6 +5,10 @@ This module stores metadata only; it never imports scoring labels.
 """
 from __future__ import annotations
 
+import copy
+import fcntl
+import os
+import tempfile
 import hashlib
 import json
 from datetime import datetime, timezone
@@ -14,7 +18,7 @@ from typing import Any, Literal
 
 from pydantic import Field, model_validator
 
-from .models import ConsumerObligation, DataContract, StrictModel
+from .models import ConsumerObligation, DataContract, Migration, StrictModel
 
 KINDS = Literal['team', 'product', 'attribute', 'usage', 'obligation', 'coverage', 'global_rule', 'constitution']
 
@@ -139,8 +143,8 @@ class KnowledgeRecord(StrictModel):
 class KnowledgeSnapshot(StrictModel):
     snapshot_id: str
     schema_version: str = 'knowledge-1'
-    proposal_id: str
-    product_id: str
+    proposal_id: str = Field(min_length=1)
+    product_id: str = Field(min_length=1)
     as_of: datetime
     membership_epoch: int | None
     old_contract: DataContract
@@ -156,6 +160,16 @@ class KnowledgeSnapshot(StrictModel):
         return self.model_dump(mode='json', exclude={'snapshot_id', 'canonical_payload_hash'})
 
     def verify(self):
+        utc(self.as_of)
+        ids = [r.record_id for r in self.records]
+        if len(ids) != len(set(ids)) or ids != sorted(ids):
+            raise ValueError('duplicate or unsorted snapshot records')
+        if self.required_consumer_ids != sorted(set(self.required_consumer_ids)):
+            raise ValueError('duplicate or unsorted consumers')
+        if self.product_id != self.old_contract.product_id or self.product_id != self.new_contract.product_id:
+            raise ValueError('snapshot product mismatch')
+        if self.completeness == 'complete' and self.issues:
+            raise ValueError('complete snapshot has unresolved issues')
         if digest(self.payload()) != self.snapshot_id or self.snapshot_id != self.canonical_payload_hash:
             raise ValueError('snapshot integrity failure')
         expected = {f'{r.record_id}@{r.version}': digest(r.model_dump(mode='json')) for r in self.records}
@@ -176,16 +190,38 @@ class KnowledgeStore:
         self._records: dict[str, list[KnowledgeRecord]] = {}
         self._snapshots: dict[str, KnowledgeSnapshot] = {}
         self._events: list[dict] = []
+        self._release_events: list[dict] = []
+        self._release_runs: dict[str, dict] = {}
+        self._release_commits: dict[str, dict] = {}
+        self._release_targets: dict[str, str] = {}
+        self._publication_receipts: dict[str, dict] = {}
+        self._disk_hash = None
+        self._faulted = False
         if path and path.exists():
-            self._restore(json.loads(path.read_text()))
+            payload = json.loads(path.read_text())
+            self._disk_hash = digest(payload)
+            self._restore(payload)
 
     def _authorized(self, actor, domain, kind):
         return next((a for a in self.authorities if a.actor == actor and a.domain == domain and kind in a.kinds), None)
 
+    def _ensure_healthy(self):
+        if self._faulted:
+            raise ValueError('store requires reload after persistence failure')
+        if self.path:
+            current = digest(json.loads(self.path.read_text())) if self.path.exists() else None
+            if current != self._disk_hash:
+                self._faulted = True
+                raise ValueError('ledger changed by another writer; reload required')
+
     def _append(self, record, actor, operation, at):
+        self._ensure_healthy()
+        record = KnowledgeRecord.model_validate(record.model_dump())
         at = utc(at)
         if record.valid_from != at:
             raise ValueError('version effective time must equal event time')
+        if self._release_events and at <= utc(datetime.fromisoformat(self._release_events[-1]['at'])):
+            raise ValueError('record event cannot backdate an existing release journal')
         grant = self._authorized(actor, record.owner_domain, record.kind)
         if not grant:
             raise PermissionError('actor lacks configured domain authority')
@@ -238,6 +274,7 @@ class KnowledgeStore:
 
     def list_impact(self, product_id: str, changed_fields: list[str], as_of: datetime):
         with self.lock:
+            self._ensure_healthy()
             selected = self._selected(as_of)
             usages = {r.record_id: r for r in selected if r.kind == 'usage' and r.data['product_id'] == product_id
                       and (not changed_fields or set(changed_fields) & set(r.data['field_paths']))}
@@ -245,8 +282,9 @@ class KnowledgeStore:
                      for o in selected if o.kind == 'obligation' and o.data['usage_ref'] == r.record_id]}
                     for r in sorted(usages.values(), key=lambda r: r.record_id)]
 
-    def build_snapshot(self, proposal_id: str, old: DataContract, new: DataContract, as_of: datetime):
+    def build_snapshot(self, proposal_id: str, old: DataContract, new: DataContract, as_of: datetime, *, persist=True):
         with self.lock:
+            self._ensure_healthy()
             if old.product_id != new.product_id or old.contract_version == new.contract_version or old.owner_domain != new.owner_domain:
                 raise ValueError('invalid contract change')
             as_of = utc(as_of)
@@ -278,6 +316,8 @@ class KnowledgeStore:
                     issues.append(f'team_domain_mismatch:{r.record_id}')
                 if r.kind == 'product' and (r.data['contract']['product_id'] != new.product_id or r.data['contract']['owner_domain'] != r.owner_domain):
                     issues.append(f'product_owner_mismatch:{r.record_id}')
+                if r.kind == 'product' and r.owner_domain != old.owner_domain:
+                    issues.append(f'product_owner_mismatch:{r.record_id}')
                 if r.kind == 'attribute' and r.owner_domain != old.owner_domain:
                     issues.append(f'attribute_owner_mismatch:{r.record_id}')
                 if r.kind == 'obligation' and (r.data['usage_ref'] not in by_id or by_id[r.data['usage_ref']].kind != 'usage'):
@@ -291,7 +331,11 @@ class KnowledgeStore:
                         issues.append(f'team_authority_mismatch:{r.record_id}')
                 if r.kind == 'attribute' and (r.data['field_path'] not in old.schema_fields or r.data['contract_version'] != old.contract_version):
                     issues.append(f'attribute_contract_mismatch:{r.record_id}')
-            attrs = {r.data['field_path'] for r in records if r.kind == 'attribute'}
+            attrs = {r.data['field_path'] for r in records if r.kind == 'attribute'
+                     and r.status == 'confirmed' and (not r.valid_until or r.valid_until > as_of)
+                     and not any(issue.endswith(':' + r.record_id) for issue in issues)}
+            attribute_paths = [r.data['field_path'] for r in records if r.kind == 'attribute']
+            if len(attribute_paths) != len(set(attribute_paths)): issues.append('attribute_identity_conflict')
             for member in members:
                 active = [r for r in records if r.kind == 'usage' and r.data['consumer_id'] == member and r.data['active']]
                 if len(active) != 1:
@@ -323,41 +367,162 @@ class KnowledgeStore:
             sid = digest(payload)
             snapshot = KnowledgeSnapshot(snapshot_id=sid, canonical_payload_hash=sid, **payload)
             snapshot.verify()
-            self._snapshots[sid] = snapshot
-            self._persist()
+            if persist:
+                self._snapshots[sid] = snapshot
+                self._persist()
             return snapshot.model_copy(deep=True)
 
     def resolve_snapshot(self, snapshot_id: str):
         with self.lock:
+            self._ensure_healthy()
             snapshot = self._snapshots[snapshot_id].model_copy(deep=True)
             snapshot.verify()
             return snapshot
 
     def is_current(self, snapshot: KnowledgeSnapshot, at: datetime):
-        current = self.build_snapshot(snapshot.proposal_id, snapshot.old_contract, snapshot.new_contract, at)
+        current = self.build_snapshot(snapshot.proposal_id, snapshot.old_contract, snapshot.new_contract, at, persist=False)
         return current.record_hashes == snapshot.record_hashes and current.completeness == snapshot.completeness
 
+    def release_journal(self):
+        with self.lock:
+            self._ensure_healthy()
+            return copy.deepcopy(self._release_events)
+
+    def _save_release_event(self, event):
+        self._ensure_healthy()
+        event = copy.deepcopy(event)
+        if self._release_events and utc(datetime.fromisoformat(event['at'])) < utc(datetime.fromisoformat(self._release_events[-1]['at'])):
+            raise ValueError('release journal time must not move backwards')
+        event['sequence'] = len(self._release_events) + 1
+        event['previous_hash'] = self._release_events[-1]['event_hash'] if self._release_events else None
+        event['event_hash'] = digest(event)
+        indexes = (dict(self._release_runs), dict(self._release_commits), dict(self._publication_receipts), dict(self._release_targets))
+        self._release_events.append(event)
+        try:
+            self._index_release_event(event)
+        except Exception:
+            self._release_events.pop()
+            self._release_runs, self._release_commits, self._publication_receipts, self._release_targets = indexes
+            raise
+        self._persist()
+
+    def _index_release_event(self, event):
+        from .knowledge_release import MappedRelease, change_key, target_key, request_fingerprint, build_release
+        if event['kind'] == 'decision':
+            result = MappedRelease.model_validate(event['result'])
+            snapshot = self._snapshots[result.snapshot_id]
+            snapshot.verify()
+            if result.proposal_id != snapshot.proposal_id or result.run_id in self._release_runs:
+                raise ValueError('invalid or duplicate journal run')
+            if utc(datetime.fromisoformat(event['at'])) < snapshot.as_of:
+                raise ValueError('journal decision precedes snapshot')
+            migrations = [Migration.model_validate(m) for m in event['migrations']]
+            expected = build_release(self, snapshot, result.run_id, utc(datetime.fromisoformat(event['at'])), migrations)
+            if result.model_dump(mode='json') != expected.model_dump(mode='json'):
+                raise ValueError('journal result does not reproduce from snapshot and history')
+            if event['fingerprint'] != request_fingerprint(result.snapshot_id, event['migrations']):
+                raise ValueError('invalid journal request fingerprint')
+            if result.terminal_state == 'COMMITTED':
+                key = change_key(snapshot)
+                if key in self._release_commits or target_key(snapshot) in self._release_targets or result.release_id != key:
+                    raise ValueError('duplicate or invalid release authorization')
+                self._release_commits[key] = event
+                self._release_targets[target_key(snapshot)] = key
+            if result.terminal_state == 'ALREADY_COMMITTED':
+                if result.release_id != change_key(snapshot) or result.release_id not in self._release_commits:
+                    raise ValueError('duplicate result without original authorization')
+            self._release_runs[result.run_id] = event
+        elif event['kind'] == 'publication_ack':
+            rid = event['release_id']
+            if rid not in self._release_commits or rid in self._publication_receipts or not event['evidence_ref']:
+                raise ValueError('invalid publication acknowledgement')
+            if utc(datetime.fromisoformat(event['at'])) < utc(datetime.fromisoformat(self._release_commits[rid]['at'])):
+                raise ValueError('publication acknowledgement precedes authorization')
+            self._publication_receipts[rid] = event
+        else:
+            raise ValueError('unknown release journal event')
+
+    def pending_publications(self):
+        with self.lock:
+            self._ensure_healthy()
+            return [copy.deepcopy(event['result']) for rid,event in sorted(self._release_commits.items())
+                    if rid not in self._publication_receipts]
+
+    def acknowledge_publication(self, release_id, evidence_ref, at):
+        with self.lock:
+            self._ensure_healthy()
+            if release_id not in self._release_commits: raise KeyError(release_id)
+            if not evidence_ref: raise ValueError('publication evidence required')
+            if release_id in self._publication_receipts:
+                prior = self._publication_receipts[release_id]
+                if prior['evidence_ref'] != evidence_ref: raise ValueError('conflicting publication acknowledgement')
+                return copy.deepcopy(prior)
+            self._save_release_event({'kind':'publication_ack', 'release_id':release_id,
+                'evidence_ref':evidence_ref, 'at':utc(at).isoformat()})
+            return copy.deepcopy(self._publication_receipts[release_id])
+
     def _persist(self):
-        if self.path:
+        if not self.path: return
+        payload = {'format_version':'knowledge-ledger-2',
+            'records':[r.model_dump(mode='json') for h in self._records.values() for r in h],
+            'snapshots':[s.model_dump(mode='json') for s in self._snapshots.values()],
+            'events':self._events, 'release_events':self._release_events}
+        payload['integrity_hash'] = digest(payload)
+        temporary = None
+        try:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            payload = {'records': [r.model_dump(mode='json') for h in self._records.values() for r in h],
-                       'snapshots': [s.model_dump(mode='json') for s in self._snapshots.values()], 'events': self._events}
-            temp = self.path.with_suffix(self.path.suffix + '.tmp')
-            temp.write_text(canonical(payload), encoding='utf-8')
-            temp.replace(self.path)
+            with self.path.with_suffix(self.path.suffix + '.lock').open('a') as lockfile:
+                fcntl.flock(lockfile, fcntl.LOCK_EX)
+                current = digest(json.loads(self.path.read_text())) if self.path.exists() else None
+                if current != self._disk_hash:
+                    raise ValueError('concurrent writer detected; reload required')
+                fd, temporary = tempfile.mkstemp(prefix=self.path.name + '.', dir=self.path.parent)
+                with os.fdopen(fd, 'w', encoding='utf-8') as stream:
+                    stream.write(canonical(payload))
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.replace(temporary, self.path)
+                temporary = None
+                directory_fd = os.open(self.path.parent, os.O_RDONLY | os.O_DIRECTORY)
+                try: os.fsync(directory_fd)
+                finally: os.close(directory_fd)
+                self._disk_hash = digest(payload)
+        except Exception:
+            self._faulted = True
+            raise
+        finally:
+            if temporary is not None:
+                try: os.unlink(temporary)
+                except FileNotFoundError: pass
 
     def _restore(self, payload):
+        if payload.get('format_version') not in (None, 'knowledge-ledger-2'):
+            raise ValueError('unsupported ledger format')
+        if payload.get('format_version') == 'knowledge-ledger-2':
+            if payload.get('integrity_hash') != digest({k:v for k,v in payload.items() if k != 'integrity_hash'}):
+                raise ValueError('ledger checksum mismatch')
         for raw in payload['records']:
             r = KnowledgeRecord.model_validate(raw)
             history = self._records.setdefault(r.record_id, [])
             if r.version != len(history) + 1: raise ValueError('corrupt version history')
+            if history and (r.valid_from <= history[-1].valid_from or r.kind != history[-1].kind or r.owner_domain != history[-1].owner_domain):
+                raise ValueError('corrupt record identity or chronology')
             history.append(r)
         self._events = payload['events']
         records = {(r.record_id, r.version): r for h in self._records.values() for r in h}
         if len(self._events) != len(records): raise ValueError('incomplete event ledger')
         previous = None
+        seen = set()
         for e in self._events:
-            r = records[(e['record_id'], e['version'])]
+            key = (e['record_id'], e['version'])
+            if key in seen: raise ValueError('duplicate record event')
+            seen.add(key)
+            r = records[key]
+            expected_status = {'propose':'candidate','confirm':'confirmed','revoke':'revoked'}.get(e['operation'])
+            if r.status != expected_status or utc(datetime.fromisoformat(e['at'])) != r.valid_from or e['evidence_ref'] != r.evidence_ref:
+                raise ValueError('invalid record event semantics')
+            if r.status == 'confirmed' and r.confirmed_by != e['actor']:
+                raise ValueError('confirmation actor mismatch')
             grant = self._authorized(e['actor'], r.owner_domain, r.kind)
             if not grant or grant.authority_ref != e['authority_ref'] or e['previous_hash'] != previous or e['record_hash'] != digest(r.model_dump(mode='json')):
                 raise ValueError('invalid ledger authority or integrity')
@@ -368,4 +533,17 @@ class KnowledgeStore:
             for r in s.records:
                 if digest(records[(r.record_id, r.version)].model_dump(mode='json')) != s.record_hashes[f'{r.record_id}@{r.version}']:
                     raise ValueError('snapshot not anchored to ledger')
+            reconstructed = self.build_snapshot(s.proposal_id, s.old_contract, s.new_contract, s.as_of, persist=False)
+            if reconstructed.snapshot_id != s.snapshot_id:
+                raise ValueError('snapshot context inconsistent with record history')
             self._snapshots[s.snapshot_id] = s
+
+        for event in payload.get('release_events', []):
+            if self._release_events and utc(datetime.fromisoformat(event['at'])) < utc(datetime.fromisoformat(self._release_events[-1]['at'])):
+                raise ValueError('release journal chronology failure')
+            if event['sequence'] != len(self._release_events) + 1 or event['previous_hash'] != (self._release_events[-1]['event_hash'] if self._release_events else None):
+                raise ValueError('release journal sequence failure')
+            if event['event_hash'] != digest({k:v for k,v in event.items() if k != 'event_hash'}):
+                raise ValueError('release journal integrity failure')
+            self._index_release_event(event)
+            self._release_events.append(event)
