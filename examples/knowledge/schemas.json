@@ -335,10 +335,12 @@
         "type": "string"
       },
       "proposal_id": {
+        "minLength": 1,
         "title": "Proposal Id",
         "type": "string"
       },
       "product_id": {
+        "minLength": 1,
         "title": "Product Id",
         "type": "string"
       },
@@ -422,6 +424,102 @@
       "canonical_payload_hash"
     ],
     "title": "KnowledgeSnapshot",
+    "type": "object"
+  },
+  "MappedRelease": {
+    "$defs": {
+      "Decision": {
+        "enum": [
+          "ACCEPT",
+          "REJECT",
+          "NEEDS_REVIEW"
+        ],
+        "title": "Decision",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "proposal_id": {
+        "minLength": 1,
+        "title": "Proposal Id",
+        "type": "string"
+      },
+      "run_id": {
+        "minLength": 1,
+        "title": "Run Id",
+        "type": "string"
+      },
+      "snapshot_id": {
+        "minLength": 1,
+        "title": "Snapshot Id",
+        "type": "string"
+      },
+      "decision": {
+        "$ref": "#/$defs/Decision"
+      },
+      "terminal_state": {
+        "enum": [
+          "COMMITTED",
+          "QUARANTINED",
+          "ESCALATED",
+          "ABORTED",
+          "ALREADY_COMMITTED"
+        ],
+        "title": "Terminal State",
+        "type": "string"
+      },
+      "release_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Release Id"
+      },
+      "reasons": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Reasons",
+        "type": "array"
+      },
+      "evidence": {
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Evidence",
+        "type": "array"
+      },
+      "state_trace": {
+        "items": {
+          "type": "string"
+        },
+        "title": "State Trace",
+        "type": "array"
+      },
+      "contract_change": {
+        "additionalProperties": true,
+        "title": "Contract Change",
+        "type": "object"
+      }
+    },
+    "required": [
+      "proposal_id",
+      "run_id",
+      "snapshot_id",
+      "decision",
+      "terminal_state",
+      "reasons",
+      "evidence",
+      "state_trace"
+    ],
+    "title": "MappedRelease",
     "type": "object"
   },
   "team": {
