@@ -22,7 +22,7 @@ class OracleIsolationTest(unittest.TestCase):
                 purpose="development_regression",
             )
             results = json.loads(output.read_text(encoding="utf-8"))
-            self.assertEqual(len(results), 80)
+            self.assertEqual(len(results), 60)
             for result in results:
                 self.assertNotIn("expected_decision", result)
                 self.assertNotIn("matches_expected", result)
