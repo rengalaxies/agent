@@ -84,3 +84,7 @@ make business-pilot
 - [Синтетический сквозной пример](examples/knowledge/demo.py): `PYTHONPATH=src:. python examples/knowledge/demo.py`.
 - [Слепая экспертная анкета и анализ](expert/README.md); анкета работает локально, не отправляет ответы.
 - Проверки: `make test`; с API extra и test-api выполняются проверки маршрутов; `node expert/smoke-test.cjs` проверяет поведение анкеты.
+
+## Надёжность решений: пакет 1
+
+[Ревизия, устойчивый журнал и границы гарантий](docs/package-1-reliability-2026-09-29.md). Решения сохраняются и восстанавливаются; одно изменение получает единственное разрешение, даже при новых run/proposal. Внешняя публикация требует дедупликации release_id у получателя. Пример: `PYTHONPATH=src:. python examples/knowledge/recovery_demo.py`.
