@@ -291,6 +291,7 @@ def _assess_h1(
     assert isinstance(delta_ci, dict)
     v2 = by_mode[ValidationMode.V2.value]
     criteria = {
+        "no_paired_dangerous_regressions": int(comparison["paired_regressions"]) == 0,
         "minimum_effect_met": (
             float(comparison["safe_detection_rate_delta"])
             >= thresholds.minimum_safe_detection_rate_delta
