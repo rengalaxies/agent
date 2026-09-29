@@ -19,7 +19,6 @@ class Decision(StrEnum):
 class ValidationMode(StrEnum):
     V0 = "V0"
     V1_IND = "V1-ind"
-    V1_ORACLE = "V1-oracle"
     V2 = "V2"
 
 
