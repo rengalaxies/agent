@@ -58,6 +58,7 @@ class FrozenMetricsTest(unittest.TestCase):
         )["by_mode"]
         for mode_report in report.values():
             self.assertIn("needs_review_rate", mode_report)
+            self.assertAlmostEqual(mode_report["false_block_rate"], mode_report["admissible_reject_rate"] + mode_report["admissible_review_rate"])
             self.assertIn("confidence_intervals_95", mode_report)
         v2_detection_ci = report["V2"]["confidence_intervals_95"][
             "dangerous_safe_detection_rate"
