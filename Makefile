@@ -37,3 +37,13 @@ clean:
 	find . -type f -name '*.pyc' -delete
 	rm -f results/pilot-raw-results.json results/pilot-results.json results/run-manifest.json results/pilot-score-manifest.json results/pilot-metrics.json
 	rm -f results/business-case-development.json
+
+.PHONY: e4-fast e4-standard e4-recovery
+e4-fast:
+	PYTHONPATH=src python stand/run_e4.py --profile fast --output results/e4-local-fast.json
+
+e4-standard:
+	PYTHONPATH=src python stand/run_e4.py --profile standard --output results/e4-local-standard.json
+
+e4-recovery:
+	PYTHONPATH=src python stand/recovery_check.py
