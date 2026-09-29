@@ -108,97 +108,6 @@ def _baseline_rule_checks(scenario: Scenario, rule: BaselineRule) -> list[CheckR
     raise ValueError(f"unsupported baseline rule: {rule.kind}")
 
 
-def _oracle_predicate_checks(
-    contract: DataContract,
-    obligation: ConsumerObligation,
-    migrations: list[Migration],
-) -> list[CheckResult]:
-    """Explicit V1-oracle predicates, independent from the V2 interpreter."""
-    semantic = contract.semantic
-    checks: list[CheckResult] = []
-    if obligation.required_meaning is not None:
-        checks.append(
-            _result(
-                "meaning",
-                semantic.meaning == obligation.required_meaning,
-                "ORACLE_REQUIRED_MEANING",
-            )
-        )
-    if obligation.required_formula is not None:
-        checks.append(
-            _result(
-                "formula",
-                semantic.formula == obligation.required_formula,
-                "ORACLE_REQUIRED_FORMULA",
-            )
-        )
-    if obligation.accepted_units:
-        exact = semantic.unit in obligation.accepted_units and (
-            not obligation.accepted_scales or semantic.scale in obligation.accepted_scales
-        )
-        migrated = any(
-            _migration(
-                migrations,
-                "unit_scale",
-                f"{semantic.unit}:{semantic.scale}",
-                f"{unit}:{scale}",
-            )
-            for unit in obligation.accepted_units
-            for scale in (obligation.accepted_scales or [semantic.scale])
-        )
-        checks.append(
-            _result("unit_scale", exact or migrated, "ORACLE_CONSUMER_UNIT_SCALE")
-        )
-    if obligation.min_window_days is not None:
-        value = semantic.calculation_window_days
-        checks.append(
-            _result(
-                "time_window",
-                None if value is None else value >= obligation.min_window_days,
-                "ORACLE_CONSUMER_MIN_WINDOW",
-                actual=value,
-                required=obligation.min_window_days,
-            )
-        )
-    if obligation.accepted_identity_scopes:
-        exact = semantic.identity_scope in obligation.accepted_identity_scopes
-        migrated = any(
-            _migration(
-                migrations,
-                "identity_scope",
-                semantic.identity_scope,
-                target,
-            )
-            for target in obligation.accepted_identity_scopes
-        )
-        checks.append(
-            _result(
-                "identity_scope",
-                exact or migrated,
-                "ORACLE_CONSUMER_IDENTITY_SCOPE",
-            )
-        )
-    if obligation.allowed_sources:
-        checks.append(
-            _result(
-                "lineage",
-                set(semantic.allowed_sources) <= set(obligation.allowed_sources),
-                "ORACLE_CONSUMER_ALLOWED_SOURCES",
-            )
-        )
-    if obligation.required_purposes:
-        checks.append(
-            _result(
-                "purpose",
-                set(obligation.required_purposes) <= set(semantic.purposes),
-                "ORACLE_CONSUMER_REQUIRED_PURPOSES",
-            )
-        )
-    if not checks:
-        checks.append(_result("obligation", None, "ORACLE_EMPTY_OBLIGATION"))
-    return checks
-
-
 def validate(
     scenario: Scenario,
     mode: ValidationMode,
@@ -211,14 +120,6 @@ def validate(
         if mode == ValidationMode.V1_IND:
             for rule in baseline_policy.rules_for(scenario.family_id):
                 checks.extend(_baseline_rule_checks(scenario, rule))
-        elif mode == ValidationMode.V1_ORACLE:
-            checks.extend(
-                _oracle_predicate_checks(
-                    scenario.new_contract,
-                    obligation,
-                    scenario.migrations,
-                )
-            )
         elif mode == ValidationMode.V2:
             checks.extend(
                 _V2_INTERPRETER.evaluate(
