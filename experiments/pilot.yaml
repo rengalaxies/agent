@@ -6,7 +6,7 @@ catalog_manifest: experiments/development-catalog.yaml
 analysis_plan: experiments/analysis-plan-0.3.1.yaml
 baseline_policy: policies/v1-ind.yaml
 oracle_catalog: oracles/development.yaml
-modes: [V0, V1-ind, V1-oracle, V2]
+modes: [V0, V1-ind, V2]
 expected_scenario_count: 20
 seed: 20260916
 expected_labels_exposed_to_validators: false
