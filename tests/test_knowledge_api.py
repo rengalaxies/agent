@@ -38,3 +38,14 @@ class KnowledgeAPITests(unittest.IsolatedAsyncioTestCase):
 
     async def asyncTearDown(self):
         await self.client.aclose()
+
+    async def test_journal_pending_ack_routes(self):
+        r=await self.client.post('/snapshots',headers=self.p,json={'proposal_id':'p','old_contract':self.old.model_dump(mode='json'),'new_contract':self.new.model_dump(mode='json')})
+        sid=r.json()['snapshot_id'];r=await self.client.post('/release',headers=self.p,json={'snapshot_id':sid,'run_id':'durable'})
+        rid=r.json()['release_id']
+        self.assertEqual(len((await self.client.get('/publications/pending',headers=self.p)).json()),1)
+        self.assertEqual((await self.client.post(f'/publications/{rid}/ack',headers=self.c,json={'evidence_ref':'receipt'})).status_code,403)
+        self.assertEqual((await self.client.post(f'/publications/{rid}/ack',headers=self.p,json={'evidence_ref':'receipt'})).status_code,200)
+        self.assertEqual((await self.client.get('/publications/pending',headers=self.p)).json(),[])
+        self.assertEqual((await self.client.get('/runs/durable',headers=self.p)).json()['release_id'],rid)
+        self.assertEqual(len((await self.client.get('/release-journal',headers=self.p)).json()),2)
