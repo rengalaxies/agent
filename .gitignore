@@ -8,3 +8,8 @@ build/
 results/*.json
 !results/README.md
 !results/business-case-development.json
+*.pyc
+.runtime/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
