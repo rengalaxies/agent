@@ -44,6 +44,7 @@ def create_knowledge_app(store: KnowledgeStore, token_actors: dict[str,str]):
         except PermissionError as e:raise HTTPException(403,str(e)) from e
         except KeyError as e:raise HTTPException(404,'record or snapshot not found') from e
         except ValueError as e:raise HTTPException(409,str(e)) from e
+        except OSError as e:raise HTTPException(503,'durable storage unavailable; reload before retry') from e
     def producer(actor,domain):
         if not store._authorized(actor,domain,'product'):raise HTTPException(403,'producer authority required')
     @app.post('/records/propose')
@@ -72,4 +73,25 @@ def create_knowledge_app(store: KnowledgeStore, token_actors: dict[str,str]):
         snapshot=invoke(lambda:store.resolve_snapshot(body.snapshot_id))
         producer(actor,snapshot.old_contract.owner_domain)
         return invoke(lambda:engine.run(body.snapshot_id,body.run_id,datetime.now(timezone.utc),body.migrations))
+    @app.get('/runs/{run_id}')
+    async def run_result(run_id: str,actor=Depends(identity)):
+        def read():
+            store._ensure_healthy()
+            return store._release_runs[run_id]['result']
+        return invoke(read)
+    @app.get('/release-journal')
+    async def journal(actor=Depends(identity)):
+        return invoke(store.release_journal)
+    @app.get('/publications/pending')
+    async def pending(actor=Depends(identity)):
+        return invoke(store.pending_publications)
+    @app.post('/publications/{release_id}/ack')
+    async def ack(release_id: str,body: Mutation,actor=Depends(identity)):
+        def write():
+            store._ensure_healthy()
+            original=store._release_commits[release_id]['result']
+            snapshot=store.resolve_snapshot(original['snapshot_id'])
+            producer(actor,snapshot.old_contract.owner_domain)
+            return store.acknowledge_publication(release_id,body.evidence_ref,datetime.now(timezone.utc))
+        return invoke(write)
     return app
