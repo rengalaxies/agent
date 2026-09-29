@@ -1,0 +1,1035 @@
+{
+  "KnowledgeRecord": {
+    "additionalProperties": false,
+    "properties": {
+      "record_id": {
+        "minLength": 1,
+        "title": "Record Id",
+        "type": "string"
+      },
+      "version": {
+        "minimum": 1,
+        "title": "Version",
+        "type": "integer"
+      },
+      "kind": {
+        "enum": [
+          "team",
+          "product",
+          "attribute",
+          "usage",
+          "obligation",
+          "coverage",
+          "global_rule",
+          "constitution"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "owner_domain": {
+        "title": "Owner Domain",
+        "type": "string"
+      },
+      "status": {
+        "default": "candidate",
+        "enum": [
+          "candidate",
+          "confirmed",
+          "revoked"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "confirmed_by": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Confirmed By"
+      },
+      "evidence_ref": {
+        "minLength": 1,
+        "title": "Evidence Ref",
+        "type": "string"
+      },
+      "valid_from": {
+        "format": "date-time",
+        "title": "Valid From",
+        "type": "string"
+      },
+      "valid_until": {
+        "anyOf": [
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Valid Until"
+      },
+      "data": {
+        "additionalProperties": true,
+        "title": "Data",
+        "type": "object"
+      }
+    },
+    "required": [
+      "record_id",
+      "version",
+      "kind",
+      "owner_domain",
+      "evidence_ref",
+      "valid_from",
+      "data"
+    ],
+    "title": "KnowledgeRecord",
+    "type": "object"
+  },
+  "KnowledgeSnapshot": {
+    "$defs": {
+      "DataContract": {
+        "additionalProperties": false,
+        "properties": {
+          "product_id": {
+            "title": "Product Id",
+            "type": "string"
+          },
+          "contract_version": {
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "owner_domain": {
+            "title": "Owner Domain",
+            "type": "string"
+          },
+          "schema_fields": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "minProperties": 1,
+            "title": "Schema Fields",
+            "type": "object"
+          },
+          "semantic": {
+            "$ref": "#/$defs/SemanticProfile"
+          }
+        },
+        "required": [
+          "product_id",
+          "contract_version",
+          "owner_domain",
+          "schema_fields",
+          "semantic"
+        ],
+        "title": "DataContract",
+        "type": "object"
+      },
+      "KnowledgeRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "record_id": {
+            "minLength": 1,
+            "title": "Record Id",
+            "type": "string"
+          },
+          "version": {
+            "minimum": 1,
+            "title": "Version",
+            "type": "integer"
+          },
+          "kind": {
+            "enum": [
+              "team",
+              "product",
+              "attribute",
+              "usage",
+              "obligation",
+              "coverage",
+              "global_rule",
+              "constitution"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "owner_domain": {
+            "title": "Owner Domain",
+            "type": "string"
+          },
+          "status": {
+            "default": "candidate",
+            "enum": [
+              "candidate",
+              "confirmed",
+              "revoked"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "confirmed_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confirmed By"
+          },
+          "evidence_ref": {
+            "minLength": 1,
+            "title": "Evidence Ref",
+            "type": "string"
+          },
+          "valid_from": {
+            "format": "date-time",
+            "title": "Valid From",
+            "type": "string"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Valid Until"
+          },
+          "data": {
+            "additionalProperties": true,
+            "title": "Data",
+            "type": "object"
+          }
+        },
+        "required": [
+          "record_id",
+          "version",
+          "kind",
+          "owner_domain",
+          "evidence_ref",
+          "valid_from",
+          "data"
+        ],
+        "title": "KnowledgeRecord",
+        "type": "object"
+      },
+      "SemanticProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "meaning": {
+            "title": "Meaning",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Unit"
+          },
+          "scale": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Scale"
+          },
+          "calculation_window_days": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calculation Window Days"
+          },
+          "identity_scope": {
+            "title": "Identity Scope",
+            "type": "string"
+          },
+          "allowed_sources": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Sources",
+            "type": "array"
+          },
+          "purposes": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Purposes",
+            "type": "array"
+          },
+          "valid_time": {
+            "default": "event_time",
+            "title": "Valid Time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "meaning",
+          "formula",
+          "identity_scope",
+          "allowed_sources",
+          "purposes"
+        ],
+        "title": "SemanticProfile",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "snapshot_id": {
+        "title": "Snapshot Id",
+        "type": "string"
+      },
+      "schema_version": {
+        "default": "knowledge-1",
+        "title": "Schema Version",
+        "type": "string"
+      },
+      "proposal_id": {
+        "title": "Proposal Id",
+        "type": "string"
+      },
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "as_of": {
+        "format": "date-time",
+        "title": "As Of",
+        "type": "string"
+      },
+      "membership_epoch": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Membership Epoch"
+      },
+      "old_contract": {
+        "$ref": "#/$defs/DataContract"
+      },
+      "new_contract": {
+        "$ref": "#/$defs/DataContract"
+      },
+      "required_consumer_ids": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Required Consumer Ids",
+        "type": "array"
+      },
+      "records": {
+        "items": {
+          "$ref": "#/$defs/KnowledgeRecord"
+        },
+        "title": "Records",
+        "type": "array"
+      },
+      "completeness": {
+        "enum": [
+          "complete",
+          "incomplete",
+          "unknown"
+        ],
+        "title": "Completeness",
+        "type": "string"
+      },
+      "issues": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Issues",
+        "type": "array"
+      },
+      "record_hashes": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Record Hashes",
+        "type": "object"
+      },
+      "canonical_payload_hash": {
+        "title": "Canonical Payload Hash",
+        "type": "string"
+      }
+    },
+    "required": [
+      "snapshot_id",
+      "proposal_id",
+      "product_id",
+      "as_of",
+      "membership_epoch",
+      "old_contract",
+      "new_contract",
+      "required_consumer_ids",
+      "records",
+      "completeness",
+      "issues",
+      "record_hashes",
+      "canonical_payload_hash"
+    ],
+    "title": "KnowledgeSnapshot",
+    "type": "object"
+  },
+  "team": {
+    "additionalProperties": false,
+    "properties": {
+      "team_id": {
+        "title": "Team Id",
+        "type": "string"
+      },
+      "domain_id": {
+        "title": "Domain Id",
+        "type": "string"
+      },
+      "authority_ref": {
+        "title": "Authority Ref",
+        "type": "string"
+      }
+    },
+    "required": [
+      "team_id",
+      "domain_id",
+      "authority_ref"
+    ],
+    "title": "TeamData",
+    "type": "object"
+  },
+  "product": {
+    "$defs": {
+      "DataContract": {
+        "additionalProperties": false,
+        "properties": {
+          "product_id": {
+            "title": "Product Id",
+            "type": "string"
+          },
+          "contract_version": {
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "owner_domain": {
+            "title": "Owner Domain",
+            "type": "string"
+          },
+          "schema_fields": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "minProperties": 1,
+            "title": "Schema Fields",
+            "type": "object"
+          },
+          "semantic": {
+            "$ref": "#/$defs/SemanticProfile"
+          }
+        },
+        "required": [
+          "product_id",
+          "contract_version",
+          "owner_domain",
+          "schema_fields",
+          "semantic"
+        ],
+        "title": "DataContract",
+        "type": "object"
+      },
+      "SemanticProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "meaning": {
+            "title": "Meaning",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Unit"
+          },
+          "scale": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Scale"
+          },
+          "calculation_window_days": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calculation Window Days"
+          },
+          "identity_scope": {
+            "title": "Identity Scope",
+            "type": "string"
+          },
+          "allowed_sources": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Sources",
+            "type": "array"
+          },
+          "purposes": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Purposes",
+            "type": "array"
+          },
+          "valid_time": {
+            "default": "event_time",
+            "title": "Valid Time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "meaning",
+          "formula",
+          "identity_scope",
+          "allowed_sources",
+          "purposes"
+        ],
+        "title": "SemanticProfile",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "producer_team_ref": {
+        "title": "Producer Team Ref",
+        "type": "string"
+      },
+      "contract": {
+        "$ref": "#/$defs/DataContract"
+      }
+    },
+    "required": [
+      "product_id",
+      "producer_team_ref",
+      "contract"
+    ],
+    "title": "ProductData",
+    "type": "object"
+  },
+  "attribute": {
+    "additionalProperties": false,
+    "properties": {
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "field_path": {
+        "title": "Field Path",
+        "type": "string"
+      },
+      "semantic_profile_ref": {
+        "title": "Semantic Profile Ref",
+        "type": "string"
+      },
+      "contract_version": {
+        "title": "Contract Version",
+        "type": "string"
+      }
+    },
+    "required": [
+      "product_id",
+      "field_path",
+      "semantic_profile_ref",
+      "contract_version"
+    ],
+    "title": "AttributeData",
+    "type": "object"
+  },
+  "usage": {
+    "additionalProperties": false,
+    "properties": {
+      "consumer_id": {
+        "title": "Consumer Id",
+        "type": "string"
+      },
+      "consumer_team_ref": {
+        "title": "Consumer Team Ref",
+        "type": "string"
+      },
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "field_paths": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Field Paths",
+        "type": "array"
+      },
+      "purpose": {
+        "title": "Purpose",
+        "type": "string"
+      },
+      "calculation_ref": {
+        "title": "Calculation Ref",
+        "type": "string"
+      },
+      "registration_ref": {
+        "title": "Registration Ref",
+        "type": "string"
+      },
+      "active": {
+        "default": true,
+        "title": "Active",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "consumer_id",
+      "consumer_team_ref",
+      "product_id",
+      "field_paths",
+      "purpose",
+      "calculation_ref",
+      "registration_ref"
+    ],
+    "title": "UsageData",
+    "type": "object"
+  },
+  "obligation": {
+    "$defs": {
+      "ConsumerObligation": {
+        "additionalProperties": false,
+        "properties": {
+          "obligation_id": {
+            "title": "Obligation Id",
+            "type": "string"
+          },
+          "obligation_version": {
+            "title": "Obligation Version",
+            "type": "string"
+          },
+          "consumer_id": {
+            "title": "Consumer Id",
+            "type": "string"
+          },
+          "consumer_domain": {
+            "title": "Consumer Domain",
+            "type": "string"
+          },
+          "product_id": {
+            "title": "Product Id",
+            "type": "string"
+          },
+          "required_meaning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Required Meaning"
+          },
+          "required_formula": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Required Formula"
+          },
+          "accepted_units": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Accepted Units",
+            "type": "array"
+          },
+          "accepted_scales": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Accepted Scales",
+            "type": "array"
+          },
+          "min_window_days": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Min Window Days"
+          },
+          "accepted_identity_scopes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Accepted Identity Scopes",
+            "type": "array"
+          },
+          "allowed_sources": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Sources",
+            "type": "array"
+          },
+          "required_purposes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Purposes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "obligation_id",
+          "obligation_version",
+          "consumer_id",
+          "consumer_domain",
+          "product_id"
+        ],
+        "title": "ConsumerObligation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "usage_ref": {
+        "title": "Usage Ref",
+        "type": "string"
+      },
+      "requirement": {
+        "$ref": "#/$defs/ConsumerObligation"
+      },
+      "mandatory": {
+        "default": true,
+        "title": "Mandatory",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "usage_ref",
+      "requirement"
+    ],
+    "title": "ObligationData",
+    "type": "object"
+  },
+  "coverage": {
+    "additionalProperties": false,
+    "properties": {
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "membership_epoch": {
+        "minimum": 1,
+        "title": "Membership Epoch",
+        "type": "integer"
+      },
+      "registered_consumer_ids": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Registered Consumer Ids",
+        "type": "array"
+      },
+      "registry_evidence_ref": {
+        "title": "Registry Evidence Ref",
+        "type": "string"
+      },
+      "registration_boundary": {
+        "title": "Registration Boundary",
+        "type": "string"
+      },
+      "authority_ref": {
+        "title": "Authority Ref",
+        "type": "string"
+      }
+    },
+    "required": [
+      "product_id",
+      "membership_epoch",
+      "registered_consumer_ids",
+      "registry_evidence_ref",
+      "registration_boundary",
+      "authority_ref"
+    ],
+    "title": "CoverageData",
+    "type": "object"
+  },
+  "global_rule": {
+    "$defs": {
+      "ConsumerObligation": {
+        "additionalProperties": false,
+        "properties": {
+          "obligation_id": {
+            "title": "Obligation Id",
+            "type": "string"
+          },
+          "obligation_version": {
+            "title": "Obligation Version",
+            "type": "string"
+          },
+          "consumer_id": {
+            "title": "Consumer Id",
+            "type": "string"
+          },
+          "consumer_domain": {
+            "title": "Consumer Domain",
+            "type": "string"
+          },
+          "product_id": {
+            "title": "Product Id",
+            "type": "string"
+          },
+          "required_meaning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Required Meaning"
+          },
+          "required_formula": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Required Formula"
+          },
+          "accepted_units": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Accepted Units",
+            "type": "array"
+          },
+          "accepted_scales": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Accepted Scales",
+            "type": "array"
+          },
+          "min_window_days": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Min Window Days"
+          },
+          "accepted_identity_scopes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Accepted Identity Scopes",
+            "type": "array"
+          },
+          "allowed_sources": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Sources",
+            "type": "array"
+          },
+          "required_purposes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Purposes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "obligation_id",
+          "obligation_version",
+          "consumer_id",
+          "consumer_domain",
+          "product_id"
+        ],
+        "title": "ConsumerObligation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "rule_id": {
+        "title": "Rule Id",
+        "type": "string"
+      },
+      "rule_version": {
+        "title": "Rule Version",
+        "type": "string"
+      },
+      "predicate": {
+        "$ref": "#/$defs/ConsumerObligation"
+      },
+      "priority": {
+        "default": 0,
+        "title": "Priority",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "product_id",
+      "rule_id",
+      "rule_version",
+      "predicate"
+    ],
+    "title": "RuleData",
+    "type": "object"
+  },
+  "constitution": {
+    "additionalProperties": false,
+    "properties": {
+      "product_id": {
+        "title": "Product Id",
+        "type": "string"
+      },
+      "constitution_ref": {
+        "title": "Constitution Ref",
+        "type": "string"
+      },
+      "constitution_version": {
+        "title": "Constitution Version",
+        "type": "string"
+      },
+      "content_hash": {
+        "title": "Content Hash",
+        "type": "string"
+      }
+    },
+    "required": [
+      "product_id",
+      "constitution_ref",
+      "constitution_version",
+      "content_hash"
+    ],
+    "title": "ConstitutionData",
+    "type": "object"
+  }
+}
