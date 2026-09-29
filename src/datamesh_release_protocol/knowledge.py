@@ -183,9 +183,11 @@ class KnowledgeStore:
     Optional JSON persistence uses atomic replacement. One writer process per file;
     RLock protects snapshot/commit from in-process time-of-check races.
     """
-    def __init__(self, authorities: list[Authority], path: Path | None = None):
+    def __init__(self, authorities: list[Authority], path: Path | None = None, *, domain_public_keys=None, domain_routes=None):
         self.authorities = tuple(a.model_copy(deep=True) for a in authorities)
         self.path = path
+        self.domain_public_keys = dict(domain_public_keys or {})
+        self.domain_routes = dict(domain_routes or {})
         self.lock = RLock()
         self._records: dict[str, list[KnowledgeRecord]] = {}
         self._snapshots: dict[str, KnowledgeSnapshot] = {}
@@ -408,7 +410,7 @@ class KnowledgeStore:
 
     def _index_release_event(self, event):
         from .knowledge_release import MappedRelease, change_key, target_key, request_fingerprint, build_release
-        if event['kind'] == 'decision':
+        if event['kind'] in ('decision','distributed_decision'):
             result = MappedRelease.model_validate(event['result'])
             snapshot = self._snapshots[result.snapshot_id]
             snapshot.verify()
@@ -417,7 +419,12 @@ class KnowledgeStore:
             if utc(datetime.fromisoformat(event['at'])) < snapshot.as_of:
                 raise ValueError('journal decision precedes snapshot')
             migrations = [Migration.model_validate(m) for m in event['migrations']]
-            expected = build_release(self, snapshot, result.run_id, utc(datetime.fromisoformat(event['at'])), migrations)
+            if event['kind']=='distributed_decision':
+                from .stand.policy import build_distributed_release
+                if not self.domain_public_keys or not self.domain_routes:raise ValueError('trusted domain configuration required to restore distributed decisions')
+                expected=build_distributed_release(self,snapshot,result.run_id,utc(datetime.fromisoformat(event['at'])),migrations,event['messages'],event['deadline_expired'])
+            else:
+                expected = build_release(self, snapshot, result.run_id, utc(datetime.fromisoformat(event['at'])), migrations)
             if result.model_dump(mode='json') != expected.model_dump(mode='json'):
                 raise ValueError('journal result does not reproduce from snapshot and history')
             if event['fingerprint'] != request_fingerprint(result.snapshot_id, event['migrations']):
