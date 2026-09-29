@@ -1,0 +1,24 @@
+{
+  "product_id": "active-users",
+  "contract_version": "2",
+  "owner_domain": "sales",
+  "schema_fields": {
+    "active": "bool"
+  },
+  "semantic": {
+    "meaning": "active",
+    "description": null,
+    "formula": "purchases_30d > 0",
+    "unit": "bool",
+    "scale": null,
+    "calculation_window_days": null,
+    "identity_scope": "person",
+    "allowed_sources": [
+      "crm"
+    ],
+    "purposes": [
+      "risk"
+    ],
+    "valid_time": "event_time"
+  }
+}
