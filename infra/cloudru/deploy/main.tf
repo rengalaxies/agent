@@ -53,13 +53,17 @@ variable "ui_basic_auth_hash" {
 }
 variable "ssh_public_key" {
   type = string
+  validation {
+    condition = startswith(var.ssh_public_key, "ssh-ed25519 ") || startswith(var.ssh_public_key, "ssh-rsa ")
+    error_message = "A real SSH public key is required."
+  }
   description = "SSH public key only; no private key and no plaintext password."
 }
 variable "admin_cidr" {
   type = string
   description = "Single approved management address CIDR for SSH."
   validation {
-    condition = can(cidrhost(var.admin_cidr, 0)) && var.admin_cidr != "0.0.0.0/0"
+    condition = can(cidrhost(var.admin_cidr, 0)) && var.admin_cidr != "0.0.0.0/0" && !startswith(var.admin_cidr, "192.0.2.")
     error_message = "SSH admin_cidr must be a restricted valid CIDR, not 0.0.0.0/0."
   }
 }
