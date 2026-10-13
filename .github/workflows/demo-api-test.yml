@@ -1,0 +1,77 @@
+name: Development demo API validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'services/demo_api.py'
+      - 'services/Dockerfile.demo'
+      - 'tests/test_demo_api.py'
+      - 'ui/**'
+      - 'deploy/p1/**'
+      - '.github/workflows/demo-api-test.yml'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run real engine API smoke tests
+        id: tests
+        continue-on-error: true
+        run: |
+          set +e
+          python -m pip install -e '.[api,test-api]' > /tmp/pip-demo.log 2>&1
+          if [ $? -ne 0 ]; then echo 'DEPENDENCY INSTALL FAILED' > /tmp/test-demo.log; exit 0; fi
+          PYTHONPATH=src python -m unittest tests.test_demo_api -v > /tmp/test-demo.log 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Check Docker builds
+        id: docker
+        continue-on-error: true
+        run: |
+          set +e
+          docker build -f services/Dockerfile.demo -t dmrp-api-demo:ci . > /tmp/docker-api.log 2>&1
+          api=$?
+          docker build -f ui/Dockerfile -t dmrp-ui-demo:ci . > /tmp/docker-ui.log 2>&1
+          ui=$?
+          echo "api=$api" >> "$GITHUB_OUTPUT"
+          echo "ui=$ui" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Publish test status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TEST_RC: ${{ steps.tests.outputs.status }}
+          API_RC: ${{ steps.docker.outputs.api }}
+          UI_RC: ${{ steps.docker.outputs.ui }}
+        run: |
+          python - <<'PY'
+          import os,pathlib,re
+          test=pathlib.Path("/tmp/test-demo.log").read_text() if pathlib.Path("/tmp/test-demo.log").exists() else "no test report"
+          errs=[x.strip() for x in test.splitlines() if x.startswith(("ERROR:","FAIL:","ImportError:","ModuleNotFoundError:","AssertionError:"))]
+          lines=["# Development demo CI status",
+             "**Run:** "+os.getenv("GITHUB_RUN_ID",""),
+             "**API unittest exit code:** "+str(os.getenv("TEST_RC") or "unknown"),
+             "**API image build exit code:** "+str(os.getenv("API_RC") or "unknown"),
+             "**UI image build exit code:** "+str(os.getenv("UI_RC") or "unknown"),
+             "**Scope:** development fixtures only; no E3 scoring and no cloud apply",
+             "",
+             "## Error summary"]+["- "+e[:240] for e in errs[:10]]
+          pathlib.Path("/tmp/demo-api-ci.md").write_text(chr(10).join(lines))
+          PY
+          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Development demo") | .number' | head -1)
+          if [ -z "$ISSUE" ]; then
+            gh issue create --repo "$GH_REPO" --title "[Cloud.ru CI] Development demo" --body-file /tmp/demo-api-ci.md
+          else
+            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/demo-api-ci.md
+          fi
+      - name: Enforce passing validation
+        if: steps.tests.outputs.status != '0' || steps.docker.outputs.api != '0' || steps.docker.outputs.ui != '0'
+        run: exit 1
