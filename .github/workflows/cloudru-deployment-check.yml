@@ -8,6 +8,7 @@ on:
       - '.github/workflows/cloudru-deployment-check.yml'
 permissions:
   contents: write
+  issues: write
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -84,6 +85,38 @@ jobs:
             git commit -m "ci: update Terraform schema validation result [skip ci]"
             git pull --rebase origin main
             git push origin HEAD:main || echo "Report push unavailable; diagnostic artifact is retained."
+          fi
+      - name: Publish validation status to GitHub Issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path("docs/launch-2026-10/cloudru-deployment-validation.json")
+          data=json.loads(p.read_text()) if p.exists() else {"status":"failed","stage":"reporting","validation_errors":["No validation report produced"]}
+          lines=[
+             "# Cloud.ru deployment validation status",
+             "",
+             "**Project scope:** 20853297-65b7-42a8-af40-25c8d2df4e11",
+             "**Status:** "+str(data.get("status")),
+             "**Stage:** "+str(data.get("stage")),
+             "**Run:** "+str(data.get("run_id") or "unknown"),
+             "**Commit:** "+str(data.get("commit_sha") or "unknown"),
+             "",
+             "## Sanitized errors"
+          ]
+          lines += ["- "+str(e)[:500] for e in data.get("validation_errors",[])][:20] or ["- None"]
+          lines += ["","Only schema validation. No terraform apply is executed."]
+          pathlib.Path("/tmp/cloudru-status.md").write_text("\\n".join(lines))
+          PY
+          TITLE="[Cloud.ru CI] Terraform deployment status"
+          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Terraform deployment status") | .number' | head -1)
+          if [ -z "$ISSUE" ]; then
+            gh issue create --repo "$GH_REPO" --title "$TITLE" --body-file /tmp/cloudru-status.md
+          else
+            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/cloudru-status.md
           fi
       - name: Mark validation failure
         if: always()
