@@ -47,7 +47,7 @@ jobs:
               proc=subprocess.run(["gh","issue","view",str(number),"--repo",repo,
                                    "--json","body","--jq",".body"],capture_output=True,text=True)
               return proc.stdout if proc.returncode==0 else ""
-          source={n:issue(n) for n in (4,5,7,8,9,10,11)}
+          source={n:issue(n) for n in (4,5,7,8,9,10,11,13)}
           if "**Result:** PASS" not in source[4]:
               blockers.append("Terraform Cloud.ru plan is not currently PASS")
           if "E2E UI -> nginx -> V2 status:** 0" not in source[5]:
@@ -70,9 +70,9 @@ jobs:
                   "## Pre-approval blockers"]+[f"- {b}" for b in blockers]
           if not blockers:report.append("- None; owner must explicitly approve actual paid deployment before apply.")
           report += ["", "## Tested / not tested boundary",
-            "- Verified: Terraform plan, signed synthetic E4 and V2 demo, Docker builds, Caddy cloud-init static validation, local S3-locking simulation",
+            "- Verified: Terraform plan, signed synthetic E4 and V2 demo, verified knowledge-1 graph, PostgreSQL audit persistence/restart, Docker builds, Caddy cloud-init static validation, local S3-locking simulation",
             "- Unverified until approved apply: Cloud.ru live VM bootstrap, real S3 lockfile compatibility, HTTPS certificate issuance, NAT egress and ongoing cost",
-            "- Target of this P1 is a demonstrable development prototype, not a production PostgreSQL three-domain deployment"]
+            "- Target of P1 is a development prototype with PostgreSQL audit and three separate E4 domain processes on one core VM; no independent production PostgreSQL cluster"]
           pathlib.Path("/tmp/readiness.md").write_text(chr(10).join(report))
           PY
           ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] P1 GO-NOGO") | .number' | head -1)
