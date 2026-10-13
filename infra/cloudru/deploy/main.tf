@@ -56,7 +56,7 @@ variable "zone_name" {
   }
 }
 locals {
-  approved_subnet_id = "d58e80cf-fff1-43cb-b601-96fb35822ab7"
+  approved_subnet_id = "d58e80ef-fff1-43eb-b601-96fb358224b7"
   vm = {
     ui   = { flavor = var.ui_flavor, disk = 30 }
     core = { flavor = var.core_flavor, disk = 200 }
