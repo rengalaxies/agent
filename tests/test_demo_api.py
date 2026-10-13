@@ -1,7 +1,7 @@
 """Development-only test: no evaluation oracle is used."""
 import unittest
 from fastapi.testclient import TestClient
-from services.demo_api import app
+from services.demo_api import app, E4_RUN_SLOT
 
 class DemoApiTest(unittest.TestCase):
     @classmethod
@@ -62,3 +62,13 @@ class DemoApiTest(unittest.TestCase):
         self.assertTrue(all(e["kind"]=="confirmed_usage" for e in graph["edges"]))
         self.assertEqual({e["target"] for e in graph["edges"]},{"risk","analytics"})
         self.assertNotIn("expected_decision",str(graph))
+
+    def test_distributed_run_refuses_parallel_process_fanout(self):
+        self.assertTrue(E4_RUN_SLOT.acquire(blocking=False))
+        try:
+            response=self.client.post(
+                "/api/v1/demo/distributed-runs",json={"outcome":"ACCEPT"}
+            )
+            self.assertEqual(response.status_code,429)
+        finally:
+            E4_RUN_SLOT.release()
