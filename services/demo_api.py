@@ -5,6 +5,7 @@ Only scenarios/development are served. Evaluation scenarios and oracles are neve
 from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from threading import BoundedSemaphore
 import subprocess
 import sys
 import json
@@ -23,6 +24,7 @@ ROOT=Path(__file__).resolve().parents[1]
 CATALOG={s.scenario_id:s for s in load_catalog(ROOT/"scenarios"/"development")}
 ENGINE=ReleaseEngine(load_baseline_policy(ROOT/"policies"/"v1-ind.yaml"))
 app=FastAPI(title="Data Mesh development demo API", version=__version__)
+E4_RUN_SLOT=BoundedSemaphore(value=1)  # Do not spawn unbounded domain processes.
 
 class RunRequest(BaseModel):
     scenario_id:str
@@ -59,19 +61,23 @@ def distributed_run(payload: DistributedRunRequest):
     Each request uses a fresh isolated, non-persistent state directory and three
     independent domain worker processes from the existing experimental stand.
     """
+    if not E4_RUN_SLOT.acquire(blocking=False):
+        raise HTTPException(status_code=429, detail="Distributed demonstration already running")
     run_id="e4demo-"+uuid4().hex
-    with TemporaryDirectory(prefix="e4-service-") as temp:
-        try:
-            result=subprocess.run(
-                [sys.executable, str(ROOT/"stand"/"demo.py"), "--state",temp,
-                 "--run-id",run_id, "--outcome",payload.outcome],
-                cwd=ROOT, text=True,capture_output=True,timeout=55,check=True,
-            )
-            protocol=json.loads(result.stdout)
-        except (subprocess.TimeoutExpired,subprocess.CalledProcessError,ValueError):
-            # The public demo API must not disclose child process stderr or
-            # internal paths, keys, node tokens or signing identities.
-            raise HTTPException(status_code=503, detail="E4 demo run unavailable")
+    try:
+        with TemporaryDirectory(prefix="e4-service-") as temp:
+            try:
+                result=subprocess.run(
+                    [sys.executable, str(ROOT/"stand"/"demo.py"), "--state",temp,
+                     "--run-id",run_id, "--outcome",payload.outcome],
+                    cwd=ROOT, text=True,capture_output=True,timeout=55,check=True,
+                )
+                protocol=json.loads(result.stdout)
+            except (subprocess.TimeoutExpired,subprocess.CalledProcessError,ValueError):
+                # Never disclose internal paths, signing keys or process stderr.
+                raise HTTPException(status_code=503, detail="E4 demo run unavailable")
+    finally:
+        E4_RUN_SLOT.release()
     return {
         "mode":"V2", "dataset":"synthetic_E4",
         "architecture":"three_independent_domain_processes",
