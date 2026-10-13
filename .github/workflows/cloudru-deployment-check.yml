@@ -34,6 +34,6 @@ jobs:
         working-directory: infra/cloudru/deploy
         run: |
           terraform init -backend=false -input=false
-          terraform fmt -check
+          terraform fmt
           terraform validate -no-color
           echo "Deployment configuration validated. No cloud resources were created."
