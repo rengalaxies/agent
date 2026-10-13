@@ -29,6 +29,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.5
+          terraform_wrapper: false
       - name: Select scoped S3 credentials without exposing values
         env:
           RAW_STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
@@ -149,7 +150,13 @@ jobs:
             -backend-config="skip_requesting_account_id=true" \
             -backend-config="skip_metadata_api_check=true" \
             -backend-config="use_path_style=true"
-          terraform state list > "$RUNNER_TEMP/state-inventory.txt"
+          if ! terraform state list > "$RUNNER_TEMP/state-inventory.txt" 2> "$RUNNER_TEMP/state-read-error.txt"; then
+            if ! rg -q --fixed-strings "No state file was found" "$RUNNER_TEMP/state-read-error.txt"; then
+              cat "$RUNNER_TEMP/state-read-error.txt"
+              exit 1
+            fi
+            echo "First deployment: production remote state has not been created yet"
+          fi
       - name: Plan with live project and approved secrets
         id: plan
         working-directory: infra/cloudru/deploy
