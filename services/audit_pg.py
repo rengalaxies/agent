@@ -72,3 +72,19 @@ def audit_record(run_id: str, scenario_id: str, decision: dict) -> dict:
         raise AuditUnavailable("audit database temporarily unavailable") from None
 
     return {"persisted": True, "sha256": digest, "run_id": run_id}
+
+
+def audit_ready() -> bool:
+    """Return readiness without exposing any DB connection details."""
+    required = os.getenv("DMRP_REQUIRE_AUDIT") == "1"
+    if not required:
+        return True
+    try:
+        dsn = _dsn()
+        if not dsn:
+            return False
+        import psycopg
+        with psycopg.connect(dsn, connect_timeout=3) as connection:
+            return connection.execute("SELECT 1").fetchone()[0] == 1
+    except Exception:
+        return False
