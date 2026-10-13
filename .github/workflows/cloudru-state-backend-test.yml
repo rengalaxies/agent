@@ -17,6 +17,9 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Start isolated local S3 emulator
         run: |
           python3 -m pip install --quiet 'moto[server]>=5,<6' boto3
