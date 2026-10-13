@@ -1,6 +1,11 @@
 name: Public UI static smoke
 on:
   workflow_dispatch:
+    inputs:
+      verify_deployed:
+        description: "Verify authenticated deployed UI, V2, E4 and audit"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -23,4 +28,49 @@ jobs:
               assert text in s, f"Missing expected UI demo marker: {text}"
           assert "CLOUDRU_SECRET" not in s and "auth_secret" not in s
           print("Static UI smoke PASS: synthetic scenarios, three decisions, no embedded cloud secret variable")
+          PY
+      - name: Verify authenticated deployed services
+        if: inputs.verify_deployed
+        env:
+          TENANT: ${{ vars.CLOUDRU_TENANT_ID }}
+          BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+        run: |
+          python3 -m pip install --quiet 'boto3>=1.34,<2' cryptography requests
+          python3 - <<'PY'
+          import os,json,base64,hashlib,re,boto3,requests,time
+          from botocore.config import Config
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          tenant=os.environ["TENANT"]; bucket=os.environ["BUCKET"]
+          assert tenant=="fc91c42d-c2ea-4d6d-a236-103fd1f37f00" and bucket=="test-bucket-ds"
+          access=tenant+":"+os.environ["KEY_ID"];print("::add-mask::"+access)
+          sse=base64.b64decode(os.environ["SSE"].strip(),validate=True)
+          password=AESGCM(hashlib.sha256(b"dmrp-ui-ci-v1"+sse).digest()).decrypt(base64.b64decode("nO4TjZjHfGSWQg3x"),base64.b64decode("Mwg+uEF4R48MQ+5hQ1xojw7EbQXSdlSxtbXsaSsMZHCS+/gKl/rRNxO3gNgF1xRK"),b"dmrp-ui-admin-smoke-v1").decode()
+          print("::add-mask::"+password)
+          s3=boto3.client("s3",endpoint_url="https://s3.cloud.ru",region_name="ru-central-1",aws_access_key_id=access,aws_secret_access_key=os.environ["SECRET"],config=Config(s3={"addressing_style":"path"}))
+          state=json.loads(s3.get_object(Bucket=bucket,Key="terraform/p1/daniil-smirnov.tfstate",SSECustomerAlgorithm="AES256",SSECustomerKey=sse)["Body"].read())
+          url=state["outputs"]["ui_https_url"]["value"]
+          assert re.fullmatch(r"https://[0-9]+-[0-9]+-[0-9]+-[0-9]+\.sslip\.io",url)
+          assert requests.get(url,timeout=15,allow_redirects=False).status_code==401
+          def call(path,payload=None):
+              kwargs={"timeout":65,"allow_redirects":False,"auth":("admin",password)}
+              response=requests.get(url+path,**kwargs) if payload is None else requests.post(url+path,json=payload,**kwargs)
+              assert response.status_code==200,"Unexpected HTTP status on "+path+": "+str(response.status_code)
+              return response
+          assert "PROTOTYPE" in call("/").text
+          health=call("/api/healthz").json();assert health["postgres_audit_ready"]
+          catalog=call("/api/v1/demo/scenarios").json();assert catalog["dataset"]=="development" and catalog["scenarios"]
+          v2=call("/api/v1/demo/runs",{"scenario_id":catalog["scenarios"][0]["id"]}).json()
+          assert v2["mode"]=="V2" and v2["audit"]["persisted"]
+          knowledge=call("/api/v1/knowledge/map").json();assert knowledge["schema_version"]=="knowledge-1" and not knowledge["evaluation_oracle_loaded"]
+          for outcome in ("ACCEPT","REJECT","NEEDS_REVIEW"):
+              result=call("/api/v1/demo/distributed-runs",{"outcome":outcome}).json()
+              assert result["architecture"]=="three_independent_domain_processes"
+              assert not result["evaluation_oracle_loaded"]
+              assert result["release"]["decision"]==outcome
+          print("DEPLOYED PASS: valid TLS, admin login, private API health, V2 persisted audit, knowledge-1, all E4 outcomes")
+          print("Verified UI URL:",url)
+          
           PY
