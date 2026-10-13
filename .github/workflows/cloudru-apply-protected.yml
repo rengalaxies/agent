@@ -151,7 +151,7 @@ jobs:
             -backend-config="skip_metadata_api_check=true" \
             -backend-config="use_path_style=true"
           if ! terraform state list > "$RUNNER_TEMP/state-inventory.txt" 2> "$RUNNER_TEMP/state-read-error.txt"; then
-            if ! rg -q --fixed-strings "No state file was found" "$RUNNER_TEMP/state-read-error.txt"; then
+            if ! grep -q -F "No state file was found" "$RUNNER_TEMP/state-read-error.txt"; then
               cat "$RUNNER_TEMP/state-read-error.txt"
               exit 1
             fi
