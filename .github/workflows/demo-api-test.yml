@@ -43,6 +43,38 @@ jobs:
           echo "api=$api" >> "$GITHUB_OUTPUT"
           echo "ui=$ui" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Exercise UI to real backend over nginx
+        id: e2e
+        continue-on-error: true
+        run: |
+          set +e
+          docker rm -f dmrp-api-ci dmrp-ui-ci >/dev/null 2>&1 || true
+          docker network create dmrp-e2e >/dev/null 2>&1 || true
+          docker run -d --rm --name dmrp-api-ci --network dmrp-e2e --network-alias core -p 127.0.0.1:18000:8000 dmrp-api-demo:ci
+          docker run -d --rm --name dmrp-ui-ci --network dmrp-e2e -e CORE_PRIVATE_IP=core -p 127.0.0.1:18080:8080 dmrp-ui-demo:ci
+          sleep 4
+          curl -fsS http://127.0.0.1:18080/healthz > /tmp/e2e-ui-health
+          curl -fsS http://127.0.0.1:18080/api/healthz > /tmp/e2e-api-health
+          curl -fsS http://127.0.0.1:18080/api/v1/demo/scenarios > /tmp/e2e-catalog.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("/tmp/e2e-catalog.json"))
+          assert x["dataset"]=="development" and x["mode"]=="V2"
+          assert len(x["scenarios"])>0
+          open("/tmp/e2e-input.json","w").write(json.dumps({"scenario_id":x["scenarios"][0]["id"]}))
+          PY
+          curl -fsS -X POST -H 'Content-Type: application/json' --data-binary @/tmp/e2e-input.json http://127.0.0.1:18080/api/v1/demo/runs > /tmp/e2e-run.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("/tmp/e2e-run.json"))
+          assert x["mode"]=="V2" and x["dataset"]=="development" and "decision" in x
+          print("E2E UI -> Nginx -> FastAPI -> V2: PASS")
+          PY
+          code=$?
+          if [ "$code" -ne 0 ]; then docker logs dmrp-ui-ci --tail 30; docker logs dmrp-api-ci --tail 30; fi
+          docker rm -f dmrp-ui-ci dmrp-api-ci >/dev/null 2>&1 || true
+          echo "status=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Publish test status
         if: always()
         env:
@@ -51,6 +83,7 @@ jobs:
           TEST_RC: ${{ steps.tests.outputs.status }}
           API_RC: ${{ steps.docker.outputs.api }}
           UI_RC: ${{ steps.docker.outputs.ui }}
+          E2E_RC: ${{ steps.e2e.outputs.status }}
         run: |
           python - <<'PY'
           import os,pathlib,re
@@ -61,6 +94,7 @@ jobs:
              "**API unittest exit code:** "+str(os.getenv("TEST_RC") or "unknown"),
              "**API image build exit code:** "+str(os.getenv("API_RC") or "unknown"),
              "**UI image build exit code:** "+str(os.getenv("UI_RC") or "unknown"),
+             "**E2E UI -> nginx -> V2 status:** "+str(os.getenv("E2E_RC") or "unknown"),
              "**Scope:** development fixtures only; no E3 scoring and no cloud apply",
              "",
              "## Error summary"]+["- "+e[:240] for e in errs[:10]]
@@ -73,5 +107,5 @@ jobs:
             gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/demo-api-ci.md
           fi
       - name: Enforce passing validation
-        if: steps.tests.outputs.status != '0' || steps.docker.outputs.api != '0' || steps.docker.outputs.ui != '0'
+        if: steps.tests.outputs.status != '0' || steps.docker.outputs.api != '0' || steps.docker.outputs.ui != '0' || steps.e2e.outputs.status != '0'
         run: exit 1
