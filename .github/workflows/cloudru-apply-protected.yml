@@ -1,0 +1,148 @@
+name: Cloud.ru P1 protected apply
+on:
+  workflow_dispatch:
+    inputs:
+      project_id_confirmation:
+        description: "Type the exact approved Cloud.ru project UUID"
+        required: true
+        type: string
+      approve_monthly_rub:
+        description: "Approved monthly RUB ceiling (must be at least 8300)"
+        required: true
+        type: string
+      approval_phrase:
+        description: "Type AUTHORIZE-PAID-DEPLOYMENT to acknowledge billing"
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-daniil-p1-deployment
+  cancel-in-progress: false
+jobs:
+  apply:
+    environment:
+      name: cloudru-p1-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - name: Strict scope and owner approval gate
+        env:
+          APPROVED_PROJECT: ${{ inputs.project_id_confirmation }}
+          APPROVAL_PHRASE: ${{ inputs.approval_phrase }}
+          CEILING: ${{ inputs.approve_monthly_rub }}
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          STATE_ACCESS: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          STATE_SECRET: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
+          SSH_PUB: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          ADMIN_CIDR: ${{ vars.CLOUDRU_ADMIN_CIDR }}
+          UI_HASH: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
+        run: |
+          set -eu
+          test "$APPROVED_PROJECT" = "20853297-65b7-42a8-af40-25c8d2df4e11" || exit 1
+          test "$APPROVAL_PHRASE" = "AUTHORIZE-PAID-DEPLOYMENT" || exit 1
+          case "$CEILING" in *[!0-9]*|"") echo "Invalid budget ceiling"; exit 1;; esac
+          test "$CEILING" -ge 8300 || { echo "Budget ceiling below reference estimate"; exit 1; }
+          for VALUE in "$KEY_ID" "$SECRET" "$STATE_ACCESS" "$STATE_SECRET" "$STATE_BUCKET" "$STATE_ENDPOINT" "$SSH_PUB" "$ADMIN_CIDR" "$UI_HASH"; do
+            test -n "$VALUE" || { echo "Missing mandatory protected value"; exit 1; }
+          done
+          case "$SSH_PUB" in ssh-ed25519\ *|ssh-rsa\ *) : ;; *) echo "Invalid SSH public key"; exit 1;; esac
+          case "$ADMIN_CIDR" in 0.0.0.0/0|192.0.2.*|198.51.100.*|203.0.113.*) echo "Placeholder or open SSH CIDR"; exit 1;; esac
+          case "$UI_HASH" in '\$2a\$'*|'\$2b\$'*|'\$2y\$'*) : ;; *) echo "Invalid bcrypt UI hash"; exit 1;; esac
+          test ! -e infra/cloudru/deploy/backend.tf || { echo "Backend file must be initialized by this workflow only"; exit 1; }
+      - name: Configure Cloud.ru provider mirror
+        run: |
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc" >> "$GITHUB_ENV"
+      - name: Initialize encrypted remote Terraform state with lockfile
+        working-directory: infra/cloudru/deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
+          STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
+        run: |
+          set -eu
+          cat > backend.tf <<'EOF'
+          terraform {
+            backend "s3" {}
+          }
+          EOF
+          terraform init -reconfigure -input=false -no-color \
+            -backend-config="bucket=$STATE_BUCKET" \
+            -backend-config="key=terraform/p1/daniil-smirnov.tfstate" \
+            -backend-config="region=${STATE_REGION:-ru-central-1}" \
+            -backend-config="endpoints={s3=\"$STATE_ENDPOINT\"}" \
+            -backend-config="use_lockfile=true" \
+            -backend-config="skip_credentials_validation=true" \
+            -backend-config="skip_region_validation=true" \
+            -backend-config="skip_requesting_account_id=true" \
+            -backend-config="skip_metadata_api_check=true" \
+            -backend-config="use_path_style=true"
+          terraform state list > "$RUNNER_TEMP/state-inventory.txt"
+      - name: Plan with live project and approved secrets
+        id: plan
+        working-directory: infra/cloudru/deploy
+        env:
+          TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
+          TF_VAR_git_ref: ${{ github.sha }}
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+          TF_VAR_ui_flavor: "gen-2-4"
+          TF_VAR_core_flavor: "gen-8-32"
+          TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
+          TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
+          TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+        run: |
+          terraform validate -no-color
+          terraform plan -input=false -no-color -out=p1-approved.tfplan
+          terraform show -json p1-approved.tfplan > "$RUNNER_TEMP/p1-reviewed.json"
+          python3 - <<'PY'
+          import json,os,collections
+          p=json.load(open(os.environ["RUNNER_TEMP"]+"/p1-reviewed.json"))
+          changes=p.get("resource_changes",[])
+          actions=collections.Counter()
+          for r in changes:
+              ops=r["change"]["actions"]
+              actions.update(ops)
+              assert set(ops) <= {"create","no-op"}, "Unexpected update/delete in plan"
+              after=r["change"].get("after") or {}
+              if "project_id" in after:
+                  assert after["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11"
+          assert actions["create"]>0 and actions["create"]<=16
+          print("Approved scope validation passed; creation count:",actions["create"])
+          PY
+      - name: Apply exactly the approved plan
+        working-directory: infra/cloudru/deploy
+        env:
+          TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
+          TF_VAR_git_ref: ${{ github.sha }}
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+          TF_VAR_ui_flavor: "gen-2-4"
+          TF_VAR_core_flavor: "gen-8-32"
+          TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
+          TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
+          TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+        run: terraform apply -input=false -auto-approve p1-approved.tfplan
