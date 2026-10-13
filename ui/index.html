@@ -9,7 +9,7 @@
 <section class="panel"><h2>Карта производитель → потребители</h2><div class="domains"><div class="domain"><strong>Fintech</strong><small>Producer: gross_spend_30d</small></div><span class="arr" aria-hidden="true">⇢</span><div class="domain"><strong>Retail</strong><small>Consumer: analytics</small></div><span class="arr" aria-hidden="true">⇢</span><div class="domain"><strong>Mobility</strong><small>Consumer: risk_features</small></div></div><p class="muted" style="font-size:13px;margin-bottom:0">Обязательства зарегистрированы по версиям; схема карты в настоящем контуре формируется из knowledge-1.</p></section>
 <section class="panel"><h2>Сценарии изменения</h2><div class="rows" id="scenarios" role="group" aria-label="Сценарии"></div></section>
 <section class="panel full"><div class="top"><h2>Результат проверки</h2><span class="pill" id="decision"></span></div><div class="detail"><dl><dt>Изменение</dt><dd id="change"></dd><dt>Потребители</dt><dd id="consumers"></dd><dt>Обоснование</dt><dd id="reason"></dd></dl></div><button class="action" id="simulate">Показать поток решения</button><div class="steps" id="flow" style="margin-top:18px" aria-live="polite"></div></section>
-<section class="panel full"><h2>Пример аудиторского следа</h2><pre class="evidence" id="trace"></pre></section></div><footer>v0.1 mock • Тестовый UI для интервью • Никакие реальные изменения данных не выпускаются</footer></main>
+<section class="panel full"><h2>Пример аудиторского следа</h2><pre class="evidence" id="trace"></pre></section><section class="panel full" id="live-panel"><h2>Проверка через реальный V2</h2><p class="muted">Только development-сценарии. Результат получаем от API, не подставляем заранее.</p><div class="top"><select id="live-scenario" aria-label="Development-сценарий" style="background:#19253d;color:#fff;padding:12px;border-radius:9px;min-width:260px"><option>Проверка подключения...</option></select><button class="action" id="live-run" disabled>Запустить V2</button></div><p id="live-status" role="status" class="muted">Подключение к API не подтверждено</p><pre id="live-result" class="evidence" aria-live="polite">Нет результата</pre></section></div><footer>v0.1 mock • Тестовый UI для интервью • Никакие реальные изменения данных не выпускаются</footer></main>
 <script>
 const cases=[
 {id:"M-01",title:"Смена формулы gross → net",decision:"REJECT",type:"reject",change:"gross_spend_30d: новая формула вычитает возвраты, тип decimal сохранён",consumers:"Retail требует gross, Mobility допускает только исходную формулу",reason:"consumer.required_meaning нарушено. Структурная совместимость не гарантирует сохранения семантики.",evidence:"Required gross_spend; proposed net_spend; no verified migration."},
@@ -17,4 +17,34 @@ const cases=[
 {id:"X-03",title:"Недоступный потребитель",decision:"NEEDS_REVIEW",type:"review",change:"Изменение временного окна 30d → 7d",consumers:"Retail подтвердил требования; Mobility не ответил в срок",reason:"Нет обязательной позиции затронутого домена: неизвестность не преобразуется в ACCEPT.",evidence:"Consumer position: absent; timeout: true."}
 ];
 let selected=0;function render(){const x=cases[selected];document.getElementById("scenarios").innerHTML=cases.map((v,i)=>'<button class="scenario '+(i===selected?'active':'')+'" onclick="selectCase('+i+')" aria-pressed="'+(i===selected)+'"><strong>'+v.id+'</strong> · '+v.title+'</button>').join("");const d=document.getElementById("decision");d.className="pill "+x.type;d.textContent=x.decision;["change","consumers","reason"].forEach(k=>document.getElementById(k).textContent=x[k]);document.getElementById("trace").textContent=JSON.stringify({scenario:x.id,mode:"V2-ILLUSTRATION",consumer_count:2,decision:x.decision,evidence:x.evidence,note:"Synthetic example, not a live validator output"},null,2);document.getElementById("flow").innerHTML="";}function selectCase(i){selected=i;render()}document.getElementById("simulate").addEventListener("click",()=>{const stages=[["1","Proposal"],["2","Snapshot"],["3","Impact map"],["4","Consumer positions"],["5","Policy verdict"]];document.getElementById("flow").innerHTML=stages.map(([n,t])=>'<div class="step"><strong>'+n+'</strong>'+t+'</div>').join("")});render();
+</script><script>
+(async function(){
+ const status=document.getElementById('live-status'), result=document.getElementById('live-result'), selector=document.getElementById('live-scenario'), run=document.getElementById('live-run');
+ try {
+  const health=await fetch('/api/healthz',{cache:'no-store'});
+  if(!health.ok) throw Error('API health status '+health.status);
+  const healthData=await health.json();
+  if(healthData.engine_live!==true || healthData.evaluation_oracle_loaded!==false) throw Error('Live development mode is not verified');
+  const r=await fetch('/api/v1/demo/scenarios',{cache:'no-store'});
+  if(!r.ok) throw Error('API catalog status '+r.status);
+  const data=await r.json();
+  if(data.dataset!=='development' || data.mode!=='V2') throw Error('Unexpected API dataset or mode');
+  selector.replaceChildren();
+  for(const item of data.scenarios){const o=document.createElement('option');o.value=item.id;o.textContent=item.id+' · '+item.title;selector.appendChild(o)}
+  run.disabled=!data.scenarios.length;
+  status.textContent='V2 API подключён. Результаты вычисляются на сервере. Набор development.';
+ }catch(error){selector.replaceChildren();const o=document.createElement('option');o.textContent='API недоступен';selector.appendChild(o);run.disabled=true;status.textContent='Реальная проверка недоступна: '+error.message+'. Выше показаны только синтетические примеры.'}
+ run.addEventListener('click',async()=>{
+  run.disabled=true;status.textContent='Выполняется V2...';result.textContent='Ожидание результата';
+  try{
+   const response=await fetch('/api/v1/demo/runs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scenario_id:selector.value})});
+   if(!response.ok) throw Error('HTTP '+response.status);
+   const value=await response.json();
+   if(value.dataset!=='development'||value.mode!=='V2') throw Error('Unexpected mode');
+   result.textContent=JSON.stringify(value,null,2);
+   status.textContent='Завершено. Реальный результат движка V2 на development-сценарии, не эксперимент E3.';
+  }catch(error){result.textContent='Нет проверенного результата';status.textContent='Ошибка реальной проверки: '+error.message}
+  finally{run.disabled=false}
+ });
+})();
 </script></body></html>
