@@ -20,7 +20,7 @@ jobs:
         run: |
           python3 -m pip install pyyaml
           sudo apt-get update -qq
-          sudo apt-get install -y -qq shellcheck
+          sudo apt-get install -y -qq shellcheck caddy
       - name: Validate rendered cloud-init YAML and shell syntax
         id: verify
         continue-on-error: true
@@ -34,7 +34,7 @@ jobs:
             rendered=(original.replace("${git_ref}","a"*40)
                       .replace("${core_ip}","10.0.0.22")
                       .replace("${ui_ip_dashed}","203-0-113-77")
-                      .replace("${ui_basic_auth_hash}","$2a$12$mock-only-hash"))
+                      .replace("${ui_basic_auth_hash}",subprocess.check_output(["caddy","hash-password","--plaintext","CI-only-password"],text=True).strip()))
             doc=yaml.safe_load(rendered)
             assert isinstance(doc,dict) and doc.get("package_update") is True
             files=doc["write_files"]
@@ -50,7 +50,11 @@ jobs:
                 # Warnings about shellcheck style are non-blocking; syntax failures block.
                 subprocess.run(["shellcheck","-s","sh","-S","error",str(script)],check=True)
             if name=="ui":
-              assert any(x["path"]=="/etc/caddy/Caddyfile" for x in files)
+              caddyfile=next(x["content"] for x in files if x["path"]=="/etc/caddy/Caddyfile")
+              cfg=pathlib.Path("/tmp/Caddyfile.bootstrap")
+              cfg.write_text(caddyfile)
+              subprocess.run(["caddy","validate","--config",str(cfg),"--adapter","caddyfile"],check=True)
+              print("Caddy config validation: PASS")
           print("Bootstrap YAML and extracted shell scripts: PASS")
           PY
           rc=$?
