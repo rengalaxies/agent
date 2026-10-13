@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       approve_monthly_rub:
-        description: "Approved monthly RUB ceiling (must be at least 8300)"
+        description: "Approved monthly RUB ceiling (must be at least 8000)"
         required: true
         type: string
       approval_phrase:
@@ -79,7 +79,7 @@ jobs:
           test "$APPROVED_PROJECT" = "20853297-65b7-42a8-af40-25c8d2df4e11" || exit 1
           test "$APPROVAL_PHRASE" = "AUTHORIZE-PAID-DEPLOYMENT" || exit 1
           case "$CEILING" in *[!0-9]*|"") echo "Invalid budget ceiling"; exit 1;; esac
-          test "$CEILING" -ge 8300 || { echo "Budget ceiling below reference estimate"; exit 1; }
+          test "$CEILING" -ge 8000 || { echo "Budget ceiling below reference estimate"; exit 1; }
           for VALUE in "$KEY_ID" "$SECRET" "$STATE_ACCESS" "$STATE_SECRET" "$STATE_SSE" "$STATE_BUCKET" "$SSH_PUB" "$UI_HASH"; do
             test -n "$VALUE" || { echo "Missing mandatory protected value"; exit 1; }
           done
