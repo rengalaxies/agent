@@ -24,7 +24,7 @@ let selected=0;function render(){const x=cases[selected];document.getElementById
   const health=await fetch('/api/healthz',{cache:'no-store'});
   if(!health.ok) throw Error('API health status '+health.status);
   const healthData=await health.json();
-  if(healthData.engine_live!==true || healthData.evaluation_oracle_loaded!==false) throw Error('Live development mode is not verified');
+  if(healthData.api_ready!==true || healthData.engine_live!==true || healthData.evaluation_oracle_loaded!==false) throw Error('Live development mode is not verified');
   const r=await fetch('/api/v1/demo/scenarios',{cache:'no-store'});
   if(!r.ok) throw Error('API catalog status '+r.status);
   const data=await r.json();
