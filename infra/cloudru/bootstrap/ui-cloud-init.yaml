@@ -13,7 +13,7 @@ write_files:
       ${ui_ip_dashed}.sslip.io {
           encode zstd gzip
           basicauth {
-              researcher ${ui_basic_auth_hash}
+              admin ${ui_basic_auth_hash}
           }
           reverse_proxy 127.0.0.1:8080
           header {
