@@ -80,7 +80,7 @@ jobs:
         run: |
           git config user.name "cloudru-inventory-bot"
           git config user.email "cloudru-inventory-bot@users.noreply.github.com"
-          git add docs/launch-2026-10/cloudru-inventory-latest.json
+          git add docs/launch-2026-10/cloudru-inventory-latest.json docs/launch-2026-10/cloudru-candidates-latest.json
           if ! git diff --cached --quiet; then
             git commit -m "ci: update Cloud.ru inventory summary [skip ci]"
             git pull --rebase origin main
