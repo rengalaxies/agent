@@ -1,5 +1,7 @@
 """Development-only test: no evaluation oracle is used."""
 import unittest
+import os
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 from services.demo_api import app, E4_RUN_SLOT
 
@@ -28,6 +30,7 @@ class DemoApiTest(unittest.TestCase):
         self.assertEqual(item["dataset"],"development")
         self.assertIn("decision",item)
         self.assertEqual(item["scenario_id"],catalog[0]["id"])
+        self.assertFalse(item["audit"]["persisted"])
 
     def test_nonlisted_evaluation_scenario_blocked(self):
         response=self.client.post("/api/v1/demo/runs",json={"scenario_id":"NOT_IN_DEVELOPMENT"})
@@ -72,3 +75,10 @@ class DemoApiTest(unittest.TestCase):
             self.assertEqual(response.status_code,429)
         finally:
             E4_RUN_SLOT.release()
+
+    def test_required_postgres_audit_fails_closed(self):
+        catalog=self.client.get("/api/v1/demo/scenarios").json()["scenarios"]
+        with patch.dict(os.environ,{"DMRP_REQUIRE_AUDIT":"1","DATABASE_URL":"","DMRP_DATABASE_URL_FILE":""}):
+            response=self.client.post("/api/v1/demo/runs",json={"scenario_id":catalog[0]["id"]})
+        self.assertEqual(response.status_code,503)
+        self.assertNotIn("password",response.text.lower())
