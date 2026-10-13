@@ -9,7 +9,7 @@
 <section class="panel"><h2>Карта производитель → потребители</h2><div class="domains"><div class="domain"><strong>Fintech</strong><small>Producer: gross_spend_30d</small></div><span class="arr" aria-hidden="true">⇢</span><div class="domain"><strong>Retail</strong><small>Consumer: analytics</small></div><span class="arr" aria-hidden="true">⇢</span><div class="domain"><strong>Mobility</strong><small>Consumer: risk_features</small></div></div><p class="muted" style="font-size:13px;margin-bottom:0">Обязательства зарегистрированы по версиям; схема карты в настоящем контуре формируется из knowledge-1.</p></section>
 <section class="panel"><h2>Сценарии изменения</h2><div class="rows" id="scenarios" role="group" aria-label="Сценарии"></div></section>
 <section class="panel full"><div class="top"><h2>Результат проверки</h2><span class="pill" id="decision"></span></div><div class="detail"><dl><dt>Изменение</dt><dd id="change"></dd><dt>Потребители</dt><dd id="consumers"></dd><dt>Обоснование</dt><dd id="reason"></dd></dl></div><button class="action" id="simulate">Показать поток решения</button><div class="steps" id="flow" style="margin-top:18px" aria-live="polite"></div></section>
-<section class="panel full"><h2>Пример аудиторского следа</h2><pre class="evidence" id="trace"></pre></section><section class="panel full" id="live-panel"><h2>Проверка через реальный V2</h2><p class="muted">Только development-сценарии. Результат получаем от API, не подставляем заранее.</p><div class="top"><select id="live-scenario" aria-label="Development-сценарий" style="background:#19253d;color:#fff;padding:12px;border-radius:9px;min-width:260px"><option>Проверка подключения...</option></select><button class="action" id="live-run" disabled>Запустить V2</button></div><p id="live-status" role="status" class="muted">Подключение к API не подтверждено</p><pre id="live-result" class="evidence" aria-live="polite">Нет результата</pre></section></div><footer>v0.1 mock • Тестовый UI для интервью • Никакие реальные изменения данных не выпускаются</footer></main>
+<section class="panel full"><h2>Пример аудиторского следа</h2><pre class="evidence" id="trace"></pre></section><section class="panel full" id="live-panel"><h2>Проверка через реальный V2</h2><p class="muted">Только development-сценарии. Результат получаем от API, не подставляем заранее.</p><div class="top"><select id="live-scenario" aria-label="Development-сценарий" style="background:#19253d;color:#fff;padding:12px;border-radius:9px;min-width:260px"><option>Проверка подключения...</option></select><button class="action" id="live-run" disabled>Запустить V2</button></div><p id="live-status" role="status" class="muted">Подключение к API не подтверждено</p><pre id="live-result" class="evidence" aria-live="polite">Нет результата</pre></section><section class="panel full"><h2>Распределённый E4: три автономных процесса</h2><p class="muted">Инженерная проверка протокола на синтетических доменах sales, risk, analytics. Отдельно от оценки гипотезы H1.</p><div class="top"><select id="e4-outcome" aria-label="Исход синтетического E4" style="background:#19253d;color:#fff;padding:12px;border-radius:9px"><option>ACCEPT</option><option>REJECT</option><option>NEEDS_REVIEW</option></select><button class="action" id="e4-run">Запустить распределённый протокол</button></div><p id="e4-status" role="status" class="muted">Здесь выводится результат реального межпроцессного запуска, если API доступен.</p><pre id="e4-result" class="evidence" aria-live="polite">Нет результата</pre></section></div><footer>v0.1 mock • Тестовый UI для интервью • Никакие реальные изменения данных не выпускаются</footer></main>
 <script>
 const cases=[
 {id:"M-01",title:"Смена формулы gross → net",decision:"REJECT",type:"reject",change:"gross_spend_30d: новая формула вычитает возвраты, тип decimal сохранён",consumers:"Retail требует gross, Mobility допускает только исходную формулу",reason:"consumer.required_meaning нарушено. Структурная совместимость не гарантирует сохранения семантики.",evidence:"Required gross_spend; proposed net_spend; no verified migration."},
@@ -47,4 +47,21 @@ let selected=0;function render(){const x=cases[selected];document.getElementById
   finally{run.disabled=false}
  });
 })();
+</script><script>
+document.getElementById('e4-run').addEventListener('click',async function(){
+ const btn=this, status=document.getElementById('e4-status'), result=document.getElementById('e4-result');
+ btn.disabled=true;status.textContent='Запуск трёх независимых доменных процессов...';result.textContent='Ожидание подписанных ответов';
+ try{
+  const outcome=document.getElementById('e4-outcome').value;
+  const response=await fetch('/api/v1/demo/distributed-runs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({outcome})});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  const data=await response.json();
+  if(data.dataset!=='synthetic_E4'||data.architecture!=='three_independent_domain_processes')throw Error('Неожиданный источник данных');
+  result.textContent=JSON.stringify(data,null,2);
+  status.textContent='Получен результат E4. Это инженерная демонстрация, не результат экспериментальной проверки H1.';
+ }catch(err){
+  result.textContent='Проверенный распределённый результат отсутствует';
+  status.textContent='E4 недоступен: '+err.message;
+ }finally{btn.disabled=false}
+});
 </script></body></html>
