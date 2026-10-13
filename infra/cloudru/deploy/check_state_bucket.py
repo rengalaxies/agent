@@ -35,7 +35,7 @@ def validate(s3):
 
 
 def main():
-    endpoint = os.environ["CLOUDRU_STATE_S3_ENDPOINT"]
+    endpoint = os.getenv("CLOUDRU_STATE_S3_ENDPOINT") or "https://s3.cloud.ru"
     parsed = urlparse(endpoint)
     assert parsed.scheme == "https" and parsed.hostname and not parsed.username, "invalid HTTPS S3 endpoint"
     import boto3
