@@ -140,7 +140,7 @@ resource "cloudru_evolution_compute_disk" "boot" {
   zone = { name = var.zone_name }
   size = each.value.disk
   disk_type = { name = "SSD" }
-  image_id = var.ubuntu_image_id
+  image = { id = var.ubuntu_image_id }
   bootable = true
   encrypted = false
   readonly = false
@@ -155,6 +155,7 @@ resource "cloudru_evolution_compute_interface" "nic" {
   interface_security_enabled = true
   security_groups = [{ id = each.key == "ui" ? cloudru_evolution_compute_security_group.ui.id : cloudru_evolution_compute_security_group.core.id }]
   type = "INTERFACE_TYPE_REGULAR"
+  vm = {}
 }
 resource "cloudru_evolution_compute_external_ip" "ui" {
   project_id = var.project_id
