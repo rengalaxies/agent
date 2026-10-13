@@ -51,6 +51,7 @@ class DemoApiTest(unittest.TestCase):
                 self.assertFalse(item["evaluation_oracle_loaded"])
                 self.assertIn("release",item)
                 self.assertEqual(item["requested_outcome"],expected)
+                self.assertEqual(item["release"]["decision"],expected)
 
     def test_live_verified_knowledge_graph(self):
         response=self.client.get("/api/v1/knowledge/map")

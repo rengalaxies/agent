@@ -59,3 +59,43 @@ jobs:
         \ \\\n  --tmpfs /tmp:rw,nosuid,nodev --security-opt no-new-privileges --cap-drop ALL \\\n  -e CORE_PRIVATE_IP=127.0.0.1\
         \ -p 127.0.0.1:18080:8080 dmrp-ui-regression\nfor attempt in $(seq 1 20); do\n  if curl -fsS http://127.0.0.1:18080/healthz;\
         \ then exit 0; fi\n  sleep 1\ndone\ndocker logs dmrp-ui-regression\nexit 1\n"
+  configuration:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.10.5
+    - name: Install Cloud.ru Terraform mirror configuration
+      run: "cat > \"$RUNNER_TEMP/terraform.tfrc\" <<'EOF'\nprovider_installation {\n  network_mirror {\n    url = \"https://evo-tf-provider-generic.ar.cloud.ru/\"\
+        \n    include = [\"cloudru/*\"]\n  }\n  direct { exclude = [\"cloudru/*\"] }\n}\nEOF\necho \"TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc\"\
+        \ >> \"$GITHUB_ENV\"\n"
+    - name: Terraform init and validate without cloud credentials
+      working-directory: infra/cloudru/deploy
+      run: 'terraform init -backend=false -input=false -no-color
+
+        terraform validate -no-color'
+    - name: Prepare YAML and shell validators
+      run: 'python3 -m pip install pyyaml
+
+        sudo apt-get update -qq
+
+        sudo apt-get install -y -qq shellcheck caddy
+
+        '
+    - name: Rendered bootstrap shell and Caddy configuration
+      run: "set -e\npython3 - <<'PY'\nimport pathlib,subprocess,yaml\nroot=pathlib.Path(\"infra/cloudru/bootstrap\")\nfor\
+        \ name in (\"ui\",\"core\"):\n  original=(root/f\"{name}-cloud-init.yaml\").read_text()\n  rendered=(original.replace(\"\
+        ${git_ref}\",\"a\"*40)\n            .replace(\"${core_ip}\",\"10.0.0.22\")\n            .replace(\"${ui_ip_dashed}\"\
+        ,\"203-0-113-77\")\n            .replace(\"${ui_basic_auth_hash}\",subprocess.check_output([\"caddy\",\"hash-password\"\
+        ,\"--plaintext\",\"CI-only-password\"],text=True).strip()))\n  doc=yaml.safe_load(rendered)\n  assert isinstance(doc,dict)\
+        \ and doc.get(\"package_update\") is True\n  files=doc[\"write_files\"]\n  paths=[item[\"path\"] for item in files]\n\
+        \  assert len(paths)==len(set(paths))\n  assert len(files)>=2\n  assert doc.get(\"runcmd\"), \"Missing boot commands\"\
+        \n  for item in files:\n    if item[\"path\"].endswith(\"-start\"):\n      script=pathlib.Path(\"/tmp\")/f\"{name}-start.sh\"\
+        \n      script.write_text(item[\"content\"])\n      subprocess.run([\"sh\",\"-n\",str(script)],check=True)\n     \
+        \ # Warnings about shellcheck style are non-blocking; syntax failures block.\n      subprocess.run([\"shellcheck\"\
+        ,\"-s\",\"sh\",\"-S\",\"error\",str(script)],check=True)\n  if name==\"ui\":\n    caddyfile=next(x[\"content\"] for\
+        \ x in files if x[\"path\"]==\"/etc/caddy/Caddyfile\")\n    cfg=pathlib.Path(\"/tmp/Caddyfile.bootstrap\")\n    cfg.write_text(caddyfile)\n\
+        \    subprocess.run([\"caddy\",\"validate\",\"--config\",str(cfg),\"--adapter\",\"caddyfile\"],check=True)\n    print(\"\
+        Caddy config validation: PASS\")\nprint(\"Bootstrap YAML and extracted shell scripts: PASS\")\nPY\nrc=$?\necho \"\
+        code=$rc\" >> \"$GITHUB_OUTPUT\"\nexit 0\n"
