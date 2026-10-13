@@ -22,3 +22,6 @@ Approved project only: `20853297-65b7-42a8-af40-25c8d2df4e11`.
 ## Required approval
 
 Only request a YES after the gates above have concrete testable implementations and an exact priced scope. Apply must be a separate explicitly triggered job with protected GitHub environment approval, pinned validated plan, persistent state and no automatic destroy.
+
+## Current security build
+Terraform now requests encrypted SSD volumes; cloud-init is base64 encoded; Caddy enforces HTTPS and bcrypt-based HTTP authentication with credentials supplied at protected apply. Bootstrap tests and schema validation pass. Confirm fresh `terraform plan` after these changes. Existing plan-only SSH and auth credentials are test placeholders and must never be used for real apply.
