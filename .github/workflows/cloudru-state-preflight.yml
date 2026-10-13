@@ -78,6 +78,7 @@ jobs:
                  "**Run:** ${{ github.run_id }}",
                  "**Mode:** read-only S3 checks; no bucket or objects created",
                  "**Bucket read access:** "+str(data.get("bucket_read_access",data.get("tag_scope_verified",False))),
+                 "**Diagnostic:** "+data.get("diagnostic","none"),
                  "**Lockfile:** NOT_TESTED (requires dedicated safe access verification)",
                  "**Bucket ownership:** requires owner review; matching tag is an additional safeguard"]
           pathlib.Path("/tmp/state-issue.md").write_text(chr(10).join(lines))
