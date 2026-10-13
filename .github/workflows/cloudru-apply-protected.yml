@@ -38,6 +38,7 @@ jobs:
           SECRET: ${{ secrets.CLOUDRU_SECRET }}
           STATE_ACCESS: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
           STATE_SECRET: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
           STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
           STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
           SSH_PUB: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
@@ -49,7 +50,7 @@ jobs:
           test "$APPROVAL_PHRASE" = "AUTHORIZE-PAID-DEPLOYMENT" || exit 1
           case "$CEILING" in *[!0-9]*|"") echo "Invalid budget ceiling"; exit 1;; esac
           test "$CEILING" -ge 8300 || { echo "Budget ceiling below reference estimate"; exit 1; }
-          for VALUE in "$KEY_ID" "$SECRET" "$STATE_ACCESS" "$STATE_SECRET" "$STATE_BUCKET" "$SSH_PUB" "$ADMIN_CIDR" "$UI_HASH"; do
+          for VALUE in "$KEY_ID" "$SECRET" "$STATE_ACCESS" "$STATE_SECRET" "$STATE_SSE" "$STATE_BUCKET" "$SSH_PUB" "$ADMIN_CIDR" "$UI_HASH"; do
             test -n "$VALUE" || { echo "Missing mandatory protected value"; exit 1; }
           done
           case "$SSH_PUB" in ssh-ed25519\ *|ssh-rsa\ *) : ;; *) echo "Invalid SSH public key"; exit 1;; esac
@@ -94,6 +95,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
           STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
           STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
           STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
@@ -111,6 +113,7 @@ jobs:
             -backend-config="region=${STATE_REGION:-ru-central-1}" \
             -backend-config="endpoints={s3=\"$STATE_ENDPOINT\"}" \
             -backend-config="use_lockfile=true" \
+            -backend-config="encrypt=true" \
             -backend-config="skip_credentials_validation=true" \
             -backend-config="skip_region_validation=true" \
             -backend-config="skip_requesting_account_id=true" \
@@ -133,6 +136,7 @@ jobs:
           TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
           AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
         run: |
           terraform validate -no-color
           terraform plan -input=false -no-color -out=p1-approved.tfplan
@@ -167,12 +171,14 @@ jobs:
           TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
           AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
         run: terraform apply -input=false -auto-approve p1-approved.tfplan
       - name: Verify protected UI HTTPS endpoint after provisioning
         working-directory: infra/cloudru/deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
         run: |
           set -eu
           URL=$(terraform output -raw ui_https_url)
