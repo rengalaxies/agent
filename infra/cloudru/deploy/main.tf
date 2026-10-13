@@ -35,6 +35,13 @@ variable "ubuntu_image_id" {
   type = string
   description = "Choose supported Ubuntu image ID in project and ru.AZ-2."
 }
+variable "git_ref" {
+  type = string
+  validation {
+    condition = can(regex("^[0-9a-f]{40}$", var.git_ref))
+    error_message = "git_ref must be an immutable git SHA."
+  }
+}
 variable "ssh_public_key" {
   type = string
   description = "SSH public key only; no private key and no plaintext password."
@@ -182,6 +189,10 @@ resource "cloudru_evolution_compute_vm" "vm" {
   flavor = { name = each.value.flavor }
   disks = [{ id = cloudru_evolution_compute_disk.boot[each.key].id }]
   network_interfaces = [{ id = cloudru_evolution_compute_interface.nic[each.key].id }]
+  cloud_init_userdata = templatefile("${path.module}/../bootstrap/${each.key == "ui" ? "ui" : "core"}-cloud-init.yaml", {
+    git_ref = var.git_ref
+    core_ip = cloudru_evolution_compute_interface.nic["core"].ip_address
+  })
   image_metadata = {
     public_key = { string_value = var.ssh_public_key }
   }
