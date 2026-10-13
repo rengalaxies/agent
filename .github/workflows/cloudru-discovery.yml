@@ -74,7 +74,7 @@ jobs:
               "vpc_collection_status": "not_queried_dns_issue"
           }
           path=pathlib.Path("../../docs/launch-2026-10/cloudru-inventory-latest.json")
-          path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\\n")
+          path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+chr(10))
           PY
       - name: Publish sanitized inventory summary
         run: |
