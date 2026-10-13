@@ -1,0 +1,48 @@
+#cloud-config
+package_update: true
+packages:
+  - ca-certificates
+  - curl
+  - git
+  - docker.io
+  - docker-compose-v2
+write_files:
+  - path: /etc/dmcore-bootstrap.env
+    permissions: '0600'
+    content: |
+      DMRP_REF=${git_ref}
+  - path: /etc/systemd/system/dmrp-core.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Data Mesh Development V2 Core
+      Wants=network-online.target docker.service
+      After=network-online.target docker.service
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      ExecStart=/usr/local/sbin/dmrp-core-start
+      ExecStop=/usr/bin/docker stop dmrp-core-api
+      TimeoutStartSec=360
+      [Install]
+      WantedBy=multi-user.target
+  - path: /usr/local/sbin/dmrp-core-start
+    permissions: '0700'
+    content: |
+      #!/bin/sh
+      set -eu
+      if [ ! -d /opt/dmrp/.git ]; then
+        git clone --depth=1 https://github.com/rengalaxies/agent.git /opt/dmrp
+      fi
+      cd /opt/dmrp
+      git fetch --depth=1 origin ${git_ref}
+      git checkout --detach ${git_ref}
+      docker build -f services/Dockerfile.demo -t dmrp-core:local .
+      docker rm -f dmrp-core-api 2>/dev/null || true
+      docker run -d --name dmrp-core-api --restart unless-stopped --read-only \
+        --tmpfs /tmp:rw,nosuid,nodev,size=128m --security-opt no-new-privileges \
+        --cap-drop ALL -p 8000:8000 dmrp-core:local
+runcmd:
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, --now, docker]
+  - [systemctl, enable, --now, dmrp-core.service]
