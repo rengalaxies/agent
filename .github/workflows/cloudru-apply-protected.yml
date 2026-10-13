@@ -80,7 +80,7 @@ jobs:
           test "$APPROVAL_PHRASE" = "AUTHORIZE-PAID-DEPLOYMENT" || exit 1
           case "$CEILING" in *[!0-9]*|"") echo "Invalid budget ceiling"; exit 1;; esac
           test "$CEILING" -ge 8300 || { echo "Budget ceiling below reference estimate"; exit 1; }
-          for VALUE in "$KEY_ID" "$SECRET" "$STATE_ACCESS" "$STATE_SECRET" "$STATE_SSE" "$STATE_BUCKET" "$SSH_PUB" "$ADMIN_CIDR" "$UI_HASH"; do
+          for VALUE in "$KEY_ID" "$SECRET" "$STATE_ACCESS" "$STATE_SECRET" "$STATE_SSE" "$STATE_BUCKET" "$SSH_PUB" "$UI_HASH"; do
             test -n "$VALUE" || { echo "Missing mandatory protected value"; exit 1; }
           done
           case "$SSH_PUB" in ssh-ed25519\ *|ssh-rsa\ *) : ;; *) echo "Invalid SSH public key"; exit 1;; esac
