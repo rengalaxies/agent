@@ -51,7 +51,10 @@ write_files:
       docker build -f ui/Dockerfile -t dmrp-ui:local .
       docker rm -f dmrp-ui 2>/dev/null || true
       docker run -d --name dmrp-ui --restart unless-stopped --read-only \
-        --tmpfs /var/cache/nginx:rw,nosuid,nodev --tmpfs /var/run:rw,nosuid,nodev \
+        --user 101:101 \
+        --tmpfs /etc/nginx/conf.d:rw,nosuid,nodev,uid=101,gid=101 \
+        --tmpfs /var/cache/nginx:rw,nosuid,nodev,uid=101,gid=101 \
+        --tmpfs /var/run:rw,nosuid,nodev,uid=101,gid=101 \
         --tmpfs /tmp:rw,nosuid,nodev --security-opt no-new-privileges \
         --cap-drop ALL -e CORE_PRIVATE_IP=${core_ip} -p 127.0.0.1:8080:8080 dmrp-ui:local
 runcmd:

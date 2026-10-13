@@ -1,0 +1,61 @@
+name: P1 deployment regression checks
+'on':
+  pull_request:
+    paths:
+    - services/**
+    - tests/test_demo_api.py
+    - ui/**
+    - infra/cloudru/**
+    - .github/workflows/**
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Development API and E4 regression tests
+      run: 'python -m pip install -e ''.[api,test-api,distributed,postgres]''
+
+        python -m unittest discover -s tests -p test_demo_api.py -v'
+    - name: Hardened PostgreSQL audit integration
+      run: "set -euo pipefail\ntrap 'rc=$?; echo \"status=$rc\" >> \"$GITHUB_OUTPUT\"; docker rm -f dmrp-test-api dmrp-test-db\
+        \ >/dev/null 2>&1 || true' EXIT\ndocker build -f services/Dockerfile.demo -t dmrp-postgres-api:ci .\ndocker network\
+        \ create dmrp-pg-ci-net\ndocker volume create dmrp-pg-ci-data\nPG_PASSWORD=\"$(openssl rand -hex 24)\"\ndocker run\
+        \ -d --rm --name dmrp-test-db --network dmrp-pg-ci-net --network-alias postgres \\\n  --security-opt no-new-privileges\
+        \ --cap-drop ALL \\\n  --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER --cap-add SETUID --cap-add SETGID \\\
+        \n  -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \\\n  -e POSTGRES_PASSWORD=\"$PG_PASSWORD\" \\\n  -v dmrp-pg-ci-data:/var/lib/postgresql/data\
+        \ postgres:16-alpine\nfor _attempt in $(seq 1 45); do\n  if docker exec dmrp-test-db pg_isready -U dmrp -d dmrp >/dev/null\
+        \ 2>&1; then break; fi\n  sleep 2\ndone\ndocker exec dmrp-test-db pg_isready -U dmrp -d dmrp\ndocker run -d --rm --name\
+        \ dmrp-test-api --network dmrp-pg-ci-net \\\n  --read-only --security-opt no-new-privileges --cap-drop ALL \\\n  --tmpfs\
+        \ /tmp:rw,nosuid,nodev,size=128m \\\n  -e DMRP_REQUIRE_AUDIT=1 \\\n  -e DATABASE_URL=\"postgresql://dmrp:$PG_PASSWORD@postgres:5432/dmrp\"\
+        \ \\\n  -p 127.0.0.1:18000:8000 dmrp-postgres-api:ci\nfor _attempt in $(seq 1 20); do\n  if curl -fsS http://127.0.0.1:18000/healthz\
+        \ >/dev/null 2>&1; then break; fi\n  sleep 2\ndone\ncurl -fsS http://127.0.0.1:18000/api/v1/demo/scenarios > /tmp/pg-scenarios.json\n\
+        python3 - <<'PY'\nimport json\ns=json.load(open(\"/tmp/pg-scenarios.json\"))[\"scenarios\"]\nassert s and s[0][\"\
+        id\"]\nopen(\"/tmp/pg-req.json\",\"w\").write(json.dumps({\"scenario_id\":s[0][\"id\"]}))\nPY\ncurl -fsS -X POST -H\
+        \ 'Content-Type: application/json' \\\n  --data-binary @/tmp/pg-req.json http://127.0.0.1:18000/api/v1/demo/runs >\
+        \ /tmp/pg-decision.json\npython3 - <<'PY'\nimport json\nitem=json.load(open(\"/tmp/pg-decision.json\"))\nassert item[\"\
+        mode\"]==\"V2\" and item[\"dataset\"]==\"development\"\nassert item[\"audit\"][\"persisted\"] and len(item[\"audit\"\
+        ][\"sha256\"])==64\nwith open(\"/tmp/pg-run-id\",\"w\") as f:f.write(item[\"run_id\"])\nwith open(\"/tmp/pg-hash\"\
+        ,\"w\") as f:f.write(item[\"audit\"][\"sha256\"])\nprint(\"Real V2 decision with persisted PostgreSQL audit: PASS\"\
+        )\nPY\nRUN_ID=$(cat /tmp/pg-run-id)\nPG_HASH=$(docker exec dmrp-test-db psql -U dmrp -d dmrp -Atc \\\n  \"SELECT payload_sha256\
+        \ FROM demo_release_audit WHERE run_id='$RUN_ID'\")\ntest \"$PG_HASH\" = \"$(cat /tmp/pg-hash)\"\ndocker stop dmrp-test-db\
+        \ >/dev/null\ndocker run -d --rm --name dmrp-test-db --network dmrp-pg-ci-net --network-alias postgres \\\n  --security-opt\
+        \ no-new-privileges --cap-drop ALL \\\n  --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER --cap-add SETUID\
+        \ --cap-add SETGID \\\n  -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \\\n  -e POSTGRES_PASSWORD=\"$PG_PASSWORD\" \\\n\
+        \  -v dmrp-pg-ci-data:/var/lib/postgresql/data postgres:16-alpine\nfor _attempt in $(seq 1 45); do\n  if docker exec\
+        \ dmrp-test-db pg_isready -U dmrp -d dmrp >/dev/null 2>&1; then break; fi\n  sleep 2\ndone\nPG_RESTART_HASH=$(docker\
+        \ exec dmrp-test-db psql -U dmrp -d dmrp -Atc \\\n  \"SELECT payload_sha256 FROM demo_release_audit WHERE run_id='$RUN_ID'\"\
+        )\ntest \"$PG_RESTART_HASH\" = \"$(cat /tmp/pg-hash)\"\necho \"Persisted audit survives PostgreSQL container restart:\
+        \ PASS\"\n"
+    - name: Hardened UI startup
+      run: "set -euo pipefail\ntrap 'docker rm -f dmrp-ui-regression >/dev/null 2>&1 || true' EXIT\ndocker build -f ui/Dockerfile\
+        \ -t dmrp-ui-regression .\ndocker run -d --name dmrp-ui-regression --read-only --user 101:101 \\\n  --tmpfs /etc/nginx/conf.d:rw,nosuid,nodev,uid=101,gid=101\
+        \ \\\n  --tmpfs /var/cache/nginx:rw,nosuid,nodev,uid=101,gid=101 \\\n  --tmpfs /var/run:rw,nosuid,nodev,uid=101,gid=101\
+        \ \\\n  --tmpfs /tmp:rw,nosuid,nodev --security-opt no-new-privileges --cap-drop ALL \\\n  -e CORE_PRIVATE_IP=127.0.0.1\
+        \ -p 127.0.0.1:18080:8080 dmrp-ui-regression\nfor attempt in $(seq 1 20); do\n  if curl -fsS http://127.0.0.1:18080/healthz;\
+        \ then exit 0; fi\n  sleep 1\ndone\ndocker logs dmrp-ui-regression\nexit 1\n"
