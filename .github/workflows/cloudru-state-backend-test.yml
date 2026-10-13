@@ -21,7 +21,7 @@ jobs:
         run: |
           docker run -d --rm --name state-test-s3 -p 127.0.0.1:19000:9000 \
             -e MINIO_ROOT_USER=localonly123 -e MINIO_ROOT_PASSWORD=localonly456456 \
-            minio/minio:RELEASE.2025-04-22T22-12-26Z server /data
+            quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z server /data
           python3 -m pip install --quiet boto3
           python3 - <<'PY'
           import boto3,time
