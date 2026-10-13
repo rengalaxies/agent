@@ -22,7 +22,7 @@ jobs:
           KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
           KEY_SECRET: ${{ secrets.CLOUDRU_SECRET }}
         run: |
-          test -n "$KEY_ID" && test -n "$KEY_SECRET" || { echo "Missing Cloud.ru GitHub Actions secrets"; exit 1; }
+          if [ -z "$KEY_ID" ] || [ -z "$KEY_SECRET" ]; then echo "Missing Cloud.ru GitHub Actions secrets"; exit 1; fi
       - name: Configure official Cloud.ru provider mirror
         run: |
           cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
