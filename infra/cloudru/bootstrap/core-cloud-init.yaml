@@ -11,6 +11,24 @@ write_files:
     permissions: '0600'
     content: |
       DMRP_REF=${git_ref}
+  - path: /etc/systemd/system/dmrp-core-auto-stop.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Stop non-production core to limit VM operating hours
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/sbin/shutdown -h now
+  - path: /etc/systemd/system/dmrp-core-auto-stop.timer
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Shutdown core eight hours after boot (per-session safeguard)
+      [Timer]
+      OnBootSec=8h
+      Unit=dmrp-core-auto-stop.service
+      [Install]
+      WantedBy=timers.target
   - path: /etc/systemd/system/dmrp-core.service
     permissions: '0644'
     content: |
@@ -46,3 +64,4 @@ runcmd:
   - [systemctl, daemon-reload]
   - [systemctl, enable, --now, docker]
   - [systemctl, enable, --now, dmrp-core.service]
+  - [systemctl, enable, --now, dmrp-core-auto-stop.timer]
