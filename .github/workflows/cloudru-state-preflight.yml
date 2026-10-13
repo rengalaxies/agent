@@ -48,7 +48,7 @@ jobs:
           CLOUDRU_STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
           CLOUDRU_STATE_REPORT: /tmp/dmrp-state-result.json
         run: |
-          if [ -z "$CLOUDRU_STATE_ACCESS_KEY_ID" ] || [ -z "$CLOUDRU_STATE_SECRET_ACCESS_KEY" ] || [ -z "$CLOUDRU_STATE_BUCKET" ] || [ -z "$CLOUDRU_STATE_S3_ENDPOINT" ]; then
+          if [ -z "$CLOUDRU_STATE_ACCESS_KEY_ID" ] || [ -z "$CLOUDRU_STATE_SECRET_ACCESS_KEY" ] || [ -z "$CLOUDRU_STATE_BUCKET" ] ; then
             echo '{"status":"CONFIGURATION_REQUIRED","lockfile_compatibility":"NOT_TESTED"}' > "$CLOUDRU_STATE_REPORT"
             echo "probe_rc=0" >> "$GITHUB_OUTPUT"
             exit 0
