@@ -225,3 +225,8 @@ output "planned_scope" {
     core_public_ip_count = 0
   }
 }
+
+output "ui_https_url" {
+  description = "Temporary demo hostname with managed TLS and restricted HTTP authentication"
+  value       = "https://${replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")}.sslip.io"
+}
