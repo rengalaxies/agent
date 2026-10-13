@@ -31,5 +31,5 @@ data "cloudru_evolution_compute_vm_collection" "existing" {
 }
 output "existing_vms" {
   description = "Read-only inventory to prevent duplicating resources already deployed by Codex."
-  value = [for vm in data.cloudru_evolution_compute_vm_collection.existing.vms : { name = vm.name, id = vm.id, status = vm.status }]
+  value = [for vm in (data.cloudru_evolution_compute_vm_collection.existing.vms == null ? [] : data.cloudru_evolution_compute_vm_collection.existing.vms) : { name = vm.name, id = vm.id, status = vm.status }]
 }
