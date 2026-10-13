@@ -61,9 +61,10 @@ variable "ssh_public_key" {
 }
 variable "admin_cidr" {
   type = string
-  description = "Single approved management address CIDR for SSH."
+  default = ""
+  description = "Optional trusted SSH CIDR; empty disables public SSH."
   validation {
-    condition = can(cidrhost(var.admin_cidr, 0)) && var.admin_cidr != "0.0.0.0/0" && !startswith(var.admin_cidr, "192.0.2.")
+    condition = var.admin_cidr == "" || (can(cidrhost(var.admin_cidr, 0)) && var.admin_cidr != "0.0.0.0/0" && !startswith(var.admin_cidr, "192.0.2."))
     error_message = "SSH admin_cidr must be a restricted valid CIDR, not 0.0.0.0/0."
   }
 }
@@ -121,6 +122,7 @@ resource "cloudru_evolution_compute_security_group_rule" "ui_http" {
   remote_ip_prefix = "0.0.0.0/0"
 }
 resource "cloudru_evolution_compute_security_group_rule" "ui_admin" {
+  count = var.admin_cidr == "" ? 0 : 1
   security_group_id = cloudru_evolution_compute_security_group.ui.id
   direction = "TRAFFIC_DIRECTION_INGRESS"
   ether_type = "ETHER_TYPE_IPV4"
