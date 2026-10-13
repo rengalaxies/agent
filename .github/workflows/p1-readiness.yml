@@ -42,9 +42,9 @@ jobs:
           # Explicitly make human approval and still-needed production safeguards visible.
           blockers += [
             "Persistent encrypted Terraform state backend/locking not configured or integration-tested",
-            "Private core egress/NAT provisioning not yet implemented",
+            "Private core egress/NAT Terraform configured, but not live-provisioned or smoke-tested",
             "Real SSH bootstrap keys and restricted CIDR not supplied",
-            "Public HTTPS, access controls and domain not provisioned",
+            "Public HTTPS Caddy cloud-init configured, but actual TLS and access control not live-tested",
             "Database/distributed domain runtime not yet cloud-deployed and verified",
             "Final actual cloud quote, budget approval and manual protected apply gate outstanding",
           ]
