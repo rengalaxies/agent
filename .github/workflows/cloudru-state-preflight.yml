@@ -1,6 +1,11 @@
 name: Cloud.ru Terraform state read-only validation
 on:
   workflow_dispatch:
+    inputs:
+      configure_project_tag:
+        description: "Add approved project tag to test-bucket-ds, preserving existing tags"
+        type: boolean
+        default: false
   schedule:
     - cron: '15 7 * * *'
   push:
@@ -36,6 +41,41 @@ jobs:
           except AssertionError:pass
           else:raise RuntimeError("project isolation test failed")
           print("State bucket read-only logic and cross-project rejection PASS")
+          PY
+      - name: Configure approved bucket project tag
+        if: inputs.configure_project_tag
+        env:
+          CLOUDRU_TENANT_ID: ${{ vars.CLOUDRU_TENANT_ID }}
+          CLOUDRU_KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          CLOUDRU_SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+        run: |
+          python3 -m pip install --quiet 'boto3>=1.34,<2'
+          python3 - <<'PY'
+          import os,boto3
+          from botocore.config import Config
+          from botocore.exceptions import ClientError
+          tenant=os.environ["CLOUDRU_TENANT_ID"]
+          bucket=os.environ["CLOUDRU_STATE_BUCKET"]
+          assert tenant=="fc91c42d-c2ea-4d6d-a236-103fd1f37f00"
+          assert bucket=="test-bucket-ds"
+          access=tenant+":"+os.environ["CLOUDRU_KEY_ID"]
+          print("::add-mask::"+access)
+          s3=boto3.client("s3",endpoint_url="https://s3.cloud.ru",region_name="ru-central-1",
+              aws_access_key_id=access,aws_secret_access_key=os.environ["CLOUDRU_SECRET"],
+              config=Config(s3={"addressing_style":"path"}))
+          try: tags=s3.get_bucket_tagging(Bucket=bucket).get("TagSet",[])
+          except ClientError as error:
+              if error.response["Error"]["Code"]!="NoSuchTagSet": raise RuntimeError("Unable to read existing bucket tags") from None
+              tags=[]
+          expected="20853297-65b7-42a8-af40-25c8d2df4e11"
+          current={t["Key"]:t["Value"] for t in tags}
+          assert current.get("cloudru_project_id",expected)==expected, "Conflicting project tag"
+          current["cloudru_project_id"]=expected
+          s3.put_bucket_tagging(Bucket=bucket,Tagging={"TagSet":[{"Key":k,"Value":v} for k,v in current.items()]})
+          verified={t["Key"]:t["Value"] for t in s3.get_bucket_tagging(Bucket=bucket)["TagSet"]}
+          assert verified==current
+          print("Approved project tag configured and verified; existing tags preserved")
           PY
       - name: Probe state bucket read-only if credentials exist
         id: probe
