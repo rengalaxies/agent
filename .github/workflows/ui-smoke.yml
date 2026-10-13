@@ -1,0 +1,26 @@
+name: Public UI static smoke
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'ui/**'
+      - '.github/workflows/ui-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check UI screens and scenario markers
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          p=pathlib.Path("ui/index.html")
+          s=p.read_text()
+          for text in ["PROTOTYPE", "SYNTHETIC DATA", "Fintech", "Retail", "Mobility", "M-01", "U-02", "X-03", "ACCEPT", "REJECT", "NEEDS_REVIEW"]:
+              assert text in s, f"Missing expected UI demo marker: {text}"
+          assert "CLOUDRU_SECRET" not in s and "auth_secret" not in s
+          print("Static UI smoke PASS: synthetic scenarios, three decisions, no embedded cloud secret variable")
+          PY
