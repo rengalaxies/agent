@@ -149,7 +149,7 @@ resource "cloudru_evolution_compute_disk" "boot" {
   disk_type = { name = "SSD" }
   image = { id = var.ubuntu_image_id }
   bootable = true
-  encrypted = false
+  encrypted = true
   readonly = false
   shared = false
 }
@@ -189,11 +189,11 @@ resource "cloudru_evolution_compute_vm" "vm" {
   flavor = { name = each.value.flavor }
   disks = [{ id = cloudru_evolution_compute_disk.boot[each.key].id }]
   network_interfaces = [{ id = cloudru_evolution_compute_interface.nic[each.key].id }]
-  cloud_init_userdata = templatefile("${path.module}/../bootstrap/${each.key == "ui" ? "ui" : "core"}-cloud-init.yaml", {
+  cloud_init_userdata = base64encode(templatefile("${path.module}/../bootstrap/${each.key == "ui" ? "ui" : "core"}-cloud-init.yaml", {
     git_ref = var.git_ref
     core_ip = cloudru_evolution_compute_interface.nic["core"].ip_address
     ui_ip_dashed = replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")
-  })
+  }))
   image_metadata = {
     public_key = { string_value = var.ssh_public_key }
   }
