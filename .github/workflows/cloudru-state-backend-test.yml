@@ -106,7 +106,7 @@ jobs:
                  "**Run:** "+os.getenv("GITHUB_RUN_ID",""),
                  "**Environment:** isolated local S3 emulator only; NO Cloud.ru resources created",
                  "**Coverage:** backend init, versioning, S3 lockfile, state persistence across fresh init",
-                 "**Limit:** Cloud.ru S3 compatibility is NOT proven by MinIO",
+                 "**Limit:** Cloud.ru S3 compatibility is NOT proven by a local mock",
                  ""]+["- "+str(x)[:200] for x in findings]
           pathlib.Path("/tmp/state-mock-issue.md").write_text(chr(10).join(items))
           PY
