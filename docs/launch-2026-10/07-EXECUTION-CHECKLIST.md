@@ -1,0 +1,43 @@
+# Checklist: выполнение по зависимостям
+Статус: TODO, пункты не помечены сделанными до фактической проверки.
+
+## Tonight / перед первым интервью
+- [ ] Прочитать ответ заинтересованного человека и исходное приглашение; уточнить роль/язык; сформулировать 3 проверяемых предположения без pitch.
+- [ ] Подготовить 1-page architecture и один example semantic change + old/new contract, 2 consumer obligations и вердикт.
+- [ ] Выбрать 8-10 вопросов из `02-STAKEHOLDER-INTERVIEWS-RU-EN.md`, договориться о notes/recording consent.
+- [ ] Сделать storyboard 5 экранов (пометка MOCK) или проверить реально работающий UI.
+- [ ] Составить private шаблон interview notes; запретить загрузку персональных данных в публичный repo.
+- [ ] Просмотреть `docs/knowledge-module-2026-09-29.md` и `stand/README.md`; отметить реально доступные API и функциональные gaps.
+
+## Sprint 1: архитектура и локальное демо
+- [ ] Связать существующие distributed stand и knowledge-1 с единым demo API.
+- [ ] Реализовать 3 demo-safe сценария; round trip с immutable snapshots и reason codes.
+- [ ] Уточнить UI requirements по первым интервью; собрать минимальные 5 экранов.
+- [ ] Smoke-test fail safe: stale map, consumer timeout, invalid identity/authority, forbidden release, duplicate event.
+- [ ] Развести demo seed и evaluation oracle в разные контуры.
+
+## Sprint 2: Cloud.ru
+- [ ] Утвердить реальные цены small VM, SSD, snapshots, IP, SNAT и model SKU/квоты по региону.
+- [ ] Ресурсная группа, private network, security groups, сервисные аккаунты, секреты и ограничения бюджета.
+- [ ] Создать приватную core VM, запустить сервисы, подтвердить их tests и readiness.
+- [ ] Создать **отдельную UI VM**, арендовать **отдельный публичный IPv4**, включить HTTPS и авторизацию.
+- [ ] Протестировать доступ из внешней сети; исключить публичность Kafka/Postgres/internal API.
+- [ ] Настроить traces, health, logs, backup и проверить восстановление.
+- [ ] Проверить бюджет, 90% stop rule, lifecycle ресурсов.
+
+## Sprint 3: более сильное E4 / пилот
+- [ ] Зафиксировать модель разнесения доменов на 3 VM, общих компонентов, сетевых отказов и независимости операций.
+- [ ] Выполнить сценарии bootstrap, local release, conflict, ownership inference, semantic matching, consumer disconnect и replay.
+- [ ] Сохранить run_manifest, code SHA, versions, seeds, resources, tokens и evidence.
+- [ ] Не смешивать интервью/demonstrations с H1/E3.
+
+## Sprint 4: научная проверка
+- [ ] Принять ADR-002 про V1-oracle и согласовать с ВКР.
+- [ ] Freeze baseline, profiles, scenarios, labeling policy, stats, model routes и oracle isolation.
+- [ ] E3: оценить V2 vs V1-ind без доступа к expected labels; честно учесть NEEDS_REVIEW.
+- [ ] E4: отдельно проверить децентрализацию, изоляцию отказов и bootstrap.
+- [ ] E1: физические ресурсы, latency и токены; 60 тестовых запусков только после уточнения разброса пилота.
+- [ ] Сверить утверждения с реально проведёнными испытаниями и обновить ВКР точечно после авторского согласования.
+
+## Definition of Done до разговора об MVP
+Наличие публичной ссылки, авторизации, 3 повторяемых синтетических сценариев и объяснений, карты с индикатором полноты, записи аудита, теста неверного допуска, ограниченного бюджета и приватного процесса обратной связи. **До этого** продукт показывается только как исследовательский прототип / концепт.
