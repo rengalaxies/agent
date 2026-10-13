@@ -47,3 +47,18 @@ class DemoApiTest(unittest.TestCase):
                 self.assertFalse(item["evaluation_oracle_loaded"])
                 self.assertIn("release",item)
                 self.assertEqual(item["requested_outcome"],expected)
+
+    def test_live_verified_knowledge_graph(self):
+        response=self.client.get("/api/v1/knowledge/map")
+        self.assertEqual(response.status_code,200,response.text[:400])
+        graph=response.json()
+        self.assertEqual(graph["schema_version"],"knowledge-1")
+        self.assertEqual(graph["snapshot_completeness"],"complete")
+        self.assertEqual(graph["dataset"],"synthetic_E4")
+        self.assertFalse(graph["evaluation_oracle_loaded"])
+        self.assertEqual({n["id"] for n in graph["nodes"]},{"sales","risk","analytics"})
+        self.assertGreaterEqual(len(graph["edges"]),2)
+        self.assertTrue(all(e["source"]=="sales" for e in graph["edges"]))
+        self.assertTrue(all(e["kind"]=="confirmed_usage" for e in graph["edges"]))
+        self.assertEqual({e["target"] for e in graph["edges"]},{"risk","analytics"})
+        self.assertNotIn("expected_decision",str(graph))
