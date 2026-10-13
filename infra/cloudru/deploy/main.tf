@@ -192,6 +192,7 @@ resource "cloudru_evolution_compute_vm" "vm" {
   cloud_init_userdata = templatefile("${path.module}/../bootstrap/${each.key == "ui" ? "ui" : "core"}-cloud-init.yaml", {
     git_ref = var.git_ref
     core_ip = cloudru_evolution_compute_interface.nic["core"].ip_address
+    ui_ip_dashed = replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")
   })
   image_metadata = {
     public_key = { string_value = var.ssh_public_key }
