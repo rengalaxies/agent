@@ -35,6 +35,7 @@ jobs:
         continue-on-error: true
         env:
           TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
+          TF_VAR_git_ref: ${{ github.sha }}
           TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
           TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
           TF_VAR_ui_flavor: "gen-2-4"
