@@ -5,7 +5,20 @@ packages:
   - curl
   - git
   - docker.io
+  - caddy
 write_files:
+  - path: /etc/caddy/Caddyfile
+    permissions: '0644'
+    content: |
+      ${ui_ip_dashed}.sslip.io {
+          encode zstd gzip
+          reverse_proxy 127.0.0.1:8080
+          header {
+              Strict-Transport-Security "max-age=15552000"
+              X-Content-Type-Options "nosniff"
+              X-Frame-Options "DENY"
+          }
+      }
   - path: /etc/systemd/system/dmrp-ui.service
     permissions: '0644'
     content: |
@@ -42,3 +55,4 @@ runcmd:
   - [systemctl, daemon-reload]
   - [systemctl, enable, --now, docker]
   - [systemctl, enable, --now, dmrp-ui.service]
+  - [systemctl, enable, --now, caddy]
