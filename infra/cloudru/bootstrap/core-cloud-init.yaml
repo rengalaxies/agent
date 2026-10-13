@@ -7,7 +7,54 @@ packages:
   - docker.io
   - openssl
   - docker-compose-v2
+  - python3
 write_files:
+  - path: /usr/local/sbin/dmrp-core-budget
+    permissions: '0700'
+    content: |
+      #!/usr/bin/python3
+      import json,os,pathlib,subprocess,time
+      path=pathlib.Path("/var/lib/dmrp/core-runtime.json")
+      path.parent.mkdir(parents=True,exist_ok=True)
+      now=time.time()
+      if path.exists():
+          state=json.loads(path.read_text())
+      else:
+          state={"period_start":now,"used_seconds":0}
+      boot=pathlib.Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+      current=float(pathlib.Path("/proc/uptime").read_text().split()[0])
+      if state.get("boot_id")==boot:
+          state["used_seconds"]+=max(0,current-state.get("last_uptime",current))
+      else:
+          state["used_seconds"]+=current
+      state.update(boot_id=boot,last_uptime=current)
+      if now-state["period_start"]>=30*86400:
+          state.update(period_start=now,used_seconds=0)
+      tmp=path.with_suffix(".tmp")
+      with tmp.open("w") as file:
+          json.dump(state,file);file.flush();os.fsync(file.fileno())
+      os.replace(tmp,path)
+      if state["used_seconds"]>=160*3600:
+          subprocess.run(["/usr/sbin/shutdown","-h","now"],check=True)
+  - path: /etc/systemd/system/dmrp-core-budget.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Enforce 160 core hours per 30-day budget period
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/sbin/dmrp-core-budget
+  - path: /etc/systemd/system/dmrp-core-budget.timer
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Persist core runtime and check budget every minute
+      [Timer]
+      OnBootSec=1min
+      OnUnitActiveSec=1min
+      Unit=dmrp-core-budget.service
+      [Install]
+      WantedBy=timers.target
   - path: /etc/dmcore-bootstrap.env
     permissions: '0600'
     content: |
@@ -100,3 +147,4 @@ runcmd:
   - [systemctl, enable, --now, docker]
   - [systemctl, enable, --now, dmrp-core.service]
   - [systemctl, enable, --now, dmrp-core-auto-stop.timer]
+  - [systemctl, enable, --now, dmrp-core-budget.timer]
