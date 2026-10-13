@@ -42,7 +42,7 @@ jobs:
           TF_VAR_ui_flavor: "gen-2-4"
           TF_VAR_core_flavor: "gen-8-32"
           TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
-          TF_VAR_admin_cidr: "198.51.100.1/32"
+          TF_VAR_admin_cidr: ""
           TF_VAR_ssh_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGpOGpdPnLX9RopWnqJGDeB4M06o3bo4KpNR3wEqwBts plan-only@invalid"
           TF_VAR_ui_basic_auth_hash: "$2a$12$abcdefghijklmnopqrstuu5W0V5zYkHVKAsExampleNotValid12345"
         run: |
