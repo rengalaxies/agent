@@ -42,6 +42,15 @@ variable "git_ref" {
     error_message = "git_ref must be an immutable git SHA."
   }
 }
+variable "ui_basic_auth_hash" {
+  type        = string
+  sensitive   = true
+  description = "Caddy bcrypt password hash generated outside the repository."
+  validation {
+    condition = startswith(var.ui_basic_auth_hash, "$2a$") || startswith(var.ui_basic_auth_hash, "$2b$") || startswith(var.ui_basic_auth_hash, "$2y$")
+    error_message = "Supply a bcrypt hash for HTTPS UI authentication."
+  }
+}
 variable "ssh_public_key" {
   type = string
   description = "SSH public key only; no private key and no plaintext password."
@@ -193,6 +202,7 @@ resource "cloudru_evolution_compute_vm" "vm" {
     git_ref = var.git_ref
     core_ip = cloudru_evolution_compute_interface.nic["core"].ip_address
     ui_ip_dashed = replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")
+    ui_basic_auth_hash = var.ui_basic_auth_hash
   }))
   image_metadata = {
     public_key = { string_value = var.ssh_public_key }
