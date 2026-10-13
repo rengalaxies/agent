@@ -1,16 +1,15 @@
-# Confirmed Cloud.ru plan - 2026-10-13
-**Verified result** from GitHub Issue https://github.com/rengalaxies/agent/issues/4, run `38442009976`.
+# P1 deployment status: blocked by public IP quota
 
-- Project hard scope: `20853297-65b7-42a8-af40-25c8d2df4e11` ("Даниил Смирнов").
-- Terraform plan: **PASS**, **16 resources to create**, no other actions recorded.
-- Kinds: VMs, boot disks, interfaces, security groups, security-group rules, one external IP and one NAT gateway.
-- Source: official Cloud.ru Terraform provider; UI flavor `gen-2-4`, private core flavor `gen-8-32`; Ubuntu 24.04 image `fe51a6e6-a5ad-410e-b441-1a195208a8cf`.
-- Existing subnet exact UUID: `d58e80ef-fff1-43eb-b601-96fb358224b7`, CIDR 10.0.0.0/24.
-- P1 plan used nonfunctional placeholder SSH key and admin CIDR; these MUST be changed before an approved apply.
-- **No resources created** yet. A successful plan is not proof of viable runtime/networking.
-- State must be durable and securely stored before apply; GitHub ephemeral runner-only state is unacceptable.
-- Before paid apply: verify Cloud.ru actual per-SKU price and egress/SNAT, choose budget ceiling, ensure user approval of complete cost, prepare cloud-init and deploy backend/UI.
-- Do not modify or enumerate adjacent projects. Preserve independent research evaluation oracle, no trial E3 contamination.
+Owner approved the initial iteration at up to 8000 RUB per 30 days: UI 2 vCPU/4 GiB, core 8 vCPU/32 GiB limited to 160 hours. Project: 20853297-65b7-42a8-af40-25c8d2df4e11, ru.AZ-2. No LLM, RAG or external agent inference is enabled.
 
-## 2026-10-13 storage optimization
-Owner agreed to reduce core boot SSD from 200 GiB to 80 GiB while retaining UI boot SSD 30 GiB. Total planned SSD becomes 110 GiB. The revised 16-resource plan includes this size change and passed automated planning. A new plan with real protected inputs remains required before apply. This is a capacity hypothesis, not an observed PostgreSQL requirement. No HDD provisioned by default; archive storage added separately only if needed. Disk tariff estimate is indicative, verify Cloud.ru final invoicing and all cost categories.
+Actual protected apply run 38466919178 restored the encrypted remote state and planned 3 creates, 0 changes and 0 deletes. Previously created disks, NAT, security groups, rules and interfaces were preserved. The two interfaces were untainted after fixing the optional empty VM attachment that caused a provider inconsistency.
+
+The remaining public UI IP allocation failed with `Organization quota for network.ip.quantity exceeded`. The UI and core VMs were not created. Do not claim the site is deployed or functional tests passed.
+
+Created boot disks: core c5ef8c65-ad6c-45f4-bdaa-71a132a3dafe; UI 9af43326-a6e1-45f1-8235-b82937a1f664. Created NAT: baaebb13-2c79-4e7b-8bc1-73fc1c1d9110. These resources accrue charges while quota resolution is pending. Do not delete or recreate them merely to retry deployment.
+
+Next action: Cloud.ru support must add one available public IP to the organization quota. Do not enumerate or change other projects. Once confirmed, dispatch the protected apply on main with the same project, 8000 RUB approval and existing remote state. Plan must contain no deletions. Verify HTTPS, admin authentication, live V2 audit, knowledge-1 and three-process E4 with the opt-in deployed UI smoke test.
+
+Already verified against real Cloud.ru S3: SSE-C state and lock encryption, concurrent lock rejection, fresh-directory state recovery and no-op probe plan (run 38458566308). The probe versions were removed; production state is retained. Secrets are stored in GitHub. Public SSH is disabled. Admin website login is admin; the owner retains the password in the downloaded private access bundle.
+
+The core bootstrap includes an eight-hour session stop and a persistent 160-hour-per-30-day runtime counter. YAML and actual counter script were tested for restart accounting, threshold shutdown and budget period renewal. Cloud VM execution of these safeguards remains unverified until provisioning succeeds.
