@@ -32,3 +32,18 @@ class DemoApiTest(unittest.TestCase):
     def test_nonlisted_evaluation_scenario_blocked(self):
         response=self.client.post("/api/v1/demo/runs",json={"scenario_id":"NOT_IN_DEVELOPMENT"})
         self.assertEqual(response.status_code,404)
+
+    def test_live_three_process_e4(self):
+        for expected in ("ACCEPT", "REJECT", "NEEDS_REVIEW"):
+            with self.subTest(expected=expected):
+                response=self.client.post(
+                    "/api/v1/demo/distributed-runs",
+                    json={"outcome":expected},
+                )
+                self.assertEqual(response.status_code,200,response.text[:400])
+                item=response.json()
+                self.assertEqual(item["architecture"],"three_independent_domain_processes")
+                self.assertEqual(item["dataset"],"synthetic_E4")
+                self.assertFalse(item["evaluation_oracle_loaded"])
+                self.assertIn("release",item)
+                self.assertEqual(item["requested_outcome"],expected)
