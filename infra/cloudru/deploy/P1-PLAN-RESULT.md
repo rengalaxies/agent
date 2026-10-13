@@ -11,3 +11,6 @@
 - State must be durable and securely stored before apply; GitHub ephemeral runner-only state is unacceptable.
 - Before paid apply: verify Cloud.ru actual per-SKU price and egress/SNAT, choose budget ceiling, ensure user approval of complete cost, prepare cloud-init and deploy backend/UI.
 - Do not modify or enumerate adjacent projects. Preserve independent research evaluation oracle, no trial E3 contamination.
+
+## 2026-10-13 storage optimization
+Owner agreed to reduce core boot SSD from 200 GiB to 80 GiB while retaining UI boot SSD 30 GiB. Total planned SSD becomes 110 GiB. The original 15-resource PASS plan predates this size change and MUST be rerun before approval. This is a capacity hypothesis, not an observed PostgreSQL requirement. No HDD provisioned by default; archive storage added separately only if needed. Disk tariff estimate is indicative, verify Cloud.ru final invoicing and all cost categories.
