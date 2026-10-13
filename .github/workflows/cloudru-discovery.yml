@@ -1,0 +1,35 @@
+name: Cloud.ru read-only inventory
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - name: Ensure credentials are configured
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          KEY_SECRET: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          test -n "$KEY_ID" && test -n "$KEY_SECRET" || { echo "Missing Cloud.ru GitHub Actions secrets"; exit 1; }
+      - name: Read-only Terraform inventory
+        working-directory: infra/cloudru
+        env:
+          TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          terraform init -input=false
+          terraform plan -input=false -lock=false -out=inventory.tfplan
+          terraform show -json inventory.tfplan > /tmp/cloudru-plan.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/cloudru-plan.json'))
+          out=d.get('planned_values',{}).get('outputs',{})
+          print("Inventory is read-only; existing VMs:",out.get('existing_vms',{}).get('value','(unresolved at plan time)'))
+          PY
