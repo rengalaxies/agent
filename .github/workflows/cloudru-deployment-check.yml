@@ -109,7 +109,7 @@ jobs:
           ]
           lines += ["- "+str(e)[:500] for e in data.get("validation_errors",[])][:20] or ["- None"]
           lines += ["","Only schema validation. No terraform apply is executed."]
-          pathlib.Path("/tmp/cloudru-status.md").write_text("\\n".join(lines))
+          pathlib.Path("/tmp/cloudru-status.md").write_text(chr(10).join(lines))
           PY
           TITLE="[Cloud.ru CI] Terraform deployment status"
           ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Terraform deployment status") | .number' | head -1)
