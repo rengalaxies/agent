@@ -14,6 +14,7 @@ class DemoApiTest(unittest.TestCase):
         response=self.client.get("/healthz")
         self.assertEqual(response.status_code,200)
         self.assertTrue(response.json()["engine_live"])
+        self.assertTrue(response.json()["api_ready"])
         self.assertFalse(response.json()["evaluation_oracle_loaded"])
         catalog=self.client.get("/api/v1/demo/scenarios")
         self.assertEqual(catalog.status_code,200)
@@ -82,3 +83,6 @@ class DemoApiTest(unittest.TestCase):
             response=self.client.post("/api/v1/demo/runs",json={"scenario_id":catalog[0]["id"]})
         self.assertEqual(response.status_code,503)
         self.assertNotIn("password",response.text.lower())
+        with patch.dict(os.environ,{"DMRP_REQUIRE_AUDIT":"1","DATABASE_URL":"","DMRP_DATABASE_URL_FILE":""}):
+            health=self.client.get("/healthz")
+        self.assertFalse(health.json()["api_ready"])
