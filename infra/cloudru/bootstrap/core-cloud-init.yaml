@@ -72,6 +72,8 @@ write_files:
         docker run -d --name dmrp-postgres --restart unless-stopped \
           --network dmrp-core-net --network-alias postgres \
           --security-opt no-new-privileges --cap-drop ALL \
+          --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER \
+          --cap-add SETUID --cap-add SETGID \
           -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \
           -e POSTGRES_PASSWORD="$PG_PASSWORD" \
           -v dmrp-pgdata:/var/lib/postgresql/data \

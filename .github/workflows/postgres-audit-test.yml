@@ -29,6 +29,8 @@ jobs:
           docker volume create dmrp-pg-ci-data
           PG_PASSWORD="$(openssl rand -hex 24)"
           docker run -d --rm --name dmrp-test-db --network dmrp-pg-ci-net --network-alias postgres \
+            --security-opt no-new-privileges --cap-drop ALL \
+            --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER --cap-add SETUID --cap-add SETGID \
             -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \
             -e POSTGRES_PASSWORD="$PG_PASSWORD" \
             -v dmrp-pg-ci-data:/var/lib/postgresql/data postgres:16-alpine
@@ -38,6 +40,8 @@ jobs:
           done
           docker exec dmrp-test-db pg_isready -U dmrp -d dmrp
           docker run -d --rm --name dmrp-test-api --network dmrp-pg-ci-net \
+            --read-only --security-opt no-new-privileges --cap-drop ALL \
+            --tmpfs /tmp:rw,nosuid,nodev,size=128m \
             -e DMRP_REQUIRE_AUDIT=1 \
             -e DATABASE_URL="postgresql://dmrp:$PG_PASSWORD@postgres:5432/dmrp" \
             -p 127.0.0.1:18000:8000 dmrp-postgres-api:ci
@@ -69,6 +73,8 @@ jobs:
           test "$PG_HASH" = "$(cat /tmp/pg-hash)"
           docker stop dmrp-test-db >/dev/null
           docker run -d --rm --name dmrp-test-db --network dmrp-pg-ci-net --network-alias postgres \
+            --security-opt no-new-privileges --cap-drop ALL \
+            --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER --cap-add SETUID --cap-add SETGID \
             -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \
             -e POSTGRES_PASSWORD="$PG_PASSWORD" \
             -v dmrp-pg-ci-data:/var/lib/postgresql/data postgres:16-alpine

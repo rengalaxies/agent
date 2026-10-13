@@ -51,6 +51,7 @@ class DemoApiTest(unittest.TestCase):
                 self.assertFalse(item["evaluation_oracle_loaded"])
                 self.assertIn("release",item)
                 self.assertEqual(item["requested_outcome"],expected)
+                self.assertEqual(item["release"]["decision"],expected)
 
     def test_live_verified_knowledge_graph(self):
         response=self.client.get("/api/v1/knowledge/map")
@@ -85,4 +86,16 @@ class DemoApiTest(unittest.TestCase):
         self.assertNotIn("password",response.text.lower())
         with patch.dict(os.environ,{"DMRP_REQUIRE_AUDIT":"1","DATABASE_URL":"","DMRP_DATABASE_URL_FILE":""}):
             health=self.client.get("/healthz")
-        self.assertFalse(health.json()["api_ready"])
+        self.assertEqual(health.status_code,503)
+
+    def test_distributed_timeout_kills_worker_group_and_releases_slot(self):
+        import subprocess
+        from unittest.mock import Mock
+        process=Mock(pid=12345)
+        process.communicate.side_effect=[subprocess.TimeoutExpired("demo",55),("","")]
+        with patch("services.demo_api.subprocess.Popen",return_value=process), patch("services.demo_api.os.killpg") as kill:
+            response=self.client.post("/api/v1/demo/distributed-runs",json={"outcome":"ACCEPT"})
+        self.assertEqual(response.status_code,503)
+        kill.assert_called_once()
+        self.assertTrue(E4_RUN_SLOT.acquire(blocking=False))
+        E4_RUN_SLOT.release()
