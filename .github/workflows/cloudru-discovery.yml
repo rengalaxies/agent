@@ -8,6 +8,7 @@ on:
       - '.github/workflows/cloudru-discovery.yml'
 permissions:
   contents: write
+  issues: write
 jobs:
   discover:
     runs-on: ubuntu-latest
@@ -85,4 +86,36 @@ jobs:
             git commit -m "ci: update Cloud.ru inventory summary [skip ci]"
             git pull --rebase origin main
             git push origin HEAD:main
+          fi
+      - name: Publish discovery status to Issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import pathlib,json
+          inventory=pathlib.Path("docs/launch-2026-10/cloudru-inventory-latest.json")
+          candidates=pathlib.Path("docs/launch-2026-10/cloudru-candidates-latest.json")
+          counts={}
+          if inventory.exists():
+              try: counts=json.loads(inventory.read_text()).get("counts",{})
+              except Exception: pass
+          lines=[
+            "# Cloud.ru read-only discovery",
+            "**Allowed project:** 20853297-65b7-42a8-af40-25c8d2df4e11",
+            "**Run:** ${{ github.run_id }}",
+            "**Commit:** ${{ github.sha }}",
+            "**VM/disk/IP/subnet/NAT counts:** "+str(counts),
+            "**Candidate flavor/image report:** "+("available" if candidates.exists() else "missing - review discovery step"),
+            "",
+            "This workflow cannot create or modify Cloud.ru resources."
+          ]
+          pathlib.Path("/tmp/discovery-status.md").write_text(chr(10).join(lines))
+          PY
+          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Discovery status") | .number' | head -1)
+          if [ -z "$ISSUE" ]; then
+            gh issue create --repo "$GH_REPO" --title "[Cloud.ru CI] Discovery status" --body-file /tmp/discovery-status.md
+          else
+            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/discovery-status.md
           fi
