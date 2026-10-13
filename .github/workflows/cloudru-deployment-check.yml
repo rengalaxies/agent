@@ -1,0 +1,39 @@
+name: Cloud.ru deployment validation (no apply)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'infra/cloudru/deploy/**'
+      - '.github/workflows/cloudru-deployment-check.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - name: Set official Cloud.ru provider mirror
+        run: |
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct {
+              exclude = ["cloudru/*"]
+            }
+          }
+          EOF
+          echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc" >> "$GITHUB_ENV"
+      - name: Validate deployment syntax and provider schema
+        working-directory: infra/cloudru/deploy
+        run: |
+          terraform init -backend=false -input=false
+          terraform fmt -check
+          terraform validate -no-color
+          echo "Deployment configuration validated. No cloud resources were created."
