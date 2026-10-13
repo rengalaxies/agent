@@ -73,6 +73,17 @@ jobs:
           assert x["mode"]=="V2" and x["dataset"]=="development" and "decision" in x
           print("E2E UI -> Nginx -> FastAPI -> V2: PASS")
           PY
+          curl -fsS -X POST -H 'Content-Type: application/json' \
+            -d '{"outcome":"ACCEPT"}' \
+            http://127.0.0.1:18080/api/v1/demo/distributed-runs > /tmp/e2e-e4.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("/tmp/e2e-e4.json"))
+          assert x["architecture"]=="three_independent_domain_processes"
+          assert x["dataset"]=="synthetic_E4"
+          assert x["evaluation_oracle_loaded"] is False
+          print("E2E UI -> Nginx -> FastAPI -> distributed E4: PASS")
+          PY
           code=$?
           if [ "$code" -ne 0 ]; then docker logs dmrp-ui-ci --tail 30; docker logs dmrp-api-ci --tail 30; fi
           docker rm -f dmrp-ui-ci dmrp-api-ci >/dev/null 2>&1 || true
