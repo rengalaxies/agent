@@ -157,6 +157,17 @@ resource "cloudru_evolution_compute_interface" "nic" {
   type = "INTERFACE_TYPE_REGULAR"
   vm = {}
 }
+resource "cloudru_evolution_compute_nat_gateway" "core_egress" {
+  project_id = var.project_id
+  name       = "dm-p1-core-snat"
+  zone       = { name = var.zone_name }
+  vpc_id     = "6a7f399a-277d-40f6-98fb-1ab8fe8531e1"
+  description = "Approved-project-only private core outbound for package and artifact delivery"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "cloudru_evolution_compute_external_ip" "ui" {
   project_id = var.project_id
   name = "dm-p1-ui-public-ip"
