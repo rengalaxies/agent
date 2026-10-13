@@ -31,6 +31,7 @@ jobs:
           terraform_version: 1.10.5
       - name: Select scoped S3 credentials without exposing values
         env:
+          RAW_STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
           TENANT: ${{ vars.CLOUDRU_TENANT_ID }}
           BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
           STATE_ACCESS: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
@@ -39,7 +40,7 @@ jobs:
           SECRET: ${{ secrets.CLOUDRU_SECRET }}
         run: |
           python3 - <<'PY'
-          import os
+          import os,base64
           access=os.getenv("STATE_ACCESS")
           secret=os.getenv("STATE_SECRET")
           if not access and not secret:
@@ -48,11 +49,15 @@ jobs:
               access=os.environ["TENANT"]+":"+os.environ["KEY_ID"]
               secret=os.environ["SECRET"]
           assert access and secret, "Incomplete S3 credentials"
-          assert "\\n" not in access and "\\n" not in secret
+          assert "\n" not in access and "\n" not in secret
           print("::add-mask::"+access)
           print("::add-mask::"+secret)
+          sse=os.environ["RAW_STATE_SSE"].strip()
+          assert len(base64.b64decode(sse,validate=True))==32, "Invalid state encryption key"
+          print("::add-mask::"+sse)
           with open(os.environ["GITHUB_ENV"],"a") as file:
-              file.write("SCOPED_S3_ACCESS="+access+"\\nSCOPED_S3_SECRET="+secret+"\\n")
+              file.write("SCOPED_SSE_KEY="+sse+"\n")
+              file.write("SCOPED_S3_ACCESS="+access+"\nSCOPED_S3_SECRET="+secret+"\n")
           PY
       - name: Strict scope and owner approval gate
         env:
@@ -63,7 +68,7 @@ jobs:
           SECRET: ${{ secrets.CLOUDRU_SECRET }}
           STATE_ACCESS: ${{ env.SCOPED_S3_ACCESS }}
           STATE_SECRET: ${{ env.SCOPED_S3_SECRET }}
-          STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          STATE_SSE: ${{ env.SCOPED_SSE_KEY }}
           STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
           STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
           SSH_PUB: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
@@ -120,7 +125,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
           AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
-          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
           STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
           STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
           STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
@@ -161,7 +166,7 @@ jobs:
           TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
           AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
           AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
-          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
         run: |
           terraform validate -no-color
           terraform plan -input=false -no-color -out=p1-approved.tfplan
@@ -196,14 +201,14 @@ jobs:
           TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
           AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
           AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
-          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
         run: terraform apply -input=false -auto-approve p1-approved.tfplan
       - name: Verify protected UI HTTPS endpoint after provisioning
         working-directory: infra/cloudru/deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
           AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
-          AWS_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
         run: |
           set -eu
           URL=$(terraform output -raw ui_https_url)
