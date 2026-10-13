@@ -9,6 +9,8 @@ from threading import BoundedSemaphore
 import subprocess
 import sys
 import json
+import os
+import signal
 from typing import Literal
 from uuid import uuid4
 
@@ -33,6 +35,8 @@ class RunRequest(BaseModel):
 @app.get("/healthz")
 def healthz():
     db_ok=audit_ready()
+    if not db_ok:
+        raise HTTPException(status_code=503, detail="Required audit persistence unavailable")
     return {"ok": db_ok, "api_ready": db_ok, "engine_live": True,
             "postgres_audit_ready": db_ok, "purpose": "development_demo",
             "evaluation_oracle_loaded": False}
@@ -76,12 +80,23 @@ def distributed_run(payload: DistributedRunRequest):
     try:
         with TemporaryDirectory(prefix="e4-service-") as temp:
             try:
-                result=subprocess.run(
+                process=subprocess.Popen(
                     [sys.executable, str(ROOT/"stand"/"demo.py"), "--state",temp,
                      "--run-id",run_id, "--outcome",payload.outcome],
-                    cwd=ROOT, text=True,capture_output=True,timeout=55,check=True,
+                    cwd=ROOT, text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
+                    start_new_session=True,
                 )
-                protocol=json.loads(result.stdout)
+                try:
+                    stdout, _ = process.communicate(timeout=55)
+                except subprocess.TimeoutExpired:
+                    # The coordinator owns three worker children. Killing only
+                    # the coordinator leaves them alive beyond the concurrency slot.
+                    os.killpg(process.pid, signal.SIGKILL)
+                    process.communicate()
+                    raise
+                if process.returncode:
+                    raise subprocess.CalledProcessError(process.returncode, process.args)
+                protocol=json.loads(stdout)
             except (subprocess.TimeoutExpired,subprocess.CalledProcessError,ValueError):
                 # Never disclose internal paths, signing keys or process stderr.
                 raise HTTPException(status_code=503, detail="E4 demo run unavailable")

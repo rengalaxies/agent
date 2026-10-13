@@ -195,6 +195,7 @@ resource "cloudru_evolution_compute_external_ip" "ui" {
   network_interface = { id = cloudru_evolution_compute_interface.nic["ui"].id }
 }
 resource "cloudru_evolution_compute_vm" "vm" {
+  depends_on = [cloudru_evolution_compute_nat_gateway.core_egress]
   for_each = local.vm
   project_id = var.project_id
   name = "dm-p1-${each.key}"

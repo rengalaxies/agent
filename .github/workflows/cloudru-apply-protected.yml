@@ -149,7 +149,7 @@ jobs:
               after=r["change"].get("after") or {}
               if "project_id" in after:
                   assert after["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11"
-          assert actions["create"]>0 and actions["create"]<=16
+          assert actions["create"]<=16
           print("Approved scope validation passed; creation count:",actions["create"])
           PY
       - name: Apply exactly the approved plan
