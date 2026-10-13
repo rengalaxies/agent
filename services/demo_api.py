@@ -19,6 +19,7 @@ from datamesh_release_protocol.engine import ReleaseEngine
 from datamesh_release_protocol.loaders import load_baseline_policy, load_catalog
 from datamesh_release_protocol.models import ValidationMode
 from services.knowledge_demo import development_knowledge_map
+from services.audit_pg import AuditUnavailable, audit_record
 
 ROOT=Path(__file__).resolve().parents[1]
 CATALOG={s.scenario_id:s for s in load_catalog(ROOT/"scenarios"/"development")}
@@ -45,8 +46,13 @@ def run(payload: RunRequest):
     if s is None: raise HTTPException(status_code=404,detail="Unknown development scenario")
     run_id="demo-"+uuid4().hex
     decision=ENGINE.run(s,ValidationMode.V2,run_id=run_id)
+    body=decision.model_dump(mode="json")
+    try:
+        audit=audit_record(run_id, s.scenario_id, body)
+    except AuditUnavailable:
+        raise HTTPException(status_code=503, detail="Required audit persistence unavailable")
     return {"mode": "V2", "dataset":"development", "run_id":run_id,
-            "scenario_id":s.scenario_id,"decision":decision.model_dump(mode="json"),
+            "scenario_id":s.scenario_id,"decision":body,"audit":audit,
             "disclaimer":"Actual V2 engine output on public development scenarios; not confirmatory E3 evidence"}
 
 
