@@ -51,7 +51,8 @@ jobs:
         id: e2e
         continue-on-error: true
         run: |
-          set +e
+          set -euo pipefail
+          trap 'rc=$?; echo "status=$rc" >> "$GITHUB_OUTPUT"; docker rm -f dmrp-api-ci dmrp-ui-ci >/dev/null 2>&1 || true; exit "$rc"' EXIT
           docker rm -f dmrp-api-ci dmrp-ui-ci >/dev/null 2>&1 || true
           docker network create dmrp-e2e >/dev/null 2>&1 || true
           docker run -d --rm --name dmrp-api-ci --network dmrp-e2e --network-alias core -p 127.0.0.1:18000:8000 dmrp-api-demo:ci
@@ -94,11 +95,8 @@ jobs:
           assert len(x["nodes"])==3 and len(x["edges"])>=2
           print("E2E UI -> Nginx -> knowledge-1: PASS")
           PY
-          code=$?
-          if [ "$code" -ne 0 ]; then docker logs dmrp-ui-ci --tail 30; docker logs dmrp-api-ci --tail 30; fi
-          docker rm -f dmrp-ui-ci dmrp-api-ci >/dev/null 2>&1 || true
-          echo "status=$code" >> "$GITHUB_OUTPUT"
-          exit 0
+          echo "V2 + signed E4 + verified knowledge-1 graph: all routed E2E checks passed"
+          echo "E2E checks complete"
       - name: Publish test status
         if: always()
         env:
