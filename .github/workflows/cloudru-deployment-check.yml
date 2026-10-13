@@ -7,7 +7,7 @@ on:
       - 'infra/cloudru/deploy/**'
       - '.github/workflows/cloudru-deployment-check.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -33,7 +33,52 @@ jobs:
       - name: Validate deployment syntax and provider schema
         working-directory: infra/cloudru/deploy
         run: |
-          terraform init -backend=false -input=false
-          terraform fmt
-          terraform validate -no-color
-          echo "Deployment configuration validated. No cloud resources were created."
+          set +e
+          terraform init -backend=false -input=false > /tmp/cloud-init.log 2>&1
+          init_rc=$?
+          if [ "$init_rc" -eq 0 ]; then
+            terraform fmt > /tmp/cloud-fmt.log 2>&1
+            terraform validate -no-color > /tmp/cloud-validate.log 2>&1
+            validate_rc=$?
+          else
+            validate_rc=99
+          fi
+          export INIT_RC="$init_rc" VALIDATE_RC="$validate_rc"
+          python3 - <<'PY'
+          import json,os,pathlib,re
+          init=pathlib.Path("/tmp/cloud-init.log").read_text() if pathlib.Path("/tmp/cloud-init.log").exists() else ""
+          val=pathlib.Path("/tmp/cloud-validate.log").read_text() if pathlib.Path("/tmp/cloud-validate.log").exists() else ""
+          # Include only schema errors, not provider environment or credentials.
+          errors=[line.strip() for line in val.splitlines() if "Error:" in line or "Unsupported" in line]
+          state={
+            "status":"passed" if os.environ["INIT_RC"]=="0" and os.environ["VALIDATE_RC"]=="0" else "failed",
+            "stage":"init" if os.environ["INIT_RC"]!="0" else "validate",
+            "run_id":os.environ.get("GITHUB_RUN_ID",""),
+            "commit_sha":os.environ.get("GITHUB_SHA",""),
+            "validation_errors":errors[:20],
+            "notes":"Read-only Terraform syntax/schema validation; no apply"
+          }
+          if state["stage"]=="init" and state["status"]=="failed":
+            state["validation_errors"]=["Provider installation/init failed; inspect GitHub Actions job logs"]
+          out=pathlib.Path("../../../docs/launch-2026-10/cloudru-deployment-validation.json")
+          out.write_text(json.dumps(state,ensure_ascii=False,indent=2))
+          print(json.dumps(state,ensure_ascii=False))
+          PY
+          exit 0
+      - name: Publish safe validation result
+        run: |
+          git config user.name "cloudru-validation-bot"
+          git config user.email "cloudru-validation-bot@users.noreply.github.com"
+          git add docs/launch-2026-10/cloudru-deployment-validation.json
+          if ! git diff --cached --quiet; then
+            git commit -m "ci: update Terraform schema validation result [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Mark validation failure
+        run: |
+          python3 - <<'PY'
+          import json,sys
+          data=json.load(open("docs/launch-2026-10/cloudru-deployment-validation.json"))
+          sys.exit(0 if data["status"]=="passed" else 1)
+          PY
