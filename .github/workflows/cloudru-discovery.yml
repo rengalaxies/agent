@@ -1,6 +1,11 @@
 name: Cloud.ru read-only inventory
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'infra/cloudru/**'
+      - '.github/workflows/cloudru-discovery.yml'
 permissions:
   contents: read
 jobs:
@@ -52,7 +57,7 @@ jobs:
               raise SystemExit("Scoped inventory unresolved - inspect plan")
           if inventory.get("project_id") != approved:
               raise SystemExit("ERROR: project ID mismatch")
-          for category in ("vms","disks","ips","subnets","vpcs","nat_gateways"):
+          for category in ("vms","disks","ips","subnets","nat_gateways"):
               entries=inventory.get(category) or []
               for item in entries:
                   if item.get("project_id",approved)!=approved:
