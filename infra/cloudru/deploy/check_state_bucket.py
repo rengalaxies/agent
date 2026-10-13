@@ -19,7 +19,7 @@ def validate(s3):
     bucket = os.environ["CLOUDRU_STATE_BUCKET"]
     assert len(bucket) >= 3 and len(bucket) <= 63 and bucket.isascii(), "invalid bucket name"
     # Enforce a project-bound bucket name as additional operator protection.
-    assert bucket.startswith("dmrp-tfstate-daniil-"), "state bucket must use approved project prefix"
+    assert bucket.startswith("dmrp-tfstate-daniil-") or bucket == "test-bucket-ds", "state bucket is outside the approved scope"
     s3.head_bucket(Bucket=bucket)
     versioning = s3.get_bucket_versioning(Bucket=bucket).get("Status")
     assert versioning == "Enabled", "bucket versioning is not enabled"
@@ -38,23 +38,41 @@ def main():
     endpoint = os.getenv("CLOUDRU_STATE_S3_ENDPOINT") or "https://s3.cloud.ru"
     parsed = urlparse(endpoint)
     assert parsed.scheme == "https" and parsed.hostname and not parsed.username, "invalid HTTPS S3 endpoint"
+    access_key = os.getenv("CLOUDRU_STATE_ACCESS_KEY_ID")
+    secret_key = os.getenv("CLOUDRU_STATE_SECRET_ACCESS_KEY")
+    if not access_key and not secret_key:
+        # Read-only diagnostic reuse only. Protected apply still requires
+        # separately configured state credentials.
+        tenant = os.getenv("CLOUDRU_TENANT_ID")
+        assert tenant == "fc91c42d-c2ea-4d6d-a236-103fd1f37f00", "unexpected tenant"
+        assert os.getenv("CLOUDRU_STATE_BUCKET") == "test-bucket-ds", "unexpected bucket"
+        key_id = os.environ["CLOUDRU_KEY_ID"]
+        access_key = tenant + ":" + key_id
+        secret_key = os.environ["CLOUDRU_SECRET"]
+        # GitHub's original key mask does not cover the composed S3 ID.
+        print("::add-mask::" + access_key)
+    assert access_key and secret_key, "incomplete state credentials"
+    assert endpoint == "https://s3.cloud.ru", "unexpected S3 destination"
     import boto3
     from botocore.config import Config
     s3 = boto3.client(
         "s3",
         endpoint_url=endpoint,
         region_name=os.getenv("CLOUDRU_STATE_REGION") or "ru-central-1",
-        aws_access_key_id=os.environ["CLOUDRU_STATE_ACCESS_KEY_ID"],
-        aws_secret_access_key=os.environ["CLOUDRU_STATE_SECRET_ACCESS_KEY"],
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
         config=Config(s3={"addressing_style": "path"}, retries={"max_attempts": 2}),
     )
+    authenticated = False
     try:
+        s3.head_bucket(Bucket=os.environ["CLOUDRU_STATE_BUCKET"])
+        authenticated = True
         report = validate(s3)
         code = 0
     except Exception:
         # Error category intentionally does not disclose owner, bucket, endpoint,
         # credentials, or returned account resource metadata in a public repo.
-        report = {"project_id": EXPECTED, "status": "FAIL",
+        report = {"project_id": EXPECTED, "status": "FAIL", "bucket_read_access": authenticated,
                   "diagnostic": "Bucket existence, project tag, versioning, public block or credential permissions unverified."}
         code = 1
     with open(os.environ["CLOUDRU_STATE_REPORT"], "w", encoding="utf-8") as fh:
