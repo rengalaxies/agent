@@ -7,8 +7,14 @@ terraform {
   }
 }
 variable "project_id" { type = string }
-variable "auth_key_id" { type = string; sensitive = true }
-variable "auth_secret" { type = string; sensitive = true }
+variable "auth_key_id" {
+  type = string
+  sensitive = true
+}
+variable "auth_secret" {
+  type = string
+  sensitive = true
+}
 provider "cloudru" {
   project_id  = var.project_id
   auth_key_id = var.auth_key_id
