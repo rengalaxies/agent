@@ -1,0 +1,107 @@
+name: Cloud.ru P1 read-only deployment plan
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'infra/cloudru/deploy/**'
+      - '.github/workflows/cloudru-plan.yml'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - name: Install Cloud.ru Terraform mirror configuration
+        run: |
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc" >> "$GITHUB_ENV"
+      - name: Terraform plan (never apply)
+        id: plan
+        working-directory: infra/cloudru/deploy
+        continue-on-error: true
+        env:
+          TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+          TF_VAR_ui_flavor: "gen-2-4"
+          TF_VAR_core_flavor: "gen-8-32"
+          TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
+          TF_VAR_admin_cidr: "192.0.2.1/32"
+          TF_VAR_ssh_public_key: "PLAN_ONLY_NOT_VALID_FOR_LOGIN"
+        run: |
+          set +e
+          terraform init -backend=false -input=false -no-color > /tmp/p1-init.log 2>&1
+          rc=$?
+          if [ "$rc" -eq 0 ]; then
+            terraform validate -no-color > /tmp/p1-validate.log 2>&1
+            rc=$?
+          fi
+          if [ "$rc" -eq 0 ]; then
+            terraform plan -refresh=false -input=false -no-color -lock=false -out=p1.tfplan > /tmp/p1-plan.log 2>&1
+            rc=$?
+          fi
+          echo "status_code=$rc" >> "$GITHUB_OUTPUT"
+          if [ "$rc" -eq 0 ]; then
+            terraform show -json p1.tfplan > /tmp/p1-plan.json
+          fi
+          exit 0
+      - name: Publish plan summary to issue (no sensitive values)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PLAN_RC: ${{ steps.plan.outputs.status_code }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,re
+          ok=os.getenv("PLAN_RC")=="0"
+          lines=["# Cloud.ru P1 Terraform plan","**Allowed project:** \`20853297-65b7-42a8-af40-25c8d2df4e11\`",
+             "**Result:** "+("PASS" if ok else "FAILED"),"**Run:** "+os.getenv("GITHUB_RUN_ID",""),
+             "**Mode:** plan only; no cloud resources created",
+             "**Important:** SSH key and admin CIDR are nonfunctional plan-only placeholders; replace before apply.",
+             ""]
+          if ok:
+            data=json.loads(pathlib.Path("/tmp/p1-plan.json").read_text())
+            actions={}
+            for change in data.get("resource_changes",[]):
+              for action in change.get("change",{}).get("actions",[]):
+                actions[action]=actions.get(action,0)+1
+            types=sorted({x.get("type","") for x in data.get("resource_changes",[])})
+            lines+=["## Changes","Actions: "+str(actions),"Resource kinds: "+", ".join(types)]
+          else:
+            file=pathlib.Path("/tmp/p1-plan.log")
+            if not file.exists(): file=pathlib.Path("/tmp/p1-validate.log")
+            if not file.exists(): file=pathlib.Path("/tmp/p1-init.log")
+            raw=file.read_text(errors="replace") if file.exists() else "No Terraform log"
+            errors=[]
+            for line in raw.splitlines():
+              if any(t in line for t in ("Error:", "Unsupported", "Missing required", "Invalid value", "Invalid reference")):
+                # Never paste raw provider error bodies or credential-environment lines into a public issue.
+                safe=re.sub(r'(?i)(token|password|secret|auth_key_id|auth_secret)\s*[:=].*',"[redacted]",line)
+                errors.append(safe[:240])
+            lines+=["## Sanitized validation errors"]+["- "+e for e in errors[:15]]
+          pathlib.Path("/tmp/p1-status.md").write_text(chr(10).join(lines))
+          PY
+          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] P1 deployment plan") | .number' | head -1)
+          if [ -z "$ISSUE" ]; then
+            gh issue create --repo "$GH_REPO" --title "[Cloud.ru CI] P1 deployment plan" --body-file /tmp/p1-status.md
+          else
+            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/p1-status.md
+          fi
+      - name: Report failed plan
+        if: steps.plan.outputs.status_code != '0'
+        run: exit 1
