@@ -147,3 +147,25 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
         run: terraform apply -input=false -auto-approve p1-approved.tfplan
+      - name: Verify protected UI HTTPS endpoint after provisioning
+        working-directory: infra/cloudru/deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+        run: |
+          set -eu
+          URL=$(terraform output -raw ui_https_url)
+          case "$URL" in https://*.sslip.io) : ;; *) echo "Unexpected UI hostname"; exit 1;; esac
+          echo "Checking public TLS and password challenge (no credentials disclosed)"
+          for attempt in $(seq 1 40); do
+            STATUS=$(curl --silent --show-error --output /dev/null --write-out "%{http_code}" \
+              --max-time 12 "$URL" || true)
+            if [ "$STATUS" = "401" ]; then
+              echo "UI HTTPS ready: valid TLS and HTTP authentication required"
+              exit 0
+            fi
+            echo "UI not ready yet; retry $attempt/40"
+            sleep 15
+          done
+          echo "UI HTTPS smoke check failed; inspect cloud-init and Caddy on VM"
+          exit 1
