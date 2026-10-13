@@ -15,18 +15,29 @@ EXPECTED = "20853297-65b7-42a8-af40-25c8d2df4e11"
 REQUIRED_TAG_KEY = "cloudru_project_id"
 
 
+def read_setting(s3, method, bucket):
+    try:
+        return getattr(s3, method)(Bucket=bucket)
+    except Exception as error:
+        response = getattr(error, "response", {})
+        error_code = response.get("Error", {}).get("Code", "")
+        allowed = {"NoSuchTagSet", "AccessDenied", "NoSuchBucket", "NoSuchPublicAccessBlockConfiguration", "NotImplemented"}
+        safe_code = error_code if error_code in allowed else "REQUEST_FAILED"
+        raise AssertionError(method + ": " + safe_code) from None
+
+
 def validate(s3):
     bucket = os.environ["CLOUDRU_STATE_BUCKET"]
     assert len(bucket) >= 3 and len(bucket) <= 63 and bucket.isascii(), "invalid bucket name"
     # Enforce a project-bound bucket name as additional operator protection.
     assert bucket.startswith("dmrp-tfstate-daniil-") or bucket == "test-bucket-ds", "state bucket is outside the approved scope"
     s3.head_bucket(Bucket=bucket)
-    versioning = s3.get_bucket_versioning(Bucket=bucket).get("Status")
+    versioning = read_setting(s3, "get_bucket_versioning", bucket).get("Status")
     assert versioning == "Enabled", "bucket versioning is not enabled"
-    tags = s3.get_bucket_tagging(Bucket=bucket).get("TagSet", [])
+    tags = read_setting(s3, "get_bucket_tagging", bucket).get("TagSet", [])
     project = {item.get("Key"): item.get("Value") for item in tags}.get(REQUIRED_TAG_KEY)
     assert project == EXPECTED, "bucket is not tagged for the approved Cloud.ru project"
-    public = s3.get_public_access_block(Bucket=bucket).get("PublicAccessBlockConfiguration", {})
+    public = read_setting(s3, "get_public_access_block", bucket).get("PublicAccessBlockConfiguration", {})
     required = ("BlockPublicAcls", "IgnorePublicAcls", "BlockPublicPolicy", "RestrictPublicBuckets")
     assert all(public.get(k) is True for k in required), "bucket is missing one or more public access restrictions"
     return {"project_id": EXPECTED, "bucket_name_validated": True,
