@@ -5,6 +5,7 @@ packages:
   - curl
   - git
   - docker.io
+  - openssl
   - docker-compose-v2
 write_files:
   - path: /etc/dmcore-bootstrap.env
@@ -56,10 +57,42 @@ write_files:
       git fetch --depth=1 origin ${git_ref}
       git checkout --detach ${git_ref}
       docker build -f services/Dockerfile.demo -t dmrp-core:local .
+      # Docker-only database networking - port 5432 is never published.
+      if ! docker network inspect dmrp-core-net >/dev/null 2>&1; then
+        docker network create dmrp-core-net
+      fi
+      docker volume create dmrp-pgdata >/dev/null
+      install -d -m 0700 /etc/dmrp
+      if [ ! -s /etc/dmrp/pg-password ]; then
+        umask 077
+        openssl rand -hex 24 > /etc/dmrp/pg-password
+      fi
+      PG_PASSWORD="$(cat /etc/dmrp/pg-password)"
+      if ! docker container inspect dmrp-postgres >/dev/null 2>&1; then
+        docker run -d --name dmrp-postgres --restart unless-stopped \
+          --network dmrp-core-net --network-alias postgres \
+          --security-opt no-new-privileges --cap-drop ALL \
+          -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \
+          -e POSTGRES_PASSWORD="$PG_PASSWORD" \
+          -v dmrp-pgdata:/var/lib/postgresql/data \
+          postgres:16-alpine
+      else
+        docker start dmrp-postgres >/dev/null 2>&1 || true
+      fi
+      # Startup ordering: real DB readiness required.
+      attempt=0
+      until docker exec dmrp-postgres pg_isready -U dmrp -d dmrp >/dev/null 2>&1; do
+        attempt=$((attempt + 1))
+        if [ "$attempt" -ge 60 ]; then exit 1; fi
+        sleep 2
+      done
       docker rm -f dmrp-core-api 2>/dev/null || true
       docker run -d --name dmrp-core-api --restart unless-stopped --read-only \
-        --tmpfs /tmp:rw,nosuid,nodev,size=128m --security-opt no-new-privileges \
-        --cap-drop ALL -p 8000:8000 dmrp-core:local
+        --network dmrp-core-net --security-opt no-new-privileges \
+        --tmpfs /tmp:rw,nosuid,nodev,size=128m --cap-drop ALL \
+        -e DMRP_REQUIRE_AUDIT=1 \
+        -e DATABASE_URL="postgresql://dmrp:$PG_PASSWORD@postgres:5432/dmrp" \
+        -p ${core_ip}:8000:8000 dmrp-core:local
 runcmd:
   - [systemctl, daemon-reload]
   - [systemctl, enable, --now, docker]
