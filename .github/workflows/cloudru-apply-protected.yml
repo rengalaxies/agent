@@ -157,6 +157,33 @@ jobs:
             fi
             echo "First deployment: production remote state has not been created yet"
           fi
+      - name: Recover scoped interfaces from known provider attachment inconsistency
+        working-directory: infra/cloudru/deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
+        run: |
+          python3 - <<'PY'
+          import json,subprocess
+          result=subprocess.run(["terraform","state","pull"],capture_output=True,text=True)
+          if result.returncode:
+              assert "No state file" in result.stderr+result.stdout, "Cannot read production state"
+              raise SystemExit(0)
+          state=json.loads(result.stdout)
+          for resource in state.get("resources",[]):
+              if resource.get("type")!="cloudru_evolution_compute_interface" or resource.get("name")!="nic": continue
+              for instance in resource.get("instances",[]):
+                  if instance.get("status")!="tainted": continue
+                  key=instance.get("index_key")
+                  assert key in ("ui","core")
+                  attributes=instance["attributes"]
+                  assert attributes["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11"
+                  assert attributes["name"]=="dm-p1-"+key+"-nic"
+                  assert attributes.get("id")
+                  address='cloudru_evolution_compute_interface.nic["'+key+'"]'
+                  subprocess.run(["terraform","untaint",address],check=True)
+          PY
       - name: Plan with live project and approved secrets
         id: plan
         working-directory: infra/cloudru/deploy
