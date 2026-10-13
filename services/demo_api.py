@@ -17,6 +17,7 @@ from datamesh_release_protocol import __version__
 from datamesh_release_protocol.engine import ReleaseEngine
 from datamesh_release_protocol.loaders import load_baseline_policy, load_catalog
 from datamesh_release_protocol.models import ValidationMode
+from services.knowledge_demo import development_knowledge_map
 
 ROOT=Path(__file__).resolve().parents[1]
 CATALOG={s.scenario_id:s for s in load_catalog(ROOT/"scenarios"/"development")}
@@ -79,3 +80,9 @@ def distributed_run(payload: DistributedRunRequest):
         "release":protocol,
         "disclaimer":"Distributed engineering demonstration, not confirmatory E3 evidence",
     }
+
+
+@app.get("/api/v1/knowledge/map")
+def knowledge_map():
+    """Confirmed E4 synthetic knowledge-1 consumers, without private/oracle data."""
+    return development_knowledge_map()
