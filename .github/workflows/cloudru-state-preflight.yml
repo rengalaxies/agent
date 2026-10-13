@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       configure_project_tag:
-        description: "Add approved project tag to test-bucket-ds, preserving existing tags"
+        description: "Configure project tag and block public access on test-bucket-ds"
         type: boolean
         default: false
   schedule:
@@ -42,7 +42,7 @@ jobs:
           else:raise RuntimeError("project isolation test failed")
           print("State bucket read-only logic and cross-project rejection PASS")
           PY
-      - name: Configure approved bucket project tag
+      - name: Configure approved bucket tag and privacy
         if: inputs.configure_project_tag
         env:
           CLOUDRU_TENANT_ID: ${{ vars.CLOUDRU_TENANT_ID }}
@@ -76,6 +76,11 @@ jobs:
           verified={t["Key"]:t["Value"] for t in s3.get_bucket_tagging(Bucket=bucket)["TagSet"]}
           assert verified==current
           print("Approved project tag configured and verified; existing tags preserved")
+          required=("BlockPublicAcls","IgnorePublicAcls","BlockPublicPolicy","RestrictPublicBuckets")
+          s3.put_public_access_block(Bucket=bucket,PublicAccessBlockConfiguration={k:True for k in required})
+          public=s3.get_public_access_block(Bucket=bucket)["PublicAccessBlockConfiguration"]
+          assert all(public.get(k) is True for k in required)
+          print("All four public access restrictions configured and verified")
           PY
       - name: Probe state bucket read-only if credentials exist
         id: probe
@@ -116,7 +121,7 @@ jobs:
           lines=["# Cloud.ru Terraform state readiness","**Status:** "+status,
                  "**Project:** 20853297-65b7-42a8-af40-25c8d2df4e11",
                  "**Run:** ${{ github.run_id }}",
-                 "**Mode:** read-only S3 checks; no bucket or objects created",
+                 "**Mode:** scoped tag/privacy configuration if explicitly selected, then read-only checks; no bucket or objects created",
                  "**Bucket read access:** "+str(data.get("bucket_read_access",data.get("tag_scope_verified",False))),
                  "**Diagnostic:** "+data.get("diagnostic","none"),
                  "**Lockfile:** NOT_TESTED (requires dedicated safe access verification)",
