@@ -69,6 +69,11 @@ def main():
         authenticated = True
         report = validate(s3)
         code = 0
+    except AssertionError as error:
+        # These messages are our fixed validation labels, never provider bodies.
+        report = {"project_id": EXPECTED, "status": "FAIL",
+                  "bucket_read_access": authenticated, "diagnostic": str(error)}
+        code = 1
     except Exception:
         # Error category intentionally does not disclose owner, bucket, endpoint,
         # credentials, or returned account resource metadata in a public repo.
