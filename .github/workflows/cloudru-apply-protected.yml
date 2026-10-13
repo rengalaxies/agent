@@ -55,7 +55,7 @@ jobs:
           case "$SSH_PUB" in ssh-ed25519\ *|ssh-rsa\ *) : ;; *) echo "Invalid SSH public key"; exit 1;; esac
           case "$ADMIN_CIDR" in 0.0.0.0/0|192.0.2.*|198.51.100.*|203.0.113.*) echo "Placeholder or open SSH CIDR"; exit 1;; esac
           # shellcheck disable=SC2016
-          case "$UI_HASH" in "$"2a"$"*|"$"2b"$"*|"$"2y"$"*) : ;; *) echo "Invalid bcrypt UI hash"; exit 1;; esac
+          case "$UI_HASH" in \$2a\$*|\$2b\$*|\$2y\$*) : ;; *) echo "Invalid bcrypt UI hash"; exit 1;; esac
           test ! -e infra/cloudru/deploy/backend.tf || { echo "Backend file must be initialized by this workflow only"; exit 1; }
       - name: Configure Cloud.ru provider mirror
         run: |
