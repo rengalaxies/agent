@@ -1,0 +1,123 @@
+name: Terraform remote state locking simulation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cloudru-apply-protected.yml'
+      - '.github/workflows/cloudru-state-backend-test.yml'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  mock-s3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - name: Start isolated local S3 emulator
+        run: |
+          docker run -d --rm --name state-test-s3 -p 127.0.0.1:19000:9000 \
+            -e MINIO_ROOT_USER=localonly123 -e MINIO_ROOT_PASSWORD=localonly456456 \
+            minio/minio:RELEASE.2025-04-22T22-12-26Z server /data
+          python3 -m pip install --quiet boto3
+          python3 - <<'PY'
+          import boto3,time
+          from botocore.config import Config
+          s=boto3.client("s3",endpoint_url="http://127.0.0.1:19000",aws_access_key_id="localonly123",aws_secret_access_key="localonly456456",region_name="us-east-1",config=Config(s3={"addressing_style":"path"}))
+          for attempt in range(35):
+              try:s.create_bucket(Bucket="state-test-only");break
+              except Exception:
+                  if attempt==34:raise
+                  time.sleep(1)
+          s.put_bucket_versioning(Bucket="state-test-only",VersioningConfiguration={"Status":"Enabled"})
+          PY
+      - name: Verify exact Terraform S3 backend initialization and locking
+        id: verify
+        continue-on-error: true
+        run: |
+          set +e
+          mkdir -p /tmp/remote-state-ci
+          cat > /tmp/remote-state-ci/main.tf <<'EOF'
+          terraform {
+            required_version = ">= 1.10.0"
+            backend "s3" {}
+          }
+          resource "terraform_data" "test" {
+            input = "local-test-only"
+          }
+          EOF
+          cd /tmp/remote-state-ci
+          export AWS_ACCESS_KEY_ID=localonly123 AWS_SECRET_ACCESS_KEY=localonly456456
+          STATE_ENDPOINT="http://127.0.0.1:19000"
+          terraform init -reconfigure -input=false -no-color \
+            -backend-config="bucket=state-test-only" \
+            -backend-config="key=terraform/p1/daniil-smirnov.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="endpoints={s3=\"$STATE_ENDPOINT\"}" \
+            -backend-config="use_lockfile=true" \
+            -backend-config="skip_credentials_validation=true" \
+            -backend-config="skip_region_validation=true" \
+            -backend-config="skip_requesting_account_id=true" \
+            -backend-config="skip_metadata_api_check=true" \
+            -backend-config="use_path_style=true" > /tmp/state-mock-test.log 2>&1
+          rc=$?
+          if [ "$rc" -eq 0 ]; then
+            terraform apply -input=false -auto-approve -no-color >> /tmp/state-mock-test.log 2>&1
+            rc=$?
+          fi
+          if [ "$rc" -eq 0 ]; then
+            rm -rf /tmp/remote-state-ci/.terraform /tmp/remote-state-ci/terraform.tfstate
+            terraform init -reconfigure -input=false -no-color \
+              -backend-config="bucket=state-test-only" \
+              -backend-config="key=terraform/p1/daniil-smirnov.tfstate" \
+              -backend-config="region=us-east-1" \
+              -backend-config="endpoints={s3=\"$STATE_ENDPOINT\"}" \
+              -backend-config="use_lockfile=true" \
+              -backend-config="skip_credentials_validation=true" \
+              -backend-config="skip_region_validation=true" \
+              -backend-config="skip_requesting_account_id=true" \
+              -backend-config="skip_metadata_api_check=true" \
+              -backend-config="use_path_style=true" >> /tmp/state-mock-test.log 2>&1
+            rc=$?
+          fi
+          if [ "$rc" -eq 0 ]; then
+            terraform state list >> /tmp/state-mock-test.log 2>&1
+            terraform state list | grep -q terraform_data.test
+            rc=$?
+          fi
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Publish simulation result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RC: ${{ steps.verify.outputs.rc }}
+        run: |
+          python3 - <<'PY'
+          import os,pathlib,re
+          output=pathlib.Path("/tmp/state-mock-test.log")
+          lines=output.read_text(errors="replace").splitlines() if output.exists() else []
+          findings=[l for l in lines if l.startswith("Error:")][:10]
+          items=["# Terraform remote state integration simulation",
+                 "**Status:** "+("PASS" if os.getenv("RC")=="0" else "FAIL"),
+                 "**Run:** "+os.getenv("GITHUB_RUN_ID",""),
+                 "**Environment:** isolated local S3 emulator only; NO Cloud.ru resources created",
+                 "**Coverage:** backend init, versioning, S3 lockfile, state persistence across fresh init",
+                 "**Limit:** Cloud.ru S3 compatibility is NOT proven by MinIO",
+                 ""]+["- "+str(x)[:200] for x in findings]
+          pathlib.Path("/tmp/state-mock-issue.md").write_text(chr(10).join(items))
+          PY
+          TITLE="[Cloud.ru CI] Remote state simulation"
+          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Remote state simulation") | .number' | head -1)
+          if [ -z "$ISSUE" ]; then
+            gh issue create --repo "$GH_REPO" --title "$TITLE" --body-file /tmp/state-mock-issue.md
+          else
+            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/state-mock-issue.md
+          fi
+      - name: Enforce successful backend simulation
+        if: steps.verify.outputs.rc != '0'
+        run: exit 1
