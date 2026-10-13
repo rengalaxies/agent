@@ -57,7 +57,7 @@ jobs:
         \ -t dmrp-ui-regression .\ndocker run -d --name dmrp-ui-regression --read-only --user 101:101 \\\n  --tmpfs /etc/nginx/conf.d:rw,nosuid,nodev,uid=101,gid=101\
         \ \\\n  --tmpfs /var/cache/nginx:rw,nosuid,nodev,uid=101,gid=101 \\\n  --tmpfs /var/run:rw,nosuid,nodev,uid=101,gid=101\
         \ \\\n  --tmpfs /tmp:rw,nosuid,nodev --security-opt no-new-privileges --cap-drop ALL \\\n  -e CORE_PRIVATE_IP=127.0.0.1\
-        \ -p 127.0.0.1:18080:8080 dmrp-ui-regression\nfor attempt in $(seq 1 20); do\n  if curl -fsS http://127.0.0.1:18080/healthz;\
+        \ -p 127.0.0.1:18080:8080 dmrp-ui-regression\nfor _attempt in $(seq 1 20); do\n  if curl -fsS http://127.0.0.1:18080/healthz;\
         \ then exit 0; fi\n  sleep 1\ndone\ndocker logs dmrp-ui-regression\nexit 1\n"
   configuration:
     runs-on: ubuntu-latest
