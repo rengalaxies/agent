@@ -1,0 +1,90 @@
+name: Cloud.ru Terraform state read-only validation
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 7 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'infra/cloudru/deploy/check_state_bucket.py'
+      - '.github/workflows/cloudru-state-preflight.yml'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  read-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test project-bound bucket policy checker without cloud access
+        run: |
+          python3 - <<'PY'
+          import os,importlib.util
+          spec=importlib.util.spec_from_file_location("check","infra/cloudru/deploy/check_state_bucket.py")
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          os.environ["CLOUDRU_STATE_BUCKET"]="dmrp-tfstate-daniil-test"
+          class Fake:
+            def head_bucket(self,**k):return {}
+            def get_bucket_versioning(self,**k):return {"Status":"Enabled"}
+            def get_bucket_tagging(self,**k):return {"TagSet":[{"Key":"cloudru_project_id","Value":mod.EXPECTED}]}
+            def get_public_access_block(self,**k):return {"PublicAccessBlockConfiguration":{k:True for k in ("BlockPublicAcls","IgnorePublicAcls","BlockPublicPolicy","RestrictPublicBuckets")}}
+          assert mod.validate(Fake())["tag_scope_verified"]
+          class WrongProject(Fake):
+            def get_bucket_tagging(self,**k):return {"TagSet":[{"Key":"cloudru_project_id","Value":"other-project"}]}
+          try:mod.validate(WrongProject())
+          except AssertionError:pass
+          else:raise RuntimeError("project isolation test failed")
+          print("State bucket read-only logic and cross-project rejection PASS")
+          PY
+      - name: Probe state bucket read-only if credentials exist
+        id: probe
+        continue-on-error: true
+        env:
+          CLOUDRU_STATE_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          CLOUDRU_STATE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          CLOUDRU_STATE_S3_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
+          CLOUDRU_STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
+          CLOUDRU_STATE_REPORT: /tmp/dmrp-state-result.json
+        run: |
+          if [ -z "$CLOUDRU_STATE_ACCESS_KEY_ID" ] || [ -z "$CLOUDRU_STATE_SECRET_ACCESS_KEY" ] || [ -z "$CLOUDRU_STATE_BUCKET" ] || [ -z "$CLOUDRU_STATE_S3_ENDPOINT" ]; then
+            echo '{"status":"CONFIGURATION_REQUIRED","lockfile_compatibility":"NOT_TESTED"}' > "$CLOUDRU_STATE_REPORT"
+            echo "probe_rc=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          python3 -m pip install --quiet 'boto3>=1.34,<2'
+          if python3 infra/cloudru/deploy/check_state_bucket.py; then
+            echo "probe_rc=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "probe_rc=1" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish sanitized state readiness
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import pathlib,json
+          p=pathlib.Path("/tmp/dmrp-state-result.json")
+          data=json.loads(p.read_text()) if p.exists() else {"status":"ERROR"}
+          status=data.get("status") or ("READ_ONLY_PASS" if data.get("tag_scope_verified") else "ERROR")
+          lines=["# Cloud.ru Terraform state readiness","**Status:** "+status,
+                 "**Project:** 20853297-65b7-42a8-af40-25c8d2df4e11",
+                 "**Run:** ${{ github.run_id }}",
+                 "**Mode:** read-only S3 checks; no bucket or objects created",
+                 "**Lockfile:** NOT_TESTED (requires dedicated safe access verification)",
+                 "**Bucket ownership:** requires owner review; matching tag is an additional safeguard"]
+          pathlib.Path("/tmp/state-issue.md").write_text(chr(10).join(lines))
+          PY
+          TITLE="[Cloud.ru CI] Remote Terraform state"
+          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Remote Terraform state") | .number' | head -1)
+          if [ -z "$ISSUE" ]; then
+            gh issue create --repo "$GH_REPO" --title "$TITLE" --body-file /tmp/state-issue.md
+          else
+            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/state-issue.md
+          fi
+      - name: Enforce credential-backed check when attempted
+        if: steps.probe.outputs.probe_rc != '0'
+        run: exit 1
