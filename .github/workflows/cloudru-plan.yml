@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'infra/cloudru/deploy/**'
+      - 'infra/cloudru/bootstrap/**'
       - '.github/workflows/cloudru-plan.yml'
 permissions:
   contents: read
