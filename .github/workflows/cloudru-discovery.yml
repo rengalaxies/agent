@@ -39,11 +39,24 @@ jobs:
           TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
         run: |
           terraform init -input=false
+          terraform validate -no-color
           terraform plan -input=false -lock=false -out=inventory.tfplan
           terraform show -json inventory.tfplan > /tmp/cloudru-plan.json
           python3 - <<'PY'
           import json
           d=json.load(open('/tmp/cloudru-plan.json'))
           out=d.get('planned_values',{}).get('outputs',{})
-          print("Inventory is read-only; existing VMs:",out.get('existing_vms',{}).get('value','(unresolved at plan time)'))
+          approved="20853297-65b7-42a8-af40-25c8d2df4e11"
+          inventory=out.get("scoped_inventory",{}).get("value")
+          if inventory is None:
+              raise SystemExit("Scoped inventory unresolved - inspect plan")
+          if inventory.get("project_id") != approved:
+              raise SystemExit("ERROR: project ID mismatch")
+          for category in ("vms","disks","ips","subnets","vpcs","nat_gateways"):
+              entries=inventory.get(category) or []
+              for item in entries:
+                  if item.get("project_id",approved)!=approved:
+                      raise SystemExit("ERROR: unexpected project resource")
+              print(category.upper(),len(entries),json.dumps(entries,ensure_ascii=False))
+          print("Verified inventory scope:",approved)
           PY
