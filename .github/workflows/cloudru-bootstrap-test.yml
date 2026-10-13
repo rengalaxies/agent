@@ -33,7 +33,8 @@ jobs:
             original=(root/f"{name}-cloud-init.yaml").read_text()
             rendered=(original.replace("${git_ref}","a"*40)
                       .replace("${core_ip}","10.0.0.22")
-                      .replace("${ui_ip_dashed}","203-0-113-77"))
+                      .replace("${ui_ip_dashed}","203-0-113-77")
+                      .replace("${ui_basic_auth_hash}","$2a$12$mock-only-hash"))
             doc=yaml.safe_load(rendered)
             assert isinstance(doc,dict) and doc.get("package_update") is True
             files=doc["write_files"]
