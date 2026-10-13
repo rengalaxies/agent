@@ -177,7 +177,6 @@ resource "cloudru_evolution_compute_interface" "nic" {
   interface_security_enabled = true
   security_groups = [{ id = each.key == "ui" ? cloudru_evolution_compute_security_group.ui.id : cloudru_evolution_compute_security_group.core.id }]
   type = "INTERFACE_TYPE_REGULAR"
-  vm = {}
 }
 resource "cloudru_evolution_compute_nat_gateway" "core_egress" {
   project_id = var.project_id
