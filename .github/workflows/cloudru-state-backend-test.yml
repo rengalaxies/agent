@@ -19,10 +19,9 @@ jobs:
           terraform_version: 1.10.5
       - name: Start isolated local S3 emulator
         run: |
-          docker run -d --rm --name state-test-s3 -p 127.0.0.1:19000:9000 \
-            -e MINIO_ROOT_USER=localonly123 -e MINIO_ROOT_PASSWORD=localonly456456 \
-            quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z server /data
-          python3 -m pip install --quiet boto3
+          python3 -m pip install --quiet 'moto[server]>=5,<6' boto3
+          moto_server -H 127.0.0.1 -p 19000 > /tmp/moto-state.log 2>&1 &
+          sleep 3
           python3 - <<'PY'
           import boto3,time
           from botocore.config import Config
