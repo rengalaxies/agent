@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'services/demo_api.py'
+      - 'services/knowledge_demo.py'
       - 'services/Dockerfile.demo'
       - 'tests/test_demo_api.py'
       - 'ui/**'
@@ -83,6 +84,15 @@ jobs:
           assert x["dataset"]=="synthetic_E4"
           assert x["evaluation_oracle_loaded"] is False
           print("E2E UI -> Nginx -> FastAPI -> distributed E4: PASS")
+          PY
+          curl -fsS http://127.0.0.1:18080/api/v1/knowledge/map > /tmp/e2e-knowledge.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("/tmp/e2e-knowledge.json"))
+          assert x["schema_version"]=="knowledge-1" and x["dataset"]=="synthetic_E4"
+          assert x["snapshot_completeness"]=="complete"
+          assert len(x["nodes"])==3 and len(x["edges"])>=2
+          print("E2E UI -> Nginx -> knowledge-1: PASS")
           PY
           code=$?
           if [ "$code" -ne 0 ]; then docker logs dmrp-ui-ci --tail 30; docker logs dmrp-api-ci --tail 30; fi
