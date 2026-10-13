@@ -1,6 +1,8 @@
 name: P1 pre-deployment gate (no apply)
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '35 7 * * *'
   push:
     branches: [main]
     paths:
@@ -39,18 +41,38 @@ jobs:
               blockers.append("Live UI-to-V2 interaction missing")
           if "oracles/evaluation" in api or "scenarios/evaluation" in api:
               blockers.append("Evaluation oracle/data isolation violated")
-          # Explicitly make human approval and still-needed production safeguards visible.
-          blockers += [
-            "Persistent encrypted Terraform state backend/locking not configured or integration-tested",
-            "Private core egress/NAT Terraform configured, but not live-provisioned or smoke-tested",
-            "Real SSH bootstrap keys and restricted CIDR not supplied",
-            "Public HTTPS Caddy cloud-init configured, but actual TLS and access control not live-tested",
-            "Database/distributed domain runtime not yet cloud-deployed and verified",
-            "Final actual cloud quote, budget approval and manual protected apply gate outstanding",
-          ]
-          report=["# P1 deployment readiness","**Project:** 20853297-65b7-42a8-af40-25c8d2df4e11",
-                  "**Mode:** static preflight; no apply","**Status:** NO-GO pending production safeguards",
-                  "", "## Remaining gates"]+[f"- {b}" for b in blockers]
+          import os,subprocess,re
+          repo=os.environ["GH_REPO"]
+          def issue(number):
+              proc=subprocess.run(["gh","issue","view",str(number),"--repo",repo,
+                                   "--json","body","--jq",".body"],capture_output=True,text=True)
+              return proc.stdout if proc.returncode==0 else ""
+          source={n:issue(n) for n in (4,5,7,8,9,10,11)}
+          if "**Result:** PASS" not in source[4]:
+              blockers.append("Terraform Cloud.ru plan is not currently PASS")
+          if "E2E UI -> nginx -> V2 status:** 0" not in source[5]:
+              blockers.append("Live V2 API E2E has not passed")
+          if "**Status:** PASS" not in source[7]:
+              blockers.append("Cloud-init/Caddy bootstrap syntax has not passed")
+          if "**Result:** PASS" not in source[8]:
+              blockers.append("GitHub Actions workflow lint has not passed")
+          if "**Status:** PASS" not in source[11]:
+              blockers.append("Safe S3 state persistence simulation has not passed")
+          if "**Status:** READY_FOR_STATE_TEST" not in source[9]:
+              blockers.append("Required protected GitHub inputs missing or malformed (Issue #9)")
+          if "**Status:** READ_ONLY_PASS" not in source[10]:
+              blockers.append("Cloud.ru real S3 bucket scope and privacy not yet verified (Issue #10)")
+          report=["# Cloud.ru P1 pre-deployment readiness",
+                  "**Project:** 20853297-65b7-42a8-af40-25c8d2df4e11",
+                  "**Status:** "+("READY_FOR_OWNER_PAID_APPROVAL" if not blockers else "NO-GO"),
+                  "**Run:** "+os.environ.get("GITHUB_RUN_ID",""),
+                  "**No infrastructure has been provisioned by readiness checks**","",
+                  "## Pre-approval blockers"]+[f"- {b}" for b in blockers]
+          if not blockers:report.append("- None; owner must explicitly approve actual paid deployment before apply.")
+          report += ["", "## Tested / not tested boundary",
+            "- Verified: Terraform plan, signed synthetic E4 and V2 demo, Docker builds, Caddy cloud-init static validation, local S3-locking simulation",
+            "- Unverified until approved apply: Cloud.ru live VM bootstrap, real S3 lockfile compatibility, HTTPS certificate issuance, NAT egress and ongoing cost",
+            "- Target of this P1 is a demonstrable development prototype, not a production PostgreSQL three-domain deployment"]
           pathlib.Path("/tmp/readiness.md").write_text(chr(10).join(report))
           PY
           ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] P1 GO-NOGO") | .number' | head -1)
