@@ -28,3 +28,9 @@ A disconnected core VM cannot make live release decisions. Show availability sta
 - No simulated outcome is presented as an empirical E3 result.
 - No user-provided JavaScript or untrusted network data is interpolated into innerHTML in eventual API-connected version.
 - Deployed under dedicated UI IPv4 and HTTPS after secure Cloud.ru provisioning.
+
+## Verified integration as of 2026-10-13
+
+The interface is no longer only a set of canned outcomes. The offline examples remain explicitly labeled synthetic, while the live panel calls the actual deterministic V2 engine on development scenarios. A separate signed three-process E4 demo is launched from the API. The knowledge-1 panel renders confirmed synthetic consumer dependencies from a verified snapshot, not a hand-entered graph. Core V2 now supports fail-closed PostgreSQL audit logging with a SHA-256 decision digest; local Docker integration verifies that the record survives a database-container restart. These are development demonstrations, not H1 confirmatory E3 measurements, real user records, or a deployed Cloud.ru service.
+
+CI evidence: https://github.com/rengalaxies/agent/issues/5 and https://github.com/rengalaxies/agent/issues/13. Cloud.ru deployment is blocked until a project-scoped encrypted remote Terraform state is configured (https://github.com/rengalaxies/agent/issues/6).
