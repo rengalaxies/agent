@@ -36,6 +36,9 @@ jobs:
           print("::add-mask::"+token)
           req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424",headers={"Authorization":"Bearer "+token})
           vm=json.load(urllib.request.urlopen(req,timeout=30))
+          print("VM response keys:",list(vm))
+          vm=vm.get("vm",vm)
+          print("VM field names:",list(vm))
           assert vm["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11" and vm["name"]=="dm-p1-ui"
           print("Exact UI VM status:",json.dumps({k:vm.get(k) for k in ("name","state","power_state")}))
           PY
