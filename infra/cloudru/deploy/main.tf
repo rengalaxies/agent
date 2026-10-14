@@ -194,6 +194,21 @@ resource "cloudru_evolution_compute_external_ip" "ui" {
   name = "dm-p1-ui-public-ip"
   zone = { name = var.zone_name }
   network_interface = { id = cloudru_evolution_compute_interface.nic["ui"].id }
+  lifecycle {
+    prevent_destroy = true
+    precondition {
+      condition = length([for ip in data.cloudru_evolution_compute_external_ip_collection.retained_ui.external_ips : ip if ip.id == "33a27f64-e474-49ed-a17b-15f67dd16400" && ip.project_id == var.project_id]) == 1
+      error_message = "STOP: original approved UI IP allocation must exist before rebinding."
+    }
+    postcondition {
+      condition = self.id == "33a27f64-e474-49ed-a17b-15f67dd16400" && self.ip_address == one([for ip in data.cloudru_evolution_compute_external_ip_collection.retained_ui.external_ips : ip.ip_address if ip.id == "33a27f64-e474-49ed-a17b-15f67dd16400"]) && self.network_interface.id == cloudru_evolution_compute_interface.nic["ui"].id
+      error_message = "STOP: original UI IP or approved interface binding was not retained."
+    }
+  }
+}
+data "cloudru_evolution_compute_external_ip_collection" "retained_ui" {
+  project_id = var.project_id
+  page_size = 100
 }
 resource "cloudru_evolution_compute_vm" "vm" {
   depends_on = [cloudru_evolution_compute_nat_gateway.core_egress]
@@ -204,12 +219,10 @@ resource "cloudru_evolution_compute_vm" "vm" {
   flavor = { name = each.value.flavor }
   disks = [{ id = cloudru_evolution_compute_disk.boot[each.key].id }]
   network_interfaces = [{ id = cloudru_evolution_compute_interface.nic[each.key].id }]
-  cloud_init_userdata = base64encode(templatefile("${path.module}/../bootstrap/${each.key == "ui" ? "ui" : "core"}-cloud-init.yaml", {
+  cloud_init_userdata = base64encode(templatefile("${path.module}/../bootstrap/core-cloud-init.yaml", {
     git_ref = var.git_ref
     ssh_public_key = jsonencode(trimspace(var.ssh_public_key))
     core_ip = cloudru_evolution_compute_interface.nic["core"].ip_address
-    ui_ip_dashed = replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")
-    ui_basic_auth_hash = var.ui_basic_auth_hash
   }))
   lifecycle {
     prevent_destroy = true
