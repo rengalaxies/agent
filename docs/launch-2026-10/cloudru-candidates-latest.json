@@ -84,6 +84,30 @@
       "id": "acc7e551-2c1d-491c-9118-761f7357f063",
       "name": "demo-2-4-numa-2",
       "ram": 4
+    },
+    {
+      "cpu": 4,
+      "id": "c056d52d-c540-4bba-bf63-7dae9971e813",
+      "name": "high-frequency-9374f-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 8,
+      "id": "88a186f0-f71c-48b4-9791-fa2433f33295",
+      "name": "high-frequency-9374f-8-32",
+      "ram": 32
+    },
+    {
+      "cpu": 4,
+      "id": "0be373e8-b8eb-4305-b733-bb1df1673d62",
+      "name": "high-frequency-9354-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 8,
+      "id": "e7c961ef-4b9c-4336-992f-0f5246ece38a",
+      "name": "high-frequency-9354-8-32",
+      "ram": 32
     }
   ],
   "ubuntu_images": [
@@ -98,5 +122,5 @@
       "name": "Ubuntu-24.04"
     }
   ],
-  "source_run_id": "38550329375"
+  "source_run_id": "38576805757"
 }
