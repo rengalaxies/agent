@@ -44,7 +44,12 @@ jobs:
           print("UI network interface attached:",bool(vm.get("interfaces")))
           if vm.get("is_serial_ready"):
               req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424/remote-console",data=json.dumps({"protocol":"serial"}).encode(),headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"})
-              console=json.load(urllib.request.urlopen(req,timeout=30))
+              response=urllib.request.urlopen(req,timeout=30)
+              payload=response.read()
+              console=json.loads(payload) if payload.strip() else {}
+              if not console:
+                  req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424",headers={"Authorization":"Bearer "+token})
+                  console=json.load(urllib.request.urlopen(req,timeout=30))
               print("Serial API response field names:",list(console))
               url=console.get("remote_console_ws") or console.get("remoteConsoleWs") or console.get("url")
               if url:
@@ -53,7 +58,7 @@ jobs:
                   subprocess.run(["python3","-m","pip","install","--quiet","websocket-client"],check=True)
                   import websocket,time
                   ws=websocket.create_connection(url,timeout=10)
-                  ws.send("\\r")
+                  ws.send("\r")
                   frames=[]
                   end=time.time()+10
                   while time.time()<end:
