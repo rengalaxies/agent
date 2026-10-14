@@ -231,6 +231,8 @@ resource "cloudru_evolution_compute_vm" "vm" {
   }))
   lifecycle {
     prevent_destroy = true
+    # UI-only recovery must never rewrite the running core bootstrap metadata.
+    ignore_changes = [cloud_init_userdata]
   }
 }
 output "planned_scope" {
