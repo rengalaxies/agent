@@ -16,7 +16,7 @@ output "deployment_candidates" {
       name = f.name
       cpu = f.cpu
       ram = f.ram
-    } if (f.cpu == 2 && f.ram == 4) || (f.cpu == 8 && f.ram == 32) || (f.cpu == 4 && f.ram == 32)]
+    } if (f.cpu == 2 && (f.ram == 4 || f.ram == 8 || f.ram == 16)) || (f.cpu == 8 && f.ram == 32) || (f.cpu == 4 && f.ram == 32)]
     images = [for i in coalesce(data.cloudru_evolution_compute_image_collection.available.images, []) : {
       id = i.id
       name = i.name
