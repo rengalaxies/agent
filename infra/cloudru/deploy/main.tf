@@ -197,18 +197,23 @@ resource "cloudru_evolution_compute_external_ip" "ui" {
   lifecycle {
     prevent_destroy = true
     precondition {
-      condition = length([for ip in data.cloudru_evolution_compute_external_ip_collection.retained_ui.external_ips : ip if ip.id == "33a27f64-e474-49ed-a17b-15f67dd16400" && ip.project_id == var.project_id]) == 1
+      condition = var.original_ui_ip != ""
       error_message = "STOP: original approved UI IP allocation must exist before rebinding."
     }
     postcondition {
-      condition = self.id == "33a27f64-e474-49ed-a17b-15f67dd16400" && self.ip_address == one([for ip in data.cloudru_evolution_compute_external_ip_collection.retained_ui.external_ips : ip.ip_address if ip.id == "33a27f64-e474-49ed-a17b-15f67dd16400"]) && self.network_interface.id == cloudru_evolution_compute_interface.nic["ui"].id
+      condition = self.id == "33a27f64-e474-49ed-a17b-15f67dd16400" && self.ip_address == var.original_ui_ip && self.network_interface.id == cloudru_evolution_compute_interface.nic["ui"].id
       error_message = "STOP: original UI IP or approved interface binding was not retained."
     }
   }
 }
-data "cloudru_evolution_compute_external_ip_collection" "retained_ui" {
-  project_id = var.project_id
-  page_size = 100
+variable "original_ui_ip" {
+  type = string
+  sensitive = true
+  description = "Original UI public IPv4 read from encrypted production state before planning; immutable recovery boundary."
+  validation {
+    condition = can(cidrhost("${var.original_ui_ip}/32", 0))
+    error_message = "Original UI IPv4 must be read from the existing encrypted deployment state."
+  }
 }
 resource "cloudru_evolution_compute_vm" "vm" {
   depends_on = [cloudru_evolution_compute_nat_gateway.core_egress]
