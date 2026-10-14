@@ -1,6 +1,11 @@
 name: Cloud.ru read-only inventory
 on:
   workflow_dispatch:
+    inputs:
+      reboot_ui:
+        description: "Reboot exact approved UI VM for pre-auth SSH diagnosis"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -27,6 +32,7 @@ jobs:
         env:
           KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
           KEY_SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          REBOOT_UI: ${{ inputs.reboot_ui }}
         run: |
           python3 - <<'PY'
           import os,json,urllib.request
@@ -38,6 +44,12 @@ jobs:
           vm=json.load(urllib.request.urlopen(req,timeout=30))
           vm=vm.get("vm",vm)
           assert vm["project"]["id"]=="20853297-65b7-42a8-af40-25c8d2df4e11" and vm["name"]=="dm-p1-ui"
+          if os.environ.get("REBOOT_UI")=="true":
+              req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424/set-power",data=json.dumps({"state":"reboot"}).encode(),headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"})
+              response=urllib.request.urlopen(req,timeout=30)
+              assert response.status in (200,202,204)
+              print("Exact approved UI reboot accepted")
+              raise SystemExit(0)
           print("Exact UI VM status:",json.dumps({k:vm.get(k) for k in ("name","state","power_state")}))
           print("UI guest agent running:",vm.get("guest_agent_state") in ("running","GUEST_AGENT_STATE_RUNNING"))
           print("UI serial console ready:",bool(vm.get("is_serial_ready")))
