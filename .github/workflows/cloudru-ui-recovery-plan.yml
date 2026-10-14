@@ -1,0 +1,188 @@
+name: Cloud.ru UI recovery read-only plan
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-ui-recovery-plan.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-daniil-p1-deployment
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      RECOVERY_STAGE: "plan"
+      TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
+      TF_VAR_git_ref: "29223626ae81cc51a97698bb77475b3640a660fa"
+      TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+      TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+      TF_VAR_ui_flavor: "gen-2-4"
+      TF_VAR_core_flavor: "gen-2-8"
+      TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
+      TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
+      TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+      TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+          terraform_wrapper: false
+      - name: Validate and mask temporary SSH owner address
+        env:
+          ADMIN_CIDR: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
+        run: |
+          python3 - <<'PY'
+          import os,ipaddress
+          value=os.environ.get("ADMIN_CIDR","")
+          if value:
+              network=ipaddress.ip_network(value,strict=True)
+              assert network.version==4 and network.prefixlen==32
+              assert network.network_address.is_global
+              print("::add-mask::"+value)
+              print("::add-mask::"+str(network.network_address))
+          PY
+      - name: Select scoped S3 credentials without exposing values
+        env:
+          RAW_STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          TENANT: ${{ vars.CLOUDRU_TENANT_ID }}
+          BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          STATE_ACCESS: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          STATE_SECRET: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import os,base64
+          access=os.getenv("STATE_ACCESS")
+          secret=os.getenv("STATE_SECRET")
+          if not access and not secret:
+              assert os.environ["TENANT"]=="fc91c42d-c2ea-4d6d-a236-103fd1f37f00"
+              assert os.environ["BUCKET"]=="test-bucket-ds"
+              access=os.environ["TENANT"]+":"+os.environ["KEY_ID"]
+              secret=os.environ["SECRET"]
+          assert access and secret, "Incomplete S3 credentials"
+          assert "\n" not in access and "\n" not in secret
+          print("::add-mask::"+access)
+          print("::add-mask::"+secret)
+          sse=os.environ["RAW_STATE_SSE"].strip()
+          assert len(base64.b64decode(sse,validate=True))==32, "Invalid state encryption key"
+          print("::add-mask::"+sse)
+          with open(os.environ["GITHUB_ENV"],"a") as file:
+              file.write("SCOPED_SSE_KEY="+sse+"\n")
+              file.write("SCOPED_S3_ACCESS="+access+"\nSCOPED_S3_SECRET="+secret+"\n")
+          PY
+      - name: Verify remote state bucket ownership and privacy before any apply
+        env:
+          CLOUDRU_STATE_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
+          CLOUDRU_STATE_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          CLOUDRU_STATE_S3_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
+          CLOUDRU_STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
+          CLOUDRU_STATE_REPORT: /tmp/cloudru-s3-ownership.json
+        run: |
+          set -eu
+          python3 -m pip install --quiet 'boto3>=1.34,<2'
+          python3 infra/cloudru/deploy/check_state_bucket.py
+          python3 - <<'PY'
+          import json
+          r=json.load(open("/tmp/cloudru-s3-ownership.json"))
+          assert r.get("project_id")=="20853297-65b7-42a8-af40-25c8d2df4e11"
+          assert r.get("tag_scope_verified") and r.get("private")
+          assert r.get("versioning")=="Enabled"
+          print("S3 state bucket private, versioned and tagged for approved Cloud.ru project")
+          PY
+      - name: Configure Cloud.ru provider mirror
+        run: |
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc" >> "$GITHUB_ENV"
+      - name: Initialize encrypted remote Terraform state with lockfile
+        working-directory: infra/cloudru/deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
+          STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
+          STATE_REGION: ${{ vars.CLOUDRU_STATE_REGION }}
+        run: |
+          set -eu
+          cat > backend.tf <<'EOF'
+          terraform {
+            backend "s3" {}
+          }
+          EOF
+          STATE_ENDPOINT="${STATE_ENDPOINT:-https://s3.cloud.ru}"
+          terraform init -reconfigure -input=false -no-color \
+            -backend-config="bucket=$STATE_BUCKET" \
+            -backend-config="key=terraform/p1/daniil-smirnov.tfstate" \
+            -backend-config="region=${STATE_REGION:-ru-central-1}" \
+            -backend-config="endpoints={s3=\"$STATE_ENDPOINT\"}" \
+            -backend-config="use_lockfile=true" \
+            -backend-config="encrypt=true" \
+            -backend-config="skip_credentials_validation=true" \
+            -backend-config="skip_region_validation=true" \
+            -backend-config="skip_requesting_account_id=true" \
+            -backend-config="skip_metadata_api_check=true" \
+            -backend-config="use_path_style=true"
+          if ! terraform state list > "$RUNNER_TEMP/state-inventory.txt" 2> "$RUNNER_TEMP/state-read-error.txt"; then
+            if ! grep -q -F "No state file was found" "$RUNNER_TEMP/state-read-error.txt"; then
+              cat "$RUNNER_TEMP/state-read-error.txt"
+              exit 1
+            fi
+            echo "First deployment: production remote state has not been created yet"
+          fi
+      - name: Read existing owner rule from encrypted scoped state
+        working-directory: infra/cloudru/deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
+        run: |
+          python3 - <<'PY'
+          import os,json,subprocess,ipaddress
+          state=json.loads(subprocess.run(["terraform","state","pull"],capture_output=True,text=True,check=True).stdout)
+          rule=None
+          for resource in state.get("resources",[]):
+              for instance in resource.get("instances",[]):
+                  attributes=instance["attributes"]
+                  if "project_id" in attributes: assert attributes["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11"
+                  if resource["type"]=="cloudru_evolution_compute_security_group_rule" and resource["name"]=="ui_admin":
+                      assert attributes["security_group_id"]=="4dde92a5-23a7-4c97-b48f-361d248b5af3" and attributes["port_range"]=="22:22"
+                      rule=attributes["remote_ip_prefix"]
+          assert rule and ipaddress.ip_network(rule).prefixlen==32
+          print("::add-mask::"+rule)
+          print("::add-mask::"+str(ipaddress.ip_network(rule).network_address))
+          with open(os.environ["GITHUB_ENV"],"a") as file: file.write("TF_VAR_admin_cidr="+rule+"\n")
+          print("Existing owner SSH rule preserved in read-only plan")
+          PY
+      - name: Prepare isolated installation credential and single runner address
+        id: prepare
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
+          STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+        run: |
+          python3 -m pip install --quiet boto3 cryptography paramiko requests PyYAML
+          python3 infra/cloudru/deploy/recover_ui.py prepare
+      - name: Validate exact UI-only replacement plan
+        id: plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
+          AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
+          STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+        run: |
+          terraform -chdir=infra/cloudru/deploy validate -no-color
+          python3 infra/cloudru/deploy/recover_ui.py plan
