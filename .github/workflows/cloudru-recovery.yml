@@ -1,0 +1,70 @@
+name: Cloud.ru recovery inspection
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+          terraform_wrapper: false
+      - name: Inspect exact public image authentication template
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/image-inspect"
+          cd "$RUNNER_TEMP/image-inspect"
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror { url = "https://evo-tf-provider-generic.ar.cloud.ru/" include = ["cloudru/*"] }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          export TF_CLI_CONFIG_FILE="$RUNNER_TEMP/terraform.tfrc"
+          cat > main.tf <<'EOF'
+          terraform {
+            required_providers { cloudru = { source = "cloudru/cloud", version = "2.1.3" } }
+          }
+          variable "auth_key_id" {
+            type = string
+            sensitive = true
+          }
+          variable "auth_secret" {
+            type = string
+            sensitive = true
+          }
+          provider "cloudru" {
+            project_id = "20853297-65b7-42a8-af40-25c8d2df4e11"
+            auth_key_id = var.auth_key_id
+            auth_secret = var.auth_secret
+            endpoints = { iam_endpoint = "iam.api.cloud.ru:443", compute_endpoint = "compute.api.cloud.ru:443" }
+          }
+          data "cloudru_evolution_compute_image_collection" "approved" {
+            project_id = "20853297-65b7-42a8-af40-25c8d2df4e11"
+            page_size = 100
+          }
+          output "image" {
+            sensitive = true
+            value = [for i in data.cloudru_evolution_compute_image_collection.approved.images : i if i.id == "fe51a6e6-a5ad-410e-b441-1a195208a8cf"]
+          }
+          EOF
+          terraform init -input=false -no-color > init.log 2>&1 || { tail -20 init.log; exit 1; }
+          terraform plan -input=false -no-color -out=inspect.plan > plan.log 2>&1 || { tail -30 plan.log; exit 1; }
+          terraform show -json inspect.plan > inspect.json
+          python3 - <<'PY'
+          import json
+          images=json.load(open("inspect.json"))["planned_values"]["outputs"]["image"]["value"]
+          assert len(images)==1
+          image=images[0]
+          print("IMAGE",image["name"],image["type"])
+          for field in image.get("image_metadata") or []:
+              print("METADATA",json.dumps({k:field.get(k) for k in ("name","field_type","mandatory_group","default_value","sensitive")}))
+          print("PUBLIC_IMAGE_TEMPLATE_BEGIN")
+          print(image.get("user_data_template",""))
+          print("PUBLIC_IMAGE_TEMPLATE_END")
+          PY
