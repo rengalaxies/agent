@@ -29,7 +29,7 @@ variable "ui_flavor" {
 }
 variable "core_flavor" {
   type = string
-  description = "Must be selected from scoped catalog; approximately 8 vCPU / 32 GiB."
+  description = "Must be selected from scoped catalog; current iteration 2 vCPU / 8 GiB."
 }
 variable "ubuntu_image_id" {
   type = string
