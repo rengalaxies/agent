@@ -59,9 +59,23 @@ def prepare():
     path = TEMP / "installation-key"
     path.write_bytes(raw)
     path.chmod(0o600)
-    response = requests.get("https://api.ipify.org", timeout=15)
-    response.raise_for_status()
-    address = ipaddress.ip_address(response.text.strip())
+    if os.environ["RECOVERY_STAGE"] == "plan":
+        existing = resources(state()).get(("cloudru_evolution_compute_security_group_rule", "deployment_ui", 0))
+        source = existing["remote_ip_prefix"] if existing else os.environ["TF_VAR_admin_cidr"]
+        address = ipaddress.ip_network(source, strict=True).network_address
+    else:
+        address = None
+        for attempt in range(3):
+            try:
+                response = requests.get("https://api.ipify.org", timeout=15)
+                response.raise_for_status()
+                address = ipaddress.ip_address(response.text.strip())
+                break
+            except requests.RequestException:
+                if attempt == 2:
+                    raise RuntimeError("Unable to determine single installation runner IPv4; no access rule will be broadened") from None
+                time.sleep(2)
+        assert address is not None
     assert address.version == 4 and address.is_global
     cidr = str(address) + "/32"
     print("::add-mask::" + str(address))
