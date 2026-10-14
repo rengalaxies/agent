@@ -54,12 +54,14 @@ jobs:
           url=state["outputs"]["ui_https_url"]["value"]
           assert re.fullmatch(r"https://[0-9]+-[0-9]+-[0-9]+-[0-9]+\.sslip\.io",url)
           assert requests.get(url,timeout=15,allow_redirects=False).status_code==401
+          print("HTTPS authentication challenge PASS; UI URL:",url)
           def call(path,payload=None):
               kwargs={"timeout":65,"allow_redirects":False,"auth":("admin",password)}
               response=requests.get(url+path,**kwargs) if payload is None else requests.post(url+path,json=payload,**kwargs)
               assert response.status_code==200,"Unexpected HTTP status on "+path+": "+str(response.status_code)
               return response
           assert "PROTOTYPE" in call("/").text
+          print("Authenticated UI page PASS")
           health=call("/api/healthz").json();assert health["postgres_audit_ready"]
           catalog=call("/api/v1/demo/scenarios").json();assert catalog["dataset"]=="development" and catalog["scenarios"]
           v2=call("/api/v1/demo/runs",{"scenario_id":catalog["scenarios"][0]["id"]}).json()
