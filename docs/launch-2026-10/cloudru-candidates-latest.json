@@ -63,9 +63,27 @@
     },
     {
       "cpu": 2,
+      "id": "6b488421-c4e4-484c-85c7-31132e28fd2d",
+      "name": "gen-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 2,
+      "id": "22719d6f-40f8-4f6e-be69-ca85c7d26040",
+      "name": "gen-2-16",
+      "ram": 16
+    },
+    {
+      "cpu": 2,
       "id": "81de6d4c-3848-4f56-9e3c-bae36434a5d5",
       "name": "spot-2-4",
       "ram": 4
+    },
+    {
+      "cpu": 2,
+      "id": "707f182d-4b6a-48f6-adaf-07449924e14b",
+      "name": "multiqueue-2-8",
+      "ram": 8
     },
     {
       "cpu": 8,
@@ -86,6 +104,18 @@
       "ram": 4
     },
     {
+      "cpu": 2,
+      "id": "e3e2d735-307e-44e1-9940-4cd8662929d3",
+      "name": "high-frequency-9374f-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 2,
+      "id": "fbea126f-a510-4062-a503-36ed7afb290d",
+      "name": "high-frequency-9374f-2-16",
+      "ram": 16
+    },
+    {
       "cpu": 4,
       "id": "c056d52d-c540-4bba-bf63-7dae9971e813",
       "name": "high-frequency-9374f-4-32",
@@ -96,6 +126,18 @@
       "id": "88a186f0-f71c-48b4-9791-fa2433f33295",
       "name": "high-frequency-9374f-8-32",
       "ram": 32
+    },
+    {
+      "cpu": 2,
+      "id": "6bd0593a-3a63-43d7-8098-9489a1df1129",
+      "name": "high-frequency-9354-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 2,
+      "id": "d4538934-05f0-4aa6-814f-5fd763543493",
+      "name": "high-frequency-9354-2-16",
+      "ram": 16
     },
     {
       "cpu": 4,
@@ -122,5 +164,5 @@
       "name": "Ubuntu-24.04"
     }
   ],
-  "source_run_id": "38576805757"
+  "source_run_id": "38577222986"
 }
