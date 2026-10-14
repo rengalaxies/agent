@@ -1,19 +1,13 @@
 name: Cloud.ru read-only inventory
 on:
   workflow_dispatch:
-    inputs:
-      reboot_ui:
-        description: "Reboot exact approved UI VM for pre-auth SSH diagnosis"
-        type: boolean
-        default: false
   push:
     branches: [main]
     paths:
       - 'infra/cloudru/**'
       - '.github/workflows/cloudru-discovery.yml'
 permissions:
-  contents: write
-  issues: write
+  contents: read
 jobs:
   discover:
     runs-on: ubuntu-latest
@@ -28,62 +22,6 @@ jobs:
           KEY_SECRET: ${{ secrets.CLOUDRU_SECRET }}
         run: |
           if [ -z "$KEY_ID" ] || [ -z "$KEY_SECRET" ]; then echo "Missing Cloud.ru GitHub Actions secrets"; exit 1; fi
-      - name: Read exact provisioned UI VM status
-        env:
-          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
-          KEY_SECRET: ${{ secrets.CLOUDRU_SECRET }}
-          REBOOT_UI: ${{ inputs.reboot_ui }}
-        run: |
-          python3 - <<'PY'
-          import os,json,urllib.request
-          body=json.dumps({"keyId":os.environ["KEY_ID"],"secret":os.environ["KEY_SECRET"]}).encode()
-          req=urllib.request.Request("https://iam.api.cloud.ru/api/v1/auth/token",data=body,headers={"Content-Type":"application/json"})
-          token=json.load(urllib.request.urlopen(req,timeout=30))["access_token"]
-          print("::add-mask::"+token)
-          req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424",headers={"Authorization":"Bearer "+token})
-          vm=json.load(urllib.request.urlopen(req,timeout=30))
-          vm=vm.get("vm",vm)
-          assert vm["project"]["id"]=="20853297-65b7-42a8-af40-25c8d2df4e11" and vm["name"]=="dm-p1-ui"
-          if os.environ.get("REBOOT_UI")=="true":
-              req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424/set-power",data=json.dumps({"state":"reboot"}).encode(),headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"})
-              response=urllib.request.urlopen(req,timeout=30)
-              assert response.status in (200,202,204)
-              print("Exact approved UI reboot accepted")
-              raise SystemExit(0)
-          print("Exact UI VM status:",json.dumps({k:vm.get(k) for k in ("name","state","power_state")}))
-          print("UI guest agent running:",vm.get("guest_agent_state") in ("running","GUEST_AGENT_STATE_RUNNING"))
-          print("UI serial console ready:",bool(vm.get("is_serial_ready")))
-          print("UI network interface attached:",bool(vm.get("interfaces")))
-          if vm.get("is_serial_ready"):
-              req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424/remote-console",data=json.dumps({"protocol":"serial"}).encode(),headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"})
-              response=urllib.request.urlopen(req,timeout=30)
-              payload=response.read()
-              console=json.loads(payload) if payload.strip() else {}
-              if not console:
-                  req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424",headers={"Authorization":"Bearer "+token})
-                  console=json.load(urllib.request.urlopen(req,timeout=30))
-              print("Serial API response field names:",list(console))
-              url=console.get("remote_console_ws") or console.get("remoteConsoleWs") or console.get("url")
-              if url:
-                  print("::add-mask::"+url)
-                  import subprocess
-                  subprocess.run(["python3","-m","pip","install","--quiet","websocket-client"],check=True)
-                  import websocket,time
-                  ws=websocket.create_connection(url,timeout=10)
-                  ws.send("\r")
-                  frames=[]
-                  end=time.time()+10
-                  while time.time()<end:
-                      try:
-                          chunk=ws.recv()
-                          frames.append(chunk.decode(errors="replace") if isinstance(chunk,bytes) else chunk)
-                      except websocket.WebSocketTimeoutException: break
-                  ws.close()
-                  text="".join(frames)
-                  print("SERIAL login prompt detected:", "login:" in text)
-                  print("SERIAL cloud-init failure detected:", "failed" in text.lower() and "cloud-init" in text.lower())
-                  print("SERIAL output received:",bool(text))
-          PY
       - name: Configure official Cloud.ru provider mirror
         run: |
           cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
@@ -155,7 +93,7 @@ jobs:
           for scope,rows in q.items():
               for row in rows or []:
                   code=row["resource_type_code"]
-                  if any(x in code.lower() for x in ("vcpu","cpu","ram","memory","network.ip")):
+                  if code.lower() in ("compute.vcpu","compute.ram","network.ip.quantity"):
                       print("QUOTA",scope,json.dumps({k:row.get(k) for k in ("resource_type_code","individual_limit","individual_usage","aggregated_usage")}))
           print("QUOTA_READ_COMPLETE", {k:len(v or []) for k,v in q.items()})
           PY
@@ -168,7 +106,7 @@ jobs:
         run: |
           terraform init -input=false
           terraform validate -no-color
-          terraform plan -input=false -lock=false -out=inventory.tfplan
+          terraform plan -input=false -lock=false -out=inventory.tfplan > "$RUNNER_TEMP/scoped-inventory-plan.log" 2>&1
           terraform show -json inventory.tfplan > /tmp/cloudru-plan.json
           python3 - <<'PY'
           import json
@@ -185,7 +123,7 @@ jobs:
               for item in entries:
                   if item.get("project_id",approved)!=approved:
                       raise SystemExit("ERROR: unexpected project resource")
-              print(category.upper(),len(entries),json.dumps(entries,ensure_ascii=False))
+              print(category.upper(),len(entries))
           print("Verified inventory scope:",approved)
           # Public repo: publish counts only, never resource IDs or addresses.
           import pathlib
@@ -212,45 +150,3 @@ jobs:
           pathlib.Path("../../docs/launch-2026-10/cloudru-candidates-latest.json").write_text(json.dumps(safe,ensure_ascii=False,indent=2)+chr(10))
           print("Safe candidates: flavors",len(safe["flavors"]),"ubuntu",len(safe["ubuntu_images"]))
           PY
-      - name: Publish sanitized inventory summary
-        run: |
-          git config user.name "cloudru-inventory-bot"
-          git config user.email "cloudru-inventory-bot@users.noreply.github.com"
-          git add docs/launch-2026-10/cloudru-inventory-latest.json docs/launch-2026-10/cloudru-candidates-latest.json
-          if ! git diff --cached --quiet; then
-            git commit -m "ci: update Cloud.ru inventory summary [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
-      - name: Publish discovery status to Issue
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          python3 - <<'PY'
-          import pathlib,json
-          inventory=pathlib.Path("docs/launch-2026-10/cloudru-inventory-latest.json")
-          candidates=pathlib.Path("docs/launch-2026-10/cloudru-candidates-latest.json")
-          counts={}
-          if inventory.exists():
-              try: counts=json.loads(inventory.read_text()).get("counts",{})
-              except Exception: pass
-          lines=[
-            "# Cloud.ru read-only discovery",
-            "**Allowed project:** 20853297-65b7-42a8-af40-25c8d2df4e11",
-            "**Run:** ${{ github.run_id }}",
-            "**Commit:** ${{ github.sha }}",
-            "**VM/disk/IP/subnet/NAT counts:** "+str(counts),
-            "**Candidate flavor/image report:** "+("available" if candidates.exists() else "missing - review discovery step"),
-            "",
-            "This workflow cannot create or modify Cloud.ru resources."
-          ]
-          pathlib.Path("/tmp/discovery-status.md").write_text(chr(10).join(lines))
-          PY
-          ISSUE=$(gh issue list --repo "$GH_REPO" --state open --json number,title --jq '.[] | select(.title == "[Cloud.ru CI] Discovery status") | .number' | head -1)
-          if [ -z "$ISSUE" ]; then
-            gh issue create --repo "$GH_REPO" --title "[Cloud.ru CI] Discovery status" --body-file /tmp/discovery-status.md
-          else
-            gh issue edit "$ISSUE" --repo "$GH_REPO" --body-file /tmp/discovery-status.md
-          fi
