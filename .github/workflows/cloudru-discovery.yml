@@ -56,6 +56,67 @@ jobs:
           }
           EOF
           echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc" >> "$GITHUB_ENV"
+      - name: Read authorized CPU RAM IP quota totals
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/quota-check"
+          cd "$RUNNER_TEMP/quota-check"
+          cat > main.tf <<'EOF'
+          terraform {
+           required_providers { cloudru = { source = "cloudru/cloud", version = "2.1.3" } }
+          }
+          variable "auth_key_id" {
+           type = string
+           sensitive = true
+          }
+          variable "auth_secret" {
+           type = string
+           sensitive = true
+          }
+          provider "cloudru" {
+           project_id = "20853297-65b7-42a8-af40-25c8d2df4e11"
+           auth_key_id = var.auth_key_id
+           auth_secret = var.auth_secret
+           endpoints = { iam_endpoint = "iam.api.cloud.ru:443", cloud_platform_endpoint = "organization.api.cloud.ru:443" }
+          }
+          data "cloudru_evolution_organization_project_collection" "approved" {
+           project_ids = ["20853297-65b7-42a8-af40-25c8d2df4e11"]
+           page_size = 1
+          }
+          data "cloudru_evolution_organization_quota_usage_collection" "organization" {
+           subject_type_codes = ["QUOTA_SUBJECT_TYPE_CUSTOMER"]
+           subject_ids = [data.cloudru_evolution_organization_project_collection.approved.projects[0].customer_id]
+           page_size = 100
+          }
+          data "cloudru_evolution_organization_quota_usage_collection" "project" {
+           subject_type_codes = ["QUOTA_SUBJECT_TYPE_PROJECT"]
+           subject_ids = ["20853297-65b7-42a8-af40-25c8d2df4e11"]
+           page_size = 100
+          }
+          output "quota_totals" {
+           sensitive = true
+           value = {
+           organization = data.cloudru_evolution_organization_quota_usage_collection.organization.usages
+           project = data.cloudru_evolution_organization_quota_usage_collection.project.usages
+           }
+          }
+          EOF
+          terraform init -input=false -no-color > /tmp/quota-init.log 2>&1 || { cat /tmp/quota-init.log; exit 1; }
+          terraform plan -input=false -no-color -out=quota.plan > /tmp/quota-plan.log 2>&1 || { tail -30 /tmp/quota-plan.log; exit 1; }
+          terraform show -json quota.plan > quota.json
+          python3 - <<'PY'
+          import json
+          q=json.load(open("quota.json"))["planned_values"]["outputs"]["quota_totals"]["value"]
+          for scope,rows in q.items():
+              for row in rows or []:
+                  code=row["resource_type_code"]
+                  if any(x in code.lower() for x in ("vcpu","cpu","ram","memory","network.ip")):
+                      print("QUOTA",scope,json.dumps({k:row.get(k) for k in ("resource_type_code","individual_limit","individual_usage","aggregated_usage")}))
+          print("QUOTA_READ_COMPLETE", {k:len(v or []) for k,v in q.items()})
+          PY
       - name: Read-only Terraform inventory
         working-directory: infra/cloudru
         env:
