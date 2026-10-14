@@ -229,7 +229,23 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ env.SCOPED_S3_SECRET }}
           AWS_SSE_CUSTOMER_KEY: ${{ env.SCOPED_SSE_KEY }}
           STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
-        run: terraform apply -input=false -auto-approve ui-recovery.tfplan
+        run: |
+          python3 - <<'PY'
+          import os,re,subprocess,pathlib
+          path=pathlib.Path(os.environ["RUNNER_TEMP"])/"ui-apply-private.log"
+          with path.open("w") as log:
+              result=subprocess.run(["terraform","apply","-input=false","-auto-approve","ui-recovery.tfplan"],stdout=log,stderr=subprocess.STDOUT)
+          if result.returncode:
+              text=path.read_text()
+              text=re.sub(r"\\x1b\\[[0-9;]*m","",text)
+              lines=[line for line in text.splitlines() if "message:" in line or "Error:" in line or "Reason:" in line]
+              for line in lines:
+                  line=re.sub(r"[0-9a-fA-F]{8}-[0-9a-fA-F-]{27,}", "[resource]", line)
+                  line=re.sub(r"\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b","[address]",line)
+                  print(line)
+              raise SystemExit(result.returncode)
+          print("UI_RECOVERY_APPLY_PASS: reviewed UI-only plan applied; resource details retained in encrypted state")
+          PY
       - name: Install authenticated UI via native-image SSH
         id: bootstrap
         if: inputs.stage == 'recover' && steps.apply.outcome == 'success'
