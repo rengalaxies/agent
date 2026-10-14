@@ -1,4 +1,5 @@
 name: Cloud.ru UI recovery read-only plan
+# Uses the existing restricted address for planning; creates no access rules.
 on:
   workflow_dispatch:
   push:
