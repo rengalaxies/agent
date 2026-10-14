@@ -189,11 +189,11 @@ jobs:
         working-directory: infra/cloudru/deploy
         env:
           TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
-          TF_VAR_git_ref: ${{ github.sha }}
+          TF_VAR_git_ref: "29223626ae81cc51a97698bb77475b3640a660fa"
           TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
           TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
           TF_VAR_ui_flavor: "gen-2-4"
-          TF_VAR_core_flavor: "gen-8-32"
+          TF_VAR_core_flavor: "gen-2-8"
           TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
           TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
           TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
@@ -224,11 +224,11 @@ jobs:
         working-directory: infra/cloudru/deploy
         env:
           TF_VAR_project_id: "20853297-65b7-42a8-af40-25c8d2df4e11"
-          TF_VAR_git_ref: ${{ github.sha }}
+          TF_VAR_git_ref: "29223626ae81cc51a97698bb77475b3640a660fa"
           TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
           TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
           TF_VAR_ui_flavor: "gen-2-4"
-          TF_VAR_core_flavor: "gen-8-32"
+          TF_VAR_core_flavor: "gen-2-8"
           TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
           TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
           TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
