@@ -10,6 +10,11 @@ on:
         description: "Approved monthly RUB ceiling (must be at least 8000)"
         required: true
         type: string
+      ssh_admin_cidr:
+        description: "Temporary owner SSH IPv4 /32; empty keeps public SSH disabled"
+        required: false
+        default: ""
+        type: string
       approval_phrase:
         description: "Type AUTHORIZE-PAID-DEPLOYMENT to acknowledge billing"
         required: true
@@ -30,6 +35,20 @@ jobs:
         with:
           terraform_version: 1.10.5
           terraform_wrapper: false
+      - name: Validate and mask temporary SSH owner address
+        env:
+          ADMIN_CIDR: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
+        run: |
+          python3 - <<'PY'
+          import os,ipaddress
+          value=os.environ.get("ADMIN_CIDR","")
+          if value:
+              network=ipaddress.ip_network(value,strict=True)
+              assert network.version==4 and network.prefixlen==32
+              assert network.network_address.is_global
+              print("::add-mask::"+value)
+              print("::add-mask::"+str(network.network_address))
+          PY
       - name: Select scoped S3 credentials without exposing values
         env:
           RAW_STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
@@ -73,7 +92,7 @@ jobs:
           STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
           STATE_ENDPOINT: ${{ vars.CLOUDRU_STATE_S3_ENDPOINT }}
           SSH_PUB: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
-          ADMIN_CIDR: ${{ vars.CLOUDRU_ADMIN_CIDR }}
+          ADMIN_CIDR: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
           UI_HASH: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
         run: |
           set -eu
@@ -195,7 +214,7 @@ jobs:
           TF_VAR_ui_flavor: "gen-2-4"
           TF_VAR_core_flavor: "gen-2-8"
           TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
-          TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
+          TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
           TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
           TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
           AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
@@ -230,7 +249,7 @@ jobs:
           TF_VAR_ui_flavor: "gen-2-4"
           TF_VAR_core_flavor: "gen-2-8"
           TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
-          TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
+          TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
           TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
           TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
           AWS_ACCESS_KEY_ID: ${{ env.SCOPED_S3_ACCESS }}
