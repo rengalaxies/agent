@@ -197,7 +197,7 @@ resource "cloudru_evolution_compute_external_ip" "ui" {
 }
 resource "cloudru_evolution_compute_vm" "vm" {
   depends_on = [cloudru_evolution_compute_nat_gateway.core_egress]
-  for_each = local.vm
+  for_each = { core = local.vm.core }
   project_id = var.project_id
   name = "dm-p1-${each.key}"
   zone = { name = var.zone_name }
@@ -229,4 +229,55 @@ output "planned_scope" {
 output "ui_https_url" {
   description = "Temporary demo hostname with managed TLS and restricted HTTP authentication"
   value       = "https://${replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")}.sslip.io"
+}
+
+# Move only the UI VM state address; the private core retains its lifecycle guard.
+moved {
+  from = cloudru_evolution_compute_vm.vm["ui"]
+  to = cloudru_evolution_compute_vm.ui_vm
+}
+variable "deployment_public_key" {
+  type = string
+  default = ""
+  description = "Temporary installation public key; private key never enters Terraform."
+}
+variable "deployment_cidr" {
+  type = string
+  default = ""
+  description = "Temporary installation runner single IPv4 /32."
+  validation {
+    condition = var.deployment_cidr == "" || (can(cidrhost(var.deployment_cidr, 0)) && endswith(var.deployment_cidr, "/32"))
+    error_message = "Installation source must be a single IPv4 /32."
+  }
+}
+resource "cloudru_evolution_compute_vm" "ui_vm" {
+  depends_on = [cloudru_evolution_compute_nat_gateway.core_egress]
+  project_id = var.project_id
+  name = "dm-p1-ui"
+  zone = { name = var.zone_name }
+  flavor = { name = var.ui_flavor }
+  disks = [{ id = cloudru_evolution_compute_disk.boot["ui"].id }]
+  network_interfaces = [{ id = cloudru_evolution_compute_interface.nic["ui"].id }]
+  image_metadata = {
+    hostname = { string_value = "dm-p1-ui" }
+    name = { string_value = "dmadmin" }
+    public_key = { string_value = var.deployment_public_key == "" ? trimspace(var.ssh_public_key) : trimspace(var.deployment_public_key) }
+    guest_agent_ready = { bool_value = true }
+  }
+  # Only the recovery workflow may replace this exact VM. Boot disk is retained.
+  lifecycle {
+    precondition {
+      condition = cloudru_evolution_compute_disk.boot["ui"].id == "9af43326-a6e1-45f1-8235-b82937a1f664"
+      error_message = "STOP: approved UI recovery must retain its existing boot disk."
+    }
+  }
+}
+resource "cloudru_evolution_compute_security_group_rule" "deployment_ui" {
+  count = var.deployment_cidr == "" ? 0 : 1
+  security_group_id = cloudru_evolution_compute_security_group.ui.id
+  direction = "TRAFFIC_DIRECTION_INGRESS"
+  ether_type = "ETHER_TYPE_IPV4"
+  ip_protocol = "IP_PROTOCOL_TCP"
+  port_range = "22:22"
+  remote_ip_prefix = var.deployment_cidr
 }
