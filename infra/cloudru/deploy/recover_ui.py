@@ -95,12 +95,13 @@ def plan():
     current = resources(state())
     core = current[("cloudru_evolution_compute_vm", "vm", "core")]
     assert core["id"] == CORE and core["name"] == "dm-p1-core"
-    ui = current.get(("cloudru_evolution_compute_vm", "ui_vm", None)) or current[("cloudru_evolution_compute_vm", "vm", "ui")]
-    assert ui["name"] == "dm-p1-ui"
+    ui = current.get(("cloudru_evolution_compute_vm", "ui_vm", None)) or current.get(("cloudru_evolution_compute_vm", "vm", "ui"))
+    if ui:
+        assert ui["name"] == "dm-p1-ui"
     boot = current[("cloudru_evolution_compute_disk", "boot", "ui")]
     assert boot["id"] == DISK
     command = ["terraform", "plan", "-input=false", "-no-color", "-out=ui-recovery.tfplan"]
-    if ui["id"] == OLD_UI:
+    if ui and ui["id"] == OLD_UI:
         command.append("-replace=" + ADDRESS)
     with (TEMP / "recovery-plan.log").open("w") as log:
         result = subprocess.run(command, cwd=DEPLOY, stdout=log, stderr=subprocess.STDOUT)
@@ -110,6 +111,7 @@ def plan():
     result = subprocess.run(["terraform", "show", "-json", "ui-recovery.tfplan"], cwd=DEPLOY,
                             capture_output=True, text=True, check=True)
     changes = json.loads(result.stdout).get("resource_changes", [])
+    new_nic = any(r["address"] == 'cloudru_evolution_compute_interface.nic["ui"]' and r["change"]["actions"] == ["create"] for r in changes)
     operations = []
     for resource in changes:
         change = resource["change"]
@@ -117,13 +119,31 @@ def plan():
             continue
         before, after = change.get("before") or {}, change.get("after") or {}
         if resource["address"] == ADDRESS:
-            assert change["actions"] == ["delete", "create"]
-            assert before["id"] == OLD_UI and before["project_id"] == after["project_id"] == PROJECT
+            assert change["actions"] in (["delete", "create"], ["create"])
+            if before:
+                assert before["id"] == OLD_UI and before["project_id"] == PROJECT
+            assert after["project_id"] == PROJECT
             assert after["name"] == "dm-p1-ui"
-            assert after["disks"] == [{"id": DISK, **{k: v for k, v in after["disks"][0].items() if k != "id"}}]
+            assert len(after["disks"]) == 1
             assert after["disks"][0]["id"] == DISK
-            assert after["network_interfaces"][0]["id"] == ui["network_interfaces"][0]["id"]
+            assert len(after["network_interfaces"]) == 1
+            if new_nic:
+                assert after["network_interfaces"][0].get("id") is None
+            else:
+                assert after["network_interfaces"][0]["id"] == current[("cloudru_evolution_compute_interface", "nic", "ui")]["id"]
             assert not after.get("cloud_init_userdata")
+            assert after["image_metadata"]["name"]["string_value"] == "dmadmin"
+        elif resource["address"] == 'cloudru_evolution_compute_interface.nic["ui"]':
+            assert change["actions"] == ["create"] and not before
+            assert after["project_id"] == PROJECT and after["name"] == "dm-p1-ui-nic"
+            assert after["subnet"]["id"] == "d58e80ef-fff1-43eb-b601-96fb358224b7"
+            assert after["security_groups"][0]["id"] == "4dde92a5-23a7-4c97-b48f-361d248b5af3"
+            assert after["interface_security_enabled"] is True
+        elif resource["address"] == "cloudru_evolution_compute_external_ip.ui":
+            assert new_nic and change["actions"] == ["update"]
+            assert before["id"] == after["id"] == "33a27f64-e474-49ed-a17b-15f67dd16400"
+            assert before["project_id"] == after["project_id"] == PROJECT
+            assert before["ip_address"] == after["ip_address"]
         elif resource["address"] == "cloudru_evolution_compute_security_group_rule.deployment_ui[0]":
             assert change["actions"] in (["create"], ["update"])
             assert after["security_group_id"] == "4dde92a5-23a7-4c97-b48f-361d248b5af3"
@@ -133,7 +153,7 @@ def plan():
             raise AssertionError("STOP: unexpected change to " + resource["address"])
         operations.append((resource["address"], change["actions"]))
     print("UI_RECOVERY_PLAN_PASS", json.dumps(operations))
-    print("Private core, all disks, both IPs, NAT and interfaces have no configuration changes")
+    print("Private core, all disks, both allocated IPs and NAT are retained; UI interface restoration is scoped to its original subnet and security group")
 
 
 def connect(host, key, channel=None):
@@ -217,7 +237,12 @@ def bootstrap():
 
 
 def cleanup_plan():
-    result = subprocess.run(["terraform", "plan", "-input=false", "-no-color", "-out=ui-cleanup.tfplan"],
+    command = ["terraform", "plan", "-input=false", "-no-color", "-out=ui-cleanup.tfplan"]
+    if os.environ.get("BOOTSTRAP_SUCCESS") != "true":
+        # If VM creation failed, remove only the temporary SSH rule, without
+        # implicitly attempting another VM/interface/IP recovery in cleanup.
+        command.append("-target=cloudru_evolution_compute_security_group_rule.deployment_ui")
+    result = subprocess.run(command,
                             cwd=DEPLOY, capture_output=True, text=True)
     if result.returncode:
         print(result.stdout[-4000:] + result.stderr[-4000:])
