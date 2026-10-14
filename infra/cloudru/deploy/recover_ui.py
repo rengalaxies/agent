@@ -37,6 +37,11 @@ def s3_client():
 
 
 def prepare():
+    allocation = resources(state())[("cloudru_evolution_compute_external_ip", "ui", None)]
+    assert allocation["id"] == "33a27f64-e474-49ed-a17b-15f67dd16400" and allocation["project_id"] == PROJECT
+    original_ip = allocation["ip_address"]
+    assert ipaddress.ip_address(original_ip).version == 4 and ipaddress.ip_address(original_ip).is_global
+    print("::add-mask::" + original_ip)
     sse = base64.b64decode(os.environ["AWS_SSE_CUSTOMER_KEY"], validate=True)
     assert len(sse) == 32
     client = s3_client()
@@ -81,6 +86,7 @@ def prepare():
     print("::add-mask::" + str(address))
     print("::add-mask::" + cidr)
     with open(os.environ["GITHUB_ENV"], "a") as file:
+        file.write("TF_VAR_original_ui_ip=" + original_ip + "\n")
         file.write("TF_VAR_deployment_public_key=" + public + "\n")
         file.write("TF_VAR_deployment_cidr=" + cidr + "\n")
     print("Installation key prepared; only its public half enters Terraform")
@@ -126,21 +132,13 @@ def plan():
                             capture_output=True, text=True, check=True)
     document = json.loads(result.stdout)
     changes = document.get("resource_changes", [])
-    ip_data = next(r["values"] for r in document["planned_values"]["root_module"]["resources"]
-                   if r["address"] == "data.cloudru_evolution_compute_external_ip_collection.retained_ui")
-    allocations = [ip for ip in ip_data["external_ips"] if ip["id"] == "33a27f64-e474-49ed-a17b-15f67dd16400"]
-    assert len(allocations) == 1 and allocations[0]["project_id"] == PROJECT
-    retained_ip = allocations[0]["ip_address"]
+    retained_ip = os.environ["TF_VAR_original_ui_ip"]
     assert ipaddress.ip_address(retained_ip).is_global
-    (TEMP / "retained-ip-check.json").write_text(json.dumps({"id": allocations[0]["id"], "ip": retained_ip}))
+    (TEMP / "retained-ip-check.json").write_text(json.dumps({"id": "33a27f64-e474-49ed-a17b-15f67dd16400", "ip": retained_ip}))
     new_nic = any(r["address"] == 'cloudru_evolution_compute_interface.nic["ui"]' and r["change"]["actions"] == ["create"] for r in changes)
     operations = []
     for resource in changes:
         change = resource["change"]
-        if resource["mode"] == "data":
-            assert resource["address"] == "data.cloudru_evolution_compute_external_ip_collection.retained_ui"
-            assert (change.get("after") or {})["project_id"] == PROJECT
-            continue
         if change["actions"] == ["no-op"]:
             continue
         before, after = change.get("before") or {}, change.get("after") or {}
