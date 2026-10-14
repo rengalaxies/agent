@@ -97,14 +97,8 @@ jobs:
           assert r.get("versioning")=="Enabled"
           print("S3 state bucket private, versioned and tagged for approved Cloud.ru project")
           PY
-      - uses: actions/cache@v4
-        with:
-          path: ${{ runner.temp }}/cloudru-provider-cache
-          key: cloudru-provider-2.1.3-${{ runner.os }}-${{ runner.arch }}
       - name: Configure Cloud.ru provider mirror
         run: |
-          mkdir -p "$RUNNER_TEMP/cloudru-provider-cache"
-          echo "TF_PLUGIN_CACHE_DIR=$RUNNER_TEMP/cloudru-provider-cache" >> "$GITHUB_ENV"
           cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
           provider_installation {
             network_mirror {
