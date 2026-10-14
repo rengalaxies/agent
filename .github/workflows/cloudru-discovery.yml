@@ -42,6 +42,30 @@ jobs:
           print("UI guest agent running:",vm.get("guest_agent_state") in ("running","GUEST_AGENT_STATE_RUNNING"))
           print("UI serial console ready:",bool(vm.get("is_serial_ready")))
           print("UI network interface attached:",bool(vm.get("interfaces")))
+          if vm.get("is_serial_ready"):
+              req=urllib.request.Request("https://compute.api.cloud.ru/api/v1/vms/1ddaa956-cfeb-4243-8007-1a4b7f715424/remote-console",data=json.dumps({"protocol":"serial"}).encode(),headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"})
+              console=json.load(urllib.request.urlopen(req,timeout=30))
+              print("Serial API response field names:",list(console))
+              url=console.get("remote_console_ws") or console.get("remoteConsoleWs") or console.get("url")
+              if url:
+                  print("::add-mask::"+url)
+                  import subprocess
+                  subprocess.run(["python3","-m","pip","install","--quiet","websocket-client"],check=True)
+                  import websocket,time
+                  ws=websocket.create_connection(url,timeout=10)
+                  ws.send("\\r")
+                  frames=[]
+                  end=time.time()+10
+                  while time.time()<end:
+                      try:
+                          chunk=ws.recv()
+                          frames.append(chunk.decode(errors="replace") if isinstance(chunk,bytes) else chunk)
+                      except websocket.WebSocketTimeoutException: break
+                  ws.close()
+                  text="".join(frames)
+                  print("SERIAL login prompt detected:", "login:" in text)
+                  print("SERIAL cloud-init failure detected:", "failed" in text.lower() and "cloud-init" in text.lower())
+                  print("SERIAL output received:",bool(text))
           PY
       - name: Configure official Cloud.ru provider mirror
         run: |
