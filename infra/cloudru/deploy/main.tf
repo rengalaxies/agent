@@ -206,13 +206,11 @@ resource "cloudru_evolution_compute_vm" "vm" {
   network_interfaces = [{ id = cloudru_evolution_compute_interface.nic[each.key].id }]
   cloud_init_userdata = base64encode(templatefile("${path.module}/../bootstrap/${each.key == "ui" ? "ui" : "core"}-cloud-init.yaml", {
     git_ref = var.git_ref
+    ssh_public_key = jsonencode(trimspace(var.ssh_public_key))
     core_ip = cloudru_evolution_compute_interface.nic["core"].ip_address
     ui_ip_dashed = replace(cloudru_evolution_compute_external_ip.ui.ip_address, ".", "-")
     ui_basic_auth_hash = var.ui_basic_auth_hash
   }))
-  image_metadata = {
-    public_key = { string_value = var.ssh_public_key }
-  }
   lifecycle {
     prevent_destroy = true
   }
