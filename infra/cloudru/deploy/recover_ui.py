@@ -124,11 +124,23 @@ def plan():
         raise SystemExit(result.returncode)
     result = subprocess.run(["terraform", "show", "-json", "ui-recovery.tfplan"], cwd=DEPLOY,
                             capture_output=True, text=True, check=True)
-    changes = json.loads(result.stdout).get("resource_changes", [])
+    document = json.loads(result.stdout)
+    changes = document.get("resource_changes", [])
+    ip_data = next(r["values"] for r in document["planned_values"]["root_module"]["resources"]
+                   if r["address"] == "data.cloudru_evolution_compute_external_ip_collection.retained_ui")
+    allocations = [ip for ip in ip_data["external_ips"] if ip["id"] == "33a27f64-e474-49ed-a17b-15f67dd16400"]
+    assert len(allocations) == 1 and allocations[0]["project_id"] == PROJECT
+    retained_ip = allocations[0]["ip_address"]
+    assert ipaddress.ip_address(retained_ip).is_global
+    (TEMP / "retained-ip-check.json").write_text(json.dumps({"id": allocations[0]["id"], "ip": retained_ip}))
     new_nic = any(r["address"] == 'cloudru_evolution_compute_interface.nic["ui"]' and r["change"]["actions"] == ["create"] for r in changes)
     operations = []
     for resource in changes:
         change = resource["change"]
+        if resource["mode"] == "data":
+            assert resource["address"] == "data.cloudru_evolution_compute_external_ip_collection.retained_ui"
+            assert (change.get("after") or {})["project_id"] == PROJECT
+            continue
         if change["actions"] == ["no-op"]:
             continue
         before, after = change.get("before") or {}, change.get("after") or {}
@@ -157,7 +169,16 @@ def plan():
             assert new_nic and change["actions"] == ["update"]
             assert before["id"] == after["id"] == "33a27f64-e474-49ed-a17b-15f67dd16400"
             assert before["project_id"] == after["project_id"] == PROJECT
-            assert before["ip_address"] == after["ip_address"]
+            assert before["ip_address"] == retained_ip
+            if "ip_address" in after:
+                assert after["ip_address"] == retained_ip
+            else:
+                # This field is read-only and recomputed by this provider on a
+                # NIC update. A live precheck plus mandatory Terraform
+                # postcondition enforces the same physical IP and exact NIC.
+                assert change["after_unknown"]["ip_address"] is True
+                assert any(check["address"].get("to_display") == resource["address"]
+                           and check["status"] == "unknown" for check in document.get("checks", []))
         elif resource["address"] == "cloudru_evolution_compute_security_group_rule.deployment_ui[0]":
             assert change["actions"] in (["create"], ["update"])
             assert after["security_group_id"] == "4dde92a5-23a7-4c97-b48f-361d248b5af3"
@@ -205,6 +226,11 @@ def bootstrap():
     assert data[("cloudru_evolution_compute_vm", "vm", "core")]["id"] == CORE
     assert data[("cloudru_evolution_compute_disk", "boot", "ui")]["id"] == DISK
     public_ip = data[("cloudru_evolution_compute_external_ip", "ui", None)]["ip_address"]
+    allocation = data[("cloudru_evolution_compute_external_ip", "ui", None)]
+    retained = json.loads((TEMP / "retained-ip-check.json").read_text())
+    assert allocation["id"] == retained["id"] and public_ip == retained["ip"]
+    assert allocation["network_interface"]["id"] == data[("cloudru_evolution_compute_interface", "nic", "ui")]["id"]
+    print("Original public IP and exact approved UI NIC binding verified after apply")
     core_ip = data[("cloudru_evolution_compute_interface", "nic", "core")]["ip_address"]
     key = paramiko.Ed25519Key.from_private_key_file(str(TEMP / "installation-key"))
     client = None
