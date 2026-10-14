@@ -39,7 +39,7 @@ jobs:
           print("VM response keys:",list(vm))
           vm=vm.get("vm",vm)
           print("VM field names:",list(vm))
-          assert vm["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11" and vm["name"]=="dm-p1-ui"
+          assert vm["project"]["id"]=="20853297-65b7-42a8-af40-25c8d2df4e11" and vm["name"]=="dm-p1-ui"
           print("Exact UI VM status:",json.dumps({k:vm.get(k) for k in ("name","state","power_state")}))
           PY
       - name: Configure official Cloud.ru provider mirror
