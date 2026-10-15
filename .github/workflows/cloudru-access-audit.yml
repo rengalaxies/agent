@@ -15,6 +15,7 @@ jobs:
         env:
           KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
           SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          WF_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
           SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
         run: |
           python3 -m pip install --quiet boto3 requests
@@ -91,5 +92,29 @@ jobs:
               print("WORKFLOW_API_HTTP_STATUS",r.status_code)
           except requests.RequestException as e:
               print("WORKFLOW_API_CONNECTION",type(e).__name__)
+          key=os.environ.get("WF_KEY","").strip()
+          if key:
+              print("::add-mask::"+key)
+              base="https://devtools.api.cloud.ru/workflow/v1/project/"+project
+              rr=requests.get(base+"/application/de8e6314-9e8b-4b39-bf69-4b1469928955/deployment/list",headers={"X-API-KEY":key},timeout=30)
+              print("DEPLOYMENT_HISTORY_HTTP",rr.status_code)
+              if rr.ok:
+                  deps=rr.json().get("deployments",[])
+                  print("DEPLOYMENT_COUNT",rr.json().get("total"))
+                  for dep in deps[:1]:
+                      run=dep.get("run") or {}
+                      print("LATEST_RUN_STATE",run.get("status"))
+                      for stage in run.get("stages") or []:
+                          for job in stage.get("jobs") or []:
+                              if job.get("name") in ("create_registry","test_build_push","create_container"):
+                                  print("LATEST_JOB",job["name"],job.get("status"))
+          rr=requests.get("https://containers.api.cloud.ru/v2/containers",headers=headers,params={"projectId":project},timeout=30)
+          print("CONTAINERS_API_HTTP",rr.status_code)
+          if rr.ok:
+              def shape(v):
+                  if isinstance(v,dict): return {k:shape(x) for k,x in v.items()}
+                  if isinstance(v,list): return [shape(v[0])] if v else []
+                  return type(v).__name__
+              print("CONTAINERS_SCHEMA",json.dumps(shape(rr.json())))
           print("AUDIT_COMPLETE: no infrastructure mutations")
           PY
