@@ -1,0 +1,54 @@
+name: Durable evidence release and local pilot
+on:
+  push:
+    branches: [research/durable-evidence-release]
+    paths:
+      - '.github/workflows/durable-evidence.yml'
+      - 'src/datamesh_release_protocol/evidence_release.py'
+      - 'src/datamesh_release_protocol/evidence_pilot.py'
+      - 'services/evidence_pilot.py'
+      - 'tests/test_evidence_release.py'
+      - 'tests/test_evidence_pilot.py'
+      - 'tools/*evidence*demo.py'
+      - 'tools/check_evidence_pilot_browser.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: '.:src:tests:tools'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[distributed]'
+      - name: Existing guarantees, durable failure tests and pilot HTTP lifecycle
+        run: python -m unittest test_pr_assistant test_evidence_snapshot test_migration_evidence test_evidence_graph test_consumer_test_baseline test_knowledge test_evidence_release test_evidence_pilot -v
+      - name: Fresh durable lifecycle and restart
+        run: python tools/run_durable_evidence_demo.py --output /tmp/durable-evidence
+      - name: Previous research artifacts remain reproducible
+        run: |
+          python tools/compare_pr_assistant.py --output /tmp/pr-assistant-comparison.json
+          diff docs/research-2026-10-15/pr-assistant-comparison.json /tmp/pr-assistant-comparison.json
+          python tools/run_pr_assistant.py --output /tmp/pr-assistant-review
+          diff -r docs/research-2026-10-15/pr-assistant-demo /tmp/pr-assistant-review
+          python tools/run_evidence_snapshot_demo.py > /tmp/evidence-snapshot.json
+          diff docs/research-2026-10-15/evidence-snapshot-results.json /tmp/evidence-snapshot.json
+      - name: Install actual browser for local pilot check
+        run: |
+          python -m pip install 'playwright>=1.50,<2'
+          python -m playwright install --with-deps chromium
+      - name: Exercise UI buttons and capture evidence
+        run: python tools/check_evidence_pilot_browser.py --output /tmp/evidence-pilot-browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: durable-evidence-pilot-results
+          path: |
+            /tmp/durable-evidence
+            /tmp/evidence-pilot-browser
+            /tmp/pr-assistant-review
