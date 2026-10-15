@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: ["deploy/cloudru-managed"]
-    paths: ["Dockerfile", "services/managed_app.py", ".github/workflows/cloudru-managed-test.yml"]
+    paths: ["Dockerfile", "services/**", "tests/test_audit_volume.py", ".github/workflows/cloudru-managed-test.yml"]
 permissions:
   contents: read
 jobs:
@@ -73,4 +73,45 @@ jobs:
               for name in ("managed-no-db","managed-app","managed-db"):
                   subprocess.run(["docker","rm","-f",name],capture_output=True)
               subprocess.run(["docker","network","rm",network],capture_output=True)
+          PY
+      - name: Verify persistent volume audit, integrity and app recreation
+        run: |
+          docker run --rm --entrypoint python -v "$PWD/tests:/app/tests:ro" dmrp-managed:test -m unittest discover -s tests -p test_audit_volume.py -v
+          python3 - <<'PY'
+          import subprocess,os,secrets,hashlib,time,json,tempfile,pathlib
+          import requests
+          directory=tempfile.mkdtemp()
+          os.chmod(directory,0o777)
+          pathlib.Path(directory,".dmrp-audit-volume-v1.json").write_text(json.dumps({"project_id":"20853297-65b7-42a8-af40-25c8d2df4e11","dataset":"development","format":1}))
+          env=os.environ.copy()
+          password=secrets.token_hex(24)
+          env.update(DMRP_UI_USERNAME="researcher",DMRP_UI_PASSWORD_SHA256=hashlib.sha256(password.encode()).hexdigest())
+          base="http://127.0.0.1:18081"
+          auth=("researcher",password)
+          def start():
+              subprocess.run(["docker","run","-d","--name","managed-volume","--read-only","--tmpfs","/tmp","--cap-drop","ALL","-p","127.0.0.1:18081:8080","-v",directory+":/audit-data","-e","DMRP_UI_USERNAME","-e","DMRP_UI_PASSWORD_SHA256","-e","DMRP_AUDIT_BACKEND=object_storage_volume","dmrp-managed:test"],env=env,check=True,capture_output=True)
+              for _ in range(40):
+                  try:
+                      if requests.get(base+"/healthz",timeout=3).status_code==200: return
+                  except requests.RequestException: pass
+                  time.sleep(1)
+              raise AssertionError("Persistent volume readiness failed")
+          try:
+              start()
+              scenarios=requests.get(base+"/api/v1/demo/scenarios",auth=auth,timeout=5).json()["scenarios"]
+              response=requests.post(base+"/api/v1/demo/runs",auth=auth,json={"scenario_id":scenarios[0]["id"]},timeout=20)
+              response.raise_for_status()
+              result=response.json()
+              assert result["audit"]["persisted"] and result["audit"]["backend"]=="object_storage_volume"
+              run_id=result["run_id"]
+              assert requests.get(base+"/api/v1/demo/audit/"+run_id,timeout=5).status_code==401
+              subprocess.run(["docker","rm","-f","managed-volume"],check=True,capture_output=True)
+              start()
+              saved=requests.get(base+"/api/v1/demo/audit/"+run_id,auth=auth,timeout=5)
+              saved.raise_for_status()
+              assert saved.json()["decision"]==result["decision"]
+              assert saved.json()["payload_sha256"]==result["audit"]["sha256"]
+              print("PASS: real V2 result persists across container recreation and authenticated retrieval")
+          finally:
+              subprocess.run(["docker","rm","-f","managed-volume"],capture_output=True)
           PY
