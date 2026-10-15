@@ -1,0 +1,222 @@
+{
+  "kind": "synthetic-evidence-lifecycle-not-business-validation",
+  "unconfirmed": {
+    "format": "migration-evidence-snapshot-1",
+    "knowledge_snapshot_id": "706a05fe5b4ecfeed1def397bd7b1c20d74b8493674cbc21649c55d3069ce01f",
+    "receipts": [
+      {
+        "verifier": "migration-fixtures-1",
+        "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+        "migration": {
+          "dimension": "unit_scale",
+          "source": "kopeck:0",
+          "target": "RUB:2",
+          "expression": "value / 100",
+          "validated_examples": 1,
+          "bijective": false
+        },
+        "fixtures": [
+          {
+            "input": "123",
+            "expected": "1.23"
+          }
+        ],
+        "input_hash": "31458a7c21c3767e3303b81603fb4a9502f004ea0bdd6539aa16a96e55a641d0",
+        "decision": "ACCEPT",
+        "reason": "FIXTURES_PASSED",
+        "results": [
+          {
+            "input": "123",
+            "expected": "1.23",
+            "actual": "1.23",
+            "passed": true
+          }
+        ],
+        "guarantee": "listed fixtures only",
+        "receipt_hash": "7c613071b21bbd06529ebcee4e3b27586578a2cd47003a972fb4449be6ad7f71"
+      }
+    ],
+    "fixture_refs": [
+      "git:test-fixtures@commit-1"
+    ],
+    "subject_hash": "56ad155d81ca8f9551ef5e8fc8008c609082a8509d963260fa9e711f6c1572b8",
+    "trust_hash": "53acdfaa39a3653074738312ea036b6384a7c818c87f4ada75c8768395fc9585",
+    "required_domains": [
+      "risk",
+      "sales"
+    ],
+    "confirmations": [],
+    "decision": "NEEDS_REVIEW",
+    "issues": [
+      "unconfirmed_domain:risk",
+      "unconfirmed_domain:sales"
+    ],
+    "release_authorization": false,
+    "evidence_snapshot_id": "555ea517e5dcd68731e81ab62d59a9299f005eaa31eaaab413bfb8b50521f294"
+  },
+  "confirmed": {
+    "format": "migration-evidence-snapshot-1",
+    "knowledge_snapshot_id": "706a05fe5b4ecfeed1def397bd7b1c20d74b8493674cbc21649c55d3069ce01f",
+    "receipts": [
+      {
+        "verifier": "migration-fixtures-1",
+        "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+        "migration": {
+          "dimension": "unit_scale",
+          "source": "kopeck:0",
+          "target": "RUB:2",
+          "expression": "value / 100",
+          "validated_examples": 1,
+          "bijective": false
+        },
+        "fixtures": [
+          {
+            "input": "123",
+            "expected": "1.23"
+          }
+        ],
+        "input_hash": "31458a7c21c3767e3303b81603fb4a9502f004ea0bdd6539aa16a96e55a641d0",
+        "decision": "ACCEPT",
+        "reason": "FIXTURES_PASSED",
+        "results": [
+          {
+            "input": "123",
+            "expected": "1.23",
+            "actual": "1.23",
+            "passed": true
+          }
+        ],
+        "guarantee": "listed fixtures only",
+        "receipt_hash": "7c613071b21bbd06529ebcee4e3b27586578a2cd47003a972fb4449be6ad7f71"
+      }
+    ],
+    "fixture_refs": [
+      "git:test-fixtures@commit-1"
+    ],
+    "subject_hash": "56ad155d81ca8f9551ef5e8fc8008c609082a8509d963260fa9e711f6c1572b8",
+    "trust_hash": "53acdfaa39a3653074738312ea036b6384a7c818c87f4ada75c8768395fc9585",
+    "required_domains": [
+      "risk",
+      "sales"
+    ],
+    "confirmations": [
+      {
+        "actor": "consumer",
+        "domain": "risk",
+        "subject_hash": "56ad155d81ca8f9551ef5e8fc8008c609082a8509d963260fa9e711f6c1572b8",
+        "version": 1,
+        "status": "confirmed",
+        "evidence_ref": "review:test-owner",
+        "valid_from": "2026-09-29T00:00:03Z",
+        "valid_until": "2026-09-29T00:00:30Z",
+        "signature": "hdNVIaK4067GVmeVAjUwP8VggkJcNs+K+YvnP+3dbudbbugBXPO8ixV+Yx1/sz942+5i790hI1Ahk+V5Z0lQCA=="
+      },
+      {
+        "actor": "producer",
+        "domain": "sales",
+        "subject_hash": "56ad155d81ca8f9551ef5e8fc8008c609082a8509d963260fa9e711f6c1572b8",
+        "version": 1,
+        "status": "confirmed",
+        "evidence_ref": "review:test-owner",
+        "valid_from": "2026-09-29T00:00:03Z",
+        "valid_until": "2026-09-29T00:00:30Z",
+        "signature": "OSlWS/qEgrJ7EIfPA5Mj1D7jsWjGca3RN0CFdhz2f6Wd/+fhqoUPgoQdDyVZ69MxdimJ/cN6UetgOf+tbcxqCg=="
+      }
+    ],
+    "decision": "ACCEPT",
+    "issues": [],
+    "release_authorization": false,
+    "evidence_snapshot_id": "5b606f5a1531945d5e359cf46ddddf6307ab401bb1d951a6b47aff4b5923ded8"
+  },
+  "graph": {
+    "format": "migration-evidence-snapshot-1",
+    "knowledge_snapshot_id": "706a05fe5b4ecfeed1def397bd7b1c20d74b8493674cbc21649c55d3069ce01f",
+    "nodes": [
+      {
+        "id": "confirmation:53defcc454c8ac4ebe7b1fead5b9eec3e3d1ab2fbebad017a51a63e60c00651d",
+        "kind": "domain_confirmation",
+        "actor": "consumer",
+        "domain": "risk",
+        "subject_hash": "56ad155d81ca8f9551ef5e8fc8008c609082a8509d963260fa9e711f6c1572b8",
+        "version": 1,
+        "status": "confirmed",
+        "evidence_ref": "review:test-owner",
+        "valid_from": "2026-09-29T00:00:03Z",
+        "valid_until": "2026-09-29T00:00:30Z",
+        "signature": "hdNVIaK4067GVmeVAjUwP8VggkJcNs+K+YvnP+3dbudbbugBXPO8ixV+Yx1/sz942+5i790hI1Ahk+V5Z0lQCA=="
+      },
+      {
+        "id": "confirmation:c807da82786a625f2630697b220f1f5bbb11973a25eecf6d8d6483b14a437105",
+        "kind": "domain_confirmation",
+        "actor": "producer",
+        "domain": "sales",
+        "subject_hash": "56ad155d81ca8f9551ef5e8fc8008c609082a8509d963260fa9e711f6c1572b8",
+        "version": 1,
+        "status": "confirmed",
+        "evidence_ref": "review:test-owner",
+        "valid_from": "2026-09-29T00:00:03Z",
+        "valid_until": "2026-09-29T00:00:30Z",
+        "signature": "OSlWS/qEgrJ7EIfPA5Mj1D7jsWjGca3RN0CFdhz2f6Wd/+fhqoUPgoQdDyVZ69MxdimJ/cN6UetgOf+tbcxqCg=="
+      },
+      {
+        "id": "fixture:154778748ff20850b5c33b535b9adf9d742d2bce97d0a36d8c667540debe68e7",
+        "kind": "fixture_evidence",
+        "evidence_ref": "git:test-fixtures@commit-1"
+      },
+      {
+        "id": "migration:f69195c4bb80716c0fa0773669468764329997fb4dc21bb345a418e40a1450fc",
+        "kind": "migration"
+      },
+      {
+        "id": "receipt:7c613071b21bbd06529ebcee4e3b27586578a2cd47003a972fb4449be6ad7f71",
+        "kind": "verification_receipt"
+      },
+      {
+        "id": "snapshot:5b606f5a1531945d5e359cf46ddddf6307ab401bb1d951a6b47aff4b5923ded8",
+        "kind": "evidence_snapshot"
+      }
+    ],
+    "edges": [
+      {
+        "source": "confirmation:53defcc454c8ac4ebe7b1fead5b9eec3e3d1ab2fbebad017a51a63e60c00651d",
+        "target": "snapshot:5b606f5a1531945d5e359cf46ddddf6307ab401bb1d951a6b47aff4b5923ded8",
+        "relation": "attests_subject"
+      },
+      {
+        "source": "confirmation:c807da82786a625f2630697b220f1f5bbb11973a25eecf6d8d6483b14a437105",
+        "target": "snapshot:5b606f5a1531945d5e359cf46ddddf6307ab401bb1d951a6b47aff4b5923ded8",
+        "relation": "attests_subject"
+      },
+      {
+        "source": "snapshot:5b606f5a1531945d5e359cf46ddddf6307ab401bb1d951a6b47aff4b5923ded8",
+        "target": "migration:f69195c4bb80716c0fa0773669468764329997fb4dc21bb345a418e40a1450fc",
+        "relation": "contains"
+      },
+      {
+        "source": "receipt:7c613071b21bbd06529ebcee4e3b27586578a2cd47003a972fb4449be6ad7f71",
+        "target": "fixture:154778748ff20850b5c33b535b9adf9d742d2bce97d0a36d8c667540debe68e7",
+        "relation": "tested_on"
+      },
+      {
+        "source": "migration:f69195c4bb80716c0fa0773669468764329997fb4dc21bb345a418e40a1450fc",
+        "target": "receipt:7c613071b21bbd06529ebcee4e3b27586578a2cd47003a972fb4449be6ad7f71",
+        "relation": "verified_by"
+      }
+    ],
+    "guarantee": "signed expectations and listed executable fixtures only"
+  },
+  "before_revocation": {
+    "current": true,
+    "decision": "ACCEPT",
+    "reasons": [],
+    "release_authorization": false
+  },
+  "after_revocation": {
+    "current": false,
+    "decision": "NEEDS_REVIEW",
+    "reasons": [
+      "evidence_or_confirmation_changed"
+    ],
+    "release_authorization": false
+  }
+}
