@@ -15,6 +15,8 @@ jobs:
       - name: Exercise the actual public page and V2 button
         env:
           GH_TOKEN: ${{ github.token }}
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
           SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
         run: |
           python3 -m pip install --quiet playwright cryptography requests
@@ -27,14 +29,23 @@ jobs:
           cfg=json.loads(AESGCM(key).decrypt(enc[:12],enc[12:],b"dmrp-managed-auth-v1"))
           for value in cfg.values(): print("::add-mask::"+value)
           for attempt in range(45):
-              deploy=requests.get("https://api.github.com/repos/rengalaxies/agent/actions/runs/38727858485",headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"]},timeout=20)
+              deploy=requests.get("https://api.github.com/repos/rengalaxies/agent/actions/runs/38728500696",headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"]},timeout=20)
               deploy.raise_for_status()
               if deploy.json()["status"]=="completed":
                   assert deploy.json()["conclusion"]=="success", "Cloud durability verification must pass"
                   break
               time.sleep(8)
           else: raise AssertionError("Cloud deployment still running")
-          url="https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru"
+          a=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          a.raise_for_status()
+          token=a.json()["access_token"]
+          print("::add-mask::"+token)
+          listing=requests.get("https://containers.api.cloud.ru/v2/containers",headers={"Authorization":"Bearer "+token},params={"projectId":"20853297-65b7-42a8-af40-25c8d2df4e11"},timeout=30)
+          listing.raise_for_status()
+          targets=[d for d in listing.json().get("data",[]) if d.get("name","").startswith("dmrp-demo-audit")]
+          assert len(targets)==1
+          url=targets[0]["configuration"]["ingress"]["publicUri"]
+          if not url.startswith("http"): url="https://"+url
           for attempt in range(36):
               try:
                   r=requests.get(url+"/healthz",timeout=10)
