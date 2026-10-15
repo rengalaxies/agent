@@ -7,6 +7,7 @@ on:
       - 'src/datamesh_release_protocol/evidence_snapshot.py'
       - 'tests/test_evidence_snapshot.py'
       - 'tools/run_evidence_snapshot_demo.py'
+      - 'docs/research-2026-10-15/evidence-snapshot-results.json'
   workflow_dispatch:
 permissions:
   contents: read
