@@ -83,7 +83,13 @@ jobs:
                   if r.ok and "json" in r.headers.get("Content-Type",""):
                       doc=r.json()
                       print("AGENT_API_"+kind+"_FIELDS",sorted(doc) if isinstance(doc,dict) else type(doc).__name__)
-                      if kind=="instanceTypes": print("AGENT_INSTANCE_TYPES",json.dumps(doc)[:5000])
+                      pass  # Never publish response payloads.
               except requests.RequestException as e: print("AGENT_API_"+kind,type(e).__name__)
+          try:
+              url="https://devtools.api.cloud.ru/workflow/v1/project/"+project+"/application/list"
+              r=requests.get(url,headers=headers,timeout=20)
+              print("WORKFLOW_API_HTTP_STATUS",r.status_code)
+          except requests.RequestException as e:
+              print("WORKFLOW_API_CONNECTION",type(e).__name__)
           print("AUDIT_COMPLETE: no infrastructure mutations")
           PY
