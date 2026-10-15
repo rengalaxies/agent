@@ -32,3 +32,20 @@ Deployment prerequisites still to resolve:
 Current IAM bearer was accepted by AI Agents read APIs but returned HTTP 403 from Workflow Studio.
 This does not establish that creating an agent or managed app is permitted.
 No public site is claimed until deployment and browser/API checks succeed.
+
+## Persistent public demo audit
+
+The managed demo can select DMRP_AUDIT_BACKEND=object_storage_volume and mount
+the dedicated private, versioned bucket dmrp-demo-audit-20853297 at /audit-data.
+This stores independent JSON records and verifies SHA-256 on authenticated reads.
+It is a development-demo audit sink, not PostgreSQL or a transactional database.
+The default backend remains PostgreSQL for the original VM/experimental setup.
+
+No IAM access key is injected into the application. The platform mounts the bucket.
+Readiness fails without the exact mounted-volume marker. Do not disable the mount
+check in deployed environments. No temporary-directory fallback is provided.
+Only public development scenarios are retained; no confirmatory evidence is created.
+The bucket is isolated from the encrypted Terraform state bucket.
+
+Validation must include independent S3 object retrieval and reading the same run
+after a real stop/start, beyond local bind-mount tests. Keep maxInstanceCount=1.
