@@ -24,7 +24,7 @@ jobs:
       TF_VAR_ui_flavor: "gen-2-4"
       TF_VAR_core_flavor: "gen-2-8"
       TF_VAR_ubuntu_image_id: "fe51a6e6-a5ad-410e-b441-1a195208a8cf"
-      TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
+      TF_VAR_admin_cidr: ${{ vars.CLOUDRU_ADMIN_CIDR }}
       TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
       TF_VAR_ui_basic_auth_hash: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
     steps:
@@ -35,7 +35,7 @@ jobs:
           terraform_wrapper: false
       - name: Validate and mask temporary SSH owner address
         env:
-          ADMIN_CIDR: ${{ inputs.ssh_admin_cidr || vars.CLOUDRU_ADMIN_CIDR }}
+          ADMIN_CIDR: ${{ vars.CLOUDRU_ADMIN_CIDR }}
         run: |
           python3 - <<'PY'
           import os,ipaddress
