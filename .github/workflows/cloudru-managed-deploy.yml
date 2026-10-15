@@ -1,9 +1,6 @@
 name: Deploy and verify persistent managed demo
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [".github/workflows/cloudru-managed-deploy.yml"]
 permissions:
   contents: read
   actions: read
@@ -48,8 +45,12 @@ jobs:
           headers={"Authorization":"Bearer "+token}
           base="https://containers.api.cloud.ru/v2/containers/"+name
           params={"projectId":project}
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+          session=requests.Session()
+          session.mount("https://",HTTPAdapter(max_retries=Retry(total=4,backoff_factor=1,status_forcelist=[429,502,503,504],allowed_methods=["GET"])))
           def get_app():
-              r=requests.get(base,headers=headers,params=params,timeout=30)
+              r=session.get(base,headers=headers,params=params,timeout=20)
               r.raise_for_status()
               d=r.json()
               assert d["projectId"]==project and d["name"]==name
@@ -128,15 +129,17 @@ jobs:
           r=requests.post(base+":stop",headers=headers,params=params,timeout=30)
           print("STOP_HTTP",r.status_code)
           r.raise_for_status()
-          for _ in range(30):
-              state=get_app()["status"]
-              if state=="stopped": break
-              time.sleep(3)
-          else: raise AssertionError("Container stop did not complete")
-          print("CONTAINER_STOP_CONFIRMED")
-          r=requests.post(base+":start",headers=headers,params=params,timeout=30)
-          print("START_HTTP",r.status_code)
-          r.raise_for_status()
+          try:
+              for _ in range(30):
+                  state=get_app()["status"]
+                  if state in ("stopped","suspended"): break
+                  time.sleep(3)
+              else: raise AssertionError("Container suspension did not complete")
+              print("CONTAINER_SUSPEND_CONFIRMED")
+          finally:
+              r=requests.post(base+":start",headers=headers,params=params,timeout=35)
+              print("START_HTTP",r.status_code)
+              r.raise_for_status()
           ready()
           restored=requests.get(url+"/api/v1/demo/audit/"+saved_result["run_id"],auth=ui_auth,timeout=20)
           restored.raise_for_status()
