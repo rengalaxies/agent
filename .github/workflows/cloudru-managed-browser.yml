@@ -6,6 +6,7 @@ on:
     paths: [".github/workflows/cloudru-managed-browser.yml"]
 permissions:
   contents: read
+  actions: read
 jobs:
   browser:
     runs-on: ubuntu-latest
@@ -13,6 +14,7 @@ jobs:
     steps:
       - name: Exercise the actual public page and V2 button
         env:
+          GH_TOKEN: ${{ github.token }}
           SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
         run: |
           python3 -m pip install --quiet playwright cryptography requests
@@ -24,6 +26,14 @@ jobs:
           key=base64.b64decode(os.environ["SSE"].strip(),validate=True)
           cfg=json.loads(AESGCM(key).decrypt(enc[:12],enc[12:],b"dmrp-managed-auth-v1"))
           for value in cfg.values(): print("::add-mask::"+value)
+          for attempt in range(45):
+              deploy=requests.get("https://api.github.com/repos/rengalaxies/agent/actions/runs/38726642963",headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"]},timeout=20)
+              deploy.raise_for_status()
+              if deploy.json()["status"]=="completed":
+                  assert deploy.json()["conclusion"]=="success", "Cloud durability verification must pass"
+                  break
+              time.sleep(8)
+          else: raise AssertionError("Cloud deployment still running")
           url="https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru"
           for attempt in range(36):
               try:
@@ -42,7 +52,9 @@ jobs:
               browser=p.chromium.launch(**options)
               context=browser.new_context(http_credentials={"username":cfg["username"],"password":cfg["password"]})
               page=context.new_page()
+              page.on("pageerror",lambda error: print("BROWSER_SCRIPT_ERROR",str(error)[:300]))
               page.goto(url,wait_until="networkidle",timeout=60000)
+              print("BROWSER_LIVE_STATUS",page.locator("#live-status").inner_text())
               page.wait_for_function("!document.getElementById('live-run').disabled",timeout=30000)
               assert page.locator("#live-scenario option").count()>0
               page.locator("#live-run").click()
