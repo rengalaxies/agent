@@ -72,19 +72,19 @@ jobs:
                       for dep in d.get("deployments",[])[:1]:
                           for stage in (dep.get("run") or {}).get("stages") or []:
                               for job in stage.get("jobs") or []:
-                                  if job.get("name")!="test_build_push": continue
+                                  if job.get("name") not in ("test_build_push","create_container"): continue
                                   jid=job.get("id","")
                                   if not re.fullmatch(r"[0-9a-f-]{36}",jid): continue
                                   logs=get("/job/"+jid+"/log/list",{"limit":100,"before_time":"2026-10-16T00:00:00Z"})
                                   print("LOG_SCHEMA",json.dumps(shape(logs)))
                                   entries=(logs or {}).get("logs",[])
-                                  print("LOG_COUNT",len(entries))
-                                  markers=("error","failed","timeout","pushed","success","build","push","image","digest","kaniko","test","pytest","permission","denied","connection","refused","proxy","fallback","exit","code","upload","report","result","artifact","cannot","not found","unauthorized","expired","deadline","exceeded","internal","request","unavailable","finished","completed","fatal","pip install","downloading","collecting","installing","snapshot","copy","workdir","return","warning","error building","error pushing")
+                                  print("LOG_COUNT",job.get("name"),len(entries))
+                                  markers=("error","failed","timeout","pushed","success","build","push","image","digest","kaniko","test","pytest","permission","denied","connection","refused","proxy","fallback","exit","code","upload","report","result","artifact","cannot","not found","unauthorized","expired","deadline","exceeded","internal","request","unavailable","finished","completed","fatal","pip install","downloading","collecting","installing","snapshot","copy","workdir","return","warning","error building","error pushing","invalid","required","cpu","ram","limit","quota","permission","bad request","validation","port","revision","credentials","environment","keyerror","dmrp_ui_username","database","unavailable","400","403","500")
                                   for n,entry in enumerate(entries):
                                       msg=entry.get("message","").lower()
                                       found=[m for m in markers if m in msg]
                                       if any(m in msg for m in ("error","failed","fatal","pushed","success")) or n<5:
-                                          print("LOG_MARKERS",n,entry.get("time"),found)
+                                          print("LOG_MARKERS",job.get("name"),n,entry.get("time"),found)
                                   runid=dep.get("run_id") or (dep.get("run") or {}).get("id")
                                   if isinstance(runid,str) and re.fullmatch(r"[0-9a-f-]{36}",runid):
                                       run=get("/run/"+runid)
