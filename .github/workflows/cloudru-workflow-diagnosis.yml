@@ -77,6 +77,20 @@ jobs:
                                   if not re.fullmatch(r"[0-9a-f-]{36}",jid): continue
                                   logs=get("/job/"+jid+"/log/list",{"limit":100,"before_time":"2026-10-15T23:59:59Z"})
                                   print("LOG_SCHEMA",json.dumps(shape(logs)))
+                                  entries=(logs or {}).get("logs",[])
+                                  print("LOG_COUNT",len(entries))
+                                  markers=("error","failed","timeout","pushed","success","build","push","image","digest","kaniko","test","pytest","permission","denied","connection","refused","proxy","fallback","exit","code","upload","report","result","artifact","cannot","not found","unauthorized","expired","deadline","exceeded","internal","request","unavailable","finished","completed","fatal")
+                                  for n,entry in enumerate(entries):
+                                      msg=entry.get("message","").lower()
+                                      found=[m for m in markers if m in msg]
+                                      if any(m in msg for m in ("error","failed","fatal","pushed","success")) or n>=len(entries)-5:
+                                          print("LOG_MARKERS",n,entry.get("time"),found)
+                                  runid=dep.get("run_id") or (dep.get("run") or {}).get("id")
+                                  if isinstance(runid,str) and re.fullmatch(r"[0-9a-f-]{36}",runid):
+                                      run=get("/run/"+runid)
+                                      print("RUN_SCHEMA",json.dumps(shape(run)))
+                                      message=str((run or {}).get("status_message") or "").lower()
+                                      print("RUN_ERROR_MARKERS",[m for m in markers if m in message])
                                   raw=json.dumps(logs).lower()
                                   for pattern in ("timeout","unauthorized","denied","error","pushed","success","quota","memory","exit code","no space","manifest","connection refused","context deadline","artifact","killed","failed to"):
                                       print("LOG_INDICATOR",pattern,raw.count(pattern))
