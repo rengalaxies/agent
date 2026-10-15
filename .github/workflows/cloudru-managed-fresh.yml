@@ -92,7 +92,12 @@ jobs:
           name=fresh["name"]
           base="https://containers.api.cloud.ru/v2/containers/"+name
           print("FRESH_CONTAINER_NAME",name)
-          url=fresh["configuration"]["ingress"]["publicUri"]
+          for _ in range(30):
+              fresh=get_app()
+              url=fresh.get("configuration",{}).get("ingress",{}).get("publicUri")
+              if url: break
+              time.sleep(3)
+          else: raise AssertionError("Public URI provisioning did not complete")
           if not url.startswith("http"): url="https://"+url
           ui_auth=(cfg["username"],cfg["password"])
           for attempt in range(30):
