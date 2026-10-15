@@ -1,4 +1,4 @@
-name: Inspect managed storage schema
+name: Inspect managed storage state
 on:
   workflow_dispatch:
   push:
@@ -9,24 +9,28 @@ permissions:
 jobs:
   inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 3
     steps:
-      - name: Read public API storage definitions
+      - name: Inspect exact managed demo state
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
         run: |
           python3 -u - <<'PY'
-          import requests,re,json
-          urls=["https://containers.api.cloud.ru/swagger.json","https://containers.api.cloud.ru/openapi.json","https://containers.api.cloud.ru/v2/openapi.json","https://cloud.ru/docs/container-apps-evolution/ug/topics/api__container-apps"]
-          for url in urls:
-              try:
-                  r=requests.get(url,timeout=20)
-                  print("PUBLIC_SCHEMA_HTTP",url,r.status_code)
-                  if r.ok:
-                      if "json" in r.headers.get("Content-Type",""):
-                          d=r.json()
-                          for name,schema in d.get("components",{}).get("schemas",d.get("definitions",{})).items():
-                              if any(x in name.lower() for x in ("volume","s3","bucket")): print("STORAGE_SCHEMA",name,json.dumps(schema))
-                      else:
-                          matches=re.findall(r'[^\s"<>]{0,200}(?:swagger|openapi|\.ya?ml|\.json)[^\s"<>]{0,200}',r.text)
-                          print("PUBLIC_SCHEMA_LINKS",matches[:40])
-              except requests.RequestException: print("PUBLIC_SCHEMA_UNAVAILABLE")
+          import requests,os,json
+          a=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          a.raise_for_status()
+          token=a.json()["access_token"]
+          print("::add-mask::"+token)
+          base="https://containers.api.cloud.ru/v2/containers/appd6bx6ql6wqmzsno1jnp258579"
+          params={"projectId":"20853297-65b7-42a8-af40-25c8d2df4e11"}
+          r=requests.get(base,params=params,headers={"Authorization":"Bearer "+token},timeout=30)
+          r.raise_for_status()
+          app=r.json()
+          assert app["name"]=="appd6bx6ql6wqmzsno1jnp258579" and app["projectId"]==params["projectId"]
+          print("CONTAINER_STATE",app["status"])
+          print("AUDIT_IMAGE_SELECTED",":audit-7fb471010211" in app["template"]["containers"][0]["image"])
+          for path in ("/healthz","/"):
+              r=requests.get("https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru"+path,timeout=20)
+              print("PUBLIC_STATUS",path,r.status_code)
           PY
