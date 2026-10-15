@@ -1,0 +1,24 @@
+{
+  "development_scenario": "U-01",
+  "source_ref": "synthetic:pr-assistant-v1",
+  "old_sql": "SELECT user_id, amount FROM transactions ORDER BY user_id;\n",
+  "new_sql": "SELECT user_id, amount * 100 AS amount FROM transactions ORDER BY user_id;\n",
+  "schemas": {"transactions": {"user_id": "integer", "amount": "decimal"}},
+  "tables": {"transactions": [{"user_id": 1, "amount": 100.5}, {"user_id": 2, "amount": -42.25}, {"user_id": 3, "amount": 0}]},
+  "expected": {"columns": ["user_id", "amount"], "rows": [[1, 100.5], [2, -42.25], [3, 0]]},
+  "consumer_sql": "SELECT user_id, amount FROM spending_activity_profile;",
+  "consumer_schemas": {"spending_activity_profile": {"user_id": "string", "amount": "decimal"}},
+  "consumer_id": "retail-offers",
+  "registration": {"complete": true, "consumers": ["retail-offers"], "intermediate_nodes": ["retail-aggregate"], "boundary": "synthetic registered subscriptions only", "evidence_ref": "fixture:subscription-registry-v1"},
+  "requirement_states": {"retail-rub-amount": {"status": "confirmed", "owner": "retail", "version": "1.0.0", "evidence_ref": "fixture:consumer-confirmation-v1", "valid_from": "2026-10-01T00:00:00+00:00", "valid_until": "2026-11-01T00:00:00+00:00"}},
+  "evaluated_at": "2026-10-15T12:00:00+00:00",
+  "manifest": {
+    "metadata": {"dbt_schema_version": "https://schemas.getdbt.com/dbt/manifest/v12.json"},
+    "nodes": {
+      "model.demo.spending": {"unique_id": "model.demo.spending", "resource_type": "model", "depends_on": {"nodes": []}},
+      "model.demo.aggregate": {"unique_id": "model.demo.aggregate", "resource_type": "model", "depends_on": {"nodes": ["model.demo.spending"]}},
+      "model.demo.retail": {"unique_id": "model.demo.retail", "resource_type": "model", "depends_on": {"nodes": ["model.demo.aggregate"]}}
+    }
+  },
+  "bindings": {"model.demo.spending": "spending_activity_profile", "model.demo.aggregate": "retail-aggregate", "model.demo.retail": "retail-offers"}
+}

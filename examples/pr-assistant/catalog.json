@@ -1,0 +1,21 @@
+{
+  "kind": "diagnostic-manual-expectations-not-confirmatory-holdout",
+  "cases": [
+    {"id": "unit-break", "variant": "unit_break", "expected": "REJECT", "rationale": "Producer multiplies RUB values by 100 while the registered consumer still requires RUB."},
+    {"id": "unchanged", "variant": "safe", "expected": "ACCEPT", "rationale": "The SQL and all declared consumer requirements retain the original behavior."},
+    {"id": "formula-formatting", "variant": "cosmetic_formula", "expected": "ACCEPT", "rationale": "Only insignificant whitespace in the symbolic formula changes; supplied executable SQL is unchanged. Safe by construction in this diagnostic."},
+    {"id": "missing-confirmation", "variant": "missing_state", "expected": "NEEDS_REVIEW", "rationale": "The provenance and owner confirmation of the requirement are absent."},
+    {"id": "expired-confirmation", "variant": "expired", "expected": "NEEDS_REVIEW", "rationale": "The requirement evidence is outside its stated validity interval."},
+    {"id": "owner-mismatch", "variant": "owner_changed", "expected": "NEEDS_REVIEW", "rationale": "The recorded owner does not match the consumer domain."},
+    {"id": "candidate-requirement", "variant": "candidate", "expected": "NEEDS_REVIEW", "rationale": "The requirement is a proposal rather than a declared confirmed record."},
+    {"id": "boundary-unknown", "variant": "boundary_unknown", "expected": "NEEDS_REVIEW", "rationale": "The registered subscription boundary is not confirmed."},
+    {"id": "undocumented-consumer", "variant": "unregistered", "expected": "NEEDS_REVIEW", "rationale": "A provided query reveals an additional consumer without a requirement."},
+    {"id": "dynamic-consumption", "variant": "dynamic", "expected": "NEEDS_REVIEW", "rationale": "An uncompiled query cannot establish its dependencies; a manifest does not resolve the missing SQL evidence."},
+    {"id": "orphan-manifest", "variant": "orphan", "expected": "NEEDS_REVIEW", "rationale": "A manifest dependency references an absent resource."},
+    {"id": "json-path", "variant": "json", "expected": "NEEDS_REVIEW", "rationale": "The importer sees the JSON column but does not establish semantics or schema of its nested paths."},
+    {"id": "conflicting-consumers", "variant": "conflict", "expected": "REJECT", "rationale": "A second registered consumer requires USD while the proposed contract promises RUB; no conversion exists."},
+    {"id": "registered-without-requirement", "variant": "missing_requirement", "expected": "NEEDS_REVIEW", "rationale": "A registered consumer has no supplied formal requirement."},
+    {"id": "code-contract-disagreement", "variant": "wrong_sql", "expected": "REJECT", "rationale": "The contract claims unchanged RUB behavior but executable SQL multiplies values by 100 and violates supplied consumer outputs."},
+    {"id": "unsupported-producer", "variant": "unsupported_producer", "expected": "NEEDS_REVIEW", "rationale": "Producer SQL cannot be executed in the declared SQLite fixture dialect."}
+  ]
+}

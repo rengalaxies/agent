@@ -1,0 +1,198 @@
+{
+  "kind": "bounded-import-diagnostic",
+  "catalog_hash": "3ce82cafa2987b14f2cfd197e15f5646cf8738119d4373ab8486b0cc53144dcf",
+  "rows": [
+    {
+      "id": "simple",
+      "expected": {
+        "spend": [
+          "amount"
+        ]
+      },
+      "actual": {
+        "spend": [
+          "amount"
+        ]
+      },
+      "extraction_matches": true,
+      "gap_expected": false,
+      "gaps": [],
+      "gap_matches": true
+    },
+    {
+      "id": "join-filter",
+      "expected": {
+        "spend": [
+          "amount",
+          "user_id"
+        ],
+        "users": [
+          "active",
+          "user_id"
+        ]
+      },
+      "actual": {
+        "spend": [
+          "amount",
+          "user_id"
+        ],
+        "users": [
+          "active",
+          "user_id"
+        ]
+      },
+      "extraction_matches": true,
+      "gap_expected": false,
+      "gaps": [],
+      "gap_matches": true
+    },
+    {
+      "id": "cte",
+      "expected": {
+        "spend": [
+          "amount"
+        ]
+      },
+      "actual": {
+        "spend": [
+          "amount"
+        ]
+      },
+      "extraction_matches": true,
+      "gap_expected": false,
+      "gaps": [],
+      "gap_matches": true
+    },
+    {
+      "id": "count-relation",
+      "expected": {
+        "spend": []
+      },
+      "actual": {
+        "spend": []
+      },
+      "extraction_matches": true,
+      "gap_expected": false,
+      "gaps": [],
+      "gap_matches": true
+    },
+    {
+      "id": "comment-literal",
+      "expected": {
+        "spend": [
+          "amount"
+        ]
+      },
+      "actual": {
+        "spend": [
+          "amount"
+        ]
+      },
+      "extraction_matches": true,
+      "gap_expected": false,
+      "gaps": [],
+      "gap_matches": true
+    },
+    {
+      "id": "wildcard",
+      "expected": {
+        "spend": [
+          "amount",
+          "user_id"
+        ]
+      },
+      "actual": {
+        "spend": [
+          "amount",
+          "user_id"
+        ]
+      },
+      "extraction_matches": true,
+      "gap_expected": false,
+      "gaps": [],
+      "gap_matches": true
+    },
+    {
+      "id": "json",
+      "expected": {
+        "events": [
+          "payload"
+        ]
+      },
+      "actual": {
+        "events": [
+          "payload"
+        ]
+      },
+      "extraction_matches": true,
+      "gap_expected": true,
+      "gaps": [
+        "json_path_semantics_unresolved:events"
+      ],
+      "gap_matches": true
+    },
+    {
+      "id": "dynamic",
+      "expected": {},
+      "actual": {},
+      "extraction_matches": true,
+      "gap_expected": true,
+      "gaps": [
+        "uncompiled_template_or_dynamic_sql"
+      ],
+      "gap_matches": true
+    },
+    {
+      "id": "unresolved",
+      "expected": {},
+      "actual": {},
+      "extraction_matches": true,
+      "gap_expected": true,
+      "gaps": [
+        "unsupported_or_invalid_sqlite_select"
+      ],
+      "gap_matches": true
+    },
+    {
+      "id": "unsupported-udf",
+      "expected": {},
+      "actual": {},
+      "extraction_matches": true,
+      "gap_expected": true,
+      "gaps": [
+        "unsupported_or_invalid_sqlite_select"
+      ],
+      "gap_matches": true
+    }
+  ],
+  "sql_cases": 10,
+  "supported_cases": 6,
+  "cases_with_explicit_gaps": 4,
+  "exact_expected_outputs": 10,
+  "manifest_edges": [
+    [
+      "retail-aggregate",
+      "retail-offers"
+    ],
+    [
+      "spending_activity_profile",
+      "retail-aggregate"
+    ]
+  ],
+  "manifest_matches": true,
+  "multihop_path_length": 2,
+  "not_automated": [
+    "business meaning",
+    "accepted semantic changes",
+    "owner confirmation",
+    "JSON path schema",
+    "dynamic SQL",
+    "unregistered consumer completeness"
+  ],
+  "limitations": [
+    "Small author-labelled fixtures, not an independent benchmark.",
+    "Unresolved SQL compilation yields no resolved edges, not zero dependencies.",
+    "SQLite compilation support is not PostgreSQL dialect support.",
+    "The manifest fixture exercises consumed v12 fields, not full schema validation or dbt runtime."
+  ]
+}
