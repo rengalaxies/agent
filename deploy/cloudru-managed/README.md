@@ -1,51 +1,63 @@
-# Cloud.ru managed hosting fallback
+# Managed public development demo
 
-This branch prepares an alternative deployment; it does not replace or recreate the existing VMs.
+Public URL: https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru
 
-The root Dockerfile packages the existing development V2 API and its UI on port 8080.
-It runs as UID 10001. The hosting platform must terminate HTTPS.
+This deployment packages the existing deterministic V2 engine, development UI,
+knowledge map and synthetic three-process E4 demonstration on port 8080.
+Only scenarios/development are packaged; evaluation inputs and oracle labels are excluded.
+The hosting platform terminates HTTPS. Application routes require HTTP Basic authentication,
+except /healthz for readiness probes.
 
-Required environment configuration (supply values through protected platform secrets):
+## Public-demo persistence
 
-- DMRP_UI_USERNAME: HTTP Basic username.
+Select DMRP_AUDIT_BACKEND=object_storage_volume. Cloud.ru mounts the dedicated private,
+versioned bucket dmrp-demo-audit-20853297 at /audit-data using a platform S3 volume.
+No IAM key is injected into the application. The Terraform state bucket is not mounted.
+
+Each V2 request writes one independent JSON record with its decision, run ID,
+scenario ID, timestamp and SHA-256 digest. The file is closed, fsynced and read back
+before persisted=true is returned. Authenticated GET /api/v1/demo/audit/{run_id}
+verifies the record digest. Failed persistence returns 503.
+
+This is a development audit sink, not PostgreSQL, a transactional database,
+tamper-proof storage or confirmatory E3 evidence. Bucket versioning preserves
+object versions; SHA-256 detects accidental corruption, not malicious rewriting.
+
+Required runtime environment:
+- DMRP_UI_USERNAME
 - DMRP_UI_PASSWORD_SHA256: SHA-256 hex digest of the UI password.
-- DATABASE_URL: PostgreSQL DSN with credentials and network reachability.
-- DMRP_REQUIRE_AUDIT=1: set in the image; must remain enabled.
+- DMRP_REQUIRE_AUDIT=1
+- DMRP_AUDIT_BACKEND=object_storage_volume
+- DMRP_AUDIT_DIRECTORY=/audit-data
 
-Do not put passwords, DSNs, IAM credentials or generated API keys in this repository.
+The mounted marker .dmrp-audit-volume-v1.json must identify the approved project
+20853297-65b7-42a8-af40-25c8d2df4e11, dataset development and format 1.
+Readiness fails without the exact mount and marker. Never disable mount checks
+in cloud deployment. There is no temporary-directory fallback.
+Keep maxInstanceCount=1 for this demo.
 
-The adapter serves the existing UI at / and existing API routes without changing the research engine.
-Both /healthz and /api/healthz check PostgreSQL readiness. Only /healthz is unauthenticated for platform probes.
-Missing PostgreSQL returns 503. Release checks require persisted audit records.
-Only public development scenarios are packaged; confirmatory evaluation data and oracle labels are excluded.
+## Original PostgreSQL path
 
-The CI workflow builds the real image, checks authentication, rejects oversized API requests,
-checks 503 without a database, starts PostgreSQL and verifies an actual V2 release audit row.
-No cloud deployment credentials are required by that verification.
+The default backend remains postgres. For the original VM/experimental setup,
+provide DATABASE_URL or DMRP_DATABASE_URL_FILE and DMRP_REQUIRE_AUDIT=1.
+No PostgreSQL instance is provisioned by the managed-demo deployment.
+Managed Container Apps currently cannot connect to Cloud.ru Managed PostgreSQL;
+do not provision a database assuming such connectivity.
 
-Deployment prerequisites still to resolve:
-1. Workflow Studio service enabled and dedicated API key with project access.
-2. PostgreSQL endpoint reachable from managed runtime; the private Core VM cannot be assumed reachable.
-3. Secrets injected into the application and HTTPS endpoint verified.
-4. Resource price/quota check before provisioning persistent managed services.
+## Verification
 
-Current IAM bearer was accepted by AI Agents read APIs but returned HTTP 403 from Workflow Studio.
-This does not establish that creating an agent or managed app is permitted.
-No public site is claimed until deployment and browser/API checks succeed.
+cloudru-managed-test.yml builds the real image, checks Basic authentication,
+oversized request rejection, missing-storage readiness and actual PostgreSQL writes.
+It also checks volume integrity, failed writes, concurrent independent records,
+and persistence through complete local container removal and recreation.
 
-## Persistent public demo audit
+cloudru-managed-deploy.yml builds the pinned verified source, pushes to the existing
+Artifact Registry, preserves authentication and volumes, and verifies real V2 runs,
+the knowledge API, an independent S3 read, bucket versioning and audit retrieval after
+a real Cloud.ru stop/start. Its output contains pass/fail markers, not private payloads.
 
-The managed demo can select DMRP_AUDIT_BACKEND=object_storage_volume and mount
-the dedicated private, versioned bucket dmrp-demo-audit-20853297 at /audit-data.
-This stores independent JSON records and verifies SHA-256 on authenticated reads.
-It is a development-demo audit sink, not PostgreSQL or a transactional database.
-The default backend remains PostgreSQL for the original VM/experimental setup.
+cloudru-managed-browser.yml opens the real public page in Chromium, clicks the V2
+button and compares the displayed decision with authenticated persisted-audit retrieval.
 
-No IAM access key is injected into the application. The platform mounts the bucket.
-Readiness fails without the exact mounted-volume marker. Do not disable the mount
-check in deployed environments. No temporary-directory fallback is provided.
-Only public development scenarios are retained; no confirmatory evidence is created.
-The bucket is isolated from the encrypted Terraform state bucket.
-
-Validation must include independent S3 object retrieval and reading the same run
-after a real stop/start, beyond local bind-mount tests. Keep maxInstanceCount=1.
+Deployment success requires the cloud and browser checks to pass; CI alone is insufficient.
+Do not put passwords, DSNs or unencrypted IAM credentials in the repository.
