@@ -118,7 +118,8 @@ jobs:
               print("CONTAINERS_SCHEMA",json.dumps(shape(rr.json())))
               for item in rr.json().get("data",[]):
                   name=item.get("name","")
-                  if "de8e6314-9e8b-4b39-bf69-4b1469928955" not in name and "dmrp" not in name: continue
+                  if len(rr.json().get("data",[]))!=1: continue
+                  print("CONTAINER_NAME",name)
                   print("TARGET_CONTAINER_FOUND",True)
                   for field in ("state","status"):
                       value=item.get(field)
@@ -128,7 +129,7 @@ jobs:
                           for k,x in v.items():
                               if k in ("env","environmentVariables","environment") and isinstance(x,list):
                                   print("RUNTIME_ENV_NAMES",[e.get("name") for e in x if isinstance(e,dict)])
-                              if k.lower() in ("url","publicurl","endpoint","domain") and isinstance(x,str) and x.startswith("https://"):
+                              if k.lower() in ("url","publicurl","publicuri","endpoint","domain") and isinstance(x,str) and x.startswith("https://"):
                                   try:
                                       q=requests.get(x,timeout=15,allow_redirects=False)
                                       print("CONTAINER_PUBLIC_HTTP",q.status_code)
