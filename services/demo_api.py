@@ -21,7 +21,7 @@ from datamesh_release_protocol.engine import ReleaseEngine
 from datamesh_release_protocol.loaders import load_baseline_policy, load_catalog
 from datamesh_release_protocol.models import ValidationMode
 from services.knowledge_demo import development_knowledge_map
-from services.audit_pg import AuditUnavailable, audit_record, audit_ready
+from services.audit_sink import AuditUnavailable, audit_record, audit_ready, BACKEND
 
 ROOT=Path(__file__).resolve().parents[1]
 CATALOG={s.scenario_id:s for s in load_catalog(ROOT/"scenarios"/"development")}
@@ -38,7 +38,8 @@ def healthz():
     if not db_ok:
         raise HTTPException(status_code=503, detail="Required audit persistence unavailable")
     return {"ok": db_ok, "api_ready": db_ok, "engine_live": True,
-            "postgres_audit_ready": db_ok, "purpose": "development_demo",
+            "audit_ready": db_ok, "audit_backend": BACKEND,
+            "postgres_audit_ready": db_ok if BACKEND == "postgres" else False, "purpose": "development_demo",
             "evaluation_oracle_loaded": False}
 
 @app.get("/api/v1/demo/scenarios")
