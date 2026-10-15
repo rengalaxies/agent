@@ -65,6 +65,16 @@ jobs:
               r=requests.post(base+":start",headers=headers,params=params,timeout=35)
               print("RESUME_HTTP",r.status_code)
               r.raise_for_status()
+          app=get_app()
+          template=app["template"]
+          env=template["containers"][0].get("env") or []
+          if not any(e.get("name")=="DMRP_RELEASE_ID" and e.get("value")=="audit-v1-republished" for e in env):
+              env=[e for e in env if e.get("name")!="DMRP_RELEASE_ID"]
+              env.append({"name":"DMRP_RELEASE_ID","value":"audit-v1-republished"})
+              template["containers"][0]["env"]=env
+              r=requests.patch(base,headers=headers,params=params,json={"template":template},timeout=45)
+              print("REPUBLISH_HTTP",r.status_code)
+              r.raise_for_status()
           url="https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru"
           ui_auth=(cfg["username"],cfg["password"])
           for attempt in range(30):
