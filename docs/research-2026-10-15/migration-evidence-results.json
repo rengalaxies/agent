@@ -1,0 +1,206 @@
+{
+  "kind": "development-diagnostic-not-accuracy",
+  "cases": [
+    {
+      "case": "correct",
+      "policy": "migration-fixtures-1",
+      "scenario_snapshot_id": "92b35c77a6124df7b9299020326abbbf598efa7b107848f1b25f2b20655d97a3",
+      "legacy_v2_decision": "ACCEPT",
+      "decision": "ACCEPT",
+      "receipts": [
+        {
+          "verifier": "migration-fixtures-1",
+          "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+          "migration": {
+            "dimension": "unit_scale",
+            "source": "kopeck:0",
+            "target": "RUB:2",
+            "expression": "value / 100",
+            "validated_examples": 3,
+            "bijective": false
+          },
+          "fixtures": [
+            {
+              "input": "123",
+              "expected": "1.23"
+            },
+            {
+              "input": "-50",
+              "expected": "-0.5"
+            }
+          ],
+          "input_hash": "66f9ee9e99bcd7a4fdd9738715381e62b26e711a494cba98ed48ede7ad92f8c1",
+          "decision": "ACCEPT",
+          "reason": "FIXTURES_PASSED",
+          "results": [
+            {
+              "input": "123",
+              "expected": "1.23",
+              "actual": "1.23",
+              "passed": true
+            },
+            {
+              "input": "-50",
+              "expected": "-0.5",
+              "actual": "-0.5",
+              "passed": true
+            }
+          ],
+          "guarantee": "listed fixtures only",
+          "receipt_hash": "dd1ef5510e3377e4971739d464c542c059b98f6cadc6443b9cdca8d21b8a049c"
+        }
+      ],
+      "release_authorization": false,
+      "evidence_bundle_hash": "b71c24820fe413d1e3b73c67ae9b26ef5d31697ed3b6daee248f31c0bdea329b"
+    },
+    {
+      "case": "wrong_but_declared_valid",
+      "policy": "migration-fixtures-1",
+      "scenario_snapshot_id": "02b86643bd16c1b094b6fd0020ebcee533f36bb785861894f0efe9675c8eb34b",
+      "legacy_v2_decision": "ACCEPT",
+      "decision": "REJECT",
+      "receipts": [
+        {
+          "verifier": "migration-fixtures-1",
+          "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+          "migration": {
+            "dimension": "unit_scale",
+            "source": "kopeck:0",
+            "target": "RUB:2",
+            "expression": "value * 100",
+            "validated_examples": 3,
+            "bijective": false
+          },
+          "fixtures": [
+            {
+              "input": "123",
+              "expected": "1.23"
+            }
+          ],
+          "input_hash": "ddb76a4124fa0738e24ee3d592f62f9ebd4f201d435f34b9dddb0aa275829f60",
+          "decision": "REJECT",
+          "reason": "FIXTURE_MISMATCH",
+          "results": [
+            {
+              "input": "123",
+              "expected": "1.23",
+              "actual": "12300",
+              "passed": false
+            }
+          ],
+          "guarantee": "listed fixtures only",
+          "receipt_hash": "87c60cf76379fd57b00340828668fe880ee4440854dee1c809344b9253290d16"
+        }
+      ],
+      "release_authorization": false,
+      "evidence_bundle_hash": "66210362242fba155867a964f6f706856357dd86e5aa28cd97629b162dae8589"
+    },
+    {
+      "case": "unsupported_expression",
+      "policy": "migration-fixtures-1",
+      "scenario_snapshot_id": "58738695d61fcbac1187472225ce906ad7c1674f3f2482816be667723e629c35",
+      "legacy_v2_decision": "ACCEPT",
+      "decision": "NEEDS_REVIEW",
+      "receipts": [
+        {
+          "verifier": "migration-fixtures-1",
+          "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+          "migration": {
+            "dimension": "unit_scale",
+            "source": "kopeck:0",
+            "target": "RUB:2",
+            "expression": "WRONG",
+            "validated_examples": 3,
+            "bijective": false
+          },
+          "fixtures": [
+            {
+              "input": "123",
+              "expected": "1.23"
+            }
+          ],
+          "input_hash": "7090815a890f42f12163d676f5bdccb6152e4e66180daaba68f849392ee01233",
+          "decision": "NEEDS_REVIEW",
+          "reason": "UNEXECUTABLE_OR_INVALID_ARITHMETIC",
+          "results": [],
+          "guarantee": "listed fixtures only",
+          "receipt_hash": "6a464a1761b767f783dfeebaefe6d46c2ebfaa0cfe221623474a00446659e80e"
+        }
+      ],
+      "release_authorization": false,
+      "evidence_bundle_hash": "66f445f7dce0fc4fd1af6fd9d632323d17743785347fed7f9534670f1b2fc7a2"
+    },
+    {
+      "case": "missing_examples",
+      "policy": "migration-fixtures-1",
+      "scenario_snapshot_id": "92b35c77a6124df7b9299020326abbbf598efa7b107848f1b25f2b20655d97a3",
+      "legacy_v2_decision": "ACCEPT",
+      "decision": "NEEDS_REVIEW",
+      "receipts": [
+        {
+          "verifier": "migration-fixtures-1",
+          "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+          "migration": {
+            "dimension": "unit_scale",
+            "source": "kopeck:0",
+            "target": "RUB:2",
+            "expression": "value / 100",
+            "validated_examples": 3,
+            "bijective": false
+          },
+          "fixtures": [],
+          "input_hash": "ea70398fcb8ea570f574acc460b500867968607009ad31e1dbb40a87dadc6b89",
+          "decision": "NEEDS_REVIEW",
+          "reason": "NO_EXECUTABLE_FIXTURES",
+          "results": [],
+          "guarantee": "listed fixtures only",
+          "receipt_hash": "d8af71adbf222003e7470a344334f15999bc808cfdcb3d02802424676d6eb01f"
+        }
+      ],
+      "release_authorization": false,
+      "evidence_bundle_hash": "3df0fbe3c066a82d28e98f78ae8394774fbba128960a04aa42c62cb6d455d06b"
+    },
+    {
+      "case": "weak_zero_only_fixture",
+      "policy": "migration-fixtures-1",
+      "scenario_snapshot_id": "02b86643bd16c1b094b6fd0020ebcee533f36bb785861894f0efe9675c8eb34b",
+      "legacy_v2_decision": "ACCEPT",
+      "decision": "ACCEPT",
+      "receipts": [
+        {
+          "verifier": "migration-fixtures-1",
+          "verifier_sha256": "9f6f69a83a9952bb1cc955853de2fd8d6dc9194993fda248e91afd89e1e67407",
+          "migration": {
+            "dimension": "unit_scale",
+            "source": "kopeck:0",
+            "target": "RUB:2",
+            "expression": "value * 100",
+            "validated_examples": 3,
+            "bijective": false
+          },
+          "fixtures": [
+            {
+              "input": "0",
+              "expected": "0"
+            }
+          ],
+          "input_hash": "90c2de079467cfa00f842de70dd0bdfc1e542429e0f5fb00c7bc23a339b5d15a",
+          "decision": "ACCEPT",
+          "reason": "FIXTURES_PASSED",
+          "results": [
+            {
+              "input": "0",
+              "expected": "0",
+              "actual": "0",
+              "passed": true
+            }
+          ],
+          "guarantee": "listed fixtures only",
+          "receipt_hash": "3ef9dd7f0413f438713cf8eaf107f4abea93115fdc61024067e53424033ddfd0"
+        }
+      ],
+      "release_authorization": false,
+      "evidence_bundle_hash": "83f8eae93448a74e97afad5284fe99fd474ffa0e8c6f70f1a268ed4ffb7db60e"
+    }
+  ]
+}
