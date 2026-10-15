@@ -1,0 +1,41 @@
+name: Signed migration evidence snapshot
+on:
+  push:
+    branches: [research/migration-evidence-snapshot]
+    paths:
+      - '.github/workflows/evidence-snapshot.yml'
+      - 'src/datamesh_release_protocol/evidence_snapshot.py'
+      - 'tests/test_evidence_snapshot.py'
+      - 'tools/run_evidence_snapshot_demo.py'
+      - 'docs/research-2026-10-15/evidence-snapshot-results.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[distributed]'
+      - name: Verify signed evidence and existing guarantees
+        env:
+          PYTHONPATH: 'src:tests'
+        run: python -m unittest test_evidence_snapshot test_migration_evidence test_evidence_graph test_consumer_test_baseline test_knowledge -v
+      - name: Reproduce lifecycle and previous comparisons
+        env:
+          PYTHONPATH: 'src:tests'
+        run: |
+          python tools/run_evidence_snapshot_demo.py > /tmp/evidence-snapshot.json
+          diff docs/research-2026-10-15/evidence-snapshot-results.json /tmp/evidence-snapshot.json
+          python tools/run_migration_evidence_demo.py > /tmp/migration-evidence.json
+          diff docs/research-2026-10-15/migration-evidence-results.json /tmp/migration-evidence.json
+          python tools/run_equal_information.py > /tmp/equal-information.json
+          diff docs/research-2026-10-15/equal-information-results.json /tmp/equal-information.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-evidence-lifecycle
+          path: /tmp/evidence-snapshot.json
