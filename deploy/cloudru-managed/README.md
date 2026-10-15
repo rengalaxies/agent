@@ -1,6 +1,6 @@
 # Managed public development demo
 
-Public URL: https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru
+Public URL: https://dmrp-demo-audit.containerapps.ru
 
 This deployment packages the existing deterministic V2 engine, development UI,
 knowledge map and synthetic three-process E4 demonstration on port 8080.
@@ -34,7 +34,7 @@ The mounted marker .dmrp-audit-volume-v1.json must identify the approved project
 20853297-65b7-42a8-af40-25c8d2df4e11, dataset development and format 1.
 Readiness fails without the exact mount and marker. Never disable mount checks
 in cloud deployment. There is no temporary-directory fallback.
-Keep maxInstanceCount=1 for this demo.
+Keep minInstanceCount=1 and maxInstanceCount=1 for this demo.
 
 ## Original PostgreSQL path
 
@@ -53,11 +53,21 @@ and persistence through complete local container removal and recreation.
 
 cloudru-managed-deploy.yml builds the pinned verified source, pushes to the existing
 Artifact Registry, preserves authentication and volumes, and verifies real V2 runs,
-the knowledge API, an independent S3 read, bucket versioning and audit retrieval after
-a real Cloud.ru stop/start. Its output contains pass/fail markers, not private payloads.
+the knowledge API, an independent S3 read and bucket versioning. It does not suspend
+the public application during routine deployment verification. Its output contains pass/fail markers, not private payloads.
 
 cloudru-managed-browser.yml opens the real public page in Chromium, clicks the V2
 button and compares the displayed decision with authenticated persisted-audit retrieval.
 
 Deployment success requires the cloud and browser checks to pass; CI alone is insufficient.
 Do not put passwords, DSNs or unencrypted IAM credentials in the repository.
+
+## Observed cloud lifecycle limitation
+
+The original workflow-created container returned 502 after explicit suspension and
+resume even though its process started and configuration remained intact.
+The recovered independent container dmrp-demo-audit reads the same pre-suspension
+audit records successfully. Its resources are 0.2 vCPU and 512 MiB, with one warm instance.
+The old workflow-created application was suspended after replacement acceptance.
+Do not use the old Workflow Studio pipeline as the current deployment target.
+The precise cause of the old endpoint failure remains unconfirmed.
