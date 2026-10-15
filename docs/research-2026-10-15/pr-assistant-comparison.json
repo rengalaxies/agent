@@ -1,0 +1,429 @@
+{
+  "kind": "diagnostic-not-confirmatory-or-business-validation",
+  "cases": 16,
+  "catalog_hash": "83b8ddaacd1bd2211af84c457b0e4a1dde128ce038418dad775d03d194979304",
+  "summaries": {
+    "consumer_tests_scan": {
+      "correct": 16,
+      "false_rejects": 0,
+      "unsafe_accepts": 0,
+      "review": 11
+    },
+    "consumer_tests_catalog": {
+      "correct": 16,
+      "false_rejects": 0,
+      "unsafe_accepts": 0,
+      "review": 11
+    },
+    "v2_graph_assistant": {
+      "correct": 15,
+      "false_rejects": 1,
+      "unsafe_accepts": 0,
+      "review": 11
+    }
+  },
+  "rows": [
+    {
+      "id": "unit-break",
+      "expected": "REJECT",
+      "rationale": "Producer multiplies RUB values by 100 while the registered consumer still requires RUB.",
+      "input_hash": "944af9658d426070b54734d40c6127b206d63f3d4c0ba25353f101c40a9fe110",
+      "decisions": {
+        "consumer_tests_scan": "REJECT",
+        "consumer_tests_catalog": "REJECT",
+        "v2_graph_assistant": "REJECT"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": true
+    },
+    {
+      "id": "unchanged",
+      "expected": "ACCEPT",
+      "rationale": "The SQL and all declared consumer requirements retain the original behavior.",
+      "input_hash": "b1b663f3a3f916fff52e2d356354b690bef87eb744376877afbaf763497f7e97",
+      "decisions": {
+        "consumer_tests_scan": "ACCEPT",
+        "consumer_tests_catalog": "ACCEPT",
+        "v2_graph_assistant": "ACCEPT"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "formula-formatting",
+      "expected": "ACCEPT",
+      "rationale": "Only insignificant whitespace in the symbolic formula changes; supplied executable SQL is unchanged. Safe by construction in this diagnostic.",
+      "input_hash": "52628711d8b72dd4a948f2d30636419f81f61932de8723e95d1f87c5616fcc3c",
+      "decisions": {
+        "consumer_tests_scan": "ACCEPT",
+        "consumer_tests_catalog": "ACCEPT",
+        "v2_graph_assistant": "REJECT"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": true
+    },
+    {
+      "id": "missing-confirmation",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "The provenance and owner confirmation of the requirement are absent.",
+      "input_hash": "f5b7d5a5e08324ad62206c6931024fc1aeccc41d440b9735cf94a1052c6aa6e1",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "requirement_owner_or_version_mismatch:retail-rub-amount",
+        "requirement_unconfirmed:retail-rub-amount",
+        "requirement_validity_unknown:retail-rub-amount"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 0,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "expired-confirmation",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "The requirement evidence is outside its stated validity interval.",
+      "input_hash": "2b071f9d7f29e730b6ee61728233e3dfc1338e3d19522031c23b89029365d267",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "requirement_not_current:retail-rub-amount"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "owner-mismatch",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "The recorded owner does not match the consumer domain.",
+      "input_hash": "63f90d42fdb153b807240bee3aa0b595cb0c3b65b9eebd094fb2dc709999a0d5",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "requirement_owner_or_version_mismatch:retail-rub-amount"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "candidate-requirement",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "The requirement is a proposal rather than a declared confirmed record.",
+      "input_hash": "240240c4f2cc32290ed32e805a741bcb102ea0ddd67c922dab20baa4c45108b7",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "requirement_unconfirmed:retail-rub-amount"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "boundary-unknown",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "The registered subscription boundary is not confirmed.",
+      "input_hash": "bd0ad402cdb86275b3799557875c7c83286397f58134eb0475739ecf7eff4500",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "registered_boundary_unconfirmed"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "undocumented-consumer",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "A provided query reveals an additional consumer without a requirement.",
+      "input_hash": "e999529ac109721271cecd49d13c3de4d10d1217731053fb1c69ccffa6ca8afd",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 16,
+      "graph_edge_inspections": 4,
+      "graph_index_build_edges": 4,
+      "gaps": [
+        "observed_consumer_missing_requirement:shadow-consumer"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "dynamic-consumption",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "An uncompiled query cannot establish its dependencies; a manifest does not resolve the missing SQL evidence.",
+      "input_hash": "525e667d14c2d004a4e82ea30a07aee262353521881b91273c1b3a8669fd18ab",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 6,
+      "graph_edge_inspections": 2,
+      "graph_index_build_edges": 2,
+      "gaps": [
+        "uncompiled_template_or_dynamic_sql"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "orphan-manifest",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "A manifest dependency references an absent resource.",
+      "input_hash": "ca9b4416692a23f1f1d28e7922f7f1ea054e530cfabd0b0735b7310e95811900",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 12,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 4,
+      "gaps": [
+        "unresolved_dependency:model.absent"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "json-path",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "The importer sees the JSON column but does not establish semantics or schema of its nested paths.",
+      "input_hash": "2dbfbe840120ec79d28e49a51a3280333672f838fcaa737f51b9bf3bf79802bf",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "json_path_semantics_unresolved:spending_activity_profile"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "conflicting-consumers",
+      "expected": "REJECT",
+      "rationale": "A second registered consumer requires USD while the proposed contract promises RUB; no conversion exists.",
+      "input_hash": "9bd6e27b799ac2e818649d2bf7d3d241cea22046be57230bbc9ec5ec1166f6ef",
+      "decisions": {
+        "consumer_tests_scan": "REJECT",
+        "consumer_tests_catalog": "REJECT",
+        "v2_graph_assistant": "REJECT"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 16,
+      "graph_edge_inspections": 4,
+      "graph_index_build_edges": 4,
+      "gaps": [],
+      "human_input_counts": {
+        "declared_requirements": 2,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": true
+    },
+    {
+      "id": "registered-without-requirement",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "A registered consumer has no supplied formal requirement.",
+      "input_hash": "4cee99af402138a7ea8c2e2930300937e80c1f2e7cb104dcb658be90e3553e7a",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [
+        "registered_consumer_missing_requirement",
+        "registered_consumption_not_observed:accounting-without-contract"
+      ],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    },
+    {
+      "id": "code-contract-disagreement",
+      "expected": "REJECT",
+      "rationale": "The contract claims unchanged RUB behavior but executable SQL multiplies values by 100 and violates supplied consumer outputs.",
+      "input_hash": "003dee052aac7914f100e081b8e896f59ef654ba4181864796c6845b50dc4c3c",
+      "decisions": {
+        "consumer_tests_scan": "REJECT",
+        "consumer_tests_catalog": "REJECT",
+        "v2_graph_assistant": "REJECT"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": true
+    },
+    {
+      "id": "unsupported-producer",
+      "expected": "NEEDS_REVIEW",
+      "rationale": "Producer SQL cannot be executed in the declared SQLite fixture dialect.",
+      "input_hash": "c92f08d5cf8a6ed26e6bdaf54d61b6d11643110e88fd4206c1cd7cd77fbb05e4",
+      "decisions": {
+        "consumer_tests_scan": "NEEDS_REVIEW",
+        "consumer_tests_catalog": "NEEDS_REVIEW",
+        "v2_graph_assistant": "NEEDS_REVIEW"
+      },
+      "retrieval_equal": true,
+      "scan_edge_inspections": 9,
+      "graph_edge_inspections": 3,
+      "graph_index_build_edges": 3,
+      "gaps": [],
+      "human_input_counts": {
+        "declared_requirements": 1,
+        "supplied_expected_rows": 3,
+        "explicit_registration_boundaries": 1
+      },
+      "proposed_artifact": false
+    }
+  ],
+  "retrieval_parity": true,
+  "ownership_maintenance_tasks": {
+    "missing-confirmation": [
+      "locate requirement source",
+      "obtain owner confirmation"
+    ],
+    "expired-confirmation": [
+      "revalidate requirement",
+      "renew validity evidence"
+    ],
+    "owner-mismatch": [
+      "verify current accountable domain",
+      "update versioned evidence"
+    ],
+    "undocumented-consumer": [
+      "identify owner",
+      "register usage",
+      "supply requirement"
+    ]
+  },
+  "cost_limits": [
+    "Human task counts are inventory, not measured person-minutes or business cost.",
+    "Traversal counts omit runtime and index memory; no latency claim.",
+    "Fixtures and expected outputs are supplied, not inferred from code.",
+    "Same author labels and implementations; no independent expert validation."
+  ],
+  "llm_comparison": "NOT_RUN: no configured reproducible inference endpoint"
+}

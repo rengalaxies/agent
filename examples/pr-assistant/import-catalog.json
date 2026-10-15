@@ -1,0 +1,15 @@
+{
+  "schemas": {"spend": {"user_id": "integer", "amount": "decimal"}, "users": {"user_id": "integer", "active": "boolean"}, "events": {"payload": "json"}},
+  "cases": [
+    {"id": "simple", "sql": "SELECT amount FROM spend", "expected": {"spend": ["amount"]}, "gap": false},
+    {"id": "join-filter", "sql": "SELECT s.amount FROM spend s JOIN users u ON u.user_id = s.user_id WHERE u.active = 1", "expected": {"spend": ["amount", "user_id"], "users": ["active", "user_id"]}, "gap": false},
+    {"id": "cte", "sql": "WITH x AS (SELECT amount FROM spend) SELECT amount FROM x", "expected": {"spend": ["amount"]}, "gap": false},
+    {"id": "count-relation", "sql": "SELECT count(*) FROM spend", "expected": {"spend": []}, "gap": false},
+    {"id": "comment-literal", "sql": "SELECT 'FROM fake' AS note, amount FROM spend -- JOIN absent", "expected": {"spend": ["amount"]}, "gap": false},
+    {"id": "wildcard", "sql": "SELECT * FROM spend", "expected": {"spend": ["amount", "user_id"]}, "gap": false},
+    {"id": "json", "sql": "SELECT json_extract(payload, '$.amount') FROM events", "expected": {"events": ["payload"]}, "gap": true},
+    {"id": "dynamic", "sql": "SELECT amount FROM {{ ref('spend') }}", "expected": {}, "gap": true},
+    {"id": "unresolved", "sql": "SELECT amount FROM missing", "expected": {}, "gap": true},
+    {"id": "unsupported-udf", "sql": "SELECT proprietary_udf(amount) FROM spend", "expected": {}, "gap": true}
+  ]
+}
