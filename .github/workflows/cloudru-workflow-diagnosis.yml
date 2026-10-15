@@ -16,12 +16,12 @@ jobs:
           WF_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
         run: |
           python3 - <<'PY'
-          import os,json,urllib.request,urllib.error,re
+          import os,json,urllib.request,urllib.error,re,time,http.client
           key=os.environ["WF_KEY"].strip()
           assert key, "Workflow API key missing"
           print("::add-mask::"+key)
           base="https://devtools.api.cloud.ru/workflow/v1/project/20853297-65b7-42a8-af40-25c8d2df4e11"
-          def get(path,body=None):
+          def request_once(path,body=None):
               req=urllib.request.Request(base+path,headers={"X-API-KEY":key,"Content-Type":"application/json"},data=json.dumps(body).encode() if body else None,method="GET")
               try:
                   with urllib.request.urlopen(req,timeout=35) as r:
@@ -30,6 +30,13 @@ jobs:
               except urllib.error.HTTPError as e:
                   print("HTTP",path.split("?")[0],e.code)
                   return None
+          def get(path,body=None):
+              for attempt in range(3):
+                  try: return request_once(path,body)
+                  except (OSError,http.client.HTTPException):
+                      print("RETRY_CONNECTION",attempt+1)
+                      time.sleep(2)
+              return None
           def shape(v):
               if isinstance(v,dict): return {k:shape(x) for k,x in v.items()}
               if isinstance(v,list): return [shape(v[0])] if v else []
@@ -68,7 +75,7 @@ jobs:
                                   if job.get("name")!="test_build_push": continue
                                   jid=job.get("id","")
                                   if not re.fullmatch(r"[0-9a-f-]{36}",jid): continue
-                                  logs=get("/job/"+jid+"/log/list",{"limit":1000})
+                                  logs=get("/job/"+jid+"/log/list",{"limit":100,"before_time":"2026-10-15T23:59:59Z"})
                                   print("LOG_SCHEMA",json.dumps(shape(logs)))
                                   raw=json.dumps(logs).lower()
                                   for pattern in ("timeout","unauthorized","denied","error","pushed","success","quota","memory","exit code","no space","manifest","connection refused","context deadline","artifact","killed","failed to"):
