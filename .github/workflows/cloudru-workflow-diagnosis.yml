@@ -50,5 +50,16 @@ jobs:
               for suffix in ("","/deployment/list"):
                   d=get("/application/"+aid+suffix)
                   print("TARGET_SCHEMA",suffix,json.dumps(shape(d)))
+                  def statuses(v):
+                      if isinstance(v,dict):
+                          s=v.get("status")
+                          if isinstance(s,str) and re.fullmatch(r"[A-Za-z_ -]{1,40}",s):
+                              name=v.get("name","")
+                              name=name if name in ("dmrp-demo","ci_cd","create_registry","test_build_push","create_container") else "record"
+                              print("STATUS",name,s)
+                          for x in v.values(): statuses(x)
+                      elif isinstance(v,list):
+                          for x in v: statuses(x)
+                  statuses(d)
           print("READ_ONLY_COMPLETE")
           PY
