@@ -19,7 +19,7 @@ jobs:
         run: |
           python3 -m pip install --quiet requests cryptography boto3
           python3 -u - <<'PY'
-          import os,json,base64,time,hashlib
+          import os,json,base64,time,hashlib,re
           from cryptography.hazmat.primitives.ciphers.aead import AESGCM
           import requests
           project="20853297-65b7-42a8-af40-25c8d2df4e11"
@@ -56,12 +56,13 @@ jobs:
           s3.put_bucket_versioning(Bucket=bucket,VersioningConfiguration={"Status":"Enabled"})
           marker={"project_id":project,"dataset":"development","format":1}
           s3.put_object(Bucket=bucket,Key=".dmrp-audit-volume-v1.json",Body=json.dumps(marker).encode(),ContentType="application/json")
-          template["volumes"]=[{"name":"demo-audit","type":"s3","volumeAttributes":{"bucketName":bucket,"tenantId":"fc91c42d-c2ea-4d6d-a236-103fd1f37f00","region":"ru-central-1","readOnly":"false"}}]
+          template["volumes"]=[{"name":"demo-audit","type":"persistent","volumeAttributes":{"bucketName":bucket,"tenantId":"fc91c42d-c2ea-4d6d-a236-103fd1f37f00","region":"ru-central-1","readOnly":"false"}}]
           container["volumeMounts"]=[{"name":"demo-audit","mountPath":"/audit-data","readOnly":False}]
           r=requests.patch(base,headers=headers,params=params,json={"template":template},timeout=45)
           print("VOLUME_CONFIGURATION_HTTP",r.status_code)
           if not r.ok:
               raw=r.text.lower()
+              print("VOLUME_VALIDATION", " ".join(re.findall(r"[a-zA-Z_]+",raw))[:500])
               print("VOLUME_ERROR_MARKERS",[s for s in ("invalid","required","s3","persistent","ephemeral","volume","type","unsupported","enum","bucket","mount","permission","forbidden","tenant","region") if s in raw])
               raise RuntimeError("Persistent volume configuration rejected")
           print("VOLUME_CONFIGURATION_ACCEPTED")
