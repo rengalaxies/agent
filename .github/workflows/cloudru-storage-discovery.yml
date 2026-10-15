@@ -22,12 +22,12 @@ jobs:
           a.raise_for_status()
           token=a.json()["access_token"]
           print("::add-mask::"+token)
-          base="https://containers.api.cloud.ru/v2/containers/appd6bx6ql6wqmzsno1jnp258579"
+          base="https://containers.api.cloud.ru/v2/containers/dmrp-demo-audit"
           params={"projectId":"20853297-65b7-42a8-af40-25c8d2df4e11"}
           r=requests.get(base,params=params,headers={"Authorization":"Bearer "+token},timeout=30)
           r.raise_for_status()
           app=r.json()
-          assert app["name"]=="appd6bx6ql6wqmzsno1jnp258579" and app["projectId"]==params["projectId"]
+          assert app["name"]=="dmrp-demo-audit" and app["projectId"]==params["projectId"]
           print("RESUMED_CONTAINER_STATE",app["status"])
           print("AUDIT_IMAGE_SELECTED",":audit-7fb471010211" in app["template"]["containers"][0]["image"])
           env=app["template"]["containers"][0].get("env",[])
@@ -47,7 +47,11 @@ jobs:
                   raw=json.dumps(recent or entries[:15]).lower()
                   print("LISTENING_PORTS",re.findall(r"0[.]0[.]0[.]0:([0-9]+)",raw))
                   print("RUNTIME_MARKERS",suffix,[s for s in ("keyerror","dmrp_ui_username","dmrp_ui_password_sha256","modulenotfounderror","audit_sink","audit_volume","permission","denied","failedmount","mountvolume","backoff","oomkilled","traceback","error","unhealthy","connection refused","context deadline","readiness probe failed","liveness probe failed","startup probe failed","application startup complete","uvicorn running","failed to start","no such file","failedscheduling","insufficient","503","502","200","statemount","state_not_mounted","failedmount","volume mount") if s in raw])
+          print("PUBLIC_INGRESS_ENABLED",app["configuration"]["ingress"].get("publiclyAccessible"))
+          if not app["configuration"]["ingress"].get("publicUri"):
+              print("PUBLIC_URI_NOT_PROVISIONED")
+              raise SystemExit(0)
           for path in ("/healthz","/"):
-              r=requests.get("https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru"+path,timeout=20)
+              r=requests.get("https://dmrp-demo-audit.containerapps.ru"+path,timeout=20)
               print("PUBLIC_STATUS",path,r.status_code)
           PY
