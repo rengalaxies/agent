@@ -56,7 +56,7 @@ jobs:
           s3.put_bucket_versioning(Bucket=bucket,VersioningConfiguration={"Status":"Enabled"})
           marker={"project_id":project,"dataset":"development","format":1}
           s3.put_object(Bucket=bucket,Key=".dmrp-audit-volume-v1.json",Body=json.dumps(marker).encode(),ContentType="application/json")
-          template["volumes"]=[{"name":"demo-audit","type":"persistent","volumeAttributes":{"bucketName":bucket,"tenantId":"fc91c42d-c2ea-4d6d-a236-103fd1f37f00","region":"ru-central-1","readOnly":"false"}}]
+          template["volumes"]=[{"name":"demo-audit","type":"s3","volumeAttributes":{"bucketName":bucket}}]
           container["volumeMounts"]=[{"name":"demo-audit","mountPath":"/audit-data","readOnly":False}]
           r=requests.patch(base,headers=headers,params=params,json={"template":template},timeout=45)
           print("VOLUME_CONFIGURATION_HTTP",r.status_code)
