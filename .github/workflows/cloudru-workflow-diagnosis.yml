@@ -75,11 +75,11 @@ jobs:
                                   if job.get("name")!="test_build_push": continue
                                   jid=job.get("id","")
                                   if not re.fullmatch(r"[0-9a-f-]{36}",jid): continue
-                                  logs=get("/job/"+jid+"/log/list",{"limit":100,"before_time":"2026-10-15T23:59:59Z"})
+                                  logs=get("/job/"+jid+"/log/list",{"limit":100,"before_time":"2026-10-16T00:00:00Z"})
                                   print("LOG_SCHEMA",json.dumps(shape(logs)))
                                   entries=(logs or {}).get("logs",[])
                                   print("LOG_COUNT",len(entries))
-                                  markers=("error","failed","timeout","pushed","success","build","push","image","digest","kaniko","test","pytest","permission","denied","connection","refused","proxy","fallback","exit","code","upload","report","result","artifact","cannot","not found","unauthorized","expired","deadline","exceeded","internal","request","unavailable","finished","completed","fatal")
+                                  markers=("error","failed","timeout","pushed","success","build","push","image","digest","kaniko","test","pytest","permission","denied","connection","refused","proxy","fallback","exit","code","upload","report","result","artifact","cannot","not found","unauthorized","expired","deadline","exceeded","internal","request","unavailable","finished","completed","fatal","pip install","downloading","collecting","installing","snapshot","copy","workdir","return","warning","error building","error pushing")
                                   for n,entry in enumerate(entries):
                                       msg=entry.get("message","").lower()
                                       found=[m for m in markers if m in msg]
