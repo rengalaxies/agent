@@ -9,7 +9,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 4
     steps:
       - name: Inspect approved service without publishing payloads
         env:
@@ -97,30 +97,5 @@ jobs:
                                   for pattern in (r"exit (?:code|status)[: =]+([0-9]+)",r"status code[: =]+([0-9]{3})"):
                                       print("ERROR_CODES",re.findall(pattern,raw))
 
-          aid="de8e6314-9e8b-4b39-bf69-4b1469928955"
-          app=get("/application/"+aid)
-          assert app and app["name"]=="dmrp-demo"
-          assert app["project_id"]=="20853297-65b7-42a8-af40-25c8d2df4e11"
-          assert app["repository_url"].rstrip("/") in ("https://github.com/rengalaxies/agent","https://github.com/rengalaxies/agent.git")
-          assert app["branch"]=="deploy/cloudru-managed"
-          history=get("/application/"+aid+"/deployment/list")
-          if history and history.get("total")==2 and (app.get("run") or {}).get("status")=="failed":
-              req=urllib.request.Request(base+"/application/"+aid+"/deployment",headers={"X-API-KEY":key,"Content-Type":"application/json"},data=b"{}",method="POST")
-              with urllib.request.urlopen(req,timeout=40) as response:
-                  result=json.load(response)
-                  print("REDEPLOY_ACCEPTED",response.status)
-              for attempt in range(15):
-                  time.sleep(20)
-                  current=get("/application/"+aid)
-                  status=(current or {}).get("run",{}).get("status")
-                  print("REDEPLOY_POLL",attempt,status if status in ("pending","running","done","failed","success","in_progress") else "other")
-                  if status in ("done","failed","success"):
-                      h=get("/application/"+aid+"/deployment/list")
-                      if h:
-                          for dep in h.get("deployments",[])[:1]: statuses(dep.get("run",{}))
-                      break
-          else:
-              print("REDEPLOY_SKIPPED_SAFETY_GATE")
-          print("DIAGNOSIS_COMPLETE")
-
+          print("READ_ONLY_COMPLETE")
           PY
