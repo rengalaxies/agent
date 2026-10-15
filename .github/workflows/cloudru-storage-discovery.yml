@@ -28,7 +28,7 @@ jobs:
           r.raise_for_status()
           app=r.json()
           assert app["name"]=="appd6bx6ql6wqmzsno1jnp258579" and app["projectId"]==params["projectId"]
-          print("CONTAINER_STATE",app["status"])
+          print("RESUMED_CONTAINER_STATE",app["status"])
           print("AUDIT_IMAGE_SELECTED",":audit-7fb471010211" in app["template"]["containers"][0]["image"])
           for path in ("/healthz","/"):
               r=requests.get("https://appd6bx6ql6wqmzsno1jnp258579.containerapps.ru"+path,timeout=20)
