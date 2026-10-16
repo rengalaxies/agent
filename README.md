@@ -66,8 +66,8 @@ make business-pilot
 - `docs/business-process-as-is.md` - аналитическая базовая модель выпуска без consumer-aware протокола;
 - `docs/business-process-to-be.md` - целевой процесс выпуска с локальными вердиктами и детерминированной финализацией;
 - `docs/economic-model.md` - формула, связь метрик с затратами, точка безубыточности и границы экономического вывода;
-- `src/change_completion` - отдельные контракты нового продукта и декларативная оценка покрытия; исполнителя пока нет;
-- `tests/product` и `examples/product` - отдельные продуктовые проверки и примеры описаний разных стеков;
+- `src/change_completion` - контракты, декларативная оценка покрытия и verifier предоставленных observations; исполнителя пока нет;
+- `tests/product` и `examples/product` - отдельные продуктовые проверки и примеры описаний разных стеков; [offline verification replay](examples/product/verification/README.md) сравнивает синтетические observations с независимо одобренными ожиданиями без исполнения candidate;
 - `services`, `ui`, `stand`, `deploy` - существующие исследовательские API, интерфейс, стенд и development-размещение; их наличие не означает готовую on-premise поставку.
 
 ## Интерпретация режимов

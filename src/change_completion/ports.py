@@ -1,4 +1,4 @@
-"""Adapter boundaries only. No connectors, sandbox or verifier implementations."""
+"""Adapter ports. No connectors or sandbox yet; observation verifier is separate."""
 from typing import Protocol
 
 from .models import AdapterDeclaration, ContentRef, Dependency, TransitionSpec
