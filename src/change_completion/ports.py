@@ -1,4 +1,4 @@
-"""Adapter ports. No connectors or sandbox yet; observation verifier is separate."""
+"""Adapter ports. Internal adapters/readonly runtime are separate implementations."""
 from typing import Protocol
 
 from .models import AdapterDeclaration, ContentRef, Dependency, TransitionSpec

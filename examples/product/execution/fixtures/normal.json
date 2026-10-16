@@ -1,0 +1,20 @@
+{
+  "schemas": {
+    "events": {
+      "age_days": "INTEGER",
+      "amount": "INTEGER"
+    }
+  },
+  "tables": {
+    "events": [
+      {
+        "age_days": 10,
+        "amount": 100
+      },
+      {
+        "age_days": 60,
+        "amount": 60
+      }
+    ]
+  }
+}

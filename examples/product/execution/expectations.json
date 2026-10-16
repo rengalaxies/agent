@@ -1,0 +1,127 @@
+{
+  "approved_by": "business-owner",
+  "cases": [
+    {
+      "case_id": "analytics-normal",
+      "expected": {
+        "columns": [
+          {
+            "kind": "int",
+            "name": "total",
+            "nullable": false
+          }
+        ],
+        "rows": [
+          [
+            160
+          ]
+        ]
+      },
+      "fixture": {
+        "sha256": "aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9",
+        "uri": "normal.json"
+      },
+      "input_records": 2,
+      "requirement_ids": [
+        "r-analytics"
+      ],
+      "tags": [
+        "normal"
+      ]
+    },
+    {
+      "case_id": "analytics-boundary",
+      "expected": {
+        "columns": [
+          {
+            "kind": "int",
+            "name": "total",
+            "nullable": false
+          }
+        ],
+        "rows": [
+          [
+            31
+          ]
+        ]
+      },
+      "fixture": {
+        "sha256": "1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e",
+        "uri": "boundary.json"
+      },
+      "input_records": 4,
+      "requirement_ids": [
+        "r-analytics"
+      ],
+      "tags": [
+        "boundary"
+      ]
+    },
+    {
+      "case_id": "audit-normal",
+      "expected": {
+        "columns": [
+          {
+            "kind": "int",
+            "name": "total",
+            "nullable": false
+          }
+        ],
+        "rows": [
+          [
+            100
+          ]
+        ]
+      },
+      "fixture": {
+        "sha256": "aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9",
+        "uri": "normal.json"
+      },
+      "input_records": 2,
+      "requirement_ids": [
+        "r-audit"
+      ],
+      "tags": [
+        "normal"
+      ]
+    },
+    {
+      "case_id": "audit-boundary",
+      "expected": {
+        "columns": [
+          {
+            "kind": "int",
+            "name": "total",
+            "nullable": false
+          }
+        ],
+        "rows": [
+          [
+            7
+          ]
+        ]
+      },
+      "fixture": {
+        "sha256": "1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e",
+        "uri": "boundary.json"
+      },
+      "input_records": 4,
+      "requirement_ids": [
+        "r-audit"
+      ],
+      "tags": [
+        "boundary"
+      ]
+    }
+  ],
+  "context_sha256": "7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293",
+  "format": "independent-expectations/1",
+  "origin": "owner_examples",
+  "prepared_at": "2026-10-16T10:00:00Z",
+  "required_tags": [
+    "normal",
+    "boundary"
+  ],
+  "transition_id": "two-consumer-window-change",
+  "valid_until": "2027-10-16T10:00:00Z"
+}
