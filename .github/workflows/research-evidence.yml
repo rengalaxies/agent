@@ -1,0 +1,41 @@
+name: Research evidence and equal-information checks
+on:
+  push:
+    branches: [research/evidence-graph-fair-baseline]
+    paths:
+      - '.github/workflows/research-evidence.yml'
+      - 'src/datamesh_release_protocol/evidence_graph.py'
+      - 'src/datamesh_release_protocol/consumer_test_baseline.py'
+      - 'tools/run_equal_information.py'
+      - 'tests/test_evidence_graph.py'
+      - 'tests/test_consumer_test_baseline.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[distributed]'
+      - name: Check graph, baseline and existing knowledge guarantees
+        env:
+          PYTHONPATH: 'src:tests'
+        run: |
+          python -m unittest discover -s tests -p 'test_evidence_graph.py' -v
+          python -m unittest discover -s tests -p 'test_consumer_test_baseline.py' -v
+          python -m unittest discover -s tests -p 'test_knowledge.py' -v
+      - name: Repeat comparison without scoring oracles
+        env:
+          PYTHONPATH: src
+        run: |
+          python tools/run_equal_information.py > /tmp/equal-information.json
+          diff docs/research-2026-10-15/equal-information-results.json /tmp/equal-information.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: equal-information-diagnostic
+          path: /tmp/equal-information.json
