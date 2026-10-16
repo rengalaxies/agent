@@ -24,3 +24,6 @@ dmrp = "datamesh_release_protocol.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+change_completion = ["web/*.html"]

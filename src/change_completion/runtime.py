@@ -46,6 +46,19 @@ def utc_now():
     return datetime.now(timezone.utc)
 
 
+def runtime_revision():
+    return digest_bytes(encode({p.name: digest_bytes(p.read_bytes())
+                                for p in sorted(Path(__file__).parent.glob("*.py"))}))
+
+
+def authority_digest(policy, actor):
+    grants = [g for g in policy.grants if g.actor == actor]
+    return digest_bytes(encode({"grants": [g.model_dump(mode="json") for g in grants],
+                               "revoked": sorted(policy.revoked_grant_ids.intersection(g.grant_id for g in grants)),
+                               "suites": sorted(policy.approved_suite_digests), "owners": sorted(policy.approved_owners),
+                               "minimum_cases": policy.minimum_cases}))
+
+
 def _granted(spec, policy, actor, component, action, at):
     return action in spec.allowed_actions and any(
         g.grant_id not in policy.revoked_grant_ids and g.actor == actor
@@ -145,9 +158,10 @@ def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
             require(fixture.get("schemas") == source_schemas, "fixture_source_schema_mismatch")
             require(sum(len(rows) for rows in fixture["tables"].values()) == case.input_records, "fixture_count_mismatch")
             fixture_bytes[case.case_id] = content
-        runtime_revision = digest_bytes(encode({name: digest_bytes(Path(__file__).with_name(name).read_bytes())
-                                               for name in ("runtime.py", "executor.py", "sql_worker.py", "comparison.py", "verification.py", "adapters.py", "providers.py", "models.py")}))
-        fingerprint = digest_bytes(encode({"runtime": RUNTIME_VERSION, "runtime_revision": runtime_revision, "context": context_digest(spec),
+        revision = runtime_revision()
+        authority = authority_digest(policy, actor)
+        fingerprint = digest_bytes(encode({"runtime": RUNTIME_VERSION, "runtime_revision": revision,
+                                          "authority": authority, "context": context_digest(spec),
                                           "suite": suite_hash, "provider": provider.identity,
                                           "snapshot": {k: digest_bytes(v) for k, v in captured.items()},
                                           "inventory": discovery,
@@ -173,7 +187,8 @@ def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
                 require(all(_granted(spec, policy_loader(), actor, t.component_id, Action.EXPORT, clock()) for t in intent.targets), "cached_export_authority_unavailable")
                 result = {**result, "verification": fresh.model_dump(mode="json"), "revalidated_at": clock().isoformat()}
             return {**result, "reused": True}
-        result.update(run_id=run_id, context_sha256=context_digest(spec), runtime_revision=runtime_revision, reused=False)
+        result.update(run_id=run_id, context_sha256=context_digest(spec), runtime_revision=revision,
+                      authority_sha256=authority, reused=False)
         store.append(run_id, "DISCOVERED", {"files": discovery["files"], "dependencies": discovery["dependencies"], "coverage_limits": discovery["gaps"]})
         proposals = {}
         created = clock()
