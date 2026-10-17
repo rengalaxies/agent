@@ -1,4 +1,5 @@
 name: Lab real Foundation Models agent CI
+# Attempt 2: explicit analyst status enum; attempt 1 failure retained in reports.
 on:
   workflow_dispatch:
   push:

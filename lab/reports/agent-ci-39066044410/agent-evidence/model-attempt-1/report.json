@@ -1,0 +1,34 @@
+{
+  "run_id": "1cc96756-1f83-46ba-9f6b-134c5443eb30",
+  "mode": "live",
+  "started_at": "2026-10-17T20:17:51.312348+00:00",
+  "outcome": "BLOCKED",
+  "scenario_suite": "lab/evaluator frozen suite",
+  "manual_time": "NOT_MEASURED",
+  "infrastructure_cost": "NOT_MEASURED",
+  "execution_actions": [],
+  "waiting_seconds": "NOT_MEASURED",
+  "change": {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "intent": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault."
+  },
+  "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+  "source_commit": "dfcdfb8e3016721a397a1655c642873d19cfab9a",
+  "source_snapshot_digest": "95bf2ad6a3db56262f1eed8e7882096429f1df294fa066e9151829d50283233f",
+  "context_digest": "b910bff1b2f37659cfe4a925c6a17369ddf0cd0b817c8b7dda0c3888b79996a7",
+  "model": "NOT_CONFIGURED",
+  "limits": {
+    "calls": 2,
+    "llm_seconds": 240,
+    "tokens": 64000,
+    "parallelism": 1,
+    "cost_usd": null
+  },
+  "blocker": "Missing CLOUDRU_FOUNDATION_API_KEY and/or CLOUDRU_LLM_MODEL; IAM credentials are not an inference API key.",
+  "elapsed_seconds": 0.017,
+  "llm_calls": 0,
+  "token_usage": [],
+  "model_cost_usd": "NOT_MEASURED",
+  "ended_at": "2026-10-17T20:17:51.329417+00:00"
+}
