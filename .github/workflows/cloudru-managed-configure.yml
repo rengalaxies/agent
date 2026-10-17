@@ -1,0 +1,90 @@
+name: Configure approved managed demo
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-managed-configure.yml"]
+permissions:
+  contents: read
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Configure authentication and inspect runtime
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+        run: |
+          python3 -m pip install --quiet requests cryptography
+          python3 -u - <<'PY'
+          import os,json,base64,time,hashlib
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          import requests
+          project="20853297-65b7-42a8-af40-25c8d2df4e11"
+          name="appd6bx6ql6wqmzsno1jnp258579"
+          enc=base64.b64decode("v163R/1hZPy/nAH0xNacyClwaT9ADDGsEny8ESu3/Ja8/JqsnwCoW0ro7wrzrBdMeHTUWZVjiBS2ZCHzDnkisGGWC3nn4IKuZMkMvqQT4hTXkDg0uQrjw0pOt4paDqOTlhwEuWYkuPPOeoqKe+MfazOnDrvIG+/Ev6EROPBgiAZiES2rtglus6xNzlewQk1MQn0aP3Ow31v4XPmNkkRfuUC04ffeTDlaUJh+/K1YE4meuIj/")
+          key=base64.b64decode(os.environ["SSE"].strip(),validate=True)
+          cfg=json.loads(AESGCM(key).decrypt(enc[:12],enc[12:],b"dmrp-managed-auth-v1"))
+          for value in cfg.values(): print("::add-mask::"+value)
+          auth=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          auth.raise_for_status()
+          token=auth.json()["access_token"]
+          print("::add-mask::"+token)
+          headers={"Authorization":"Bearer "+token}
+          base="https://containers.api.cloud.ru/v2/containers/"+name
+          params={"projectId":project}
+          r=requests.get(base,headers=headers,params=params,timeout=30)
+          r.raise_for_status()
+          app=r.json()
+          assert app["projectId"]==project and app["name"]==name
+          template=app["template"]
+          assert len(template["containers"])==1
+          container=template["containers"][0]
+          assert "workflow-20853297-65b7-42a8-af40-25c8d2df4e11" in container["image"]
+          env=container.get("env") or []
+          names={x.get("name") for x in env}
+          required={"DMRP_UI_USERNAME":cfg["username"],"DMRP_UI_PASSWORD_SHA256":cfg["sha256"],"DMRP_REQUIRE_AUDIT":"1"}
+          changed=False
+          for k,v in required.items():
+              found=next((x for x in env if x.get("name")==k),None)
+              if found is None: env.append({"name":k,"value":v}); changed=True
+              elif found.get("value")!=v: found.clear();found.update({"name":k,"value":v});changed=True
+          container["env"]=env
+          if changed:
+              r=requests.patch(base,headers=headers,params=params,json={"template":template},timeout=45)
+              print("AUTH_CONFIGURATION_HTTP",r.status_code)
+              if not r.ok:
+                  raw=r.text.lower()
+                  print("CONFIG_ERROR_MARKERS",[s for s in ("publishing","conflict","invalid","required","permission","forbidden","not found","env","template","revision") if s in raw])
+              else: print("AUTH_CONFIGURATION_ACCEPTED")
+          else: print("AUTH_ALREADY_CONFIGURED")
+          for attempt in range(6):
+              time.sleep(10)
+              r=requests.get(base,headers=headers,params=params,timeout=30)
+              if not r.ok: print("RUNTIME_GET_HTTP",r.status_code);continue
+              app=r.json()
+              print("CONTAINER_STATE",app.get("status"))
+              ingress=app.get("configuration",{}).get("ingress",{})
+              url=ingress.get("publicUri","")
+              if url and not url.startswith("http"): url="https://"+url
+              if url.startswith("https://"):
+                  try:
+                      q=requests.get(url,timeout=20,allow_redirects=False)
+                      print("UNAUTHENTICATED_HTTP",q.status_code)
+                      q=requests.get(url,auth=(cfg["username"],cfg["password"]),timeout=20,allow_redirects=False)
+                      print("AUTHENTICATED_HTTP",q.status_code)
+                      h=requests.get(url.rstrip("/")+"/healthz",timeout=20,allow_redirects=False)
+                      print("DATABASE_READINESS_HTTP",h.status_code)
+                      if q.status_code==200:
+                          print("PUBLIC_DEMO_URL",url)
+                          break
+                  except requests.RequestException: print("PUBLIC_ENDPOINT_NOT_READY")
+          for suffix in ("/logs","/systemLogs"):
+              r=requests.get(base+suffix,headers=headers,params=params,timeout=30)
+              print("RUNTIME_LOGS_HTTP",suffix,r.status_code)
+              if r.ok:
+                  raw=r.text.lower()
+                  print("RUNTIME_ERROR_MARKERS",[s for s in ("keyerror","dmrp_ui_username","dmrp_ui_password_sha256","database_url","traceback","permission denied","module not found","modulenotfounderror","back-off","failed","error","imagepull","oomkilled","readiness","crashloop") if s in raw])
+          PY

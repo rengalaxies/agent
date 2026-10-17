@@ -1,0 +1,142 @@
+name: Cloud.ru deployment access audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-access-audit.yml"]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Read approved project and test deployment channels
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          WF_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
+          SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+        run: |
+          python3 -m pip install --quiet boto3 requests
+          python3 - <<'PY'
+          import os,json,base64,socket,concurrent.futures
+          import boto3,requests
+          from botocore.config import Config
+          project="20853297-65b7-42a8-af40-25c8d2df4e11"
+          access="fc91c42d-c2ea-4d6d-a236-103fd1f37f00:"+os.environ["KEY_ID"]
+          print("::add-mask::"+access)
+          sse=base64.b64decode(os.environ["SSE"].strip(),validate=True)
+          assert len(sse)==32
+          s3=boto3.client("s3",endpoint_url="https://s3.cloud.ru",region_name="ru-central-1",aws_access_key_id=access,aws_secret_access_key=os.environ["SECRET"],config=Config(s3={"addressing_style":"path"}))
+          state=json.loads(s3.get_object(Bucket="test-bucket-ds",Key="terraform/p1/daniil-smirnov.tfstate",SSECustomerAlgorithm="AES256",SSECustomerKey=sse)["Body"].read())
+          data={}
+          for resource in state.get("resources",[]):
+              if resource["mode"]!="managed": continue
+              for instance in resource.get("instances",[]):
+                  item=instance["attributes"]
+                  if "project_id" in item: assert item["project_id"]==project
+                  data[(resource["type"],resource["name"],instance.get("index_key"))]=item
+          ui=data[("cloudru_evolution_compute_vm","ui_vm",None)]
+          core=data[("cloudru_evolution_compute_vm","vm","core")]
+          assert ui["name"]=="dm-p1-ui" and core["name"]=="dm-p1-core"
+          assert core["id"]=="97a6e631-1d80-4212-aa69-ef6454b029df"
+          allocation=data[("cloudru_evolution_compute_external_ip","ui",None)]
+          assert allocation["id"]=="33a27f64-e474-49ed-a17b-15f67dd16400"
+          ip=allocation["ip_address"]
+          print("::add-mask::"+ip)
+          auth=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          auth.raise_for_status()
+          token=auth.json()["access_token"]
+          print("::add-mask::"+token)
+          headers={"Authorization":"Bearer "+token}
+          for label,item in (("UI",ui),("CORE",core)):
+              r=requests.get("https://compute.api.cloud.ru/api/v1/vms/"+item["id"],headers=headers,timeout=25)
+              r.raise_for_status()
+              vm=r.json().get("vm",r.json())
+              assert vm["project"]["id"]==project and vm["name"]==item["name"]
+              print(label+"_STATE",vm.get("state"))
+              print(label+"_AGENT",vm.get("guest_agent_state"))
+              print(label+"_CONSOLE_FIELDS_PRESENT",[k for k in vm if "console" in k])
+              print(label+"_API_FIELDS",sorted(vm))
+          def probe(port):
+              try:
+                  with socket.create_connection((ip,port),timeout=8) as sock:
+                      if port==22:
+                          sock.settimeout(5)
+                          banner=sock.recv(128)
+                          return "TCP_22_BANNER "+repr(banner[:80])
+                      return "TCP_"+str(port)+" CONNECTED"
+              except (OSError,socket.timeout) as e:
+                  return "TCP_"+str(port)+" "+type(e).__name__
+          with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
+              for result in pool.map(probe,[22,80,443]): print(result)
+          try:
+              r=requests.get("http://"+ip,timeout=(8,10),allow_redirects=False)
+              print("PUBLIC_HTTP_STATUS",r.status_code)
+              print("PUBLIC_HTTP_SERVER",r.headers.get("Server",""))
+              print("PUBLIC_HTTP_NGINX_WELCOME","Welcome to nginx!" in r.text)
+          except requests.RequestException as e: print("PUBLIC_HTTP",type(e).__name__)
+          for kind in ("agents","evo-claws","instanceTypes","mcpServers"):
+              try:
+                  r=requests.get("https://console.cloud.ru/u-api/ai-agents/v1/"+project+"/"+kind,headers=headers,params={"limit":10,"offset":0},timeout=25)
+                  print("AGENT_API_"+kind+"_STATUS",r.status_code)
+                  if r.ok and "json" in r.headers.get("Content-Type",""):
+                      doc=r.json()
+                      print("AGENT_API_"+kind+"_FIELDS",sorted(doc) if isinstance(doc,dict) else type(doc).__name__)
+                      pass  # Never publish response payloads.
+              except requests.RequestException as e: print("AGENT_API_"+kind,type(e).__name__)
+          try:
+              url="https://devtools.api.cloud.ru/workflow/v1/project/"+project+"/application/list"
+              r=requests.get(url,headers=headers,timeout=20)
+              print("WORKFLOW_API_HTTP_STATUS",r.status_code)
+          except requests.RequestException as e:
+              print("WORKFLOW_API_CONNECTION",type(e).__name__)
+          key=os.environ.get("WF_KEY","").strip()
+          if key:
+              print("::add-mask::"+key)
+              base="https://devtools.api.cloud.ru/workflow/v1/project/"+project
+              rr=requests.get(base+"/application/de8e6314-9e8b-4b39-bf69-4b1469928955/deployment/list",headers={"X-API-KEY":key},timeout=30)
+              print("DEPLOYMENT_HISTORY_HTTP",rr.status_code)
+              if rr.ok:
+                  deps=rr.json().get("deployments",[])
+                  print("DEPLOYMENT_COUNT",rr.json().get("total"))
+                  for dep in deps[:1]:
+                      run=dep.get("run") or {}
+                      print("LATEST_RUN_STATE",run.get("status"))
+                      for stage in run.get("stages") or []:
+                          for job in stage.get("jobs") or []:
+                              if job.get("name") in ("create_registry","test_build_push","create_container"):
+                                  print("LATEST_JOB",job["name"],job.get("status"))
+          rr=requests.get("https://containers.api.cloud.ru/v2/containers",headers=headers,params={"projectId":project},timeout=30)
+          print("CONTAINERS_API_HTTP",rr.status_code)
+          if rr.ok:
+              def shape(v):
+                  if isinstance(v,dict): return {k:shape(x) for k,x in v.items()}
+                  if isinstance(v,list): return [shape(v[0])] if v else []
+                  return type(v).__name__
+              print("CONTAINERS_SCHEMA",json.dumps(shape(rr.json())))
+              for item in rr.json().get("data",[]):
+                  name=item.get("name","")
+                  if len(rr.json().get("data",[]))!=1: continue
+                  print("CONTAINER_NAME",name)
+                  print("TARGET_CONTAINER_FOUND",True)
+                  for field in ("state","status"):
+                      value=item.get(field)
+                      if isinstance(value,str) and len(value)<40: print("CONTAINER_STATE",field,value)
+                  def scan(v):
+                      if isinstance(v,dict):
+                          for k,x in v.items():
+                              if k in ("env","environmentVariables","environment") and isinstance(x,list):
+                                  print("RUNTIME_ENV_NAMES",[e.get("name") for e in x if isinstance(e,dict)])
+                              if k.lower() in ("url","publicurl","publicuri","endpoint","domain") and isinstance(x,str) and x.startswith("https://"):
+                                  try:
+                                      q=requests.get(x,timeout=15,allow_redirects=False)
+                                      print("CONTAINER_PUBLIC_HTTP",q.status_code)
+                                  except requests.RequestException: print("CONTAINER_PUBLIC_HTTP","connection_failed")
+                              scan(x)
+                      elif isinstance(v,list):
+                          for x in v: scan(x)
+                  scan(item)
+          print("AUDIT_COMPLETE: no infrastructure mutations")
+          PY

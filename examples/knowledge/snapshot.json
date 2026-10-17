@@ -1,0 +1,253 @@
+{
+  "snapshot_id": "bb32bf4d57a0e9ab49bb405bd66d48606b9b58d5f9707a7cff04cb45687376c6",
+  "schema_version": "knowledge-1",
+  "proposal_id": "compatible-change",
+  "product_id": "active-users",
+  "as_of": "2026-09-29T00:00:02Z",
+  "membership_epoch": 1,
+  "old_contract": {
+    "product_id": "active-users",
+    "contract_version": "1",
+    "owner_domain": "sales",
+    "schema_fields": {
+      "active": "bool"
+    },
+    "semantic": {
+      "meaning": "active",
+      "description": null,
+      "formula": "purchases_30d > 0",
+      "unit": "bool",
+      "scale": null,
+      "calculation_window_days": null,
+      "identity_scope": "person",
+      "allowed_sources": [
+        "crm"
+      ],
+      "purposes": [
+        "risk"
+      ],
+      "valid_time": "event_time"
+    }
+  },
+  "new_contract": {
+    "product_id": "active-users",
+    "contract_version": "2",
+    "owner_domain": "sales",
+    "schema_fields": {
+      "active": "bool"
+    },
+    "semantic": {
+      "meaning": "active",
+      "description": null,
+      "formula": "purchases_30d > 0",
+      "unit": "bool",
+      "scale": null,
+      "calculation_window_days": null,
+      "identity_scope": "person",
+      "allowed_sources": [
+        "crm"
+      ],
+      "purposes": [
+        "risk"
+      ],
+      "valid_time": "event_time"
+    }
+  },
+  "required_consumer_ids": [
+    "risk-app"
+  ],
+  "records": [
+    {
+      "record_id": "attribute",
+      "version": 2,
+      "kind": "attribute",
+      "owner_domain": "sales",
+      "status": "confirmed",
+      "confirmed_by": "producer",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "product_id": "active-users",
+        "field_path": "active",
+        "semantic_profile_ref": "semantic:1",
+        "contract_version": "1"
+      }
+    },
+    {
+      "record_id": "constitution",
+      "version": 2,
+      "kind": "constitution",
+      "owner_domain": "federation",
+      "status": "confirmed",
+      "confirmed_by": "registry",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "product_id": "active-users",
+        "constitution_ref": "constitution:1",
+        "constitution_version": "1",
+        "content_hash": "abc"
+      }
+    },
+    {
+      "record_id": "coverage",
+      "version": 2,
+      "kind": "coverage",
+      "owner_domain": "federation",
+      "status": "confirmed",
+      "confirmed_by": "registry",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "product_id": "active-users",
+        "membership_epoch": 1,
+        "registered_consumer_ids": [
+          "risk-app"
+        ],
+        "registry_evidence_ref": "registry:1",
+        "registration_boundary": "registered subscriptions",
+        "authority_ref": "grant:registry"
+      }
+    },
+    {
+      "record_id": "ct",
+      "version": 2,
+      "kind": "team",
+      "owner_domain": "risk",
+      "status": "confirmed",
+      "confirmed_by": "consumer",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "team_id": "c",
+        "domain_id": "risk",
+        "authority_ref": "grant:consumer"
+      }
+    },
+    {
+      "record_id": "obligation",
+      "version": 2,
+      "kind": "obligation",
+      "owner_domain": "risk",
+      "status": "confirmed",
+      "confirmed_by": "consumer",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "usage_ref": "usage",
+        "requirement": {
+          "obligation_id": "risk-obligation",
+          "obligation_version": "1",
+          "consumer_id": "risk-app",
+          "consumer_domain": "risk",
+          "product_id": "active-users",
+          "required_meaning": null,
+          "required_formula": "purchases_30d > 0",
+          "accepted_units": [],
+          "accepted_scales": [],
+          "min_window_days": null,
+          "accepted_identity_scopes": [],
+          "allowed_sources": [],
+          "required_purposes": []
+        },
+        "mandatory": true
+      }
+    },
+    {
+      "record_id": "product",
+      "version": 2,
+      "kind": "product",
+      "owner_domain": "sales",
+      "status": "confirmed",
+      "confirmed_by": "producer",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "product_id": "active-users",
+        "producer_team_ref": "pt",
+        "contract": {
+          "product_id": "active-users",
+          "contract_version": "1",
+          "owner_domain": "sales",
+          "schema_fields": {
+            "active": "bool"
+          },
+          "semantic": {
+            "meaning": "active",
+            "description": null,
+            "formula": "purchases_30d > 0",
+            "unit": "bool",
+            "scale": null,
+            "calculation_window_days": null,
+            "identity_scope": "person",
+            "allowed_sources": [
+              "crm"
+            ],
+            "purposes": [
+              "risk"
+            ],
+            "valid_time": "event_time"
+          }
+        }
+      }
+    },
+    {
+      "record_id": "pt",
+      "version": 2,
+      "kind": "team",
+      "owner_domain": "sales",
+      "status": "confirmed",
+      "confirmed_by": "producer",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "team_id": "p",
+        "domain_id": "sales",
+        "authority_ref": "grant:producer"
+      }
+    },
+    {
+      "record_id": "usage",
+      "version": 2,
+      "kind": "usage",
+      "owner_domain": "risk",
+      "status": "confirmed",
+      "confirmed_by": "consumer",
+      "evidence_ref": "confirmation:1",
+      "valid_from": "2026-09-29T00:00:01Z",
+      "valid_until": null,
+      "data": {
+        "consumer_id": "risk-app",
+        "consumer_team_ref": "ct",
+        "product_id": "active-users",
+        "field_paths": [
+          "active"
+        ],
+        "purpose": "risk",
+        "calculation_ref": "calc:1",
+        "registration_ref": "registry:1",
+        "active": true
+      }
+    }
+  ],
+  "completeness": "complete",
+  "issues": [],
+  "record_hashes": {
+    "attribute@2": "0586ebe4526344c1b814320c09ec85df677c7e2c4bfdf905e8e0ebbb7bb47887",
+    "constitution@2": "e1c9c7ca99a63769e06b0a54d45c200c7ffbdf4a7d1fe08d78fb3b71c4ff99e3",
+    "coverage@2": "d26711ec62473f943696a31710c75e3748274380f7e8d88f57cf6ba2f339ce51",
+    "ct@2": "20fdbbf19ee3a5f7fbec6b3a2225e35c9ebed56b3b327297406ea9e4537b645b",
+    "obligation@2": "65b48aea55e264166a2bd67862450d3319b539ababbe00800717d64329940e6d",
+    "product@2": "5f0d716c8a2c29fefe650e99e71e3f787a09c846e2d4b82ba97eb1b2ed8c89d7",
+    "pt@2": "2cb6f1fb8ef25fda581f9a4a5533568f30ec9b5010e0b838f1500bf7ca1794fc",
+    "usage@2": "fe32dcdd0b566c57e6c07efdc8e90586624db7275eb9f8e6caced60f6e76c28f"
+  },
+  "canonical_payload_hash": "bb32bf4d57a0e9ab49bb405bd66d48606b9b58d5f9707a7cff04cb45687376c6"
+}

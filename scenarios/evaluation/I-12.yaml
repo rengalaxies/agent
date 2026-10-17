@@ -1,0 +1,59 @@
+scenario_id: I-12
+family_id: F4
+split: evaluation
+description: Глобальный идентификатор заменён идентификатором арендатора с взаимно-однозначным отображением
+old_contract:
+  product_id: customer_presence_profile
+  contract_version: 1.4.0
+  owner_domain: mobility
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Последняя подтверждённая зона присутствия
+    formula: latest_confirmed_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: global_user_id
+    allowed_sources:
+    - crm
+    purposes:
+    - partner_offer
+    - risk_scoring
+new_contract:
+  product_id: customer_presence_profile
+  contract_version: 2.0.0
+  owner_domain: mobility
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Последняя подтверждённая зона присутствия
+    formula: latest_confirmed_zone(event_time)
+    calculation_window_days: 7
+    identity_scope: tenant_user_id
+    allowed_sources:
+    - crm
+    purposes:
+    - partner_offer
+    - risk_scoring
+obligations:
+- obligation_id: i-12-retail-offers
+  obligation_version: 1.0.0
+  consumer_id: retail-offers
+  consumer_domain: retail
+  product_id: customer_presence_profile
+  required_formula: latest_confirmed_zone(event_time)
+  min_window_days: 7
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - crm
+  required_purposes:
+  - partner_offer
+migrations:
+- dimension: identity_scope
+  source: tenant_user_id
+  target: global_user_id
+  expression: tenant_identity_map_v1
+  validated_examples: 12
+  bijective: true

@@ -1,0 +1,60 @@
+scenario_id: M-15
+family_id: F1
+split: evaluation
+description: Из формулы исключены возвраты без обновления требования потребителя
+old_contract:
+  product_id: engagement_quality_index
+  contract_version: 1.4.0
+  owner_domain: retail
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Индекс подтверждённой вовлечённости
+    formula: weighted_count(confirmed_actions)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: score
+    scale: 4
+new_contract:
+  product_id: engagement_quality_index
+  contract_version: 2.0.0
+  owner_domain: retail
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Индекс вовлечённости без возвратов
+    formula: weighted_count(confirmed_actions excluding returns)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - partner_offer
+    - risk_scoring
+    unit: score
+    scale: 4
+obligations:
+- obligation_id: m-15-mobility-offers
+  obligation_version: 1.0.0
+  consumer_id: mobility-offers
+  consumer_domain: mobility
+  product_id: engagement_quality_index
+  required_meaning: Индекс подтверждённой вовлечённости
+  required_formula: weighted_count(confirmed_actions)
+  min_window_days: 30
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - transactions
+  - web_events
+  - crm
+  required_purposes:
+  - partner_offer
+migrations: []

@@ -1,0 +1,168 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "flavors": [
+    {
+      "cpu": 2,
+      "id": "1f38e57c-0004-4f44-badf-1a0f3c09a128",
+      "name": "gen-2-4",
+      "ram": 4
+    },
+    {
+      "cpu": 8,
+      "id": "2f34cc4d-6e9f-42f3-b61a-bb054a100702",
+      "name": "gen-8-32",
+      "ram": 32
+    },
+    {
+      "cpu": 4,
+      "id": "7ba1554b-f9e6-428c-825e-d17f0e0192fa",
+      "name": "low-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 8,
+      "id": "10252da4-922c-4098-98b4-5c23b8ee8735",
+      "name": "low-8-32",
+      "ram": 32
+    },
+    {
+      "cpu": 2,
+      "id": "49c10d7f-081d-4a2c-9a68-123ef11c6e32",
+      "name": "low-2-4",
+      "ram": 4
+    },
+    {
+      "cpu": 4,
+      "id": "800df814-9478-49ad-99f5-086c3d85a19e",
+      "name": "gen-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 2,
+      "id": "82d31572-23e0-4937-a6af-45ddae64ba87",
+      "name": "lowcost10-2-4",
+      "ram": 4
+    },
+    {
+      "cpu": 4,
+      "id": "e870d400-db88-4ba3-9ae4-f5755b19c9d3",
+      "name": "lowcost10-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 8,
+      "id": "80de6367-29e6-46f6-8469-e62c8e8cfd01",
+      "name": "lowcost10-8-32",
+      "ram": 32
+    },
+    {
+      "cpu": 2,
+      "id": "ca805d16-ab4a-45ae-a33b-a0733295f886",
+      "name": "L3EVO-2CPU-4RAM-maint",
+      "ram": 4
+    },
+    {
+      "cpu": 2,
+      "id": "6b488421-c4e4-484c-85c7-31132e28fd2d",
+      "name": "gen-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 2,
+      "id": "22719d6f-40f8-4f6e-be69-ca85c7d26040",
+      "name": "gen-2-16",
+      "ram": 16
+    },
+    {
+      "cpu": 2,
+      "id": "81de6d4c-3848-4f56-9e3c-bae36434a5d5",
+      "name": "spot-2-4",
+      "ram": 4
+    },
+    {
+      "cpu": 2,
+      "id": "707f182d-4b6a-48f6-adaf-07449924e14b",
+      "name": "multiqueue-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 8,
+      "id": "6d334874-1334-4177-8e48-b01c06b0fc1e",
+      "name": "multiqueue-8-32-s",
+      "ram": 32
+    },
+    {
+      "cpu": 2,
+      "id": "5ec77745-5db6-4128-9f64-ff8dde756f06",
+      "name": "demo-2-4-numa-1",
+      "ram": 4
+    },
+    {
+      "cpu": 2,
+      "id": "acc7e551-2c1d-491c-9118-761f7357f063",
+      "name": "demo-2-4-numa-2",
+      "ram": 4
+    },
+    {
+      "cpu": 2,
+      "id": "e3e2d735-307e-44e1-9940-4cd8662929d3",
+      "name": "high-frequency-9374f-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 2,
+      "id": "fbea126f-a510-4062-a503-36ed7afb290d",
+      "name": "high-frequency-9374f-2-16",
+      "ram": 16
+    },
+    {
+      "cpu": 4,
+      "id": "c056d52d-c540-4bba-bf63-7dae9971e813",
+      "name": "high-frequency-9374f-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 8,
+      "id": "88a186f0-f71c-48b4-9791-fa2433f33295",
+      "name": "high-frequency-9374f-8-32",
+      "ram": 32
+    },
+    {
+      "cpu": 2,
+      "id": "6bd0593a-3a63-43d7-8098-9489a1df1129",
+      "name": "high-frequency-9354-2-8",
+      "ram": 8
+    },
+    {
+      "cpu": 2,
+      "id": "d4538934-05f0-4aa6-814f-5fd763543493",
+      "name": "high-frequency-9354-2-16",
+      "ram": 16
+    },
+    {
+      "cpu": 4,
+      "id": "0be373e8-b8eb-4305-b733-bb1df1673d62",
+      "name": "high-frequency-9354-4-32",
+      "ram": 32
+    },
+    {
+      "cpu": 8,
+      "id": "e7c961ef-4b9c-4336-992f-0f5246ece38a",
+      "name": "high-frequency-9354-8-32",
+      "ram": 32
+    }
+  ],
+  "ubuntu_images": [
+    {
+      "id": "474c9e98-760f-4e54-aaa9-70024814f2b0",
+      "min_disk": 10,
+      "name": "ubuntu-22.04"
+    },
+    {
+      "id": "fe51a6e6-a5ad-410e-b441-1a195208a8cf",
+      "min_disk": 10,
+      "name": "Ubuntu-24.04"
+    }
+  ],
+  "source_run_id": "38599890963"
+}

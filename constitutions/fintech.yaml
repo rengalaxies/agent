@@ -1,0 +1,6 @@
+domain_id: fintech
+constitution_version: 1.0.0
+owned_products: [spending_activity_profile]
+permissions: [propose_change, issue_local_verdict, release_owned_product]
+prohibitions: [override_external_verdict, accept_unknown_version, modify_own_authority]
+on_timeout: NEEDS_REVIEW

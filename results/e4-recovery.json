@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "domain_restart_preserves_response",
+    "conflicting_event_id_rejected",
+    "coordinator_signed_journal_restore_and_replay",
+    "tampered_journal_rejected",
+    "updated_domain_state_survives_restart",
+    "local_revision_change_aborts",
+    "whole_stand_restart_preserves_identity"
+  ],
+  "passed": 7
+}

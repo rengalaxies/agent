@@ -1,0 +1,101 @@
+name: Cloud.ru Workflow diagnosis
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-workflow-diagnosis.yml"]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Inspect approved service without publishing payloads
+        env:
+          WF_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.error,re,time,http.client
+          key=os.environ["WF_KEY"].strip()
+          assert key, "Workflow API key missing"
+          print("::add-mask::"+key)
+          base="https://devtools.api.cloud.ru/workflow/v1/project/20853297-65b7-42a8-af40-25c8d2df4e11"
+          def request_once(path,body=None):
+              req=urllib.request.Request(base+path,headers={"X-API-KEY":key,"Content-Type":"application/json"},data=json.dumps(body).encode() if body else None,method="GET")
+              try:
+                  with urllib.request.urlopen(req,timeout=35) as r:
+                      print("HTTP",path.split("?")[0],r.status)
+                      return json.load(r)
+              except urllib.error.HTTPError as e:
+                  print("HTTP",path.split("?")[0],e.code)
+                  return None
+          def get(path,body=None):
+              for attempt in range(3):
+                  try: return request_once(path,body)
+                  except (OSError,http.client.HTTPException):
+                      print("RETRY_CONNECTION",attempt+1)
+                      time.sleep(2)
+              return None
+          def shape(v):
+              if isinstance(v,dict): return {k:shape(x) for k,x in v.items()}
+              if isinstance(v,list): return [shape(v[0])] if v else []
+              return type(v).__name__
+          doc=get("/application/list")
+          print("APPLICATION_SCHEMA",json.dumps(shape(doc)))
+          def find(v):
+              if isinstance(v,dict):
+                  if v.get("name")=="dmrp-demo": yield v
+                  for x in v.values(): yield from find(x)
+              elif isinstance(v,list):
+                  for x in v: yield from find(x)
+          apps=list(find(doc))
+          print("TARGET_MATCHES",len(apps))
+          for app in apps:
+              aid=app.get("id")
+              if not isinstance(aid,str) or not re.fullmatch(r"[0-9a-f-]{36}",aid): continue
+              for suffix in ("","/deployment/list"):
+                  d=get("/application/"+aid+suffix)
+                  print("TARGET_SCHEMA",suffix,json.dumps(shape(d)))
+                  def statuses(v):
+                      if isinstance(v,dict):
+                          s=v.get("status")
+                          if isinstance(s,str) and re.fullmatch(r"[A-Za-z_ -]{1,40}",s):
+                              name=v.get("name","")
+                              name=name if name in ("dmrp-demo","ci_cd","create_registry","test_build_push","create_container") else "record"
+                              print("STATUS",name,s)
+                          for x in v.values(): statuses(x)
+                      elif isinstance(v,list):
+                          for x in v: statuses(x)
+                  statuses(d)
+                  if suffix=="/deployment/list" and isinstance(d,dict):
+                      for dep in d.get("deployments",[])[:1]:
+                          for stage in (dep.get("run") or {}).get("stages") or []:
+                              for job in stage.get("jobs") or []:
+                                  if job.get("name") not in ("test_build_push","create_container"): continue
+                                  jid=job.get("id","")
+                                  if not re.fullmatch(r"[0-9a-f-]{36}",jid): continue
+                                  logs=get("/job/"+jid+"/log/list",{"limit":100,"before_time":"2026-10-16T00:00:00Z"})
+                                  print("LOG_SCHEMA",json.dumps(shape(logs)))
+                                  entries=(logs or {}).get("logs",[])
+                                  print("LOG_COUNT",job.get("name"),len(entries))
+                                  markers=("error","failed","timeout","pushed","success","build","push","image","digest","kaniko","test","pytest","permission","denied","connection","refused","proxy","fallback","exit","code","upload","report","result","artifact","cannot","not found","unauthorized","expired","deadline","exceeded","internal","request","unavailable","finished","completed","fatal","pip install","downloading","collecting","installing","snapshot","copy","workdir","return","warning","error building","error pushing","invalid","required","cpu","ram","limit","quota","permission","bad request","validation","port","revision","credentials","environment","keyerror","dmrp_ui_username","database","unavailable","400","403","500")
+                                  for n,entry in enumerate(entries):
+                                      msg=entry.get("message","").lower()
+                                      found=[m for m in markers if m in msg]
+                                      if any(m in msg for m in ("error","failed","fatal","pushed","success")) or n<5:
+                                          print("LOG_MARKERS",job.get("name"),n,entry.get("time"),found)
+                                  runid=dep.get("run_id") or (dep.get("run") or {}).get("id")
+                                  if isinstance(runid,str) and re.fullmatch(r"[0-9a-f-]{36}",runid):
+                                      run=get("/run/"+runid)
+                                      print("RUN_SCHEMA",json.dumps(shape(run)))
+                                      message=str((run or {}).get("status_message") or "").lower()
+                                      print("RUN_ERROR_MARKERS",[m for m in markers if m in message])
+                                  raw=json.dumps(logs).lower()
+                                  for pattern in ("timeout","unauthorized","denied","error","pushed","success","quota","memory","exit code","no space","manifest","connection refused","context deadline","artifact","killed","failed to"):
+                                      print("LOG_INDICATOR",pattern,raw.count(pattern))
+                                  for pattern in (r"exit (?:code|status)[: =]+([0-9]+)",r"status code[: =]+([0-9]{3})"):
+                                      print("ERROR_CODES",re.findall(pattern,raw))
+
+          print("READ_ONLY_COMPLETE")
+          PY

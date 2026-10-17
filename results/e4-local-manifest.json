@@ -1,0 +1,187 @@
+{
+  "format": "gzip-base64-1",
+  "files": [
+    {
+      "archive": "results/e4-local-fast.json.gz.b64",
+      "raw_file": "results/e4-local-fast.json",
+      "raw_bytes": 9444004,
+      "raw_sha256": "586d6327430cdf8d34ffead83f857015cbce2814be0125d1dfe10f18b690529f",
+      "archive_sha256": "2dfdcc0de2cb1fc0bc6a7680918e8375a3339ef702815c747dcb1473c64cf228"
+    },
+    {
+      "archive": "results/e4-local-standard.json.gz.b64",
+      "raw_file": "results/e4-local-standard.json",
+      "raw_bytes": 596577,
+      "raw_sha256": "fdfb2bc729d73ede2a16580afdca465911a41bd24bad117b5380c2c1cee119c0",
+      "archive_sha256": "5ac0c510f7b7b1f8f659b2553df9b3af6a4be7bce0d92adc691263f6d45916d1"
+    }
+  ],
+  "summaries": {
+    "fast": {
+      "suite": "E4 synthetic local engineering",
+      "profile": "fast",
+      "ttl_s": 0.15,
+      "seeds_per_class": 30,
+      "cloud_run": false,
+      "confirmatory_E3_run": false,
+      "domain_pids": {
+        "analytics": 116682,
+        "risk": 116683,
+        "sales": 116684
+      },
+      "public_keys": {
+        "analytics": "fb855feab50271b9acf0a43e5748394071811021c540a7334cc2c5b1132a0f7c",
+        "risk": "0a6b9eaf5e05f2134f8845b47f9b2e7e952632fbe7357b70bd261d050b2a70cd",
+        "sales": "d48d8d2e3ce2c2212d69b466caf04bb4540ece9a0a2de58e25072c4132168412"
+      },
+      "elapsed_s": 47.68452501000047,
+      "trial_count": 588,
+      "passed": 588,
+      "classes": {
+        "E4-01": {
+          "trials": 90,
+          "passed": 90,
+          "max_elapsed_s": 0.03920116900007997
+        },
+        "E4-02": {
+          "trials": 90,
+          "passed": 90,
+          "max_elapsed_s": 0.03921015100058867
+        },
+        "E4-03": {
+          "trials": 18,
+          "passed": 18,
+          "max_elapsed_s": 0.026256115999785834
+        },
+        "E4-04": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": 0.15849393700045766
+        },
+        "E4-05": {
+          "trials": 90,
+          "passed": 90,
+          "max_elapsed_s": 0.06498914900021191
+        },
+        "E4-06": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": 0.15873940299934475
+        },
+        "E4-07": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": 0.16178638900055375
+        },
+        "E4-08": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": 0.03171669599942106
+        },
+        "E4-09": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": 0.1648335030004091
+        },
+        "E4-10": {
+          "trials": 90,
+          "passed": 90,
+          "max_elapsed_s": 0.03943460699974821
+        },
+        "E4-11": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": 0.15972007399977883
+        },
+        "E4-12": {
+          "trials": 30,
+          "passed": 30,
+          "max_elapsed_s": null
+        }
+      }
+    },
+    "standard": {
+      "suite": "E4 synthetic local engineering",
+      "profile": "standard",
+      "ttl_s": 10.0,
+      "seeds_per_class": 1,
+      "cloud_run": false,
+      "confirmatory_E3_run": false,
+      "domain_pids": {
+        "analytics": 122751,
+        "risk": 122752,
+        "sales": 122753
+      },
+      "public_keys": {
+        "analytics": "b8b1fe0d27b0012ca3c5d63585ceac01d2e66075992a26ef497acc38709dcb53",
+        "risk": "a34ea308bb973927635f65dca0ff4c31e44cf6116664e273388ae6e1a78751c4",
+        "sales": "7758b8c5923677b2f79b0fc3ade8ea3be0620f7e1d7fbacd4ee291f9fcfc1760"
+      },
+      "elapsed_s": 54.027057260999754,
+      "trial_count": 37,
+      "passed": 37,
+      "classes": {
+        "E4-01": {
+          "trials": 3,
+          "passed": 3,
+          "max_elapsed_s": 0.039896386000691564
+        },
+        "E4-02": {
+          "trials": 3,
+          "passed": 3,
+          "max_elapsed_s": 0.02807696899981238
+        },
+        "E4-03": {
+          "trials": 18,
+          "passed": 18,
+          "max_elapsed_s": 0.023618836999958148
+        },
+        "E4-04": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": 10.006437844000175
+        },
+        "E4-05": {
+          "trials": 3,
+          "passed": 3,
+          "max_elapsed_s": 0.6279979700002514
+        },
+        "E4-06": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": 10.007570140999633
+        },
+        "E4-07": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": 10.007401840000057
+        },
+        "E4-08": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": 0.024471875000017462
+        },
+        "E4-09": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": 10.00793486999919
+        },
+        "E4-10": {
+          "trials": 3,
+          "passed": 3,
+          "max_elapsed_s": 0.031085197999345837
+        },
+        "E4-11": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": 10.006885147000503
+        },
+        "E4-12": {
+          "trials": 1,
+          "passed": 1,
+          "max_elapsed_s": null
+        }
+      }
+    }
+  }
+}

@@ -71,6 +71,8 @@ jobs:
           docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml up -d --wait --wait-timeout 120 postgres rabbitmq
           docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml run --rm bootstrap
           docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml run --rm --entrypoint python -v "$PWD/lab-evidence:/evidence" app -m lab.tests.integration --broken-only --output /evidence/broken.json
+      - name: Independently execute compatible and wrong candidate artifacts
+        run: python3 -m lab.evaluator.control_candidates --output lab-evidence/candidate-controls.json
       - name: Report bounded CI outcome
         if: always()
         run: |

@@ -1,0 +1,28 @@
+name: Lab bounded real Foundation Models access probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths: [infra/cloudru/lab/model_probe.py, .github/workflows/lab-model-probe.yml]
+permissions:
+  contents: read
+jobs:
+  inference-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Qualify existing keys with at most two tiny synthetic requests
+        env:
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+          CLOUDRU_WORKFLOW_API_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
+          CLOUDRU_LLM_MODEL: ${{ vars.CLOUDRU_LLM_MODEL }}
+        run: python3 infra/cloudru/lab/model_probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-model-probe-${{ github.sha }}
+          path: lab-model-probe.json
+          if-no-files-found: error

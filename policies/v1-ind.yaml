@@ -1,0 +1,19 @@
+policy_id: v1-ind-industrial-baseline
+version: 1.0.0
+family_rules:
+  F1: []
+  F2:
+    - rule_id: unit-change-requires-migration
+      kind: require_migration_on_unit_change
+  F3: []
+  F4:
+    - rule_id: identity-change-requires-migration
+      kind: require_migration_on_identity_change
+  F5:
+    - rule_id: approved-lineage
+      kind: allowed_sources
+      value: [crm, transactions, loyalty, web_events]
+  F6:
+    - rule_id: keep-risk-purpose
+      kind: required_purposes
+      value: [risk_scoring]

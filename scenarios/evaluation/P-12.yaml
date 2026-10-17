@@ -1,0 +1,58 @@
+scenario_id: P-12
+family_id: F6
+split: evaluation
+description: Добавлена цель partner_offer при сохранении risk_scoring
+old_contract:
+  product_id: customer_risk_context
+  contract_version: 1.4.0
+  owner_domain: fintech
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Контекст риска клиента
+    formula: risk_context(events)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - risk_scoring
+    - retention
+    unit: score
+    scale: 4
+new_contract:
+  product_id: customer_risk_context
+  contract_version: 2.0.0
+  owner_domain: fintech
+  schema_fields:
+    user_id: string
+    value: decimal
+  semantic:
+    meaning: Контекст риска клиента
+    formula: risk_context(events)
+    calculation_window_days: 30
+    identity_scope: global_user_id
+    allowed_sources:
+    - transactions
+    purposes:
+    - risk_scoring
+    - retention
+    - partner_offer
+    unit: score
+    scale: 4
+obligations:
+- obligation_id: p-12-fintech-risk
+  obligation_version: 1.0.0
+  consumer_id: fintech-risk
+  consumer_domain: fintech
+  product_id: customer_risk_context
+  required_formula: risk_context(events)
+  min_window_days: 30
+  accepted_identity_scopes:
+  - global_user_id
+  allowed_sources:
+  - transactions
+  required_purposes:
+  - risk_scoring
+migrations: []

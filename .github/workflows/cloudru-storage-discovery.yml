@@ -1,0 +1,57 @@
+name: Inspect managed storage state
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-storage-discovery.yml"]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect exact managed demo state
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          python3 -u - <<'PY'
+          import requests,os,json,re
+          a=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          a.raise_for_status()
+          token=a.json()["access_token"]
+          print("::add-mask::"+token)
+          base="https://containers.api.cloud.ru/v2/containers/dmrp-demo-audit"
+          params={"projectId":"20853297-65b7-42a8-af40-25c8d2df4e11"}
+          r=requests.get(base,params=params,headers={"Authorization":"Bearer "+token},timeout=30)
+          r.raise_for_status()
+          app=r.json()
+          assert app["name"]=="dmrp-demo-audit" and app["projectId"]==params["projectId"]
+          print("RESUMED_CONTAINER_STATE",app["status"])
+          print("AUDIT_IMAGE_SELECTED",":audit-7fb471010211" in app["template"]["containers"][0]["image"])
+          env=app["template"]["containers"][0].get("env",[])
+          print("CONFIG_ENV_NAMES",[e.get("name") for e in env])
+          print("PERSISTENT_BACKEND_SELECTED",any(e.get("name")=="DMRP_AUDIT_BACKEND" and e.get("value")=="object_storage_volume" for e in env))
+          print("CONFIG_VOLUME_COUNT",len(app["template"].get("volumes",[])))
+          print("CONTAINER_PORT",app["template"]["containers"][0].get("containerPort"))
+          print("ACTUAL_PUBLIC_URI",app["configuration"]["ingress"].get("publicUri"))
+          print("PUBLIC_RUNTIME_LIMITS",app["template"].get("timeout"),app["template"].get("idleTimeout"),app["template"].get("scaling"))
+          for suffix in ("/logs","/systemLogs"):
+              r=requests.get(base+suffix,params=params,headers={"Authorization":"Bearer "+token},timeout=30)
+              print("LOG_HTTP",suffix,r.status_code)
+              if r.ok:
+                  entries=r.json().get("data",[])
+                  recent=[e for e in entries if str(e.get("timestamp",""))>="2026-10-15T11:26"]
+                  print("RECENT_LOG_COUNT",suffix,len(recent))
+                  raw=json.dumps(recent or entries[:15]).lower()
+                  print("LISTENING_PORTS",re.findall(r"0[.]0[.]0[.]0:([0-9]+)",raw))
+                  print("RUNTIME_MARKERS",suffix,[s for s in ("keyerror","dmrp_ui_username","dmrp_ui_password_sha256","modulenotfounderror","audit_sink","audit_volume","permission","denied","failedmount","mountvolume","backoff","oomkilled","traceback","error","unhealthy","connection refused","context deadline","readiness probe failed","liveness probe failed","startup probe failed","application startup complete","uvicorn running","failed to start","no such file","failedscheduling","insufficient","503","502","200","statemount","state_not_mounted","failedmount","volume mount") if s in raw])
+          print("PUBLIC_INGRESS_ENABLED",app["configuration"]["ingress"].get("publiclyAccessible"))
+          if not app["configuration"]["ingress"].get("publicUri"):
+              print("PUBLIC_URI_NOT_PROVISIONED")
+              raise SystemExit(0)
+          for path in ("/healthz","/"):
+              r=requests.get("https://dmrp-demo-audit.containerapps.ru"+path,timeout=20)
+              print("PUBLIC_STATUS",path,r.status_code)
+          PY

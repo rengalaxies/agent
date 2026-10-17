@@ -1,0 +1,5 @@
+product_id: spending_activity_profile
+owner_domain: fintech
+canonical_version: 1.0.0
+events: [UserProfileChanged, PaymentSignalChanged]
+semantic_dimensions: [meaning, formula, unit, scale, calculation_window_days, identity_scope, allowed_sources, purposes]

@@ -1,0 +1,139 @@
+name: Recover managed demo on fresh container
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-managed-fresh.yml"]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cloudru-managed-demo-fresh
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 7fb471010211d12af1520d9250d447baa93a7cc0
+      - name: Build, deploy and verify durable audit across restart
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install --quiet requests cryptography boto3
+          python3 -u - <<'PY'
+          import os,json,base64,time,hashlib,subprocess,re
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          import requests,boto3
+          from botocore.config import Config
+          project="20853297-65b7-42a8-af40-25c8d2df4e11"
+          name="appd6bx6ql6wqmzsno1jnp258579"
+          enc=base64.b64decode("v163R/1hZPy/nAH0xNacyClwaT9ADDGsEny8ESu3/Ja8/JqsnwCoW0ro7wrzrBdMeHTUWZVjiBS2ZCHzDnkisGGWC3nn4IKuZMkMvqQT4hTXkDg0uQrjw0pOt4paDqOTlhwEuWYkuPPOeoqKe+MfazOnDrvIG+/Ev6EROPBgiAZiES2rtglus6xNzlewQk1MQn0aP3Ow31v4XPmNkkRfuUC04ffeTDlaUJh+/K1YE4meuIj/")
+          key=base64.b64decode(os.environ["SSE"].strip(),validate=True)
+          cfg=json.loads(AESGCM(key).decrypt(enc[:12],enc[12:],b"dmrp-managed-auth-v1"))
+          for value in cfg.values(): print("::add-mask::"+value)
+          check=requests.get("https://api.github.com/repos/rengalaxies/agent/actions/runs/38726498407",headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"]},timeout=30)
+          check.raise_for_status()
+          assert check.json()["conclusion"]=="success", "Required image verification must pass"
+          print("TEST_GATE_PASSED")
+          auth=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          auth.raise_for_status()
+          token=auth.json()["access_token"]
+          print("::add-mask::"+token)
+          headers={"Authorization":"Bearer "+token}
+          base="https://containers.api.cloud.ru/v2/containers/"+name
+          params={"projectId":project}
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+          session=requests.Session()
+          session.mount("https://",HTTPAdapter(max_retries=Retry(total=4,backoff_factor=1,status_forcelist=[429,502,503,504],allowed_methods=["GET"])))
+          def get_app():
+              r=session.get(base,headers=headers,params=params,timeout=20)
+              r.raise_for_status()
+              d=r.json()
+              assert d["projectId"]==project and d["name"]==name
+              return d
+          source=get_app()
+          template=source["template"]
+          container=template["containers"][0]
+          oldimage=container["image"]
+          assert "workflow-"+project in oldimage
+          container["image"]=oldimage.split("@")[0].rsplit(":",1)[0]+":audit-7fb471010211"
+          container["name"]="dmrp-demo-audit"
+          env=container.get("env") or []
+          desired={"DMRP_UI_USERNAME":cfg["username"],"DMRP_UI_PASSWORD_SHA256":cfg["sha256"],"DMRP_REQUIRE_AUDIT":"1","DMRP_AUDIT_BACKEND":"object_storage_volume","DMRP_AUDIT_DIRECTORY":"/audit-data"}
+          container["env"]=[e for e in env if e.get("name") not in desired]+[{"name":k,"value":v} for k,v in desired.items()]
+          container["resources"]={"cpu":"0.2","memory":"512Mi"}
+          template["scaling"]["minInstanceCount"]=1
+          template["scaling"]["maxInstanceCount"]=1
+          listing=session.get("https://containers.api.cloud.ru/v2/containers",headers=headers,params=params,timeout=25)
+          listing.raise_for_status()
+          existing=[x for x in listing.json().get("data",[]) if x.get("name","").startswith("dmrp-demo-audit")]
+          assert len(existing)<=1
+          if not existing:
+              payload={"projectId":project,"name":"dmrp-demo-audit","description":"Persistent development V2 demo","configuration":{"ingress":{"publiclyAccessible":True,"accessSettings":{"enableAuth":False}},"autoDeployments":{"enabled":False,"pattern":"*"},"privileged":False},"template":template}
+              r=requests.post("https://containers.api.cloud.ru/v2/containers",headers=headers,json=payload,timeout=45)
+              print("FRESH_CONTAINER_CREATE_HTTP",r.status_code)
+              r.raise_for_status()
+          for _ in range(15):
+              listing=session.get("https://containers.api.cloud.ru/v2/containers",headers=headers,params=params,timeout=25)
+              listing.raise_for_status()
+              existing=[x for x in listing.json().get("data",[]) if x.get("name","").startswith("dmrp-demo-audit")]
+              if existing: break
+              time.sleep(3)
+          assert len(existing)==1
+          fresh=existing[0]
+          assert fresh["projectId"]==project
+          name=fresh["name"]
+          base="https://containers.api.cloud.ru/v2/containers/"+name
+          print("FRESH_CONTAINER_NAME",name)
+          for _ in range(30):
+              fresh=get_app()
+              url=fresh.get("configuration",{}).get("ingress",{}).get("publicUri")
+              if url: break
+              time.sleep(3)
+          else: raise AssertionError("Public URI provisioning did not complete")
+          if not url.startswith("http"): url="https://"+url
+          ui_auth=(cfg["username"],cfg["password"])
+          for attempt in range(30):
+              try:
+                  r=session.get(url+"/healthz",timeout=12)
+                  if r.ok and r.json().get("audit_backend")=="object_storage_volume": break
+              except requests.RequestException: pass
+              time.sleep(6)
+          else: raise AssertionError("Resumed application readiness failed")
+          print("PERSISTENT_AUDIT_READY")
+          assert session.get(url,timeout=15).status_code==401
+          assert session.get(url,auth=ui_auth,timeout=15).status_code==200
+          from datetime import datetime,timezone
+          access="fc91c42d-c2ea-4d6d-a236-103fd1f37f00:"+os.environ["KEY_ID"]
+          print("::add-mask::"+access)
+          s3=boto3.client("s3",endpoint_url="https://s3.cloud.ru",region_name="ru-central-1",aws_access_key_id=access,aws_secret_access_key=os.environ["SECRET"],config=Config(s3={"addressing_style":"path"}))
+          cutoff=datetime(2026,10,15,11,22,11,tzinfo=timezone.utc)
+          objects=s3.list_objects_v2(Bucket="dmrp-demo-audit-20853297",Prefix="demo-").get("Contents",[])
+          prior=[x for x in objects if x["LastModified"]<cutoff]
+          assert prior, "No pre-suspension audit records"
+          obj=max(prior,key=lambda x:x["LastModified"])
+          record=json.loads(s3.get_object(Bucket="dmrp-demo-audit-20853297",Key=obj["Key"])["Body"].read())
+          stored=session.get(url+"/api/v1/demo/audit/"+record["run_id"],auth=ui_auth,timeout=20)
+          stored.raise_for_status()
+          assert stored.json()==record
+          print("PASS_PRE_SUSPENSION_RECORD_RESTORED_FROM_PERSISTENT_STORAGE")
+          r=session.get(url+"/api/healthz",auth=ui_auth,timeout=15)
+          r.raise_for_status()
+          catalog=session.get(url+"/api/v1/demo/scenarios",auth=ui_auth,timeout=15)
+          catalog.raise_for_status()
+          r=requests.post(url+"/api/v1/demo/runs",auth=ui_auth,json={"scenario_id":catalog.json()["scenarios"][0]["id"]},timeout=30)
+          r.raise_for_status()
+          assert r.json()["audit"]["persisted"]
+          print("PASS_V2_AFTER_RESUME")
+          print("FINAL_CONTAINER_STATE",get_app()["status"])
+          print("PUBLIC_DEMO_URL",url)
+          r=requests.post("https://containers.api.cloud.ru/v2/containers/appd6bx6ql6wqmzsno1jnp258579:stop",headers=headers,params=params,timeout=35)
+          print("OLD_CONTAINER_STOP_HTTP",r.status_code)
+          PY

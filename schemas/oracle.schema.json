@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:datamesh-release-protocol:oracle:0.3.0",
+  "title": "Separated scenario oracle catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["catalog_id", "split", "labels"],
+  "properties": {
+    "catalog_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["development", "evaluation"]},
+    "labels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "scenario_id",
+          "scenario_class",
+          "expected_decision",
+          "expected_consumer_decisions",
+          "rationale"
+        ],
+        "properties": {
+          "scenario_id": {"type": "string", "pattern": "^[MUTILP]-[0-9]{2}$"},
+          "scenario_class": {"enum": ["dangerous", "admissible"]},
+          "expected_decision": {"enum": ["ACCEPT", "REJECT", "NEEDS_REVIEW"]},
+          "expected_consumer_decisions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {"enum": ["ACCEPT", "REJECT", "NEEDS_REVIEW"]}
+          },
+          "rationale": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

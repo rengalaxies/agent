@@ -1,0 +1,152 @@
+#cloud-config
+ssh_authorized_keys:
+  - ${ssh_public_key}
+package_update: true
+packages:
+  - ca-certificates
+  - curl
+  - git
+  - docker.io
+  - openssl
+  - docker-compose-v2
+  - python3
+write_files:
+  - path: /usr/local/sbin/dmrp-core-budget
+    permissions: '0700'
+    content: |
+      #!/usr/bin/python3
+      import json,os,pathlib,subprocess,time
+      path=pathlib.Path("/var/lib/dmrp/core-runtime.json")
+      path.parent.mkdir(parents=True,exist_ok=True)
+      now=time.time()
+      if path.exists():
+          state=json.loads(path.read_text())
+      else:
+          state={"period_start":now,"used_seconds":0}
+      boot=pathlib.Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+      current=float(pathlib.Path("/proc/uptime").read_text().split()[0])
+      if state.get("boot_id")==boot:
+          state["used_seconds"]+=max(0,current-state.get("last_uptime",current))
+      else:
+          state["used_seconds"]+=current
+      state.update(boot_id=boot,last_uptime=current)
+      if now-state["period_start"]>=30*86400:
+          state.update(period_start=now,used_seconds=0)
+      tmp=path.with_suffix(".tmp")
+      with tmp.open("w") as file:
+          json.dump(state,file);file.flush();os.fsync(file.fileno())
+      os.replace(tmp,path)
+      if state["used_seconds"]>=160*3600:
+          subprocess.run(["/usr/sbin/shutdown","-h","now"],check=True)
+  - path: /etc/systemd/system/dmrp-core-budget.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Enforce 160 core hours per 30-day budget period
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/sbin/dmrp-core-budget
+  - path: /etc/systemd/system/dmrp-core-budget.timer
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Persist core runtime and check budget every minute
+      [Timer]
+      OnBootSec=1min
+      OnUnitActiveSec=1min
+      Unit=dmrp-core-budget.service
+      [Install]
+      WantedBy=timers.target
+  - path: /etc/dmcore-bootstrap.env
+    permissions: '0600'
+    content: |
+      DMRP_REF=${git_ref}
+  - path: /etc/systemd/system/dmrp-core-auto-stop.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Stop non-production core to limit VM operating hours
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/sbin/shutdown -h now
+  - path: /etc/systemd/system/dmrp-core-auto-stop.timer
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Shutdown core eight hours after boot (per-session safeguard)
+      [Timer]
+      OnBootSec=8h
+      Unit=dmrp-core-auto-stop.service
+      [Install]
+      WantedBy=timers.target
+  - path: /etc/systemd/system/dmrp-core.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Data Mesh Development V2 Core
+      Wants=network-online.target docker.service
+      After=network-online.target docker.service
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      ExecStart=/usr/local/sbin/dmrp-core-start
+      ExecStop=/usr/bin/docker stop dmrp-core-api
+      TimeoutStartSec=360
+      [Install]
+      WantedBy=multi-user.target
+  - path: /usr/local/sbin/dmrp-core-start
+    permissions: '0700'
+    content: |
+      #!/bin/sh
+      set -eu
+      if [ ! -d /opt/dmrp/.git ]; then
+        git clone --depth=1 https://github.com/rengalaxies/agent.git /opt/dmrp
+      fi
+      cd /opt/dmrp
+      git fetch --depth=1 origin ${git_ref}
+      git checkout --detach ${git_ref}
+      docker build -f services/Dockerfile.demo -t dmrp-core:local .
+      # Docker-only database networking - port 5432 is never published.
+      if ! docker network inspect dmrp-core-net >/dev/null 2>&1; then
+        docker network create dmrp-core-net
+      fi
+      docker volume create dmrp-pgdata >/dev/null
+      install -d -m 0700 /etc/dmrp
+      if [ ! -s /etc/dmrp/pg-password ]; then
+        umask 077
+        openssl rand -hex 24 > /etc/dmrp/pg-password
+      fi
+      PG_PASSWORD="$(cat /etc/dmrp/pg-password)"
+      if ! docker container inspect dmrp-postgres >/dev/null 2>&1; then
+        docker run -d --name dmrp-postgres --restart unless-stopped \
+          --network dmrp-core-net --network-alias postgres \
+          --security-opt no-new-privileges --cap-drop ALL \
+          --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER \
+          --cap-add SETUID --cap-add SETGID \
+          -e POSTGRES_USER=dmrp -e POSTGRES_DB=dmrp \
+          -e POSTGRES_PASSWORD="$PG_PASSWORD" \
+          -v dmrp-pgdata:/var/lib/postgresql/data \
+          postgres:16-alpine
+      else
+        docker start dmrp-postgres >/dev/null 2>&1 || true
+      fi
+      # Startup ordering: real DB readiness required.
+      attempt=0
+      until docker exec dmrp-postgres pg_isready -U dmrp -d dmrp >/dev/null 2>&1; do
+        attempt=$((attempt + 1))
+        if [ "$attempt" -ge 60 ]; then exit 1; fi
+        sleep 2
+      done
+      docker rm -f dmrp-core-api 2>/dev/null || true
+      docker run -d --name dmrp-core-api --restart unless-stopped --read-only \
+        --network dmrp-core-net --security-opt no-new-privileges \
+        --tmpfs /tmp:rw,nosuid,nodev,size=128m --cap-drop ALL \
+        -e DMRP_REQUIRE_AUDIT=1 \
+        -e DATABASE_URL="postgresql://dmrp:$PG_PASSWORD@postgres:5432/dmrp" \
+        -p ${core_ip}:8000:8000 dmrp-core:local
+runcmd:
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, --now, docker]
+  - [systemctl, enable, --now, dmrp-core.service]
+  - [systemctl, enable, --now, dmrp-core-auto-stop.timer]
+  - [systemctl, enable, --now, dmrp-core-budget.timer]

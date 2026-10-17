@@ -1,0 +1,32 @@
+[
+  {
+    "actor": "producer",
+    "domain": "sales",
+    "kinds": [
+      "team",
+      "product",
+      "attribute"
+    ],
+    "authority_ref": "grant:producer"
+  },
+  {
+    "actor": "consumer",
+    "domain": "risk",
+    "kinds": [
+      "team",
+      "usage",
+      "obligation"
+    ],
+    "authority_ref": "grant:consumer"
+  },
+  {
+    "actor": "registry",
+    "domain": "federation",
+    "kinds": [
+      "coverage",
+      "constitution",
+      "global_rule"
+    ],
+    "authority_ref": "grant:registry"
+  }
+]

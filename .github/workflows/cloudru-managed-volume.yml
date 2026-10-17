@@ -1,0 +1,69 @@
+name: Prepare persistent demo volume
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cloudru-managed-volume.yml"]
+permissions:
+  contents: read
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Configure authentication and inspect runtime
+        env:
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+        run: |
+          python3 -m pip install --quiet requests cryptography boto3
+          python3 -u - <<'PY'
+          import os,json,base64,time,hashlib,re
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          import requests
+          project="20853297-65b7-42a8-af40-25c8d2df4e11"
+          name="appd6bx6ql6wqmzsno1jnp258579"
+          auth=requests.post("https://iam.api.cloud.ru/api/v1/auth/token",json={"keyId":os.environ["KEY_ID"],"secret":os.environ["SECRET"]},timeout=30)
+          auth.raise_for_status()
+          token=auth.json()["access_token"]
+          print("::add-mask::"+token)
+          headers={"Authorization":"Bearer "+token}
+          base="https://containers.api.cloud.ru/v2/containers/"+name
+          params={"projectId":project}
+          r=requests.get(base,headers=headers,params=params,timeout=30)
+          r.raise_for_status()
+          app=r.json()
+          assert app["projectId"]==project and app["name"]==name
+          template=app["template"]
+          assert len(template["containers"])==1
+          container=template["containers"][0]
+          assert "workflow-20853297-65b7-42a8-af40-25c8d2df4e11" in container["image"]
+          import boto3
+          from botocore.config import Config
+          from botocore.exceptions import ClientError
+          bucket="dmrp-demo-audit-20853297"
+          access="fc91c42d-c2ea-4d6d-a236-103fd1f37f00:"+os.environ["KEY_ID"]
+          print("::add-mask::"+access)
+          s3=boto3.client("s3",endpoint_url="https://s3.cloud.ru",region_name="ru-central-1",aws_access_key_id=access,aws_secret_access_key=os.environ["SECRET"],config=Config(s3={"addressing_style":"path"}))
+          try:
+              s3.head_bucket(Bucket=bucket)
+              print("AUDIT_BUCKET_EXISTS")
+          except ClientError as e:
+              if str(e.response["Error"]["Code"]) not in ("404","NoSuchBucket","NotFound"): raise
+              s3.create_bucket(Bucket=bucket)
+              print("AUDIT_BUCKET_CREATED")
+          s3.put_bucket_versioning(Bucket=bucket,VersioningConfiguration={"Status":"Enabled"})
+          marker={"project_id":project,"dataset":"development","format":1}
+          s3.put_object(Bucket=bucket,Key=".dmrp-audit-volume-v1.json",Body=json.dumps(marker).encode(),ContentType="application/json")
+          template["volumes"]=[{"name":"demo-audit","type":"s3","volumeAttributes":{"bucketName":bucket}}]
+          container["volumeMounts"]=[{"name":"demo-audit","mountPath":"/audit-data","readOnly":False}]
+          r=requests.patch(base,headers=headers,params=params,json={"template":template},timeout=45)
+          print("VOLUME_CONFIGURATION_HTTP",r.status_code)
+          if not r.ok:
+              raw=r.text.lower()
+              print("VOLUME_VALIDATION", " ".join(re.findall(r"[a-zA-Z_]+",raw))[:500])
+              print("VOLUME_ERROR_MARKERS",[s for s in ("invalid","required","s3","persistent","ephemeral","volume","type","unsupported","enum","bucket","mount","permission","forbidden","tenant","region") if s in raw])
+              raise RuntimeError("Persistent volume configuration rejected")
+          print("VOLUME_CONFIGURATION_ACCEPTED")
+          PY
