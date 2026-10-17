@@ -1,0 +1,47 @@
+{
+  "note": "Declared fixture ownership, not a verified live directory. UNKNOWN freshness requires human confirmation before deployment.",
+  "bindings": [
+    {
+      "environment_id": "lab",
+      "object_ref": "billing.v1",
+      "team_id": "billing",
+      "source_ref": "lab/catalog/owners.json",
+      "verification_state": "DECLARED"
+    },
+    {
+      "environment_id": "lab",
+      "object_ref": "billing.v2",
+      "team_id": "billing",
+      "source_ref": "lab/catalog/owners.json",
+      "verification_state": "DECLARED"
+    },
+    {
+      "environment_id": "lab",
+      "object_ref": "lab/app/analytics.py",
+      "team_id": "analytics",
+      "source_ref": "lab/catalog/owners.json",
+      "verification_state": "DECLARED"
+    },
+    {
+      "environment_id": "lab",
+      "object_ref": "lab/app/service.py",
+      "team_id": "platform",
+      "source_ref": "lab/catalog/owners.json",
+      "verification_state": "DECLARED"
+    },
+    {
+      "environment_id": "lab",
+      "object_ref": "billing",
+      "team_id": "billing",
+      "source_ref": "lab/catalog/owners.json",
+      "verification_state": "DECLARED"
+    },
+    {
+      "environment_id": "lab",
+      "object_ref": "lab/app/service.py#analytics",
+      "team_id": "analytics",
+      "source_ref": "lab/catalog/owners.json",
+      "verification_state": "DECLARED"
+    }
+  ]
+}

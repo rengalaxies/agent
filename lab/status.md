@@ -4,6 +4,8 @@ Overall: **проверенный агентный проход в CI; Cloud.ru 
 
 ## Evidence
 
+Initiator/team inbox: [CLI replay report](reports/inbox-summary.md), [Actions 39067851363](https://github.com/rengalaxies/agent/actions/runs/39067851363), exact code `0dd24672b93869acd54ab5d4fb9f176707e2e9cd`. Breaking-change cards for billing/analytics, unknown-owner coordinator routing, revision/decision invalidation and deduplication pass. Saved real-agent replay is explicit; no fresh inference or financial check is claimed. Twenty tests pass; acknowledgement never grants execution.
+
 S1 commit-gap recovery now has a scoped PASS: [report](reports/commit-gap-summary.md), [Actions 39067222291](https://github.com/rengalaxies/agent/actions/runs/39067222291), source `ce6fa97dde09e4bcea72b701d203430395d9e2d5`. Hard controller death after durable S1 commit, persisted journal, fresh-process reconciliation, safe-stop and blind-retry denial are independently checked. T13/T14 are PARTIAL_PASS for this window only; full coverage remains open. No new model calls or VM actions.
 
 Operational access update, 2026-10-17 22:45 MSK: the operator added the Foundation Models key. Rerun job 117487080370 in run 39061894797 returned PASS_API_RESPONSE for openai/gpt-oss-120b with 70 input + 16 completion tokens. Earlier missing-key/403 reports are historical. At that point real agent repair had not yet run; the later agent CI report supersedes this access-only status. Operator console supplied the UI Ed25519 host fingerprint at 22:50 MSK; read-only SSH qualification follows.
@@ -30,7 +32,7 @@ PASS below describes only the frozen scenario's exercised application behavior. 
 | T05 wrong routing | PASS | Live missing binding detected; outbox retry after restoring route |
 | T06 rare consumer absent from trace | NOT_RUN | Static scanner exercise only |
 | T07 hidden consumer | NOT_RUN | No live recall experiment |
-| T08 unknown/conflicting owner | NOT_RUN | No live exception-routing acceptance |
+| T08 unknown/conflicting owner | PARTIAL_PASS | Unknown owner routed to explicitly designated coordinator in CLI replay; conflict resolution/live directory unqualified |
 | T09 invalidated PASS | NOT_RUN | Unit context guard only |
 | T10 expired/revoked grant | NOT_RUN | Unit guard only |
 | T11 lost confirm | PASS | Real broker duplicate publication, one ledger business record |
@@ -39,7 +41,7 @@ PASS below describes only the frozen scenario's exercised application behavior. 
 | T14 UNKNOWN action outcome | PARTIAL_PASS | Persisted INTENDED after hard death reconciled to committed S1; retry denied before effect, invocation/update counters prove no repetition; other windows untested |
 | T15 fractional coexistence | PASS | Explicit compatibility rejection; no rounding, S6 not performed |
 | T16 invalid inputs | PASS | Separate rejection evidence for NULL, negative, fraction, currency, overflow, bool |
-| T17 signal/revision | NOT_RUN | Local inbox logic only |
+| T17 signal/revision | PASS_IN_CLI_REPLAY | Nine-command CLI journey: duplicate signals suppressed; old cards/decisions invalidated; no inherited PASS for new revision |
 | T18 environment collision | NOT_RUN | Unit environment scope only |
 | T19 independent installation/restore | NOT_RUN | Independent operator and actual restore unqualified |
 

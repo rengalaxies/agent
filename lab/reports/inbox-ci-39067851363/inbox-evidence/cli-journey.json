@@ -1,0 +1,497 @@
+[
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "assess",
+      "--root",
+      "/home/runner/work/agent/agent",
+      "--change",
+      "/home/runner/work/agent/agent/inbox-evidence/change-revision-1.json",
+      "--initiator",
+      "orders-owner",
+      "--coordinator",
+      "stand-coordinator"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "analytics"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "billing"
+      }
+    ],
+    "decisions": [],
+    "local_notification_count": 2,
+    "snapshot_digest": "cec0ed74b5a0f3cd532407f8ed2691c42cc8b4dc3c1b846e6757b55b120a2a62"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "decide",
+      "--card-id",
+      "c3511c180d3c216ff81d2a8d",
+      "--revision",
+      "1",
+      "--assessment",
+      "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "--team",
+      "billing",
+      "--actor",
+      "billing-reviewer",
+      "--decision",
+      "acknowledged",
+      "--comment",
+      "CLI scenario decision for this exact revision; no execution permission"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "analytics"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "billing"
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+        "revision": 1,
+        "decision": "acknowledged",
+        "valid": true,
+        "grants_execution": false
+      }
+    ],
+    "local_notification_count": 2,
+    "snapshot_digest": "841a7106df43bb26a4cb2f276fbcc63905cf6cf4ceb173a50ac7d35eb63a176f"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "decide",
+      "--card-id",
+      "eec6510ad785ae53e92a34a0",
+      "--revision",
+      "1",
+      "--assessment",
+      "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "--team",
+      "analytics",
+      "--actor",
+      "analytics-reviewer",
+      "--decision",
+      "request_changes",
+      "--comment",
+      "CLI scenario decision for this exact revision; no execution permission"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": true,
+        "status": "заблокировано",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "billing"
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+        "revision": 1,
+        "decision": "acknowledged",
+        "valid": true,
+        "grants_execution": false
+      },
+      {
+        "decision_id": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+        "revision": 1,
+        "decision": "request_changes",
+        "valid": true,
+        "grants_execution": false
+      }
+    ],
+    "local_notification_count": 2,
+    "snapshot_digest": "71c66a54b9eae000a1cef8931f1406fc51dd1c87dfba499084bf46c6945d5a0a"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "assess",
+      "--root",
+      "/home/runner/work/agent/agent",
+      "--change",
+      "/home/runner/work/agent/agent/inbox-evidence/change-revision-1.json",
+      "--initiator",
+      "orders-owner",
+      "--coordinator",
+      "stand-coordinator"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": true,
+        "status": "заблокировано",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "billing"
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+        "revision": 1,
+        "decision": "acknowledged",
+        "valid": true,
+        "grants_execution": false
+      },
+      {
+        "decision_id": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+        "revision": 1,
+        "decision": "request_changes",
+        "valid": true,
+        "grants_execution": false
+      }
+    ],
+    "local_notification_count": 2,
+    "snapshot_digest": "71c66a54b9eae000a1cef8931f1406fc51dd1c87dfba499084bf46c6945d5a0a"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "assess",
+      "--root",
+      "/home/runner/work/agent/agent",
+      "--change",
+      "/home/runner/work/agent/agent/inbox-evidence/change-revision-2.json",
+      "--initiator",
+      "orders-owner",
+      "--coordinator",
+      "stand-coordinator"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": false,
+        "status": "устарело",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": false,
+        "status": "устарело",
+        "next_action_owner": "billing"
+      },
+      {
+        "card_id": "d63b124de72159175e53925a",
+        "revision": 2,
+        "team": "analytics",
+        "active": true,
+        "status": "требуется решение",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "b6914ef2effaae9e1840d30e",
+        "revision": 2,
+        "team": "billing",
+        "active": true,
+        "status": "требуется решение",
+        "next_action_owner": "orders-owner"
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+        "revision": 1,
+        "decision": "acknowledged",
+        "valid": false,
+        "grants_execution": false
+      },
+      {
+        "decision_id": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+        "revision": 1,
+        "decision": "request_changes",
+        "valid": false,
+        "grants_execution": false
+      }
+    ],
+    "local_notification_count": 4,
+    "snapshot_digest": "1e5df09b463923d87c449dbf443ea6a406f05b3e6c2a84d16135d733c64fa3b7"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "decide",
+      "--card-id",
+      "c3511c180d3c216ff81d2a8d",
+      "--revision",
+      "1",
+      "--assessment",
+      "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "--team",
+      "billing",
+      "--actor",
+      "billing-reviewer",
+      "--decision",
+      "reviewed",
+      "--comment",
+      "CLI scenario decision for this exact revision; no execution permission"
+    ],
+    "exit_code": 2,
+    "reason": "Decision refers to stale or mismatched revision/assessment."
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "assess",
+      "--root",
+      "/home/runner/work/agent/agent",
+      "--change",
+      "/home/runner/work/agent/agent/inbox-evidence/change-revision-2.json",
+      "--initiator",
+      "orders-owner",
+      "--coordinator",
+      "stand-coordinator"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": false,
+        "status": "устарело",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": false,
+        "status": "устарело",
+        "next_action_owner": "billing"
+      },
+      {
+        "card_id": "d63b124de72159175e53925a",
+        "revision": 2,
+        "team": "analytics",
+        "active": true,
+        "status": "требуется решение",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "b6914ef2effaae9e1840d30e",
+        "revision": 2,
+        "team": "billing",
+        "active": true,
+        "status": "требуется решение",
+        "next_action_owner": "orders-owner"
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+        "revision": 1,
+        "decision": "acknowledged",
+        "valid": false,
+        "grants_execution": false
+      },
+      {
+        "decision_id": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+        "revision": 1,
+        "decision": "request_changes",
+        "valid": false,
+        "grants_execution": false
+      }
+    ],
+    "local_notification_count": 4,
+    "snapshot_digest": "1e5df09b463923d87c449dbf443ea6a406f05b3e6c2a84d16135d733c64fa3b7"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/team-inbox.json",
+      "decide",
+      "--card-id",
+      "b6914ef2effaae9e1840d30e",
+      "--revision",
+      "2",
+      "--assessment",
+      "16acc9b7ca7410cf753c844becd57ed84a454eb82e2355c118feba8d97b608e4",
+      "--team",
+      "billing",
+      "--actor",
+      "billing-reviewer",
+      "--decision",
+      "acknowledged",
+      "--comment",
+      "CLI scenario decision for this exact revision; no execution permission"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "eec6510ad785ae53e92a34a0",
+        "revision": 1,
+        "team": "analytics",
+        "active": false,
+        "status": "устарело",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "c3511c180d3c216ff81d2a8d",
+        "revision": 1,
+        "team": "billing",
+        "active": false,
+        "status": "устарело",
+        "next_action_owner": "billing"
+      },
+      {
+        "card_id": "d63b124de72159175e53925a",
+        "revision": 2,
+        "team": "analytics",
+        "active": true,
+        "status": "требуется решение",
+        "next_action_owner": "orders-owner"
+      },
+      {
+        "card_id": "b6914ef2effaae9e1840d30e",
+        "revision": 2,
+        "team": "billing",
+        "active": true,
+        "status": "требуется решение",
+        "next_action_owner": "orders-owner"
+      }
+    ],
+    "decisions": [
+      {
+        "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+        "revision": 1,
+        "decision": "acknowledged",
+        "valid": false,
+        "grants_execution": false
+      },
+      {
+        "decision_id": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+        "revision": 1,
+        "decision": "request_changes",
+        "valid": false,
+        "grants_execution": false
+      },
+      {
+        "decision_id": "b5cb2566d85075d5f756e8add450f9ea073683d9de12b963c053ee298000e4c5",
+        "revision": 2,
+        "decision": "acknowledged",
+        "valid": true,
+        "grants_execution": false
+      }
+    ],
+    "local_notification_count": 4,
+    "snapshot_digest": "e5bb2ca03950b82b3def63d3f024de790793ccfa0bcf7446b064a103e04e5468"
+  },
+  {
+    "command": [
+      "-m",
+      "lab.runtime.inbox",
+      "--store",
+      "/home/runner/work/agent/agent/inbox-evidence/unknown-owner-inbox.json",
+      "assess",
+      "--root",
+      "/home/runner/work/agent/agent",
+      "--change",
+      "/home/runner/work/agent/agent/inbox-evidence/change-revision-1.json",
+      "--initiator",
+      "orders-owner",
+      "--coordinator",
+      "stand-coordinator",
+      "--source",
+      "/tmp/tmpe_cmz8e3/source"
+    ],
+    "exit_code": 0,
+    "cards": [
+      {
+        "card_id": "e15221b79237fd04afc38271",
+        "revision": 1,
+        "team": "COORDINATOR",
+        "active": true,
+        "status": "заблокировано",
+        "next_action_owner": "stand-coordinator"
+      },
+      {
+        "card_id": "26dbd8af2016b2bcec48cdee",
+        "revision": 1,
+        "team": "analytics",
+        "active": true,
+        "status": "проверено",
+        "next_action_owner": "analytics"
+      }
+    ],
+    "decisions": [],
+    "local_notification_count": 2,
+    "snapshot_digest": "8c66e5959679954d64231c1c85d1c802a8ce8984c33c90c88b305801797ee9ee"
+  }
+]
