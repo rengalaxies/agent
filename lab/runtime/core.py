@@ -192,22 +192,24 @@ class LLM:
             raise Stop('Cost cap requested but verified model price is not configured.')
         context_text = json.dumps(context, ensure_ascii=False)
         input_bound = len(context_text.encode()) + len(system.encode()) + 256
-        output_bound = min(3000, self.max_tokens - self.tokens - input_bound)
+        output_bound = min(6000, self.max_tokens - self.tokens - input_bound)
         if output_bound <= 0:
             raise Stop('Conservative input/output token budget exhausted before request.')
         # UTF-8 byte bound plus message overhead conservatively bounds ordinary tokenizer input.
         # Conservative upper bound avoids starting a call whose maximum charge exceeds budget.
         if self.max_cost_usd is not None and self.cost + (input_bound * float(input_rate) + output_bound * float(output_rate)) / 1e6 > self.max_cost_usd:
             raise Stop('Insufficient remaining cost budget for next bounded call.')
-        payload = {'model': self.model, 'temperature': 0, 'max_tokens': output_bound,
+        payload = {'model': self.model, 'temperature': 0, 'max_completion_tokens': output_bound, 'response_format': {'type':'json_object'},
                    'messages': [{'role': 'system', 'content': system}, {'role': 'user', 'content': context_text}]}
         self.calls += 1
+        (self.audit.directory / f'call-{self.calls}-{role}-request.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2))
         self.audit.record('llm_request', role=role, model=self.model, context_digest=digest(context), call=self.calls)
         req = urllib.request.Request(self.endpoint + '/chat/completions', data=json.dumps(payload).encode(),
                                      headers={'Authorization': 'Bearer ' + self.key, 'Content-Type': 'application/json'})
         try:
             with urllib.request.urlopen(req, timeout=min(90, remaining)) as response:
                 result = json.loads(response.read(1_000_001))
+            (self.audit.directory / f'call-{self.calls}-{role}-response.json').write_text(json.dumps(result, ensure_ascii=False, indent=2))
             usage = result.get('usage', {})
             if 'total_tokens' not in usage:
                 raise Stop('Provider omitted token usage; cannot continue within measured token budget.')

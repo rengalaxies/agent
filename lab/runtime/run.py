@@ -35,6 +35,12 @@ def run(root, output, change, mode='live', max_seconds=180, max_tokens=64000, ma
         commit = subprocess.run(['git', '-C', str(root), 'rev-parse', 'HEAD'], capture_output=True, text=True, check=False)
         report['source_commit'] = commit.stdout.strip() if commit.returncode == 0 else 'UNKNOWN'
         discovery = discover(root)
+        # Replace the reference migration with the submitted broken artifact in model context.
+        for evidence in discovery['evidence']:
+            name = evidence['object_ref']
+            if name in change.get('proposed_files', {}):
+                evidence['content'] = change['proposed_files'][name]
+                evidence['digest'] = __import__('hashlib').sha256(evidence['content'].encode()).hexdigest()
         report['source_snapshot_digest'] = discovery['snapshot_digest']
         report['context_digest'] = digest({'source': discovery['snapshot_digest'], 'change': change})
         (output/'discovery.json').write_text(json.dumps(discovery, indent=2, ensure_ascii=False))
@@ -69,6 +75,7 @@ def run(root, output, change, mode='live', max_seconds=180, max_tokens=64000, ma
             'Do not claim tests passed. The independent evaluator will execute the artifact. '
             'If source already implements the requirement, explain that in assumptions; do not claim a no-op is a repair.',
             {'change': change, 'findings': analyst, 'source_evidence': discovery['evidence']})
+        (output/'proposal.json').write_text(json.dumps(proposal, indent=2, ensure_ascii=False))
         bundle = stage_candidate(root, output/'candidate', proposal, change.get('proposed_files'))
         bundle['context_digest'] = report['context_digest']
         report['candidate'] = bundle
