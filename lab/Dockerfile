@@ -10,6 +10,7 @@ COPY lab/runtime /work/lab/runtime
 COPY lab/catalog /work/lab/catalog
 COPY lab/evaluator /work/lab/evaluator
 COPY lab/tests /work/lab/tests
+COPY lab/reports/agent-ci-39066354050 /work/lab/reports/agent-ci-39066354050
 RUN useradd --uid 10001 --create-home lab
 USER 10001
 ENTRYPOINT ["python", "-m", "lab.app.cli"]
