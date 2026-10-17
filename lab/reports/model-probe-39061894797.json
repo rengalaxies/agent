@@ -1,0 +1,21 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+  "scope": "synthetic connectivity probe only",
+  "max_requests": 2,
+  "max_completion_tokens_per_request": 16,
+  "probes": [
+    {
+      "credential_name": "CLOUDRU_FOUNDATION_API_KEY",
+      "status": "BLOCKED_MISSING_CREDENTIAL"
+    },
+    {
+      "credential_name": "CLOUDRU_WORKFLOW_API_KEY",
+      "status": "BLOCKED_HTTP",
+      "http_status": 403
+    }
+  ],
+  "agent_scenario": "NOT_RUN",
+  "cost": "NOT_MEASURED",
+  "run_url": "https://github.com/rengalaxies/agent/actions/runs/39061894797"
+}

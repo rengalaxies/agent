@@ -69,7 +69,7 @@ def run(root, output, change, mode='live', max_seconds=180, max_tokens=64000, ma
             'Do not claim tests passed. The independent evaluator will execute the artifact. '
             'If source already implements the requirement, explain that in assumptions; do not claim a no-op is a repair.',
             {'change': change, 'findings': analyst, 'source_evidence': discovery['evidence']})
-        bundle = stage_candidate(root, output/'candidate', proposal)
+        bundle = stage_candidate(root, output/'candidate', proposal, change.get('proposed_files'))
         bundle['context_digest'] = report['context_digest']
         report['candidate'] = bundle
         (output/'candidate-bundle.json').write_text(json.dumps(bundle, indent=2, ensure_ascii=False))

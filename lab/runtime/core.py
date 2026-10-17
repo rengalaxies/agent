@@ -228,7 +228,7 @@ class LLM:
             raise Stop('LLM call failed: ' + type(exc).__name__) from None
 
 
-def stage_candidate(root, destination, proposal):
+def stage_candidate(root, destination, proposal, proposed_files=None):
     root, destination = Path(root), Path(destination)
     patches = proposal.get('patches', [])
     if not patches or len(patches) > len(ALLOWED_PATCHES):
@@ -247,6 +247,15 @@ def stage_candidate(root, destination, proposal):
             if any(p.is_symlink() for p in origin.rglob('*')):
                 raise Stop('Symlink in candidate inputs is forbidden.')
             shutil.copytree(origin, destination / folder, ignore=shutil.ignore_patterns('__pycache__'))
+    # The concrete submitted candidate is the repair baseline. Source checkout stays intact.
+    source_digests = {}
+    for name, content in (proposed_files or {}).items():
+        if name not in ALLOWED_PATCHES or not isinstance(content, str) or len(content.encode()) > MAX_FILE:
+            raise Stop('Submitted candidate violates exact file scope.')
+        target = destination / name
+        source_digests[name] = hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else None
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content)
     changed = []
     for patch in patches:
         target = destination / patch['path']
@@ -256,10 +265,12 @@ def stage_candidate(root, destination, proposal):
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(patch['content'])
         changed.append({'path': patch['path'], 'before_digest': hashlib.sha256(before.encode()).hexdigest(),
+                        'source_before_digest': source_digests.get(patch['path']),
                         'after_digest': hashlib.sha256(patch['content'].encode()).hexdigest()})
     if not changed:
         raise Stop('No effective patch generated; reference implementation is not an agent-produced repair.')
     return {'candidate_digest': tree_digest(destination), 'patches': changed,
+            'repair_baseline': 'submitted_files' if proposed_files else 'source_checkout',
             'transition_plan': proposal.get('transition_plan', []), 'assumptions': proposal.get('assumptions', [])}
 
 

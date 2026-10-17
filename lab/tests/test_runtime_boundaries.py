@@ -24,3 +24,14 @@ class RuntimeBoundaryUnitTests(unittest.TestCase):
             for name in ['lab/evaluator/expectations.json','../lab/sql/expand.sql','lab/app/service.py']:
                 with self.subTest(name=name):
                     with self.assertRaises(Stop):stage_candidate(tmp,Path(tmp)/'candidate',{'patches':[{'path':name,'content':'bad'}]})
+
+    def test_repair_is_measured_against_submitted_candidate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)/'source';sql=root/'lab/sql';sql.mkdir(parents=True)
+            (sql/'expand.sql').write_text('correct migration')
+            result=stage_candidate(root,Path(tmp)/'candidate',
+                {'patches':[{'path':'lab/sql/expand.sql','content':'correct migration'}]},
+                {'lab/sql/expand.sql':'wrong submitted migration'})
+            self.assertEqual(result['repair_baseline'],'submitted_files')
+            self.assertNotEqual(result['patches'][0]['before_digest'],result['patches'][0]['after_digest'])
+            self.assertEqual((sql/'expand.sql').read_text(),'correct migration')

@@ -81,7 +81,7 @@ must be separate from application stop; leave existing UI and managed demo alone
 
 The corrected live preflight run `39039843414` observed UI TCP/22 reachable,
 TCP/443 unreachable, core stopped, and readable recovery key matching UI state
-metadata. This supersedes the historical SSH timeout but does not establish SSH
+metadata. Later runs (including rerun job 117481021499) again timed out on TCP22, so reachability is intermittent. This does not establish SSH
 trust, authentication, OS access or lab readiness.
 
 The next preflight version performs an unauthenticated SSH handshake only after

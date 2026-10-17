@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
   push:
     branches: [feat/postgres-rabbitmq-agent-lab]
-    paths: ['lab/**', '.github/workflows/lab-integration.yml', 'infra/cloudru/lab/**']
+    paths: ['lab/**', '.github/workflows/lab-integration.yml', 'infra/cloudru/lab/**', '!lab/reports/**', '!lab/status.md', '!lab/**/README.md', '!lab/README.md']
   pull_request:
-    paths: ['lab/**', '.github/workflows/lab-integration.yml', 'infra/cloudru/lab/**']
+    paths: ['lab/**', '.github/workflows/lab-integration.yml', 'infra/cloudru/lab/**', '!lab/reports/**', '!lab/status.md', '!lab/**/README.md', '!lab/README.md']
 permissions:
   contents: read
 concurrency:
@@ -66,6 +66,8 @@ jobs:
           mkdir -p lab-evidence
           chmod 0777 lab-evidence
           docker compose -f lab/compose.yaml run --rm --entrypoint python -v "$PWD/lab-evidence:/evidence" app -m lab.tests.integration --output /evidence/integration.json
+      - name: Verify persistent databases and pending broker delivery after component restart
+        run: python3 -m lab.evaluator.restart_control
       - name: Reproduce naive semantic break on separate fresh CI project
         run: |
           docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml up -d --wait --wait-timeout 120 postgres rabbitmq
