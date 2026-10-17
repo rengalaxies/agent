@@ -76,3 +76,19 @@ modify existing experiment volumes. Restart the same project with identical
 source/image digests and retained lab volumes; validate consumer records and
 outbox before resuming a partially completed transition. VM power operations
 must be separate from application stop; leave existing UI and managed demo alone.
+
+## Refreshed channel probe
+
+The corrected live preflight run `39039843414` observed UI TCP/22 reachable,
+TCP/443 unreachable, core stopped, and readable recovery key matching UI state
+metadata. This supersedes the historical SSH timeout but does not establish SSH
+trust, authentication, OS access or lab readiness.
+
+The next preflight version performs an unauthenticated SSH handshake only after
+matching the API UI interface to the approved state NIC and public IP allocation.
+It publishes a public host-key SHA256 fingerprint without the hostname/address.
+`BLOCKED_HOST_TRUST_UNVERIFIED` means no authentication or OS command was attempted.
+The observed fingerprint must be checked through a trusted independent channel;
+it is not automatically added to known_hosts. Only an existing configured
+`CLOUDRU_LAB_SSH_KNOWN_HOSTS` enables RejectPolicy authentication and the fixed
+read-only inventory script. Missing trust is not bypassed with AutoAddPolicy.

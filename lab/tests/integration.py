@@ -27,7 +27,7 @@ def run(candidate_only=False, broken_only=False):
             report['checks'][key] = {'status':'PASS','evidence': evidence}
             return True
         except Exception as exc:
-            report['checks'][key] = {'status':'FAIL','evidence':{'type':type(exc).__name__,'code':getattr(exc,'code',None)}}
+            report['checks'][key] = {'status':'FAIL','evidence':{'type':type(exc).__name__,'code':getattr(exc,'code',None),'assertion':str(exc) if isinstance(exc,AssertionError) else None}}
             return False
     def need(condition, message):
         if not condition: raise AssertionError(message)
@@ -112,13 +112,20 @@ def run(candidate_only=False, broken_only=False):
         states=[]
         for step in range(1,6):
             app.transition(f'S{step}')
-            create(f'mixed-{step}',(step+1)*100);drain()
+            create(f'mixed-{step}',(step+1)*100)
+            if step==4:
+                app.publish()
+                try:app.consume(version=1)
+                except app.LabError as exc:need(exc.code=='MIXED_VERSION','Unsupported version failed for wrong reason')
+                else:raise AssertionError('Billing v1 incorrectly consumed v2')
+                need(not rows('BILLING','SELECT order_id FROM ledger WHERE order_id=%s',(f'mixed-{step}',)),'Unsupported consumer committed ledger')
+            drain()
             states.append(business())
         return {'states':states,'coverage':'R1-R5 financial transition; R6-R8 require runtime grant/context scenarios'}
     if not check('compatible_S0_S5',corrected):
         report['outcome']='FAIL';return report
     if candidate_only:
-        report['outcome']='PASS';report['coverage']='candidate migration, R1-R5 financial invariants only'
+        report['outcome']='FAIL' if any(x['status']=='FAIL' for x in report['checks'].values()) else 'PASS';report['coverage']='candidate migration, R1-R5 financial invariants only'
         report['measurements']['execution_seconds']=time.monotonic()-started
         return report
     report['cases']['T03']={'status':'BLOCKED','evidence':{'financial_transition':report['checks']['compatible_S0_S5'],'remaining':'Full R6-R8 enforcement not established by application integration suite'}}

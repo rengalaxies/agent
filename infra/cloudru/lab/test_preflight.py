@@ -1,6 +1,7 @@
 """Scope guards are meaningful even without cloud credentials."""
 import unittest
-from preflight import PROJECT, select_state, live_zone_name
+from unittest.mock import MagicMock, patch
+from preflight import PROJECT, select_state, live_zone_name, ssh_probe
 
 
 class ScopeTests(unittest.TestCase):
@@ -33,6 +34,18 @@ class ScopeTests(unittest.TestCase):
             state["resources"][0]["instances"][0]["attributes"][field] = bad
             with self.assertRaises(ValueError):
                 select_state(state)
+
+    def test_untrusted_handshake_never_authenticates(self):
+        fake = MagicMock()
+        fake.Transport.return_value.get_remote_server_key.return_value.asbytes.return_value = b'public-host-key'
+        fake.Transport.return_value.get_remote_server_key.return_value.get_name.return_value = 'ssh-ed25519'
+        with patch.dict('sys.modules', {'paramiko': fake}), patch.dict('os.environ', {}, clear=True), patch('preflight.socket.create_connection'):
+            result = ssh_probe('192.0.2.1', b'private-credential-must-not-be-read')
+        self.assertEqual(result['status'], 'BLOCKED_HOST_TRUST_UNVERIFIED')
+        self.assertEqual(result['authentication'], 'NOT_ATTEMPTED')
+        self.assertTrue(result['observed_host_key_sha256'].startswith('SHA256:'))
+        fake.SSHClient.assert_not_called()
+        fake.Ed25519Key.from_private_key.assert_not_called()
 
     def test_wrong_core_id_stops(self):
         state = self.fixture()

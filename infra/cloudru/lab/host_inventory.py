@@ -25,7 +25,7 @@ if shutil.which("docker"):
     report["docker_version"] = command(["docker", "version", "--format", "{{.Server.Version}}"])
     report["compose_version"] = command(["docker", "compose", "version", "--short"])
     # No inspect/env or full logs: these can contain passwords.
-    report["containers"] = command(["docker", "ps", "--format", "{{.Names}} {{.Status}} {{.Ports}}"])
+    report["containers"] = command(["docker", "ps", "--format", "{{.Names}} {{.Status}}"])
     report["volume_names"] = command(["docker", "volume", "ls", "--format", "{{.Name}}"])
     report["container_runtime"] = "INVENTORIED"
 print(json.dumps(report, indent=2))

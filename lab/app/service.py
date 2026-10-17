@@ -58,6 +58,8 @@ def rabbit():
     parameters.heartbeat = 30
     parameters.blocked_connection_timeout = 30
     parameters.socket_timeout = 10
+    parameters.connection_attempts = 15
+    parameters.retry_delay = 2
     return pika.BlockingConnection(parameters)
 
 

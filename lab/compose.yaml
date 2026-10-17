@@ -49,7 +49,7 @@ services:
     mem_limit: 384m
     cpus: 0.50
     healthcheck:
-      test: [CMD, rabbitmq-diagnostics, -q, ping]
+      test: [CMD, rabbitmq-diagnostics, -q, check_port_connectivity]
       interval: 5s
       timeout: 5s
       retries: 30

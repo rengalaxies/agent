@@ -66,6 +66,11 @@ jobs:
           mkdir -p lab-evidence
           chmod 0777 lab-evidence
           docker compose -f lab/compose.yaml run --rm --entrypoint python -v "$PWD/lab-evidence:/evidence" app -m lab.tests.integration --output /evidence/integration.json
+      - name: Reproduce naive semantic break on separate fresh CI project
+        run: |
+          docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml up -d --wait --wait-timeout 120 postgres rabbitmq
+          docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml run --rm bootstrap
+          docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml run --rm --entrypoint python -v "$PWD/lab-evidence:/evidence" app -m lab.tests.integration --broken-only --output /evidence/broken.json
       - name: Report bounded CI outcome
         if: always()
         run: |
@@ -86,4 +91,6 @@ jobs:
           retention-days: 14
       - name: Stop only this disposable CI compose project
         if: always()
-        run: docker compose -f lab/compose.yaml down --remove-orphans
+        run: |
+          docker compose -f lab/compose.yaml down --remove-orphans
+          docker compose -p "${COMPOSE_PROJECT_NAME}-broken" -f lab/compose.yaml down --remove-orphans

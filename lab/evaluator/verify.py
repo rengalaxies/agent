@@ -48,7 +48,7 @@ def verify(candidate_dir, scenario_id='T03'):
               'suite_digest': suite_digest(), 'scenario_id': scenario_id,
               'outcome': 'INCOMPLETE', 'checks': [],
               'coverage': 'candidate checks only; live business validation requires isolated suite',
-              'uncovered': ['full S0-S5 execution', 'R6 grants', 'R7 discovery completeness',
+              'uncovered': ['R6 grants', 'R7 discovery completeness',
                             'R8 freshness', 'component recovery']}
     frozen_expectations()
     root = Path(candidate_dir)
