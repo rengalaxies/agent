@@ -7,6 +7,7 @@ COPY lab/app /work/lab/app
 COPY lab/sql /work/lab/sql
 COPY lab/contracts /work/lab/contracts
 COPY lab/runtime /work/lab/runtime
+COPY lab/product /work/lab/product
 COPY lab/catalog /work/lab/catalog
 COPY lab/evaluator /work/lab/evaluator
 COPY lab/tests /work/lab/tests
