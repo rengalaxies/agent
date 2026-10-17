@@ -1,0 +1,162 @@
+{
+  "experiment": "E4 development process-isolation demonstration",
+  "scenario_source": "development/T-03 plus one synthetic fintech obligation",
+  "confirmatory": false,
+  "timeout_s": 0.55,
+  "baseline_decision": "ACCEPT",
+  "cases": [
+    {
+      "scenario_id": "E4-3D-DEV",
+      "mode": "V2",
+      "proposal_id": "E4:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "expected_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "received_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "missing_domains": [],
+      "decision": "ACCEPT",
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "elapsed_ms": 186.83,
+      "worker_exitcodes": {
+        "fintech": -15,
+        "mobility": 0,
+        "retail": -15
+      },
+      "case": "normal",
+      "expected_behavior": "ACCEPT",
+      "passed": true
+    },
+    {
+      "scenario_id": "E4-3D-DEV",
+      "mode": "V2",
+      "proposal_id": "E4:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "expected_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "received_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "missing_domains": [],
+      "decision": "ACCEPT",
+      "duplicates": 3,
+      "invalid_events": 0,
+      "conflicts": [],
+      "elapsed_ms": 162.49,
+      "worker_exitcodes": {
+        "fintech": -15,
+        "mobility": -15,
+        "retail": -15
+      },
+      "case": "duplicate",
+      "expected_behavior": "ACCEPT",
+      "passed": true
+    },
+    {
+      "scenario_id": "E4-3D-DEV",
+      "mode": "V2",
+      "proposal_id": "E4:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "expected_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "received_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "missing_domains": [],
+      "decision": "ACCEPT",
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "elapsed_ms": 187.0,
+      "worker_exitcodes": {
+        "fintech": -15,
+        "mobility": 0,
+        "retail": -15
+      },
+      "case": "reverse_delivery",
+      "expected_behavior": "ACCEPT",
+      "passed": true
+    },
+    {
+      "scenario_id": "E4-3D-DEV",
+      "mode": "V2",
+      "proposal_id": "E4:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "expected_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "received_domains": [
+        "fintech",
+        "retail"
+      ],
+      "missing_domains": [
+        "mobility"
+      ],
+      "decision": "NEEDS_REVIEW",
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "elapsed_ms": 552.86,
+      "worker_exitcodes": {
+        "fintech": 0,
+        "mobility": -15,
+        "retail": 0
+      },
+      "case": "late_domain",
+      "expected_behavior": "NEEDS_REVIEW",
+      "passed": true
+    },
+    {
+      "scenario_id": "E4-3D-DEV",
+      "mode": "V2",
+      "proposal_id": "E4:E4-3D-DEV:V2",
+      "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+      "expected_domains": [
+        "fintech",
+        "mobility",
+        "retail"
+      ],
+      "received_domains": [
+        "fintech",
+        "retail"
+      ],
+      "missing_domains": [
+        "mobility"
+      ],
+      "decision": "NEEDS_REVIEW",
+      "duplicates": 0,
+      "invalid_events": 0,
+      "conflicts": [],
+      "elapsed_ms": 204.53,
+      "worker_exitcodes": {
+        "fintech": -15,
+        "retail": 0
+      },
+      "case": "unavailable_domain",
+      "expected_behavior": "NEEDS_REVIEW",
+      "passed": true
+    }
+  ],
+  "passed": 5,
+  "total": 5
+}
