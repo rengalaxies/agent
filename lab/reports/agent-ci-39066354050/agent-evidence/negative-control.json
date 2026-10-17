@@ -1,0 +1,54 @@
+{
+  "candidate_digest": "a320c084fcfc6426ab10504809d8b128bad0c0cba7218909b2209aaee0a2086e",
+  "suite_digest": "c0b7e19ec8aaf6240fcf4f53779de567eaaf37d5a16c570fa275f3e234425cfa",
+  "scenario_id": "T03",
+  "outcome": "FAIL",
+  "checks": {
+    "baseline": {
+      "status": "PASS",
+      "evidence": {
+        "order_count": 6,
+        "expected_minor_total": 214848377900,
+        "ledger": {
+          "held-0": 0,
+          "held-1": 100,
+          "held-2": 700,
+          "held-3": 12500,
+          "held-4": 99999900,
+          "held-5": 214748364700
+        },
+        "state": "S0"
+      }
+    },
+    "wrong_migration_rejected": {
+      "status": "PASS",
+      "evidence": {
+        "verdict": "REJECT",
+        "source_unchanged": true,
+        "transactional_DDL_rolled_back": true
+      }
+    },
+    "readonly_verifier": {
+      "status": "PASS",
+      "evidence": {
+        "source_and_billing_roles": "SELECT only"
+      }
+    },
+    "compatible_S0_S5": {
+      "status": "FAIL",
+      "evidence": {
+        "type": "CheckViolation",
+        "code": null,
+        "assertion": null
+      }
+    }
+  },
+  "accepted_properties": [],
+  "coverage": "candidate checks only; live business validation requires isolated suite",
+  "uncovered": [
+    "R6 grants",
+    "R7 discovery completeness",
+    "R8 freshness",
+    "component recovery"
+  ]
+}

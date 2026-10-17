@@ -1,0 +1,81 @@
+{
+  "outcome": "PASS",
+  "source_commit": "373ca9299870ed7379135cefdb8004877ccbb5fc",
+  "mode": "INTEGRATION + REPLAY / CONTROL",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39068710511",
+  "execution_permission": false,
+  "vm_actions": [],
+  "external_notifications": 0,
+  "scenarios": {
+    "A": {
+      "status": "PASS",
+      "layers": [
+        "browser",
+        "API",
+        "live catalogs",
+        "fresh PostgreSQL/RabbitMQ financial verifier"
+      ],
+      "mode": "REPLAY",
+      "verification_id": "f03bacd7f3744c2b895fd3b18922ec77"
+    },
+    "H": {
+      "status": "PASS",
+      "layers": [
+        "browser disabled apply",
+        "direct API 403"
+      ]
+    },
+    "B": {
+      "status": "PASS",
+      "layers": [
+        "API",
+        "server docs-only profile control"
+      ]
+    },
+    "D": {
+      "status": "PASS",
+      "layers": [
+        "API",
+        "browser stale display"
+      ],
+      "old_verification": "f03bacd7f3744c2b895fd3b18922ec77"
+    },
+    "C": {
+      "status": "PASS",
+      "layers": [
+        "API",
+        "declared owner catalog controlled mutation"
+      ],
+      "mode": "FIXTURE / CONTROL ownership; live DB/broker catalogs"
+    },
+    "E": {
+      "status": "PASS",
+      "layers": [
+        "real RabbitMQ mutation",
+        "live collector",
+        "API invalidation"
+      ],
+      "before": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "after": "2e52501245e7c192ac32624a2f8ecdf69d0566b9e7bf756f03df778476f9eb12"
+    },
+    "F": {
+      "status": "PASS",
+      "layers": [
+        "asynchronous API",
+        "delayed CONTROL worker"
+      ],
+      "job": "948f5b12eb13417d9500ab93c84ad249"
+    },
+    "G": {
+      "status": "PASS",
+      "layers": [
+        "SIGKILL server process",
+        "SQLite restart",
+        "API idempotency"
+      ],
+      "job": "3bab72970b4a4488899186ea0e8bb872"
+    }
+  },
+  "errors": [],
+  "cleanup": "PASS"
+}

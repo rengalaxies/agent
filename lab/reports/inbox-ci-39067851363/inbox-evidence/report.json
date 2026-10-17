@@ -1,0 +1,21 @@
+{
+  "outcome": "PASS",
+  "source_commit": "0dd24672b93869acd54ab5d4fb9f176707e2e9cd",
+  "llm_calls": 0,
+  "external_notifications": 0,
+  "execution_permission": false,
+  "vm_actions": [],
+  "mode": "SAVED_REAL_AGENT_REPLAY; NO_NEW_FINANCIAL_VERIFICATION",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39067851363",
+  "replayed_source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+  "replayed_actions_run": "https://github.com/rengalaxies/agent/actions/runs/39066354050",
+  "cases": {
+    "breaking_change": "PASS",
+    "unknown_owner_to_coordinator": "PASS",
+    "revision_and_deduplication": "PASS",
+    "stale_decision_denied": "PASS",
+    "acknowledgement_is_not_permission": "PASS"
+  },
+  "discovery": "supported literal AST references from saved code; declared ownership catalog; no runtime discovery",
+  "workflow_steps": 9
+}

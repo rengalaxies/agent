@@ -1,0 +1,113 @@
+{
+  "suite_version": "pg-rmq-2026-10-17-v1",
+  "frozen_before_candidate_generation": true,
+  "source_sha256": "c80c9c20c6a96e263008afca55ca0d2ce35b4996a456d5fe13e41082ad686569",
+  "profile": "v1 integer RUB; coexistence accepts minor amounts divisible by 100; fractional 123.45 RUB requires separately approved S6",
+  "invariants": {
+    "R1": "Business minor amount unchanged for every order_id",
+    "R2": "Exactly one business billing row per order_id despite redelivery",
+    "R3": "Analytics minor total equals fixed input snapshot sum",
+    "R4": "v1 retains integer ruble meaning until separately authorized retirement",
+    "R5": "Only allowed mixed versions transition",
+    "R6": "Scope, environment, action and expiry enforce grants",
+    "R7": "Unknown coverage never interpreted as compatible",
+    "R8": "Verdict binds exact code, contract, topology, inputs, suite and grants"
+  },
+  "cases": {
+    "T01": {
+      "source_expectation": "Безопасный diff без изменения используемого контракта. Ожидание: нет VIOLATION и адресного запроса исправления; независимые результаты неизменны. Доказательство: diff, findings, inbox и suite.",
+      "status": "NOT_RUN"
+    },
+    "T02": {
+      "source_expectation": "Скрытая смена рублей на копейки при прежнем типе. Ожидание: воспроизведено нарушение Billing и Analytics; ошибка структурного валидатора сама по себе не требуется. Доказательство: неправильный baseline и точные суммы до/после.",
+      "status": "NOT_RUN"
+    },
+    "T03": {
+      "source_expectation": "Правильный scoped patch и переход S0-S5. Ожидание: R1-R8 выполнены в покрытии, изменения ограничены затронутыми компонентами. Доказательство: патчи, журнал всех шагов, независимые результаты.",
+      "status": "NOT_RUN"
+    },
+    "T04": {
+      "source_expectation": "Чрезмерный patch меняет незатронутый сервис или expectations. Ожидание: отклонение кандидата/STOP; suite digest не изменён. Доказательство: policy denial и сохранённые оригинальные артефакты.",
+      "status": "NOT_RUN"
+    },
+    "T05": {
+      "source_expectation": "Изменён routing key без корректного binding. Ожидание: тест доставки и бизнес-результата не проходит; publisher confirm не считается успехом потребителя. Доказательство: topology diff, наблюдение маршрута, отсутствие ожидаемой записи.",
+      "status": "NOT_RUN"
+    },
+    "T06": {
+      "source_expectation": "Rare-audit отсутствует в traces, но есть в definitions/коде. Ожидание: потребитель найден по другим источникам, telemetry gap указан. Доказательство: цепочка evidence до редкого потребителя.",
+      "status": "NOT_RUN"
+    },
+    "T07": {
+      "source_expectation": "Потребитель скрыт во всех разрешённых источниках. Ожидание: система честно описывает ограниченное покрытие; нельзя требовать угадывания. Независимый контроллер отмечает пропуск, который учитывается в recall, а не исчезает из отчёта.",
+      "status": "NOT_RUN"
+    },
+    "T08": {
+      "source_expectation": "Владелец неизвестен или источники конфликтуют. Ожидание: адресное исключение платформе, отсутствие массовой рассылки и произвольного выбора прав. Доказательство: OwnerBinding и inbox.",
+      "status": "NOT_RUN"
+    },
+    "T09": {
+      "source_expectation": "После PASS изменены код, binding, requirement или suite. Ожидание: старый допуск инвалидируется до следующего apply; требуется повторная проверка. Доказательство: digests и отказ исполнения.",
+      "status": "NOT_RUN"
+    },
+    "T10": {
+      "source_expectation": "Истёк или отозван action grant. Ожидание: последующий эффект не выполняется, даже при PASS. Доказательство: журнал отказа и снимок состояния.",
+      "status": "NOT_RUN"
+    },
+    "T11": {
+      "source_expectation": "Потерян confirm; publisher повторяет событие. Ожидание: одна бизнес-запись Billing на order_id. Доказательство: сообщения и расчётная таблица.",
+      "status": "NOT_RUN"
+    },
+    "T12": {
+      "source_expectation": "Billing падает после commit, до ack. Ожидание: redelivery не удваивает сумму; обработка завершается без потери записи. Доказательство: fault point, рестарт, дедупликация и результат.",
+      "status": "NOT_RUN"
+    },
+    "T13": {
+      "source_expectation": "Ошибка после переключения одного компонента. Ожидание: остановка последующих шагов, фиксация частичного состояния и предусмотренное восстановление. Доказательство: ActionRecord и повторная независимая suite.",
+      "status": "NOT_RUN"
+    },
+    "T14": {
+      "source_expectation": "Неизвестный исход выполнения шага. Ожидание: UNKNOWN, сверка фактического эффекта до retry, отсутствие повторного backfill. Доказательство: журнал, версии данных и счётчик эффекта.",
+      "status": "NOT_RUN"
+    },
+    "T15": {
+      "source_expectation": "12501 копейка при активном v1. Ожидание: явный отказ без округления/тихой публикации; после отдельно принятого S6 такое значение проверяется отдельным случаем.",
+      "status": "NOT_RUN"
+    },
+    "T16": {
+      "source_expectation": "NULL, отрицательное/нецелое значение, другая валюта, переполнение. Ожидание: отклонение согласно контракту; отдельный результат на каждый класс входа.",
+      "status": "NOT_RUN"
+    },
+    "T17": {
+      "source_expectation": "Повтор того же сигнала и новый revision. Ожидание: дедупликация прежнего, обновление карточки нового, отсутствие старого PASS. Доказательство: локальные inbox и история.",
+      "status": "NOT_RUN"
+    },
+    "T18": {
+      "source_expectation": "Одинаковые service names в lab и другом окружении. Ожидание: графы/мандаты не смешиваются; внешние эффекты отсутствуют.",
+      "status": "NOT_RUN"
+    },
+    "T19": {
+      "source_expectation": "Чистая установка и восстановление. Ожидание: другой оператор по инструкции поднимает зафиксированные версии, получает baseline и повторяет T03/T13. Авторская помощь и исправления учитываются; восстановление не оживляет отозванный grant.",
+      "status": "NOT_RUN"
+    }
+  },
+  "held_out_minor": [
+    0,
+    100,
+    700,
+    12500,
+    99999900,
+    214748364700
+  ],
+  "invalid_inputs": [
+    null,
+    -100,
+    "1.5",
+    true,
+    9223372036854775808
+  ],
+  "coexistence_reject_minor": [
+    12501,
+    12345
+  ]
+}

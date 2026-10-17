@@ -1,0 +1,123 @@
+{
+  "suite_digest": "f40e27675beed45c2611ad6ceb309889de3f34b3a112f019056dbc5d23f19441",
+  "suite_version": "pg-rmq-2026-10-17-v1",
+  "kind": "REAL_POSTGRESQL_RABBITMQ_INTEGRATION",
+  "checks": {
+    "baseline": {
+      "status": "PASS",
+      "evidence": {
+        "order_count": 6,
+        "expected_minor_total": 214848377900,
+        "ledger": {
+          "held-0": 0,
+          "held-1": 100,
+          "held-2": 700,
+          "held-3": 12500,
+          "held-4": 99999900,
+          "held-5": 214748364700
+        },
+        "state": "S0"
+      }
+    },
+    "T02": {
+      "status": "PASS",
+      "evidence": {
+        "expected_minor": 12500,
+        "observed_billing_minor": 1250000,
+        "observed_analytics_minor": "1250000",
+        "independent_verdict": "REJECT"
+      }
+    }
+  },
+  "cases": {
+    "T01": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T02": {
+      "status": "PASS",
+      "evidence": {
+        "expected_minor": 12500,
+        "observed_billing_minor": 1250000,
+        "observed_analytics_minor": "1250000",
+        "independent_verdict": "REJECT"
+      }
+    },
+    "T03": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T04": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T05": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T06": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T07": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T08": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T09": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T10": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T11": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T12": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T13": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T14": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T15": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T16": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T17": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T18": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T19": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    }
+  },
+  "measurements": {
+    "manual_active_seconds": "NOT_MEASURED",
+    "model_cost": "NOT_MEASURED",
+    "infrastructure_cost": "NOT_MEASURED",
+    "waiting_seconds": "NOT_MEASURED"
+  },
+  "outcome": "PASS",
+  "coverage": "deliberately incompatible v1 control, independently rejected"
+}

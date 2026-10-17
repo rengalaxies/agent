@@ -1,0 +1,16 @@
+{
+  "findings": [
+    {
+      "object_ref": "lab/sql/expand.sql",
+      "evidence_ids": [
+        "b9d2adb134e1cefc67dd085d",
+        "6159bcf99d266c46aed99ecd",
+        "07bb2f89526c204a4d7c5ba7",
+        "6df6ccaee61ff4af0dabfbc0"
+      ],
+      "status": "RISK",
+      "reason": "The proposed UPDATE sets amount_minor = amount_rub (evidence b9d2adb...), which violates the invariant that amount_minor must equal amount_rub * 100. The service transition S1 explicitly checks for rows where amount_minor IS DISTINCT FROM amount_rub*100 (evidence 6159bcf99d266c46aed99ecd). The contracts for v1 and v2 require amount_minor to be a multiple of 100 and consistent with amount_rub (evidence 07bb2f89526c204a4d7c5ba7, 6df6ccaee61ff4af0dabfbc0). Applying this diff would introduce data inconsistency and break downstream checks."
+    }
+  ],
+  "gaps": []
+}

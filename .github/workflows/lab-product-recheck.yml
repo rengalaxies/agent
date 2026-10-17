@@ -1,0 +1,50 @@
+name: Integrated lab product recheck without inference
+# Reviewed exact source, current snapshot and safe UI example guards.
+on:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths: [.github/workflows/lab-product-recheck.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install existing Python API stack and browser test driver
+        run: |
+          python3 -m pip install --quiet fastapi==0.115.12 uvicorn==0.34.2 httpx==0.28.1 pika==1.3.2 'psycopg[binary]==3.2.9' playwright==1.51.0
+          python3 -m playwright install --with-deps chromium
+      - name: Contract, collector, durable queue, API and existing unit regression
+        run: |
+          python3 -m unittest discover -s lab/tests -v > unit-regression.log 2>&1
+          python3 -m unittest discover -s lab/product/tests -v > product-unit.log 2>&1
+      - name: Resolve immutable images
+        run: |
+          python3 - <<'PY'
+          import subprocess,json,os,pathlib
+          images={}
+          for k,tag in {'POSTGRES_IMAGE':'postgres:16.10-bookworm','RABBITMQ_IMAGE':'rabbitmq:3.13.7-management','PYTHON_IMAGE':'python:3.12.11-slim-bookworm'}.items():
+              subprocess.run(['docker','pull',tag],check=True,stdout=subprocess.DEVNULL)
+              images[k]=json.loads(subprocess.check_output(['docker','image','inspect','--format','{{json .RepoDigests}}',tag]))[0]
+          pathlib.Path('product-images.json').write_text(json.dumps(images,indent=2))
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              for k,v in images.items():f.write(k+'='+v+'\n')
+          PY
+      - name: Real catalogs, A-H API integration and actual browser user path
+        run: python3 -m lab.product.ci_flow
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: product-integration-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            product-evidence/
+            product-images.json
+            product-unit.log
+            unit-regression.log
+          retention-days: 30
+          if-no-files-found: error

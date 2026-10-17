@@ -1,0 +1,20 @@
+{
+  "breaking": {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "environment_id": "lab",
+    "intent": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault.",
+    "proposed_diff": "--- a/lab/sql/expand.sql\n+++ b/lab/sql/expand.sql\n@@ -1,5 +1,5 @@\n ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\n-UPDATE orders SET amount_minor=amount_rub*100 WHERE amount_minor IS NULL;\n+UPDATE orders SET amount_minor=amount_rub WHERE amount_minor IS NULL;\n ALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\n DO $$ BEGIN\n  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n",
+    "proposed_files": {
+      "lab/sql/expand.sql": "ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\nUPDATE orders SET amount_minor=amount_rub WHERE amount_minor IS NULL;\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\nDO $$ BEGIN\n IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK(amount_minor >= 0 AND amount_minor % 100=0 AND amount_minor/100=amount_rub);\n END IF;\nEND $$;\n"
+    }
+  },
+  "safe": {
+    "intent": "Documentation clarification only",
+    "proposed_diff": "--- a/docs/note.md\n+++ b/docs/note.md\n-old\n+clarified\n",
+    "proposed_files": {
+      "docs/note.md": "clarified\n"
+    },
+    "kind": "safe"
+  }
+}

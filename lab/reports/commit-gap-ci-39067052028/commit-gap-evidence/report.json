@@ -1,0 +1,64 @@
+{
+  "scenario": "T13_T14_S1_COMMIT_BEFORE_CONFIRM",
+  "outcome": "FAIL",
+  "source_commit": "dd6b33aadcb0568089bdd62b5ba7ef17439f6e53",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39067052028",
+  "expectations_sha256": "778920a9d753715414090553a11520943ddc003d32ae9298f4c5ea18591880d2",
+  "compose_project": "dm-commit-gap-8db483356621",
+  "automatic_application": "BLOCKED",
+  "llm_calls": 0,
+  "vm_actions": [],
+  "processes": [
+    {
+      "mode": "prepare",
+      "service": "app",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "fault",
+      "service": "app",
+      "exit_code": 81,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "recover",
+      "service": "app",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "drain",
+      "service": "app",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    }
+  ],
+  "image_id": "sha256:db20593b86b8c283c2fa80ccef6a3d02f12e6a693470ddae2f172bd0e6a3f922",
+  "error_class": "AssertionError",
+  "cleanup": "PASS"
+}

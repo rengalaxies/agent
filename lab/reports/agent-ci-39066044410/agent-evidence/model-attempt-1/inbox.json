@@ -1,0 +1,740 @@
+[
+  {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+    "team_id": "UNKNOWN",
+    "active": true,
+    "status": "LINK_FOUND",
+    "updated_at": "2026-10-17T20:17:51.328215+00:00",
+    "objects": [
+      "lab/app/bootstrap.py#bootstrap",
+      "lab/app/bootstrap.py#bootstrap",
+      "lab/app/bootstrap.py#bootstrap",
+      "rare-audit",
+      "lab/app/service.py#initialize",
+      "lab/app/service.py#create_order",
+      "lab/app/service.py#create_order",
+      "lab/app/service.py#publish",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/app/service.py#transition",
+      "lab/sql/source.sql"
+    ],
+    "grounds": [
+      {
+        "source_ref": "postgres:PUBLIC",
+        "target_ref": "lab/app/bootstrap.py#bootstrap",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "06e882129341e6bb5df04320"
+        ],
+        "line": 28,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "PUBLIC",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:pg_roles",
+        "target_ref": "lab/app/bootstrap.py#bootstrap",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "06e882129341e6bb5df04320"
+        ],
+        "line": 14,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "pg_roles",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:pg_database",
+        "target_ref": "lab/app/bootstrap.py#bootstrap",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "06e882129341e6bb5df04320"
+        ],
+        "line": 20,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "pg_database",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "orders.events",
+        "target_ref": "rare-audit",
+        "relation_type": "BROKER_BINDING",
+        "routing_key": "order.created.v1",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 72,
+        "direction": "exchange-to-queue",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "order.created.v1",
+        "confirmation": "CODE_DECLARATION",
+        "coverage_note": "Conditional code is not proof of active binding.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:lab_state",
+        "target_ref": "lab/app/service.py#initialize",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 83,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "lab_state",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:lab_state",
+        "target_ref": "lab/app/service.py#create_order",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 96,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "lab_state",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py#create_order",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 101,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:outbox",
+        "target_ref": "lab/app/service.py#publish",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 127,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "outbox",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:lab_state",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 227,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "lab_state",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:transition_log",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 229,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "transition_log",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 240,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 235,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:amount_rub",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 235,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "amount_rub",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 245,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 272,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 278,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:ledger",
+        "target_ref": "lab/app/service.py#transition",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 280,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "ledger",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/sql/source.sql",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "568ba0938eaffe5a90bc9fab"
+        ],
+        "line": 18,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "UNKNOWN",
+        "owner_evidence": [],
+        "owner_freshness": "UNKNOWN"
+      }
+    ],
+    "what_changes": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault.",
+    "requirement": "Business amount must be conserved; v1 meaning preserved.",
+    "reproduced": "NOT_RUN",
+    "patches": [],
+    "verification": "NOT_RUN",
+    "executed": [],
+    "human_decision": "Resolve UNKNOWN/CONFLICT/STALE owners and issue separate exact action grant.",
+    "coverage_gaps": [
+      "Static supported syntax only; dynamic SQL and external consumers may be absent.",
+      "No live traces supplied; lack of telemetry never removes a static dependency.",
+      "Repository snapshot does not prove deployed code or broker state."
+    ]
+  },
+  {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+    "team_id": "platform",
+    "active": true,
+    "status": "LINK_FOUND",
+    "updated_at": "2026-10-17T20:17:51.328234+00:00",
+    "objects": [
+      "lab/app/service.py",
+      "lab/app/service.py",
+      "lab/app/service.py",
+      "lab/app/service.py",
+      "lab/app/service.py",
+      "lab/app/service.py"
+    ],
+    "grounds": [
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 101,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "platform",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 235,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "platform",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 240,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "platform",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 245,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "platform",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 272,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "platform",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:orders",
+        "target_ref": "lab/app/service.py",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 278,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "orders amount semantics",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Reference only; not proof of execution.",
+        "owner": "platform",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      }
+    ],
+    "what_changes": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault.",
+    "requirement": "Business amount must be conserved; v1 meaning preserved.",
+    "reproduced": "NOT_RUN",
+    "patches": [],
+    "verification": "NOT_RUN",
+    "executed": [],
+    "human_decision": "Resolve UNKNOWN/CONFLICT/STALE owners and issue separate exact action grant.",
+    "coverage_gaps": [
+      "Static supported syntax only; dynamic SQL and external consumers may be absent.",
+      "No live traces supplied; lack of telemetry never removes a static dependency.",
+      "Repository snapshot does not prove deployed code or broker state."
+    ]
+  },
+  {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+    "team_id": "billing",
+    "active": true,
+    "status": "LINK_FOUND",
+    "updated_at": "2026-10-17T20:17:51.328244+00:00",
+    "objects": [
+      "billing",
+      "lab/app/service.py#consume",
+      "lab/app/service.py#consume",
+      "lab/app/service.py#consume",
+      "lab/app/service.py#consume"
+    ],
+    "grounds": [
+      {
+        "source_ref": "orders.events",
+        "target_ref": "billing",
+        "relation_type": "BROKER_BINDING",
+        "routing_key": "DYNAMIC",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 69,
+        "direction": "exchange-to-queue",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "UNKNOWN_DYNAMIC",
+        "confirmation": "CODE_DECLARATION",
+        "coverage_note": "Conditional code is not proof of active binding.",
+        "owner": "billing",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "billing",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:lab_state",
+        "target_ref": "lab/app/service.py#consume",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 167,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "lab_state",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "billing",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#consume",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:ledger",
+        "target_ref": "lab/app/service.py#consume",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 183,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "ledger",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "billing",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#consume",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:processed_events",
+        "target_ref": "lab/app/service.py#consume",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 186,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "processed_events",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "billing",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#consume",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      },
+      {
+        "source_ref": "postgres:processed_events",
+        "target_ref": "lab/app/service.py#consume",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 190,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "processed_events",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "billing",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#consume",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      }
+    ],
+    "what_changes": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault.",
+    "requirement": "Business amount must be conserved; v1 meaning preserved.",
+    "reproduced": "NOT_RUN",
+    "patches": [],
+    "verification": "NOT_RUN",
+    "executed": [],
+    "human_decision": "Resolve UNKNOWN/CONFLICT/STALE owners and issue separate exact action grant.",
+    "coverage_gaps": [
+      "Static supported syntax only; dynamic SQL and external consumers may be absent.",
+      "No live traces supplied; lack of telemetry never removes a static dependency.",
+      "Repository snapshot does not prove deployed code or broker state."
+    ]
+  },
+  {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+    "team_id": "analytics",
+    "active": true,
+    "status": "LINK_FOUND",
+    "updated_at": "2026-10-17T20:17:51.328248+00:00",
+    "objects": [
+      "lab/app/service.py#analytics"
+    ],
+    "grounds": [
+      {
+        "source_ref": "postgres:lab_state",
+        "target_ref": "lab/app/service.py#analytics",
+        "relation_type": "SQL_READ_REFERENCE",
+        "evidence_ids": [
+          "6159bcf99d266c46aed99ecd"
+        ],
+        "line": 206,
+        "direction": "source-to-reader",
+        "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+        "contract": "lab_state",
+        "confirmation": "STATIC_REFERENCE",
+        "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+        "owner": "analytics",
+        "owner_evidence": [
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#analytics",
+            "team_id": "analytics",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ],
+        "owner_freshness": "UNKNOWN"
+      }
+    ],
+    "what_changes": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault.",
+    "requirement": "Business amount must be conserved; v1 meaning preserved.",
+    "reproduced": "NOT_RUN",
+    "patches": [],
+    "verification": "NOT_RUN",
+    "executed": [],
+    "human_decision": "Resolve UNKNOWN/CONFLICT/STALE owners and issue separate exact action grant.",
+    "coverage_gaps": [
+      "Static supported syntax only; dynamic SQL and external consumers may be absent.",
+      "No live traces supplied; lack of telemetry never removes a static dependency.",
+      "Repository snapshot does not prove deployed code or broker state."
+    ]
+  }
+]
