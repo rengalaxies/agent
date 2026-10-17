@@ -1,10 +1,10 @@
 # Actual lab status - 2026-10-17
 
-Overall: **NOT READY for the requested Cloud.ru + real-model internal demonstration**. Application controls have run on real PostgreSQL/RabbitMQ in GitHub Actions. No VM deployment or real agent repair is claimed. The dispatcher also blocks financial-only PASS until independent R1-R8 acceptance is implemented and qualified.
+Overall: **проверенный агентный проход в CI; Cloud.ru deployment NOT READY**. Real Foundation Models analyst and executor produced a SQL repair independently verified on fresh PostgreSQL/RabbitMQ. Controlled CI R6-R8 qualification passes; automatic application stays BLOCKED. Exact commits, all failures, token usage and remaining deployment steps: [agent CI report](reports/agent-ci-summary.md). Historical evidence and original full-scenario gaps follow.
 
 ## Evidence
 
-Operational access update, 2026-10-17 22:45 MSK: the operator added the Foundation Models key. Rerun job 117487080370 in run 39061894797 returned PASS_API_RESPONSE for openai/gpt-oss-120b with 70 input + 16 completion tokens. Earlier missing-key/403 reports are historical. Real agent repair has not yet run. Operator console supplied the UI Ed25519 host fingerprint at 22:50 MSK; read-only SSH qualification follows.
+Operational access update, 2026-10-17 22:45 MSK: the operator added the Foundation Models key. Rerun job 117487080370 in run 39061894797 returned PASS_API_RESPONSE for openai/gpt-oss-120b with 70 input + 16 completion tokens. Earlier missing-key/403 reports are historical. At that point real agent repair had not yet run; the later agent CI report supersedes this access-only status. Operator console supplied the UI Ed25519 host fingerprint at 22:50 MSK; read-only SSH qualification follows.
 
 - Final verified code: `7bb70630bfb72e58e11bda36aa9f0ee7dc6a4e90`. [Full lab CI run 39062576562](https://github.com/rengalaxies/agent/actions/runs/39062576562) PASS, including 12 lab + 5 infrastructure unit checks, live application suite, restart, broken control and independent correct/wrong artifact execution. Main scenario outcome remains INCOMPLETE. All final JSON and immutable image manifests are preserved under `reports/ci-39062576562/`. [Existing P1 regression run 39062579591](https://github.com/rengalaxies/agent/actions/runs/39062579591) also PASS. Independent review confirmed the late authority/context recheck fix. No automatic transition is authorized by financial-only PASS. [Draft PR23](https://github.com/rengalaxies/agent/pull/23) has no deletions or unrelated changes; final documentation/report commits do not change this verified code.
 
@@ -23,7 +23,7 @@ PASS below describes only the frozen scenario's exercised application behavior. 
 |---|---|---|
 | T01 safe change | NOT_RUN | No live product finding/inbox evaluation |
 | T02 silent semantic change | PASS | Broken control: intended 12500 minor, Billing and Analytics observed 1250000; REJECT |
-| T03 correct scoped transition | BLOCKED | S0-S5 financial control passed; full R6-R8 and real agent path unproven |
+| T03 correct scoped transition | BLOCKED | S0-S5 financial control passed; agent repair and controlled CI R6-R8 now pass separately; full deployment-bound dispatcher acceptance remains blocked |
 | T04 excessive patch | NOT_RUN | Unit path/evaluator edit rejection only |
 | T05 wrong routing | PASS | Live missing binding detected; outbox retry after restoring route |
 | T06 rare consumer absent from trace | NOT_RUN | Static scanner exercise only |
@@ -46,7 +46,7 @@ Additional live controls: baseline, SELECT-only verifier privileges, wrong migra
 ## Concrete blockers and next authorized actions
 
 1. Establish trusted runner-to-guest access. The read-only workflow supports an existing matched encrypted recovery key and `CLOUDRU_LAB_SSH_KNOWN_HOSTS`; it does not auto-accept a newly observed host key. Network reachability also needs qualification. Do not rerun VM replacement recovery or alter cloud-init expecting replay. Once accessible, run `host_inventory.py`, measure free RAM/disk/runtime/ports/workloads, then issue FIT/DOES_NOT_FIT before deployment.
-2. Foundation Models API access is now qualified. Keep `CLOUDRU_FOUNDATION_API_KEY` and `CLOUDRU_LLM_MODEL` in Actions and next run the actual bounded agent scenario. Keep secrets in Actions; no private key/password in chat is required. Workflow-key 403 is a verified access failure, not proof that Foundation Models is unavailable to the account.
+2. Foundation Models API access is now qualified. The bounded real-agent CI scenario now passes; see the agent CI report. The workflow pins the verified model when the repository variable is absent. Keep secrets in Actions; no private key/password in chat is required. Workflow-key 403 is a verified access failure, not proof that Foundation Models is unavailable to the account.
 3. Complete T01/T04/T06-T10/T13-T14/T17-T19 with actual product decisions, scoped effects and recovery. Retain their current status until evidence exists. Current repair generation supports one SQL migration file; broader related service patches and automatic live-source collection are future work.
 4. Deliver a reviewed exact commit/image ID to a qualified existing VM using the authenticated channel. Existing core startup is authorized after resource/identity validation, but startup alone does not deliver code. No core start was performed while delivery is blocked. Resource recreation, new paid resources and capacity increases remain outside this implementation.
 5. Test persisted data across component restart and operator restore, then run a real model's discovery/repair, independent verification and granted transition. Compare ordinary engineering, a strong agent and the module only with actual participants/runs under `evaluator/protocol.json`.
@@ -57,4 +57,4 @@ CLI/controller-driven services, one host, no public UI, no production daemon sup
 
 The initial specification accepts integer rubles only; the uploaded 123.45 RUB example conflicts with that coexistence profile. The implementation rejects fractional rubles while v1 survives. No rounding, legacy retirement or arbitrary change to the research protocol was introduced. Kafka remains unimplemented with separate adapter requirements in `README.md`.
 
-No Cloud.ru resources were created, replaced, resized or started in this work. Main, the managed demo and frozen research artifacts were not changed. Three-mode labor/cost comparison, model costs and infrastructure cost are NOT_MEASURED. Real external notifications were not sent.
+No VMs were created, replaced, resized or started. Earlier SSH qualification created and removed one temporary runner-only security-group rule; this agent CI phase made no cloud infrastructure changes. Main, the managed demo and frozen research artifacts were not changed. Three-mode labor/cost comparison, model costs and infrastructure cost are NOT_MEASURED. Real external notifications were not sent.
