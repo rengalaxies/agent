@@ -1,4 +1,5 @@
 """Internal bounded SQL transition runner; no production or GitHub effects."""
+from .bounded_verification import bounded_verify
 from datetime import datetime, timezone
 import difflib
 import json
@@ -69,7 +70,7 @@ def _granted(spec, policy, actor, component, action, at):
 def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
                    fixture_loader: Callable[[str], bytes], policy_loader: Callable[[], TrustPolicy],
                    store: RunStore, *, actor: str, provider: PatchProvider | None = None,
-                   clock: Callable[[], datetime] = utc_now) -> dict:
+                   clock: Callable[[], datetime] = utc_now, retry_of: str | None = None, retry_key: str | None = None) -> dict:
     """Capture exact approved bytes, prepare, execute and persist a review package.
 
     Roots, clock, policy_loader, fixture_loader and provider are deployment-owned.
@@ -166,8 +167,19 @@ def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
                                           "snapshot": {k: digest_bytes(v) for k, v in captured.items()},
                                           "inventory": discovery,
                                           "fixtures": {k: digest_bytes(v) for k, v in fixture_bytes.items()}}))
+        if retry_of is not None or retry_key is not None:
+            require(bool(retry_of) and type(retry_key) is str and 8 <= len(retry_key) <= 128, "invalid_retry_request")
+            prior = store.get(retry_of)
+            require(prior["transition_id"] == spec.transition_id, "retry_transition_mismatch")
+            require(prior["status"] in ("STOP", "FAIL"), "retry_requires_terminal_failure")
+            require(prior["result"].get("context_sha256") == context_digest(spec), "retry_context_mismatch")
+            fingerprint = digest_bytes(encode({"base": fingerprint, "retry_of": retry_of, "retry_key": retry_key}))
         claimed = store.claim(spec.transition_id, fingerprint)
         run_id = claimed["run_id"]
+        if claimed["claimed"]:
+            store.append(run_id, "CONTEXT", {"context_sha256": context_digest(spec)})
+        if claimed["claimed"] and retry_of:
+            store.append(run_id, "OPERATOR_RETRY", {"retry_of": retry_of, "retry_key": retry_key})
         if not claimed["claimed"]:
             previous = store.get(run_id)
             if previous["status"] == "RUNNING":
@@ -182,7 +194,7 @@ def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
                 require(all(digest_bytes(p["candidate"].encode()) == p["sha256"] for p in saved.values()), "cached_candidate_digest_mismatch")
                 candidate = ContentRef(uri="runtime://"+run_id+"/candidate", sha256=digest_bytes(encode(saved)))
                 require(candidate.sha256 == result.get("candidate_sha256"), "cached_bundle_digest_mismatch")
-                fresh = verify_observations(spec, candidate, suite_bytes, encode(result["observations"]), policy_loader(), at=clock(), actor=actor)
+                fresh = bounded_verify(spec, candidate, suite_bytes, encode(result["observations"]), policy_loader(), at=clock(), actor=actor)
                 require(fresh.status == "PASS", "cached_verification_no_longer_valid")
                 require(all(_granted(spec, policy_loader(), actor, t.component_id, Action.EXPORT, clock()) for t in intent.targets), "cached_export_authority_unavailable")
                 result = {**result, "verification": fresh.model_dump(mode="json"), "revalidated_at": clock().isoformat()}
@@ -232,7 +244,7 @@ def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
                                     "context_sha256": context_digest(spec), "candidate_sha256": candidate.sha256,
                                     "suite_sha256": suite_hash, "candidate_created_at": created.isoformat(),
                                     "captured_at": captured_at.isoformat(), "cases": observations})
-        report = verify_observations(spec, candidate, suite_bytes, observation_bytes, policy_loader(), at=clock(), actor=actor)
+        report = bounded_verify(spec, candidate, suite_bytes, observation_bytes, policy_loader(), at=clock(), actor=actor)
         result.update(candidate_sha256=candidate.sha256, receipts=receipts,
                       verification=report.model_dump(mode="json"))
         store.append(run_id, "VERIFIED", {"status": report.status, "observations_sha256": digest_bytes(observation_bytes)})
@@ -241,7 +253,7 @@ def run_transition(repository: Path, spec: TransitionSpec, suite_bytes: bytes,
         require(discover_repository(repository) == discovery, "repository_inventory_changed_during_run")
         for target in intent.targets:
             require(_granted(spec, policy_loader(), actor, target.component_id, Action.EXPORT, clock()), "export_authority_revoked")
-        fresh = verify_observations(spec, candidate, suite_bytes, observation_bytes, policy_loader(), at=clock(), actor=actor)
+        fresh = bounded_verify(spec, candidate, suite_bytes, observation_bytes, policy_loader(), at=clock(), actor=actor)
         require(fresh.status == report.status, "verification_authority_or_time_changed")
         result["status"] = "READY_FOR_REVIEW" if report.status == "PASS" else report.status
         result["reason_codes"] = [] if report.status == "PASS" else ["verification_"+report.status.lower()]

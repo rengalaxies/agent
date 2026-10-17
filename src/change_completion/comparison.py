@@ -7,6 +7,7 @@ Dataclasses are transport objects; constructors do not validate. The comparison
 entry point validates both sides before examining values.
 """
 
+from collections import Counter
 from dataclasses import dataclass
 from decimal import Decimal
 from fractions import Fraction
@@ -19,6 +20,9 @@ MAX_COLUMNS = 128
 MAX_NUMERIC_DIGITS = 1000
 MAX_DECIMAL_EXPONENT = 1000
 MAX_TEXT_LENGTH = 16_384
+# Deterministic work ceiling for ambiguous tolerance matching. This is a
+# conservative operation budget, not a platform-dependent wall-clock timeout.
+MAX_COMPARISON_OPERATIONS = 250_000
 _KINDS = {"int", "float", "decimal", "str", "bool"}
 _NUMERIC = {"int", "float", "decimal"}
 
@@ -127,6 +131,8 @@ def compare_tables(expected: Table, actual: Table, *, ordered: bool = False,
     magnitude 1000 and 16384 characters per text cell are accepted. Unordered
     comparison uses a perfect bipartite matching, preserving multiplicity even
     when tolerance intervals overlap. Relative tolerance uses expected values.
+    Ambiguous tolerant matching has a deterministic weighted operation ceiling;
+    exceeding it returns STOP, never a potentially incorrect PASS or FAIL.
     """
     if type(ordered) is not bool or type(numeric_equivalence) is not bool:
         return Comparison("STOP", ("INVALID_OPTIONS",))
@@ -148,30 +154,80 @@ def compare_tables(expected: Table, actual: Table, *, ordered: bool = False,
     if len(expected.rows) != len(actual.rows):
         return Comparison("FAIL", ("ROW_COUNT_MISMATCH",))
 
-    def matches(left: Sequence[object], right: Sequence[object]) -> bool:
-        for column, a, b in zip(expected.columns, left, right):
+    # Normalize each numeric value once, outside the O(rows**2) matching loop.
+    # Schema validation preserves strict type checking; rational canonicalization
+    # additionally supports explicitly requested cross-numeric equivalence.
+    def normalize(table: Table) -> list[tuple[object, ...]]:
+        return [tuple(_number(value) if value is not None and column.kind in _NUMERIC
+                      else value for column, value in zip(table.columns, row))
+                for row in table.rows]
+
+    wanted_rows, actual_rows = normalize(expected), normalize(actual)
+    policies = [(_number(c.abs_tol), _number(c.rel_tol)) for c in expected.columns]
+    has_tolerance = any(absolute or relative for absolute, relative in policies)
+
+    # No pairwise matching is needed for exact multisets. Schema validation has
+    # already rejected bool/int or other incompatible kinds, including NULLs.
+    # Counter preserves duplicates and Fraction never rounds decimal/float data.
+    if not has_tolerance:
+        passed = (wanted_rows == actual_rows if ordered
+                  else Counter(wanted_rows) == Counter(actual_rows))
+        return Comparison("PASS" if passed else "FAIL",
+                          () if passed else ("ROW_VALUES_MISMATCH",))
+
+    # An exact match is also sufficient when tolerances are enabled. This keeps
+    # ordinary equal large tables fast without weakening approximate matching.
+    if (wanted_rows == actual_rows if ordered
+            else Counter(wanted_rows) == Counter(actual_rows)):
+        return Comparison("PASS", ())
+
+    tolerances = [tuple(max(absolute, relative * abs(value))
+                        if value is not None and column.kind in _NUMERIC else None
+                        for column, value, (absolute, relative)
+                        in zip(expected.columns, row, policies))
+                  for row in wanted_rows]
+    # Account conservatively for large rational arithmetic as well as cell
+    # comparisons. Reject the entire approximate job before building its graph.
+    numeric_weight = 1
+    for rows in (wanted_rows, actual_rows, tolerances):
+        for row in rows:
+            for value in row:
+                if type(value) is Fraction:
+                    numeric_weight = max(numeric_weight, (
+                        value.numerator.bit_length() + value.denominator.bit_length()
+                        + 255) // 256)
+    row_pairs = len(wanted_rows) if ordered else len(wanted_rows) * len(actual_rows)
+    projected = row_pairs * len(expected.columns) * numeric_weight
+    if projected > MAX_COMPARISON_OPERATIONS:
+        return Comparison("STOP", ("COMPARISON_WORK_LIMIT",))
+
+    def matches(i: int, right: tuple[object, ...]) -> bool:
+        for column, a, b, tolerance in zip(
+                expected.columns, wanted_rows[i], right, tolerances[i]):
             if a is None or b is None:
                 if a is not None or b is not None:
                     return False
             elif column.kind in _NUMERIC:
-                x, y = _number(a), _number(b)
-                tolerance = max(_number(column.abs_tol),
-                                _number(column.rel_tol) * abs(x))
-                if abs(x - y) > tolerance:
+                if a != b and abs(a - b) > tolerance:
                     return False
-            elif type(a) is not type(b) or a != b:
+            elif a != b:
                 return False
         return True
 
     if ordered:
-        passed = all(matches(a, b) for a, b in zip(expected.rows, actual.rows))
+        passed = all(matches(i, row) for i, row in enumerate(actual_rows))
     else:
-        edges = [[j for j, row in enumerate(actual.rows) if matches(wanted, row)]
-                 for wanted in expected.rows]
+        edges = [[j for j, row in enumerate(actual_rows) if matches(i, row)]
+                 for i in range(len(wanted_rows))]
         assigned: dict[int, int] = {}
+        remaining = MAX_COMPARISON_OPERATIONS - projected
 
         def augment(i: int, seen: set[int]) -> bool:
+            nonlocal remaining
             for j in edges[i]:
+                remaining -= 1
+                if remaining < 0:
+                    raise _ValueLimit("matching operation budget")
                 if j in seen:
                     continue
                 seen.add(j)
@@ -180,6 +236,9 @@ def compare_tables(expected: Table, actual: Table, *, ordered: bool = False,
                     return True
             return False
 
-        passed = all(augment(i, set()) for i in range(len(expected.rows)))
+        try:
+            passed = all(augment(i, set()) for i in range(len(wanted_rows)))
+        except _ValueLimit:
+            return Comparison("STOP", ("COMPARISON_WORK_LIMIT",))
     return Comparison("PASS" if passed else "FAIL",
                       () if passed else ("ROW_VALUES_MISMATCH",))

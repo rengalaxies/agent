@@ -32,14 +32,23 @@ def main(argv=None):
     run = subs.add_parser("run")
     for key in ("repository", "transition", "expectations", "fixtures", "trust", "state", "actor"):
         run.add_argument("--"+key, required=True)
+    run.add_argument("--retry-of", help="Failed run retained as immutable parent")
+    run.add_argument("--retry-key", help="Operator idempotency key for this explicit attempt")
     run.add_argument("--provider-config", help="Explicit operator-owned HTTP gateway configuration")
     run.add_argument("--at", help="Synthetic demo clock only; not for production authorization")
     history = subs.add_parser("history")
     history.add_argument("--state", required=True)
     history.add_argument("--run-id", required=True)
+    recover = subs.add_parser("reconcile")
+    for key in ("state", "run-id", "actor", "reason"):
+        recover.add_argument("--"+key, required=True)
+    recover.add_argument("--worker-stopped", action="store_true")
     args = parser.parse_args(argv)
     try:
         state = operator_path(args.state)
+        if args.command == "reconcile":
+            print(json.dumps(RunStore(state / "runs.sqlite3").reconcile_interrupted(args.run_id, actor=args.actor, reason=args.reason, worker_stopped=args.worker_stopped)))
+            return 0
         if args.command == "history":
             if not (state / "runs.sqlite3").is_file():
                 raise KeyError("unknown_state")
@@ -79,7 +88,7 @@ def main(argv=None):
             kwargs["clock"] = lambda: at
         result = run_transition(repository, spec, suite,
                                 lambda uri: read_repository_file(fixture_root, uri), policy_loader,
-                                RunStore(state / "runs.sqlite3"), actor=args.actor, provider=provider, **kwargs)
+                                RunStore(state / "runs.sqlite3"), actor=args.actor, provider=provider, retry_of=args.retry_of, retry_key=args.retry_key, **kwargs)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return {"READY_FOR_REVIEW": 0, "FAIL": 1, "STOP": 2}[result["status"]]
     except (OSError, ValueError, TypeError, KeyError, RuntimeError):

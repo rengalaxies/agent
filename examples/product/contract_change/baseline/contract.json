@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "amount": {
+      "type": "integer",
+      "unit": "rub"
+    },
+    "customer_id": {
+      "type": "integer",
+      "unit": "count"
+    }
+  }
+}

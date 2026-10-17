@@ -36,7 +36,7 @@ class RunCLITest(unittest.TestCase):
             code, history = self.call(["history", "--state", state, "--run-id", first["run_id"]])
             self.assertEqual(code, 0)
             self.assertEqual(history["status"], "READY_FOR_REVIEW")
-            self.assertEqual([e["kind"] for e in history["events"]], ["CLAIMED", "DISCOVERED", "PREPARED", "VERIFIED", "FINISHED"])
+            self.assertEqual([e["kind"] for e in history["events"]], ["CLAIMED", "CONTEXT", "DISCOVERED", "PREPARED", "VERIFIED", "FINISHED"])
 
     def test_state_inside_checkout_rejected(self):
         code, report = self.call(self.args(ROOT / "repository/private-state"))

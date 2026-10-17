@@ -149,6 +149,24 @@ class RunStore:
             connection.execute("UPDATE runs SET status=?,result=?,finished_at=? WHERE run_id=?", (status, encoded, _timestamp(), run_id))
             self._event(connection, run_id, "FINISHED", _json({"status": status}))
 
+    def reconcile_interrupted(self, run_id, *, actor, reason, worker_stopped=False):
+        """Explicit operator assertion, never a timeout-based automatic reclaim."""
+        if worker_stopped is not True or not actor or not reason or len(reason) > 1000:
+            raise ValueError("confirmed stopped worker, actor and reason required")
+        with self._connection() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            row = connection.execute("SELECT status,transition_id FROM runs WHERE run_id=?", (run_id,)).fetchone()
+            if row is None: raise KeyError(run_id)
+            if row["status"] != "RUNNING": raise ValueError("only interrupted running attempt")
+            context = connection.execute("SELECT payload FROM events WHERE run_id=? AND kind='CONTEXT' ORDER BY sequence LIMIT 1", (run_id,)).fetchone()
+            if context is None: raise ValueError("legacy attempt lacks recorded context")
+            result = {"run_id": run_id, "status": "STOP", "context_sha256": json.loads(context[0])["context_sha256"],
+                      "reason_codes": ["operator_reconciled_interruption"], "effects_authorized": False}
+            connection.execute("UPDATE runs SET status='STOP',result=?,finished_at=? WHERE run_id=?", (_json(result), _timestamp(), run_id))
+            self._event(connection, run_id, "OPERATOR_RECONCILED", _json({"actor": actor, "reason": reason}))
+            self._event(connection, run_id, "FINISHED", _json({"status": "STOP"}))
+        return result
+
     def get(self, run_id: str) -> dict:
         with self._connection() as connection:
             connection.execute("BEGIN")

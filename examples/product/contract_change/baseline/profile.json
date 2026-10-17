@@ -1,0 +1,16 @@
+{
+  "profile": "contract-python-sql/1",
+  "contract": "contract.json",
+  "consumers": [
+    {
+      "id": "finance",
+      "python": "finance.py",
+      "sql": "finance.sql"
+    },
+    {
+      "id": "audit",
+      "python": "audit.py",
+      "sql": "audit.sql"
+    }
+  ]
+}

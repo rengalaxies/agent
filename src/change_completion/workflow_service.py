@@ -1,8 +1,10 @@
 """Authenticated callers coordinate review/delivery; never execute from a GET."""
+from .bounded_verification import bounded_verify
 from dataclasses import dataclass
 from pathlib import Path
 
 from .adapters import discover_repository, read_repository_file
+from .action_policy import ActionRequest, Mandate, evaluate_action
 from .delivery import DeliveryConfig, GatewayDelivery
 from .models import Action, ContentRef, TransitionSpec
 from .runtime import _granted, authority_digest, encode, runtime_revision, utc_now
@@ -78,7 +80,7 @@ class WorkflowService:
             candidate = ContentRef(uri="runtime://"+row["run_id"]+"/candidate", sha256=digest_bytes(encode(patches)))
             if candidate.sha256 != result["candidate_sha256"]:
                 return False, "candidate_bundle_changed"
-            report = verify_observations(spec, candidate, suite_bytes, encode(result["observations"]), policy,
+            report = bounded_verify(spec, candidate, suite_bytes, encode(result["observations"]), policy,
                                          at=now, actor=self.worker_actor)
             if report.status != "PASS":
                 return False, "verification_expired_or_revoked"
@@ -167,6 +169,19 @@ class WorkflowService:
         self.workflows.reopen(run_id, package_digest)
         return self.view(run_id, principal)
 
+    def _authorize_delivery_action(self, spec, principal, action, scope):
+        # Both policy and grants are operator-owned current state, never candidate text.
+        now, policy = self.clock(), self.policy_loader()
+        decision = evaluate_action(spec, ActionRequest(
+            actor=principal.actor, action=action, component_ids=frozenset(scope),
+            environment=spec.environment, context_sha256=context_digest(spec),
+            at=now, evidence_current=True), Mandate(
+                grants=tuple(policy.grants),
+                trusted_issuers=frozenset(g.issued_by for g in policy.grants),
+                revoked_grant_ids=policy.revoked_grant_ids))
+        if not decision.allowed:
+            raise PermissionError("delivery policy denied: " + ",".join(decision.reason_codes))
+
     def deliver(self, run_id, principal, kind, *, send=False):
         row, spec = self._load(run_id, principal, "send_delivery" if send else "prepare_delivery")
         current = self.view(run_id, principal)
@@ -203,6 +218,7 @@ class WorkflowService:
         now, policy = self.clock(), self.policy_loader()
         if not all(_granted(spec, policy, principal.actor, c, action, now) for c in scope):
             raise PermissionError("delivery authority unavailable")
+        self._authorize_delivery_action(spec, principal, action, scope)
         if queued["status"] == "DELIVERED":
             return {"status": "delivered", "key": key, "receipt": queued["receipt"], "reused": True}
         if queued["status"] != "PENDING":
@@ -212,6 +228,7 @@ class WorkflowService:
             raise ValueError("package invalidated before send")
         if not all(_granted(spec, self.policy_loader(), principal.actor, c, action, self.clock()) for c in scope):
             raise PermissionError("delivery authority revoked")
+        self._authorize_delivery_action(spec, principal, action, scope)
         self.workflows.claim_delivery(key)
         outcome = self.gateway.send("pull_request" if kind == "pr" else "notification", payload, key)
         if outcome["status"] == "delivered":

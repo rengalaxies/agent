@@ -64,6 +64,25 @@ class WorkflowAPITest(unittest.TestCase):
         self.client = TestClient(self.app)
         self.path = "/api/runs/"+self.run_id
 
+    def test_c3_proposal_does_not_require_production_approval(self):
+        # An approved high-risk scope can request review without granting a deploy.
+        data = self.lab.spec.model_dump(mode="json")
+        data["criticality"] = 3
+        data["critical_risks"] = ["financial calculation"]
+        self.lab.spec = TransitionSpec.model_validate(data)
+        suite = json.loads(self.lab.suite)
+        suite["context_sha256"] = context_digest(self.lab.spec)
+        self.lab.suite = encode(suite)
+        old = self.lab.policy
+        self.lab.policy = TrustPolicy(frozenset({digest_bytes(self.lab.suite)}), old.approved_owners,
+                                      old.grants, old.revoked_grant_ids, old.minimum_cases)
+        run = self.lab.run_case()
+        self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+        outcome = self.service.deliver(run["run_id"], self.principals["publisher"], "pr", send=True)
+        self.assertEqual(outcome["status"], "delivered")
+        self.assertEqual(len(self.gateway.calls), 1)
+        self.assertEqual(self.workflows.get(run["run_id"])["status"], "PENDING")
+
     def headers(self, actor="publisher"):
         return {"Authorization": "Bearer test-token-"+actor}
 

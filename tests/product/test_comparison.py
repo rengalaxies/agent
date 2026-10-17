@@ -1,7 +1,10 @@
 import unittest
+from time import perf_counter
+from unittest.mock import patch
 from decimal import Decimal
 
 from change_completion.comparison import Column, Table, compare_tables, MAX_ROWS
+import change_completion.comparison as comparator
 
 
 def table(kind, values, **policy):
@@ -97,6 +100,55 @@ class ComparisonTests(unittest.TestCase):
         huge_tolerance = table("int", [1], abs_tol=Decimal("1e999999999"))
         self.assertEqual(compare_tables(huge_tolerance, table("int", [1])).reason_codes,
                          ("EXPECTED_TOLERANCE_LIMIT",))
+
+    def test_large_exact_multiset_keeps_precision_and_finishes_quickly(self):
+        columns = [Column(str(i), "decimal") for i in range(128)]
+        rows = [[Decimal(i * 1000 + j) / 100 for j in range(128)]
+                for i in range(200)]
+        expected = Table(columns, rows)
+        actual = Table(columns, list(reversed(rows)))
+        started = perf_counter()
+        self.assertEqual(compare_tables(expected, actual).status, "PASS")
+        # Deliberately generous regression boundary, old implementation >80 s.
+        self.assertLess(perf_counter() - started, 5.0)
+        changed = [list(row) for row in actual.rows]
+        changed[-1][-1] += Decimal("0.00000000000001")
+        self.assertEqual(compare_tables(expected, Table(columns, changed)).status, "FAIL")
+
+    def test_wide_tolerant_job_stops_before_pairwise_matching(self):
+        columns = [Column(str(i), "int", abs_tol=1) for i in range(128)]
+        rows = [[i for _ in range(128)] for i in range(200)]
+        changed = [[i + 1 for _ in range(128)] for i in range(200)]
+        self.assertEqual(compare_tables(Table(columns, rows), Table(columns, changed)),
+                         comparator.Comparison("STOP", ("COMPARISON_WORK_LIMIT",)))
+        # Exact equality remains cheap even under a permissive contract.
+        self.assertEqual(compare_tables(Table(columns, rows),
+                                        Table(columns, list(reversed(rows)))).status, "PASS")
+
+    def test_matching_search_budget_stops_dense_ambiguity(self):
+        expected = table("int", list(range(200)), abs_tol=10000)
+        actual = table("int", list(range(1000, 1200)))
+        self.assertEqual(compare_tables(expected, actual).reason_codes,
+                         ("COMPARISON_WORK_LIMIT",))
+
+    def test_numbers_are_not_reparsed_for_each_candidate(self):
+        expected = table("decimal", [Decimal(i) for i in range(40)], abs_tol=Decimal("0.1"))
+        actual = table("decimal", [Decimal(i) + Decimal("0.05") for i in range(40)])
+        with patch.object(comparator, "_number", wraps=comparator._number) as number:
+            self.assertEqual(compare_tables(expected, actual).status, "PASS")
+            self.assertLess(number.call_count, 200)
+
+    def test_large_numeric_approximation_charges_bit_complexity(self):
+        expected = table("int", [10 ** 900 + i for i in range(200)], abs_tol=1)
+        actual = table("int", [10 ** 900 + i + 1 for i in range(200)])
+        self.assertEqual(compare_tables(expected, actual).reason_codes,
+                         ("COMPARISON_WORK_LIMIT",))
+
+    def test_ordered_tolerance_avoids_quadratic_cost(self):
+        columns = [Column(str(i), "int", abs_tol=1) for i in range(128)]
+        expected = Table(columns, [[i] * 128 for i in range(200)])
+        actual = Table(columns, [[i + 1] * 128 for i in range(200)])
+        self.assertEqual(compare_tables(expected, actual, ordered=True).status, "PASS")
 
 
 if __name__ == "__main__":

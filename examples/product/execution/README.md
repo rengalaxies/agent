@@ -63,3 +63,8 @@ The worker runs trusted Python with `-I -S`, cleared environment, closed inherit
 This is **not a general OS sandbox for arbitrary code**. Runtime image/dependency hardening and an installation threat assessment remain necessary for a client deployment. Limits include a 2-second worker wall timeout, 256 MiB address space, SQL instruction budget, bounded inputs/output and result rows. The overall 60-second budget is checked between bounded operations; it is not a separate supervisor that kills every parent operation at exactly 60 seconds.
 
 Empty/all-NULL output columns, ambiguous predicates, complex unsupported dependency syntax and unsupported profiles yield STOP. Discovery is static and local. No auto-merge, GitHub PR publication, notification, production switch or legacy retirement is implemented. Human review is required; `READY_FOR_REVIEW` never means deployed or accepted.
+
+
+### Бюджет сравнения после повторного аудита
+
+Точное сравнение строк использует канонический multiset с сохранением точности и количества повторов. Для сложных сравнений с допусками действует отдельный лимит вычислительной работы; превышение возвращает STOP/COMPARISON_WORK_LIMIT, не PASS и не доказательство неверности результата. Крупный неоднозначный случай нужно разбить либо квалифицировать другой verifier. Это operation budget, не универсальная OS-песочница или жесткий wall timeout процесса.
