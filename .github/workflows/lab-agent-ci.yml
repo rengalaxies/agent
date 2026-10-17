@@ -36,7 +36,7 @@ jobs:
       - name: One real agent attempt and independent fresh verifier
         env:
           CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
-          CLOUDRU_LLM_MODEL: ${{ vars.CLOUDRU_LLM_MODEL }}
+          CLOUDRU_LLM_MODEL: ${{ vars.CLOUDRU_LLM_MODEL || 'openai/gpt-oss-120b' }}
         run: python3 -m lab.evaluator.agent_ci
       - uses: actions/upload-artifact@v4
         if: always()
