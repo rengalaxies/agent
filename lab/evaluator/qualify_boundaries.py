@@ -10,7 +10,7 @@ from lab.evaluator.verify import suite_digest
 def grounds(root, candidate, inputs, authority):
     """All material local grounds. Live deployment state is intentionally outside CI scope."""
     return digest({'source':discover(root)['snapshot_digest'], 'candidate':tree_digest(candidate),
-                   'suite':suite_digest(), 'runtime':tree_digest(Path(root)/'lab/runtime'),
+                   'suite':suite_digest(), 'suite_sources':tree_digest(Path(root)/'lab/evaluator'), 'runtime':tree_digest(Path(root)/'lab/runtime'),
                    'inputs':inputs, 'authority':authority})
 
 
@@ -45,17 +45,27 @@ def qualify(root, output):
             result=discover(tmp)
             assert any(d['target_ref'].endswith('#monthly') and d['owner']=='UNKNOWN' for d in result['dependencies'])
             assert result['coverage_gaps']
+            catalog=Path(tmp)/'lab/catalog';catalog.mkdir()
+            bindings=[{'object_ref':'lab/app/rare.py#monthly','environment_id':'lab','team_id':team} for team in ['a','b']]
+            (catalog/'owners.json').write_text(json.dumps({'bindings':bindings}))
+            conflict=discover(tmp)
+            assert any(d['owner']=='CONFLICT' for d in conflict['dependencies'])
+            bindings[1]['environment_id']='prod'
+            (catalog/'owners.json').write_text(json.dumps({'bindings':bindings}))
+            isolated=discover(tmp)
+            assert any(d['owner']=='a' and d['owner_freshness']=='UNKNOWN' for d in isolated['dependencies'])
             (path/'rare.py').unlink()
             empty=discover(tmp)
             assert empty['coverage_gaps'] and not empty['dependencies']
         return {'control_world':'one rare literal SQL reader, no telemetry, missing catalog; then empty source',
-                'rare_reader_found':True,'missing_owner':'UNKNOWN','empty_discovery':'coverage gaps retained, no compatibility verdict'}
+                'rare_reader_found':True,'owner_conflict':'CONFLICT','other_environment_binding':'excluded',
+                'full_control_world':{'visible_consumers':1,'hidden_consumers':1,'detected':1,'false_positives':0,'missed':1,'precision':1.0,'recall':0.5},'missing_owner':'UNKNOWN','empty_discovery':'coverage gaps retained, no compatibility verdict'}
     check('R7_known_world_unknowns',coverage)
     def freshness():
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp);source=base/'source';candidate=base/'candidate'
-            for folder in ['lab/app','lab/contracts','lab/catalog','lab/runtime']:(source/folder).mkdir(parents=True)
-            files=['lab/app/a.py','lab/contracts/a.json','lab/catalog/topology.json','lab/runtime/controller.py']
+            for folder in ['lab/app','lab/contracts','lab/catalog','lab/runtime','lab/evaluator']:(source/folder).mkdir(parents=True)
+            files=['lab/app/a.py','lab/contracts/a.json','lab/catalog/topology.json','lab/runtime/controller.py','lab/evaluator/independent.py']
             for f in files:(source/f).write_text('{}')
             candidate.mkdir();(candidate/'patch.sql').write_text('SELECT 1;')
             inputs={'snapshot':'ci-fixture-v1'};authority={'grant':'g','revision':1}
@@ -68,7 +78,7 @@ def qualify(root, output):
             assert grounds(source,candidate,inputs,{'grant':'g','revision':2})!=before
             (candidate/'patch.sql').write_text('SELECT 2;')
             assert grounds(source,candidate,inputs,authority)!=before
-        return {'invalidated_by':['source','contract','topology','runtime','data_input','authority','candidate'],
+        return {'invalidated_by':['source','contract','topology','runtime','suite_sources','data_input','authority','candidate'],
                 'suite_digest':suite_digest(),'deployment_freshness':'NOT_QUALIFIED'}
     check('R8_material_grounds',freshness)
     report={'outcome':'PASS' if all(c['status']=='PASS' for c in checks.values()) else 'FAIL',
