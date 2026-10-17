@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import sys
 from lab.app import service
-from lab.runtime.core import Stop, tree_digest
+from lab.runtime.core import Stop, tree_digest, json_exact
 from lab.runtime.dispatch import _perform_transition, reconcile_unknown
 
 JOURNAL=Path('/evidence/journal')
@@ -60,4 +60,4 @@ def main(mode):
         return result
     raise ValueError('unsupported fixture mode')
 
-if __name__=='__main__':print(json.dumps(main(sys.argv[1]),default=str,sort_keys=True))
+if __name__=='__main__':print(json.dumps(main(sys.argv[1]),default=json_exact,sort_keys=True))

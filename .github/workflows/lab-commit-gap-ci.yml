@@ -1,4 +1,5 @@
 name: Lab S1 committed step lost controller confirmation
+# Keep timestamp serialization identical to persisted audit evidence.
 on:
   push:
     branches: [feat/postgres-rabbitmq-agent-lab]
