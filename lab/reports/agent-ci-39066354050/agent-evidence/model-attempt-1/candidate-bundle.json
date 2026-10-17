@@ -1,0 +1,18 @@
+{
+  "candidate_digest": "a081c040cd28746c93eb661c851dc6ca98c382f56d5ab315f8ace2978c1755e1",
+  "patches": [
+    {
+      "path": "lab/sql/expand.sql",
+      "before_digest": "2ae6a260b5cd727631047097febdbdf4577c94e3affe1e0c090c37cdf10de53c",
+      "source_before_digest": "2162cb8603f397020106077af6c5d1a3e2adfc807d0dd7e67a112649659fafa2",
+      "after_digest": "1c5dfcee98dd888e82b224163e79b9c7db5c2f65bb592e852a22241af616ee2f"
+    }
+  ],
+  "repair_baseline": "submitted_files",
+  "transition_plan": [],
+  "assumptions": [
+    "The rest of expand.sql (column addition, NOT NULL alteration, and constraint creation) is correct and requires no changes.",
+    "Multiplying amount_rub by 100 never exceeds PostgreSQL bigint limits because amount_rub is bounded by 92233720368547758 per source schema."
+  ],
+  "context_digest": "b910bff1b2f37659cfe4a925c6a17369ddf0cd0b817c8b7dda0c3888b79996a7"
+}

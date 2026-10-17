@@ -1,0 +1,46 @@
+{
+  "id": "chatcmpl-87a1a328-586f-484a-abb4-740d833c594a",
+  "object": "chat.completion",
+  "created": 1792268545,
+  "model": "openai/gpt-oss-120b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"patches\": [\n    {\n      \"path\": \"lab/sql/expand.sql\",\n      \"content\": \"ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\\nUPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\\nDO $$ BEGIN\\n IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\\n  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK(amount_minor >= 0 AND amount_minor % 100 = 0 AND amount_minor / 100 = amount_rub);\\n END IF;\\nEND $$;\\n\"\n    }\n  ],\n  \"transition_plan\": [],\n  \"assumptions\": [\n    \"The rest of expand.sql (column addition, NOT NULL alteration, and constraint creation) is correct and requires no changes.\",\n    \"Multiplying amount_rub by 100 never exceeds PostgreSQL bigint limits because amount_rub is bounded by 92233720368547758 per source schema.\"\n  ]\n}",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need to produce a JSON patch fixing expand.sql. The current expand.sql sets amount_minor = amount_rub (incorrect). Need to set amount_minor = amount_rub * 100, using integer arithmetic, ensure no overflow beyond bigint. Also need to ensure backfill is idempotent: only rows where amount_minor IS NULL should be updated. Already condition. Also need to add check constraint already present. The patch should replace the UPDATE line.\n\nAlso need to consider that amount_rub is up to 92233720368547758, multiplied by 100 gives 9223372036854775800 which is within bigint max 9223372036854775807, safe. So we can just multiply.\n\nThus patch content: same file but corrected line.\n\nWe must output JSON with patches array containing path \"lab/sql/expand.sql\" and content with corrected SQL.\n\nAlso include transition_plan empty, assumptions maybe note that original file had incorrect backfill.\n\nAssumptions: The rest of file is correct; we only modify the UPDATE line.\n\nReturn JSON.\n\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.31.0-tp4-b69e9a4d",
+  "usage": {
+    "prompt_tokens": 9403,
+    "total_tokens": 9851,
+    "completion_tokens": 448,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "created_cache_tokens": 9392,
+      "multimodal_tokens": null
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 214
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}
