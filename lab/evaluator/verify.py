@@ -46,7 +46,7 @@ def verify(candidate_dir, scenario_id='T03'):
     """
     result = {'candidate_digest': candidate_digest(candidate_dir),
               'suite_digest': suite_digest(), 'scenario_id': scenario_id,
-              'outcome': 'INCOMPLETE', 'checks': [],
+              'outcome': 'INCOMPLETE', 'checks': [], 'accepted_properties': [],
               'coverage': 'candidate checks only; live business validation requires isolated suite',
               'uncovered': ['R6 grants', 'R7 discovery completeness',
                             'R8 freshness', 'component recovery']}
@@ -99,6 +99,7 @@ def verify(candidate_dir, scenario_id='T03'):
             actual=json.loads((evidence/'candidate.json').read_text())
             result['checks']=actual['checks']
             result['outcome']=actual['outcome']
+            result['accepted_properties']=['R1','R2','R3','R4','R5'] if actual['outcome']=='PASS' else []
             result['coverage']=actual['coverage']
             result['environment_manifest_digest']=hashlib.sha256((trusted_root/'lab/compose.yaml').read_bytes()).hexdigest()
             result['input_snapshot_digest']=hashlib.sha256((HERE/'expectations.json').read_bytes()).hexdigest()

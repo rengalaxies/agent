@@ -33,6 +33,8 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=(), aut
     verification = verify(candidate, 'T03')
     if verification.get('outcome') != 'PASS':
         raise Stop('Independent live candidate verification is incomplete or failed.')
+    if not set('R'+str(i) for i in range(1,9)).issubset(verification.get('accepted_properties', [])):
+        raise Stop('Financial-only PASS cannot authorize execution; independent R1-R8 acceptance required.')
     if tree_digest(candidate) != artifact:
         raise Stop('Artifact changed while checking.')
     def recheck():

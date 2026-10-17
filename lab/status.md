@@ -1,6 +1,6 @@
 # Actual lab status - 2026-10-17
 
-Overall: **NOT READY for the requested Cloud.ru + real-model internal demonstration**. Application controls have run on real PostgreSQL/RabbitMQ in GitHub Actions. No VM deployment or real agent repair is claimed.
+Overall: **NOT READY for the requested Cloud.ru + real-model internal demonstration**. Application controls have run on real PostgreSQL/RabbitMQ in GitHub Actions. No VM deployment or real agent repair is claimed. The dispatcher also blocks financial-only PASS until independent R1-R8 acceptance is implemented and qualified.
 
 ## Evidence
 

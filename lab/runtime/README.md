@@ -21,3 +21,5 @@ A verifier `INCOMPLETE` result blocks deployment. A dry-run or successful static
 Independent verification has its own fixed controller timeouts (build/start/test/cleanup), separate from model-call duration. Runtime execution is serial; no concurrent dispatcher calls are supported. `LAB_EXPAND_SQL` is cleared during dispatcher application and restored afterward so an inherited test override cannot replace the verified migration.
 
 The dispatcher requires a trusted `authority_loader()` callback returning the current operator grant and revoked IDs. It reloads authority and source/candidate/suite digests after lengthy verification and immediately before the effect. Missing authority, expiry, revocation or changed inputs deny execution. This callback is operator-controlled, never supplied by model output.
+
+Current live candidate verification accepts only financial R1-R5. The dispatcher requires independently accepted R1-R8 and therefore safely blocks automatic transition execution until the remaining properties are qualified. A finance-only PASS is usable as scoped evidence, not as execution authorization.
