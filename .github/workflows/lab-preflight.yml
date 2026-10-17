@@ -1,0 +1,46 @@
+name: Lab existing VM read-only preflight
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths:
+      - infra/cloudru/lab/preflight.py
+      - .github/workflows/lab-preflight.yml
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-lab-readonly-preflight
+  cancel-in-progress: false
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install state and API clients
+        run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3
+      - name: Read exact approved state and VM identities without mutation
+        env:
+          CLOUDRU_KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          CLOUDRU_SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          CLOUDRU_STATE_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          CLOUDRU_STATE_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          CLOUDRU_STATE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          CLOUDRU_SSH_PUBLIC_KEY: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          CLOUDRU_UI_BASIC_AUTH_HASH: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
+          CLOUDRU_WORKFLOW_API_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
+          CLOUDRU_LAB_SSH_PRIVATE_KEY: ${{ secrets.CLOUDRU_LAB_SSH_PRIVATE_KEY }}
+          CLOUDRU_LAB_SSH_KNOWN_HOSTS: ${{ secrets.CLOUDRU_LAB_SSH_KNOWN_HOSTS }}
+          LAB_LLM_BASE_URL: ${{ vars.LAB_LLM_BASE_URL }}
+          LAB_LLM_MODEL: ${{ vars.LAB_LLM_MODEL }}
+          CLOUDRU_LLM_API_KEY: ${{ secrets.CLOUDRU_LLM_API_KEY }}
+        run: python3 infra/cloudru/lab/preflight.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-readonly-preflight-${{ github.sha }}
+          path: lab-preflight.json
+          if-no-files-found: error
+          retention-days: 14
