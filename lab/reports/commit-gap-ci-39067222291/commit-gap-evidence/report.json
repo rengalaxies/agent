@@ -1,0 +1,87 @@
+{
+  "scenario": "T13_T14_S1_COMMIT_BEFORE_CONFIRM",
+  "outcome": "PASS",
+  "source_commit": "ce6fa97dde09e4bcea72b701d203430395d9e2d5",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39067222291",
+  "expectations_sha256": "778920a9d753715414090553a11520943ddc003d32ae9298f4c5ea18591880d2",
+  "compose_project": "dm-commit-gap-a4cab4bda66d",
+  "automatic_application": "BLOCKED",
+  "llm_calls": 0,
+  "vm_actions": [],
+  "processes": [
+    {
+      "mode": "prepare",
+      "service": "app",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "fault",
+      "service": "app",
+      "exit_code": 81,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "recover",
+      "service": "app",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "drain",
+      "service": "app",
+      "exit_code": 0,
+      "new_container_process": true
+    },
+    {
+      "mode": "readonly",
+      "service": "verifier",
+      "exit_code": 0,
+      "new_container_process": true
+    }
+  ],
+  "image_id": "sha256:6204dc4360cf807d855e8f483c402ddc590b402df72f3cb64d933250750b2f4f",
+  "recovery": {
+    "executed_actions": [],
+    "observed_state": "S1",
+    "reason": "S1_COMMITTED_WITHOUT_CONTROLLER_CONFIRMATION_REQUIRES_FRESH_OPERATOR_DECISION",
+    "retry": {
+      "reason": "Prior outcome unresolved; inspect actual snapshot and reconcile before a new grant.",
+      "state": "DENIED_BEFORE_EFFECT"
+    },
+    "state": "RECONCILED_COMMITTED_STOP"
+  },
+  "independent_checks": {
+    "normalized_money_total": 15200,
+    "orders_and_ledger": 5,
+    "transition_invocations": 1,
+    "actual_backfill_updates": 5,
+    "remaining_messages_delivered": 1,
+    "blind_retry": "DENIED_BEFORE_EFFECT",
+    "journal_matches_durable_state": true,
+    "journal_states": [
+      "INTENDED",
+      "RECONCILED_COMMITTED_STOP"
+    ]
+  },
+  "coverage": "one S1 post-commit controller crash and safe-stop reconciliation; no S4 broker partial-cutover recovery or general T13/T14 acceptance",
+  "cleanup": "PASS"
+}

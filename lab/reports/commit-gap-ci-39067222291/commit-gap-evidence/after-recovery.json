@@ -1,0 +1,215 @@
+{
+  "billing": {
+    "ledger": [
+      {
+        "amount_minor": 0,
+        "created_at": "2026-10-17T20:34:17.288869+00:00",
+        "currency": "RUB",
+        "order_id": "gap-0"
+      },
+      {
+        "amount_minor": 100,
+        "created_at": "2026-10-17T20:34:17.326817+00:00",
+        "currency": "RUB",
+        "order_id": "gap-1"
+      },
+      {
+        "amount_minor": 700,
+        "created_at": "2026-10-17T20:34:17.363327+00:00",
+        "currency": "RUB",
+        "order_id": "gap-2"
+      },
+      {
+        "amount_minor": 12500,
+        "created_at": "2026-10-17T20:34:17.433383+00:00",
+        "currency": "RUB",
+        "order_id": "gap-3"
+      }
+    ],
+    "processed_events": [
+      {
+        "event_id": "d4d06400-fd26-4745-bf3b-8aa99adfa301",
+        "order_id": "gap-0",
+        "processed_at": "2026-10-17T20:34:17.288869+00:00"
+      },
+      {
+        "event_id": "32d82829-09ab-4ef9-a495-a53fd58486a6",
+        "order_id": "gap-1",
+        "processed_at": "2026-10-17T20:34:17.326817+00:00"
+      },
+      {
+        "event_id": "3f3bf25b-a332-4dbd-9247-d9dc999b8674",
+        "order_id": "gap-2",
+        "processed_at": "2026-10-17T20:34:17.363327+00:00"
+      },
+      {
+        "event_id": "3f4a1ea8-80fe-45fc-8a07-25829a86aace",
+        "order_id": "gap-3",
+        "processed_at": "2026-10-17T20:34:17.433383+00:00"
+      }
+    ]
+  },
+  "instrumentation": {
+    "backfill_updates": [
+      {
+        "order_id": "gap-0"
+      },
+      {
+        "order_id": "gap-1"
+      },
+      {
+        "order_id": "gap-2"
+      },
+      {
+        "order_id": "gap-3"
+      },
+      {
+        "order_id": "gap-pending"
+      }
+    ],
+    "transition_invocations": 1
+  },
+  "source": {
+    "lab_state": [
+      {
+        "analytics_version": 1,
+        "billing_version": 1,
+        "current_state": "S1",
+        "event_version": 1,
+        "paused": false,
+        "singleton": true,
+        "updated_at": "2026-10-17T20:34:19.503017+00:00",
+        "watermark": null
+      }
+    ],
+    "orders": [
+      {
+        "amount_minor": 0,
+        "amount_rub": 0,
+        "created_at": "2026-10-17T20:34:17.218487+00:00",
+        "currency": "RUB",
+        "order_id": "gap-0",
+        "seq": 1
+      },
+      {
+        "amount_minor": 100,
+        "amount_rub": 1,
+        "created_at": "2026-10-17T20:34:17.296384+00:00",
+        "currency": "RUB",
+        "order_id": "gap-1",
+        "seq": 2
+      },
+      {
+        "amount_minor": 700,
+        "amount_rub": 7,
+        "created_at": "2026-10-17T20:34:17.333506+00:00",
+        "currency": "RUB",
+        "order_id": "gap-2",
+        "seq": 3
+      },
+      {
+        "amount_minor": 12500,
+        "amount_rub": 125,
+        "created_at": "2026-10-17T20:34:17.405197+00:00",
+        "currency": "RUB",
+        "order_id": "gap-3",
+        "seq": 4
+      },
+      {
+        "amount_minor": 1900,
+        "amount_rub": 19,
+        "created_at": "2026-10-17T20:34:17.440046+00:00",
+        "currency": "RUB",
+        "order_id": "gap-pending",
+        "seq": 5
+      }
+    ],
+    "outbox": [
+      {
+        "attempts": 1,
+        "event_id": "d4d06400-fd26-4745-bf3b-8aa99adfa301",
+        "order_id": "gap-0",
+        "payload": {
+          "amount": 0,
+          "contract_version": 1,
+          "currency": "RUB",
+          "event_id": "d4d06400-fd26-4745-bf3b-8aa99adfa301",
+          "order_id": "gap-0"
+        },
+        "published_at": "2026-10-17T20:34:17.228489+00:00",
+        "routing_key": "order.created.v1",
+        "seq": 1
+      },
+      {
+        "attempts": 1,
+        "event_id": "32d82829-09ab-4ef9-a495-a53fd58486a6",
+        "order_id": "gap-1",
+        "payload": {
+          "amount": 1,
+          "contract_version": 1,
+          "currency": "RUB",
+          "event_id": "32d82829-09ab-4ef9-a495-a53fd58486a6",
+          "order_id": "gap-1"
+        },
+        "published_at": "2026-10-17T20:34:17.305616+00:00",
+        "routing_key": "order.created.v1",
+        "seq": 2
+      },
+      {
+        "attempts": 1,
+        "event_id": "3f3bf25b-a332-4dbd-9247-d9dc999b8674",
+        "order_id": "gap-2",
+        "payload": {
+          "amount": 7,
+          "contract_version": 1,
+          "currency": "RUB",
+          "event_id": "3f3bf25b-a332-4dbd-9247-d9dc999b8674",
+          "order_id": "gap-2"
+        },
+        "published_at": "2026-10-17T20:34:17.342337+00:00",
+        "routing_key": "order.created.v1",
+        "seq": 3
+      },
+      {
+        "attempts": 1,
+        "event_id": "3f4a1ea8-80fe-45fc-8a07-25829a86aace",
+        "order_id": "gap-3",
+        "payload": {
+          "amount": 125,
+          "contract_version": 1,
+          "currency": "RUB",
+          "event_id": "3f4a1ea8-80fe-45fc-8a07-25829a86aace",
+          "order_id": "gap-3"
+        },
+        "published_at": "2026-10-17T20:34:17.414531+00:00",
+        "routing_key": "order.created.v1",
+        "seq": 4
+      },
+      {
+        "attempts": 1,
+        "event_id": "951bdda0-dfb9-4c22-b842-acd594ad375e",
+        "order_id": "gap-pending",
+        "payload": {
+          "amount": 19,
+          "contract_version": 1,
+          "currency": "RUB",
+          "event_id": "951bdda0-dfb9-4c22-b842-acd594ad375e",
+          "order_id": "gap-pending"
+        },
+        "published_at": "2026-10-17T20:34:17.453659+00:00",
+        "routing_key": "order.created.v1",
+        "seq": 5
+      }
+    ],
+    "transition_log": [
+      {
+        "applied_at": "2026-10-17T20:34:19.503017+00:00",
+        "detail": {
+          "legacy_retired": false,
+          "previous": "S0"
+        },
+        "target": "S1"
+      }
+    ]
+  }
+}

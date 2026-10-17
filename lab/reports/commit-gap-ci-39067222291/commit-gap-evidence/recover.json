@@ -1,0 +1,10 @@
+{
+  "executed_actions": [],
+  "observed_state": "S1",
+  "reason": "S1_COMMITTED_WITHOUT_CONTROLLER_CONFIRMATION_REQUIRES_FRESH_OPERATOR_DECISION",
+  "retry": {
+    "reason": "Prior outcome unresolved; inspect actual snapshot and reconcile before a new grant.",
+    "state": "DENIED_BEFORE_EFFECT"
+  },
+  "state": "RECONCILED_COMMITTED_STOP"
+}

@@ -4,6 +4,8 @@ Overall: **проверенный агентный проход в CI; Cloud.ru 
 
 ## Evidence
 
+S1 commit-gap recovery now has a scoped PASS: [report](reports/commit-gap-summary.md), [Actions 39067222291](https://github.com/rengalaxies/agent/actions/runs/39067222291), source `ce6fa97dde09e4bcea72b701d203430395d9e2d5`. Hard controller death after durable S1 commit, persisted journal, fresh-process reconciliation, safe-stop and blind-retry denial are independently checked. T13/T14 are PARTIAL_PASS for this window only; full coverage remains open. No new model calls or VM actions.
+
 Operational access update, 2026-10-17 22:45 MSK: the operator added the Foundation Models key. Rerun job 117487080370 in run 39061894797 returned PASS_API_RESPONSE for openai/gpt-oss-120b with 70 input + 16 completion tokens. Earlier missing-key/403 reports are historical. At that point real agent repair had not yet run; the later agent CI report supersedes this access-only status. Operator console supplied the UI Ed25519 host fingerprint at 22:50 MSK; read-only SSH qualification follows.
 
 - Final verified code: `7bb70630bfb72e58e11bda36aa9f0ee7dc6a4e90`. [Full lab CI run 39062576562](https://github.com/rengalaxies/agent/actions/runs/39062576562) PASS, including 12 lab + 5 infrastructure unit checks, live application suite, restart, broken control and independent correct/wrong artifact execution. Main scenario outcome remains INCOMPLETE. All final JSON and immutable image manifests are preserved under `reports/ci-39062576562/`. [Existing P1 regression run 39062579591](https://github.com/rengalaxies/agent/actions/runs/39062579591) also PASS. Independent review confirmed the late authority/context recheck fix. No automatic transition is authorized by financial-only PASS. [Draft PR23](https://github.com/rengalaxies/agent/pull/23) has no deletions or unrelated changes; final documentation/report commits do not change this verified code.
@@ -33,8 +35,8 @@ PASS below describes only the frozen scenario's exercised application behavior. 
 | T10 expired/revoked grant | NOT_RUN | Unit guard only |
 | T11 lost confirm | PASS | Real broker duplicate publication, one ledger business record |
 | T12 commit before ack | PASS | Durable Billing commit, connection closes before ack, redelivery deduplicated |
-| T13 partial transition failure | NOT_RUN | No injected partial cutover/recovery acceptance |
-| T14 UNKNOWN action outcome | NOT_RUN | Idempotent backfill replay passed; UNKNOWN journal injection not exercised |
+| T13 partial transition failure | PARTIAL_PASS | S1 post-commit controller death, observation and safe-stop passed; S4 partial broker cutover/recovery untested |
+| T14 UNKNOWN action outcome | PARTIAL_PASS | Persisted INTENDED after hard death reconciled to committed S1; retry denied before effect, invocation/update counters prove no repetition; other windows untested |
 | T15 fractional coexistence | PASS | Explicit compatibility rejection; no rounding, S6 not performed |
 | T16 invalid inputs | PASS | Separate rejection evidence for NULL, negative, fraction, currency, overflow, bool |
 | T17 signal/revision | NOT_RUN | Local inbox logic only |
