@@ -5,6 +5,7 @@ on:
     branches: [feat/postgres-rabbitmq-agent-lab]
     paths:
       - infra/cloudru/lab/preflight.py
+      - infra/cloudru/lab/ui-host-pin.json
       - .github/workflows/lab-preflight.yml
 permissions:
   contents: read

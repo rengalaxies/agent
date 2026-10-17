@@ -70,15 +70,32 @@ def probe(host, port):
         return "TCP_UNREACHABLE"
 
 
-def ssh_probe(host, private_key=None):
-    """Public handshake only unless trusted known_hosts is supplied beforehand."""
+def console_pin():
+    path = Path(__file__).with_name('ui-host-pin.json')
+    if not path.exists():
+        return ''
+    pin = json.loads(path.read_text())
+    if pin.get('project_id') != PROJECT or pin.get('vm_name') != 'dm-p1-ui' or pin.get('key_type') != 'ssh-ed25519':
+        raise ValueError('HOST_PIN_SCOPE_MISMATCH')
+    value = pin['fingerprint_sha256_hex']
+    if len(value) != 64 or any(c not in '0123456789abcdef' for c in value):
+        raise ValueError('HOST_PIN_INVALID')
+    return value
+
+
+def ssh_probe(host, private_key=None, expected_fingerprint=None):
+    """Authenticate only with pinned known_hosts or an independent console SHA256 pin."""
     import paramiko
     logging.getLogger("paramiko").disabled = True
     transport = None
     result = {"authentication": "NOT_ATTEMPTED", "host_trust": "UNVERIFIED"}
     try:
+        if expected_fingerprint is None:
+            expected_fingerprint = console_pin()
         sock = socket.create_connection((host, 22), timeout=8)
         transport = paramiko.Transport(sock)
+        if expected_fingerprint:
+            transport.get_security_options().key_types = ('ssh-ed25519',)
         transport.banner_timeout = 8
         transport.start_client(timeout=10)
         key = transport.get_remote_server_key()
@@ -88,13 +105,21 @@ def ssh_probe(host, private_key=None):
         transport.close()
         transport = None
         known = os.getenv("CLOUDRU_LAB_SSH_KNOWN_HOSTS", "").strip()
+        pin_verified = False
+        if expected_fingerprint:
+            pin_verified = key.get_name() == 'ssh-ed25519' and hashlib.sha256(key.asbytes()).hexdigest() == expected_fingerprint
+            if not pin_verified:
+                result['status'] = 'BLOCKED_HOST_PIN_MISMATCH'
+                return result
+            if not known:
+                known = host + ' ' + key.get_name() + ' ' + key.get_base64()
         if not known:
             result["status"] = "BLOCKED_HOST_TRUST_UNVERIFIED"
             return result
         if not private_key:
             result["status"] = "BLOCKED_NO_VERIFIED_CREDENTIAL"
             return result
-        # Never promote the observed key to trust. Use only preconfigured entries.
+        # The live key is accepted only after comparison to the independent console pin.
         with tempfile.TemporaryDirectory() as directory:
             known_path = Path(directory) / "known_hosts"
             known_path.write_text(known + "\n")
@@ -106,7 +131,7 @@ def ssh_probe(host, private_key=None):
                 client.connect(host, username="dmadmin", pkey=private,
                     timeout=8, banner_timeout=8, auth_timeout=8,
                     look_for_keys=False, allow_agent=False)
-                result.update(authentication="PASS", host_trust="PINNED_KNOWN_HOSTS")
+                result.update(authentication="PASS", host_trust="CONSOLE_SHA256_PIN" if pin_verified else "PINNED_KNOWN_HOSTS")
                 code = Path(__file__).with_name("host_inventory.py").read_text()
                 stdin, stdout, stderr = client.exec_command("python3 -", timeout=90)
                 stdin.write(code)

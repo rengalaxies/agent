@@ -40,10 +40,20 @@ class ScopeTests(unittest.TestCase):
         fake.Transport.return_value.get_remote_server_key.return_value.asbytes.return_value = b'public-host-key'
         fake.Transport.return_value.get_remote_server_key.return_value.get_name.return_value = 'ssh-ed25519'
         with patch.dict('sys.modules', {'paramiko': fake}), patch.dict('os.environ', {}, clear=True), patch('preflight.socket.create_connection'):
-            result = ssh_probe('192.0.2.1', b'private-credential-must-not-be-read')
+            result = ssh_probe('192.0.2.1', b'private-credential-must-not-be-read', expected_fingerprint='')
         self.assertEqual(result['status'], 'BLOCKED_HOST_TRUST_UNVERIFIED')
         self.assertEqual(result['authentication'], 'NOT_ATTEMPTED')
         self.assertTrue(result['observed_host_key_sha256'].startswith('SHA256:'))
+        fake.SSHClient.assert_not_called()
+        fake.Ed25519Key.from_private_key.assert_not_called()
+
+    def test_console_pin_mismatch_never_authenticates(self):
+        fake = MagicMock()
+        fake.Transport.return_value.get_remote_server_key.return_value.asbytes.return_value = b'wrong-key'
+        fake.Transport.return_value.get_remote_server_key.return_value.get_name.return_value = 'ssh-ed25519'
+        with patch.dict('sys.modules', {'paramiko': fake}), patch.dict('os.environ', {}, clear=True), patch('preflight.socket.create_connection'):
+            result = ssh_probe('192.0.2.1', b'private-credential-must-not-be-read', expected_fingerprint='0'*64)
+        self.assertEqual(result['status'], 'BLOCKED_HOST_PIN_MISMATCH')
         fake.SSHClient.assert_not_called()
         fake.Ed25519Key.from_private_key.assert_not_called()
 

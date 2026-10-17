@@ -92,3 +92,5 @@ The observed fingerprint must be checked through a trusted independent channel;
 it is not automatically added to known_hosts. Only an existing configured
 `CLOUDRU_LAB_SSH_KNOWN_HOSTS` enables RejectPolicy authentication and the fixed
 read-only inventory script. Missing trust is not bypassed with AutoAddPolicy.
+
+Operator console update (2026-10-17 22:50 MSK): `ui-host-pin.json` contains the independently observed SHA256 hex digest of the UI Ed25519 host key. Preflight may construct a known_hosts entry from the live key only after its exact SHA256 matches this pin and the API/state address/interface identity matches. A mismatch stops before credential parsing or authentication. This is explicit out-of-band pinning, not automatic trust of the first observed key.
