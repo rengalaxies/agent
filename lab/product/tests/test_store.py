@@ -65,6 +65,18 @@ class WorkflowTests(unittest.TestCase):
         self.snapshot();self.basis='new-binding';self.snapshot()
         self.assertFalse(self.s.rows('snapshots')[0]['current']);self.assertTrue(self.s.rows('snapshots')[1]['current'])
 
+    def test_web_verifier_has_no_implicit_docker_authority(self):
+        import json
+        example=json.loads((ROOT/'lab/reports/agent-ci-39066354050/agent-evidence/input.json').read_text())
+        self.s.create_change({**example,**{k:v for k,v in change(2).items() if k not in ('proposed_diff','proposed_files')}})
+        self.snapshot()
+        self.assertEqual(self.job('analysis','REPLAY')['status'],'SUCCEEDED')
+        self.assertEqual(self.job('prepare','REPLAY')['status'],'SUCCEEDED')
+        with patch.dict('os.environ',{'LAB_ENABLE_ISOLATED_VERIFIER':''}):
+            result=self.job('verify','REPLAY')
+        self.assertEqual(result['status'],'BLOCKED')
+        self.assertEqual(self.s.rows('verifications'),[])
+
 if __name__=='__main__':unittest.main()
 
 class JournalOriginTests(unittest.TestCase):

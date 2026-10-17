@@ -155,6 +155,8 @@ class Worker:
             if core.tree_digest(candidate['candidate_path'])!=candidate['bundle']['candidate_digest']:raise core.Stop('Candidate changed after staging')
             verifier=self.verifier
             if not verifier:
+                if os.getenv('LAB_ENABLE_ISOLATED_VERIFIER')!='1':
+                    raise core.Stop('Fresh verification requires a separately isolated trusted CI executor; web process has no Docker authority')
                 from lab.evaluator.verify import verify
                 verifier=verify
             result=verifier(candidate['candidate_path'],'T03')

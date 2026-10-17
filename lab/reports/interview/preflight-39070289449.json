@@ -1,0 +1,57 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "checked_at": "2026-10-17T21:17:17.736962+00:00",
+  "source_commit": "772ec283cd99af40a43c063ca640a7ad494862b6",
+  "read_only": true,
+  "secrets_present": {
+    "CLOUDRU_KEY_ID": true,
+    "CLOUDRU_SECRET": true,
+    "CLOUDRU_STATE_SSE_CUSTOMER_KEY": true,
+    "CLOUDRU_STATE_ACCESS_KEY_ID": false,
+    "CLOUDRU_STATE_SECRET_ACCESS_KEY": false,
+    "CLOUDRU_SSH_PUBLIC_KEY": true,
+    "CLOUDRU_UI_BASIC_AUTH_HASH": true,
+    "CLOUDRU_WORKFLOW_API_KEY": true,
+    "CLOUDRU_LAB_SSH_PRIVATE_KEY": false,
+    "CLOUDRU_LAB_SSH_KNOWN_HOSTS": false,
+    "CLOUDRU_LLM_API_KEY": false,
+    "CLOUDRU_FOUNDATION_API_KEY": true
+  },
+  "vm_os_execution": "BLOCKED_UNVERIFIED_CHANNEL",
+  "os_resources": "NOT_MEASURED",
+  "deployment": "NOT_RUN",
+  "llm": "NOT_TESTED",
+  "llm_config_present": {
+    "CLOUDRU_LLM_BASE_URL": false,
+    "CLOUDRU_LLM_MODEL": false
+  },
+  "terraform_mutations": "NONE",
+  "checks": {
+    "existing_state_scope": "PASS",
+    "ui_tcp_22": "TCP_UNREACHABLE",
+    "ui_tcp_443": "TCP_UNREACHABLE"
+  },
+  "state_serial": 17,
+  "recovery_key": {
+    "readable": true,
+    "matches_ui_state_metadata": true,
+    "os_authentication": "NOT_TESTED"
+  },
+  "vms": {
+    "ui": {
+      "scope": "PASS",
+      "state": "running",
+      "state_flavor": "gen-2-4",
+      "guest_agent_field_present": true,
+      "guest_agent_does_not_prove_exec": true
+    },
+    "core": {
+      "scope": "PASS",
+      "state": "stopped",
+      "state_flavor": "gen-2-8",
+      "guest_agent_field_present": true,
+      "guest_agent_does_not_prove_exec": true
+    }
+  },
+  "inventory": "PASS"
+}
