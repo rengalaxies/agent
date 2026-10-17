@@ -1,8 +1,10 @@
 # Actual lab status - 2026-10-17
 
-Overall: **проверенный агентный проход в CI; Cloud.ru deployment NOT READY**. Real Foundation Models analyst and executor produced a SQL repair independently verified on fresh PostgreSQL/RabbitMQ. Controlled CI R6-R8 qualification passes; automatic application stays BLOCKED. Exact commits, all failures, token usage and remaining deployment steps: [agent CI report](reports/agent-ci-summary.md). Historical evidence and original full-scenario gaps follow.
+Overall: **интегрированный UI → API → живые основания → новая модель → независимая проверка подтверждён в CI/браузере; Cloud.ru deployment NOT READY**. Real Foundation Models analyst and executor produced a SQL repair independently verified on fresh PostgreSQL/RabbitMQ. Controlled CI R6-R8 qualification passes; automatic application stays BLOCKED. Exact commits, all failures, token usage and remaining deployment steps: [agent CI report](reports/agent-ci-summary.md). Historical evidence and original full-scenario gaps follow.
 
 ## Evidence
+
+Integrated product path: [complete report and A-H matrix](reports/product-path/REPORT.md). Corrective LIVE path source `032595515dd733cb0841ab7847955033780c33d8`, [Actions 39068862920](https://github.com/rengalaxies/agent/actions/runs/39068862920) PASS; final no-inference recheck source `d3b7ee2109fb4040d0872cee099a19031c662f2b`, [39069174791](https://github.com/rengalaxies/agent/actions/runs/39069174791) PASS. Actual live catalogs/bindings, real broker mutation/invalidation, asynchronous queue, late reply, SIGKILL restart and direct apply403 are checked. Two new real model paths used four calls and 52188 tokens total; all retained. Screenshots, prompts, replies, actual patches, exact IDs/digests and scope labels are preserved. No cloud UI deployment or automatic application is claimed.
 
 Initiator/team inbox: [CLI replay report](reports/inbox-summary.md), [Actions 39067851363](https://github.com/rengalaxies/agent/actions/runs/39067851363), exact code `0dd24672b93869acd54ab5d4fb9f176707e2e9cd`. Breaking-change cards for billing/analytics, unknown-owner coordinator routing, revision/decision invalidation and deduplication pass. Saved real-agent replay is explicit; no fresh inference or financial check is claimed. Twenty tests pass; acknowledgement never grants execution.
 
@@ -25,7 +27,7 @@ PASS below describes only the frozen scenario's exercised application behavior. 
 
 | Case | Status | Evidence / remaining scope |
 |---|---|---|
-| T01 safe change | NOT_RUN | No live product finding/inbox evaluation |
+| T01 safe change | PARTIAL_PASS | Supported docs-only UI/API profile creates no blocking team work; broader safe semantics unqualified |
 | T02 silent semantic change | PASS | Broken control: intended 12500 minor, Billing and Analytics observed 1250000; REJECT |
 | T03 correct scoped transition | BLOCKED | S0-S5 financial control passed; agent repair and controlled CI R6-R8 now pass separately; full deployment-bound dispatcher acceptance remains blocked |
 | T04 excessive patch | NOT_RUN | Unit path/evaluator edit rejection only |
@@ -33,7 +35,7 @@ PASS below describes only the frozen scenario's exercised application behavior. 
 | T06 rare consumer absent from trace | NOT_RUN | Static scanner exercise only |
 | T07 hidden consumer | NOT_RUN | No live recall experiment |
 | T08 unknown/conflicting owner | PARTIAL_PASS | Unknown owner routed to explicitly designated coordinator in CLI replay; conflict resolution/live directory unqualified |
-| T09 invalidated PASS | NOT_RUN | Unit context guard only |
+| T09 invalidated PASS | PARTIAL_PASS | Actual broker binding change plus fresh collector/API invalidates prior results; revision guard checked; broader deployed/suite freshness unqualified |
 | T10 expired/revoked grant | NOT_RUN | Unit guard only |
 | T11 lost confirm | PASS | Real broker duplicate publication, one ledger business record |
 | T12 commit before ack | PASS | Durable Billing commit, connection closes before ack, redelivery deduplicated |

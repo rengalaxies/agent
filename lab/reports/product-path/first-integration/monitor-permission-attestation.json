@@ -1,0 +1,10 @@
+{
+  "username": "ci_monitor",
+  "vhost": "/",
+  "configure": "^$",
+  "write": "^$",
+  "read": "^$",
+  "broker_identity": "rabbit@rabbitmq",
+  "collected_at": "2026-10-17T20:56:08.580329+00:00",
+  "source": "trusted CI rabbitmqctl list_user_permissions"
+}

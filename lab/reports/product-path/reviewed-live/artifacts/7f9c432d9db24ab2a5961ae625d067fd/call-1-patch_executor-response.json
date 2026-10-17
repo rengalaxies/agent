@@ -1,0 +1,46 @@
+{
+  "id": "chatcmpl-b51c341c-2f8c-4ec7-893f-bf140dd9438a",
+  "object": "chat.completion",
+  "created": 1792270844,
+  "model": "openai/gpt-oss-120b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"patches\": [\n    {\n      \"path\": \"lab/sql/expand.sql\",\n      \"content\": \"ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\\nUPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\\nDO $$ BEGIN\\n    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'orders_money_consistent') THEN\\n        ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK (\\n            amount_minor >= 0\\n            AND amount_minor % 100 = 0\\n            AND amount_minor / 100 = amount_rub\\n        );\\n    END IF;\\nEND $$;\"\n    }\n  ],\n  \"transition_plan\": [],\n  \"assumptions\": []\n}",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need to produce a JSON patch fixing the SQL. The issue: backfill should multiply by 100. Also need to ensure constraint check passes. The proposed diff incorrectly sets amount_minor=amount_rub. We must produce corrected content for lab/sql/expand.sql.\n\nWe must preserve integer rubles, exact minor units and bigint bounds. So we need to update the file to:\n\nALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\nUPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\nDO $$ BEGIN\n IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK (amount_minor >= 0 AND amount_minor % 100 = 0 AND amount_minor / 100 = amount_rub);\n END IF;\nEND $$;\n\nPotentially also need to ensure that amount_minor column is big enough: bigint already.\n\nWe must output JSON with patches array containing path and content.\n\nNo transition plan, assumptions empty.\n\nReturn JSON.\n\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.31.0-tp4-b69e9a4d",
+  "usage": {
+    "prompt_tokens": 12574,
+    "total_tokens": 12983,
+    "completion_tokens": 409,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "created_cache_tokens": 12528,
+      "multimodal_tokens": null
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 226
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}
