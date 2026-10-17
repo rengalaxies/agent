@@ -1,0 +1,138 @@
+{
+  "acceptor": "business-acceptor",
+  "allowed_actions": [
+    "discover",
+    "patch",
+    "verify",
+    "export"
+  ],
+  "before": {
+    "sha256": "c95157e0f21d6b2b899c2b39cfab5810a4f50b6be2496edcf1c53a3cbbea1fcd",
+    "uri": "before.json"
+  },
+  "completion_criteria": [
+    "Independent cases passed for both consumers",
+    "Acceptor reviews patch; no production changes"
+  ],
+  "components": [
+    {
+      "artifacts": [
+        {
+          "sha256": "80fa57897fb4d562f53d0278e7c10f05461a3473e117653d2d0db63f69674521",
+          "uri": "source.json"
+        }
+      ],
+      "component_id": "events",
+      "owner": "source-owner",
+      "profile": "fixture-source/1"
+    },
+    {
+      "artifacts": [
+        {
+          "sha256": "534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa",
+          "uri": "analytics.sql"
+        }
+      ],
+      "component_id": "analytics",
+      "owner": "analytics-owner",
+      "profile": "sqlite-select/1"
+    },
+    {
+      "artifacts": [
+        {
+          "sha256": "534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa",
+          "uri": "audit.sql"
+        }
+      ],
+      "component_id": "audit",
+      "owner": "audit-owner",
+      "profile": "sqlite-select/1"
+    }
+  ],
+  "consumers": [
+    "analytics",
+    "audit"
+  ],
+  "critical_risks": [],
+  "criticality": 2,
+  "dependencies": [
+    {
+      "basis": {
+        "sha256": "534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa",
+        "uri": "analytics.sql"
+      },
+      "certainty": "observed",
+      "source": "events",
+      "target": "analytics"
+    },
+    {
+      "basis": {
+        "sha256": "534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa",
+        "uri": "audit.sql"
+      },
+      "certainty": "observed",
+      "source": "events",
+      "target": "audit"
+    }
+  ],
+  "environment": "test",
+  "goal": "Изменить окно analytics до90дней, сохранив audit30дней",
+  "grants": [],
+  "impact": "cross_system",
+  "needs": [
+    {
+      "capability": {
+        "action": "discover",
+        "artifact_kind": "source",
+        "profile": "fixture-source/1"
+      },
+      "component_id": "events"
+    },
+    {
+      "capability": {
+        "action": "discover",
+        "artifact_kind": "source",
+        "profile": "sqlite-select/1"
+      },
+      "component_id": "analytics"
+    },
+    {
+      "capability": {
+        "action": "discover",
+        "artifact_kind": "source",
+        "profile": "sqlite-select/1"
+      },
+      "component_id": "audit"
+    }
+  ],
+  "owner": "migration-owner",
+  "requirements": [
+    {
+      "approved_by": "business-owner",
+      "basis": {
+        "sha256": "4a1debb06c9ba03ce6693e80043f1b66fe7159c42f718208a7f03794accf89dc",
+        "uri": "requirements.json"
+      },
+      "consumer_id": "analytics",
+      "expectation": "age_days < 90",
+      "requirement_id": "r-analytics"
+    },
+    {
+      "approved_by": "business-owner",
+      "basis": {
+        "sha256": "4a1debb06c9ba03ce6693e80043f1b66fe7159c42f718208a7f03794accf89dc",
+        "uri": "requirements.json"
+      },
+      "consumer_id": "audit",
+      "expectation": "age_days < 30",
+      "requirement_id": "r-audit"
+    }
+  ],
+  "schema_version": "change-completion/1",
+  "target": {
+    "sha256": "6c3adc365e8ef39f7343a85e51648162f3cfeec2dd6a906aa120c2a5d9b9f8e3",
+    "uri": "target.json"
+  },
+  "transition_id": "two-consumer-window-change",
+  "unknowns": []
+}

@@ -1,16 +1,25 @@
-# Public UI - first interview artifact
-Status: interactive static demonstration, **not connected to live Policy Engine**.
+# Research UI - synthetic demonstration
+Status: static explanatory examples plus API-connected V2, E4 and knowledge-1 panels. This is not the new migration-completion product. Last status review: 2026-10-16.
 
 ## Run
-Serve `ui/index.html` with any static HTTP server; e.g. `python -m http.server 8080 -d ui`. On a real public VM, serve it behind TLS and authentication, not directly on an open development port.
+From the repository root, with Python 3.12 and the project dependencies:
+
+```bash
+python -m pip install -e '.[api,distributed,test-api]'
+PYTHONPATH=src python -m services.local_demo
+```
+
+Open http://127.0.0.1:8080. This launcher serves the UI and existing API on loopback only. No Docker, database or LLM is required for the optional-local-audit synthetic mode; an optional PostgreSQL audit is a separate integration. It does not connect to client systems. Stop with Ctrl+C.
+
+Serving only `ui/index.html` with a static HTTP server shows the explanatory examples; live panels then explicitly report unavailable API. For a real public deployment use TLS, authentication and an approved topology; the local launcher is not a production server configuration.
 
 The mock shows:
 1. Domain map `fintech -> retail -> mobility`.
 2. Three **synthetic predetermined** scenarios: formula change -> REJECT; verified RUB/kopecks migration -> ACCEPT; absent consumer position -> NEEDS_REVIEW.
 3. Visible rationale, input changes, consumer obligations, decision flow and JSON-style evidence illustration.
 
-## Integration contract for next sprint
-Backend must provide:
+## Historical target contract and remaining gaps
+The following list is an earlier design, not an exact inventory of implemented endpoints. In particular, run lookup, idempotency keys and authentication for the demo API remain production gaps. Current implemented routes are in `services/demo_api.py`:
 - GET /api/v1/demo/scenarios -> {scenarios:[{id,title,description}]}
 - POST /api/v1/demo/runs -> {run_id, scenario_id, status}; accepts scenario_id + idempotency key.
 - GET /api/v1/demo/runs/{run_id} -> {decision, reason_codes, consumer_positions, evidence_refs, snapshot_id, constitution_version, stages}.

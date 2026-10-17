@@ -1,0 +1,19 @@
+"""Adapter ports. Internal adapters/readonly runtime are separate implementations."""
+from typing import Protocol
+
+from .models import AdapterDeclaration, ContentRef, Dependency, TransitionSpec
+
+
+class DiscoveryAdapter(Protocol):
+    def describe(self) -> AdapterDeclaration: ...
+    def discover(self, snapshots: tuple[ContentRef, ...]) -> tuple[Dependency, ...]: ...
+
+
+class PatchAdapter(Protocol):
+    def describe(self) -> AdapterDeclaration: ...
+    def prepare(self, transition: TransitionSpec) -> ContentRef: ...
+
+
+class VerificationAdapter(Protocol):
+    def describe(self) -> AdapterDeclaration: ...
+    def verify(self, transition: TransitionSpec, patch: ContentRef, independent_expectations: ContentRef) -> ContentRef: ...

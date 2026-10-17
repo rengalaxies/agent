@@ -1,0 +1,155 @@
+{
+  "schema_version": "change-completion/1",
+  "transition_id": "batch-report",
+  "goal": "Перенести пакетный источник; сохранить суммы и состав строк отчета",
+  "owner": "migration-owner",
+  "acceptor": "consumer-acceptor",
+  "environment": "test",
+  "criticality": 2,
+  "before": {
+    "uri": "fixture://before",
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "target": {
+    "uri": "fixture://target",
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "components": [
+    {
+      "component_id": "source",
+      "owner": "team-source",
+      "profile": "csv-v1",
+      "artifacts": [
+        {
+          "uri": "fixture://source",
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ]
+    },
+    {
+      "component_id": "consumer",
+      "owner": "team-consumer",
+      "profile": "tsql-reporting-v1",
+      "artifacts": [
+        {
+          "uri": "fixture://consumer",
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ]
+    },
+    {
+      "component_id": "audit-consumer",
+      "owner": "audit-team",
+      "profile": "legacy-export-v2",
+      "artifacts": [
+        {
+          "uri": "fixture://consumer",
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ]
+    }
+  ],
+  "consumers": [
+    "consumer",
+    "audit-consumer"
+  ],
+  "requirements": [
+    {
+      "requirement_id": "r1",
+      "consumer_id": "consumer",
+      "expectation": "Основной отчет использует утвержденное новое окно 90d",
+      "basis": {
+        "uri": "fixture://approved-expectations",
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "approved_by": "business-owner"
+    },
+    {
+      "requirement_id": "r2",
+      "consumer_id": "audit-consumer",
+      "expectation": "Исторический контроль сохраняет окно 30d",
+      "basis": {
+        "uri": "fixture://approved-expectations",
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "approved_by": "business-owner"
+    }
+  ],
+  "dependencies": [
+    {
+      "source": "source",
+      "target": "consumer",
+      "certainty": "observed",
+      "basis": {
+        "uri": "fixture://usage",
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    },
+    {
+      "source": "source",
+      "target": "audit-consumer",
+      "certainty": "observed",
+      "basis": {
+        "uri": "fixture://usage",
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    }
+  ],
+  "unknowns": [
+    "Профиль только описывает стек: реализованные адаптеры отсутствуют"
+  ],
+  "needs": [
+    {
+      "component_id": "source",
+      "capability": {
+        "action": "discover",
+        "artifact_kind": "contract",
+        "profile": "csv-v1"
+      }
+    },
+    {
+      "component_id": "consumer",
+      "capability": {
+        "action": "patch",
+        "artifact_kind": "source_code",
+        "profile": "tsql-reporting-v1"
+      }
+    },
+    {
+      "component_id": "consumer",
+      "capability": {
+        "action": "verify",
+        "artifact_kind": "observable_result",
+        "profile": "tsql-reporting-v1"
+      }
+    },
+    {
+      "component_id": "audit-consumer",
+      "capability": {
+        "action": "patch",
+        "artifact_kind": "source_code",
+        "profile": "legacy-export-v2"
+      }
+    },
+    {
+      "component_id": "audit-consumer",
+      "capability": {
+        "action": "verify",
+        "artifact_kind": "observable_result",
+        "profile": "legacy-export-v2"
+      }
+    }
+  ],
+  "grants": [],
+  "allowed_actions": [
+    "discover",
+    "patch",
+    "verify",
+    "export"
+  ],
+  "completion_criteria": [
+    "Независимая проверка результата пройдена",
+    "Приемщик подтвердил пакет; production effects не выполнялись"
+  ],
+  "impact": "cross_system"
+}

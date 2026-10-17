@@ -1,0 +1,55 @@
+{
+  "candidate_created_at": "2026-10-16T13:00:00Z",
+  "candidate_sha256": "6579cfed4a6ff4ba0acb6f178779ab11e677e87b871678eb1c1d8a689c6b79e3",
+  "captured_at": "2026-10-16T13:01:00Z",
+  "cases": [
+    {
+      "actual": {
+        "columns": [
+          {
+            "kind": "int",
+            "name": "net",
+            "nullable": false
+          }
+        ],
+        "rows": [
+          [
+            100
+          ]
+        ]
+      },
+      "case_id": "normal",
+      "fixture": {
+        "sha256": "5fb840ce7487773e629e6f5d986a8f63b8119cdec923eebaec8ab084b8b3f1d9",
+        "uri": "fixture-normal.json"
+      },
+      "status": "executed"
+    },
+    {
+      "actual": {
+        "columns": [
+          {
+            "kind": "int",
+            "name": "net",
+            "nullable": false
+          }
+        ],
+        "rows": [
+          [
+            80
+          ]
+        ]
+      },
+      "case_id": "refund",
+      "fixture": {
+        "sha256": "a954e6803c0806ba1ad81c3d8eb95c42083249ce179cf0a458a0741b5c95204a",
+        "uri": "fixture-refund.json"
+      },
+      "status": "executed"
+    }
+  ],
+  "context_sha256": "1b9e0d3c6e271d1bee152ce00aac8c99b875902237a7cc435887c7def3938e92",
+  "format": "captured-observations/1",
+  "suite_sha256": "cb32926fa32078bf4780d7c3a9797fd842650f49a39a148b59918ebf874ce0d5",
+  "transition_id": "net-amount-replay"
+}

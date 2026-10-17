@@ -1,0 +1,106 @@
+{
+  "acceptor": "consumer-acceptor",
+  "allowed_actions": [
+    "discover",
+    "patch",
+    "verify",
+    "export"
+  ],
+  "before": {
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "uri": "fixture://before"
+  },
+  "completion_criteria": [
+    "Независимая проверка результата пройдена",
+    "Приемщик подтвердил пакет; production effects не выполнялись"
+  ],
+  "components": [
+    {
+      "artifacts": [
+        {
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "uri": "fixture://source"
+        }
+      ],
+      "component_id": "source",
+      "owner": "team-source",
+      "profile": "fixture-input/1"
+    },
+    {
+      "artifacts": [
+        {
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "uri": "fixture://consumer"
+        }
+      ],
+      "component_id": "consumer",
+      "owner": "team-consumer",
+      "profile": "fixture-observations/1"
+    }
+  ],
+  "consumers": [
+    "consumer"
+  ],
+  "criticality": 2,
+  "dependencies": [
+    {
+      "basis": {
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "uri": "fixture://usage"
+      },
+      "certainty": "observed",
+      "source": "source",
+      "target": "consumer"
+    }
+  ],
+  "environment": "test",
+  "goal": "Проверить заранее заданные наблюдения net amount по независимым примерам",
+  "grants": [],
+  "impact": "cross_system",
+  "needs": [
+    {
+      "capability": {
+        "action": "discover",
+        "artifact_kind": "contract",
+        "profile": "fixture-input/1"
+      },
+      "component_id": "source"
+    },
+    {
+      "capability": {
+        "action": "patch",
+        "artifact_kind": "source_code",
+        "profile": "fixture-observations/1"
+      },
+      "component_id": "consumer"
+    },
+    {
+      "capability": {
+        "action": "verify",
+        "artifact_kind": "observable_result",
+        "profile": "fixture-observations/1"
+      },
+      "component_id": "consumer"
+    }
+  ],
+  "owner": "migration-owner",
+  "requirements": [
+    {
+      "approved_by": "business-owner",
+      "basis": {
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "uri": "fixture://approved-expectations"
+      },
+      "consumer_id": "consumer",
+      "expectation": "net = gross - refunds, без потери точности",
+      "requirement_id": "r1"
+    }
+  ],
+  "schema_version": "change-completion/1",
+  "target": {
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "uri": "fixture://target"
+  },
+  "transition_id": "net-amount-replay",
+  "unknowns": []
+}

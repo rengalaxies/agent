@@ -7,7 +7,7 @@ Staged resources: private UI/core interfaces, 2 VM, 2 boot disks, 2 security gro
 1. Auto-validation must pass: `docs/launch-2026-10/cloudru-deployment-validation.json`. The file may not exist if workflow failed before publishing; inspect Actions then.
 2. Discover real VM flavors and image (and check matching `ru.AZ-2` zone and min_disk); obtain results in `cloudru-candidates-latest.json`.
 3. Verify networking: existing subnet ownership within project, security group association, public IPv4 allocation and egress for UI/backend. Avoid nonfunctional launch caused by missing NAT or DNS.
-4. Provide SSH *public* key and restricted admin CIDR via protected GitHub variables or environment; NEVER private key in repository. Need cloud-init/installation for Ubuntu, Docker, PostgreSQL, service supervisor and UI - NOT PRESENT YET.
+4. Provide SSH *public* key and restricted admin CIDR via protected GitHub variables or environment; NEVER private key in repository. Bootstrap templates now exist in [../bootstrap](../bootstrap/); their presence and static validation do not prove that any VM was provisioned or that services are healthy. Verify the rendered configuration and current runtime before deployment.
 5. Choose secure persistent Terraform state (encrypted remote backend, locking and limited permissions). **Never use an ephemeral GitHub Actions runner as the only location of state and never run apply without state persistence.** Without state, reruns may duplicate paid resources.
 6. Confirm exact monthly price (UI compute 720h, core requested hours, disk 230GiB 720h, one IPv4, egress/NAT, backups and LLM), then obtain owner's explicit approval.
 
