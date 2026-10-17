@@ -60,6 +60,7 @@ class Store:
         if type(payload.get('revision')) is not int or payload['revision']<1: raise Stop('Positive revision required')
         if len(json.dumps(payload).encode())>150000: raise Stop('Change input too large')
         clean={k:payload[k] for k in required};clean.update(revision=payload['revision'],kind=payload.get('kind','breaking'),proposed_files=payload.get('proposed_files',{}))
+        clean['diff_digest']=digest(clean['proposed_diff'])
         clean['input_digest']=digest(clean)
         with self.transaction():
             prior=[c for c in self.rows('changes') if c['change_id']==clean['change_id']]

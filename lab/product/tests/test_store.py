@@ -61,4 +61,8 @@ class WorkflowTests(unittest.TestCase):
         c=change(2,kind='safe');c.update(proposed_diff='--- a/docs/note.md\n+++ b/docs/note.md\n-old\n+new',proposed_files={'docs/note.md':'new'})
         self.s.create_change(c);self.snapshot();self.job('analysis');self.assertEqual(self.s.rows('assessments')[-1]['classification'],'SUPPORTED_DOCS_ONLY');self.assertEqual(len(self.s.rows('cards')),0)
 
+    def test_superseded_snapshot_not_current(self):
+        self.snapshot();self.basis='new-binding';self.snapshot()
+        self.assertFalse(self.s.rows('snapshots')[0]['current']);self.assertTrue(self.s.rows('snapshots')[1]['current'])
+
 if __name__=='__main__':unittest.main()

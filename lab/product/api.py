@@ -40,7 +40,11 @@ def create_app(db_path=None,artifact_root=None,start_worker=True,**worker_option
         historical=json.loads((worker.root/'lab/reports/agent-ci-39066354050/agent-evidence/input.json').read_text())
         return {'breaking':historical,'safe':{'intent':'Documentation clarification only','proposed_diff':'--- a/docs/note.md\n+++ b/docs/note.md\n-old\n+clarified\n','proposed_files':{'docs/note.md':'clarified\n'},'kind':'safe'}}
     @app.post('/api/lab/changes')
-    def changes(payload:dict):return guarded(store.create_change,payload)
+    def changes(payload:dict):
+        try:actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=worker.root,text=True,timeout=5).strip()
+        except Exception:raise HTTPException(409,detail='Current repository commit unavailable') from None
+        if payload.get('source_commit')!=actual:raise HTTPException(409,detail='Supported source is the exact current repository commit')
+        return guarded(store.create_change,payload)
     @app.post('/api/lab/jobs',status_code=202)
     def jobs(payload:dict):return guarded(store.enqueue,payload)
     @app.post('/api/lab/decisions')

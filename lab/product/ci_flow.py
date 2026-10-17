@@ -100,10 +100,14 @@ def main(live=False):
             report['scenarios']['A']={'status':'PASS','layers':['browser','API','live catalogs','fresh PostgreSQL/RabbitMQ financial verifier'],'mode':mode,'verification_id':verification['id']}
             report['scenarios']['H']={'status':'PASS','layers':['browser disabled apply','direct API 403']}
             if not live:
-                safe=copy.deepcopy(example['safe']);safe.update(change_id='safe-docs',title='Documentation-only change',revision=1,source_commit=env['GITHUB_SHA']);post('/changes',safe)
+                page.get_by_test_id('tab-changes').click();page.get_by_test_id('change-id').fill('safe-docs');page.get_by_test_id('kind').select_option('safe');page.get_by_test_id('create-change').click()
+                for _ in range(40):
+                    if any(c['change_id']=='safe-docs' for c in state()['changes']):break
+                    time.sleep(.1)
                 wait('safe-docs','snapshot','LIVE RUN');wait('safe-docs','analysis','FIXTURE / CONTROL')
                 assert not any(c['change_id']=='safe-docs' and c['current'] for c in state()['cards'])
-                report['scenarios']['B']={'status':'PASS','layers':['API','server docs-only profile control']}
+                report['scenarios']['B']={'status':'PASS','layers':['browser creation','API','server docs-only profile control']}
+                page.get_by_test_id('tab-details').click();page.get_by_test_id('selected-change').select_option(cid)
                 original=state();change=next(c for c in original['changes'] if c['change_id']==cid);revision={k:change[k] for k in ['change_id','title','intent','proposed_diff','proposed_files','source_commit','kind']};revision['revision']=2
                 post('/changes',revision);assert not any(x['current'] for kind in ['cards','decisions','candidates','verifications','assessments'] for x in state()[kind] if x['change_id']==cid)
                 page.get_by_test_id('refresh').click();time.sleep(.4);page.screenshot(path=str(OUT/'05-stale.png'),full_page=True)

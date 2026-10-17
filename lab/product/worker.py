@@ -36,6 +36,8 @@ class Worker:
                 if kind=='snapshots' and current:
                     previous=[x for x in s.rows('snapshots') if x['change_id']==c['change_id'] and x['revision']==c['revision']]
                     if previous and previous[-1]['basis_digest']!=rows[0]['basis_digest']:s.invalidate(c['change_id'],'MATERIAL_SNAPSHOT_CHANGED')
+                    for old in previous:
+                        old.update(current=False,invalidation='SUPERSEDED_SNAPSHOT_COLLECTION');s.put('snapshots',old)
                 for row in rows:
                     row['current']=bool(current);s.put(kind,row)
                 if current and kind in ('candidates','verifications'):
@@ -100,6 +102,7 @@ class Worker:
             if snapshot.get('mode')!='LIVE RUN':raise core.Stop('Collector did not return live evidence')
             return 'snapshots',[{**entity(),**snapshot}]
         snapshot=self.latest_result('snapshots',j)
+        if snapshot.get('source_commit') and c['source_commit']!=snapshot['source_commit']:raise core.Stop('Change source commit does not match live evidence source commit')
         if operation=='analysis':
             # Safe classification is server-derived and intentionally narrow, never client kind.
             files=c.get('proposed_files',{})

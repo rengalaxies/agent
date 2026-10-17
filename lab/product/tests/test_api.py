@@ -10,9 +10,14 @@ class APITests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             app=create_app(Path(d)/'state.db',Path(d)/'artifacts',start_worker=False)
             with TestClient(app) as client:
-                self.assertEqual(client.post('/api/lab/changes',json=change()).status_code,200)
+                self.assertEqual(client.post('/api/lab/changes',json={**change(),'source_commit':client.get('/api/lab/state').json()['source_commit']}).status_code,200)
                 r=client.post('/api/lab/jobs',json=dict(change_id='test',operation='snapshot',mode='LIVE RUN',idempotency_key='one'))
                 self.assertEqual(r.status_code,202);self.assertEqual(r.json()['status'],'QUEUED')
                 self.assertEqual(client.post('/api/lab/apply',json={'role':'initiator','approved':True}).status_code,403)
                 self.assertFalse(client.get('/api/lab/state').json()['execution_permission'])
                 self.assertTrue(client.get('/api/lab/healthz').json()['demo_roles'])
+    def test_unverified_source_commit_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            app=create_app(Path(d)/'state.db',Path(d)/'artifacts',start_worker=False)
+            with TestClient(app) as client:
+                self.assertEqual(client.post('/api/lab/changes',json=change()).status_code,409)
