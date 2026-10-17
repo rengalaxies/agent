@@ -1,4 +1,5 @@
 name: Lab existing VM read-only preflight
+# Requalify the existing guest channel before the interview deployment batch.
 on:
   workflow_dispatch:
   push:
