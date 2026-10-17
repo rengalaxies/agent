@@ -1,0 +1,42 @@
+name: Lab S1 committed step lost controller confirmation
+on:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths: [.github/workflows/lab-commit-gap-ci.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  commit-gap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --quiet pika==1.3.2 'psycopg[binary]==3.2.9'
+      - name: Existing dispatcher authorization regression
+        run: python3 -m unittest discover -s lab/tests -v
+      - name: Pin dependency images for exact run
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          images={}
+          for k,tag in {'POSTGRES_IMAGE':'postgres:16.10-bookworm','RABBITMQ_IMAGE':'rabbitmq:3.13.7-management','PYTHON_IMAGE':'python:3.12.11-slim-bookworm'}.items():
+              subprocess.run(['docker','pull',tag],check=True,stdout=subprocess.DEVNULL)
+              images[k]=json.loads(subprocess.check_output(['docker','image','inspect','--format','{{json .RepoDigests}}',tag]))[0]
+          pathlib.Path('commit-gap-images.json').write_text(json.dumps(images,indent=2))
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              for k,v in images.items():f.write(k+'='+v+'\n')
+          PY
+      - name: Hard crash, fresh controller process, independent read-only verification
+        run: python3 -m lab.evaluator.commit_gap_control
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: commit-gap-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            commit-gap-evidence/
+            commit-gap-images.json
+          retention-days: 30
+          if-no-files-found: error

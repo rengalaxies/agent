@@ -52,6 +52,12 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=(), aut
         enforce_grant(current_grant, 'transition', target, change.get('environment_id', 'lab'),
                       fresh, authority.get('revoked', ()))
     recheck()
+    return _perform_transition(candidate, journal_dir, target, artifact, authorization_context, recheck)
+
+
+def _perform_transition(candidate, journal_dir, target, artifact, authorization_context, before_effect, after_commit=None):
+    """Trusted effect boundary; fault callback is only used by the isolated CI controller."""
+    from lab.app import service
     audit = Audit(journal_dir)
     key = digest({'candidate': artifact, 'target': target, 'context': authorization_context})
     prior = [json.loads(line) for line in audit.path.read_text().splitlines()] if audit.path.exists() else []
@@ -69,7 +75,7 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=(), aut
     previous_override = os.environ.pop("LAB_EXPAND_SQL", None)
     try:
         try:
-            recheck()
+            before_effect()
         except Stop:
             audit.record('transition', state='DENIED', idempotency_key=key, target=target,
                          reason='Authority or verification context invalid immediately before effect')
@@ -77,6 +83,8 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=(), aut
         # Trusted service implementation, candidate SQL only; never import candidate Python.
         service.SQL = candidate / 'lab/sql'
         result = service.transition(target)
+        if after_commit is not None:
+            after_commit()
         after = service.snapshot()
         audit.record('transition', state='CONFIRMED', idempotency_key=key, target=target,
                      result=result, observed_effect=after)
@@ -91,3 +99,42 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=(), aut
         service.SQL = previous_sql
         if previous_override is not None:
             os.environ["LAB_EXPAND_SQL"] = previous_override
+
+
+def reconcile_unknown(journal_dir, expected_artifact):
+    """Read durable state, record a safe stop. Never executes or retries a transition."""
+    from lab.app import service
+    audit = Audit(journal_dir)
+    if not audit.path.exists():
+        raise Stop('No persisted intent to reconcile.')
+    rows = [json.loads(line) for line in audit.path.read_text().splitlines()]
+    previous = '0' * 64
+    for row in rows:
+        unsigned = {k:v for k,v in row.items() if k != 'record_digest'}
+        if row.get('previous_digest') != previous or digest(unsigned) != row.get('record_digest'):
+            raise Stop('Journal integrity failure; no retry permitted.')
+        previous = row['record_digest']
+    intent = rows[-1]
+    if intent.get('state') == 'UNKNOWN':
+        intent = next((r for r in reversed(rows) if r.get('idempotency_key') == intent.get('idempotency_key') and r.get('state') == 'INTENDED'), {})
+    if intent.get('state') != 'INTENDED' or intent.get('artifact_digest') != expected_artifact:
+        raise Stop('No matching unresolved intent; operator reconciliation required.')
+    actual = service.snapshot()
+    state = actual['source']['lab_state']
+    logs = actual['source']['transition_log']
+    before = intent['before']['source']['lab_state']
+    matches = (intent.get('target') == 'S1' and len(before) == len(state) == 1
+               and before[0]['current_state'] == 'S0' and state[0]['current_state'] == 'S1'
+               and len(logs) == 1 and logs[0]['target'] == 'S1'
+               and logs[0]['detail'].get('previous') == 'S0'
+               and all(r.get('amount_minor') == r['amount_rub'] * 100 for r in actual['source']['orders']))
+    if not matches:
+        audit.record('reconciliation', state='RECONCILIATION_BLOCKED', idempotency_key=intent['idempotency_key'],
+                     reason='DURABLE_STATE_DOES_NOT_MATCH_S1_INTENT', observed_effect=actual)
+        raise Stop('Durable state does not match S1 intent; no retry permitted.')
+    reason = 'S1_COMMITTED_WITHOUT_CONTROLLER_CONFIRMATION_REQUIRES_FRESH_OPERATOR_DECISION'
+    record = audit.record('reconciliation', state='RECONCILED_COMMITTED_STOP',
+                         idempotency_key=intent['idempotency_key'], target='S1',
+                         intended_record_digest=intent['record_digest'], artifact_digest=expected_artifact,
+                         reason=reason, observed_effect=actual, executed_actions=[])
+    return {'state':record['state'], 'reason':reason, 'observed_state':'S1', 'executed_actions':[]}
