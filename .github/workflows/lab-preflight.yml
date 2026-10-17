@@ -33,8 +33,9 @@ jobs:
           CLOUDRU_WORKFLOW_API_KEY: ${{ secrets.CLOUDRU_WORKFLOW_API_KEY }}
           CLOUDRU_LAB_SSH_PRIVATE_KEY: ${{ secrets.CLOUDRU_LAB_SSH_PRIVATE_KEY }}
           CLOUDRU_LAB_SSH_KNOWN_HOSTS: ${{ secrets.CLOUDRU_LAB_SSH_KNOWN_HOSTS }}
-          LAB_LLM_BASE_URL: ${{ vars.LAB_LLM_BASE_URL }}
-          LAB_LLM_MODEL: ${{ vars.LAB_LLM_MODEL }}
+          CLOUDRU_LLM_BASE_URL: ${{ vars.CLOUDRU_LLM_BASE_URL }}
+          CLOUDRU_LLM_MODEL: ${{ vars.CLOUDRU_LLM_MODEL }}
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
           CLOUDRU_LLM_API_KEY: ${{ secrets.CLOUDRU_LLM_API_KEY }}
         run: python3 infra/cloudru/lab/preflight.py
       - uses: actions/upload-artifact@v4

@@ -16,7 +16,7 @@ TENANT = "fc91c42d-c2ea-4d6d-a236-103fd1f37f00"
 REQUIRED = ["CLOUDRU_KEY_ID", "CLOUDRU_SECRET", "CLOUDRU_STATE_SSE_CUSTOMER_KEY"]
 PRESENCE = REQUIRED + ["CLOUDRU_STATE_ACCESS_KEY_ID", "CLOUDRU_STATE_SECRET_ACCESS_KEY",
     "CLOUDRU_SSH_PUBLIC_KEY", "CLOUDRU_UI_BASIC_AUTH_HASH", "CLOUDRU_WORKFLOW_API_KEY",
-    "CLOUDRU_LAB_SSH_PRIVATE_KEY", "CLOUDRU_LAB_SSH_KNOWN_HOSTS", "CLOUDRU_LLM_API_KEY"]
+    "CLOUDRU_LAB_SSH_PRIVATE_KEY", "CLOUDRU_LAB_SSH_KNOWN_HOSTS", "CLOUDRU_LLM_API_KEY", "CLOUDRU_FOUNDATION_API_KEY"]
 
 
 def select_state(state):
@@ -37,7 +37,7 @@ def select_state(state):
         vm = managed[key]
         if vm.get("project_id") != PROJECT or vm.get("name") != "dm-p1-" + label:
             raise ValueError("VM_IDENTITY_MISMATCH")
-        if vm.get("zone", {}).get("name") != "ru.AZ-2":
+        if live_zone_name(vm) != "ru.AZ-2":
             raise ValueError("VM_ZONE_MISMATCH")
         result[label] = vm
     if result["core"]["id"] != "97a6e631-1d80-4212-aa69-ef6454b029df":
@@ -47,6 +47,11 @@ def select_state(state):
         raise ValueError("PUBLIC_IP_ID_MISMATCH")
     result["ui_ip"] = ip["ip_address"]
     return result
+
+
+def live_zone_name(vm):
+    zone = vm.get("availability_zone") or vm.get("zone") or {}
+    return zone.get("name") if isinstance(zone, dict) else zone
 
 
 def probe(host, port):
@@ -63,7 +68,7 @@ def main():
         "secrets_present": {k: bool(os.getenv(k)) for k in PRESENCE},
         "vm_os_execution": "BLOCKED_UNVERIFIED_CHANNEL",
         "os_resources": "NOT_MEASURED", "deployment": "NOT_RUN",
-        "llm": "NOT_TESTED", "llm_config_present": {k: bool(os.getenv(k)) for k in ("LAB_LLM_BASE_URL", "LAB_LLM_MODEL")}, "terraform_mutations": "NONE", "checks": {}}
+        "llm": "NOT_TESTED", "llm_config_present": {k: bool(os.getenv(k)) for k in ("CLOUDRU_LLM_BASE_URL", "CLOUDRU_LLM_MODEL")}, "terraform_mutations": "NONE", "checks": {}}
     try:
         import boto3
         import requests
@@ -119,7 +124,7 @@ def main():
             vm = response.json().get("vm", response.json())
             if vm.get("project", {}).get("id") != PROJECT or vm.get("name") != expected["name"]:
                 raise ValueError("LIVE_VM_IDENTITY_MISMATCH")
-            if vm.get("zone", {}).get("name") != "ru.AZ-2":
+            if live_zone_name(vm) != "ru.AZ-2":
                 raise ValueError("LIVE_VM_ZONE_MISMATCH")
             # Strictly allowlist status values; never publish arbitrary metadata.
             status = vm.get("state", "UNKNOWN")
