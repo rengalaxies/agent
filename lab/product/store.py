@@ -46,7 +46,7 @@ class Store:
         return row
     def base(self,c,mode,**fields):
         return {**dict(id=uuid.uuid4().hex,change_id=c['change_id'],revision=c['revision'],input_digest=c['input_digest'],source_commit=c['source_commit'],mode=mode,created_at=now()),**fields}
-    def log(self,c,action,**fields): self.put('journal',self.base(c,'FIXTURE / CONTROL',action=action,**fields))
+    def log(self,c,action,**fields): self.put('journal',self.base(c,fields.pop('mode','FIXTURE / CONTROL'),action=action,**fields))
     def invalidate(self,cid,reason):
         for kind in RESULTS:
             for r in self.rows(kind):
@@ -84,7 +84,7 @@ class Store:
             snapshots=[s for s in self.rows('snapshots') if s['change_id']==c['change_id'] and s['revision']==c['revision']]
             basis=snapshots[-1]['basis_digest'] if snapshots else None
             j=self.base(c,payload['mode'],operation=payload['operation'],status='QUEUED',error=None,result_id=None,idempotency_key=payload['idempotency_key'],request_digest=digest(request),basis_digest=basis)
-            self.put('jobs',j);self.log(c,'JOB_QUEUED',job_id=j['id'])
+            self.put('jobs',j);self.log(c,'JOB_QUEUED',job_id=j['id'],mode=j['mode'])
             return j
     def is_current(self,job):
         c=self.latest(job['change_id'])
@@ -101,7 +101,7 @@ class Store:
             for d in self.rows('decisions'):
                 if d['card_id']==card['id'] and d.get('current'):d['current']=False;self.put('decisions',d)
             c=self.latest(card['change_id']); row=self.base(c,card['mode'],**allowed,decision_digest=digest(allowed),basis_digest=card['basis_digest'],current=True,grants_execution=False)
-            self.put('decisions',row);self.log(c,'TEAM_DECISION',decision_id=row['id'])
+            self.put('decisions',row);self.log(c,'TEAM_DECISION',decision_id=row['id'],mode=card['mode'])
             return row
     def state(self):
         with self.lock: return {**{k:self.rows(k) for k in KINDS},'execution_permission':False,'demo_roles':True}

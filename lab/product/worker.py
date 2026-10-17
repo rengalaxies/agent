@@ -51,11 +51,11 @@ class Worker:
                             if card['team']=='COORDINATOR':card['status']='заблокировано'
                             s.put('cards',card)
                 j.update(status='SUCCEEDED',result_id=rows[0]['id'] if rows else None)
-                s.put('jobs',j);s.log(c,'JOB_COMPLETED',job_id=j['id'],current=bool(current))
+                s.put('jobs',j);s.log(c,'JOB_COMPLETED',job_id=j['id'],current=bool(current),mode=j['mode'])
         except Exception as exc:
             with s.transaction():
                 j.update(status='BLOCKED' if isinstance(exc,core.Stop) else 'FAILED',error=str(exc) if isinstance(exc,core.Stop) else type(exc).__name__)
-                s.put('jobs',j);s.log(c,'JOB_STOPPED',job_id=j['id'],error=j['error'])
+                s.put('jobs',j);s.log(c,'JOB_STOPPED',job_id=j['id'],error=j['error'],mode=j['mode'])
         return True
     def latest_result(self,kind,j):
         values=[r for r in self.store.rows(kind) if r['change_id']==j['change_id'] and r['revision']==j['revision'] and r.get('current') and r.get('basis_digest')==j['basis_digest']]
@@ -71,13 +71,13 @@ class Worker:
             if len(histories)>=2 or tokens>=64000 or seconds>=240:raise core.Stop('Per-revision live budget exhausted: 2 calls / 64000 tokens / 240 model seconds')
             # Unknown previous response consumes remaining budget: never silently retry paid inference.
             if len(histories)!=len(usage) or any(not x.get('usage_complete') for x in usage):raise core.Stop('Prior inference outcome unknown; budget reconciliation required')
-            s.log(c,'LLM_RESERVED',job_id=j['id'])
+            s.log(c,'LLM_RESERVED',job_id=j['id'],mode='LIVE RUN')
         directory=self.artifacts/j['id'];audit=core.Audit(directory)
         llm=self.llm_factory(audit,max_calls=1,max_seconds=240-seconds,max_tokens=64000-tokens)
         started=time.monotonic()
         try:return llm.call(role,system,context)
         finally:
-            with s.transaction():s.log(c,'LLM_USAGE',job_id=j['id'],model=llm.model,tokens=llm.tokens,usage=llm.usage,seconds=round(time.monotonic()-started,3),calls=llm.calls,usage_complete=bool(llm.calls and len(llm.usage)==llm.calls),cost_usd='NOT_MEASURED',artifact_ref=str(directory))
+            with s.transaction():s.log(c,'LLM_USAGE',job_id=j['id'],mode='LIVE RUN',model=llm.model,tokens=llm.tokens,usage=llm.usage,seconds=round(time.monotonic()-started,3),calls=llm.calls,usage_complete=bool(llm.calls and len(llm.usage)==llm.calls),cost_usd='NOT_MEASURED',artifact_ref=str(directory))
     def model_snapshot(self,snapshot):
         return {k:snapshot[k] for k in ('basis_digest','collected_at','mode','owners','coverage_gaps') if k in snapshot} | {'edges':[{k:e[k] for k in ('source','target','source_kind','confirmation','routing_key','evidence_ids','line') if k in e} for e in snapshot.get('edges',[])]} | {'postgres':{k:snapshot.get('postgres',{}).get(k) for k in ('views','dependencies')},'rabbitmq':{'bindings':snapshot.get('rabbitmq',{}).get('bindings')}}
     def model_discovery(self,c):

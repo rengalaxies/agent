@@ -66,3 +66,10 @@ class WorkflowTests(unittest.TestCase):
         self.assertFalse(self.s.rows('snapshots')[0]['current']);self.assertTrue(self.s.rows('snapshots')[1]['current'])
 
 if __name__=='__main__':unittest.main()
+
+class JournalOriginTests(unittest.TestCase):
+    def test_operation_journal_keeps_real_origin(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/'state.db');c=store.create_change(change())
+            store.log(c,'LLM_USAGE',mode='LIVE RUN',tokens=12)
+            self.assertEqual(store.rows('journal')[-1]['mode'],'LIVE RUN')
