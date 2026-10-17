@@ -11,6 +11,8 @@ Overall: **NOT READY for the requested Cloud.ru + real-model internal demonstrat
 
 ## Original matrix, combined actual application results
 
+Restart qualification: [CI run 39062162959](https://github.com/rengalaxies/agent/actions/runs/39062162959), source `9ba0a730846d581f81b943ff2c77b266cab33836`, passed component restart control. Source/Billing rows survived PostgreSQL and RabbitMQ restart unchanged; a pending published event was consumed afterward into one ledger record for 12500 minor units. Evidence is preserved under `reports/ci-39062162959/`. This does not fulfill independent-operator restore T19. Independent static review additionally identified a grant/context time-of-check gap; the subsequent dispatcher fix reloads authority and revalidates hashes immediately before the effect. Expiry/revocation/context-change tests pass locally; the full R6 scenario remains unqualified.
+
 PASS below describes only the frozen scenario's exercised application behavior. Unit tests do not upgrade other rows. The detailed original expectations remain in `evaluator/expectations.json`.
 
 | Case | Status | Evidence / remaining scope |

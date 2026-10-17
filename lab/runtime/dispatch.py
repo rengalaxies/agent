@@ -10,7 +10,7 @@ from pathlib import Path
 from .core import Audit, Stop, digest, discover, enforce_grant, tree_digest
 
 
-def execute(root, candidate, change, grant, journal_dir, target, revoked=()):
+def execute(root, candidate, change, grant, journal_dir, target, revoked=(), authority_loader=None):
     """Reverify exact candidate and context before ONE explicit transition step.
 
     No shell, merge, broker administration or legacy retirement entrypoint exists.
@@ -18,6 +18,8 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=()):
     """
     from lab.evaluator.verify import verify, suite_digest
     from lab.app import service
+    if not callable(authority_loader):
+        raise Stop('Live authority loader required to recheck revocation immediately before execution.')
     if target not in ('S1', 'S2', 'S3', 'S4', 'S5'):
         raise Stop('Only explicit S1-S5 transition actions supported.')
     candidate = Path(candidate).resolve()
@@ -33,6 +35,21 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=()):
         raise Stop('Independent live candidate verification is incomplete or failed.')
     if tree_digest(candidate) != artifact:
         raise Stop('Artifact changed while checking.')
+    def recheck():
+        current_source = discover(root)
+        current_context = digest({'source': current_source['snapshot_digest'], 'change': change})
+        fresh = digest({'change_context': current_context, 'artifact_digest': tree_digest(candidate),
+                        'suite_digest': suite_digest()})
+        try:
+            authority = authority_loader()
+            current_grant = authority['grant']
+        except Exception:
+            raise Stop('Current authority unavailable; execution denied.') from None
+        if fresh != authorization_context:
+            raise Stop('Source, candidate or suite changed during verification.')
+        enforce_grant(current_grant, 'transition', target, change.get('environment_id', 'lab'),
+                      fresh, authority.get('revoked', ()))
+    recheck()
     audit = Audit(journal_dir)
     key = digest({'candidate': artifact, 'target': target, 'context': authorization_context})
     prior = [json.loads(line) for line in audit.path.read_text().splitlines()] if audit.path.exists() else []
@@ -49,6 +66,12 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=()):
     previous_sql = service.SQL
     previous_override = os.environ.pop("LAB_EXPAND_SQL", None)
     try:
+        try:
+            recheck()
+        except Stop:
+            audit.record('transition', state='DENIED', idempotency_key=key, target=target,
+                         reason='Authority or verification context invalid immediately before effect')
+            raise
         # Trusted service implementation, candidate SQL only; never import candidate Python.
         service.SQL = candidate / 'lab/sql'
         result = service.transition(target)
@@ -56,6 +79,8 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=()):
         audit.record('transition', state='CONFIRMED', idempotency_key=key, target=target,
                      result=result, observed_effect=after)
         return {'state': 'CONFIRMED', 'target': target, 'snapshot': after}
+    except Stop:
+        raise
     except Exception as exc:
         audit.record('transition', state='UNKNOWN', idempotency_key=key, target=target,
                      error_type=type(exc).__name__, recovery='Read durable source, billing and queue state; never blindly retry.')

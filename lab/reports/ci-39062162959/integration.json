@@ -1,0 +1,568 @@
+{
+  "suite_digest": "fe7f1485555edbda706c84d3c36f80dbea8093948f4e61634179f08fe6cbd211",
+  "suite_version": "pg-rmq-2026-10-17-v1",
+  "kind": "REAL_POSTGRESQL_RABBITMQ_INTEGRATION",
+  "checks": {
+    "baseline": {
+      "status": "PASS",
+      "evidence": {
+        "order_count": 6,
+        "expected_minor_total": 214848377900,
+        "ledger": {
+          "held-0": 0,
+          "held-1": 100,
+          "held-2": 700,
+          "held-3": 12500,
+          "held-4": 99999900,
+          "held-5": 214748364700
+        },
+        "state": "S0"
+      }
+    },
+    "wrong_migration_rejected": {
+      "status": "PASS",
+      "evidence": {
+        "verdict": "REJECT",
+        "source_unchanged": true,
+        "transactional_DDL_rolled_back": true
+      }
+    },
+    "readonly_verifier": {
+      "status": "PASS",
+      "evidence": {
+        "source_and_billing_roles": "SELECT only"
+      }
+    },
+    "compatible_S0_S5": {
+      "status": "PASS",
+      "evidence": {
+        "states": [
+          {
+            "order_count": 7,
+            "expected_minor_total": 214848378100,
+            "ledger": {
+              "held-0": 0,
+              "held-1": 100,
+              "held-2": 700,
+              "held-3": 12500,
+              "held-4": 99999900,
+              "held-5": 214748364700,
+              "mixed-1": 200
+            },
+            "state": "S1"
+          },
+          {
+            "order_count": 8,
+            "expected_minor_total": 214848378400,
+            "ledger": {
+              "held-0": 0,
+              "held-1": 100,
+              "held-2": 700,
+              "held-3": 12500,
+              "held-4": 99999900,
+              "held-5": 214748364700,
+              "mixed-1": 200,
+              "mixed-2": 300
+            },
+            "state": "S2"
+          },
+          {
+            "order_count": 9,
+            "expected_minor_total": 214848378800,
+            "ledger": {
+              "held-0": 0,
+              "held-1": 100,
+              "held-2": 700,
+              "held-3": 12500,
+              "held-4": 99999900,
+              "held-5": 214748364700,
+              "mixed-1": 200,
+              "mixed-2": 300,
+              "mixed-3": 400
+            },
+            "state": "S3"
+          },
+          {
+            "order_count": 10,
+            "expected_minor_total": 214848379300,
+            "ledger": {
+              "held-0": 0,
+              "held-1": 100,
+              "held-2": 700,
+              "held-3": 12500,
+              "held-4": 99999900,
+              "held-5": 214748364700,
+              "mixed-1": 200,
+              "mixed-2": 300,
+              "mixed-3": 400,
+              "mixed-4": 500
+            },
+            "state": "S4"
+          },
+          {
+            "order_count": 11,
+            "expected_minor_total": 214848379900,
+            "ledger": {
+              "held-0": 0,
+              "held-1": 100,
+              "held-2": 700,
+              "held-3": 12500,
+              "held-4": 99999900,
+              "held-5": 214748364700,
+              "mixed-1": 200,
+              "mixed-2": 300,
+              "mixed-3": 400,
+              "mixed-4": 500,
+              "mixed-5": 600
+            },
+            "state": "S5"
+          }
+        ],
+        "coverage": "R1-R5 financial transition; R6-R8 require runtime grant/context scenarios"
+      }
+    },
+    "T11": {
+      "status": "PASS",
+      "evidence": {
+        "fault": "after_publish_confirm",
+        "business": {
+          "order_count": 12,
+          "expected_minor_total": 214848381600,
+          "ledger": {
+            "confirm-loss": 1700,
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700,
+            "mixed-1": 200,
+            "mixed-2": 300,
+            "mixed-3": 400,
+            "mixed-4": 500,
+            "mixed-5": 600
+          },
+          "state": "S5"
+        },
+        "ledger_rows_for_faulted_order": 1
+      }
+    },
+    "T12": {
+      "status": "PASS",
+      "evidence": {
+        "fault": "after_billing_commit",
+        "business": {
+          "order_count": 13,
+          "expected_minor_total": 214848383300,
+          "ledger": {
+            "ack-loss": 1700,
+            "confirm-loss": 1700,
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700,
+            "mixed-1": 200,
+            "mixed-2": 300,
+            "mixed-3": 400,
+            "mixed-4": 500,
+            "mixed-5": 600
+          },
+          "state": "S5"
+        },
+        "ledger_rows_for_faulted_order": 1
+      }
+    },
+    "outbox_commit_publish_gap": {
+      "status": "PASS",
+      "evidence": {
+        "order_count": 14,
+        "expected_minor_total": 214848385600,
+        "ledger": {
+          "ack-loss": 1700,
+          "confirm-loss": 1700,
+          "held-0": 0,
+          "held-1": 100,
+          "held-2": 700,
+          "held-3": 12500,
+          "held-4": 99999900,
+          "held-5": 214748364700,
+          "mixed-1": 200,
+          "mixed-2": 300,
+          "mixed-3": 400,
+          "mixed-4": 500,
+          "mixed-5": 600,
+          "outbox-gap": 2300
+        },
+        "state": "S5"
+      }
+    },
+    "T05": {
+      "status": "PASS",
+      "evidence": {
+        "missing_binding_detected": true,
+        "no_ledger_before_recovery": true,
+        "recovery": {
+          "order_count": 15,
+          "expected_minor_total": 214848388700,
+          "ledger": {
+            "ack-loss": 1700,
+            "confirm-loss": 1700,
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700,
+            "mixed-1": 200,
+            "mixed-2": 300,
+            "mixed-3": 400,
+            "mixed-4": 500,
+            "mixed-5": 600,
+            "outbox-gap": 2300,
+            "routing-gap": 3100
+          },
+          "state": "S5"
+        }
+      }
+    },
+    "T16": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "class": "null",
+          "rejected": true,
+          "code": "AMOUNT"
+        },
+        {
+          "class": "negative",
+          "rejected": true,
+          "code": "AMOUNT"
+        },
+        {
+          "class": "fractional",
+          "rejected": true,
+          "code": "COMPATIBILITY"
+        },
+        {
+          "class": "currency",
+          "rejected": true,
+          "code": "CURRENCY"
+        },
+        {
+          "class": "overflow",
+          "rejected": true,
+          "code": "AMOUNT"
+        },
+        {
+          "class": "bool",
+          "rejected": true,
+          "code": "AMOUNT"
+        }
+      ]
+    },
+    "T15": {
+      "status": "PASS",
+      "evidence": {
+        "rejected_minor": [
+          12501,
+          12345
+        ],
+        "S6": "NOT_RUN; separate authorization required"
+      }
+    },
+    "idempotent_backfill_replay": {
+      "status": "PASS",
+      "evidence": {
+        "backfill_count": 1,
+        "replayed": true,
+        "limitation": "UNKNOWN journal transition not injected"
+      }
+    }
+  },
+  "cases": {
+    "T01": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T02": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T03": {
+      "status": "BLOCKED",
+      "evidence": {
+        "financial_transition": {
+          "status": "PASS",
+          "evidence": {
+            "states": [
+              {
+                "order_count": 7,
+                "expected_minor_total": 214848378100,
+                "ledger": {
+                  "held-0": 0,
+                  "held-1": 100,
+                  "held-2": 700,
+                  "held-3": 12500,
+                  "held-4": 99999900,
+                  "held-5": 214748364700,
+                  "mixed-1": 200
+                },
+                "state": "S1"
+              },
+              {
+                "order_count": 8,
+                "expected_minor_total": 214848378400,
+                "ledger": {
+                  "held-0": 0,
+                  "held-1": 100,
+                  "held-2": 700,
+                  "held-3": 12500,
+                  "held-4": 99999900,
+                  "held-5": 214748364700,
+                  "mixed-1": 200,
+                  "mixed-2": 300
+                },
+                "state": "S2"
+              },
+              {
+                "order_count": 9,
+                "expected_minor_total": 214848378800,
+                "ledger": {
+                  "held-0": 0,
+                  "held-1": 100,
+                  "held-2": 700,
+                  "held-3": 12500,
+                  "held-4": 99999900,
+                  "held-5": 214748364700,
+                  "mixed-1": 200,
+                  "mixed-2": 300,
+                  "mixed-3": 400
+                },
+                "state": "S3"
+              },
+              {
+                "order_count": 10,
+                "expected_minor_total": 214848379300,
+                "ledger": {
+                  "held-0": 0,
+                  "held-1": 100,
+                  "held-2": 700,
+                  "held-3": 12500,
+                  "held-4": 99999900,
+                  "held-5": 214748364700,
+                  "mixed-1": 200,
+                  "mixed-2": 300,
+                  "mixed-3": 400,
+                  "mixed-4": 500
+                },
+                "state": "S4"
+              },
+              {
+                "order_count": 11,
+                "expected_minor_total": 214848379900,
+                "ledger": {
+                  "held-0": 0,
+                  "held-1": 100,
+                  "held-2": 700,
+                  "held-3": 12500,
+                  "held-4": 99999900,
+                  "held-5": 214748364700,
+                  "mixed-1": 200,
+                  "mixed-2": 300,
+                  "mixed-3": 400,
+                  "mixed-4": 500,
+                  "mixed-5": 600
+                },
+                "state": "S5"
+              }
+            ],
+            "coverage": "R1-R5 financial transition; R6-R8 require runtime grant/context scenarios"
+          }
+        },
+        "remaining": "Full R6-R8 enforcement not established by application integration suite"
+      }
+    },
+    "T04": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T05": {
+      "status": "PASS",
+      "evidence": {
+        "missing_binding_detected": true,
+        "no_ledger_before_recovery": true,
+        "recovery": {
+          "order_count": 15,
+          "expected_minor_total": 214848388700,
+          "ledger": {
+            "ack-loss": 1700,
+            "confirm-loss": 1700,
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700,
+            "mixed-1": 200,
+            "mixed-2": 300,
+            "mixed-3": 400,
+            "mixed-4": 500,
+            "mixed-5": 600,
+            "outbox-gap": 2300,
+            "routing-gap": 3100
+          },
+          "state": "S5"
+        }
+      }
+    },
+    "T06": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T07": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T08": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T09": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T10": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T11": {
+      "status": "PASS",
+      "evidence": {
+        "fault": "after_publish_confirm",
+        "business": {
+          "order_count": 12,
+          "expected_minor_total": 214848381600,
+          "ledger": {
+            "confirm-loss": 1700,
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700,
+            "mixed-1": 200,
+            "mixed-2": 300,
+            "mixed-3": 400,
+            "mixed-4": 500,
+            "mixed-5": 600
+          },
+          "state": "S5"
+        },
+        "ledger_rows_for_faulted_order": 1
+      }
+    },
+    "T12": {
+      "status": "PASS",
+      "evidence": {
+        "fault": "after_billing_commit",
+        "business": {
+          "order_count": 13,
+          "expected_minor_total": 214848383300,
+          "ledger": {
+            "ack-loss": 1700,
+            "confirm-loss": 1700,
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700,
+            "mixed-1": 200,
+            "mixed-2": 300,
+            "mixed-3": 400,
+            "mixed-4": 500,
+            "mixed-5": 600
+          },
+          "state": "S5"
+        },
+        "ledger_rows_for_faulted_order": 1
+      }
+    },
+    "T13": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T14": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T15": {
+      "status": "PASS",
+      "evidence": {
+        "rejected_minor": [
+          12501,
+          12345
+        ],
+        "S6": "NOT_RUN; separate authorization required"
+      }
+    },
+    "T16": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "class": "null",
+          "rejected": true,
+          "code": "AMOUNT"
+        },
+        {
+          "class": "negative",
+          "rejected": true,
+          "code": "AMOUNT"
+        },
+        {
+          "class": "fractional",
+          "rejected": true,
+          "code": "COMPATIBILITY"
+        },
+        {
+          "class": "currency",
+          "rejected": true,
+          "code": "CURRENCY"
+        },
+        {
+          "class": "overflow",
+          "rejected": true,
+          "code": "AMOUNT"
+        },
+        {
+          "class": "bool",
+          "rejected": true,
+          "code": "AMOUNT"
+        }
+      ]
+    },
+    "T17": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T18": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    },
+    "T19": {
+      "status": "NOT_RUN",
+      "evidence": "Not executed in this run"
+    }
+  },
+  "measurements": {
+    "manual_active_seconds": "NOT_MEASURED",
+    "model_cost": "NOT_MEASURED",
+    "infrastructure_cost": "NOT_MEASURED",
+    "waiting_seconds": "NOT_MEASURED",
+    "execution_seconds": 1.6879143310000018
+  },
+  "outcome": "INCOMPLETE",
+  "coverage": "Live money, mixed versions, durable outbox, duplicate delivery, commit-before-ack; no cloud qualification or real LLM claim"
+}
