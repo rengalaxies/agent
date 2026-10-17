@@ -1,0 +1,89 @@
+name: Lab isolated PostgreSQL RabbitMQ verification (CI only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths: ['lab/**', '.github/workflows/lab-integration.yml', 'infra/cloudru/lab/**']
+  pull_request:
+    paths: ['lab/**', '.github/workflows/lab-integration.yml', 'infra/cloudru/lab/**']
+permissions:
+  contents: read
+concurrency:
+  group: lab-ci-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  isolated-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      LAB_APP_IMAGE: datamesh-money-lab:ci-${{ github.sha }}
+      COMPOSE_PROJECT_NAME: dmrp-lab-ci-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare ephemeral CI credentials (never cloud credentials)
+        run: |
+          python3 - <<'PY'
+          import os, secrets
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              for name in ['PG_ADMIN_PASSWORD','ORDERS_PASSWORD','BILLING_PASSWORD','VERIFIER_PASSWORD','RABBIT_PASSWORD']:
+                  value = secrets.token_hex(24)
+                  print('::add-mask::' + value)
+                  f.write(name + '=' + value + '\n')
+          PY
+      - name: Scope guard unit tests
+        run: python3 -m unittest discover -s infra/cloudru/lab -p 'test_*.py'
+      - name: Resolve immutable dependency images for this run
+        run: |
+          set -eu
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          images = {'POSTGRES_IMAGE':'postgres:16.10-bookworm',
+                    'RABBITMQ_IMAGE':'rabbitmq:3.13.7-management',
+                    'PYTHON_IMAGE':'python:3.12.11-slim-bookworm'}
+          resolved = {}
+          for name, tag in images.items():
+              subprocess.run(['docker', 'pull', tag], check=True, stdout=subprocess.DEVNULL)
+              digest = json.loads(subprocess.check_output(['docker','image','inspect','--format','{{json .RepoDigests}}',tag]))[0]
+              assert '@sha256:' in digest
+              resolved[name] = digest
+          pathlib.Path('lab-ci-images.json').write_text(json.dumps({'source_commit':os.environ['GITHUB_SHA'],'images':resolved},indent=2))
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              for name, digest in resolved.items():
+                  f.write(name+'='+digest+'\n')
+          PY
+      - name: Build isolated lab and require actual database/broker readiness
+        run: |
+          docker compose -f lab/compose.yaml build --build-arg PYTHON_IMAGE="$PYTHON_IMAGE" app
+          docker image inspect --format '{{.Id}}' "$LAB_APP_IMAGE" > lab-ci-app-image-id.txt
+          docker compose -f lab/compose.yaml up -d --wait --wait-timeout 120 postgres rabbitmq
+          docker compose -f lab/compose.yaml run --rm bootstrap
+      - name: Unit checks within built application image
+        run: docker compose -f lab/compose.yaml run --rm --entrypoint python app -m unittest discover -s lab/tests
+      - name: Independent scenario checks on live CI services
+        run: |
+          mkdir -p lab-evidence
+          chmod 0777 lab-evidence
+          docker compose -f lab/compose.yaml run --rm --entrypoint python -v "$PWD/lab-evidence:/evidence" app -m lab.tests.integration --output /evidence/integration.json
+      - name: Report bounded CI outcome
+        if: always()
+        run: |
+          {
+            echo '## Isolated CI services, not Cloud.ru deployment'
+            echo "Source commit: $GITHUB_SHA"
+            echo 'VM deployment and real LLM execution are not established by this run.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-ci-evidence-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            lab-ci-images.json
+            lab-ci-app-image-id.txt
+            lab-evidence/*.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Stop only this disposable CI compose project
+        if: always()
+        run: docker compose -f lab/compose.yaml down --remove-orphans

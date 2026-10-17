@@ -20,7 +20,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install state and API clients
-        run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3
+        run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3 paramiko==3.5.1
       - name: Read exact approved state and VM identities without mutation
         env:
           CLOUDRU_KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}

@@ -5,6 +5,10 @@ State and API responses remain in memory, never in logs or artifacts.
 """
 import base64
 import json
+import hashlib
+import io
+import logging
+import tempfile
 import os
 from pathlib import Path
 import socket
@@ -45,6 +49,10 @@ def select_state(state):
     ip = managed[("cloudru_evolution_compute_external_ip", "ui", None)]
     if ip.get("id") != "33a27f64-e474-49ed-a17b-15f67dd16400":
         raise ValueError("PUBLIC_IP_ID_MISMATCH")
+    nic = managed[("cloudru_evolution_compute_interface", "nic", "ui")]
+    if ip.get("network_interface", {}).get("id") != nic["id"]:
+        raise ValueError("PUBLIC_IP_INTERFACE_MISMATCH")
+    result["ui_nic_id"] = nic["id"]
     result["ui_ip"] = ip["ip_address"]
     return result
 
@@ -60,6 +68,67 @@ def probe(host, port):
             return "TCP_CONNECTED"
     except OSError:
         return "TCP_UNREACHABLE"
+
+
+def ssh_probe(host, private_key=None):
+    """Public handshake only unless trusted known_hosts is supplied beforehand."""
+    import paramiko
+    logging.getLogger("paramiko").disabled = True
+    transport = None
+    result = {"authentication": "NOT_ATTEMPTED", "host_trust": "UNVERIFIED"}
+    try:
+        sock = socket.create_connection((host, 22), timeout=8)
+        transport = paramiko.Transport(sock)
+        transport.banner_timeout = 8
+        transport.start_client(timeout=10)
+        key = transport.get_remote_server_key()
+        result["observed_host_key_sha256"] = "SHA256:" + base64.b64encode(
+            hashlib.sha256(key.asbytes()).digest()).decode().rstrip("=")
+        result["observed_host_key_type"] = key.get_name()
+        transport.close()
+        transport = None
+        known = os.getenv("CLOUDRU_LAB_SSH_KNOWN_HOSTS", "").strip()
+        if not known:
+            result["status"] = "BLOCKED_HOST_TRUST_UNVERIFIED"
+            return result
+        if not private_key:
+            result["status"] = "BLOCKED_NO_VERIFIED_CREDENTIAL"
+            return result
+        # Never promote the observed key to trust. Use only preconfigured entries.
+        with tempfile.TemporaryDirectory() as directory:
+            known_path = Path(directory) / "known_hosts"
+            known_path.write_text(known + "\n")
+            known_path.chmod(0o600)
+            with paramiko.SSHClient() as client:
+                client.load_host_keys(str(known_path))
+                client.set_missing_host_key_policy(paramiko.RejectPolicy())
+                private = paramiko.Ed25519Key.from_private_key(io.StringIO(private_key.decode()))
+                client.connect(host, username="dmadmin", pkey=private,
+                    timeout=8, banner_timeout=8, auth_timeout=8,
+                    look_for_keys=False, allow_agent=False)
+                result.update(authentication="PASS", host_trust="PINNED_KNOWN_HOSTS")
+                code = Path(__file__).with_name("host_inventory.py").read_text()
+                stdin, stdout, stderr = client.exec_command("python3 -", timeout=90)
+                stdin.write(code)
+                stdin.channel.shutdown_write()
+                raw = stdout.read(65536)
+                exit_code = stdout.channel.recv_exit_status()
+                if exit_code:
+                    result.update(status="BLOCKED_OS_INVENTORY", os_exit_code=exit_code)
+                else:
+                    inventory = json.loads(raw)
+                    # Only known inventory fields; no arbitrary remote output.
+                    result["os_inventory"] = {k: inventory[k] for k in
+                        ("cpu_count", "loadavg", "memory", "disk_root", "container_runtime",
+                         "docker_version", "compose_version", "containers", "volume_names") if k in inventory}
+                    result["status"] = "PASS_READONLY_OS_INVENTORY"
+    except Exception as exc:
+        result["status"] = "BLOCKED_SSH_PROBE"
+        result["error_class"] = type(exc).__name__
+    finally:
+        if transport:
+            transport.close()
+    return result
 
 
 def main():
@@ -96,6 +165,7 @@ def main():
         selected = select_state(state)
         report["checks"]["existing_state_scope"] = "PASS"
         report["state_serial"] = state["serial"]
+        key_body = None
         try:
             from cryptography.hazmat.primitives import serialization
             key_body = s3.get_object(Bucket="test-bucket-ds", Key="deployment/p1/ui-recovery-key.pem",
@@ -107,8 +177,11 @@ def main():
             saved_public = (metadata.get("public_key") or {}).get("string_value", "")
             report["recovery_key"] = {"readable": True, "matches_ui_state_metadata":
                 saved_public.split()[:2] == public.split()[:2], "os_authentication": "NOT_TESTED"}
-            del key_body, recovery, public
+            if not report["recovery_key"]["matches_ui_state_metadata"]:
+                key_body = None
+            del recovery, public
         except Exception as exc:
+            key_body = None
             report["recovery_key"] = {"readable": False, "error_class": type(exc).__name__}
 
         response = requests.post("https://iam.api.cloud.ru/api/v1/auth/token",
@@ -126,6 +199,9 @@ def main():
                 raise ValueError("LIVE_VM_IDENTITY_MISMATCH")
             if live_zone_name(vm) != "ru.AZ-2":
                 raise ValueError("LIVE_VM_ZONE_MISMATCH")
+            if label == "ui" and not any(nic.get("id") == selected["ui_nic_id"]
+                                          for nic in (vm.get("interfaces") or [])):
+                raise ValueError("LIVE_UI_INTERFACE_MISMATCH")
             # Strictly allowlist status values; never publish arbitrary metadata.
             status = vm.get("state", "UNKNOWN")
             if not isinstance(status, str) or len(status) > 80:
@@ -136,12 +212,19 @@ def main():
                 "guest_agent_does_not_prove_exec": True}
         report["checks"]["ui_tcp_22"] = probe(selected["ui_ip"], 22)
         report["checks"]["ui_tcp_443"] = probe(selected["ui_ip"], 443)
+        if report["checks"]["ui_tcp_22"] == "TCP_CONNECTED":
+            report["ui_ssh"] = ssh_probe(selected["ui_ip"], key_body)
+            if report["ui_ssh"]["status"] == "PASS_READONLY_OS_INVENTORY":
+                report["vm_os_execution"] = "UI_READONLY_VERIFIED_CORE_UNVERIFIED"
+                report["os_resources"] = "UI_MEASURED_CORE_NOT_MEASURED"
+        del key_body
         report["inventory"] = "PASS"
     except Exception as exc:
         # Exception payloads may contain state or request credentials; class only.
         report["inventory"] = "BLOCKED"
         report["error_class"] = type(exc).__name__
         if isinstance(exc, ValueError) and str(exc) in {
+            "PUBLIC_IP_INTERFACE_MISMATCH", "LIVE_UI_INTERFACE_MISMATCH",
             "STATE_IDENTITY_MISSING", "STATE_PROJECT_MISMATCH", "VM_IDENTITY_MISMATCH",
             "VM_ZONE_MISMATCH", "CORE_ID_MISMATCH", "PUBLIC_IP_ID_MISMATCH", "MISSING_REQUIRED_SECRET",
             "INVALID_SSE_KEY", "INCOMPLETE_S3_CREDENTIAL_PAIR", "LIVE_VM_IDENTITY_MISMATCH", "LIVE_VM_ZONE_MISMATCH"}:

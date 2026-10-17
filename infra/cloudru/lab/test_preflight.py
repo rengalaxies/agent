@@ -9,7 +9,8 @@ class ScopeTests(unittest.TestCase):
         for kind, name, index, attrs in [
             ("cloudru_evolution_compute_vm", "ui_vm", None, {"id": "ui", "name": "dm-p1-ui"}),
             ("cloudru_evolution_compute_vm", "vm", "core", {"id": "97a6e631-1d80-4212-aa69-ef6454b029df", "name": "dm-p1-core"}),
-            ("cloudru_evolution_compute_external_ip", "ui", None, {"id": "33a27f64-e474-49ed-a17b-15f67dd16400", "ip_address": "192.0.2.1"}),
+            ("cloudru_evolution_compute_external_ip", "ui", None, {"id": "33a27f64-e474-49ed-a17b-15f67dd16400", "ip_address": "192.0.2.1", "network_interface": {"id": "nic"}}),
+            ("cloudru_evolution_compute_interface", "nic", "ui", {"id": "nic"}),
         ]:
             attrs.update(project_id=PROJECT, zone={"name": "ru.AZ-2"})
             resources.append({"mode": "managed", "type": kind, "name": name,
