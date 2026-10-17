@@ -1,5 +1,5 @@
 name: Protected interview rehearsal CI_ONLY without inference
-# Reviewed exact source, current snapshot and safe UI example guards.
+# Independent runbook-only executor added after authored integration acceptance.
 on:
   push:
     branches: [feat/postgres-rabbitmq-agent-lab]
@@ -35,7 +35,7 @@ jobs:
           with open(os.environ['GITHUB_ENV'],'a') as f:
               for k,v in images.items():f.write(k+'='+v+'\n')
           PY
-      - name: Real catalogs, A-H API integration and actual browser user path
+      - name: Three interview situations and independent runbook browser rehearsal
         run: python3 -m lab.product.interview_ci
       - uses: actions/upload-artifact@v4
         if: always()

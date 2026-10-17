@@ -14,18 +14,19 @@ from lab.runtime.core import Stop, now
 from .store import Store, MODES
 
 SCENARIO_VERSION = 'interview-1'
-CONSENT_VERSION = 'minimal-observations-1'
-CONSENT_NOTICE = ('Optional research recording: random session ID, scenario version, mode, '
-                  'timestamps, action/error/decision categories and moderator assistance. '
-                  'No names, email, free text, keys or screen capture. Technical execution '
-                  'audit is separate. You may decline or delete this session research export.')
+CONSENT_VERSION = 'minimal-observations-2-ru'
+CONSENT_NOTICE = ('Необязательная исследовательская запись: случайный ID сессии, версия сценария, режим, '
+                  'время, категории действий, ошибок, решений и помощи модератора. '
+                  'Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. '
+                  'Технический журнал исполнения хранится отдельно. Можно отказаться от записи '
+                  'или удалить исследовательские данные этой сессии.')
 SCENARIOS = {
-    'confirmed': {'reuses':['A'], 'initial_state':'Empty workspace; load existing breaking example, collect current sources, explicitly choose replay/control.',
-                  'expected':'Billing and analytics cards show evidence, risk/reproduction and next action; acknowledgement never permits apply.'},
-    'unknown-owner': {'reuses':['C'], 'initial_state':'Empty workspace; use the existing C missing-owner controlled catalog profile.',
-                      'expected':'Owner uncertainty is explicit and the coordinator receives the question; no invented owner.'},
-    'stale': {'reuses':['D','E'], 'initial_state':'Empty workspace; run existing A then create revision 2 or recollect changed supported basis.',
-              'expected':'Earlier cards, decisions and PASS remain history only; fresh assessment required.'},
+    'confirmed': {'reuses':['A'], 'initial_state':'Пустая сессия: создайте существующий ломающий пример, соберите текущие основания и явно выберите REPLAY.',
+                  'expected':'Карточки billing и аналитики содержат основания, риск отдельно от воспроизведения и следующее действие. Ознакомление не разрешает применение.'},
+    'unknown-owner': {'reuses':['C'], 'initial_state':'Пустая сессия: используйте существующий профиль C с контрольным отсутствием владельца в объявленном каталоге.',
+                      'expected':'Неопределённость владельца явно обозначена, вопрос направлен координатору; владелец не выдумывается.'},
+    'stale': {'reuses':['D','E'], 'initial_state':'Пустая сессия: пройдите существующий A, затем создайте ревизию 2 или соберите изменившиеся поддерживаемые основания.',
+              'expected':'Прежние карточки, решения и PASS остаются только в истории; требуется новая оценка.'},
 }
 ACTIONS = {'CHANGE_CREATED','JOB_QUEUED','JOB_COMPLETED','JOB_STOPPED','TEAM_DECISION',
            'SCENARIO_STARTED','EXPLICIT_REPLAY_SELECTED','MODERATOR_HELP','SESSION_ENDED'}

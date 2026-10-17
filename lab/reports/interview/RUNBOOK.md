@@ -37,3 +37,11 @@ On loss of the protected cloud address, switch format to moderator presentation 
 ## Backup and executor
 
 Existing backup screenshots are in `lab/reports/product-path/screenshots/`. This batch adds synthetic-session export and CI browser evidence under `lab/reports/interview/`. Workflow `lab-interview-ci.yml` executes remotely on GitHub Actions without model credentials. All rehearsal reports must state CI_ONLY until target cloud acceptance exists. Agent rehearsal is not a user study.
+
+## Current visible controls
+
+Scenario dropdown labels are "Подтверждённая зависимость", "Неизвестный владелец (контроль каталога)", and "Устаревание после новой ревизии". Click "Начать отдельную сессию". In "Изменения", keep the "Ломающее: неверный backfill RUB → minor" supported example, fill a session-local "ID изменения", keep "Ревизия" 1 and the displayed exact "Исходный commit", then click "Сохранить изменение". This creates the example; there is no separate load-example button.
+
+Use tabs "Страница изменения", "Inbox команды", "Патч и проверка". Mode is "Режим следующей операции". The action buttons are "Собрать основания", "Запустить анализ", "Подготовить патч", and (trusted isolated CI only) "Независимо проверить". Wait for the job's terminal result before the next operation. Refresh using "Обновить состояние" if needed; preserve any failure displayed in the job history.
+
+In Inbox select the "Демонстрационная роль, не аутентификация" team and keep the default "Ознакомились" when acknowledging and click "Записать решение". In the stale situation, return to "Страница изменения", click "Подготовить новую ревизию", then submit the form with "Сохранить изменение"; preparing the form alone does not create revision2. The session controls are "Сбросить только эту сессию", "Экспорт исследования JSON", "Удалить исследовательские записи", and "Завершить сессию". Default-off recording may stay off for a synthetic rehearsal; an empty research export then correctly records no observations.

@@ -41,3 +41,12 @@ SQLite transactions persist all change revisions, snapshots, jobs, assessments, 
 LIVE RUN means new live collection/model invocation; REPLAY means reused saved model output, even if its artifact is independently rechecked now; FIXTURE / CONTROL identifies deterministic scenario control. Configured bindings are not observed message delivery. Repository syntax adapters are narrow literal AST/SQL-reference extraction, not general static analysis or a complete dependency graph. Owner bindings are declared, not discovered people. Telemetry is absent and shown as a gap.
 
 All financial verification is scoped R1-R5 candidate acceptance. Original full T01-T19 acceptance, deployed-state freshness, signed multi-party authorization and general recovery remain open. `POST /api/lab/apply` always returns 403. No model output, team review or green technical job can override it.
+
+
+## Browser-only interview preparation
+
+The participant installs nothing. Remote executor: `.github/workflows/lab-interview-ci.yml`, no model credentials. Interview runbook/status: `lab/reports/interview/RUNBOOK.md` and `REPORT.md`. Until a protected cloud URL passes target acceptance, use CI_ONLY evidence/saved-materials format; localhost is not participant delivery.
+
+Optional deployment owner configuration: `LAB_REQUIRE_AUTH=1`, nonempty `LAB_AUTH_USERNAME`/`LAB_AUTH_PASSWORD` from private server secrets, `LAB_COOKIE_SECURE=1` behind HTTPS. Authentication covers every UI/API route; protected mode requires a selected isolated session. Keep one process/worker, private durable session storage, no public database/broker/admin. New sessions/reset each have separate SQLite and artifacts; observations are opt-in, category-only, exportable/deletable separately from technical audit.
+
+The ordinary web process has no Docker authority: `LAB_ENABLE_ISOLATED_VERIFIER` defaults off. Only the trusted disposable CI harness sets it to1. Do not mount a Docker socket or grant Docker-group privileges to the public application. New cloud verification requires a separately restricted executor; saved checks must remain historical REPLAY. Apply stays403.

@@ -138,6 +138,10 @@ def main():
             page.locator('#session-end').click();settled(lambda:current()['status']=='ENDED')
             report['scenarios'].update(confirmed={'status':'PASS','patch':'REPLAY','verifier':'fresh isolated PostgreSQL/RabbitMQ R1-R5'},unknown_owner={'status':'PASS','ownership':'explicit CONTROL','catalogs':'LIVE RUN'},stale={'status':'PASS','revision':2},live_unavailable={'status':'PASS','failed_job':failed['id'],'fallback':'explicit subsequent REPLAY job','provider_calls':0},research={'status':'PASS','consent':'explicit','export':'synthetic-session-export.json','deletion':'research only; technical decisions retained'},authentication={'status':'PASS','unauthenticated':401,'transport':'CI loopback HTTP only; no public deployment HTTPS claim'},apply={'status':'PASS','direct_api':403})
             browser.close()
+        from lab.product.independent_rehearsal import run as rehearse
+        rehearsal=rehearse(URL,env['LAB_AUTH_USERNAME'],env['LAB_AUTH_PASSWORD'],OUT/'independent')
+        report['independent_rehearsal']={'target':'CI_ONLY','situations':[{k:i[k] for k in ('scenario','result')} for i in rehearsal['situations']]}
+        assert all(i['result']=='COMPLETED' for i in rehearsal['situations']),'INDEPENDENT_REHEARSAL_INCOMPLETE'
         report['outcome']='PASS'
     except Exception as exc:
         report['errors'].append({'type':type(exc).__name__,'message':str(exc)[:1500] if isinstance(exc,AssertionError) else 'bounded step failed'})
