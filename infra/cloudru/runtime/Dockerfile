@@ -1,6 +1,7 @@
 FROM python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
 RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir fastapi==0.115.12 uvicorn==0.34.2 httpx==0.28.1 pika==1.3.2 'psycopg[binary]==3.2.9'
+LABEL org.opencontainers.image.revision="107dfd14292a5ab06593d424bf0b94f1cccb0b90"
 WORKDIR /work
 COPY . /work
 USER 10001:10001

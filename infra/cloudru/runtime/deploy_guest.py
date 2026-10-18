@@ -5,7 +5,9 @@ P=pathlib.Path;cfg=json.load(sys.stdin);SOURCE='107dfd14292a5ab06593d424bf0b94f1
 assert os.getuid()==0 and socket.gethostname()=='dm-p1-ui'
 def run(args,timeout=180):
  p=subprocess.run(args,capture_output=True,text=True,timeout=timeout)
- if p.returncode:raise RuntimeError('STEP_FAILED:'+args[0]+':'+(args[1] if len(args)>1 else '')+':'+str(p.returncode))
+ if p.returncode:
+  log=root/'last-step.log';log.write_text(p.stdout+'\n'+p.stderr);log.chmod(0o600)
+  raise RuntimeError('STEP_FAILED:'+args[0]+':'+(args[1] if len(args)>1 else '')+':'+str(p.returncode))
  return p.stdout.strip()
 assert run(['git','-C',str(stage),'rev-parse','HEAD'])==SOURCE
 assert run(['git','-C',str(stage),'rev-parse','HEAD^{tree}'])=='540a48cc47d87d1656e744aa20ab996d6af7bca8'
@@ -23,15 +25,31 @@ if secretpath.exists():secret=json.loads(secretpath.read_text())
 else:
  secret={k:secrets.token_hex(24) for k in ['PG_ADMIN_PASSWORD','ORDERS_PASSWORD','BILLING_PASSWORD','VERIFIER_PASSWORD','RABBIT_PASSWORD','MONITOR_PASSWORD','INTERNAL_PASSWORD']};secretpath.write_text(json.dumps(secret));secretpath.chmod(0o600)
 image='agent-cloud-product:'+SOURCE
-if subprocess.run(['docker','image','inspect',image],capture_output=True).returncode:
- run(['docker','build','--file',str(root/'runtime'/'Dockerfile'),'--tag',image,str(stage)],900)
-pg='postgres@sha256:38471f330eb885e04de130b768d6db4e10469e2311879c7e5c699f6d2d8a1c74';rb='rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69'
+# Preserve the concrete native build failure before using CI-built images.
+if not (root/'native-build-diagnostic.log').exists():
+ try:
+  probe=subprocess.run(['docker','build','--file',str(root/'runtime'/'Dockerfile'),'--tag',image,str(stage)],capture_output=True,text=True,timeout=90)
+  diagnostic=probe.stdout+'\n'+probe.stderr
+ except subprocess.TimeoutExpired:diagnostic='Native Docker build exceeded the diagnostic bound of 90 seconds; CI image delivery used.'
+ log=root/'native-build-diagnostic.log';log.write_text(diagnostic);log.chmod(0o600)
+archive=incoming/'runtime-images.tar.gz';manifest=cfg['images'];h=hashlib.sha256()
+with archive.open('rb') as f:
+ for chunk in iter(lambda:f.read(1024*1024),b''):h.update(chunk)
+assert h.hexdigest()==manifest['sha256'] and archive.stat().st_size==manifest['bytes'],'IMAGE_ARCHIVE_CHECKSUM_MISMATCH'
+assert manifest['product_commit']==SOURCE and manifest['product_tree']=='540a48cc47d87d1656e744aa20ab996d6af7bca8'
+run(['docker','load','--input',str(archive)],600)
+for name,item in manifest['images'].items():
+ d=json.loads(run(['docker','image','inspect',item['id']]))[0];assert d['Id']==item['id'] and d['Architecture']=='amd64'
+ run(['docker','tag',item['id'],'agent-cloud-'+name+':verified'])
+assert json.loads(run(['docker','image','inspect',manifest['images']['app']['id']]))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+image='agent-cloud-app:verified'
+pg='agent-cloud-postgres:verified';rb='agent-cloud-rabbitmq:verified'
 common={'restart':'unless-stopped','mem_limit':'384m','cpus':0.5,'pids_limit':200,'logging':{'driver':'json-file','options':{'max-size':'5m','max-file':'2'}},'networks':['private']}
 services={'postgres':{**common,'image':pg,'environment':{'POSTGRES_PASSWORD':secret['PG_ADMIN_PASSWORD']},'volumes':['postgres-data:/var/lib/postgresql/data'],'healthcheck':{'test':['CMD-SHELL','pg_isready -U postgres'],'interval':'5s','timeout':'3s','retries':30}},'rabbitmq':{**common,'image':rb,'hostname':'rabbitmq','environment':{'RABBITMQ_DEFAULT_USER':'lab','RABBITMQ_DEFAULT_PASS':secret['RABBIT_PASSWORD'],'RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS':'+S 1:1 +A 4'},'volumes':['rabbit-data:/var/lib/rabbitmq'],'healthcheck':{'test':['CMD','rabbitmq-diagnostics','-q','ping'],'interval':'10s','timeout':'5s','retries':30}}}
 web_env={'LAB_REQUIRE_AUTH':'1','LAB_AUTH_USERNAME':'internal_proxy','LAB_AUTH_PASSWORD':secret['INTERNAL_PASSWORD'],'LAB_COOKIE_SECURE':'1','LAB_PRODUCT_DB':'/state/state.sqlite','LAB_ARTIFACT_ROOT':'/state/artifacts','LAB_REPO_ROOT':'/work','SOURCE_READ_DSN':'host=postgres dbname=lab_source user=lab_verifier password='+secret['VERIFIER_PASSWORD'],'RABBIT_READ_URL':'http://rabbitmq:15672','RABBIT_READ_USER':'cloud_monitor','RABBIT_READ_PASSWORD':secret['MONITOR_PASSWORD'],'RABBIT_PERMISSION_ATTESTATION_FILE':'/attestation/permission.json','LAB_ENABLE_ISOLATED_VERIFIER':'0'}
 services['web']={**common,'image':image,'user':'10001:10001','mem_limit':'640m','cpus':0.75,'read_only':True,'cap_drop':['ALL'],'security_opt':['no-new-privileges:true'],'tmpfs':['/tmp:size=64m,noexec,nosuid,nodev'],'volumes':[str(root/'state')+':/state',str(root/'runtime')+':/runtime:ro',str(root/'attestation')+':/attestation:ro'],'environment':web_env,'command':['-m','uvicorn','cloud_server:app','--app-dir','/runtime','--host','0.0.0.0','--port','8088','--workers','1','--proxy-headers','--forwarded-allow-ips','*','--no-access-log'],'healthcheck':{'test':['CMD','python','-c',"import os,urllib.request,base64;r=urllib.request.Request('http://127.0.0.1:8088/api/lab/readyz',headers={'Authorization':'Basic '+base64.b64encode(('internal_proxy:'+os.environ['LAB_AUTH_PASSWORD']).encode()).decode()});urllib.request.urlopen(r,timeout=5)"],'interval':'15s','timeout':'8s','retries':4}}
 # Caddy has no administrative API; only 443 is published, nginx on 80 is untouched.
-proxy_image='caddy:2.10.2-alpine';run(['docker','pull',proxy_image],300);proxy_digest=json.loads(run(['docker','image','inspect',proxy_image]))[0]['RepoDigests'][0]
+proxy_digest='agent-cloud-proxy:verified'
 internal=base64.b64encode(('internal_proxy:'+secret['INTERNAL_PASSWORD']).encode()).decode()
 caddy='''{\n admin off\n auto_https disable_redirects\n https_port 8443\n}\n45-151-31-140.sslip.io {\n tls {\n  issuer acme {\n   disable_http_challenge\n  }\n }\n basic_auth {\n  admin HASH\n  acceptance TESTHASH\n }\n reverse_proxy web:8088 {\n  header_up Authorization "Basic INTERNAL"\n }\n header {\n  Strict-Transport-Security "max-age=15552000"\n  X-Content-Type-Options nosniff\n  X-Frame-Options DENY\n }\n}\n'''.replace('TESTHASH',cfg['acceptance_hash']).replace('HASH',cfg['admin_hash']).replace('INTERNAL',internal)
 (root/'Caddyfile').write_text(caddy);(root/'Caddyfile').chmod(0o600);os.chown(root/'Caddyfile',10001,10001)
@@ -56,5 +74,5 @@ P('/etc/systemd/system/agent-cloud-attest.service').write_text('[Unit]\nDescript
 P('/etc/systemd/system/agent-cloud-attest.timer').write_text('[Unit]\nDescription=Refresh broker attestation\n[Timer]\nOnBootSec=2min\nOnUnitActiveSec=5min\n[Install]\nWantedBy=timers.target\n')
 run(['systemctl','daemon-reload']);run(['systemctl','enable','--now','agent-cloud-attest.timer'])
 dc(['up','-d','--wait','--wait-timeout','120','web','proxy'],240)
-report={'status':'RUNTIME_STARTED_TLS_PENDING','product_commit':SOURCE,'runtime_controller_commit':cfg['controller_commit'],'url':'https://45-151-31-140.sslip.io','proxy_image':proxy_digest,'containers':dc(['ps','--format','json']),'stats':run(['docker','stats','--no-stream','--format','{{json .}}']),'memory':run(['free','-b']),'app_image_id':json.loads(run(['docker','image','inspect',image]))[0]['Id'],'apply_gate':'BLOCKED','llm_credentials_deployed':False,'docker_socket_exposed':False}
+report={'status':'RUNTIME_STARTED_TLS_PENDING','product_commit':SOURCE,'runtime_controller_commit':cfg['controller_commit'],'url':'https://45-151-31-140.sslip.io','proxy_image':manifest['images']['proxy'],'image_archive_sha256':manifest['sha256'],'containers':dc(['ps','--format','json']),'stats':run(['docker','stats','--no-stream','--format','{{json .}}']),'memory':run(['free','-b']),'app_image_id':json.loads(run(['docker','image','inspect',image]))[0]['Id'],'apply_gate':'BLOCKED','llm_credentials_deployed':False,'docker_socket_exposed':False}
 print(json.dumps(report))

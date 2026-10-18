@@ -33,7 +33,11 @@ def deploy(tf,env,selected,resources):
    except IOError:raise ValueError('RULE_PRIOR_UPLOAD_DIRECTORY_EXISTS')
    for name in ['cloud_server.py','Dockerfile','deploy_guest.py','attest.py']:
     sftp.put('infra/cloudru/runtime/'+name,incoming+'/'+name);sftp.chmod(incoming+'/'+name,0o600)
-  cfg={'incoming':incoming,'admin_hash':env['CLOUDRU_UI_BASIC_AUTH_HASH'].strip(),'acceptance_hash':bcrypt.hashpw(password.encode(),bcrypt.gensalt()).decode(),'controller_commit':os.environ['GITHUB_SHA']}
+  manifest=json.loads(Path('cloud-evidence/image-manifest.json').read_text())
+  with client.open_sftp() as sftp:
+   sftp.get_channel().settimeout(180)
+   sftp.put(manifest['archive'],incoming+'/runtime-images.tar.gz');sftp.chmod(incoming+'/runtime-images.tar.gz',0o600)
+  cfg={'images':manifest,'incoming':incoming,'admin_hash':env['CLOUDRU_UI_BASIC_AUTH_HASH'].strip(),'acceptance_hash':bcrypt.hashpw(password.encode(),bcrypt.gensalt()).decode(),'controller_commit':os.environ['GITHUB_SHA']}
   try:
    report['deployment']=json.loads(execute(client,'sudo -n python3 '+incoming+'/deploy_guest.py',json.dumps(cfg),1500))
    for _ in range(60):
@@ -64,6 +68,12 @@ print(json.dumps({'containers':r,'free':subprocess.check_output(['free','-b'],te
     assert '/var/run/docker.sock' not in row['mounts']
    report['outcome']='ACCEPTANCE_PASS_CLEANUP_PENDING'
   finally:
+   diagnostic=execute(client,'sudo -n python3 -',"import pathlib; p=pathlib.Path('/opt/agent-cloud-runtime/native-build-diagnostic.log'); print(p.read_text()[-16000:] if p.exists() else 'Native build diagnostic unavailable')")
+   import re
+   diagnostic=re.sub(r'(https?://)[^/@\s]+:[^/@\s]+@',r'\1[REDACTED]@',diagnostic)
+   for value in [password,cfg['admin_hash'],cfg['acceptance_hash'],*[env.get(k,'').strip() for k in ['CLOUDRU_KEY_ID','CLOUDRU_SECRET','CLOUDRU_STATE_SSE_CUSTOMER_KEY']]]:
+    if value:diagnostic=diagnostic.replace(value,'[REDACTED]')
+   (out/'native-build-diagnostic.log').write_text(diagnostic)
    # No reusable CI login is left on the public origin, including after failure.
    revoke='''import pathlib,subprocess,json
 p=pathlib.Path('/opt/agent-cloud-runtime/Caddyfile')

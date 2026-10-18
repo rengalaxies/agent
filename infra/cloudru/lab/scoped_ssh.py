@@ -58,6 +58,7 @@ def main(after_open=None):
         def state():
             return json.loads(client.get_object(Bucket='test-bucket-ds',Key='terraform/p1/daniil-smirnov.tfstate',
                 SSECustomerAlgorithm='AES256',SSECustomerKey=sse)['Body'].read())
+        report['phase']='READ_ENCRYPTED_STATE'
         original = state()
         selected = select_state(original)
         resources = {(r['type'],r['name'],i.get('index_key')):i['attributes']
@@ -67,9 +68,11 @@ def main(after_open=None):
         sg = resources[('cloudru_evolution_compute_security_group','ui',None)]
         if sg['id'] != GROUP or sg.get('project_id') != PROJECT:
             raise ValueError('SECURITY_GROUP_SCOPE_MISMATCH')
+        report['phase']='IAM_TOKEN'
         response=requests.post('https://iam.api.cloud.ru/api/v1/auth/token',json={
             'keyId':env['CLOUDRU_KEY_ID'],'secret':env['CLOUDRU_SECRET']},timeout=30)
         response.raise_for_status()
+        report['phase']='LIVE_VM_READ'
         response=requests.get('https://compute.api.cloud.ru/api/v1/vms/'+selected['ui']['id'],
             headers={'Authorization':'Bearer '+response.json()['access_token']},timeout=30)
         response.raise_for_status(); vm=response.json().get('vm',response.json())
@@ -77,8 +80,19 @@ def main(after_open=None):
                 or live_zone_name(vm)!='ru.AZ-2' or vm.get('state')!='running'
                 or not any(n.get('id')==selected['ui_nic_id'] for n in vm.get('interfaces',[]))):
             raise ValueError('LIVE_UI_SCOPE_MISMATCH')
-        response=requests.get('https://api.ipify.org',timeout=15);response.raise_for_status()
-        default_source=str(ipaddress.ip_address(response.text.strip()))
+        report['phase']='RUNNER_PUBLIC_IPV4'
+        observed=None;lookup_failures=[]
+        for endpoint in ['https://api.ipify.org','https://checkip.amazonaws.com']:
+            try:
+                response=requests.get(endpoint,timeout=15);response.raise_for_status()
+                observed=ipaddress.ip_address(response.text.strip())
+                if observed.version!=4 or not observed.is_global:raise ValueError('RUNNER_ADDRESS_INVALID')
+                break
+            except (requests.RequestException,ValueError) as exc:
+                lookup_failures.append({'service':endpoint.split('/')[2],'error_class':type(exc).__name__,'http_status':getattr(getattr(exc,'response',None),'status_code',None)})
+        report['runner_address_lookup_failures']=lookup_failures
+        if observed is None:raise ValueError('RUNNER_PUBLIC_IPV4_LOOKUP_FAILED')
+        default_source=str(observed)
         ip=ipaddress.ip_address(default_source);cidr=str(ip)+'/32'
         from urllib.request import getproxies
         report['runner_egress_observations']={'default_https':default_source,'ssh_uses_configured_https_proxy':env.get('CLOUDRU_SSH_USE_PROXY')=='1' and bool(getproxies().get('https')),'selected':'HTTPS_EGRESS_ROUTE_WITH_SERVER_SOURCE_RECHECK'}
@@ -174,6 +188,11 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
     except Exception as exc:
         report['status']='BLOCKED'
         report['error_class']=type(exc).__name__
+        upstream=getattr(exc,'response',None)
+        if upstream is not None:
+            from urllib.parse import urlsplit
+            report['upstream_service']=urlsplit(upstream.url).hostname
+            report['upstream_http_status']=upstream.status_code
         if str(exc).startswith(('TERRAFORM_','HOST_','LIVE_','PRIOR_','TEMPORARY_','RULE_','SECURITY_','RUNNER_','RECOVERY_','UNEXPECTED_','EXISTING_')):
             report['error_code']=str(exc)
     Path('lab-scoped-ssh.json').write_text(json.dumps(report,indent=2)+'\n')

@@ -1,0 +1,54 @@
+{
+  "hostname": "dm-p1-ui",
+  "observed_source": "172.215.210.231",
+  "source": {
+    "rc": 0,
+    "stdout": "107dfd14292a5ab06593d424bf0b94f1cccb0b90\n",
+    "stderr": ""
+  },
+  "tree": {
+    "rc": 0,
+    "stdout": "540a48cc47d87d1656e744aa20ab996d6af7bca8\n",
+    "stderr": ""
+  },
+  "clean": {
+    "rc": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "ports": {
+    "rc": 0,
+    "stdout": "State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                                                      \nLISTEN 0      4096       127.0.0.1:41919      0.0.0.0:*    users:((\"containerd\",pid=810,fd=14))                                        \nLISTEN 0      4096      127.0.0.54:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=677,fd=17))                                   \nLISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*    users:((\"systemd-resolve\",pid=677,fd=15))                                   \nLISTEN 0      511          0.0.0.0:80         0.0.0.0:*    users:((\"nginx\",pid=796,fd=5),(\"nginx\",pid=795,fd=5),(\"nginx\",pid=789,fd=5))\nLISTEN 0      4096         0.0.0.0:22         0.0.0.0:*    users:((\"sshd\",pid=1567,fd=3),(\"systemd\",pid=1,fd=91))                      \nLISTEN 0      511             [::]:80            [::]:*    users:((\"nginx\",pid=796,fd=6),(\"nginx\",pid=795,fd=6),(\"nginx\",pid=789,fd=6))\nLISTEN 0      4096            [::]:22            [::]:*    users:((\"sshd\",pid=1567,fd=4),(\"systemd\",pid=1,fd=92))                      \n",
+    "stderr": ""
+  },
+  "containers": {
+    "rc": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "caddy": {
+    "rc": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "nginx": {
+    "rc": 0,
+    "stdout": "include /etc/nginx/modules-enabled/*.conf;\n\tinclude /etc/nginx/mime.types;\n\tinclude /etc/nginx/conf.d/*.conf;\n\tinclude /etc/nginx/sites-enabled/*;\n#\t\tlisten     localhost:110;\n#\t\tlisten     localhost:143;\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\t# listen 443 ssl default_server;\n\t# listen [::]:443 ssl default_server;\n\t# include snippets/snakeoil.conf;\n\troot /var/www/html;\n\tserver_name _;\n\t#\tinclude snippets/fastcgi-php.conf;\n#\tlisten 80;\n#\tlisten [::]:80;\n#\tserver_name example.com;\n#\troot /var/www/example.com;",
+    "stderr": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n"
+  },
+  "memory": {
+    "rc": 0,
+    "stdout": "               total        used        free      shared  buff/cache   available\nMem:      4106104832   519020544  3073757184     5410816   760283136  3587084288\nSwap:              0           0           0\n",
+    "stderr": ""
+  },
+  "disk": {
+    "rc": 0,
+    "stdout": "Filesystem       1B-blocks       Used   Available Use% Mounted on\n/dev/vda2      31591473152 3837001728 26342096896  13% /\n",
+    "stderr": ""
+  },
+  "dns": {
+    "rc": 0,
+    "stdout": "45.151.31.140   STREAM 45-151-31-140.sslip.io\n45.151.31.140   DGRAM  \n45.151.31.140   RAW    \n",
+    "stderr": ""
+  }
+}
