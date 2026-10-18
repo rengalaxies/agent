@@ -66,3 +66,7 @@ CLI/controller-driven services, one host, no public UI, no production daemon sup
 The initial specification accepts integer rubles only; the uploaded 123.45 RUB example conflicts with that coexistence profile. The implementation rejects fractional rubles while v1 survives. No rounding, legacy retirement or arbitrary change to the research protocol was introduced. Kafka remains unimplemented with separate adapter requirements in `README.md`.
 
 No VMs were created, replaced, resized or started. Earlier SSH qualification created and removed one temporary runner-only security-group rule; this agent CI phase made no cloud infrastructure changes. Main, the managed demo and frozen research artifacts were not changed. Three-mode labor/cost comparison, model costs and infrastructure cost are NOT_MEASURED. Real external notifications were not sent.
+
+## Cloud runtime update - 2026-10-18
+
+Cloud UI BLOCKED. Controller f5cd5f26f3b29bd9b6597d5ba5d9c78768784388 passed CI boundary tests and image build, but Actions 39125140553 attempts 1/2 both failed before SSH negotiation despite fresh VM/NIC/SG checks and scoped runner rules. Cleanup and actual final SG audit passed. Same-runner Raven control responds on 22/80/443 with trusted TLS; target public 80 times out. Exact provider/guest packet-drop cause remains unproven pending guest packet trace or provider dataplane trace. No new agents or independent checks; REPLAY remains source/CI available; automatic application BLOCKED. No T13/T14 promotion. See lab/reports/cloud-2026-10-18/REPORT.md and RAVEN-COMPARISON.md.

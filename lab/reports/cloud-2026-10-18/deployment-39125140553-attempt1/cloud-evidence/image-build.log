@@ -1,0 +1,249 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 613B done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+#3 DONE 0.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+#5 resolve docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7 done
+#5 ...
+
+#6 [internal] load build context
+#6 transferring context: 10.08MB 0.1s done
+#6 DONE 0.1s
+
+#5 [1/5] FROM docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+#5 sha256:229c2e83adbca32a7582f378ce5a103e5c327ffd945d3f451fe66d1886693f34 3.52MB / 3.52MB 0.1s done
+#5 sha256:d296ae3a1b166ec8b25480749804c463ffde8dd56bd4a0d938c764b93565254e 13.66MB / 13.66MB 0.2s done
+#5 sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7 9.13kB / 9.13kB done
+#5 sha256:c00fc7b44d844b6da22861ec24af43968a5200eac4ec607b4725d585165d6b49 1.75kB / 1.75kB done
+#5 sha256:688a685f6a1fa9250d7c6cee916889cbca364e4b027520110e0fce80c64a13e0 5.60kB / 5.60kB done
+#5 sha256:5c32499ab806884c5725c705c2bf528662d034ed99de13d3205309e0d9ef0375 28.23MB / 28.23MB 0.1s done
+#5 extracting sha256:5c32499ab806884c5725c705c2bf528662d034ed99de13d3205309e0d9ef0375
+#5 sha256:5ac70eb707d38d47fc69ca91acd4de7256ef894f5f446a9c344a1f4ad7628114 250B / 250B 0.1s done
+#5 extracting sha256:5c32499ab806884c5725c705c2bf528662d034ed99de13d3205309e0d9ef0375 1.1s done
+#5 extracting sha256:229c2e83adbca32a7582f378ce5a103e5c327ffd945d3f451fe66d1886693f34 0.1s
+#5 extracting sha256:229c2e83adbca32a7582f378ce5a103e5c327ffd945d3f451fe66d1886693f34 0.1s done
+#5 extracting sha256:d296ae3a1b166ec8b25480749804c463ffde8dd56bd4a0d938c764b93565254e
+#5 extracting sha256:d296ae3a1b166ec8b25480749804c463ffde8dd56bd4a0d938c764b93565254e 0.5s done
+#5 extracting sha256:5ac70eb707d38d47fc69ca91acd4de7256ef894f5f446a9c344a1f4ad7628114 done
+#5 DONE 4.7s
+
+#7 [2/5] RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
+#7 0.173 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 0.182 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 0.182 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#7 0.236 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#7 0.287 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 0.330 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [354 kB]
+#7 1.042 Fetched 9393 kB in 1s (10.7 MB/s)
+#7 1.042 Reading package lists...
+#7 1.452 Reading package lists...
+#7 1.845 Building dependency tree...
+#7 1.931 Reading state information...
+#7 2.018 The following additional packages will be installed:
+#7 2.018   git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1 libgdbm-compat4
+#7 2.018   libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1 libsasl2-2
+#7 2.019   libsasl2-modules-db libssh2-1 perl perl-base perl-modules-5.36
+#7 2.019 Suggested packages:
+#7 2.019   gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
+#7 2.019   gitk gitweb git-cvs git-mediawiki git-svn sensible-utils perl-doc
+#7 2.019   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#7 2.019   libtap-harness-archive-perl
+#7 2.019 Recommended packages:
+#7 2.019   patch less ssh-client libldap-common publicsuffix libsasl2-modules
+#7 2.095 The following NEW packages will be installed:
+#7 2.095   git git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1
+#7 2.095   libgdbm-compat4 libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1
+#7 2.096   libsasl2-2 libsasl2-modules-db libssh2-1 perl perl-modules-5.36
+#7 2.096 The following packages will be upgraded:
+#7 2.097   perl-base
+#7 2.232 1 upgraded, 17 newly installed, 0 to remove and 28 not upgraded.
+#7 2.232 Need to get 19.7 MB of archives.
+#7 2.232 After this operation, 100 MB of additional disk space will be used.
+#7 2.232 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 perl-base amd64 5.36.0-7+deb12u4 [1610 kB]
+#7 2.245 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u4 [2817 kB]
+#7 2.252 Get:3 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#7 2.252 Get:4 http://deb.debian.org/debian-security bookworm-security/main amd64 libperl5.36 amd64 5.36.0-7+deb12u4 [4208 kB]
+#7 2.260 Get:5 http://deb.debian.org/debian-security bookworm-security/main amd64 perl amd64 5.36.0-7+deb12u4 [239 kB]
+#7 2.261 Get:6 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#7 2.262 Get:7 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#7 2.263 Get:8 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#7 2.263 Get:9 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#7 2.264 Get:10 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u3 [72.4 kB]
+#7 2.265 Get:11 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#7 2.268 Get:12 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#7 2.268 Get:13 http://deb.debian.org/debian-security bookworm-security/main amd64 libssh2-1 amd64 1.10.0-3+deb12u1 [176 kB]
+#7 2.268 Get:14 http://deb.debian.org/debian bookworm/main amd64 libcurl3-gnutls amd64 7.88.1-10+deb12u15 [386 kB]
+#7 2.269 Get:15 http://deb.debian.org/debian-security bookworm-security/main amd64 libexpat1 amd64 2.5.0-1+deb12u4 [106 kB]
+#7 2.269 Get:16 http://deb.debian.org/debian bookworm/main amd64 liberror-perl all 0.17029-2 [29.0 kB]
+#7 2.269 Get:17 http://deb.debian.org/debian bookworm/main amd64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#7 2.276 Get:18 http://deb.debian.org/debian bookworm/main amd64 git amd64 1:2.39.5-0+deb12u3 [7264 kB]
+#7 2.389 debconf: delaying package configuration, since apt-utils is not installed
+#7 2.406 Fetched 19.7 MB in 0s (98.1 MB/s)
+#7 2.418 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6694 files and directories currently installed.)
+#7 2.424 Preparing to unpack .../perl-base_5.36.0-7+deb12u4_amd64.deb ...
+#7 2.435 Unpacking perl-base (5.36.0-7+deb12u4) over (5.36.0-7+deb12u3) ...
+#7 3.003 Setting up perl-base (5.36.0-7+deb12u4) ...
+#7 3.023 Selecting previously unselected package perl-modules-5.36.
+#7 3.023 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6695 files and directories currently installed.)
+#7 3.028 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u4_all.deb ...
+#7 3.029 Unpacking perl-modules-5.36 (5.36.0-7+deb12u4) ...
+#7 3.304 Selecting previously unselected package libgdbm-compat4:amd64.
+#7 3.306 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#7 3.308 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#7 3.325 Selecting previously unselected package libperl5.36:amd64.
+#7 3.326 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u4_amd64.deb ...
+#7 3.327 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u4) ...
+#7 3.606 Selecting previously unselected package perl.
+#7 3.607 Preparing to unpack .../03-perl_5.36.0-7+deb12u4_amd64.deb ...
+#7 3.612 Unpacking perl (5.36.0-7+deb12u4) ...
+#7 3.640 Selecting previously unselected package libbrotli1:amd64.
+#7 3.642 Preparing to unpack .../04-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#7 3.643 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 3.672 Selecting previously unselected package libsasl2-modules-db:amd64.
+#7 3.674 Preparing to unpack .../05-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#7 3.675 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 3.689 Selecting previously unselected package libsasl2-2:amd64.
+#7 3.691 Preparing to unpack .../06-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#7 3.692 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 3.710 Selecting previously unselected package libldap-2.5-0:amd64.
+#7 3.712 Preparing to unpack .../07-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#7 3.712 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 3.738 Selecting previously unselected package libnghttp2-14:amd64.
+#7 3.740 Preparing to unpack .../08-libnghttp2-14_1.52.0-1+deb12u3_amd64.deb ...
+#7 3.740 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u3) ...
+#7 3.759 Selecting previously unselected package libpsl5:amd64.
+#7 3.760 Preparing to unpack .../09-libpsl5_0.21.2-1_amd64.deb ...
+#7 3.761 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#7 3.778 Selecting previously unselected package librtmp1:amd64.
+#7 3.779 Preparing to unpack .../10-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#7 3.780 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 3.797 Selecting previously unselected package libssh2-1:amd64.
+#7 3.799 Preparing to unpack .../11-libssh2-1_1.10.0-3+deb12u1_amd64.deb ...
+#7 3.800 Unpacking libssh2-1:amd64 (1.10.0-3+deb12u1) ...
+#7 3.827 Selecting previously unselected package libcurl3-gnutls:amd64.
+#7 3.828 Preparing to unpack .../12-libcurl3-gnutls_7.88.1-10+deb12u15_amd64.deb ...
+#7 3.829 Unpacking libcurl3-gnutls:amd64 (7.88.1-10+deb12u15) ...
+#7 3.863 Selecting previously unselected package libexpat1:amd64.
+#7 3.865 Preparing to unpack .../13-libexpat1_2.5.0-1+deb12u4_amd64.deb ...
+#7 3.865 Unpacking libexpat1:amd64 (2.5.0-1+deb12u4) ...
+#7 3.885 Selecting previously unselected package liberror-perl.
+#7 3.887 Preparing to unpack .../14-liberror-perl_0.17029-2_all.deb ...
+#7 3.888 Unpacking liberror-perl (0.17029-2) ...
+#7 3.904 Selecting previously unselected package git-man.
+#7 3.905 Preparing to unpack .../15-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#7 3.906 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#7 3.990 Selecting previously unselected package git.
+#7 3.991 Preparing to unpack .../16-git_1%3a2.39.5-0+deb12u3_amd64.deb ...
+#7 3.996 Unpacking git (1:2.39.5-0+deb12u3) ...
+#7 4.304 Setting up libexpat1:amd64 (2.5.0-1+deb12u4) ...
+#7 4.306 Setting up libpsl5:amd64 (0.21.2-1) ...
+#7 4.309 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#7 4.311 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u3) ...
+#7 4.314 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#7 4.317 Setting up perl-modules-5.36 (5.36.0-7+deb12u4) ...
+#7 4.320 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#7 4.323 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#7 4.326 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#7 4.328 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#7 4.331 Setting up libssh2-1:amd64 (1.10.0-3+deb12u1) ...
+#7 4.334 Setting up libperl5.36:amd64 (5.36.0-7+deb12u4) ...
+#7 4.337 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#7 4.340 Setting up perl (5.36.0-7+deb12u4) ...
+#7 4.350 Setting up libcurl3-gnutls:amd64 (7.88.1-10+deb12u15) ...
+#7 4.352 Setting up liberror-perl (0.17029-2) ...
+#7 4.354 Setting up git (1:2.39.5-0+deb12u3) ...
+#7 4.362 Processing triggers for libc-bin (2.36-9+deb12u13) ...
+#7 DONE 4.5s
+
+#8 [3/5] RUN pip install --no-cache-dir fastapi==0.115.12 uvicorn==0.34.2 httpx==0.28.1 pika==1.3.2 'psycopg[binary]==3.2.9'
+#8 1.614 Collecting fastapi==0.115.12
+#8 1.651   Downloading fastapi-0.115.12-py3-none-any.whl.metadata (27 kB)
+#8 1.686 Collecting uvicorn==0.34.2
+#8 1.689   Downloading uvicorn-0.34.2-py3-none-any.whl.metadata (6.5 kB)
+#8 1.706 Collecting httpx==0.28.1
+#8 1.710   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#8 1.724 Collecting pika==1.3.2
+#8 1.727   Downloading pika-1.3.2-py3-none-any.whl.metadata (13 kB)
+#8 1.742 Collecting psycopg==3.2.9 (from psycopg[binary]==3.2.9)
+#8 1.746   Downloading psycopg-3.2.9-py3-none-any.whl.metadata (4.5 kB)
+#8 1.779 Collecting starlette<0.47.0,>=0.40.0 (from fastapi==0.115.12)
+#8 1.783   Downloading starlette-0.46.2-py3-none-any.whl.metadata (6.2 kB)
+#8 1.933 Collecting pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4 (from fastapi==0.115.12)
+#8 1.937   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#8 1.960 Collecting typing-extensions>=4.8.0 (from fastapi==0.115.12)
+#8 1.964   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#8 1.980 Collecting click>=7.0 (from uvicorn==0.34.2)
+#8 1.984   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#8 1.992 Collecting h11>=0.8 (from uvicorn==0.34.2)
+#8 1.995   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#8 2.011 Collecting anyio (from httpx==0.28.1)
+#8 2.015   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#8 2.031 Collecting certifi (from httpx==0.28.1)
+#8 2.034   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+#8 2.051 Collecting httpcore==1.* (from httpx==0.28.1)
+#8 2.054   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#8 2.066 Collecting idna (from httpx==0.28.1)
+#8 2.070   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#8 2.208 Collecting psycopg-binary==3.2.9 (from psycopg[binary]==3.2.9)
+#8 2.212   Downloading psycopg_binary-3.2.9-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.9 kB)
+#8 2.223 Collecting annotated-types>=0.6.0 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.12)
+#8 2.227   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#8 2.839 Collecting pydantic-core==2.50.1 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.12)
+#8 2.843   Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+#8 2.854 Collecting typing-inspection>=0.4.4 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.12)
+#8 2.857   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#8 2.881 Downloading fastapi-0.115.12-py3-none-any.whl (95 kB)
+#8 2.885 Downloading uvicorn-0.34.2-py3-none-any.whl (62 kB)
+#8 2.888 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#8 2.892 Downloading pika-1.3.2-py3-none-any.whl (155 kB)
+#8 2.896 Downloading psycopg-3.2.9-py3-none-any.whl (202 kB)
+#8 2.900 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#8 2.904 Downloading psycopg_binary-3.2.9-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.4 MB)
+#8 2.923    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 270.8 MB/s eta 0:00:00
+#8 2.926 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#8 2.930 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#8 2.933 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#8 2.938 Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#8 2.945    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 419.8 MB/s eta 0:00:00
+#8 2.948 Downloading starlette-0.46.2-py3-none-any.whl (72 kB)
+#8 2.951 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#8 2.955 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#8 2.959 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#8 2.962 Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#8 2.966 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#8 2.969 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#8 3.025 Installing collected packages: typing-extensions, psycopg-binary, pika, idna, h11, click, certifi, annotated-types, uvicorn, typing-inspection, pydantic-core, psycopg, httpcore, anyio, starlette, pydantic, httpx, fastapi
+#8 4.221 Successfully installed annotated-types-0.8.0 anyio-4.15.1 certifi-2026.7.22 click-8.5.0 fastapi-0.115.12 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 pika-1.3.2 psycopg-3.2.9 psycopg-binary-3.2.9 pydantic-2.14.1 pydantic-core-2.50.1 starlette-0.46.2 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.34.2
+#8 4.222 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 4.312 
+#8 4.312 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#8 4.312 [notice] To update, run: pip install --upgrade pip
+#8 DONE 4.4s
+
+#9 [4/5] WORKDIR /work
+#9 DONE 0.0s
+
+#10 [5/5] COPY . /work
+#10 DONE 0.1s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 0.9s done
+#11 writing image sha256:a048388dd883d15ce41457e409472486297aeb5e238f7a3d773c2b0279419ee7 done
+#11 naming to docker.io/library/agent-cloud-product:107dfd14292a5ab06593d424bf0b94f1cccb0b90 done
+#11 DONE 0.9s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "GIT_CONFIG_KEY_0") (line 8)
