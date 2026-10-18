@@ -124,7 +124,18 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
 ''')
         def tf(args, timeout=180):
             proc=subprocess.run(['terraform']+args,cwd=ROOT,env=env,capture_output=True,text=True,timeout=timeout)
-            if proc.returncode:raise RuntimeError('TERRAFORM_'+args[0].upper()+'_FAILED')
+            if proc.returncode:
+                import re
+                lines=[]
+                for line in (proc.stderr+'\n'+proc.stdout).splitlines():
+                    if any(term.lower() in line.lower() for term in ['Error:','Error message:','StatusCode:','status code:','RequestID:','api error','AccessDenied','Unauthorized','Forbidden','Unsupported attribute','too many requests']):
+                        line=line[:800]
+                        for value in [access,secret,base64.b64encode(sse).decode(),env['CLOUDRU_KEY_ID'],env['CLOUDRU_SECRET'],env['CLOUDRU_UI_BASIC_AUTH_HASH'].strip(),str(ip),cidr,selected['ui_ip']]:
+                            if value:line=line.replace(value,'[REDACTED]')
+                        line=re.sub(r'(https?://)[^/@\s]+:[^/@\s]+@',r'\1[REDACTED]@',line)
+                        lines.append(line)
+                report['terraform_failure']={'operation':args[0],'phase':report.get('phase'),'error_lines':lines[:12]}
+                raise RuntimeError('TERRAFORM_'+args[0].upper()+'_FAILED')
             return proc.stdout
         report['phase']='BACKEND_INIT'
         tf(['init','-reconfigure','-input=false','-no-color']+['-backend-config='+x for x in [

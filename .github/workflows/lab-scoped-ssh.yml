@@ -1,9 +1,6 @@
 name: Lab temporary runner-only SSH qualification
 on:
   workflow_dispatch:
-  push:
-    branches: [feat/postgres-rabbitmq-agent-lab]
-    paths: [infra/cloudru/lab/scoped_ssh.py, .github/workflows/lab-scoped-ssh.yml]
 permissions:
   contents: read
 concurrency:
