@@ -133,13 +133,13 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
                 tf(['apply','-input=false','-no-color',plan_path])
                 report['phase']='WAIT_RUNNER_TCP22'
                 ready_started=time.monotonic();attempts=[]
-                for number in range(8):
+                for number in range(24):
                     try:
                         with open_ssh_socket(selected['ui_ip'],timeout=4):pass
                         attempts.append({'attempt':number+1,'tcp':'CONNECTED','elapsed_seconds':round(time.monotonic()-ready_started,2)});break
                     except OSError as exc:
                         attempts.append({'attempt':number+1,'tcp':'FAILED','error_class':type(exc).__name__,'elapsed_seconds':round(time.monotonic()-ready_started,2)})
-                        if number<7:time.sleep(4)
+                        if number<23:time.sleep(4)
                 report['tcp_readiness_attempts']=attempts
                 if attempts[-1]['tcp']!='CONNECTED':raise ValueError('RULE_CREATED_BUT_RUNNER_TCP_NOT_READY')
                 if after_open is not None:
