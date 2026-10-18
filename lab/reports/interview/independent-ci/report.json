@@ -1,0 +1,76 @@
+{
+  "outcome": "PASS",
+  "source_commit": "962f789d325ac73d58a143bad019bb91e123c313",
+  "mode": "CI_ONLY / REPLAY_ONLY",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39070816457",
+  "execution_permission": false,
+  "vm_actions": [],
+  "external_notifications": 0,
+  "scenarios": {
+    "isolation": {
+      "status": "PASS",
+      "first": "c2a3d7c66fad4008911ceeb4d011fba2",
+      "second": "caa3976392464743b680fa61df9c1255",
+      "reset_generation": 2,
+      "other_session_unchanged": true
+    },
+    "restart": {
+      "status": "PASS",
+      "persisted_session": "827e5f6e8e7f426a8425466cda561349"
+    },
+    "confirmed": {
+      "status": "PASS",
+      "patch": "REPLAY",
+      "verifier": "fresh isolated PostgreSQL/RabbitMQ R1-R5"
+    },
+    "unknown_owner": {
+      "status": "PASS",
+      "ownership": "explicit CONTROL",
+      "catalogs": "LIVE RUN"
+    },
+    "stale": {
+      "status": "PASS",
+      "revision": 2
+    },
+    "live_unavailable": {
+      "status": "PASS",
+      "failed_job": "7791a4f9b20443fc8d65664091170325",
+      "fallback": "explicit subsequent REPLAY job",
+      "provider_calls": 0
+    },
+    "research": {
+      "status": "PASS",
+      "consent": "explicit",
+      "export": "synthetic-session-export.json",
+      "deletion": "research only; technical decisions retained"
+    },
+    "authentication": {
+      "status": "PASS",
+      "unauthenticated": 401,
+      "transport": "CI loopback HTTP only; no public deployment HTTPS claim"
+    },
+    "apply": {
+      "status": "PASS",
+      "direct_api": 403
+    }
+  },
+  "errors": [],
+  "independent_rehearsal": {
+    "target": "CI_ONLY",
+    "situations": [
+      {
+        "scenario": "confirmed",
+        "result": "COMPLETED"
+      },
+      {
+        "scenario": "unknown-owner",
+        "result": "COMPLETED"
+      },
+      {
+        "scenario": "stale",
+        "result": "COMPLETED"
+      }
+    ]
+  },
+  "cleanup": "PASS"
+}

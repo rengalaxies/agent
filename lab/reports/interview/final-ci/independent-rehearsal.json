@@ -1,0 +1,349 @@
+{
+  "status": "CI_ONLY",
+  "target": "CI_ONLY",
+  "agent_rehearsal_not_user_study": true,
+  "cloud_acceptance": false,
+  "recording_consent": false,
+  "started_at": "2026-10-18T06:56:18.337025+00:00",
+  "instructions": "lab/reports/interview/RUNBOOK.md",
+  "situations": [
+    {
+      "scenario": "confirmed",
+      "steps": [
+        {
+          "action": "choose scenario",
+          "visible_option": "Подтверждённая зависимость"
+        },
+        {
+          "action": "create fresh session",
+          "visible_label": "Начать отдельную сессию"
+        },
+        {
+          "action": "create revision 1",
+          "visible_label": "Сохранить изменение"
+        },
+        {
+          "action": "open change details",
+          "visible_label": "Страница изменения"
+        },
+        {
+          "action": "collect mode LIVE RUN",
+          "visible_option": "LIVE RUN"
+        },
+        {
+          "action": "collect actual sources",
+          "visible_label": "Собрать основания"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "attempt LIVE without model credentials",
+          "visible_label": "Запустить анализ"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "explicit saved analysis mode",
+          "visible_option": "REPLAY"
+        },
+        {
+          "action": "run saved analysis",
+          "visible_label": "Запустить анализ"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "open inbox",
+          "visible_label": "Inbox команды"
+        },
+        {
+          "action": "choose billing demonstration role",
+          "visible_option": "billing"
+        },
+        {
+          "action": "record shown team decision",
+          "visible_label": "Записать решение"
+        },
+        {
+          "action": "open patch view",
+          "visible_label": "Патч и проверка"
+        },
+        {
+          "action": "explicit saved SQL mode",
+          "visible_option": "REPLAY"
+        },
+        {
+          "action": "prepare saved SQL",
+          "visible_label": "Подготовить патч"
+        },
+        {
+          "action": "export selected session JSON",
+          "visible_label": "Экспорт исследования JSON"
+        },
+        {
+          "action": "end selected session",
+          "visible_label": "Завершить сессию"
+        },
+        {
+          "action": "choose clean follow-on scenario",
+          "visible_option": "Подтверждённая зависимость"
+        },
+        {
+          "action": "create next empty session",
+          "visible_label": "Начать отдельную сессию"
+        },
+        {
+          "action": "end clean follow-on session",
+          "visible_label": "Завершить сессию"
+        }
+      ],
+      "issues": [],
+      "result": "COMPLETED",
+      "preflight_visible": "Изменение → команды → проверка\nИзолированный lab · PostgreSQL + RabbitMQ · внутренний inbox\nПрименение BLOCKED\nПодготовка и независимая проверка доступны отдельно от применения. Успех job не означает безопасность изменения. Решение команды не выдаёт разрешения на применение.\nИнтервью: отдельная сессия\n\nСценарий задаёт задачу, а не готовый результат. Данные и jobs изолированы от других сессий. Роли остаются демонстрационными.\n\nСценарий\nПодтверждённая зависимость\nНеизвестный владелец (контроль каталога)\nУстаревание после новой ревизии\nНачать отдельную сессию\nСбросить только эту сессию\nЗавершить сессию\n\nОбычный lab без интервью-сессии.\n\nНеобязательная исследовательская запись: случайный ID сессии, версия сценария, режим, время, категории действий, ошибок, решений и помощи модератора. Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. Технический журнал исполнения хранится отдельно. Можно отказаться от записи или удалить исследовательские данные этой сессии.\n\n Я добровольно разрешаю описанную минимальную запись исследовательских наблюдений\n\nОтказ не блокирует работу. Технический журнал выполнения хранится отдельно; удаление исследования не удаляет evidence исполнения.\n\nСохранить выбор\nПомощь модератора (без свободного текста)\nБез помощи\nНавигация\nТерминология\nТехническая ошибка\nИнструкция сценария\nОтметить помощь\nЭкспорт исследования JSON\nУдалить исследовательские записи\nДемонстрационная роль, не аутентификация\nИнициатор\nbilling\nаналитика\nКоординатор стенда\nРежим следующей операции\nFIXTURE / CONTROL\nREPLAY\nLIVE RUN\nОбновить состояние\n\nAPI недоступен. Результаты не подставлены.\n\nHTTP 409: Select an isolated interview session first\n\nИзменения\nСтраница изменения\nInbox команды\nПатч и проверка\nНовое изменение / новая ревизия\nID изменения\nРевизия\nПоддерживаемый пример\nЛомающее: неверный backfill RUB → minor\nБезопасное: комментарий документации\nИсходный commit\nНазвание\nНамерение\n\nФорма создаёт поддерживаемый diff и файл примера. Произвольные shell-команды и ручной JSON не требуются. Новая ревизия с тем же ID делает прежние результаты устаревшими.\n\nСохранить изменение\nИзменения\nЛокальный продуктовый контур. Размещение в Cloud.ru этим интерфейсом не подтверждается. LIVE RUN, REPLAY и FIXTURE / CONTROL показываются рядом с каждым результатом.",
+      "checks": [
+        "apply is BLOCKED",
+        "session scenario/version visible",
+        "supported breaking example selected",
+        "source collection reached visible success",
+        "LIVE unavailable reason remains visible",
+        "saved analysis terminal success",
+        "billing card visible",
+        "card grounds visible",
+        "saved SQL visible",
+        "acknowledgement never grants apply",
+        "new session excludes previous change ID"
+      ],
+      "session_visible": "Изменение → команды → проверка\nИзолированный lab · PostgreSQL + RabbitMQ · внутренний inbox\nПрименение BLOCKED\nПодготовка и независимая проверка доступны отдельно от применения. Успех job не означает безопасность изменения. Решение команды не выдаёт разрешения на применение.\nИнтервью: отдельная сессия\n\nСценарий задаёт задачу, а не готовый результат. Данные и jobs изолированы от других сессий. Роли остаются демонстрационными.\n\nСценарий\nПодтверждённая зависимость\nНеизвестный владелец (контроль каталога)\nУстаревание после новой ревизии\nНачать отдельную сессию\nСбросить только эту сессию\nЗавершить сессию\n\nСессия 712977f4ad414a93801d9e6dfb61d60d · confirmed · версия interview-1 · ACTIVE · поколение 1\n\nНачальное состояние\nПустая сессия: создайте существующий ломающий пример, соберите текущие основания и явно выберите REPLAY.\nЗадача / ожидаемый результат\nКарточки billing и аналитики содержат основания, риск отдельно от воспроизведения и следующее действие. Ознакомление не разрешает применение.\nПроисхождение\nExisting frozen integrated-path-1 A/C/D/E; saved model results explicitly REPLAY; current collection LIVE RUN; missing owner CONTROL.\nОграничения\n[ \"Declared owners, narrow discovery, demo roles, one worker; no deployment authority.\", \"Starting a session does not claim a scenario ran or seed unverified PASS.\" ]\n\nНеобязательная исследовательская запись: случайный ID сессии, версия сценария, режим, время, категории действий, ошибок, решений и помощи модератора. Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. Технический журнал исполнения хранится отдельно. Можно отказаться от записи или удалить исследовательские данные этой сессии.\n\n Я добровольно разрешаю описанную минимальную запись исследовательских наблюдений\n\nОтказ не блокирует работу. Технический журнал выполнения хранится отдельно; удаление исследования не удаляет evidence исполнения.\n\nСохранить выбор\nПомощь модератора (без свободного текста)\nБез помощи\nНавигация\nТерминология\nТехническая ошибка\nИнструкция сценария\nОтметить помощь\nЭкспорт исследования JSON\nУдалить исследовательские записи\nДемонстрационная роль, не аутентификация\nИнициатор\nbilling\nаналитика\nКоординатор стенда\nРежим следующей операции\nFIXTURE / CONTROL\nREPLAY\nLIVE RUN\nОбновить состояние\n\nСостояние загружено · 06:56:19 · применение BLOCKED\n\nИзменения\nСтраница изменения\nInbox команды\nПатч и проверка\nНовое изменение / новая ревизия\nID изменения\nРевизия\nПоддерживаемый пример\nЛомающее: неверный backfill RUB → minor\nБезопасное: комментарий документации\nИсходный commit\nНазвание\nНамерение\n\nФорма создаёт поддерживаемый diff и файл примера. Произвольные shell-команды и ручной JSON не требуются. Новая ревизия с тем же ID делает прежние результаты устаревшими.\n\nСохранить изменение\nИзменения\n\nНет изменений. Создайте поддерживаемый пример.\n\nЛокальный продуктовый контур. Размещение в Cloud.ru этим интерфейсом не подтверждается. LIVE RUN, REPLAY и FIXTURE / CONTROL показываются рядом с каждым результатом.",
+      "change_id": "independent-confirmed-80d710fa3b",
+      "live_unavailable": true
+    },
+    {
+      "scenario": "unknown-owner",
+      "steps": [
+        {
+          "action": "choose scenario",
+          "visible_option": "Неизвестный владелец (контроль каталога)"
+        },
+        {
+          "action": "create fresh session",
+          "visible_label": "Начать отдельную сессию"
+        },
+        {
+          "action": "create revision 1",
+          "visible_label": "Сохранить изменение"
+        },
+        {
+          "action": "open change details",
+          "visible_label": "Страница изменения"
+        },
+        {
+          "action": "collect mode LIVE RUN",
+          "visible_option": "LIVE RUN"
+        },
+        {
+          "action": "collect actual sources",
+          "visible_label": "Собрать основания"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "explicit saved analysis mode",
+          "visible_option": "FIXTURE / CONTROL"
+        },
+        {
+          "action": "run saved analysis",
+          "visible_label": "Запустить анализ"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "open inbox",
+          "visible_label": "Inbox команды"
+        },
+        {
+          "action": "export selected session JSON",
+          "visible_label": "Экспорт исследования JSON"
+        },
+        {
+          "action": "end selected session",
+          "visible_label": "Завершить сессию"
+        },
+        {
+          "action": "choose clean follow-on scenario",
+          "visible_option": "Неизвестный владелец (контроль каталога)"
+        },
+        {
+          "action": "create next empty session",
+          "visible_label": "Начать отдельную сессию"
+        },
+        {
+          "action": "end clean follow-on session",
+          "visible_label": "Завершить сессию"
+        }
+      ],
+      "issues": [],
+      "result": "COMPLETED",
+      "preflight_visible": "Изменение → команды → проверка\nИзолированный lab · PostgreSQL + RabbitMQ · внутренний inbox\nПрименение BLOCKED\nПодготовка и независимая проверка доступны отдельно от применения. Успех job не означает безопасность изменения. Решение команды не выдаёт разрешения на применение.\nИнтервью: отдельная сессия\n\nСценарий задаёт задачу, а не готовый результат. Данные и jobs изолированы от других сессий. Роли остаются демонстрационными.\n\nСценарий\nПодтверждённая зависимость\nНеизвестный владелец (контроль каталога)\nУстаревание после новой ревизии\nНачать отдельную сессию\nСбросить только эту сессию\nЗавершить сессию\n\nОбычный lab без интервью-сессии.\n\nНеобязательная исследовательская запись: случайный ID сессии, версия сценария, режим, время, категории действий, ошибок, решений и помощи модератора. Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. Технический журнал исполнения хранится отдельно. Можно отказаться от записи или удалить исследовательские данные этой сессии.\n\n Я добровольно разрешаю описанную минимальную запись исследовательских наблюдений\n\nОтказ не блокирует работу. Технический журнал выполнения хранится отдельно; удаление исследования не удаляет evidence исполнения.\n\nСохранить выбор\nПомощь модератора (без свободного текста)\nБез помощи\nНавигация\nТерминология\nТехническая ошибка\nИнструкция сценария\nОтметить помощь\nЭкспорт исследования JSON\nУдалить исследовательские записи\nДемонстрационная роль, не аутентификация\nИнициатор\nbilling\nаналитика\nКоординатор стенда\nРежим следующей операции\nFIXTURE / CONTROL\nREPLAY\nLIVE RUN\nОбновить состояние\n\nAPI недоступен. Результаты не подставлены.\n\nHTTP 409: Select an isolated interview session first\n\nИзменения\nСтраница изменения\nInbox команды\nПатч и проверка\nНовое изменение / новая ревизия\nID изменения\nРевизия\nПоддерживаемый пример\nЛомающее: неверный backfill RUB → minor\nБезопасное: комментарий документации\nИсходный commit\nНазвание\nНамерение\n\nФорма создаёт поддерживаемый diff и файл примера. Произвольные shell-команды и ручной JSON не требуются. Новая ревизия с тем же ID делает прежние результаты устаревшими.\n\nСохранить изменение\nИзменения\nЛокальный продуктовый контур. Размещение в Cloud.ru этим интерфейсом не подтверждается. LIVE RUN, REPLAY и FIXTURE / CONTROL показываются рядом с каждым результатом.",
+      "checks": [
+        "apply is BLOCKED",
+        "session scenario/version visible",
+        "supported breaking example selected",
+        "source collection reached visible success",
+        "saved analysis terminal success",
+        "coordinator card visible",
+        "unknown owner explicit",
+        "ownership controlled input labeled",
+        "coordinator ownership question visible",
+        "new session excludes previous change ID"
+      ],
+      "session_visible": "Изменение → команды → проверка\nИзолированный lab · PostgreSQL + RabbitMQ · внутренний inbox\nПрименение BLOCKED\nПодготовка и независимая проверка доступны отдельно от применения. Успех job не означает безопасность изменения. Решение команды не выдаёт разрешения на применение.\nИнтервью: отдельная сессия\n\nСценарий задаёт задачу, а не готовый результат. Данные и jobs изолированы от других сессий. Роли остаются демонстрационными.\n\nСценарий\nПодтверждённая зависимость\nНеизвестный владелец (контроль каталога)\nУстаревание после новой ревизии\nНачать отдельную сессию\nСбросить только эту сессию\nЗавершить сессию\n\nСессия 13223d617b9c455699cc5009dca30d64 · unknown-owner · версия interview-1 · ACTIVE · поколение 1\n\nНачальное состояние\nПустая сессия: используйте существующий профиль C с контрольным отсутствием владельца в объявленном каталоге.\nЗадача / ожидаемый результат\nНеопределённость владельца явно обозначена, вопрос направлен координатору; владелец не выдумывается.\nПроисхождение\nExisting frozen integrated-path-1 A/C/D/E; saved model results explicitly REPLAY; current collection LIVE RUN; missing owner CONTROL.\nОграничения\n[ \"Declared owners, narrow discovery, demo roles, one worker; no deployment authority.\", \"Starting a session does not claim a scenario ran or seed unverified PASS.\" ]\n\nНеобязательная исследовательская запись: случайный ID сессии, версия сценария, режим, время, категории действий, ошибок, решений и помощи модератора. Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. Технический журнал исполнения хранится отдельно. Можно отказаться от записи или удалить исследовательские данные этой сессии.\n\n Я добровольно разрешаю описанную минимальную запись исследовательских наблюдений\n\nОтказ не блокирует работу. Технический журнал выполнения хранится отдельно; удаление исследования не удаляет evidence исполнения.\n\nСохранить выбор\nПомощь модератора (без свободного текста)\nБез помощи\nНавигация\nТерминология\nТехническая ошибка\nИнструкция сценария\nОтметить помощь\nЭкспорт исследования JSON\nУдалить исследовательские записи\nДемонстрационная роль, не аутентификация\nИнициатор\nbilling\nаналитика\nКоординатор стенда\nРежим следующей операции\nFIXTURE / CONTROL\nREPLAY\nLIVE RUN\nОбновить состояние\n\nСостояние загружено · 06:56:27 · применение BLOCKED\n\nИзменения\nСтраница изменения\nInbox команды\nПатч и проверка\nНовое изменение / новая ревизия\nID изменения\nРевизия\nПоддерживаемый пример\nЛомающее: неверный backfill RUB → minor\nБезопасное: комментарий документации\nИсходный commit\nНазвание\nНамерение\n\nФорма создаёт поддерживаемый diff и файл примера. Произвольные shell-команды и ручной JSON не требуются. Новая ревизия с тем же ID делает прежние результаты устаревшими.\n\nСохранить изменение\nИзменения\n\nНет изменений. Создайте поддерживаемый пример.\n\nЛокальный продуктовый контур. Размещение в Cloud.ru этим интерфейсом не подтверждается. LIVE RUN, REPLAY и FIXTURE / CONTROL показываются рядом с каждым результатом.",
+      "change_id": "independent-unknown-owner-97b430870a"
+    },
+    {
+      "scenario": "stale",
+      "steps": [
+        {
+          "action": "choose scenario",
+          "visible_option": "Устаревание после новой ревизии"
+        },
+        {
+          "action": "create fresh session",
+          "visible_label": "Начать отдельную сессию"
+        },
+        {
+          "action": "create revision 1",
+          "visible_label": "Сохранить изменение"
+        },
+        {
+          "action": "open change details",
+          "visible_label": "Страница изменения"
+        },
+        {
+          "action": "collect mode LIVE RUN",
+          "visible_option": "LIVE RUN"
+        },
+        {
+          "action": "collect actual sources",
+          "visible_label": "Собрать основания"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "attempt LIVE without model credentials",
+          "visible_label": "Запустить анализ"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "explicit saved analysis mode",
+          "visible_option": "REPLAY"
+        },
+        {
+          "action": "run saved analysis",
+          "visible_label": "Запустить анализ"
+        },
+        {
+          "action": "refresh job state",
+          "visible_label": "Обновить состояние"
+        },
+        {
+          "action": "open inbox",
+          "visible_label": "Inbox команды"
+        },
+        {
+          "action": "choose billing demonstration role",
+          "visible_option": "billing"
+        },
+        {
+          "action": "record shown team decision",
+          "visible_label": "Записать решение"
+        },
+        {
+          "action": "open patch view",
+          "visible_label": "Патч и проверка"
+        },
+        {
+          "action": "explicit saved SQL mode",
+          "visible_option": "REPLAY"
+        },
+        {
+          "action": "prepare saved SQL",
+          "visible_label": "Подготовить патч"
+        },
+        {
+          "action": "return to change",
+          "visible_label": "Страница изменения"
+        },
+        {
+          "action": "prepare revision 2",
+          "visible_label": "Подготовить новую ревизию"
+        },
+        {
+          "action": "submit revision 2",
+          "visible_label": "Сохранить изменение"
+        },
+        {
+          "action": "export selected session JSON",
+          "visible_label": "Экспорт исследования JSON"
+        },
+        {
+          "action": "end selected session",
+          "visible_label": "Завершить сессию"
+        },
+        {
+          "action": "choose clean follow-on scenario",
+          "visible_option": "Устаревание после новой ревизии"
+        },
+        {
+          "action": "create next empty session",
+          "visible_label": "Начать отдельную сессию"
+        },
+        {
+          "action": "end clean follow-on session",
+          "visible_label": "Завершить сессию"
+        }
+      ],
+      "issues": [],
+      "result": "COMPLETED",
+      "preflight_visible": "Изменение → команды → проверка\nИзолированный lab · PostgreSQL + RabbitMQ · внутренний inbox\nПрименение BLOCKED\nПодготовка и независимая проверка доступны отдельно от применения. Успех job не означает безопасность изменения. Решение команды не выдаёт разрешения на применение.\nИнтервью: отдельная сессия\n\nСценарий задаёт задачу, а не готовый результат. Данные и jobs изолированы от других сессий. Роли остаются демонстрационными.\n\nСценарий\nПодтверждённая зависимость\nНеизвестный владелец (контроль каталога)\nУстаревание после новой ревизии\nНачать отдельную сессию\nСбросить только эту сессию\nЗавершить сессию\n\nОбычный lab без интервью-сессии.\n\nНеобязательная исследовательская запись: случайный ID сессии, версия сценария, режим, время, категории действий, ошибок, решений и помощи модератора. Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. Технический журнал исполнения хранится отдельно. Можно отказаться от записи или удалить исследовательские данные этой сессии.\n\n Я добровольно разрешаю описанную минимальную запись исследовательских наблюдений\n\nОтказ не блокирует работу. Технический журнал выполнения хранится отдельно; удаление исследования не удаляет evidence исполнения.\n\nСохранить выбор\nПомощь модератора (без свободного текста)\nБез помощи\nНавигация\nТерминология\nТехническая ошибка\nИнструкция сценария\nОтметить помощь\nЭкспорт исследования JSON\nУдалить исследовательские записи\nДемонстрационная роль, не аутентификация\nИнициатор\nbilling\nаналитика\nКоординатор стенда\nРежим следующей операции\nFIXTURE / CONTROL\nREPLAY\nLIVE RUN\nОбновить состояние\n\nAPI недоступен. Результаты не подставлены.\n\nHTTP 409: Select an isolated interview session first\n\nИзменения\nСтраница изменения\nInbox команды\nПатч и проверка\nНовое изменение / новая ревизия\nID изменения\nРевизия\nПоддерживаемый пример\nЛомающее: неверный backfill RUB → minor\nБезопасное: комментарий документации\nИсходный commit\nНазвание\nНамерение\n\nФорма создаёт поддерживаемый diff и файл примера. Произвольные shell-команды и ручной JSON не требуются. Новая ревизия с тем же ID делает прежние результаты устаревшими.\n\nСохранить изменение\nИзменения\nЛокальный продуктовый контур. Размещение в Cloud.ru этим интерфейсом не подтверждается. LIVE RUN, REPLAY и FIXTURE / CONTROL показываются рядом с каждым результатом.",
+      "checks": [
+        "apply is BLOCKED",
+        "session scenario/version visible",
+        "supported breaking example selected",
+        "source collection reached visible success",
+        "LIVE unavailable reason remains visible",
+        "saved analysis terminal success",
+        "billing card visible",
+        "card grounds visible",
+        "saved SQL visible",
+        "acknowledgement never grants apply",
+        "prior results are historical after revision 2",
+        "new session excludes previous change ID"
+      ],
+      "session_visible": "Изменение → команды → проверка\nИзолированный lab · PostgreSQL + RabbitMQ · внутренний inbox\nПрименение BLOCKED\nПодготовка и независимая проверка доступны отдельно от применения. Успех job не означает безопасность изменения. Решение команды не выдаёт разрешения на применение.\nИнтервью: отдельная сессия\n\nСценарий задаёт задачу, а не готовый результат. Данные и jobs изолированы от других сессий. Роли остаются демонстрационными.\n\nСценарий\nПодтверждённая зависимость\nНеизвестный владелец (контроль каталога)\nУстаревание после новой ревизии\nНачать отдельную сессию\nСбросить только эту сессию\nЗавершить сессию\n\nСессия a876196f7f8a4fe59495e719d8c0c099 · stale · версия interview-1 · ACTIVE · поколение 1\n\nНачальное состояние\nПустая сессия: пройдите существующий A, затем создайте ревизию 2 или соберите изменившиеся поддерживаемые основания.\nЗадача / ожидаемый результат\nПрежние карточки, решения и PASS остаются только в истории; требуется новая оценка.\nПроисхождение\nExisting frozen integrated-path-1 A/C/D/E; saved model results explicitly REPLAY; current collection LIVE RUN; missing owner CONTROL.\nОграничения\n[ \"Declared owners, narrow discovery, demo roles, one worker; no deployment authority.\", \"Starting a session does not claim a scenario ran or seed unverified PASS.\" ]\n\nНеобязательная исследовательская запись: случайный ID сессии, версия сценария, режим, время, категории действий, ошибок, решений и помощи модератора. Имена, email, свободный текст, нажатия клавиш, экран и секреты не записываются. Технический журнал исполнения хранится отдельно. Можно отказаться от записи или удалить исследовательские данные этой сессии.\n\n Я добровольно разрешаю описанную минимальную запись исследовательских наблюдений\n\nОтказ не блокирует работу. Технический журнал выполнения хранится отдельно; удаление исследования не удаляет evidence исполнения.\n\nСохранить выбор\nПомощь модератора (без свободного текста)\nБез помощи\nНавигация\nТерминология\nТехническая ошибка\nИнструкция сценария\nОтметить помощь\nЭкспорт исследования JSON\nУдалить исследовательские записи\nДемонстрационная роль, не аутентификация\nИнициатор\nbilling\nаналитика\nКоординатор стенда\nРежим следующей операции\nFIXTURE / CONTROL\nREPLAY\nLIVE RUN\nОбновить состояние\n\nСостояние загружено · 06:56:33 · применение BLOCKED\n\nИзменения\nСтраница изменения\nInbox команды\nПатч и проверка\nНовое изменение / новая ревизия\nID изменения\nРевизия\nПоддерживаемый пример\nЛомающее: неверный backfill RUB → minor\nБезопасное: комментарий документации\nИсходный commit\nНазвание\nНамерение\n\nФорма создаёт поддерживаемый diff и файл примера. Произвольные shell-команды и ручной JSON не требуются. Новая ревизия с тем же ID делает прежние результаты устаревшими.\n\nСохранить изменение\nИзменения\n\nНет изменений. Создайте поддерживаемый пример.\n\nЛокальный продуктовый контур. Размещение в Cloud.ru этим интерфейсом не подтверждается. LIVE RUN, REPLAY и FIXTURE / CONTROL показываются рядом с каждым результатом.",
+      "change_id": "independent-stale-2d52ffc244",
+      "live_unavailable": true
+    }
+  ],
+  "limitations": [
+    "Synthetic authenticated CI browser check; not independent participant interaction or cloud TLS acceptance.",
+    "No paid model credentials, new inference, or fresh verifier PASS requested."
+  ],
+  "unauthenticated_status": 401,
+  "authentication_required": true,
+  "finished_at": "2026-10-18T06:56:41.441102+00:00"
+}
