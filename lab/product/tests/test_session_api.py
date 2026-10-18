@@ -54,6 +54,9 @@ class SessionAPITests(unittest.TestCase):
                 self.assertEqual(client.get('/').status_code,401)
                 self.assertEqual(client.get('/api/lab/state').status_code,401)
                 self.assertEqual(client.get('/api/lab/state',auth=('operator','wrong')).status_code,401)
+                import base64
+                invalid=base64.b64encode('юзер:wrong'.encode()).decode()
+                self.assertEqual(client.get('/api/lab/state',headers={'Authorization':'Basic '+invalid}).status_code,401)
                 self.assertEqual(client.get('/api/lab/state',auth=('operator','test-only-password')).status_code,409)
                 self.assertEqual(client.post('/api/lab/sessions',json={'scenario':'confirmed'},auth=('operator','test-only-password'),headers={'Origin':'https://other.invalid'}).status_code,403)
                 self.assertEqual(client.post('/api/lab/sessions',json={'scenario':'confirmed'},auth=('operator','test-only-password')).status_code,200)

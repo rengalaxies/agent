@@ -40,7 +40,7 @@ def create_app(db_path=None,artifact_root=None,start_worker=True,**worker_option
                 scheme,encoded=request.headers.get('authorization','').split(' ',1)
                 supplied_user,supplied_password=base64.b64decode(encoded,validate=True).decode().split(':',1)
                 valid=bool(username and password and scheme.lower()=='basic' and secrets.compare_digest(supplied_user,username) and secrets.compare_digest(supplied_password,password))
-            except (ValueError,UnicodeError):pass
+            except (ValueError,UnicodeError,TypeError):pass
             if not valid:return JSONResponse({'detail':'Protected lab: authentication required'},status_code=401,headers={'WWW-Authenticate':'Basic realm="Internal lab", charset="UTF-8"'})
         if request.method not in ('GET','HEAD','OPTIONS'):
             origin=request.headers.get('origin')
@@ -117,11 +117,12 @@ def create_app(db_path=None,artifact_root=None,start_worker=True,**worker_option
     def session_end(request:Request):
         def end(_):
             selected=selected_session(request)
-            if any(j['status'] in ('QUEUED','RUNNING') for j in sessions.workspace(selected).rows('jobs')):raise Stop('Stop/reconcile pending work before ending session')
-            result=sessions.end(selected)
-            for key in list(session_workers):
-                if key[0]==selected:session_workers.pop(key).close()
-            return result
+            with workspace_lock:
+                if any(j['status'] in ('QUEUED','RUNNING') for j in sessions.workspace(selected).rows('jobs')):raise Stop('Stop/reconcile pending work before ending session')
+                result=sessions.end(selected)
+                for key in list(session_workers):
+                    if key[0]==selected:session_workers.pop(key).close()
+                return result
         return guarded(end,None)
     def guarded(fn,payload):
         try:return fn(payload)
@@ -143,16 +144,18 @@ def create_app(db_path=None,artifact_root=None,start_worker=True,**worker_option
         return {'breaking':historical,'safe':{'intent':'Documentation clarification only','proposed_diff':'--- a/docs/note.md\n+++ b/docs/note.md\n-old\n+clarified\n','proposed_files':{'docs/note.md':'clarified\n'},'kind':'safe'}}
     @app.post('/api/lab/changes')
     def changes(request:Request,payload:dict):
-        active,active_worker=context(request)
-        try:actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=active_worker.root,text=True,timeout=5).strip()
-        except Exception:raise HTTPException(409,detail='Current repository commit unavailable') from None
-        if payload.get('source_commit')!=actual:raise HTTPException(409,detail='Supported source is the exact current repository commit')
-        return guarded(active.create_change,payload)
+        with workspace_lock:
+            active,active_worker=context(request)
+            try:actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=active_worker.root,text=True,timeout=5).strip()
+            except Exception:raise HTTPException(409,detail='Current repository commit unavailable') from None
+            if payload.get('source_commit')!=actual:raise HTTPException(409,detail='Supported source is the exact current repository commit')
+            return guarded(active.create_change,payload)
     @app.post('/api/lab/jobs',status_code=202)
     def jobs(request:Request,payload:dict):
         with workspace_lock:return guarded(context(request)[0].enqueue,payload)
     @app.post('/api/lab/decisions')
-    def decisions(request:Request,payload:dict):return guarded(context(request)[0].decide,payload)
+    def decisions(request:Request,payload:dict):
+        with workspace_lock:return guarded(context(request)[0].decide,payload)
     @app.post('/api/lab/apply')
     def apply():raise HTTPException(403,detail='BLOCKED: execution criteria and fresh exact authority not satisfied; team acknowledgement is not a grant')
     ui=Path(__file__).parent/'ui'

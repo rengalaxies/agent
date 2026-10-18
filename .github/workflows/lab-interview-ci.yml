@@ -1,5 +1,5 @@
 name: Protected interview rehearsal CI_ONLY without inference
-# Independent runbook-only executor added after authored integration acceptance.
+# Recheck final atomic session mutations, malformed auth rejection and visible scenario version.
 on:
   push:
     branches: [feat/postgres-rabbitmq-agent-lab]

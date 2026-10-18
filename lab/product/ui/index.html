@@ -57,7 +57,7 @@ async function refreshSession(){
  const info=await api('/sessions/current');sessionInfo=info;
  $('consent-notice').textContent=info.consent_notice;
  const active=info.session?.status==='ACTIVE';
- $('session-status').textContent=info.session?('Сессия '+info.session.session_id+' · '+info.session.scenario+' · '+info.session.status+' · поколение '+info.session.generation):'Обычный lab без интервью-сессии.';
+ $('session-status').textContent=info.session?('Сессия '+info.session.session_id+' · '+info.session.scenario+' · версия '+info.session.scenario_version+' · '+info.session.status+' · поколение '+info.session.generation):'Обычный lab без интервью-сессии.';
  $('research-consent').checked=!!info.session?.research_consent;
  for(const name of ['session-reset','session-end','save-consent','save-help'])$(name).disabled=!active;
  for(const name of ['export-research','delete-research'])$(name).disabled=!info.session;
