@@ -37,7 +37,7 @@ def guard(plan, cidr, opening):
     return {'address': ADDRESS, 'actions': expected, 'source': 'current_runner_only_/32', 'port': 22}
 
 
-def main():
+def main(after_open=None):
     report = {'project_id': PROJECT, 'source_commit': os.getenv('GITHUB_SHA'),
               'checked_at': datetime.now(timezone.utc).isoformat(),
               'status': 'BLOCKED', 'existing_compute_changes': 'NONE', 'cleanup': 'NOT_NEEDED'}
@@ -125,6 +125,9 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
                 report['cleanup']='REQUIRED'
                 report['phase']='OPEN_SINGLE_RUNNER_RULE'
                 tf(['apply','-input=false','-no-color',plan_path])
+                if after_open is not None:
+                    report['phase']='BOUNDED_AUTHORIZED_ACTION'
+                    report['authorized_action']=after_open(tf,env,selected,resources)
                 report['phase']='PINNED_READONLY_SSH'
                 from cryptography.hazmat.primitives import serialization
                 key=client.get_object(Bucket='test-bucket-ds',Key='deployment/p1/ui-recovery-key.pem',
