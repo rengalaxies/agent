@@ -39,6 +39,18 @@ def guard(plan, cidr, opening):
     return {'address': ADDRESS, 'actions': expected, 'source': 'current_runner_only_/32', 'port': 22}
 
 
+def validate_live_attachment(nic,group,selected):
+    if not (nic.get('id')==selected['ui_nic_id'] and nic.get('project',{}).get('id')==PROJECT
+            and nic.get('vm',{}).get('id')==selected['ui']['id']
+            and GROUP in [g.get('id') for g in nic.get('security_groups',[])]
+            and nic.get('floating_ip',{}).get('ip_address')==selected['ui_ip']
+            and group.get('id')==GROUP and group.get('name')=='dm-p1-ui'
+            and group.get('project',{}).get('id')==PROJECT
+            and live_zone_name(group)=='ru.AZ-2'):
+        raise ValueError('LIVE_NIC_GROUP_ATTACHMENT_MISMATCH')
+    return {'nic_id':nic['id'],'group_id':group['id'],'vm_id':nic['vm']['id'],'project_id':PROJECT,'floating_ip_matches_state':True}
+
+
 def main(after_open=None):
     report = {'project_id': PROJECT, 'source_commit': os.getenv('GITHUB_SHA'),
               'checked_at': datetime.now(timezone.utc).isoformat(),
@@ -74,14 +86,23 @@ def main(after_open=None):
         response=reader.post('https://iam.api.cloud.ru/api/v1/auth/token',json={
             'keyId':env['CLOUDRU_KEY_ID'],'secret':env['CLOUDRU_SECRET']},timeout=30)
         response.raise_for_status()
+        vm_token=response.json()['access_token']
         report['phase']='LIVE_VM_READ'
         response=reader.get('https://compute.api.cloud.ru/api/v1/vms/'+selected['ui']['id'],
-            headers={'Authorization':'Bearer '+response.json()['access_token']},timeout=30)
+            headers={'Authorization':'Bearer '+vm_token},timeout=30)
         response.raise_for_status(); vm=response.json().get('vm',response.json())
         if (vm.get('name')!='dm-p1-ui' or vm.get('project',{}).get('id')!=PROJECT
                 or live_zone_name(vm)!='ru.AZ-2' or vm.get('state')!='running'
                 or not any(n.get('id')==selected['ui_nic_id'] for n in vm.get('interfaces',[]))):
             raise ValueError('LIVE_UI_SCOPE_MISMATCH')
+        report['phase']='LIVE_NIC_GROUP_SCOPE'
+        # REST identity/attachment reads replace the redundant failing gRPC refresh,
+        # not the exact resource-change guard or the existing encrypted backend.
+        token=vm_token
+        live=[]
+        for path in ['/interfaces/'+selected['ui_nic_id'],'/security-groups/'+GROUP]:
+            response=reader.get('https://compute.api.cloud.ru/api/v1'+path,headers={'Authorization':'Bearer '+token},timeout=25);response.raise_for_status();live.append(response.json())
+        report['live_attachment']=validate_live_attachment(live[0].get('interface',live[0]),live[1].get('security_group',live[1]),selected)
         report['phase']='RUNNER_PUBLIC_IPV4'
         observed=None;lookup_failures=[]
         for endpoint in ['https://api.ipify.org','https://checkip.amazonaws.com']:
@@ -130,7 +151,7 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
                 import re
                 lines=[]
                 for line in (proc.stderr+'\n'+proc.stdout).splitlines():
-                    if any(term.lower() in line.lower() for term in ['Error:','Error message:','StatusCode:','status code:','RequestID:','api error','AccessDenied','Unauthorized','Forbidden','Unsupported attribute','too many requests']):
+                    if any(term.lower() in line.lower() for term in ['Error:','Error message:','StatusCode:','status code:','RequestID:','api error','AccessDenied','Unauthorized','Forbidden','Unsupported attribute','too many requests','received from server','transport:']):
                         line=line[:800]
                         for value in [access,secret,base64.b64encode(sse).decode(),env['CLOUDRU_KEY_ID'],env['CLOUDRU_SECRET'],env['CLOUDRU_UI_BASIC_AUTH_HASH'].strip(),str(ip),cidr,selected['ui_ip']]:
                             if value:line=line.replace(value,'[REDACTED]')
@@ -152,7 +173,7 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
             attempted=False
             try:
                 report['phase']='GUARDED_PLAN'
-                tf(['plan','-input=false','-no-color','-lock-timeout=60s','-target='+ADDRESS,'-out='+plan_path])
+                tf(['plan','-refresh=false','-input=false','-no-color','-lock-timeout=60s','-target='+ADDRESS,'-out='+plan_path])
                 report['opening_plan']=guard(json.loads(tf(['show','-json',plan_path])),cidr,True)
                 report['runner_public_ipv4']=str(ip)
                 attempted=True
@@ -191,7 +212,7 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
                     present=any(r['name']=='lab_runner_access' and r.get('instances') for r in current['resources'])
                     if present:
                         env['TF_VAR_lab_runner_cidr']=''
-                        tf(['plan','-input=false','-no-color','-lock-timeout=60s','-target='+ADDRESS,'-out='+plan_path])
+                        tf(['plan','-refresh=false','-input=false','-no-color','-lock-timeout=60s','-target='+ADDRESS,'-out='+plan_path])
                         report['cleanup_plan']=guard(json.loads(tf(['show','-json',plan_path])),cidr,False)
                         tf(['apply','-input=false','-no-color',plan_path])
                     after=state();select_state(after)

@@ -20,3 +20,13 @@ class PlanGuardTests(unittest.TestCase):
     def test_cleanup_only_own_rule(self):
         p=self.plan();c=p['resource_changes'][0]['change'];c['before']=c.pop('after');c['actions']=['delete']
         self.assertEqual(guard(p,'8.8.8.8/32',False)['actions'],['delete'])
+
+class LiveAttachmentGuardTests(unittest.TestCase):
+ def test_exact_live_attachment_required_without_provider_refresh(self):
+  from scoped_ssh import validate_live_attachment,PROJECT,GROUP
+  selected={'ui_nic_id':'nic','ui':{'id':'vm'},'ui_ip':'192.0.2.4'}
+  nic={'id':'nic','project':{'id':PROJECT},'vm':{'id':'vm'},'security_groups':[{'id':GROUP}],'floating_ip':{'ip_address':'192.0.2.4'}}
+  group={'id':GROUP,'name':'dm-p1-ui','project':{'id':PROJECT},'availability_zone':{'name':'ru.AZ-2'}}
+  self.assertEqual(validate_live_attachment(nic,group,selected)['group_id'],GROUP)
+  for altered in [{**nic,'security_groups':[]},{**nic,'vm':{'id':'other'}},{**nic,'floating_ip':{'ip_address':'192.0.2.5'}},{**nic,'project':{'id':'other'}}]:
+   with self.assertRaisesRegex(ValueError,'LIVE_NIC_GROUP_ATTACHMENT_MISMATCH'):validate_live_attachment(altered,group,selected)
