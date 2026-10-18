@@ -20,7 +20,7 @@ async def boundary(request,call_next):
  if request.url.path=='/' and response.status_code==200:
   body=b''.join([part async for part in response.body_iterator]).decode()
   banner='<aside style="padding:16px;background:#fff3cd;color:#332b00">Cloud runtime: применение BLOCKED; новые агенты UNAVAILABLE; новая независимая проверка UNAVAILABLE. Анализ/патч: явно выбранный REPLAY. <a href="/saved-demo">Сохранённая проверка — исторический REPLAY</a></aside>'
-  body=body.replace('<body>','<body>'+banner)
+  body=body.replace('<body>','<body>'+banner).replace('data-testid="verify-patch"','data-testid="verify-patch" disabled title="UNAVAILABLE: qualified CI executor is not connected"')
   return HTMLResponse(body,headers={k:v for k,v in response.headers.items() if k.lower() not in ('content-length','content-type')})
  return response
 # Insert before any static routes; product auth middleware covers these routes as well.

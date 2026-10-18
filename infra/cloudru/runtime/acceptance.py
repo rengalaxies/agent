@@ -2,7 +2,7 @@
 import json,time,pathlib
 import httpx
 URL='https://45-151-31-140.sslip.io';SOURCE='107dfd14292a5ab06593d424bf0b94f1cccb0b90'
-def run(password,out,restart):
+def run(password,out,restart,forbidden=()):
  from playwright.sync_api import sync_playwright
  out=pathlib.Path(out);out.mkdir(exist_ok=True)
  result={'outcome':'FAIL','url':URL,'source_commit':SOURCE,'llm_calls':0,'full_verifier_runs':0,'checks':{}}
@@ -35,7 +35,7 @@ def run(password,out,restart):
   page.get_by_test_id('tab-patch').click();job('prepare-patch','prepare','REPLAY')
   prior=state();candidate=prior['candidates'][-1]
   # Use exact job fields from current state, but the boundary must refuse before enqueue.
-  payload={'change_id':'amount-transition','revision':1,'operation':'verify','mode':'REPLAY','candidate_id':candidate['id']}
+  payload={'change_id':'amount-transition','revision':1,'operation':'verify','mode':'REPLAY','candidate_id':candidate['id'],'idempotency_key':'cloud-verify-disabled-'+candidate['id']}
   r=context.request.post(URL+'/api/lab/jobs',data=payload);assert r.status==409 and r.json()['job_created'] is False;assert state()['jobs']==prior['jobs'] and not state()['verifications']
   assert context.request.post(URL+'/api/lab/apply',data={}).status==403
   result['checks'].update(confirmed='PASS',replay_patch='PASS',verifier_unavailable_no_job='PASS',apply_403='PASS')
@@ -48,6 +48,7 @@ def run(password,out,restart):
   caps=req('GET','/capabilities');assert caps['new_independent_checks']=='UNAVAILABLE' and caps['new_agent_runs']=='UNAVAILABLE'
   text=json.dumps({'state':state(),'saved':receipt,'capabilities':caps,'export':req('GET','/sessions/export')})
   assert password not in text
+  assert all(value not in text for value in forbidden)
   assert not any(v in text for v in ['INTERNAL_PASSWORD','PG_ADMIN_PASSWORD','CLOUDRU_SECRET','BEGIN OPENSSH PRIVATE KEY'])
   result['checks'].update(saved_replay_provenance='PASS',secrets_absent='PASS',trusted_https_browser='PASS')
   result['outcome']='PASS';(out/'cloud-acceptance.json').write_text(json.dumps(result,indent=2));browser.close()

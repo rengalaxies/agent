@@ -44,20 +44,25 @@ def deploy(tf,env,selected,resources):
     time.sleep(3)
    else:raise ValueError('RULE_TRUSTED_HTTPS_NOT_READY')
    spec=importlib.util.spec_from_file_location('cloud_acceptance','infra/cloudru/runtime/acceptance.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-   def restart():execute(client,"sudo -n docker compose -f /opt/agent-cloud-runtime/compose.json restart web",timeout=90)
-   report['acceptance']=module.run(password,out,restart)
    measurement='''import json,pathlib,subprocess
 p=subprocess.run(['docker','compose','-f','/opt/agent-cloud-runtime/compose.json','ps','-q'],capture_output=True,text=True,check=True)
 r=[]
 for identity in p.stdout.split():
  d=json.loads(subprocess.check_output(['docker','inspect',identity]))[0];pid=d['State']['Pid'];cg=pathlib.Path('/sys/fs/cgroup')/pathlib.Path('/proc/'+str(pid)+'/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
- r.append({'name':d['Name'],'oom_killed':d['State']['OOMKilled'],'restart_count':d['RestartCount'],'user':d['Config']['User'],'memory_limit':d['HostConfig']['Memory'],'nano_cpus':d['HostConfig']['NanoCpus'],'ports':d['HostConfig']['PortBindings'],'mounts':[x['Destination'] for x in d['Mounts']],'memory_peak':int((cg/'memory.peak').read_text()),'memory_events':(cg/'memory.events').read_text()})
-print(json.dumps({'containers':r,'free':subprocess.check_output(['free','-b'],text=True),'disk':subprocess.check_output(['df','-B1','/'],text=True)}))'''
+ r.append({'name':d['Name'],'oom_killed':d['State']['OOMKilled'],'restart_count':d['RestartCount'],'user':d['Config']['User'],'memory_limit':d['HostConfig']['Memory'],'nano_cpus':d['HostConfig']['NanoCpus'],'ports':d['HostConfig']['PortBindings'],'mounts':[x['Destination'] for x in d['Mounts']],'memory_peak':int((cg/'memory.peak').read_text()),'memory_events':(cg/'memory.events').read_text(),'memory_current':int((cg/'memory.current').read_text()),'cpu_stat':(cg/'cpu.stat').read_text()})
+print(json.dumps({'containers':r,'free':subprocess.check_output(['free','-b'],text=True),'disk':subprocess.check_output(['df','-B1','/'],text=True),'mem_available_bytes':int(next(x.split()[1] for x in pathlib.Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024}))'''
+   def restart():
+    report["before_restart_resources"]=json.loads(execute(client,"sudo -n python3 -",measurement))
+    execute(client,"sudo -n docker compose -f /opt/agent-cloud-runtime/compose.json restart web",timeout=90)
+   forbidden=json.loads(execute(client,'sudo -n python3 -',"import pathlib,json; print(json.dumps(list(json.loads(pathlib.Path('/opt/agent-cloud-runtime/secrets.json').read_text()).values())))"))
+   report['acceptance']=module.run(password,out,restart,forbidden)
+   del forbidden
    report['resources']=json.loads(execute(client,'sudo -n python3 -',measurement))
-   for row in report['resources']['containers']:
-    assert not row['oom_killed'] and 'oom_kill 0' in row['memory_events'] and row['memory_peak']<row['memory_limit']
+   assert report['resources']['mem_available_bytes']>1024**3
+   for row in report['before_restart_resources']['containers']+report['resources']['containers']:
+    assert row['restart_count']==0 and not row['oom_killed'] and 'oom_kill 0' in row['memory_events'] and row['memory_peak']<row['memory_limit']
     assert '/var/run/docker.sock' not in row['mounts']
-   report['outcome']='PASS'
+   report['outcome']='ACCEPTANCE_PASS_CLEANUP_PENDING'
   finally:
    # No reusable CI login is left on the public origin, including after failure.
    revoke='''import pathlib,subprocess,json
@@ -65,6 +70,33 @@ p=pathlib.Path('/opt/agent-cloud-runtime/Caddyfile')
 if p.exists():
  s=p.read_text();p.write_text('\\n'.join(x for x in s.split('\\n') if not x.strip().startswith('acceptance ')));subprocess.run(['docker','compose','-f','/opt/agent-cloud-runtime/compose.json','restart','proxy'],capture_output=True,check=True,timeout=90)
 print(json.dumps({'temporary_acceptance_identity':'REMOVED'}))'''
-   report['credential_cleanup']=json.loads(execute(client,'sudo -n python3 -',revoke,120));(out/'deployment.json').write_text(json.dumps(report,indent=2)+'\n')
+   report['credential_cleanup']=json.loads(execute(client,'sudo -n python3 -',revoke,120))
+   (out/'deployment.json').write_text(json.dumps(report,indent=2)+'\n')
+   if report.get('acceptance'):
+    for _ in range(10):
+     try:
+      response=httpx.get('https://45-151-31-140.sslip.io/',auth=('acceptance',password),timeout=10)
+      if response.status_code==401:break
+     except httpx.HTTPError:pass
+     time.sleep(1)
+    else:raise ValueError('RULE_TEMPORARY_ACCEPTANCE_IDENTITY_NOT_REVOKED')
+    report['credential_cleanup']['revoked_identity_http_status']=401
+    if report['outcome']=='ACCEPTANCE_PASS_CLEANUP_PENDING':report['outcome']='PASS'
+   (out/'deployment.json').write_text(json.dumps(report,indent=2)+'\n')
  return {'action':'CLOUD_RUNTIME_DEPLOYMENT','outcome':report['outcome'],'temporary_test_identity':'REMOVED','execution_permission':False}
-if __name__=='__main__':raise SystemExit(main(deploy))
+def audit_network():
+ import requests,hashlib
+ result={'status':'BLOCKED','temporary_rule_expected':'ABSENT'}
+ try:
+  r=requests.post('https://iam.api.cloud.ru/api/v1/auth/token',json={'keyId':os.environ['CLOUDRU_KEY_ID'],'secret':os.environ['CLOUDRU_SECRET']},timeout=25);r.raise_for_status()
+  r=requests.get('https://compute.api.cloud.ru/api/v1/security-groups/'+GROUP+'/rules',headers={'Authorization':'Bearer '+r.json()['access_token']},timeout=25);r.raise_for_status();d=r.json();rules=d['items'];assert len(rules)==d['total']
+  admin=[x for x in rules if x.get('direction')=='ingress' and (x.get('ip_protocol')=='any' or x.get('port_range')=='22:22')]
+  assert len(admin)==1 and admin[0]['port_range']=='22:22' and admin[0]['remote_ip_prefix'].endswith('/32')
+  result.update(status='PASS',ssh_sources=1,ssh_prefix_length=32,broad_admin_absent=True,operator_source_sha256=hashlib.sha256(admin[0]['remote_ip_prefix'].encode()).hexdigest(),public_web_ports=sorted(x['port_range'] for x in rules if x.get('direction')=='ingress' and x.get('remote_ip_prefix')=='0.0.0.0/0'))
+ except Exception as e:result['error_class']=type(e).__name__
+ Path('cloud-evidence').mkdir(exist_ok=True);Path('cloud-evidence/network-final.json').write_text(json.dumps(result,indent=2)+'\n')
+ return result['status']=='PASS'
+if __name__=='__main__':
+ status=main(deploy)
+ network_ok=audit_network()
+ raise SystemExit(status if status else (0 if network_ok else 2))

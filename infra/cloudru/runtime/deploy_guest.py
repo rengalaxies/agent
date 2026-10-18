@@ -10,7 +10,7 @@ def run(args,timeout=180):
 assert run(['git','-C',str(stage),'rev-parse','HEAD'])==SOURCE
 assert run(['git','-C',str(stage),'rev-parse','HEAD^{tree}'])=='540a48cc47d87d1656e744aa20ab996d6af7bca8'
 assert not run(['git','-C',str(stage),'status','--porcelain'])
-assert '45.151.31.140' in socket.gethostbyname_ex('45-151-31-140.sslip.io')[2]
+assert '45.151.31.140' in socket.gethostbyname_ex('45-151-31-140.sslip.io')[2], 'DNS_NOT_BOUND_TO_EXISTING_VM'
 assert not any(':'+str(port)+' ' in run(['ss','-lnt']) for port in [443]) or (root/'compose.json').exists(),'UNEXPECTED_443_OWNER'
 root.mkdir(mode=0o700,exist_ok=True)
 for name in ['runtime','state','attestation','proxy-data','proxy-config']:
@@ -25,7 +25,6 @@ else:
 image='agent-cloud-product:'+SOURCE
 if subprocess.run(['docker','image','inspect',image],capture_output=True).returncode:
  run(['docker','build','--file',str(root/'runtime'/'Dockerfile'),'--tag',image,str(stage)],900)
-base=json.loads(run(['python3','-c','import json; print(json.dumps({}))']))
 pg='postgres@sha256:38471f330eb885e04de130b768d6db4e10469e2311879c7e5c699f6d2d8a1c74';rb='rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69'
 common={'restart':'unless-stopped','mem_limit':'384m','cpus':0.5,'pids_limit':200,'logging':{'driver':'json-file','options':{'max-size':'5m','max-file':'2'}},'networks':['private']}
 services={'postgres':{**common,'image':pg,'environment':{'POSTGRES_PASSWORD':secret['PG_ADMIN_PASSWORD']},'volumes':['postgres-data:/var/lib/postgresql/data'],'healthcheck':{'test':['CMD-SHELL','pg_isready -U postgres'],'interval':'5s','timeout':'3s','retries':30}},'rabbitmq':{**common,'image':rb,'hostname':'rabbitmq','environment':{'RABBITMQ_DEFAULT_USER':'lab','RABBITMQ_DEFAULT_PASS':secret['RABBIT_PASSWORD'],'RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS':'+S 1:1 +A 4'},'volumes':['rabbit-data:/var/lib/rabbitmq'],'healthcheck':{'test':['CMD','rabbitmq-diagnostics','-q','ping'],'interval':'10s','timeout':'5s','retries':30}}}
@@ -57,5 +56,5 @@ P('/etc/systemd/system/agent-cloud-attest.service').write_text('[Unit]\nDescript
 P('/etc/systemd/system/agent-cloud-attest.timer').write_text('[Unit]\nDescription=Refresh broker attestation\n[Timer]\nOnBootSec=2min\nOnUnitActiveSec=5min\n[Install]\nWantedBy=timers.target\n')
 run(['systemctl','daemon-reload']);run(['systemctl','enable','--now','agent-cloud-attest.timer'])
 dc(['up','-d','--wait','--wait-timeout','120','web','proxy'],240)
-report={'status':'RUNTIME_STARTED_TLS_PENDING','product_commit':SOURCE,'runtime_controller_commit':cfg['controller_commit'],'url':'https://45-151-31-140.sslip.io','proxy_image':proxy_digest,'containers':json.loads(dc(['ps','--format','json'])) if False else dc(['ps','--format','json']),'stats':run(['docker','stats','--no-stream','--format','{{json .}}']),'memory':run(['free','-b']),'apply_gate':'BLOCKED','llm_credentials_deployed':False,'docker_socket_exposed':False}
+report={'status':'RUNTIME_STARTED_TLS_PENDING','product_commit':SOURCE,'runtime_controller_commit':cfg['controller_commit'],'url':'https://45-151-31-140.sslip.io','proxy_image':proxy_digest,'containers':dc(['ps','--format','json']),'stats':run(['docker','stats','--no-stream','--format','{{json .}}']),'memory':run(['free','-b']),'app_image_id':json.loads(run(['docker','image','inspect',image]))[0]['Id'],'apply_gate':'BLOCKED','llm_credentials_deployed':False,'docker_socket_exposed':False}
 print(json.dumps(report))
