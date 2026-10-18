@@ -46,15 +46,15 @@ def main():
                     except IOError:
                         a=sftp.lstat(directory)
                         if not stat.S_ISDIR(a.st_mode) or a.st_uid!=1000 or a.st_mode&0o077:raise ValueError('UNSAFE_EXISTING_STAGING_DIRECTORY')
-                target=ROOT+'/release.bundle'
+                target=ROOT+'/release-'+checksum+'.bundle'
                 try:
                     sftp.stat(target);report['upload']='EXISTING_BUNDLE_RECHECKED'
                 except FileNotFoundError:
                     temporary=target+'.upload-'+os.environ['GITHUB_RUN_ID'];sftp.put(str(bundle),temporary);sftp.chmod(temporary,0o600);sftp.rename(temporary,target);report['upload']='SFTP_NEW_PRIVATE_BUNDLE'
-            config={'directory':ROOT,'source':SOURCE,'tree':tree,'sha256':checksum}
+            config={'directory':ROOT,'source':SOURCE,'tree':tree,'sha256':checksum,'bundle_name':'release-'+checksum+'.bundle'}
             code='''import hashlib,json,os,subprocess,pathlib,socket,shutil
 c=CONFIG
-root=pathlib.Path(c['directory']);bundle=root/'release.bundle';work=root/'checkout'
+root=pathlib.Path(c['directory']);bundle=root/c['bundle_name'];work=root/'checkout'
 assert os.getuid()==1000 and socket.gethostname()=='dm-p1-ui'
 assert hashlib.sha256(bundle.read_bytes()).hexdigest()==c['sha256'],'TRANSFER_CHECKSUM_MISMATCH'
 assert shutil.disk_usage(root).free>2*1024**3,'INSUFFICIENT_STAGING_DISK'
