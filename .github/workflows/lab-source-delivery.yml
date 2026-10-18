@@ -1,5 +1,5 @@
 name: Lab pinned SSH exact source delivery staging only
-# Qualify OS network/firewall and privileged read-only runtime after pinned SSH access.
+# Bounded TCP readiness and server-observed source verification after exact /32 rule creation.
 on:
   workflow_dispatch:
   push:

@@ -68,7 +68,7 @@ if not work.exists():
 assert git(['rev-parse','HEAD'],work)==c['source'],'REMOTE_SOURCE_MISMATCH'
 assert git(['rev-parse','HEAD^{tree}'],work)==c['tree'],'REMOTE_TREE_MISMATCH'
 assert not git(['status','--porcelain'],work),'REMOTE_CHECKOUT_DIRTY'
-result={'source_commit':c['source'],'tree_sha':c['tree'],'bundle_sha256':c['sha256'],'transferred_bytes':bundle.stat().st_size,'checkout':str(work),'clean_checkout':True,'services_started':False,'sql_executed':False}
+result={'source_commit':c['source'],'tree_sha':c['tree'],'bundle_sha256':c['sha256'],'transferred_bytes':bundle.stat().st_size,'checkout':str(work),'observed_ssh_client_ip':os.environ.get('SSH_CONNECTION','').split()[0] if os.environ.get('SSH_CONNECTION') else None,'clean_checkout':True,'services_started':False,'sql_executed':False}
 (root/'delivery-manifest.json').write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(result))
 '''.replace('CONFIG',repr(config),1)
             stdin,stdout,stderr=client.exec_command('python3 -',timeout=180);stdin.write(code);stdin.channel.shutdown_write();raw=stdout.read(8192);exit_code=stdout.channel.recv_exit_status()
