@@ -145,7 +145,8 @@ def ssh_probe(host, private_key=None, expected_fingerprint=None):
                     # Only known inventory fields; no arbitrary remote output.
                     result["os_inventory"] = {k: inventory[k] for k in
                         ("cpu_count", "loadavg", "memory", "disk_root", "container_runtime",
-                         "docker_version", "compose_version", "containers", "volume_names") if k in inventory}
+                         "docker_version", "compose_version", "containers", "volume_names", "host_identity",
+                         "network", "listeners", "sudo_readonly", "services", "firewall", "runtime_access") if k in inventory}
                     result["status"] = "PASS_READONLY_OS_INVENTORY"
     except Exception as exc:
         result["status"] = "BLOCKED_SSH_PROBE"

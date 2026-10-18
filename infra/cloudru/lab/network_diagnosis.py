@@ -13,7 +13,7 @@ def now():return datetime.now(timezone.utc).isoformat()
 def ident(value):return value.get('id') if isinstance(value,dict) else value
 
 def safe_network(doc):
-    allowed={'id','name','state','status','ip_address','fixed_ip_address','private_ip','public_ip','mac_address','mac','cidr','gateway','gateway_ip','gateway_ip_address','dhcp_enabled','enable_dhcp','interface_security_enabled','port_security_enabled','type','mtu','is_default','availability_zone','zone','project','project_id','subnet','vpc','vpc_id','vm','vm_id','device_id','network_interface','network_interface_id','interface_id','floating_ip','floating_ip_id','security_groups','interfaces','routes','route_table','route_table_id','nat_gateway','nat_gateway_id','floating_ip_address','external_ip','external_ip_address','fixed_ips'}
+    allowed={'id','name','state','status','ip_address','fixed_ip_address','private_ip','public_ip','mac_address','mac','cidr','gateway','gateway_ip','gateway_ip_address','dhcp_enabled','enable_dhcp','interface_security_enabled','port_security_enabled','type','mtu','is_default','availability_zone','zone','project','project_id','subnet','vpc','vpc_id','vm','vm_id','device_id','network_interface','network_interface_id','interface_id','floating_ip','floating_ip_id','security_groups','interfaces','routes','route_table','route_table_id','nat_gateway','nat_gateway_id','floating_ip_address','external_ip','external_ip_address','fixed_ips','interface','default_gateway','dhcp_default_gateway','subnet_address','routed_network','nat_rules','destination','destination_cidr','next_hop','nexthop','created_time','modified_time','default','nat_type'}
     if isinstance(doc,list):return [safe_network(x) for x in doc]
     if isinstance(doc,dict):return {k:safe_network(v) if isinstance(v,(dict,list)) else v for k,v in doc.items() if k in allowed}
     return doc
@@ -39,7 +39,7 @@ def rule_match(rule,source,port):
     return int(low)<=port<=int(high)
 
 def public_rule(r,source):
-    result={k:r[k] for k in ('id','direction','ether_type','ip_protocol','protocol','port_range','port_range_min','port_range_max','remote_security_group','state','status') if k in r}
+    result={k:r[k] for k in ('id','direction','ether_type','ip_protocol','protocol','port_range','port_range_min','port_range_max','remote_security_group','state','status','created_time','modified_time') if k in r}
     prefix=r.get('remote_ip_prefix')
     if prefix:
         net=ipaddress.ip_network(prefix,strict=False)
@@ -94,7 +94,7 @@ def main():
         nic=get('ui_interface','/interfaces/'+selected['ui_nic_id']);nic=nic.get('interface',nic);report['ui_interface']=safe_network(nic)
         fip=get('ui_floating_ip','/floating-ips/33a27f64-e474-49ed-a17b-15f67dd16400');fip=fip.get('floating_ip',fip);report['ui_floating_ip']=safe_network(fip)
         report['checks']['vm_has_expected_nic']=any(ident(n)==selected['ui_nic_id'] for n in report['vms']['ui']['interfaces'])
-        report['checks']['fip_targets_expected_nic']=ident(fip.get('network_interface'))==selected['ui_nic_id'] or fip.get('interface_id')==selected['ui_nic_id']
+        report['checks']['fip_targets_expected_nic']=ident(fip.get('interface'))==selected['ui_nic_id'] or ident(fip.get('network_interface'))==selected['ui_nic_id'] or fip.get('interface_id')==selected['ui_nic_id']
         report['checks']['fip_address_matches_state']=fip.get('ip_address')==selected['ui_ip']
         subnet_id=ident(nic.get('subnet'))
         if subnet_id:
@@ -104,7 +104,7 @@ def main():
             gid=ident(value);sg=get('security_group_'+gid,'/security-groups/'+gid);raw=get('security_group_rules_'+gid,'/security-groups/'+gid+'/rules')
             rules=raw if isinstance(raw,list) else raw.get('items',raw.get('rules',raw.get('security_group_rules',[])))
             if not isinstance(rules,list):raise ValueError('RULE_SCHEMA_UNRECOGNIZED')
-            report['security_groups'].append({'group':safe_network(sg),'rule_count':len(rules),'rules':[public_rule(r,source) for r in rules]})
+            report['security_groups'].append({'group':safe_network(sg),'rule_count':len(rules),'total':raw.get('total',len(rules)) if isinstance(raw,dict) else len(rules),'rules':[public_rule(r,source) for r in rules]})
         for (kind,name,index),value in resources.items():
             if kind=='cloudru_evolution_compute_nat_gateway':report['nat_gateway']=safe_network(get('existing_nat_gateway','/nat-gateways/'+value['id']))
         report['checks']['runner_tcp22_authorized_by_attached_sg']=any(r['runner_tcp22_match'] is True for sg in report['security_groups'] for r in sg['rules'])
