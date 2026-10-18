@@ -1,0 +1,40 @@
+name: Lab reference network comparison read only
+on:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths: [.github/workflows/lab-reference-network.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Compare TCP and trusted HTTPS without SSH authentication
+        run: |
+          python3 - <<'PY'
+          import socket,ssl,json,datetime,pathlib
+          result={'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'ssh_authentication_attempted':False,'cloud_mutations':False,'targets':{}}
+          for label,host in [('agent','45.151.31.140'),('raven','168.113.252.75')]:
+              row={}
+              for port in [22,443]:
+                  try:
+                      with socket.create_connection((host,port),timeout=6) as s:
+                          row[str(port)]={'tcp':'CONNECTED'}
+                          if port==22:row[str(port)]['banner']=s.recv(256).decode(errors='replace').strip()
+                  except OSError as e:row[str(port)]={'tcp':'UNAVAILABLE','error_class':type(e).__name__}
+              name=host.replace('.','-')+'.sslip.io'
+              try:
+                  with socket.create_connection((name,443),timeout=6) as raw:
+                      with ssl.create_default_context().wrap_socket(raw,server_hostname=name) as tls:
+                          cert=tls.getpeercert();row['https']={'trusted_tls':True,'hostname':name,'not_after':cert.get('notAfter'),'issuer':cert.get('issuer')}
+              except OSError as e:row['https']={'trusted_tls':False,'error_class':type(e).__name__}
+              result['targets'][label]=row
+          pathlib.Path('reference-network.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reference-network
+          path: reference-network.json
+          retention-days: 14
