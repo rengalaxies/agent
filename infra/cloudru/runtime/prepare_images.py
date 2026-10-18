@@ -8,7 +8,7 @@ assert run(['git','-C','release-source','rev-parse','HEAD^{tree}'])==TREE
 assert subprocess.run(['git','-C','release-source','config','--get-regexp','http.*extraheader'],capture_output=True).returncode==1
 app='agent-cloud-product:'+SOURCE
 with (out/'image-build.log').open('w') as log:subprocess.run(['docker','build','--file','infra/cloudru/runtime/Dockerfile','--tag',app,'release-source'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=900)
-images={'app':app,'postgres':'postgres@sha256:38471f330eb885e04de130b768d6db4e10469e2311879c7e5c699f6d2d8a1c74','rabbitmq':'rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69','proxy':'caddy:2.10.2-alpine'}
+images={'app':app,'postgres':'postgres@sha256:38471f330eb885e04de130b768d6db4e10469e2311879c7e5c699f6d2d8a1c74','rabbitmq':'rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69','proxy':'caddy@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d'}
 manifest={'product_commit':SOURCE,'product_tree':TREE,'controller_commit':os.environ['GITHUB_SHA'],'images':{}}
 for key,ref in images.items():
  if key!='app':subprocess.run(['docker','pull',ref],check=True,timeout=300)

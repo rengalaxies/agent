@@ -28,6 +28,7 @@ def deploy(tf,env,selected,resources):
  with connect(env,selected) as client:
   # Survey again only because the previous runner could not establish TCP; no source redelivery.
   survey=json.loads(execute(client,'python3 -',Path('infra/cloudru/lab/runtime_survey.py').read_text(),120));(out/'survey.json').write_text(json.dumps(survey,indent=2))
+  if survey['hostname']!='dm-p1-ui' or survey['source']['stdout'].strip()!=report['product_commit'] or survey['clean']['stdout'].strip():raise ValueError('RULE_PINNED_OS_STAGED_SOURCE_MISMATCH')
   if survey['observed_source']+'/32'!=env['TF_VAR_lab_runner_cidr']:raise ValueError('RULE_SERVER_SOURCE_MISMATCH')
   incoming='/home/dmadmin/agent-runtime-upload-'+os.environ['GITHUB_RUN_ID']
   with client.open_sftp() as sftp:

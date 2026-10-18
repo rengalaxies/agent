@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from fastapi.responses import HTMLResponse,JSONResponse
 from lab.product.api import create_app
 app=create_app()
-CAPS={'cloud_ui':'ACCEPTANCE_PENDING','new_agent_runs':'UNAVAILABLE','new_independent_checks':'UNAVAILABLE','saved_demonstrations':'AVAILABLE','execution_permission':False,'reason':'No qualified isolated CI executor is connected. No LLM credential is deployed. Historical PASS applies only to its recorded inputs.'}
+CAPS={'runtime_controller_commit':os.getenv('LAB_RUNTIME_CONTROLLER_COMMIT','UNKNOWN'),'product_commit':'107dfd14292a5ab06593d424bf0b94f1cccb0b90','new_agent_runs':'UNAVAILABLE','new_independent_checks':'UNAVAILABLE','saved_demonstrations':'AVAILABLE','execution_permission':False,'reason':'No qualified isolated CI executor is connected. No LLM credential is deployed. Historical PASS applies only to its recorded inputs.'}
 @app.middleware('http')
 async def boundary(request,call_next):
  # Authentication remains enforced by the product middleware and whole-origin proxy.
@@ -37,7 +37,7 @@ def ready():
  return {'ready':True,'components':['sqlite','postgres','rabbitmq'],'execution_permission':False}
 @app.get('/saved-demo',response_class=HTMLResponse)
 def saved():
- return '''<html lang="ru"><meta charset="utf-8"><title>Исторический REPLAY</title><body><h1>REPLAY — сохранённая демонстрация</h1><p>Это не проверка текущего патча и не разрешение на применение.</p><p>Проверенный продукт: commit 107dfd14292a5ab06593d424bf0b94f1cccb0b90, <a href="https://github.com/rengalaxies/agent/actions/runs/39105701043">Actions 39105701043</a>.</p><p>Реальный агентный проход: <a href="https://github.com/rengalaxies/agent/actions/runs/39068862920">Actions 39068862920</a>, модель openai/gpt-oss-120b; происхождение и точные входы сохранены в репозитории.</p><p><a href="/api/lab/saved-demo">Полная сохранённая квитанция</a> · <a href="/">Вернуться в сценарий</a></p></body></html>'''
+ return '''<html lang="ru"><meta charset="utf-8"><title>Исторический REPLAY</title><body><h1>REPLAY — сохранённая демонстрация</h1><p>Это не проверка текущего патча и не разрешение на применение.</p><p>Проверенный продукт: commit 107dfd14292a5ab06593d424bf0b94f1cccb0b90, <a href="https://github.com/rengalaxies/agent/actions/runs/39105701043">Actions 39105701043</a>.</p><p>Реальный агентный проход: <a href="https://github.com/rengalaxies/agent/actions/runs/39068862920">Actions 39068862920</a>, модель openai/gpt-oss-120b; происхождение и точные входы сохранены в репозитории.</p><p><a href="/api/lab/saved-demo">Историческая квитанция 46bb9c61 (Actions 39070509491)</a> · <a href="/">Вернуться в сценарий</a></p></body></html>'''
 @app.get('/api/lab/saved-demo')
 def saved_receipt():
  path=Path('/work/lab/reports/interview/first-ci/session-one-state.json')

@@ -1,0 +1,29 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "b3fce78c04cebea578861a69d3692a2e30b10676",
+  "checked_at": "2026-10-18T11:11:29.721998+00:00",
+  "status": "BLOCKED",
+  "existing_compute_changes": "NONE",
+  "cleanup": "NOT_NEEDED",
+  "phase": "LIVE_VM_READ",
+  "read_retries": [
+    {
+      "service": "compute.api.cloud.ru",
+      "method": "GET",
+      "prior_attempts": [
+        {
+          "http_status": 503,
+          "error_class": null
+        },
+        {
+          "http_status": 503,
+          "error_class": null
+        }
+      ],
+      "final_http_status": 503
+    }
+  ],
+  "error_class": "HTTPError",
+  "upstream_service": "compute.api.cloud.ru",
+  "upstream_http_status": 503
+}

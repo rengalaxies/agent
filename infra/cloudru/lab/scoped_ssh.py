@@ -42,13 +42,16 @@ def guard(plan, cidr, opening):
 def validate_live_attachment(nic,group,selected):
     if not (nic.get('id')==selected['ui_nic_id'] and nic.get('project',{}).get('id')==PROJECT
             and nic.get('vm',{}).get('id')==selected['ui']['id']
+            and nic.get('vm',{}).get('name')=='dm-p1-ui'
+            and nic.get('vm',{}).get('state')=='running'
+            and live_zone_name(nic)=='ru.AZ-2'
             and GROUP in [g.get('id') for g in nic.get('security_groups',[])]
             and nic.get('floating_ip',{}).get('ip_address')==selected['ui_ip']
             and group.get('id')==GROUP and group.get('name')=='dm-p1-ui'
             and group.get('project',{}).get('id')==PROJECT
             and live_zone_name(group)=='ru.AZ-2'):
         raise ValueError('LIVE_NIC_GROUP_ATTACHMENT_MISMATCH')
-    return {'nic_id':nic['id'],'group_id':group['id'],'vm_id':nic['vm']['id'],'project_id':PROJECT,'floating_ip_matches_state':True}
+    return {'nic_id':nic['id'],'group_id':group['id'],'vm_id':nic['vm']['id'],'project_id':PROJECT,'floating_ip_matches_state':True,'vm_summary_state':nic['vm']['state']}
 
 
 def main(after_open=None):
@@ -88,13 +91,19 @@ def main(after_open=None):
         response.raise_for_status()
         vm_token=response.json()['access_token']
         report['phase']='LIVE_VM_READ'
-        response=reader.get('https://compute.api.cloud.ru/api/v1/vms/'+selected['ui']['id'],
-            headers={'Authorization':'Bearer '+vm_token},timeout=30)
-        response.raise_for_status(); vm=response.json().get('vm',response.json())
-        if (vm.get('name')!='dm-p1-ui' or vm.get('project',{}).get('id')!=PROJECT
-                or live_zone_name(vm)!='ru.AZ-2' or vm.get('state')!='running'
-                or not any(n.get('id')==selected['ui_nic_id'] for n in vm.get('interfaces',[]))):
-            raise ValueError('LIVE_UI_SCOPE_MISMATCH')
+        try:
+            response=reader.get('https://compute.api.cloud.ru/api/v1/vms/'+selected['ui']['id'],
+                headers={'Authorization':'Bearer '+vm_token},timeout=30)
+            response.raise_for_status(); vm=response.json().get('vm',response.json())
+            if (vm.get('name')!='dm-p1-ui' or vm.get('project',{}).get('id')!=PROJECT
+                    or live_zone_name(vm)!='ru.AZ-2' or vm.get('state')!='running'
+                    or not any(n.get('id')==selected['ui_nic_id'] for n in vm.get('interfaces',[]))):
+                raise ValueError('LIVE_UI_SCOPE_MISMATCH')
+            report['vm_detail']='LIVE_MATCH'
+        except requests.HTTPError as exc:
+            if exc.response is None or exc.response.status_code not in (429,502,503,504):raise
+            report['vm_detail']={'status':'TEMPORARILY_UNAVAILABLE','http_status':exc.response.status_code,
+                'required_alternative':'fresh NIC project/zone/VM id/name/running/FIP/SG + pinned authenticated OS inventory'}
         report['phase']='LIVE_NIC_GROUP_SCOPE'
         # REST identity/attachment reads replace the redundant failing gRPC refresh,
         # not the exact resource-change guard or the existing encrypted backend.
