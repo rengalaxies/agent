@@ -104,9 +104,14 @@ def main():
             gid=ident(value);sg=get('security_group_'+gid,'/security-groups/'+gid);raw=get('security_group_rules_'+gid,'/security-groups/'+gid+'/rules')
             rules=raw if isinstance(raw,list) else raw.get('items',raw.get('rules',raw.get('security_group_rules',[])))
             if not isinstance(rules,list):raise ValueError('RULE_SCHEMA_UNRECOGNIZED')
+            if isinstance(raw,dict) and raw.get('total',len(rules))!=len(rules):raise ValueError('RULE_PAGINATION_INCOMPLETE')
             report['security_groups'].append({'group':safe_network(sg),'rule_count':len(rules),'total':raw.get('total',len(rules)) if isinstance(raw,dict) else len(rules),'rules':[public_rule(r,source) for r in rules]})
         for (kind,name,index),value in resources.items():
             if kind=='cloudru_evolution_compute_nat_gateway':report['nat_gateway']=safe_network(get('existing_nat_gateway','/nat-gateways/'+value['id']))
+        report['state_ui_rules']=[{'terraform_resource':name,'rule':public_rule(v,source)} for (kind,name,index),v in resources.items() if kind=='cloudru_evolution_compute_security_group_rule' and v.get('security_group_id')=='4dde92a5-23a7-4c97-b48f-361d248b5af3']
+        live_ids={r['id'] for g in report['security_groups'] for r in g['rules']}
+        state_ids={x['rule']['id'] for x in report['state_ui_rules']}
+        report['security_rule_inventory_difference']={'live_only_ids':sorted(live_ids-state_ids),'state_only_ids':sorted(state_ids-live_ids),'note':'Difference is not automatically repaired; existing rules may be operator-managed.'}
         report['checks']['runner_tcp22_authorized_by_attached_sg']=any(r['runner_tcp22_match'] is True for sg in report['security_groups'] for r in sg['rules'])
         report['tcp_probes']=[tcp(selected['ui_ip'],port) for port in (22,80,443)]
         if report['tcp_probes'][0]['tcp']=='CONNECTED':

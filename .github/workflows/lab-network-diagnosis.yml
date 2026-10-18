@@ -1,5 +1,5 @@
 name: Lab exact existing VM network diagnosis
-# Qualify OS network/firewall and privileged read-only runtime after pinned SSH access.
+# Confirm Docker security features and compare exact live/state SG rule inventories.
 on:
   workflow_dispatch:
   push:

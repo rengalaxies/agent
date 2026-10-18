@@ -44,6 +44,9 @@ report['firewall']={name:command(args) for name,args in {
  'iptables':['sudo','-n','iptables','-S'],
  'iptables_nat':['sudo','-n','iptables','-t','nat','-S']}.items() if shutil.which(args[2])}
 report['runtime_access']={'git':command(['git','--version']),
+ 'security_options':command(['sudo','-n','docker','info','--format','{{json .SecurityOptions}}']),
+ 'cgroup_version':command(['sudo','-n','docker','info','--format','{{.CgroupVersion}}']),
+ 'root_filesystem':command(['findmnt','-n','-o','FSTYPE','/']),
  'root_docker_version':command(['sudo','-n','docker','version','--format','{{.Server.Version}}']),
  'root_containers':command(['sudo','-n','docker','ps','--format','{{.Names}} {{.Status}} {{.Ports}}']),
  'root_docker_usage':command(['sudo','-n','docker','system','df','--format','json'])}
