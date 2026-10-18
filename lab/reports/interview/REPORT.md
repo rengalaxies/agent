@@ -1,5 +1,7 @@
 # Interview preparation and Cloud.ru placement qualification
 
+Update18 October2026: guest access and exact-source staging are now confirmed; see [subsequent access report](../access-2026-10-18/REPORT.md). This historical interview report still correctly records no deployed cloud UI; its previous SSH/capacity blocker has been superseded by measured evidence.
+
 ## Placement decision
 
 **Cloud browser path: BLOCKED. Model mode for this batch: REPLAY_ONLY. Interview format currently available: saved materials / moderator presentation.** CI_ONLY browser automation is not a participant-accessible cloud address and is not user research. No public deployment was performed; no new model requests were made.

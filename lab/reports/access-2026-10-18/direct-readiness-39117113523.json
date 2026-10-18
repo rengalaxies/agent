@@ -1,0 +1,83 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "53806cdccaa59a01662c5ada62a5465b77cf0500",
+  "checked_at": "2026-10-18T09:53:43.369747+00:00",
+  "status": "BLOCKED",
+  "existing_compute_changes": "NONE",
+  "cleanup": "PASS_OWN_TEMPORARY_RULE_ABSENT",
+  "runner_egress_observations": {
+    "default_https": "135.119.21.209",
+    "ssh_uses_configured_https_proxy": false,
+    "selected": "HTTPS_EGRESS_ROUTE_WITH_SERVER_SOURCE_RECHECK"
+  },
+  "phase": "CLEANUP_OWN_RULE",
+  "opening_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "create"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "runner_public_ipv4": "135.119.21.209",
+  "tcp_readiness_attempts": [
+    {
+      "attempt": 1,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 4.0
+    },
+    {
+      "attempt": 2,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 12.01
+    },
+    {
+      "attempt": 3,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 20.01
+    },
+    {
+      "attempt": 4,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 28.02
+    },
+    {
+      "attempt": 5,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 36.02
+    },
+    {
+      "attempt": 6,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 44.03
+    },
+    {
+      "attempt": 7,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 52.03
+    },
+    {
+      "attempt": 8,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 60.04
+    }
+  ],
+  "cleanup_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "delete"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "error_class": "ValueError",
+  "error_code": "RULE_CREATED_BUT_RUNNER_TCP_NOT_READY"
+}

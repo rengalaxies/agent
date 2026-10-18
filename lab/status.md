@@ -1,6 +1,8 @@
-# Actual lab status - 2026-10-17
+# Actual lab status - 2026-10-18
 
 Overall: **интегрированный UI → API → живые основания → новая модель → независимая проверка подтверждён в CI/браузере; Cloud.ru deployment NOT READY**. Real Foundation Models analyst and executor produced a SQL repair independently verified on fresh PostgreSQL/RabbitMQ. Controlled CI R6-R8 qualification passes; automatic application stays BLOCKED. Exact commits, all failures, token usage and remaining deployment steps: [agent CI report](reports/agent-ci-summary.md). Historical evidence and original full-scenario gaps follow.
+
+Current infrastructure update,18 October2026: **pinned SSH and authenticated OS management PASS; exact verified commit107dfd1 source staged on the existing UI VM, not deployed**. Live API/state/guest network diagnosis, resource measurement, precise SG drift correction and bounded delivery evidence: [access/delivery report](reports/access-2026-10-18/REPORT.md). Earlier “guest channel unverified / capacity unmeasured” entries below are historical. Public prototype HTTPS remains NOT_READY; no domain apply, UI change, LLM call or interview rerun in this access batch.
 
 ## Evidence
 

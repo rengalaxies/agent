@@ -1,0 +1,758 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "8c8e15b8db1a04adb8cc8877bba60ec6b282dc42",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39115909389",
+  "started_at": "2026-10-18T09:35:21.215800+00:00",
+  "read_only": true,
+  "cloud_mutations": [],
+  "apply_gate": "BLOCKED",
+  "api": {
+    "vm_ui": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:29.273595+00:00",
+      "request_id": "225e6342-b6ac-4166-a1ff-967bc1a0fd32",
+      "response_fields": [
+        "additional_properties",
+        "availability_zone",
+        "created_time",
+        "description",
+        "disks",
+        "flavor",
+        "guest_agent_state",
+        "id",
+        "image",
+        "interfaces",
+        "is_serial_ready",
+        "locked",
+        "metadata_fields",
+        "modified_time",
+        "name",
+        "placement_group",
+        "project",
+        "remote_console_protocol",
+        "remote_console_url",
+        "remote_console_ws",
+        "state",
+        "tags",
+        "vnc_url",
+        "vnc_ws"
+      ]
+    },
+    "vm_core": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:31.004850+00:00",
+      "request_id": "9d74d20d-67f8-46ab-8acb-3c8794c60ae3",
+      "response_fields": [
+        "additional_properties",
+        "availability_zone",
+        "created_time",
+        "description",
+        "disks",
+        "flavor",
+        "guest_agent_state",
+        "id",
+        "image",
+        "interfaces",
+        "is_serial_ready",
+        "locked",
+        "metadata_fields",
+        "modified_time",
+        "name",
+        "placement_group",
+        "project",
+        "remote_console_protocol",
+        "remote_console_url",
+        "remote_console_ws",
+        "state",
+        "tags",
+        "vnc_url",
+        "vnc_ws"
+      ]
+    },
+    "ui_interface": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:31.867441+00:00",
+      "request_id": "e48823a8-ce8b-4e2c-bf70-f1243710b67c",
+      "response_fields": [
+        "allowed_address_pairs",
+        "availability_zone",
+        "created_time",
+        "description",
+        "floating_ip",
+        "id",
+        "interface_security_enabled",
+        "ip_address",
+        "modified_time",
+        "name",
+        "primary",
+        "project",
+        "security_groups",
+        "state",
+        "subnet",
+        "type",
+        "vm"
+      ]
+    },
+    "ui_floating_ip": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:33.665579+00:00",
+      "request_id": "962667c5-81f1-4667-9ccf-89b9ce3b2d5d",
+      "response_fields": [
+        "availability_zone",
+        "created_time",
+        "description",
+        "id",
+        "interface",
+        "ip_address",
+        "modified_time",
+        "name",
+        "nat_gateway",
+        "server",
+        "state",
+        "tags",
+        "vm"
+      ]
+    },
+    "subnet": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:34.615551+00:00",
+      "request_id": "17364d63-6952-43c2-adeb-5b37dcbbe2c7",
+      "response_fields": [
+        "availability_zone",
+        "can_delete",
+        "created_time",
+        "default",
+        "default_gateway",
+        "description",
+        "dhcp_default_gateway",
+        "dns_servers",
+        "id",
+        "modified_time",
+        "name",
+        "project",
+        "routed_network",
+        "state",
+        "subnet_address",
+        "tags",
+        "type",
+        "vpc_id"
+      ]
+    },
+    "security_group_4dde92a5-23a7-4c97-b48f-361d248b5af3": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:35.576711+00:00",
+      "request_id": "80615116-a564-450a-b1aa-1e068967db42",
+      "response_fields": [
+        "availability_zone",
+        "created_time",
+        "default",
+        "description",
+        "egress_rules_count",
+        "has_interfaces",
+        "has_remote",
+        "id",
+        "ingress_rules_count",
+        "modified_time",
+        "name",
+        "project",
+        "state",
+        "tags"
+      ]
+    },
+    "security_group_rules_4dde92a5-23a7-4c97-b48f-361d248b5af3": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:37.031381+00:00",
+      "request_id": "2adb466b-5832-4b8c-8a7f-9500819f6639",
+      "response_fields": [
+        "items",
+        "limit",
+        "offset",
+        "total"
+      ]
+    },
+    "existing_nat_gateway": {
+      "http_status": 200,
+      "checked_at": "2026-10-18T09:35:37.733452+00:00",
+      "request_id": "1462a06c-a70e-49dc-a620-df2389c045c3",
+      "response_fields": [
+        "availability_zone",
+        "created_time",
+        "description",
+        "floating_ip",
+        "id",
+        "modified_time",
+        "name",
+        "nat_rules",
+        "nat_type",
+        "project",
+        "state",
+        "vpc_id"
+      ]
+    }
+  },
+  "checks": {
+    "vm_has_expected_nic": true,
+    "fip_targets_expected_nic": true,
+    "fip_address_matches_state": true,
+    "runner_tcp22_authorized_by_attached_sg": true,
+    "state_unchanged": true
+  },
+  "state_serial": 19,
+  "runner_public_ipv4": "20.3.167.87",
+  "vms": {
+    "ui": {
+      "id": "c9e589fc-a42a-4cc3-8038-fe7d73929713",
+      "name": "dm-p1-ui",
+      "state": "running",
+      "guest_agent_state": "enabled",
+      "interfaces": [
+        {
+          "id": "7415eae4-918b-4784-b4b2-a19325f976b6",
+          "name": "dm-p1-ui-nic",
+          "ip_address": "10.0.0.6",
+          "type": "regular",
+          "state": "created",
+          "interface_security_enabled": true,
+          "subnet": {
+            "id": "d58e80ef-fff1-43eb-b601-96fb358224b7",
+            "name": "Default_ru.AZ-2",
+            "state": "created",
+            "routed_network": true,
+            "subnet_address": "10.0.0.0/24"
+          },
+          "floating_ip": {
+            "id": "33a27f64-e474-49ed-a17b-15f67dd16400",
+            "name": "dm-p1-ui-public-ip",
+            "ip_address": "45.151.31.140",
+            "state": "in_use"
+          },
+          "security_groups": [
+            {
+              "id": "4dde92a5-23a7-4c97-b48f-361d248b5af3",
+              "name": "dm-p1-ui",
+              "state": "created"
+            }
+          ]
+        }
+      ]
+    },
+    "core": {
+      "id": "97a6e631-1d80-4212-aa69-ef6454b029df",
+      "name": "dm-p1-core",
+      "state": "stopped",
+      "guest_agent_state": "disabled",
+      "interfaces": [
+        {
+          "id": "1df7b1f5-1ec5-41a1-b242-dac9d3623c47",
+          "name": "dm-p1-core-nic",
+          "ip_address": "10.0.0.5",
+          "type": "regular",
+          "state": "created",
+          "interface_security_enabled": true,
+          "subnet": {
+            "id": "d58e80ef-fff1-43eb-b601-96fb358224b7",
+            "name": "Default_ru.AZ-2",
+            "state": "created",
+            "routed_network": true,
+            "subnet_address": "10.0.0.0/24"
+          },
+          "floating_ip": null,
+          "security_groups": [
+            {
+              "id": "b90c9c32-8245-4024-a403-70f14477838d",
+              "name": "dm-p1-core",
+              "state": "created"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ui_interface": {
+    "id": "7415eae4-918b-4784-b4b2-a19325f976b6",
+    "name": "dm-p1-ui-nic",
+    "ip_address": "10.0.0.6",
+    "subnet": {
+      "id": "d58e80ef-fff1-43eb-b601-96fb358224b7",
+      "name": "Default_ru.AZ-2",
+      "state": "created",
+      "routed_network": true,
+      "subnet_address": "10.0.0.0/24"
+    },
+    "vm": {
+      "id": "c9e589fc-a42a-4cc3-8038-fe7d73929713",
+      "name": "dm-p1-ui",
+      "state": "running"
+    },
+    "security_groups": [
+      {
+        "id": "4dde92a5-23a7-4c97-b48f-361d248b5af3",
+        "name": "dm-p1-ui",
+        "state": "created"
+      }
+    ],
+    "floating_ip": {
+      "id": "33a27f64-e474-49ed-a17b-15f67dd16400",
+      "name": "dm-p1-ui-public-ip",
+      "ip_address": "45.151.31.140",
+      "state": "in_use"
+    },
+    "type": "regular",
+    "state": "created",
+    "interface_security_enabled": true,
+    "created_time": "2026-10-14T17:31:09Z",
+    "modified_time": "2026-10-14T17:32:57Z",
+    "project": {
+      "id": "20853297-65b7-42a8-af40-25c8d2df4e11"
+    },
+    "availability_zone": {
+      "id": "479a4ab3-3ff3-4972-95c5-7610bac5c0bb",
+      "name": "ru.AZ-2"
+    }
+  },
+  "ui_floating_ip": {
+    "id": "33a27f64-e474-49ed-a17b-15f67dd16400",
+    "name": "dm-p1-ui-public-ip",
+    "ip_address": "45.151.31.140",
+    "state": "in_use",
+    "interface": {
+      "id": "7415eae4-918b-4784-b4b2-a19325f976b6",
+      "name": "dm-p1-ui-nic",
+      "ip_address": "10.0.0.6",
+      "type": "regular",
+      "state": "created",
+      "interface_security_enabled": true
+    },
+    "vm": {
+      "id": "c9e589fc-a42a-4cc3-8038-fe7d73929713",
+      "name": "dm-p1-ui",
+      "state": "running"
+    },
+    "nat_gateway": null,
+    "availability_zone": {
+      "id": "479a4ab3-3ff3-4972-95c5-7610bac5c0bb",
+      "name": "ru.AZ-2"
+    },
+    "created_time": "2026-10-14T10:13:28Z",
+    "modified_time": "2026-10-14T17:32:57Z"
+  },
+  "subnet": {
+    "id": "d58e80ef-fff1-43eb-b601-96fb358224b7",
+    "name": "Default_ru.AZ-2",
+    "subnet_address": "10.0.0.0/24",
+    "routed_network": true,
+    "default_gateway": "10.0.0.1",
+    "dhcp_default_gateway": null,
+    "availability_zone": {
+      "id": "479a4ab3-3ff3-4972-95c5-7610bac5c0bb",
+      "name": "ru.AZ-2"
+    },
+    "project": {
+      "id": "20853297-65b7-42a8-af40-25c8d2df4e11"
+    },
+    "default": true,
+    "state": "created",
+    "created_time": "2026-10-13T11:35:18Z",
+    "modified_time": "2026-10-13T20:54:39Z",
+    "type": "regular",
+    "vpc_id": "6a7f399a-277d-40f6-98fb-1ab8fe8531e1"
+  },
+  "security_groups": [
+    {
+      "group": {
+        "id": "4dde92a5-23a7-4c97-b48f-361d248b5af3",
+        "name": "dm-p1-ui",
+        "project": {
+          "id": "20853297-65b7-42a8-af40-25c8d2df4e11"
+        },
+        "default": false,
+        "created_time": "2026-10-13T20:54:18Z",
+        "modified_time": "2026-10-13T20:54:39Z",
+        "availability_zone": {
+          "id": "479a4ab3-3ff3-4972-95c5-7610bac5c0bb",
+          "name": "ru.AZ-2"
+        },
+        "state": "created"
+      },
+      "rule_count": 5,
+      "total": 5,
+      "rules": [
+        {
+          "id": "35f8f9c5-7f2e-4020-b349-a9da4de95d67",
+          "direction": "egress",
+          "ether_type": "IPv4",
+          "ip_protocol": "any",
+          "port_range": "any",
+          "remote_security_group": null,
+          "state": "created",
+          "source_prefix": "0.0.0.0/0",
+          "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+          "source_prefix_length": 0,
+          "runner_tcp22_match": false,
+          "runner_tcp80_match": false,
+          "runner_tcp443_match": false
+        },
+        {
+          "id": "7e4a936d-3492-4b43-87cd-edbed5b6db19",
+          "direction": "ingress",
+          "ether_type": "IPv4",
+          "ip_protocol": "tcp",
+          "port_range": "443:443",
+          "remote_security_group": null,
+          "state": "created",
+          "source_prefix": "0.0.0.0/0",
+          "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+          "source_prefix_length": 0,
+          "runner_tcp22_match": false,
+          "runner_tcp80_match": false,
+          "runner_tcp443_match": true
+        },
+        {
+          "id": "7f455665-1207-40f7-a747-0ad4ae1f6f0e",
+          "direction": "ingress",
+          "ether_type": "IPv4",
+          "ip_protocol": "tcp",
+          "port_range": "22:22",
+          "remote_security_group": null,
+          "state": "created",
+          "source_prefix": "0.0.0.0/0",
+          "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+          "source_prefix_length": 0,
+          "runner_tcp22_match": true,
+          "runner_tcp80_match": false,
+          "runner_tcp443_match": false
+        },
+        {
+          "id": "8cf5d8ec-236b-4046-8357-0e4c375796a9",
+          "direction": "ingress",
+          "ether_type": "IPv4",
+          "ip_protocol": "any",
+          "port_range": "any",
+          "remote_security_group": null,
+          "state": "created",
+          "source_prefix": "0.0.0.0/0",
+          "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+          "source_prefix_length": 0,
+          "runner_tcp22_match": true,
+          "runner_tcp80_match": true,
+          "runner_tcp443_match": true
+        },
+        {
+          "id": "c4d84f11-0129-40c6-9ca0-378e95b00878",
+          "direction": "ingress",
+          "ether_type": "IPv4",
+          "ip_protocol": "tcp",
+          "port_range": "80:80",
+          "remote_security_group": null,
+          "state": "created",
+          "source_prefix": "0.0.0.0/0",
+          "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+          "source_prefix_length": 0,
+          "runner_tcp22_match": false,
+          "runner_tcp80_match": true,
+          "runner_tcp443_match": false
+        }
+      ]
+    }
+  ],
+  "nat_gateway": {
+    "id": "baaebb13-2c79-4e7b-8bc1-73fc1c1d9110",
+    "name": "dm-p1-core-snat",
+    "nat_type": "Public sNAT",
+    "state": "created",
+    "created_time": "2026-10-13T20:54:18Z",
+    "modified_time": "2026-10-13T20:54:44Z",
+    "vpc_id": "6a7f399a-277d-40f6-98fb-1ab8fe8531e1",
+    "nat_rules": [
+      {
+        "id": "7d2ca82c-f7e1-442d-86c7-624c970498a3"
+      }
+    ],
+    "floating_ip": {
+      "id": "94957dd0-5c83-4908-860e-b986d76bfe85",
+      "name": "Fip-for-NAT-Gateway_f0dd39be-588c-4d4b-a109-46f7214ad43d",
+      "ip_address": "46.16.36.82",
+      "state": "in_use"
+    },
+    "project": {
+      "id": "20853297-65b7-42a8-af40-25c8d2df4e11"
+    },
+    "availability_zone": {
+      "id": "479a4ab3-3ff3-4972-95c5-7610bac5c0bb",
+      "name": "ru.AZ-2"
+    }
+  },
+  "state_ui_rules": [
+    {
+      "terraform_resource": "ui_admin",
+      "rule": {
+        "id": "7f455665-1207-40f7-a747-0ad4ae1f6f0e",
+        "direction": "TRAFFIC_DIRECTION_INGRESS",
+        "ether_type": "ETHER_TYPE_IPV4",
+        "ip_protocol": "IP_PROTOCOL_TCP",
+        "port_range": "22:22",
+        "remote_security_group": null,
+        "status": "SECURITY_GROUP_RULE_STATUS_CREATED",
+        "source_prefix": "OPERATOR_CIDR_WITHHELD",
+        "source_prefix_sha256": "411d5c95e5c07f263ffd7d984f77adfca39a9417facb26dde09d51dae9e2e161",
+        "source_prefix_length": 32,
+        "runner_tcp22_match": false,
+        "runner_tcp80_match": false,
+        "runner_tcp443_match": false
+      }
+    },
+    {
+      "terraform_resource": "ui_http",
+      "rule": {
+        "id": "c4d84f11-0129-40c6-9ca0-378e95b00878",
+        "direction": "TRAFFIC_DIRECTION_INGRESS",
+        "ether_type": "ETHER_TYPE_IPV4",
+        "ip_protocol": "IP_PROTOCOL_TCP",
+        "port_range": "80:80",
+        "remote_security_group": null,
+        "status": "SECURITY_GROUP_RULE_STATUS_CREATED",
+        "source_prefix": "0.0.0.0/0",
+        "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+        "source_prefix_length": 0,
+        "runner_tcp22_match": false,
+        "runner_tcp80_match": true,
+        "runner_tcp443_match": false
+      }
+    },
+    {
+      "terraform_resource": "ui_https",
+      "rule": {
+        "id": "7e4a936d-3492-4b43-87cd-edbed5b6db19",
+        "direction": "TRAFFIC_DIRECTION_INGRESS",
+        "ether_type": "ETHER_TYPE_IPV4",
+        "ip_protocol": "IP_PROTOCOL_TCP",
+        "port_range": "443:443",
+        "remote_security_group": null,
+        "status": "SECURITY_GROUP_RULE_STATUS_CREATED",
+        "source_prefix": "0.0.0.0/0",
+        "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+        "source_prefix_length": 0,
+        "runner_tcp22_match": false,
+        "runner_tcp80_match": false,
+        "runner_tcp443_match": true
+      }
+    },
+    {
+      "terraform_resource": "ui_outbound",
+      "rule": {
+        "id": "35f8f9c5-7f2e-4020-b349-a9da4de95d67",
+        "direction": "TRAFFIC_DIRECTION_EGRESS",
+        "ether_type": "ETHER_TYPE_IPV4",
+        "ip_protocol": "IP_PROTOCOL_ANY",
+        "port_range": "any",
+        "remote_security_group": null,
+        "status": "SECURITY_GROUP_RULE_STATUS_CREATED",
+        "source_prefix": "0.0.0.0/0",
+        "source_prefix_sha256": "b42e18366abaf7d25debe1765391f2a4b1f3a16708045d2e6642a14fc4c93144",
+        "source_prefix_length": 0,
+        "runner_tcp22_match": false,
+        "runner_tcp80_match": false,
+        "runner_tcp443_match": false
+      }
+    }
+  ],
+  "security_rule_inventory_difference": {
+    "live_only_ids": [
+      "8cf5d8ec-236b-4046-8357-0e4c375796a9"
+    ],
+    "state_only_ids": [],
+    "note": "Difference is not automatically repaired; existing rules may be operator-managed."
+  },
+  "tcp_probes": [
+    {
+      "started_at": "2026-10-18T09:35:37.734724+00:00",
+      "port": 22,
+      "tcp": "CONNECTED",
+      "host_key": "NOT_REACHED",
+      "ssh_authentication": "NOT_REACHED",
+      "runner_local_port": 50620,
+      "ssh_banner_valid": true,
+      "ssh_banner": "SSH-2.0-OpenSSH_9.6p1 Ubuntu-3ubuntu13.19",
+      "finished_at": "2026-10-18T09:35:38.140439+00:00",
+      "elapsed_seconds": 0.406
+    },
+    {
+      "started_at": "2026-10-18T09:35:38.140473+00:00",
+      "port": 80,
+      "tcp": "CONNECTED",
+      "host_key": "NOT_REACHED",
+      "ssh_authentication": "NOT_REACHED",
+      "runner_local_port": 55230,
+      "finished_at": "2026-10-18T09:35:38.326383+00:00",
+      "elapsed_seconds": 0.186
+    },
+    {
+      "started_at": "2026-10-18T09:35:38.326409+00:00",
+      "port": 443,
+      "tcp": "FAILED",
+      "host_key": "NOT_REACHED",
+      "ssh_authentication": "NOT_REACHED",
+      "error_class": "ConnectionRefusedError",
+      "errno": 111,
+      "finished_at": "2026-10-18T09:35:38.522730+00:00",
+      "elapsed_seconds": 0.196
+    }
+  ],
+  "pinned_ssh": {
+    "authentication": "PASS",
+    "host_trust": "CONSOLE_SHA256_PIN",
+    "observed_host_key_sha256": "SHA256:UU9PJMk1+AXNkUwrfAsYaBc2Zeq4g/6vbf84IvCv3SU",
+    "observed_host_key_type": "ssh-ed25519",
+    "os_inventory": {
+      "cpu_count": 2,
+      "loadavg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "memory": {
+        "MemTotal": "4009868 kB",
+        "MemAvailable": "3530472 kB",
+        "SwapFree": "0 kB"
+      },
+      "disk_root": {
+        "total": 31591473152,
+        "used": 3825336320,
+        "free": 26353762304
+      },
+      "container_runtime": "INVENTORIED",
+      "docker_version": {
+        "status": "BLOCKED",
+        "exit_code": 1
+      },
+      "compose_version": {
+        "status": "PASS",
+        "value": "2.40.3+ds1-0ubuntu1~24.04.1",
+        "truncated": false
+      },
+      "containers": {
+        "status": "BLOCKED",
+        "exit_code": 1
+      },
+      "volume_names": {
+        "status": "BLOCKED",
+        "exit_code": 1
+      },
+      "host_identity": {
+        "hostname": "dm-p1-ui",
+        "uid": 1000
+      },
+      "network": {
+        "addresses": {
+          "status": "PASS",
+          "value": "[{\"ifindex\":1,\"ifname\":\"lo\",\"flags\":[\"LOOPBACK\",\"UP\",\"LOWER_UP\"],\"mtu\":65536,\"qdisc\":\"noqueue\",\"operstate\":\"UNKNOWN\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"loopback\",\"address\":\"00:00:00:00:00:00\",\"broadcast\":\"00:00:00:00:00:00\",\"addr_info\":[{\"family\":\"inet\",\"local\":\"127.0.0.1\",\"prefixlen\":8,\"scope\":\"host\",\"label\":\"lo\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295},{\"family\":\"inet6\",\"local\":\"::1\",\"prefixlen\":128,\"scope\":\"host\",\"noprefixroute\":true,\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":2,\"ifname\":\"enp3s0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":9000,\"qdisc\":\"fq_codel\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"link_type\":\"ether\",\"address\":\"fa:16:3e:e7:a4:09\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"addr_info\":[{\"family\":\"inet\",\"local\":\"10.0.0.6\",\"prefixlen\":24,\"metric\":100,\"broadcast\":\"10.0.0.255\",\"scope\":\"global\",\"dynamic\":true,\"label\":\"enp3s0\",\"valid_life_time\":36673,\"preferred_life_time\":36673},{\"family\":\"inet6\",\"local\":\"fe80::f816:3eff:fee7:a409\",\"prefixlen\":64,\"scope\":\"link\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]},{\"ifindex\":3,\"ifname\":\"docker0\",\"flags\":[\"NO-CARRIER\",\"BROADCAST\",\"MULTICAST\",\"UP\"],\"mtu\":1500,\"qdisc\":\"noqueue\",\"operstate\":\"DOWN\",\"group\":\"default\",\"link_type\":\"ether\",\"address\":\"7e:a4:c8:87:e7:94\",\"broadcast\":\"ff:ff:ff:ff:ff:ff\",\"addr_info\":[{\"family\":\"inet\",\"local\":\"172.17.0.1\",\"prefixlen\":16,\"broadcast\":\"172.17.255.255\",\"scope\":\"global\",\"label\":\"docker0\",\"valid_life_time\":4294967295,\"preferred_life_time\":4294967295}]}]",
+          "truncated": false
+        },
+        "routes": {
+          "status": "PASS",
+          "value": "[{\"dst\":\"default\",\"gateway\":\"10.0.0.1\",\"dev\":\"enp3s0\",\"protocol\":\"dhcp\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"8.8.4.4\",\"gateway\":\"10.0.0.1\",\"dev\":\"enp3s0\",\"protocol\":\"dhcp\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"8.8.8.8\",\"gateway\":\"10.0.0.1\",\"dev\":\"enp3s0\",\"protocol\":\"dhcp\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"10.0.0.0/24\",\"dev\":\"enp3s0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"10.0.0.1\",\"dev\":\"enp3s0\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"10.0.0.2\",\"dev\":\"enp3s0\",\"protocol\":\"dhcp\",\"scope\":\"link\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"169.254.169.254\",\"gateway\":\"10.0.0.2\",\"dev\":\"enp3s0\",\"protocol\":\"dhcp\",\"prefsrc\":\"10.0.0.6\",\"metric\":100,\"flags\":[]},{\"dst\":\"172.17.0.0/16\",\"dev\":\"docker0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.17.0.1\",\"flags\":[\"linkdown\"]},{\"type\":\"local\",\"dst\":\"10.0.0.6\",\"dev\":\"enp3s0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.0.0.6\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.0.0.255\",\"dev\":\"enp3s0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.0.0.6\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.17.0.1\",\"dev\":\"docker0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.17.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.17.255.255\",\"dev\":\"docker0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.17.0.1\",\"flags\":[\"linkdown\"]},{\"dst\":\"fe80::/64\",\"dev\":\"enp3s0\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::f816:3eff:fee7:a409\",\"dev\":\"enp3s0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"enp3s0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]",
+          "truncated": false
+        },
+        "rules": {
+          "status": "PASS",
+          "value": "[{\"priority\":0,\"src\":\"all\",\"table\":\"local\"},{\"priority\":32766,\"src\":\"all\",\"table\":\"main\"},{\"priority\":32767,\"src\":\"all\",\"table\":\"default\"}]",
+          "truncated": false
+        },
+        "rp_filter": {
+          "status": "PASS",
+          "value": "net.ipv4.conf.all.rp_filter = 2\nnet.ipv4.conf.default.rp_filter = 2",
+          "truncated": false
+        }
+      },
+      "listeners": {
+        "status": "PASS",
+        "value": "State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess\nLISTEN 0      4096       127.0.0.1:41919      0.0.0.0:*          \nLISTEN 0      4096      127.0.0.54:53         0.0.0.0:*          \nLISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*          \nLISTEN 0      511          0.0.0.0:80         0.0.0.0:*          \nLISTEN 0      4096         0.0.0.0:22         0.0.0.0:*          \nLISTEN 0      511             [::]:80            [::]:*          \nLISTEN 0      4096            [::]:22            [::]:*",
+        "truncated": false
+      },
+      "sudo_readonly": {
+        "status": "PASS",
+        "value": "0",
+        "truncated": false
+      },
+      "services": {
+        "ssh": {
+          "status": "PASS",
+          "value": "active",
+          "truncated": false
+        },
+        "docker": {
+          "status": "PASS",
+          "value": "active",
+          "truncated": false
+        },
+        "nginx": {
+          "status": "PASS",
+          "value": "active",
+          "truncated": false
+        }
+      },
+      "firewall": {
+        "ufw": {
+          "status": "PASS",
+          "value": "Status: inactive",
+          "truncated": false
+        },
+        "nft": {
+          "status": "PASS",
+          "value": "table ip nat {\n\tchain DOCKER {\n\t}\n\n\tchain PREROUTING {\n\t\ttype nat hook prerouting priority dstnat; policy accept;\n\t\tfib daddr type local counter packets 5962 bytes 293962 jump DOCKER\n\t}\n\n\tchain OUTPUT {\n\t\ttype nat hook output priority dstnat; policy accept;\n\t\tip daddr != 127.0.0.0/8 fib daddr type local counter packets 0 bytes 0 jump DOCKER\n\t}\n\n\tchain POSTROUTING {\n\t\ttype nat hook postrouting priority srcnat; policy accept;\n\t\tip saddr 172.17.0.0/16 oifname != \"docker0\" counter packets 0 bytes 0 masquerade\n\t}\n}\ntable ip filter {\n\tchain DOCKER {\n\t\tiifname != \"docker0\" oifname \"docker0\" counter packets 0 bytes 0 drop\n\t}\n\n\tchain DOCKER-FORWARD {\n\t\tcounter packets 0 bytes 0 jump DOCKER-CT\n\t\tcounter packets 0 bytes 0 jump DOCKER-INTERNAL\n\t\tcounter packets 0 bytes 0 jump DOCKER-BRIDGE\n\t\tiifname \"docker0\" counter packets 0 bytes 0 accept\n\t}\n\n\tchain DOCKER-BRIDGE {\n\t\toifname \"docker0\" counter packets 0 bytes 0 jump DOCKER\n\t}\n\n\tchain DOCKER-CT {\n\t\toifname \"docker0\" ct state related,established counter packets 0 bytes 0 accept\n\t}\n\n\tchain DOCKER-INTERNAL {\n\t}\n\n\tchain FORWARD {\n\t\ttype filter hook forward priority filter; policy drop;\n\t\tcounter packets 0 bytes 0 jump DOCKER-USER\n\t\tcounter packets 0 bytes 0 jump DOCKER-FORWARD\n\t}\n\n\tchain DOCKER-USER {\n\t}\n}\ntable ip6 nat {\n\tchain DOCKER {\n\t}\n\n\tchain PREROUTING {\n\t\ttype nat hook prerouting priority dstnat; policy accept;\n\t\tfib daddr type local counter packets 0 bytes 0 jump DOCKER\n\t}\n\n\tchain OUTPUT {\n\t\ttype nat hook output priority dstnat; policy accept;\n\t\tip6 daddr != ::1 fib daddr type local counter packets 0 bytes 0 jump DOCKER\n\t}\n}\ntable ip6 filter {\n\tchain DOCKER {\n\t}\n\n\tchain DOCKER-FORWARD {\n\t\tcounter packets 0 bytes 0 jump DOCKER-CT\n\t\tcounter packets 0 bytes 0 jump DOCKER-INTERNAL\n\t\tcounter packets 0 bytes 0 jump DOCKER-BRIDGE\n\t}\n\n\tchain DOCKER-BRIDGE {\n\t}\n\n\tchain DOCKER-CT {\n\t}\n\n\tchain DOCKER-INTERNAL {\n\t}\n\n\tchain FORWARD {\n\t\ttype filter hook forward priority filter; policy accept;\n\t\tcounter packets 0 bytes 0 jump DOCKER-USER\n\t\tcounter packets 0 bytes 0 jump DOCKER-FORWARD\n\t}\n\n\tchain DOCKER-USER {\n\t}\n}",
+          "truncated": false
+        },
+        "iptables": {
+          "status": "PASS",
+          "value": "-P INPUT ACCEPT\n-P FORWARD DROP\n-P OUTPUT ACCEPT\n-N DOCKER\n-N DOCKER-BRIDGE\n-N DOCKER-CT\n-N DOCKER-FORWARD\n-N DOCKER-INTERNAL\n-N DOCKER-USER\n-A FORWARD -j DOCKER-USER\n-A FORWARD -j DOCKER-FORWARD\n-A DOCKER ! -i docker0 -o docker0 -j DROP\n-A DOCKER-BRIDGE -o docker0 -j DOCKER\n-A DOCKER-CT -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A DOCKER-FORWARD -j DOCKER-CT\n-A DOCKER-FORWARD -j DOCKER-INTERNAL\n-A DOCKER-FORWARD -j DOCKER-BRIDGE\n-A DOCKER-FORWARD -i docker0 -j ACCEPT",
+          "truncated": false
+        },
+        "iptables_nat": {
+          "status": "PASS",
+          "value": "-P PREROUTING ACCEPT\n-P INPUT ACCEPT\n-P OUTPUT ACCEPT\n-P POSTROUTING ACCEPT\n-N DOCKER\n-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER\n-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER\n-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE",
+          "truncated": false
+        }
+      },
+      "runtime_access": {
+        "git": {
+          "status": "PASS",
+          "value": "git version 2.43.0",
+          "truncated": false
+        },
+        "security_options": {
+          "status": "PASS",
+          "value": "[\"name=apparmor\",\"name=seccomp,profile=builtin\",\"name=cgroupns\"]",
+          "truncated": false
+        },
+        "cgroup_version": {
+          "status": "PASS",
+          "value": "2",
+          "truncated": false
+        },
+        "root_filesystem": {
+          "status": "PASS",
+          "value": "ext4",
+          "truncated": false
+        },
+        "root_docker_version": {
+          "status": "PASS",
+          "value": "29.1.3",
+          "truncated": false
+        },
+        "root_containers": {
+          "status": "PASS",
+          "value": "",
+          "truncated": false
+        },
+        "root_docker_usage": {
+          "status": "PASS",
+          "value": "{\"Active\":\"0\",\"Reclaimable\":\"0B\",\"Size\":\"0B\",\"TotalCount\":\"0\",\"Type\":\"Images\"}\n{\"Active\":\"0\",\"Reclaimable\":\"0B\",\"Size\":\"0B\",\"TotalCount\":\"0\",\"Type\":\"Containers\"}\n{\"Active\":\"0\",\"Reclaimable\":\"0B\",\"Size\":\"0B\",\"TotalCount\":\"0\",\"Type\":\"Local Volumes\"}\n{\"Active\":\"0\",\"Reclaimable\":\"0B\",\"Size\":\"0B\",\"TotalCount\":\"0\",\"Type\":\"Build Cache\"}",
+          "truncated": false
+        }
+      }
+    },
+    "status": "PASS_READONLY_OS_INVENTORY"
+  },
+  "status": "COLLECTED",
+  "finished_at": "2026-10-18T09:35:43.652975+00:00"
+}

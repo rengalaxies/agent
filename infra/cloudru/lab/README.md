@@ -1,6 +1,10 @@
 # Isolated PostgreSQL / RabbitMQ lab infrastructure
 
-## Current delivery boundary
+## Current access and staging update — 18 October2026
+
+Pinned SSH/authenticated OS inventory and exact107dfd1 source staging on the existing UI VM are now proven. See [network/delivery report](../../../lab/reports/access-2026-10-18/REPORT.md). Broad ingress drift was corrected to the existing operator `/32`; Actions access uses only its temporary `/32` with verified cleanup. `lab-source-delivery.yml` stages source only, does not start services or SQL. Public app/TLS and local verifier are not accepted. Earlier channel-blocked entries are historical.
+
+## Read-only preflight boundary
 
 The new preflight is read-only. A successful inventory **does not** mean OS access,
 VM lab deployment, LLM readiness or a working application. Check the individual
