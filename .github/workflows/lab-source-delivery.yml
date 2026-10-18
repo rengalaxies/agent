@@ -1,5 +1,5 @@
 name: Lab pinned SSH exact source delivery staging only
-# Bounded TCP readiness and server-observed source verification after exact /32 rule creation.
+# Align SSH CONNECT with existing HTTPS egress route; retain strict host pin and /32 source recheck.
 on:
   workflow_dispatch:
   push:
@@ -51,6 +51,7 @@ jobs:
         run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3 paramiko==3.5.1
       - name: Stage verified source without services or SQL
         env:
+          CLOUDRU_SSH_USE_PROXY: "1"
           CLOUDRU_KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
           CLOUDRU_SECRET: ${{ secrets.CLOUDRU_SECRET }}
           CLOUDRU_STATE_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}

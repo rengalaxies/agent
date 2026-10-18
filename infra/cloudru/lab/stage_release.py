@@ -6,7 +6,7 @@ credential matching metadata. SFTP owns a new private directory; no sudo/apply.
 import base64,hashlib,io,json,logging,os,stat,subprocess,socket
 from pathlib import Path
 from datetime import datetime,timezone
-from preflight import PROJECT,TENANT,select_state,console_pin,live_zone_name
+from preflight import PROJECT,TENANT,select_state,console_pin,live_zone_name,open_ssh_socket
 SOURCE='107dfd14292a5ab06593d424bf0b94f1cccb0b90'
 ROOT='/home/dmadmin/agent-lab-staging/'+SOURCE
 
@@ -34,11 +34,11 @@ def main():
         key=s3.get_object(Bucket='test-bucket-ds',Key='deployment/p1/ui-recovery-key.pem',SSECustomerAlgorithm='AES256',SSECustomerKey=sse)['Body'].read()
         public=serialization.load_ssh_private_key(key,password=None).public_key().public_bytes(serialization.Encoding.OpenSSH,serialization.PublicFormat.OpenSSH).decode();expected=(selected['ui'].get('image_metadata',{}).get('public_key') or {}).get('string_value','')
         if public.split()[:2]!=expected.split()[:2]:raise ValueError('RECOVERY_METADATA_MISMATCH')
-        host=selected['ui_ip'];transport=paramiko.Transport(socket.create_connection((host,22),timeout=8));transport.get_security_options().key_types=('ssh-ed25519',);transport.start_client(timeout=10);observed=transport.get_remote_server_key();transport.close()
+        host=selected['ui_ip'];transport=paramiko.Transport(open_ssh_socket(host,timeout=8));transport.get_security_options().key_types=('ssh-ed25519',);transport.start_client(timeout=10);observed=transport.get_remote_server_key();transport.close()
         if observed.get_name()!='ssh-ed25519' or hashlib.sha256(observed.asbytes()).hexdigest()!=console_pin():raise ValueError('HOST_PIN_MISMATCH')
         with paramiko.SSHClient() as client:
             client.get_host_keys().add(host,'ssh-ed25519',observed);client.set_missing_host_key_policy(paramiko.RejectPolicy())
-            client.connect(host,username='dmadmin',pkey=paramiko.Ed25519Key.from_private_key(io.StringIO(key.decode())),timeout=10,banner_timeout=10,auth_timeout=10,look_for_keys=False,allow_agent=False)
+            client.connect(host,sock=open_ssh_socket(host,timeout=10),username='dmadmin',pkey=paramiko.Ed25519Key.from_private_key(io.StringIO(key.decode())),timeout=10,banner_timeout=10,auth_timeout=10,look_for_keys=False,allow_agent=False)
             report.update(host_key='CONSOLE_SHA256_PIN_MATCH',authentication='PASS')
             with client.open_sftp() as sftp:
                 for directory in ['/home/dmadmin/agent-lab-staging',ROOT]:

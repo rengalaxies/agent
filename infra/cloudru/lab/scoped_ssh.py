@@ -13,7 +13,7 @@ import tempfile
 import socket
 import time
 from datetime import datetime, timezone
-from preflight import PROJECT, TENANT, select_state, live_zone_name, ssh_probe
+from preflight import PROJECT, TENANT, select_state, live_zone_name, ssh_probe, open_ssh_socket
 
 ADDRESS = 'cloudru_evolution_compute_security_group_rule.lab_runner_access[0]'
 GROUP = '4dde92a5-23a7-4c97-b48f-361d248b5af3'
@@ -79,10 +79,9 @@ def main(after_open=None):
             raise ValueError('LIVE_UI_SCOPE_MISMATCH')
         response=requests.get('https://api.ipify.org',timeout=15);response.raise_for_status()
         default_source=str(ipaddress.ip_address(response.text.strip()))
-        direct=requests.Session();direct.trust_env=False
-        response=direct.get('https://api.ipify.org',timeout=15);response.raise_for_status()
-        ip=ipaddress.ip_address(response.text.strip());cidr=str(ip)+'/32'
-        report['runner_egress_observations']={'default_https':default_source,'direct_https':str(ip),'sources_equal':default_source==str(ip),'selected':'DIRECT_TLS_WITHOUT_ENV_PROXY'}
+        ip=ipaddress.ip_address(default_source);cidr=str(ip)+'/32'
+        from urllib.request import getproxies
+        report['runner_egress_observations']={'default_https':default_source,'ssh_uses_configured_https_proxy':env.get('CLOUDRU_SSH_USE_PROXY')=='1' and bool(getproxies().get('https')),'selected':'HTTPS_EGRESS_ROUTE_WITH_SERVER_SOURCE_RECHECK'}
         if ip.version!=4 or not ip.is_global:raise ValueError('RUNNER_ADDRESS_INVALID')
         for value in (access,secret,base64.b64encode(sse).decode(),str(ip),cidr,selected['ui_ip']):
             print('::add-mask::'+value)
@@ -136,7 +135,7 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
                 ready_started=time.monotonic();attempts=[]
                 for number in range(8):
                     try:
-                        with socket.create_connection((selected['ui_ip'],22),timeout=4):pass
+                        with open_ssh_socket(selected['ui_ip'],timeout=4):pass
                         attempts.append({'attempt':number+1,'tcp':'CONNECTED','elapsed_seconds':round(time.monotonic()-ready_started,2)});break
                     except OSError as exc:
                         attempts.append({'attempt':number+1,'tcp':'FAILED','error_class':type(exc).__name__,'elapsed_seconds':round(time.monotonic()-ready_started,2)})

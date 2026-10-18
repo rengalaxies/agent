@@ -83,6 +83,39 @@ def console_pin():
     return value
 
 
+def open_ssh_socket(host, timeout=8):
+    """Optional authenticated existing HTTPS egress proxy, with SSH pin still enforced.
+
+    Uses CONNECT only; proxy credentials are sent solely to that configured proxy.
+    No TLS or SSH verification is disabled. Direct remains the default.
+    """
+    if os.getenv('CLOUDRU_SSH_USE_PROXY')!='1':
+        return socket.create_connection((host,22),timeout=timeout)
+    from urllib.request import getproxies
+    from urllib.parse import urlparse,unquote
+    import ssl
+    proxy=getproxies().get('https')
+    if not proxy:return socket.create_connection((host,22),timeout=timeout)
+    parsed=urlparse(proxy)
+    if parsed.scheme not in ('http','https') or not parsed.hostname:raise ValueError('HOST_PROXY_CONFIGURATION_INVALID')
+    sock=socket.create_connection((parsed.hostname,parsed.port or (443 if parsed.scheme=='https' else 80)),timeout=timeout)
+    if parsed.scheme=='https':sock=ssl.create_default_context(cafile=os.getenv('REQUESTS_CA_BUNDLE') or None).wrap_socket(sock,server_hostname=parsed.hostname)
+    headers=['CONNECT '+host+':22 HTTP/1.1','Host: '+host+':22']
+    if parsed.username is not None:
+        auth=unquote(parsed.username)+':'+unquote(parsed.password or '')
+        headers.append('Proxy-Authorization: Basic '+base64.b64encode(auth.encode()).decode())
+    sock.sendall(('\r\n'.join(headers)+'\r\n\r\n').encode())
+    response=b''
+    while not response.endswith(b'\r\n\r\n') and len(response)<8192:
+        part=sock.recv(1)
+        if not part:break
+        response+=part
+    line=response.split(b'\r\n',1)[0].split()
+    if len(line)<2 or line[1]!=b'200':
+        sock.close();raise ValueError('HOST_PROXY_CONNECT_REJECTED_'+(line[1].decode('ascii',errors='ignore') if len(line)>1 and line[1].isdigit() else 'UNKNOWN'))
+    return sock
+
+
 def ssh_probe(host, private_key=None, expected_fingerprint=None):
     """Authenticate only with pinned known_hosts or an independent console SHA256 pin."""
     import paramiko
@@ -92,7 +125,7 @@ def ssh_probe(host, private_key=None, expected_fingerprint=None):
     try:
         if expected_fingerprint is None:
             expected_fingerprint = console_pin()
-        sock = socket.create_connection((host, 22), timeout=8)
+        sock = open_ssh_socket(host, timeout=8)
         transport = paramiko.Transport(sock)
         if expected_fingerprint:
             transport.get_security_options().key_types = ('ssh-ed25519',)
@@ -128,7 +161,7 @@ def ssh_probe(host, private_key=None, expected_fingerprint=None):
                 client.load_host_keys(str(known_path))
                 client.set_missing_host_key_policy(paramiko.RejectPolicy())
                 private = paramiko.Ed25519Key.from_private_key(io.StringIO(private_key.decode()))
-                client.connect(host, username="dmadmin", pkey=private,
+                client.connect(host, sock=open_ssh_socket(host,timeout=8), username="dmadmin", pkey=private,
                     timeout=8, banner_timeout=8, auth_timeout=8,
                     look_for_keys=False, allow_agent=False)
                 result.update(authentication="PASS", host_trust="CONSOLE_SHA256_PIN" if pin_verified else "PINNED_KNOWN_HOSTS")
