@@ -17,11 +17,13 @@ def execute(client,command,data=None,timeout=1200):
 
 def deploy(tf,env,selected,resources):
  import bcrypt,requests,httpx
- auth=requests.post('https://iam.api.cloud.ru/api/v1/auth/token',json={'keyId':env['CLOUDRU_KEY_ID'],'secret':env['CLOUDRU_SECRET']},timeout=25);auth.raise_for_status()
- r=requests.get('https://compute.api.cloud.ru/api/v1/security-groups/'+GROUP+'/rules',headers={'Authorization':'Bearer '+auth.json()['access_token']},timeout=25);r.raise_for_status();d=r.json();rules=d['items'];assert len(rules)==d['total']
+ from http_client import ReadClient
+ lookup_report={};reader=ReadClient(lookup_report)
+ auth=reader.post('https://iam.api.cloud.ru/api/v1/auth/token',json={'keyId':env['CLOUDRU_KEY_ID'],'secret':env['CLOUDRU_SECRET']},timeout=25);auth.raise_for_status()
+ r=reader.get('https://compute.api.cloud.ru/api/v1/security-groups/'+GROUP+'/rules',headers={'Authorization':'Bearer '+auth.json()['access_token']},timeout=25);r.raise_for_status();d=r.json();rules=d['items'];assert len(rules)==d['total']
  if any(x.get('direction')=='ingress' and x.get('remote_ip_prefix')=='0.0.0.0/0' and (x.get('ip_protocol')=='any' or x.get('port_range')=='22:22') for x in rules):raise ValueError('RULE_BROAD_ADMIN_ACCESS')
  password=secrets.token_hex(24);print('::add-mask::'+password)
- report={'outcome':'FAIL','controller_commit':os.environ['GITHUB_SHA'],'product_commit':'107dfd14292a5ab06593d424bf0b94f1cccb0b90','actions_run':'https://github.com/'+os.environ['GITHUB_REPOSITORY']+'/actions/runs/'+os.environ['GITHUB_RUN_ID'],'apply_gate':'BLOCKED','broad_admin_absent':True}
+ report={'outcome':'FAIL','controller_commit':os.environ['GITHUB_SHA'],'product_commit':'107dfd14292a5ab06593d424bf0b94f1cccb0b90','actions_run':'https://github.com/'+os.environ['GITHUB_REPOSITORY']+'/actions/runs/'+os.environ['GITHUB_RUN_ID'],'apply_gate':'BLOCKED','broad_admin_absent':True,'read_lookups':lookup_report}
  out=Path('cloud-evidence');out.mkdir(exist_ok=True)
  with connect(env,selected) as client:
   # Survey again only because the previous runner could not establish TCP; no source redelivery.
@@ -97,9 +99,11 @@ print(json.dumps({'temporary_acceptance_identity':'REMOVED'}))'''
 def audit_network():
  import requests,hashlib
  result={'status':'BLOCKED','temporary_rule_expected':'ABSENT'}
+ from http_client import ReadClient
+ reader=ReadClient(result)
  try:
-  r=requests.post('https://iam.api.cloud.ru/api/v1/auth/token',json={'keyId':os.environ['CLOUDRU_KEY_ID'],'secret':os.environ['CLOUDRU_SECRET']},timeout=25);r.raise_for_status()
-  r=requests.get('https://compute.api.cloud.ru/api/v1/security-groups/'+GROUP+'/rules',headers={'Authorization':'Bearer '+r.json()['access_token']},timeout=25);r.raise_for_status();d=r.json();rules=d['items'];assert len(rules)==d['total']
+  r=reader.post('https://iam.api.cloud.ru/api/v1/auth/token',json={'keyId':os.environ['CLOUDRU_KEY_ID'],'secret':os.environ['CLOUDRU_SECRET']},timeout=25);r.raise_for_status()
+  r=reader.get('https://compute.api.cloud.ru/api/v1/security-groups/'+GROUP+'/rules',headers={'Authorization':'Bearer '+r.json()['access_token']},timeout=25);r.raise_for_status();d=r.json();rules=d['items'];assert len(rules)==d['total']
   admin=[x for x in rules if x.get('direction')=='ingress' and (x.get('ip_protocol')=='any' or x.get('port_range')=='22:22')]
   assert len(admin)==1 and admin[0]['port_range']=='22:22' and admin[0]['remote_ip_prefix'].endswith('/32')
   result.update(status='PASS',ssh_sources=1,ssh_prefix_length=32,broad_admin_absent=True,operator_source_sha256=hashlib.sha256(admin[0]['remote_ip_prefix'].encode()).hexdigest(),public_web_ports=sorted(x['port_range'] for x in rules if x.get('direction')=='ingress' and x.get('remote_ip_prefix')=='0.0.0.0/0'))

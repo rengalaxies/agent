@@ -33,7 +33,9 @@ jobs:
                   f.write(name + '=' + value + '\n')
           PY
       - name: Scope guard unit tests
-        run: python3 -m unittest discover -s infra/cloudru/lab -p 'test_*.py'
+        run: |
+          python3 -m pip install --quiet requests==2.32.5
+          python3 -m unittest discover -s infra/cloudru/lab -p 'test_*.py'
       - name: Resolve immutable dependency images for this run
         run: |
           set -eu

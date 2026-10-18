@@ -48,6 +48,7 @@ jobs:
         run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3 paramiko==3.5.1 bcrypt==4.3.0 httpx==0.28.1 fastapi==0.115.12 uvicorn==0.34.2 playwright==1.51.0
       - name: Check cloud boundary before any VM runtime change
         run: |
+          python3 -m unittest discover -s infra/cloudru/lab -p 'test_*.py' -v
           python3 -m unittest discover -s infra/cloudru/runtime -p test_boundary.py -v
           python3 -m playwright install --with-deps chromium
       - name: Build and export verified images on CI, without cloud credentials

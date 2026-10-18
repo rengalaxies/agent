@@ -47,6 +47,8 @@ def main(after_open=None):
     try:
         import boto3
         import requests
+        from http_client import ReadClient
+        reader=ReadClient(report)
         from botocore.config import Config
         sse = base64.b64decode(env['CLOUDRU_STATE_SSE_CUSTOMER_KEY'].strip(), validate=True)
         if len(sse) != 32: raise ValueError('INVALID_SSE_KEY')
@@ -69,11 +71,11 @@ def main(after_open=None):
         if sg['id'] != GROUP or sg.get('project_id') != PROJECT:
             raise ValueError('SECURITY_GROUP_SCOPE_MISMATCH')
         report['phase']='IAM_TOKEN'
-        response=requests.post('https://iam.api.cloud.ru/api/v1/auth/token',json={
+        response=reader.post('https://iam.api.cloud.ru/api/v1/auth/token',json={
             'keyId':env['CLOUDRU_KEY_ID'],'secret':env['CLOUDRU_SECRET']},timeout=30)
         response.raise_for_status()
         report['phase']='LIVE_VM_READ'
-        response=requests.get('https://compute.api.cloud.ru/api/v1/vms/'+selected['ui']['id'],
+        response=reader.get('https://compute.api.cloud.ru/api/v1/vms/'+selected['ui']['id'],
             headers={'Authorization':'Bearer '+response.json()['access_token']},timeout=30)
         response.raise_for_status(); vm=response.json().get('vm',response.json())
         if (vm.get('name')!='dm-p1-ui' or vm.get('project',{}).get('id')!=PROJECT
@@ -84,7 +86,7 @@ def main(after_open=None):
         observed=None;lookup_failures=[]
         for endpoint in ['https://api.ipify.org','https://checkip.amazonaws.com']:
             try:
-                response=requests.get(endpoint,timeout=15);response.raise_for_status()
+                response=reader.get(endpoint,timeout=15);response.raise_for_status()
                 observed=ipaddress.ip_address(response.text.strip())
                 if observed.version!=4 or not observed.is_global:raise ValueError('RUNNER_ADDRESS_INVALID')
                 break
@@ -135,6 +137,7 @@ resource "cloudru_evolution_compute_security_group_rule" "lab_runner_access" {
                         line=re.sub(r'(https?://)[^/@\s]+:[^/@\s]+@',r'\1[REDACTED]@',line)
                         lines.append(line)
                 report['terraform_failure']={'operation':args[0],'phase':report.get('phase'),'error_lines':lines[:12]}
+                report.setdefault('terraform_failures',[]).append(report['terraform_failure'])
                 raise RuntimeError('TERRAFORM_'+args[0].upper()+'_FAILED')
             return proc.stdout
         report['phase']='BACKEND_INIT'

@@ -1,0 +1,26 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "63ee54a5ffc9e19b7384587c1f5f381f0ceea86c",
+  "checked_at": "2026-10-18T10:53:15.165239+00:00",
+  "status": "BLOCKED",
+  "existing_compute_changes": "NONE",
+  "cleanup": "PASS_OWN_TEMPORARY_RULE_ABSENT",
+  "phase": "CLEANUP_OWN_RULE",
+  "runner_address_lookup_failures": [],
+  "runner_egress_observations": {
+    "default_https": "172.178.118.200",
+    "ssh_uses_configured_https_proxy": false,
+    "selected": "HTTPS_EGRESS_ROUTE_WITH_SERVER_SOURCE_RECHECK"
+  },
+  "opening_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "create"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "runner_public_ipv4": "172.178.118.200",
+  "error_class": "RuntimeError",
+  "error_code": "TERRAFORM_APPLY_FAILED"
+}

@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "temporary_rule_expected": "ABSENT",
+  "ssh_sources": 1,
+  "ssh_prefix_length": 32,
+  "broad_admin_absent": true,
+  "operator_source_sha256": "411d5c95e5c07f263ffd7d984f77adfca39a9417facb26dde09d51dae9e2e161",
+  "public_web_ports": [
+    "443:443",
+    "80:80"
+  ]
+}
