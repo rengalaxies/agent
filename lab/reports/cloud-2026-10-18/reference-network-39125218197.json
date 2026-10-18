@@ -1,0 +1,55 @@
+{
+  "at": "2026-10-18T11:56:10.593242+00:00",
+  "ssh_authentication_attempted": false,
+  "cloud_mutations": false,
+  "targets": {
+    "agent": {
+      "22": {
+        "tcp": "UNAVAILABLE",
+        "error_class": "TimeoutError"
+      },
+      "443": {
+        "tcp": "UNAVAILABLE",
+        "error_class": "TimeoutError"
+      },
+      "https": {
+        "trusted_tls": false,
+        "error_class": "TimeoutError"
+      }
+    },
+    "raven": {
+      "22": {
+        "tcp": "CONNECTED",
+        "banner": "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.17"
+      },
+      "443": {
+        "tcp": "CONNECTED"
+      },
+      "https": {
+        "trusted_tls": true,
+        "hostname": "168-113-252-75.sslip.io",
+        "not_after": "Jan 10 15:15:12 2027 GMT",
+        "issuer": [
+          [
+            [
+              "countryName",
+              "US"
+            ]
+          ],
+          [
+            [
+              "organizationName",
+              "Let's Encrypt"
+            ]
+          ],
+          [
+            [
+              "commonName",
+              "YE2"
+            ]
+          ]
+        ]
+      }
+    }
+  }
+}

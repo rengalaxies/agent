@@ -18,11 +18,13 @@ jobs:
           result={'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'ssh_authentication_attempted':False,'cloud_mutations':False,'targets':{}}
           for label,host in [('agent','45.151.31.140'),('raven','168.113.252.75')]:
               row={}
-              for port in [22,443]:
+              for port in [22,80,443]:
                   try:
                       with socket.create_connection((host,port),timeout=6) as s:
                           row[str(port)]={'tcp':'CONNECTED'}
                           if port==22:row[str(port)]['banner']=s.recv(256).decode(errors='replace').strip()
+                          if port==80:
+                              s.sendall(('GET / HTTP/1.0\r\nHost: '+host+'\r\n\r\n').encode());row[str(port)]['http_status_line']=s.recv(256).decode(errors='replace').splitlines()[0]
                   except OSError as e:row[str(port)]={'tcp':'UNAVAILABLE','error_class':type(e).__name__}
               name=host.replace('.','-')+'.sslip.io'
               try:
