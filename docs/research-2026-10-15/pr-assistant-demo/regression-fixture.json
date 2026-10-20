@@ -1,0 +1,44 @@
+{
+  "schemas": {
+    "transactions": {
+      "user_id": "integer",
+      "amount": "decimal"
+    }
+  },
+  "tables": {
+    "transactions": [
+      {
+        "user_id": 1,
+        "amount": 100.5
+      },
+      {
+        "user_id": 2,
+        "amount": -42.25
+      },
+      {
+        "user_id": 3,
+        "amount": 0
+      }
+    ]
+  },
+  "expected": {
+    "columns": [
+      "user_id",
+      "amount"
+    ],
+    "rows": [
+      [
+        1,
+        100.5
+      ],
+      [
+        2,
+        -42.25
+      ],
+      [
+        3,
+        0
+      ]
+    ]
+  }
+}

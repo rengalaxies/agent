@@ -1,0 +1,25 @@
+{
+  "product_id": "spending_activity_profile",
+  "contract_version": "2.0.0-compat.1",
+  "owner_domain": "fintech",
+  "schema_fields": {
+    "user_id": "string",
+    "amount": "decimal"
+  },
+  "semantic": {
+    "meaning": "Сумма покупок",
+    "description": null,
+    "formula": "sum(purchase_amount)",
+    "unit": "RUB",
+    "scale": 2,
+    "calculation_window_days": 30,
+    "identity_scope": "global_user_id",
+    "allowed_sources": [
+      "transactions"
+    ],
+    "purposes": [
+      "retail_personalization"
+    ],
+    "valid_time": "event_time"
+  }
+}

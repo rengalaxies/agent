@@ -1,0 +1,219 @@
+{
+  "format": "pr-change-assistant-1",
+  "input_hash": "5df658707ddc7af947290c092fafab556768d03b59d89e3381c5a9d2ddbbd350",
+  "decision": "REJECT",
+  "mode": "advisory",
+  "release_authorization": false,
+  "semantic_changes": {
+    "unit": {
+      "old": "RUB",
+      "new": "kopeck"
+    },
+    "scale": {
+      "old": 2,
+      "new": 0
+    }
+  },
+  "diff": "--- producer-before.sql\n+++ producer-after.sql\n@@ -1 +1 @@\n-SELECT user_id, amount FROM transactions ORDER BY user_id;\n+SELECT user_id, amount * 100 AS amount FROM transactions ORDER BY user_id;\n",
+  "affected": [
+    {
+      "consumer_id": "retail-offers",
+      "owner": "retail",
+      "obligation_id": "retail-rub-amount",
+      "path": [
+        {
+          "producer": "spending_activity_profile",
+          "consumer": "retail-offers",
+          "fields": [
+            "amount",
+            "user_id"
+          ],
+          "field_scope": "read_columns",
+          "status": "observed",
+          "evidence_ref": "synthetic:pr-assistant-v1",
+          "source_hash": "391c5876f8fcccd32705a9516f353f05e818ede3310b79005618215e3d6aa60e",
+          "extractor": "sqlite-compile-1"
+        }
+      ],
+      "requirement_source": "fixture:consumer-confirmation-v1"
+    }
+  ],
+  "observed_edges": [
+    {
+      "producer": "spending_activity_profile",
+      "consumer": "retail-offers",
+      "fields": [
+        "amount",
+        "user_id"
+      ],
+      "field_scope": "read_columns",
+      "status": "observed",
+      "evidence_ref": "synthetic:pr-assistant-v1",
+      "source_hash": "391c5876f8fcccd32705a9516f353f05e818ede3310b79005618215e3d6aa60e",
+      "extractor": "sqlite-compile-1"
+    },
+    {
+      "producer": "spending_activity_profile",
+      "consumer": "retail-aggregate",
+      "fields": [],
+      "source_resource": "model.demo.spending",
+      "target_resource": "model.demo.aggregate",
+      "field_scope": "relation_only",
+      "status": "observed",
+      "evidence_ref": "synthetic:pr-assistant-v1",
+      "source_hash": "0a568e005a0915e56c232d911ceb1c057c1a280c4aef9edcdc4afee4b89b00e5",
+      "extractor": "dbt-manifest-v12"
+    },
+    {
+      "producer": "retail-aggregate",
+      "consumer": "retail-offers",
+      "fields": [],
+      "source_resource": "model.demo.aggregate",
+      "target_resource": "model.demo.retail",
+      "field_scope": "relation_only",
+      "status": "observed",
+      "evidence_ref": "synthetic:pr-assistant-v1",
+      "source_hash": "0a568e005a0915e56c232d911ceb1c057c1a280c4aef9edcdc4afee4b89b00e5",
+      "extractor": "dbt-manifest-v12"
+    }
+  ],
+  "gaps": [],
+  "typed_reasons": [
+    "V2_CONSUMER_UNIT_SCALE"
+  ],
+  "regression": {
+    "status": "executed",
+    "columns": [
+      "user_id",
+      "amount"
+    ],
+    "rows": [
+      [
+        1,
+        10050.0
+      ],
+      [
+        2,
+        -4225.0
+      ],
+      [
+        3,
+        0
+      ]
+    ],
+    "input_hash": "0a9779c2f53a817985a6850ee46dbe56e63018066b073f58cf1eadc45dca71f9",
+    "decision": "REJECT",
+    "guarantee": "supplied SQLite fixture and expected rows only"
+  },
+  "proposed_artifact": {
+    "kind": "side_by_side_compatibility_candidate",
+    "contract": {
+      "product_id": "spending_activity_profile",
+      "contract_version": "2.0.0-compat.1",
+      "owner_domain": "fintech",
+      "schema_fields": {
+        "user_id": "string",
+        "amount": "decimal"
+      },
+      "semantic": {
+        "meaning": "Сумма покупок",
+        "description": null,
+        "formula": "sum(purchase_amount)",
+        "unit": "RUB",
+        "scale": 2,
+        "calculation_window_days": 30,
+        "identity_scope": "global_user_id",
+        "allowed_sources": [
+          "transactions"
+        ],
+        "purposes": [
+          "retail_personalization"
+        ],
+        "valid_time": "event_time"
+      }
+    },
+    "sql": "SELECT user_id, amount FROM transactions ORDER BY user_id;\n",
+    "regression_test": {
+      "schemas": {
+        "transactions": {
+          "user_id": "integer",
+          "amount": "decimal"
+        }
+      },
+      "tables": {
+        "transactions": [
+          {
+            "user_id": 1,
+            "amount": 100.5
+          },
+          {
+            "user_id": 2,
+            "amount": -42.25
+          },
+          {
+            "user_id": 3,
+            "amount": 0
+          }
+        ]
+      },
+      "expected": {
+        "columns": [
+          "user_id",
+          "amount"
+        ],
+        "rows": [
+          [
+            1,
+            100.5
+          ],
+          [
+            2,
+            -42.25
+          ],
+          [
+            3,
+            0
+          ]
+        ]
+      }
+    },
+    "typed_recheck": "ACCEPT",
+    "regression_recheck": {
+      "status": "executed",
+      "columns": [
+        "user_id",
+        "amount"
+      ],
+      "rows": [
+        [
+          1,
+          100.5
+        ],
+        [
+          2,
+          -42.25
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "input_hash": "98d93e1bb3c12a661e56fee89e444f789542e3abeede57c4f46537f0681d4ff7",
+      "decision": "ACCEPT",
+      "guarantee": "supplied SQLite fixture and expected rows only"
+    },
+    "applies_automatically": false,
+    "remaining_work": [
+      "owner reviews semantic suitability",
+      "route existing consumers to compatibility endpoint",
+      "verify deployment SQL dialect and real data"
+    ]
+  },
+  "human_input_counts": {
+    "declared_requirements": 1,
+    "supplied_expected_rows": 3,
+    "explicit_registration_boundaries": 1
+  },
+  "limitation": "observed code does not establish business meaning or complete coverage",
+  "report_hash": "748885c9d77c2453715c2bac0a1c63759cc5cc42e38b55b08368055573e1d099"
+}
