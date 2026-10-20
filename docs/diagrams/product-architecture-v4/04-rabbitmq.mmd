@@ -1,0 +1,9 @@
+flowchart LR
+  P["Публикация: exchange и key base/head"] --> V["Проверить identity и профиль"]
+  D["Definitions, arguments, policies"] --> V
+  V --> M["Direct/topic matching"]
+  V --> U["Вне профиля: UNKNOWN"]
+  M --> Q["Известные очереди и дельта маршрутов"]
+  Q --> H["Подписки и обработчики"]
+  H --> R["Условное влияние и проверка"]
+  U --> R
