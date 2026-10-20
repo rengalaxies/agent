@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant U as Человек или coding agent
+  participant M as Модуль
+  participant S as Разрешенные снимки
+  U->>M: prepare_context до планирования и кода
+  M->>S: Прочитать версии, код, правила и конфигурации
+  S-->>M: Основания и границы обследования
+  M-->>U: ctx-01, правила, зависимости и неизвестное
+  U->>U: Подготовить изменение Orders
+  U->>M: analyze_change(o1, o2, ctx-01)
+  M-->>U: result-01, источники, JSON и черновик сообщения
