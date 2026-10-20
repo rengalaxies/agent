@@ -1,0 +1,151 @@
+{
+  "source_commit": "dfcdfb8e3016721a397a1655c642873d19cfab9a",
+  "model": "",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39066044410",
+  "attempt": "1",
+  "budget": {
+    "model_attempts": 1,
+    "calls": 2,
+    "tokens": 64000,
+    "seconds": 240
+  },
+  "automatic_application": "BLOCKED",
+  "cloud_vm_actions": [],
+  "boundaries": {
+    "outcome": "PASS",
+    "scope": "controlled CI world only; dispatcher race tests recorded separately",
+    "checks": {
+      "R6_exact_scope": {
+        "status": "PASS",
+        "evidence": {
+          "denied": [
+            "action",
+            "object",
+            "environment",
+            "stale_context",
+            "revoked",
+            "expired",
+            "path_escape",
+            "evaluator_write",
+            "app_write"
+          ]
+        }
+      },
+      "R7_known_world_unknowns": {
+        "status": "PASS",
+        "evidence": {
+          "control_world": "one rare literal SQL reader, no telemetry, missing catalog; then empty source",
+          "rare_reader_found": true,
+          "missing_owner": "UNKNOWN",
+          "empty_discovery": "coverage gaps retained, no compatibility verdict"
+        }
+      },
+      "R8_material_grounds": {
+        "status": "PASS",
+        "evidence": {
+          "invalidated_by": [
+            "source",
+            "contract",
+            "topology",
+            "runtime",
+            "data_input",
+            "authority",
+            "candidate"
+          ],
+          "suite_digest": "c0b7e19ec8aaf6240fcf4f53779de567eaaf37d5a16c570fa275f3e234425cfa",
+          "deployment_freshness": "NOT_QUALIFIED"
+        }
+      }
+    },
+    "automatic_application": "BLOCKED; no grant issued; candidate verifier remains financial-only"
+  },
+  "negative_control": {
+    "candidate_digest": "a320c084fcfc6426ab10504809d8b128bad0c0cba7218909b2209aaee0a2086e",
+    "suite_digest": "c0b7e19ec8aaf6240fcf4f53779de567eaaf37d5a16c570fa275f3e234425cfa",
+    "scenario_id": "T03",
+    "outcome": "FAIL",
+    "checks": {
+      "baseline": {
+        "status": "PASS",
+        "evidence": {
+          "order_count": 6,
+          "expected_minor_total": 214848377900,
+          "ledger": {
+            "held-0": 0,
+            "held-1": 100,
+            "held-2": 700,
+            "held-3": 12500,
+            "held-4": 99999900,
+            "held-5": 214748364700
+          },
+          "state": "S0"
+        }
+      },
+      "wrong_migration_rejected": {
+        "status": "PASS",
+        "evidence": {
+          "verdict": "REJECT",
+          "source_unchanged": true,
+          "transactional_DDL_rolled_back": true
+        }
+      },
+      "readonly_verifier": {
+        "status": "PASS",
+        "evidence": {
+          "source_and_billing_roles": "SELECT only"
+        }
+      },
+      "compatible_S0_S5": {
+        "status": "FAIL",
+        "evidence": {
+          "type": "CheckViolation",
+          "code": null,
+          "assertion": null
+        }
+      }
+    },
+    "accepted_properties": [],
+    "coverage": "candidate checks only; live business validation requires isolated suite",
+    "uncovered": [
+      "R6 grants",
+      "R7 discovery completeness",
+      "R8 freshness",
+      "component recovery"
+    ]
+  },
+  "agent": {
+    "run_id": "1cc96756-1f83-46ba-9f6b-134c5443eb30",
+    "mode": "live",
+    "started_at": "2026-10-17T20:17:51.312348+00:00",
+    "outcome": "BLOCKED",
+    "scenario_suite": "lab/evaluator frozen suite",
+    "manual_time": "NOT_MEASURED",
+    "infrastructure_cost": "NOT_MEASURED",
+    "execution_actions": [],
+    "waiting_seconds": "NOT_MEASURED",
+    "change": {
+      "change_id": "orders-minor-001",
+      "revision": 1,
+      "intent": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault."
+    },
+    "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+    "source_commit": "dfcdfb8e3016721a397a1655c642873d19cfab9a",
+    "source_snapshot_digest": "95bf2ad6a3db56262f1eed8e7882096429f1df294fa066e9151829d50283233f",
+    "context_digest": "b910bff1b2f37659cfe4a925c6a17369ddf0cd0b817c8b7dda0c3888b79996a7",
+    "model": "NOT_CONFIGURED",
+    "limits": {
+      "calls": 2,
+      "llm_seconds": 240,
+      "tokens": 64000,
+      "parallelism": 1,
+      "cost_usd": null
+    },
+    "blocker": "Missing CLOUDRU_FOUNDATION_API_KEY and/or CLOUDRU_LLM_MODEL; IAM credentials are not an inference API key.",
+    "elapsed_seconds": 0.017,
+    "llm_calls": 0,
+    "token_usage": [],
+    "model_cost_usd": "NOT_MEASURED",
+    "ended_at": "2026-10-17T20:17:51.329417+00:00"
+  },
+  "outcome": "FAIL"
+}

@@ -1,0 +1,25 @@
+test_context_changed_during_verification_blocks_effect (test_dispatch_recheck.DispatchRecheckTests.test_context_changed_during_verification_blocks_effect) ... ok
+test_financial_pass_does_not_authorize_transition (test_dispatch_recheck.DispatchRecheckTests.test_financial_pass_does_not_authorize_transition) ... ok
+test_revocation_or_expiry_during_verification_blocks_effect (test_dispatch_recheck.DispatchRecheckTests.test_revocation_or_expiry_during_verification_blocks_effect) ... ok
+test_digest_binds_file_content (test_evaluator.EvaluatorUnitTests.test_digest_binds_file_content) ... ok
+test_frozen_source_matrix_has_exact_19_ids (test_evaluator.EvaluatorUnitTests.test_frozen_source_matrix_has_exact_19_ids) ... ok
+test_no_live_execution_never_passes (test_evaluator.EvaluatorUnitTests.test_no_live_execution_never_passes) ... ok
+test_rejects_evaluator_tampering_candidate (test_evaluator.EvaluatorUnitTests.test_rejects_evaluator_tampering_candidate) ... ok
+test_symlink_candidate_rejected (test_evaluator.EvaluatorUnitTests.test_symlink_candidate_rejected) ... ok
+test_independent_control_world (test_qualification.QualificationTests.test_independent_control_world) ... ok
+test_mismatch_or_corrupt_journal_never_executes (test_reconciliation.ReconciliationTests.test_mismatch_or_corrupt_journal_never_executes) ... ok
+test_reconciliation_only_observes_and_stops (test_reconciliation.ReconciliationTests.test_reconciliation_only_observes_and_stops) ... ok
+test_evaluator_and_traversal_patch_rejected (test_runtime_boundaries.RuntimeBoundaryUnitTests.test_evaluator_and_traversal_patch_rejected) ... ok
+test_grant_exact_scope_and_revision (test_runtime_boundaries.RuntimeBoundaryUnitTests.test_grant_exact_scope_and_revision) ... ok
+test_repair_is_measured_against_submitted_candidate (test_runtime_boundaries.RuntimeBoundaryUnitTests.test_repair_is_measured_against_submitted_candidate) ... ok
+test_revoked_and_expired (test_runtime_boundaries.RuntimeBoundaryUnitTests.test_revoked_and_expired) ... ok
+test_breaking_change_addressed_with_source_and_replay (test_team_inbox.TeamInboxTests.test_breaking_change_addressed_with_source_and_replay) ... ok
+test_changed_code_cannot_borrow_historical_pass (test_team_inbox.TeamInboxTests.test_changed_code_cannot_borrow_historical_pass) ... ok
+test_changed_input_same_revision_and_wrong_team_are_rejected (test_team_inbox.TeamInboxTests.test_changed_input_same_revision_and_wrong_team_are_rejected) ... ok
+test_revision_invalidates_decisions_without_duplicate_notifications (test_team_inbox.TeamInboxTests.test_revision_invalidates_decisions_without_duplicate_notifications) ... ok
+test_unknown_owner_routes_only_to_coordinator (test_team_inbox.TeamInboxTests.test_unknown_owner_routes_only_to_coordinator) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.256s
+
+OK

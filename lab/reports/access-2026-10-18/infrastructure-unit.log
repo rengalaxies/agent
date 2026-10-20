@@ -1,0 +1,22 @@
+test_actual_floating_ip_interface_schema_and_secret_exclusion (test_network_diagnosis.NetworkTests.test_actual_floating_ip_interface_schema_and_secret_exclusion) ... ok
+test_group_selector_is_not_proof_of_public_access (test_network_diagnosis.NetworkTests.test_group_selector_is_not_proof_of_public_access) ... ok
+test_runner_source_port_and_direction_are_distinct (test_network_diagnosis.NetworkTests.test_runner_source_port_and_direction_are_distinct) ... ok
+test_console_pin_mismatch_never_authenticates (test_preflight.ScopeTests.test_console_pin_mismatch_never_authenticates) ... ok
+test_empty_or_foreign_scope_stops (test_preflight.ScopeTests.test_empty_or_foreign_scope_stops) ... ok
+test_exact_existing_scope (test_preflight.ScopeTests.test_exact_existing_scope) ... ok
+test_live_zone_schema (test_preflight.ScopeTests.test_live_zone_schema) ... ok
+test_untrusted_handshake_never_authenticates (test_preflight.ScopeTests.test_untrusted_handshake_never_authenticates) ... ok
+test_wrong_core_id_stops (test_preflight.ScopeTests.test_wrong_core_id_stops) ... ok
+test_connect_rejection_stops_before_ssh_and_closes_socket (test_proxy_transport.ProxyTests.test_connect_rejection_stops_before_ssh_and_closes_socket) ... ok
+test_headers_do_not_consume_the_ssh_banner (test_proxy_transport.ProxyTests.test_headers_do_not_consume_the_ssh_banner) ... ok
+test_exact_narrow_correction (test_reconcile_access.ReconcileTests.test_exact_narrow_correction) ... ok
+test_vm_or_other_rule_is_never_allowed (test_reconcile_access.ReconcileTests.test_vm_or_other_rule_is_never_allowed) ... ok
+test_wide_wrong_operator_or_port_is_denied (test_reconcile_access.ReconcileTests.test_wide_wrong_operator_or_port_is_denied) ... ok
+test_cleanup_only_own_rule (test_scoped_ssh.PlanGuardTests.test_cleanup_only_own_rule) ... ok
+test_only_new_exact_runner_rule (test_scoped_ssh.PlanGuardTests.test_only_new_exact_runner_rule) ... ok
+test_replacement_other_resource_and_broad_access_rejected (test_scoped_ssh.PlanGuardTests.test_replacement_other_resource_and_broad_access_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.016s
+
+OK

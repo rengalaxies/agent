@@ -1,0 +1,36 @@
+test_server_gate_and_async_queue (test_api.APITests.test_server_gate_and_async_queue) ... ok
+test_unverified_source_commit_rejected (test_api.APITests.test_unverified_source_commit_rejected) ... ok
+test_bad_endpoint_refuses_credentials_in_url (test_collectors.CollectorTests.test_bad_endpoint_refuses_credentials_in_url) ... ok
+test_binding_schema_repository_or_owner_change_invalidates_basis (test_collectors.CollectorTests.test_binding_schema_repository_or_owner_change_invalidates_basis) ... ok
+test_digest_stable_collection_time_and_runtime_statistics (test_collectors.CollectorTests.test_digest_stable_collection_time_and_runtime_statistics) ... ok
+test_http_is_only_get_and_volatile_broker_stats_are_removed (test_collectors.CollectorTests.test_http_is_only_get_and_volatile_broker_stats_are_removed) ... ok
+test_missing_live_credentials_blocks_instead_of_fixture (test_collectors.CollectorTests.test_missing_live_credentials_blocks_instead_of_fixture) ... ok
+test_monitor_cannot_collect_without_independent_permission_attestation (test_collectors.CollectorTests.test_monitor_cannot_collect_without_independent_permission_attestation) ... ok
+test_repository_references_are_static_and_declared (test_collectors.CollectorTests.test_repository_references_are_static_and_declared) ... ok
+test_isolation_reset_consent_delete_and_gate (test_session_api.SessionAPITests.test_isolation_reset_consent_delete_and_gate) ... ok
+test_protected_mode_fails_closed (test_session_api.SessionAPITests.test_protected_mode_fails_closed) ... ok
+test_sequential_switch_rejects_pending_work (test_session_api.SessionAPITests.test_sequential_switch_rejects_pending_work) ... ok
+test_consent_allowlist_delete_keeps_technical_records (test_sessions.SessionTests.test_consent_allowlist_delete_keeps_technical_records) ... ok
+test_no_retroactive_capture_and_explicit_notice (test_sessions.SessionTests.test_no_retroactive_capture_and_explicit_notice) ... ok
+test_reset_refuses_active_job (test_sessions.SessionTests.test_reset_refuses_active_job) ... ok
+test_restart_preserves_sessions_and_rejects_traversal (test_sessions.SessionTests.test_restart_preserves_sessions_and_rejects_traversal) ... ok
+test_two_business_passes_reuse_worker_no_decision_transfer (test_sessions.SessionTests.test_two_business_passes_reuse_worker_no_decision_transfer) ... ok
+test_two_sequential_sessions_no_state_carry_and_selected_reset (test_sessions.SessionTests.test_two_sequential_sessions_no_state_carry_and_selected_reset) ... ok
+test_unknown_owner_reuses_control_catalog_without_mutating_collector (test_sessions.SessionTests.test_unknown_owner_reuses_control_catalog_without_mutating_collector) ... ok
+test_operation_journal_keeps_real_origin (test_store.JournalOriginTests.test_operation_journal_keeps_real_origin) ... ok
+test_addressed_cards_and_exact_decision (test_store.WorkflowTests.test_addressed_cards_and_exact_decision) ... ok
+test_client_safe_flag_does_not_bypass (test_store.WorkflowTests.test_client_safe_flag_does_not_bypass) ... ok
+test_docs_only_supported_profile (test_store.WorkflowTests.test_docs_only_supported_profile) ... ok
+test_late_analysis_stays_history (test_store.WorkflowTests.test_late_analysis_stays_history) ... ok
+test_live_missing_credential_blocks_no_fixture_fallback (test_store.WorkflowTests.test_live_missing_credential_blocks_no_fixture_fallback) ... ok
+test_restart_unknown_and_idempotency (test_store.WorkflowTests.test_restart_unknown_and_idempotency) ... ok
+test_snapshot_basis_invalidates (test_store.WorkflowTests.test_snapshot_basis_invalidates) ... ok
+test_submitted_source_overrides_reference (test_store.WorkflowTests.test_submitted_source_overrides_reference) ... ok
+test_superseded_snapshot_not_current (test_store.WorkflowTests.test_superseded_snapshot_not_current) ... ok
+test_unknown_owner_coordinator (test_store.WorkflowTests.test_unknown_owner_coordinator) ... ok
+test_web_verifier_has_no_implicit_docker_authority (test_store.WorkflowTests.test_web_verifier_has_no_implicit_docker_authority) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.451s
+
+OK

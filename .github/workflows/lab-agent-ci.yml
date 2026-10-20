@@ -1,0 +1,50 @@
+name: Lab real Foundation Models agent CI
+# Attempt 2: explicit analyst status enum; attempt 1 failure retained in reports.
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths: [.github/workflows/lab-agent-ci.yml]
+permissions:
+  contents: read
+concurrency:
+  group: lab-real-agent
+  cancel-in-progress: false
+jobs:
+  real-agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install host controller dependencies
+        run: python3 -m pip install --quiet pika==1.3.2 'psycopg[binary]==3.2.9'
+      - name: Authorization races and boundaries
+        run: python3 -m unittest discover -s lab/tests
+      - name: Pin dependency images
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, pathlib
+          images={}
+          for key,tag in {'POSTGRES_IMAGE':'postgres:16.10-bookworm','RABBITMQ_IMAGE':'rabbitmq:3.13.7-management','PYTHON_IMAGE':'python:3.12.11-slim-bookworm'}.items():
+              subprocess.run(['docker','pull',tag],check=True,stdout=subprocess.DEVNULL)
+              images[key]=json.loads(subprocess.check_output(['docker','image','inspect','--format','{{json .RepoDigests}}',tag]))[0]
+          pathlib.Path('agent-images.json').write_text(json.dumps(images,indent=2))
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              for k,v in images.items():f.write(k+'='+v+'\n')
+          PY
+      - name: One real agent attempt and independent fresh verifier
+        env:
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+          CLOUDRU_LLM_MODEL: ${{ vars.CLOUDRU_LLM_MODEL || 'openai/gpt-oss-120b' }}
+        run: python3 -m lab.evaluator.agent_ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-agent-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            agent-evidence/
+            agent-images.json
+          retention-days: 30
+          if-no-files-found: error

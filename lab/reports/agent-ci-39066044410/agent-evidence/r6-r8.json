@@ -1,0 +1,48 @@
+{
+  "outcome": "PASS",
+  "scope": "controlled CI world only; dispatcher race tests recorded separately",
+  "checks": {
+    "R6_exact_scope": {
+      "status": "PASS",
+      "evidence": {
+        "denied": [
+          "action",
+          "object",
+          "environment",
+          "stale_context",
+          "revoked",
+          "expired",
+          "path_escape",
+          "evaluator_write",
+          "app_write"
+        ]
+      }
+    },
+    "R7_known_world_unknowns": {
+      "status": "PASS",
+      "evidence": {
+        "control_world": "one rare literal SQL reader, no telemetry, missing catalog; then empty source",
+        "rare_reader_found": true,
+        "missing_owner": "UNKNOWN",
+        "empty_discovery": "coverage gaps retained, no compatibility verdict"
+      }
+    },
+    "R8_material_grounds": {
+      "status": "PASS",
+      "evidence": {
+        "invalidated_by": [
+          "source",
+          "contract",
+          "topology",
+          "runtime",
+          "data_input",
+          "authority",
+          "candidate"
+        ],
+        "suite_digest": "c0b7e19ec8aaf6240fcf4f53779de567eaaf37d5a16c570fa275f3e234425cfa",
+        "deployment_freshness": "NOT_QUALIFIED"
+      }
+    }
+  },
+  "automatic_application": "BLOCKED; no grant issued; candidate verifier remains financial-only"
+}

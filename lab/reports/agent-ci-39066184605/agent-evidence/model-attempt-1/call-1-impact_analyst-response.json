@@ -1,0 +1,46 @@
+{
+  "id": "chatcmpl-044f87f3-9c3b-42dd-8a81-aba3eb7fb383",
+  "object": "chat.completion",
+  "created": 1792268396,
+  "model": "openai/gpt-oss-120b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"findings\": [\n    {\n      \"object_ref\": \"lab/sql/expand.sql\",\n      \"evidence_ids\": [\n        \"b9d2adb134e1cefc67dd085d\",\n        \"6159bcf99d266c46aed99ecd\"\n      ],\n      \"status\": \"POTENTIAL_VIOLATION\",\n      \"reason\": \"The proposed UPDATE sets `amount_minor = amount_rub` instead of `amount_rub * 100`. The later CHECK constraint added in the same file (`amount_minor % 100 = 0 AND amount_minor/100 = amount_rub`) and the transition‑backfill verification in `lab/app/service.py` (`SELECT count(*) n FROM orders WHERE amount_minor IS DISTINCT FROM amount_rub*100`) both require the 100× relationship. Applying the diff would cause the constraint to fail and trigger a BACKFILL error.\"\n    },\n    {\n      \"object_ref\": \"lab/app/service.py#transition\",\n      \"evidence_ids\": [\n        \"6159bcf99d266c46aed99ecd\"\n      ],\n      \"status\": \"RISK_INFERRED\",\n      \"reason\": \"The transition to state S1 runs a backfill sanity check that expects `amount_minor = amount_rub*100`. If the broken backfill from `expand.sql` is applied, the check will detect mismatched rows, raising a `LabError('BACKFILL')` and halting the migration. Downstream services (billing ledger, analytics) also rely on the 100× invariant, so data inconsistency would propagate.\"\n    }\n  ],\n  \"gaps\": [\n    \"Static supported syntax only; dynamic SQL and external consumers may be absent.\",\n    \"No live traces supplied; lack of telemetry never removes a static dependency.\",\n    \"Repository snapshot does not prove deployed code or broker state.\"\n  ]\n}",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need to produce JSON with findings about potential violations or risks from the proposed change. The change modifies expand.sql: updates amount_minor incorrectly (sets equal to amount_rub instead of amount_rub*100). This violates the constraint that amount_minor must be amount_rub*100. Evidence: expand.sql current content (b9d2adb...) shows the same broken diff (the same as proposed). The constraint added later checks amount_minor % 100 =0 and amount_minor/100 = amount_rub. The proposed diff will break that constraint, causing backfill to set wrong values.\n\nWe need to identify reproduced violation: The proposed change violates the contract that amount_minor must equal amount_rub*100 (as per intent and constraints). Evidence IDs: the expand.sql file (b9d2adb134e1cefc67dd085d) shows the UPDATE uses amount_rub (incorrect). Also the constraint definition (same file) expects amount_minor/100 = amount_rub. Also the service code expects amount_minor = amount_rub*100 (e.g., in transition S1 backfill check: source.execute('SELECT count(*) n FROM orders WHERE amount_minor IS DISTINCT FROM amount_rub*100').fetchone()['n'] raises error if mismatch). Evidence ID 6159bcf99d266c46aed99ecd lines around 240 show that check. So we have reproduced violation.\n\nWe also need to note inferred risk: data inconsistency, breaking downstream billing, analytics, idempotency, etc. Also unknowns: whether this diff will be applied before or after constraint addition; but constraint will be added after update, causing failure.\n\nWe must output JSON with findings array each object: object_ref (the file), evidence_ids, status (e.g., \"VIOLATION_REPRODUCED\" or \"RISK_INFERRED\"? The spec says status, reason. Use status like \"VIOLATION\" maybe. Provide reason.\n\nAlso gaps: list coverage gaps from discovery: static syntax only, no live traces, snapshot not proof of deployment.\n\nWe must not assert reproduction from static code? The instruction: \"Never assert reproduction from static code.\" Hmm. It says \"Never assert reproduction from static code.\" That means we cannot claim that the violation is reproduced in runtime; we can only note that the static diff would cause a violation given constraints. So status maybe \"POTENTIAL_VIOLATION\" not \"REPRODUCED\". Use \"POTENTIAL_VIOLATION\". Provide reason.\n\nLet's list findings:\n\n1. Object: lab/sql/expand.sql. Evidence IDs: b9d2adb134e1cefc67dd085d (the file content) and 6159bcf99d266c46aed99ecd (service transition check). Status: \"POTENTIAL_VIOLATION\". Reason: UPDATE sets amount_minor = amount_rub, violating constraint amount_minor/100 = amount_rub and breaking backfill check.\n\n2. Object: lab/app/service.py (transition function). Evidence ID 6159bcf99d266c46aed99ecd lines where backfill check expects amount_minor = amount_rub*100. Status: \"RISK_INFERRED\". Reason: If expand.sql runs, backfill will produce mismatched rows, causing LabError 'BACKFILL'.\n\nPotential other: analytics expects amount_minor derived from amount_rub*100; mismatch leads to analytics discrepancy.\n\nBut we can combine.\n\nGaps: list coverage_gaps.\n\nReturn JSON.\n\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.31.0-tp4-b69e9a4d",
+  "usage": {
+    "prompt_tokens": 13444,
+    "total_tokens": 14563,
+    "completion_tokens": 1119,
+    "prompt_tokens_details": {
+      "cached_tokens": 48,
+      "created_cache_tokens": 13392,
+      "multimodal_tokens": null
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 716
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

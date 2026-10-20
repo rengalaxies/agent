@@ -1,0 +1,82 @@
+{
+  "outcome": "PASS",
+  "source_commit": "032595515dd733cb0841ab7847955033780c33d8",
+  "mode": "INTEGRATION + REPLAY / CONTROL",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39068862920",
+  "execution_permission": false,
+  "vm_actions": [],
+  "external_notifications": 0,
+  "scenarios": {
+    "A": {
+      "status": "PASS",
+      "layers": [
+        "browser",
+        "API",
+        "live catalogs",
+        "fresh PostgreSQL/RabbitMQ financial verifier"
+      ],
+      "mode": "REPLAY",
+      "verification_id": "968edeed0edf4a749cb83cddda330300"
+    },
+    "H": {
+      "status": "PASS",
+      "layers": [
+        "browser disabled apply",
+        "direct API 403"
+      ]
+    },
+    "B": {
+      "status": "PASS",
+      "layers": [
+        "browser creation",
+        "API",
+        "server docs-only profile control"
+      ]
+    },
+    "D": {
+      "status": "PASS",
+      "layers": [
+        "API",
+        "browser stale display"
+      ],
+      "old_verification": "968edeed0edf4a749cb83cddda330300"
+    },
+    "C": {
+      "status": "PASS",
+      "layers": [
+        "API",
+        "declared owner catalog controlled mutation"
+      ],
+      "mode": "FIXTURE / CONTROL ownership; live DB/broker catalogs"
+    },
+    "E": {
+      "status": "PASS",
+      "layers": [
+        "real RabbitMQ mutation",
+        "live collector",
+        "API invalidation"
+      ],
+      "before": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "after": "2e52501245e7c192ac32624a2f8ecdf69d0566b9e7bf756f03df778476f9eb12"
+    },
+    "F": {
+      "status": "PASS",
+      "layers": [
+        "asynchronous API",
+        "delayed CONTROL worker"
+      ],
+      "job": "7930f4fde8db46a292d4170616a84a78"
+    },
+    "G": {
+      "status": "PASS",
+      "layers": [
+        "SIGKILL server process",
+        "SQLite restart",
+        "API idempotency"
+      ],
+      "job": "7bea9911454e4a5a875bf013dd2e8f47"
+    }
+  },
+  "errors": [],
+  "cleanup": "PASS"
+}

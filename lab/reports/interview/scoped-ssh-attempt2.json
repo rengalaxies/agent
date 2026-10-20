@@ -1,0 +1,31 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "0ed24519a30305e3dad476903d5374bce4f636f0",
+  "checked_at": "2026-10-17T21:18:08.238018+00:00",
+  "status": "BLOCKED",
+  "existing_compute_changes": "NONE",
+  "cleanup": "PASS_OWN_TEMPORARY_RULE_ABSENT",
+  "phase": "DONE",
+  "opening_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "create"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "ssh": {
+    "authentication": "NOT_ATTEMPTED",
+    "host_trust": "UNVERIFIED",
+    "status": "BLOCKED_SSH_PROBE",
+    "error_class": "TimeoutError"
+  },
+  "cleanup_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "delete"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  }
+}

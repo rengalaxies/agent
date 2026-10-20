@@ -1,0 +1,76 @@
+name: Lab protected cloud runtime acceptance
+# Align SSH CONNECT with existing HTTPS egress route; retain strict host pin and /32 source recheck.
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths:
+      - infra/cloudru/lab/deploy_runtime.py
+      - infra/cloudru/lab/scoped_ssh.py
+      - infra/cloudru/runtime/**
+      - infra/cloudru/lab/ui-host-pin.json
+      - .github/workflows/lab-cloud-runtime.yml
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-daniil-p1-deployment
+  cancel-in-progress: false
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 107dfd14292a5ab06593d424bf0b94f1cccb0b90
+          persist-credentials: false
+          path: release-source
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+          terraform_wrapper: false
+      - name: Configure official Terraform mirror
+        run: |
+          cat > "$RUNNER_TEMP/cloudru.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/cloudru.tfrc" >> "$GITHUB_ENV"
+      - name: Install state and API clients
+        run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3 paramiko==3.5.1 bcrypt==4.3.0 httpx==0.28.1 fastapi==0.115.12 uvicorn==0.34.2 playwright==1.51.0
+      - name: Check cloud boundary before any VM runtime change
+        run: |
+          python3 -m unittest discover -s infra/cloudru/lab -p 'test_*.py' -v
+          python3 -m unittest discover -s infra/cloudru/runtime -p test_boundary.py -v
+          python3 -m playwright install --with-deps chromium
+      - name: Build and export verified images on CI, without cloud credentials
+        run: python3 infra/cloudru/runtime/prepare_images.py
+      - name: Start protected runtime and test actual HTTPS
+        env:
+          CLOUDRU_SSH_USE_PROXY: "1"
+          CLOUDRU_KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          CLOUDRU_SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          CLOUDRU_STATE_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          CLOUDRU_STATE_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          CLOUDRU_STATE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          CLOUDRU_SSH_PUBLIC_KEY: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          CLOUDRU_UI_BASIC_AUTH_HASH: ${{ secrets.CLOUDRU_UI_BASIC_AUTH_HASH }}
+          CLOUDRU_LAB_SSH_KNOWN_HOSTS: ${{ secrets.CLOUDRU_LAB_SSH_KNOWN_HOSTS }}
+        run: python3 infra/cloudru/lab/deploy_runtime.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-cloud-runtime-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            cloud-evidence/
+            lab-scoped-ssh.json
+          if-no-files-found: error
+          retention-days: 14

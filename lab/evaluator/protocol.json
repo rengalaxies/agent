@@ -1,0 +1,26 @@
+{
+  "version": "2026-10-17-v1",
+  "unit_of_analysis": "one change revision on one freshly initialized isolated scenario",
+  "modes": ["ordinary_engineering", "strong_general_agent", "module"],
+  "status": "NOT_RUN",
+  "controls": ["known broken candidate", "known compatible candidate"],
+  "controls_are_not_comparison_modes": true,
+  "fairness": ["identical initial snapshot and requirements", "equivalent tool access and scope", "identical independent evaluator", "fixed task order with counterbalancing across participants", "record prior case exposure", "no evaluator files or held-out answers in agent context", "all attempts and safe stops retained"],
+  "metrics": {
+    "business_correctness": "per-order source, ledger and analytics equality plus completeness at watermark",
+    "consumer_precision_recall": "known evaluator world; hidden consumers retained as false negatives",
+    "false_signals": "count against frozen scenario expectations",
+    "manual_active_seconds": "NOT_MEASURED",
+    "manual_questions": "NOT_MEASURED",
+    "execution_seconds": "NOT_MEASURED",
+    "waiting_seconds": "NOT_MEASURED",
+    "iterations": "NOT_MEASURED",
+    "model_tokens": "NOT_MEASURED",
+    "model_cost": "NOT_MEASURED",
+    "infrastructure_cost": "NOT_MEASURED",
+    "integration_maintenance_seconds": "NOT_MEASURED"
+  },
+  "stopping_rule": "fixed task/time/tool/cost budget; failure and incompleteness retained",
+  "analysis": "report all task outcomes and uncertainty; no claim of customer cash savings from synthetic tasks",
+  "human_comparator": "requires actual engineer participation; scripted baseline is not a manual experiment"
+}

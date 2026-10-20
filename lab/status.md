@@ -1,0 +1,72 @@
+# Actual lab status - 2026-10-18
+
+Overall: **интегрированный UI → API → живые основания → новая модель → независимая проверка подтверждён в CI/браузере; Cloud.ru deployment NOT READY**. Real Foundation Models analyst and executor produced a SQL repair independently verified on fresh PostgreSQL/RabbitMQ. Controlled CI R6-R8 qualification passes; automatic application stays BLOCKED. Exact commits, all failures, token usage and remaining deployment steps: [agent CI report](reports/agent-ci-summary.md). Historical evidence and original full-scenario gaps follow.
+
+Current infrastructure update,18 October2026: **pinned SSH and authenticated OS management PASS; exact verified commit107dfd1 source staged on the existing UI VM, not deployed**. Live API/state/guest network diagnosis, resource measurement, precise SG drift correction and bounded delivery evidence: [access/delivery report](reports/access-2026-10-18/REPORT.md). Earlier “guest channel unverified / capacity unmeasured” entries below are historical. Public prototype HTTPS remains NOT_READY; no domain apply, UI change, LLM call or interview rerun in this access batch.
+
+## Evidence
+
+Integrated product path: [complete report and A-H matrix](reports/product-path/REPORT.md). Corrective LIVE path source `032595515dd733cb0841ab7847955033780c33d8`, [Actions 39068862920](https://github.com/rengalaxies/agent/actions/runs/39068862920) PASS; final no-inference recheck source `d3b7ee2109fb4040d0872cee099a19031c662f2b`, [39069174791](https://github.com/rengalaxies/agent/actions/runs/39069174791) PASS. Actual live catalogs/bindings, real broker mutation/invalidation, asynchronous queue, late reply, SIGKILL restart and direct apply403 are checked. Two new real model paths used four calls and 52188 tokens total; all retained. Screenshots, prompts, replies, actual patches, exact IDs/digests and scope labels are preserved. No cloud UI deployment or automatic application is claimed.
+
+Initiator/team inbox: [CLI replay report](reports/inbox-summary.md), [Actions 39067851363](https://github.com/rengalaxies/agent/actions/runs/39067851363), exact code `0dd24672b93869acd54ab5d4fb9f176707e2e9cd`. Breaking-change cards for billing/analytics, unknown-owner coordinator routing, revision/decision invalidation and deduplication pass. Saved real-agent replay is explicit; no fresh inference or financial check is claimed. Twenty tests pass; acknowledgement never grants execution.
+
+S1 commit-gap recovery now has a scoped PASS: [report](reports/commit-gap-summary.md), [Actions 39067222291](https://github.com/rengalaxies/agent/actions/runs/39067222291), source `ce6fa97dde09e4bcea72b701d203430395d9e2d5`. Hard controller death after durable S1 commit, persisted journal, fresh-process reconciliation, safe-stop and blind-retry denial are independently checked. T13/T14 are PARTIAL_PASS for this window only; full coverage remains open. No new model calls or VM actions.
+
+Operational access update, 2026-10-17 22:45 MSK: the operator added the Foundation Models key. Rerun job 117487080370 in run 39061894797 returned PASS_API_RESPONSE for openai/gpt-oss-120b with 70 input + 16 completion tokens. Earlier missing-key/403 reports are historical. At that point real agent repair had not yet run; the later agent CI report supersedes this access-only status. Operator console supplied the UI Ed25519 host fingerprint at 22:50 MSK; read-only SSH qualification follows.
+
+- Final verified code: `7bb70630bfb72e58e11bda36aa9f0ee7dc6a4e90`. [Full lab CI run 39062576562](https://github.com/rengalaxies/agent/actions/runs/39062576562) PASS, including 12 lab + 5 infrastructure unit checks, live application suite, restart, broken control and independent correct/wrong artifact execution. Main scenario outcome remains INCOMPLETE. All final JSON and immutable image manifests are preserved under `reports/ci-39062576562/`. [Existing P1 regression run 39062579591](https://github.com/rengalaxies/agent/actions/runs/39062579591) also PASS. Independent review confirmed the late authority/context recheck fix. No automatic transition is authorized by financial-only PASS. [Draft PR23](https://github.com/rengalaxies/agent/pull/23) has no deletions or unrelated changes; final documentation/report commits do not change this verified code.
+
+- [Application CI run 39061632161](https://github.com/rengalaxies/agent/actions/runs/39061632161), code `9b7c687f4956333c573ba6575825ab5539481b0f`: successful execution; main suite outcome INCOMPLETE, broken control PASS. Preserved JSON under `reports/ci-39061632161/`. This commit's intermediate repository tree omitted pre-existing files; the later complete-tree repair restores every original path. The tested lab sources and original results remain identifiable by exact commit.
+- [Full-tree CI run 39061894752](https://github.com/rengalaxies/agent/actions/runs/39061894752), code `8998afc7129b51c237ddd481a19b874a03723ecd`: successful application and artifact-control execution. Independent verifier ran actual candidate SQL in separate fresh PostgreSQL/RabbitMQ projects: compatible artifact PASS, wrong artifact FAIL as required. Main suite remains INCOMPLETE. Preserved JSON and immutable manifests under `reports/ci-39061894752/`.
+- [Exact-project preflight 39040055755](https://github.com/rengalaxies/agent/actions/runs/39040055755), rerun job `117481021499`: source state serial 15; UI running/gen-2-4, core stopped/gen-2-8; approved project/zone identity checked. Existing state and recovery SSH key readable with SSE-C; key public part matches UI metadata. API/state only, not guest authentication. Runner TCP22 was connected in an earlier run and unreachable in later runs, including this rerun. TCP443 unreachable. No OS capacity measurement or FIT decision exists.
+- [Model access probe 39061894797](https://github.com/rengalaxies/agent/actions/runs/39061894797): `CLOUDRU_FOUNDATION_API_KEY` absent; existing `CLOUDRU_WORKFLOW_API_KEY` received HTTP 403 from the documented Foundation Models chat endpoint with the documented `openai/gpt-oss-120b` model ID. No agent scenario was executed. Preserved report `reports/model-probe-39061894797.json`.
+
+## Original matrix, combined actual application results
+
+Restart qualification: [CI run 39062162959](https://github.com/rengalaxies/agent/actions/runs/39062162959), source `9ba0a730846d581f81b943ff2c77b266cab33836`, passed component restart control. Source/Billing rows survived PostgreSQL and RabbitMQ restart unchanged; a pending published event was consumed afterward into one ledger record for 12500 minor units. Evidence is preserved under `reports/ci-39062162959/`. This does not fulfill independent-operator restore T19. Independent static review additionally identified a grant/context time-of-check gap; the subsequent dispatcher fix reloads authority and revalidates hashes immediately before the effect. Expiry/revocation/context-change tests pass locally; the full R6 scenario remains unqualified.
+
+PASS below describes only the frozen scenario's exercised application behavior. Unit tests do not upgrade other rows. The detailed original expectations remain in `evaluator/expectations.json`.
+
+| Case | Status | Evidence / remaining scope |
+|---|---|---|
+| T01 safe change | PARTIAL_PASS | Supported docs-only UI/API profile creates no blocking team work; broader safe semantics unqualified |
+| T02 silent semantic change | PASS | Broken control: intended 12500 minor, Billing and Analytics observed 1250000; REJECT |
+| T03 correct scoped transition | BLOCKED | S0-S5 financial control passed; agent repair and controlled CI R6-R8 now pass separately; full deployment-bound dispatcher acceptance remains blocked |
+| T04 excessive patch | NOT_RUN | Unit path/evaluator edit rejection only |
+| T05 wrong routing | PASS | Live missing binding detected; outbox retry after restoring route |
+| T06 rare consumer absent from trace | NOT_RUN | Static scanner exercise only |
+| T07 hidden consumer | NOT_RUN | No live recall experiment |
+| T08 unknown/conflicting owner | PARTIAL_PASS | Unknown owner routed to explicitly designated coordinator in CLI replay; conflict resolution/live directory unqualified |
+| T09 invalidated PASS | PARTIAL_PASS | Actual broker binding change plus fresh collector/API invalidates prior results; revision guard checked; broader deployed/suite freshness unqualified |
+| T10 expired/revoked grant | NOT_RUN | Unit guard only |
+| T11 lost confirm | PASS | Real broker duplicate publication, one ledger business record |
+| T12 commit before ack | PASS | Durable Billing commit, connection closes before ack, redelivery deduplicated |
+| T13 partial transition failure | PARTIAL_PASS | S1 post-commit controller death, observation and safe-stop passed; S4 partial broker cutover/recovery untested |
+| T14 UNKNOWN action outcome | PARTIAL_PASS | Persisted INTENDED after hard death reconciled to committed S1; retry denied before effect, invocation/update counters prove no repetition; other windows untested |
+| T15 fractional coexistence | PASS | Explicit compatibility rejection; no rounding, S6 not performed |
+| T16 invalid inputs | PASS | Separate rejection evidence for NULL, negative, fraction, currency, overflow, bool |
+| T17 signal/revision | PASS_IN_CLI_REPLAY | Nine-command CLI journey: duplicate signals suppressed; old cards/decisions invalidated; no inherited PASS for new revision |
+| T18 environment collision | NOT_RUN | Unit environment scope only |
+| T19 independent installation/restore | NOT_RUN | Independent operator and actual restore unqualified |
+
+Additional live controls: baseline, SELECT-only verifier privileges, wrong migration transactional rollback, mixed permitted versions, per-order and aggregate money invariants at every S1-S5 state, durable outbox commit/publication gap, idempotent backfill replay. Initial snapshot: 6 orders, exact total 214848377900 minor units. S5 control: 11 orders, exact total 214848379900. This is synthetic engineering evidence, not a customer or manual-comparator measurement.
+
+## Concrete blockers and next authorized actions
+
+1. Establish trusted runner-to-guest access. The read-only workflow supports an existing matched encrypted recovery key and `CLOUDRU_LAB_SSH_KNOWN_HOSTS`; it does not auto-accept a newly observed host key. Network reachability also needs qualification. Do not rerun VM replacement recovery or alter cloud-init expecting replay. Once accessible, run `host_inventory.py`, measure free RAM/disk/runtime/ports/workloads, then issue FIT/DOES_NOT_FIT before deployment.
+2. Foundation Models API access is now qualified. The bounded real-agent CI scenario now passes; see the agent CI report. The workflow pins the verified model when the repository variable is absent. Keep secrets in Actions; no private key/password in chat is required. Workflow-key 403 is a verified access failure, not proof that Foundation Models is unavailable to the account.
+3. Complete T01/T04/T06-T10/T13-T14/T17-T19 with actual product decisions, scoped effects and recovery. Retain their current status until evidence exists. Current repair generation supports one SQL migration file; broader related service patches and automatic live-source collection are future work.
+4. Deliver a reviewed exact commit/image ID to a qualified existing VM using the authenticated channel. Existing core startup is authorized after resource/identity validation, but startup alone does not deliver code. No core start was performed while delivery is blocked. Resource recreation, new paid resources and capacity increases remain outside this implementation.
+5. Test persisted data across component restart and operator restore, then run a real model's discovery/repair, independent verification and granted transition. Compare ordinary engineering, a strong agent and the module only with actual participants/runs under `evaluator/protocol.json`.
+
+## Remaining implementation limits
+
+CLI/controller-driven services, one host, no public UI, no production daemon supervision or telemetry backend, no general corporate discovery, no independent process-level read/write isolation for each model role, no signed multi-party grant service. Static provenance and owner uncertainty are exposed; repository hashes do not attest deployed state. Existing runtime uses trusted operator files for authorization. Test fixtures have broader administrative reach than product model output and must remain private to the lab controller.
+
+The initial specification accepts integer rubles only; the uploaded 123.45 RUB example conflicts with that coexistence profile. The implementation rejects fractional rubles while v1 survives. No rounding, legacy retirement or arbitrary change to the research protocol was introduced. Kafka remains unimplemented with separate adapter requirements in `README.md`.
+
+No VMs were created, replaced, resized or started. Earlier SSH qualification created and removed one temporary runner-only security-group rule; this agent CI phase made no cloud infrastructure changes. Main, the managed demo and frozen research artifacts were not changed. Three-mode labor/cost comparison, model costs and infrastructure cost are NOT_MEASURED. Real external notifications were not sent.
+
+## Cloud runtime update - 2026-10-18
+
+Cloud UI BLOCKED. Controller f5cd5f26f3b29bd9b6597d5ba5d9c78768784388 passed CI boundary tests and image build, but Actions 39125140553 attempts 1/2 both failed before SSH negotiation despite fresh VM/NIC/SG checks and scoped runner rules. Cleanup and actual final SG audit passed. Same-runner Raven control responds on 22/80/443 with trusted TLS; target public 80 times out. Exact provider/guest packet-drop cause remains unproven pending guest packet trace or provider dataplane trace. No new agents or independent checks; REPLAY remains source/CI available; automatic application BLOCKED. No T13/T14 promotion. See lab/reports/cloud-2026-10-18/REPORT.md and RAVEN-COMPARISON.md.

@@ -1,0 +1,84 @@
+name: datamesh-money-lab
+x-app: &app
+  image: ${LAB_APP_IMAGE:-datamesh-money-lab:local}
+  build:
+    context: ..
+    dockerfile: lab/Dockerfile
+    args:
+      PYTHON_IMAGE: ${PYTHON_IMAGE:-python:3.12.11-slim-bookworm}
+  networks: [lab]
+  mem_limit: 256m
+  cpus: 0.50
+  read_only: true
+  tmpfs: [/tmp]
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  depends_on:
+    postgres: {condition: service_healthy}
+    rabbitmq: {condition: service_healthy}
+x-source: &source
+  SOURCE_DSN: host=postgres dbname=lab_source user=lab_orders password=${ORDERS_PASSWORD:?Set ORDERS_PASSWORD}
+  BILLING_DSN: host=postgres dbname=lab_billing user=lab_billing password=${BILLING_PASSWORD:?Set BILLING_PASSWORD}
+  SOURCE_READ_DSN: host=postgres dbname=lab_source user=lab_verifier password=${VERIFIER_PASSWORD:?Set VERIFIER_PASSWORD}
+  BILLING_READ_DSN: host=postgres dbname=lab_billing user=lab_verifier password=${VERIFIER_PASSWORD:?Set VERIFIER_PASSWORD}
+  RABBITMQ_URL: amqp://lab:${RABBIT_PASSWORD:?Set RABBIT_PASSWORD}@rabbitmq:5672/%2F
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:-postgres:16.10-bookworm}
+    environment:
+      POSTGRES_PASSWORD: ${PG_ADMIN_PASSWORD:?Set PG_ADMIN_PASSWORD}
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    networks: [lab]
+    mem_limit: 384m
+    cpus: 0.50
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U postgres -d postgres]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  rabbitmq:
+    image: ${RABBITMQ_IMAGE:-rabbitmq:3.13.7-management}
+    environment:
+      RABBITMQ_DEFAULT_USER: lab
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD:?Set RABBIT_PASSWORD}
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '+S 1:1 +A 4'
+    volumes: [rabbit-data:/var/lib/rabbitmq]
+    hostname: rabbitmq
+    networks: [lab]
+    mem_limit: 384m
+    cpus: 0.50
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, check_port_connectivity]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+  bootstrap:
+    <<: *app
+    profiles: [setup]
+    command: [bootstrap]
+    environment:
+      <<: *source
+      ADMIN_DSN: host=postgres dbname=postgres user=postgres password=${PG_ADMIN_PASSWORD:?Set PG_ADMIN_PASSWORD}
+      ORDERS_PASSWORD: ${ORDERS_PASSWORD:?Set ORDERS_PASSWORD}
+      BILLING_PASSWORD: ${BILLING_PASSWORD:?Set BILLING_PASSWORD}
+      VERIFIER_PASSWORD: ${VERIFIER_PASSWORD:?Set VERIFIER_PASSWORD}
+  app:
+    <<: *app
+    profiles: [tools]
+    command: [snapshot]
+    environment: *source
+  verifier:
+    <<: *app
+    profiles: [verification]
+    command: [snapshot]
+    environment:
+      SOURCE_READ_DSN: host=postgres dbname=lab_source user=lab_verifier password=${VERIFIER_PASSWORD:?Set VERIFIER_PASSWORD}
+      BILLING_READ_DSN: host=postgres dbname=lab_billing user=lab_verifier password=${VERIFIER_PASSWORD:?Set VERIFIER_PASSWORD}
+networks:
+  lab:
+    internal: true
+volumes:
+  postgres-data:
+  rabbit-data:

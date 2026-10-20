@@ -1,0 +1,46 @@
+{
+  "id": "chatcmpl-2415f8cb-6de4-499c-bb9b-0f80572a8f8c",
+  "object": "chat.completion",
+  "created": 1792270703,
+  "model": "openai/gpt-oss-120b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"findings\": [\n    {\n      \"object_ref\": \"lab/sql/expand.sql\",\n      \"evidence_ids\": [\"e89a92d4207b46215d53310a\"],\n      \"status\": \"RISK\",\n      \"reason\": \"The proposed diff changes the backfill to set amount_minor = amount_rub instead of amount_rub*100. This violates the CHECK constraint added in the same script (amount_minor % 100 = 0 AND amount_minor/100 = amount_rub) and the explicit backfill verification in the transition to state S1, which will raise a BACKFILL error and break the migration.\"\n    }\n  ],\n  \"gaps\": []\n}",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need to produce JSON with findings and gaps. We must analyze the proposed change: updating expand.sql to set amount_minor=amount_rub (instead of amount_rub*100). This breaks consistency: constraint expects amount_minor = amount_rub*100. The change will cause backfill mismatch, violating the check constraint. Also transition S1 runs expand.sql and then checks that count of rows where amount_minor IS DISTINCT FROM amount_rub*100 is zero; if not, raises LabError('BACKFILL'). So this change will cause that error, a risk.\n\nWe need to identify object_refs impacted: likely lab/sql/expand.sql, maybe orders table, constraint orders_money_consistent, and the transition S1 step. Also analytics view may be affected? Not directly.\n\nFindings: link found between change and orders table, constraint, transition logic. Status: RISK because will cause backfill failure and data inconsistency.\n\nAlso insufficient evidence? We have evidence of constraint definition in expand.sql and transition code checking backfill. So we have sufficient evidence.\n\nThus produce one finding: object_ref \"lab/sql/expand.sql\" with evidence_ids [\"e89a92d4207b46215d53310a\"] (the submitted candidate source). status RISK, reason \"Backfill will set amount_minor equal to amount_rub, violating constraint amount_minor = amount_rub*100 and causing transition S1 to fail.\"\n\nPotential other finding: the check constraint added by expand.sql ensures amount_minor%100=0 and amount_minor/100=amount_rub. The change violates that. So also link to orders_money_consistent constraint. Could reference evidence from expand.sql content (same). Use same evidence id.\n\nReturn gaps: none? The instruction says include gaps array; we can leave empty.\n\nReturn JSON."
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.31.0-tp4-b69e9a4d",
+  "usage": {
+    "prompt_tokens": 12475,
+    "total_tokens": 13001,
+    "completion_tokens": 526,
+    "prompt_tokens_details": {
+      "cached_tokens": 48,
+      "created_cache_tokens": 12416,
+      "multimodal_tokens": null
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 367
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

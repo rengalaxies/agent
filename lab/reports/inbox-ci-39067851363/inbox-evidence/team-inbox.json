@@ -1,0 +1,451 @@
+{
+  "format": 1,
+  "cards": [
+    {
+      "card_id": "eec6510ad785ae53e92a34a0",
+      "change_id": "orders-minor-001",
+      "revision": 1,
+      "assessment_digest": "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "team": "analytics",
+      "initiator": "orders-owner",
+      "responsible": "analytics",
+      "active": false,
+      "status": "устарело",
+      "affected_services": [
+        "lab/app/service.py#analytics"
+      ],
+      "grounds": [
+        {
+          "target": "lab/app/service.py#analytics",
+          "dependency_object": "postgres:analytics.orders_v1",
+          "relation": "STATIC_SQL_READ",
+          "source_path": "lab/app/service.py",
+          "line": 207,
+          "source_fragment": "'SELECT count(*) AS orders, coalesce(sum(amount_rub::numeric * 100),0) AS amount_minor FROM analytics.orders_v1'",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+          "freshness": "HISTORICAL_REPLAY_SNAPSHOT; deployed state NOT_VERIFIED",
+          "owner": "analytics",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#analytics",
+              "team_id": "analytics",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "2ef9fbf4004313bc1713fc6eee42c5de68a425a81e658fee809ff875a70b2d78"
+        },
+        {
+          "target": "lab/app/service.py#analytics",
+          "dependency_object": "postgres:analytics.orders_v2",
+          "relation": "STATIC_SQL_READ",
+          "source_path": "lab/app/service.py",
+          "line": 207,
+          "source_fragment": "'SELECT count(*) AS orders,coalesce(sum(amount_minor::numeric),0) AS amount_minor FROM analytics.orders_v2'",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+          "freshness": "HISTORICAL_REPLAY_SNAPSHOT; deployed state NOT_VERIFIED",
+          "owner": "analytics",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#analytics",
+              "team_id": "analytics",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "94c0b1c92c53a491fd0da31f00231679c9870e0913c0de9ab05ab331dedb3528"
+        }
+      ],
+      "risk": {
+        "status": "INFERRED_RISK",
+        "description": "Аналитика читает представления orders_v1/v2: нужно сохранить смысл суммы в обоих путях. Неверный backfill блокирует S1; порча аналитического результата этим replay не воспроизведена."
+      },
+      "reproduction": {
+        "status": "REPLAY_BROKEN_MIGRATION_REJECTED",
+        "result": {
+          "negative_verifier_outcome": "FAIL",
+          "S0_S5_check": {
+            "status": "FAIL",
+            "evidence": {
+              "type": "CheckViolation",
+              "code": null,
+              "assertion": null
+            }
+          },
+          "downstream_corruption": "NOT_REPRODUCED by this replay"
+        },
+        "evidence": "lab/reports/agent-ci-39066354050/agent-evidence/negative-control.json"
+      },
+      "repair": {
+        "status": "PREPARED_IN_REPLAY",
+        "patch_ref": "lab/reports/agent-ci-39066354050/agent-evidence/model.patch",
+        "candidate_digest": "a081c040cd28746c93eb661c851dc6ca98c382f56d5ab315f8ace2978c1755e1"
+      },
+      "independent_verification": {
+        "status": "PASS_IN_HISTORICAL_REPLAY",
+        "scope": "R1-R5 isolated financial candidate; not team approval or deployment freshness",
+        "evidence": "lab/reports/agent-ci-39066354050/agent-evidence/model-attempt-1/report.json",
+        "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39066354050"
+      },
+      "next_action": "Повторно оценить новую ревизию; старое решение неприменимо.",
+      "next_action_owner": "orders-owner",
+      "decision": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+      "execution_permission": false,
+      "notification_kind": "LOCAL_INBOX_ONLY",
+      "replay": "SAVED_REAL_AGENT_REPLAY; NO_NEW_INFERENCE_OR_VERIFICATION",
+      "invalidated_by_revision": 2
+    },
+    {
+      "card_id": "c3511c180d3c216ff81d2a8d",
+      "change_id": "orders-minor-001",
+      "revision": 1,
+      "assessment_digest": "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "team": "billing",
+      "initiator": "orders-owner",
+      "responsible": "billing",
+      "active": false,
+      "status": "устарело",
+      "affected_services": [
+        "lab/app/service.py#consume"
+      ],
+      "grounds": [
+        {
+          "target": "lab/app/service.py#consume",
+          "dependency_object": "rabbitmq:queue:billing",
+          "relation": "STATIC_BROKER_READ",
+          "source_path": "lab/app/service.py",
+          "line": 175,
+          "source_fragment": "channel.basic_get(queue='billing', auto_ack=False)",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+          "freshness": "HISTORICAL_REPLAY_SNAPSHOT; deployed state NOT_VERIFIED",
+          "owner": "billing",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#consume",
+              "team_id": "billing",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "9eca77b0a7e03a5e9803678d5f705a788bd355d694b56f5ef20f48664a916864"
+        }
+      ],
+      "risk": {
+        "status": "INFERRED_RISK",
+        "description": "Billing читает события из очереди: нужно сохранить единицы суммы старого контракта. Неверный backfill блокирует S1; порча расчётных записей этим replay не воспроизведена."
+      },
+      "reproduction": {
+        "status": "REPLAY_BROKEN_MIGRATION_REJECTED",
+        "result": {
+          "negative_verifier_outcome": "FAIL",
+          "S0_S5_check": {
+            "status": "FAIL",
+            "evidence": {
+              "type": "CheckViolation",
+              "code": null,
+              "assertion": null
+            }
+          },
+          "downstream_corruption": "NOT_REPRODUCED by this replay"
+        },
+        "evidence": "lab/reports/agent-ci-39066354050/agent-evidence/negative-control.json"
+      },
+      "repair": {
+        "status": "PREPARED_IN_REPLAY",
+        "patch_ref": "lab/reports/agent-ci-39066354050/agent-evidence/model.patch",
+        "candidate_digest": "a081c040cd28746c93eb661c851dc6ca98c382f56d5ab315f8ace2978c1755e1"
+      },
+      "independent_verification": {
+        "status": "PASS_IN_HISTORICAL_REPLAY",
+        "scope": "R1-R5 isolated financial candidate; not team approval or deployment freshness",
+        "evidence": "lab/reports/agent-ci-39066354050/agent-evidence/model-attempt-1/report.json",
+        "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39066354050"
+      },
+      "next_action": "Повторно оценить новую ревизию; старое решение неприменимо.",
+      "next_action_owner": "billing",
+      "decision": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+      "execution_permission": false,
+      "notification_kind": "LOCAL_INBOX_ONLY",
+      "replay": "SAVED_REAL_AGENT_REPLAY; NO_NEW_INFERENCE_OR_VERIFICATION",
+      "invalidated_by_revision": 2
+    },
+    {
+      "card_id": "d63b124de72159175e53925a",
+      "change_id": "orders-minor-001",
+      "revision": 2,
+      "assessment_digest": "16acc9b7ca7410cf753c844becd57ed84a454eb82e2355c118feba8d97b608e4",
+      "team": "analytics",
+      "initiator": "orders-owner",
+      "responsible": "analytics",
+      "active": true,
+      "status": "требуется решение",
+      "affected_services": [
+        "lab/app/service.py#analytics"
+      ],
+      "grounds": [
+        {
+          "target": "lab/app/service.py#analytics",
+          "dependency_object": "postgres:analytics.orders_v1",
+          "relation": "STATIC_SQL_READ",
+          "source_path": "lab/app/service.py",
+          "line": 207,
+          "source_fragment": "'SELECT count(*) AS orders, coalesce(sum(amount_rub::numeric * 100),0) AS amount_minor FROM analytics.orders_v1'",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+          "freshness": "HISTORICAL_REPLAY_SNAPSHOT; deployed state NOT_VERIFIED",
+          "owner": "analytics",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#analytics",
+              "team_id": "analytics",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "2ef9fbf4004313bc1713fc6eee42c5de68a425a81e658fee809ff875a70b2d78"
+        },
+        {
+          "target": "lab/app/service.py#analytics",
+          "dependency_object": "postgres:analytics.orders_v2",
+          "relation": "STATIC_SQL_READ",
+          "source_path": "lab/app/service.py",
+          "line": 207,
+          "source_fragment": "'SELECT count(*) AS orders,coalesce(sum(amount_minor::numeric),0) AS amount_minor FROM analytics.orders_v2'",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+          "freshness": "HISTORICAL_REPLAY_SNAPSHOT; deployed state NOT_VERIFIED",
+          "owner": "analytics",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#analytics",
+              "team_id": "analytics",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "94c0b1c92c53a491fd0da31f00231679c9870e0913c0de9ab05ab331dedb3528"
+        }
+      ],
+      "risk": {
+        "status": "INFERRED_RISK",
+        "description": "Аналитика читает представления orders_v1/v2: нужно сохранить смысл суммы в обоих путях. Неверный backfill блокирует S1; порча аналитического результата этим replay не воспроизведена."
+      },
+      "reproduction": {
+        "status": "NOT_RUN_FOR_THIS_REVISION",
+        "result": null,
+        "evidence": null
+      },
+      "repair": {
+        "status": "NOT_PREPARED_FOR_THIS_REVISION",
+        "patch_ref": null,
+        "candidate_digest": null
+      },
+      "independent_verification": {
+        "status": "NOT_RUN_FOR_THIS_REVISION",
+        "scope": "R1-R5 isolated financial candidate; not team approval or deployment freshness",
+        "evidence": null,
+        "actions_run": null
+      },
+      "next_action": "Инициатору запустить повторный анализ и независимую проверку этой ревизии; команде уточнить требования.",
+      "next_action_owner": "orders-owner",
+      "decision": null,
+      "execution_permission": false,
+      "notification_kind": "LOCAL_INBOX_ONLY",
+      "replay": "SAVED_REAL_AGENT_REPLAY; NO_NEW_INFERENCE_OR_VERIFICATION"
+    },
+    {
+      "card_id": "b6914ef2effaae9e1840d30e",
+      "change_id": "orders-minor-001",
+      "revision": 2,
+      "assessment_digest": "16acc9b7ca7410cf753c844becd57ed84a454eb82e2355c118feba8d97b608e4",
+      "team": "billing",
+      "initiator": "orders-owner",
+      "responsible": "billing",
+      "active": true,
+      "status": "требуется решение",
+      "affected_services": [
+        "lab/app/service.py#consume"
+      ],
+      "grounds": [
+        {
+          "target": "lab/app/service.py#consume",
+          "dependency_object": "rabbitmq:queue:billing",
+          "relation": "STATIC_BROKER_READ",
+          "source_path": "lab/app/service.py",
+          "line": 175,
+          "source_fragment": "channel.basic_get(queue='billing', auto_ack=False)",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "88826fc4c2121657f18d8a2ec00a1605b508f1ee",
+          "freshness": "HISTORICAL_REPLAY_SNAPSHOT; deployed state NOT_VERIFIED",
+          "owner": "billing",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#consume",
+              "team_id": "billing",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "9eca77b0a7e03a5e9803678d5f705a788bd355d694b56f5ef20f48664a916864"
+        }
+      ],
+      "risk": {
+        "status": "INFERRED_RISK",
+        "description": "Billing читает события из очереди: нужно сохранить единицы суммы старого контракта. Неверный backfill блокирует S1; порча расчётных записей этим replay не воспроизведена."
+      },
+      "reproduction": {
+        "status": "NOT_RUN_FOR_THIS_REVISION",
+        "result": null,
+        "evidence": null
+      },
+      "repair": {
+        "status": "NOT_PREPARED_FOR_THIS_REVISION",
+        "patch_ref": null,
+        "candidate_digest": null
+      },
+      "independent_verification": {
+        "status": "NOT_RUN_FOR_THIS_REVISION",
+        "scope": "R1-R5 isolated financial candidate; not team approval or deployment freshness",
+        "evidence": null,
+        "actions_run": null
+      },
+      "next_action": "Инициатору запустить повторный анализ и независимую проверку этой ревизии; команде уточнить требования.",
+      "next_action_owner": "orders-owner",
+      "decision": "b5cb2566d85075d5f756e8add450f9ea073683d9de12b963c053ee298000e4c5",
+      "execution_permission": false,
+      "notification_kind": "LOCAL_INBOX_ONLY",
+      "replay": "SAVED_REAL_AGENT_REPLAY; NO_NEW_INFERENCE_OR_VERIFICATION"
+    }
+  ],
+  "decisions": [
+    {
+      "card_id": "c3511c180d3c216ff81d2a8d",
+      "revision": 1,
+      "assessment_digest": "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "team": "billing",
+      "actor": "billing-reviewer",
+      "decision": "acknowledged",
+      "comment": "CLI scenario decision for this exact revision; no execution permission",
+      "decision_id": "8f178e729c70bc97c8b91aebc7bb46172e333b146623d3a38585fa36641f30f2",
+      "recorded_at": "2026-10-17T20:42:34.566233+00:00",
+      "valid": false,
+      "grants_execution": false,
+      "invalidation": "REVISION_OR_ASSESSMENT_CHANGED"
+    },
+    {
+      "card_id": "eec6510ad785ae53e92a34a0",
+      "revision": 1,
+      "assessment_digest": "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "team": "analytics",
+      "actor": "analytics-reviewer",
+      "decision": "request_changes",
+      "comment": "CLI scenario decision for this exact revision; no execution permission",
+      "decision_id": "655351a2f9e539f719c7d62560ab19a800c016b8179f5f4089d921c4e04f5691",
+      "recorded_at": "2026-10-17T20:42:34.631794+00:00",
+      "valid": false,
+      "grants_execution": false,
+      "invalidation": "REVISION_OR_ASSESSMENT_CHANGED"
+    },
+    {
+      "card_id": "b6914ef2effaae9e1840d30e",
+      "revision": 2,
+      "assessment_digest": "16acc9b7ca7410cf753c844becd57ed84a454eb82e2355c118feba8d97b608e4",
+      "team": "billing",
+      "actor": "billing-reviewer",
+      "decision": "acknowledged",
+      "comment": "CLI scenario decision for this exact revision; no execution permission",
+      "decision_id": "b5cb2566d85075d5f756e8add450f9ea073683d9de12b963c053ee298000e4c5",
+      "recorded_at": "2026-10-17T20:42:35.000309+00:00",
+      "valid": true,
+      "grants_execution": false
+    }
+  ],
+  "local_notifications": [
+    {
+      "notification_id": "eec6510ad785ae53e92a34a0",
+      "card_id": "eec6510ad785ae53e92a34a0",
+      "recipient": "analytics",
+      "channel": "LOCAL_JSON",
+      "external_sent": false
+    },
+    {
+      "notification_id": "c3511c180d3c216ff81d2a8d",
+      "card_id": "c3511c180d3c216ff81d2a8d",
+      "recipient": "billing",
+      "channel": "LOCAL_JSON",
+      "external_sent": false
+    },
+    {
+      "notification_id": "d63b124de72159175e53925a",
+      "card_id": "d63b124de72159175e53925a",
+      "recipient": "analytics",
+      "channel": "LOCAL_JSON",
+      "external_sent": false
+    },
+    {
+      "notification_id": "b6914ef2effaae9e1840d30e",
+      "card_id": "b6914ef2effaae9e1840d30e",
+      "recipient": "billing",
+      "channel": "LOCAL_JSON",
+      "external_sent": false
+    }
+  ],
+  "changes": [
+    {
+      "change_id": "orders-minor-001",
+      "revision": 1,
+      "input_digest": "410502d04930073aa17f52979316be87243a9353e98c0aa8fedd77e05c453a31",
+      "assessment_digest": "f95a5dc06fa83939ecc2e71e29cfb73645fe9e35120845b25ec7fbe95b2d1316",
+      "context_digest": "b5d1685434c43a51e87ff6839936d1ab995ec071ed3bb59c5b5224105d91aca1",
+      "initiator": "orders-owner",
+      "coordinator": "stand-coordinator",
+      "intent": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault.",
+      "replay": "SAVED_REAL_AGENT_REPLAY; NO_NEW_INFERENCE_OR_VERIFICATION",
+      "replay_run": "https://github.com/rengalaxies/agent/actions/runs/39066354050",
+      "replay_eligible": true,
+      "coverage": "literal supported references only; no general graph completeness or deployed freshness"
+    },
+    {
+      "change_id": "orders-minor-001",
+      "revision": 2,
+      "input_digest": "cff3c5f81e8836ee952705458cb8ae16407c69a53a8b544b756aca0118957821",
+      "assessment_digest": "16acc9b7ca7410cf753c844becd57ed84a454eb82e2355c118feba8d97b608e4",
+      "context_digest": "35adc55d9f0dc2672c65157641fc338e688947f4486192c9115a656359327c79",
+      "initiator": "orders-owner",
+      "coordinator": "stand-coordinator",
+      "intent": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault. Revision 2: requirements must be assessed again.",
+      "replay": "SAVED_REAL_AGENT_REPLAY; NO_NEW_INFERENCE_OR_VERIFICATION",
+      "replay_run": "https://github.com/rengalaxies/agent/actions/runs/39066354050",
+      "replay_eligible": false,
+      "coverage": "literal supported references only; no general graph completeness or deployed freshness"
+    }
+  ],
+  "execution_permission": false
+}

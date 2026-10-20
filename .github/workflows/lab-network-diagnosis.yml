@@ -1,0 +1,41 @@
+name: Lab exact existing VM network diagnosis
+# Confirm Docker security features and compare exact live/state SG rule inventories.
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/postgres-rabbitmq-agent-lab]
+    paths:
+      - infra/cloudru/lab/network_diagnosis.py
+      - infra/cloudru/lab/ui-host-pin.json
+      - .github/workflows/lab-network-diagnosis.yml
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-lab-readonly-preflight
+  cancel-in-progress: false
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install state and API clients
+        run: python3 -m pip install --quiet boto3==1.40.50 requests==2.32.5 cryptography==46.0.3 paramiko==3.5.1
+      - name: Read exact approved state and VM identities without mutation
+        env:
+          CLOUDRU_KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          CLOUDRU_SECRET: ${{ secrets.CLOUDRU_SECRET }}
+          CLOUDRU_STATE_SSE_CUSTOMER_KEY: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          CLOUDRU_STATE_ACCESS_KEY_ID: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          CLOUDRU_STATE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          CLOUDRU_LAB_SSH_KNOWN_HOSTS: ${{ secrets.CLOUDRU_LAB_SSH_KNOWN_HOSTS }}
+        run: python3 infra/cloudru/lab/network_diagnosis.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-network-diagnosis-${{ github.sha }}-${{ github.run_attempt }}
+          path: lab-network-diagnosis.json
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,2653 @@
+{
+  "changes": [
+    {
+      "change_id": "amount-transition",
+      "title": "\u041f\u0435\u0440\u0435\u0445\u043e\u0434 \u0441\u0443\u043c\u043c RUB \u2192 minor",
+      "intent": "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0441\u0443\u043c\u043c\u044b billing \u0438 \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0438 \u043f\u0440\u0438 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u0435 \u043d\u0430 minor units.",
+      "proposed_diff": "--- a/lab/sql/expand.sql\n+++ b/lab/sql/expand.sql\n@@ -1,5 +1,5 @@\n ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\n-UPDATE orders SET amount_minor=amount_rub*100 WHERE amount_minor IS NULL;\n+UPDATE orders SET amount_minor=amount_rub WHERE amount_minor IS NULL;\n ALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\n DO $$ BEGIN\n  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "revision": 1,
+      "kind": "breaking",
+      "proposed_files": {
+        "lab/sql/expand.sql": "ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\nUPDATE orders SET amount_minor=amount_rub WHERE amount_minor IS NULL;\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\nDO $$ BEGIN\n IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK(amount_minor >= 0 AND amount_minor % 100=0 AND amount_minor/100=amount_rub);\n END IF;\nEND $$;\n"
+      },
+      "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "id": "4033fb81f5c6477488295ca01dce022a",
+      "mode": "FIXTURE / CONTROL",
+      "created_at": "2026-10-18T06:55:50.015201+00:00"
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "cf3b6c83e33f477191f011a89c72c601",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.335485+00:00",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "collected_at": "2026-10-18T06:55:50.335329+00:00",
+      "postgres": {
+        "schemas": [
+          {
+            "name": "analytics"
+          },
+          {
+            "name": "public"
+          }
+        ],
+        "columns": [
+          {
+            "schema": "analytics",
+            "object": "orders_v1",
+            "kind": "v",
+            "column": "order_id",
+            "type": "text",
+            "not_null": false
+          },
+          {
+            "schema": "analytics",
+            "object": "orders_v1",
+            "kind": "v",
+            "column": "amount_rub",
+            "type": "bigint",
+            "not_null": false
+          },
+          {
+            "schema": "analytics",
+            "object": "orders_v1",
+            "kind": "v",
+            "column": "currency",
+            "type": "text",
+            "not_null": false
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "singleton",
+            "type": "boolean",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "current_state",
+            "type": "text",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "billing_version",
+            "type": "integer",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "analytics_version",
+            "type": "integer",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "event_version",
+            "type": "integer",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "paused",
+            "type": "boolean",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "watermark",
+            "type": "bigint",
+            "not_null": false
+          },
+          {
+            "schema": "public",
+            "object": "lab_state",
+            "kind": "r",
+            "column": "updated_at",
+            "type": "timestamp with time zone",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "orders",
+            "kind": "r",
+            "column": "seq",
+            "type": "bigint",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "orders",
+            "kind": "r",
+            "column": "order_id",
+            "type": "text",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "orders",
+            "kind": "r",
+            "column": "amount_rub",
+            "type": "bigint",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "orders",
+            "kind": "r",
+            "column": "currency",
+            "type": "text",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "orders",
+            "kind": "r",
+            "column": "created_at",
+            "type": "timestamp with time zone",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "seq",
+            "type": "bigint",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "event_id",
+            "type": "uuid",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "order_id",
+            "type": "text",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "routing_key",
+            "type": "text",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "payload",
+            "type": "jsonb",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "published_at",
+            "type": "timestamp with time zone",
+            "not_null": false
+          },
+          {
+            "schema": "public",
+            "object": "outbox",
+            "kind": "r",
+            "column": "attempts",
+            "type": "integer",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "transition_log",
+            "kind": "r",
+            "column": "target",
+            "type": "text",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "transition_log",
+            "kind": "r",
+            "column": "applied_at",
+            "type": "timestamp with time zone",
+            "not_null": true
+          },
+          {
+            "schema": "public",
+            "object": "transition_log",
+            "kind": "r",
+            "column": "detail",
+            "type": "jsonb",
+            "not_null": true
+          }
+        ],
+        "views": [
+          {
+            "schema": "analytics",
+            "name": "orders_v1",
+            "definition": " SELECT order_id,\n    amount_rub,\n    currency\n   FROM orders;"
+          }
+        ],
+        "dependencies": [
+          {
+            "view_schema": "analytics",
+            "view_name": "orders_v1",
+            "target_schema": "public",
+            "target_name": "orders"
+          }
+        ],
+        "method": "pg_catalog read-only transaction",
+        "confirmation": "LIVE_CATALOG_CONFIGURATION",
+        "limitations": "One source database only; catalog dependencies are not evidence of executed queries."
+      },
+      "rabbitmq": {
+        "exchanges": [
+          {
+            "name": "",
+            "vhost": "/",
+            "type": "direct",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "amq.direct",
+            "vhost": "/",
+            "type": "direct",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "amq.fanout",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "amq.headers",
+            "vhost": "/",
+            "type": "headers",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "amq.match",
+            "vhost": "/",
+            "type": "headers",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "amq.topic",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "orders.events",
+            "vhost": "/",
+            "type": "direct",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+          },
+          {
+            "name": "amq.rabbitmq.trace",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": true,
+            "arguments": {}
+          }
+        ],
+        "queues": [
+          {
+            "name": "billing",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "exclusive": false,
+            "arguments": {}
+          }
+        ],
+        "bindings": [
+          {
+            "source": "",
+            "vhost": "/",
+            "destination": "billing",
+            "destination_type": "queue",
+            "routing_key": "billing",
+            "arguments": {}
+          },
+          {
+            "source": "orders.events",
+            "vhost": "/",
+            "destination": "billing",
+            "destination_type": "queue",
+            "routing_key": "order.created.v1",
+            "arguments": {}
+          }
+        ],
+        "method": "RabbitMQ management HTTP GET; vhost /",
+        "confirmation": "LIVE_BROKER_CONFIGURATION",
+        "permissions_verified": "TRUSTED_CI_ATTESTATION",
+        "permission_attestation": {
+          "source": "trusted CI rabbitmqctl list_user_permissions",
+          "collected_at": "2026-10-18T06:55:48.944752+00:00",
+          "broker_identity": "rabbit@rabbitmq",
+          "vhost": "/",
+          "configure": "^$",
+          "write": "^$",
+          "read": "^$"
+        },
+        "permission_attestation_digest": "ea6cfa38ef53cd5daae158bf79535c9a7e2211aeb7008414ac5e1f1a821b0a7f",
+        "limitations": "Bindings establish configuration, not observed message delivery; one vhost only."
+      },
+      "repository": {
+        "evidence": [
+          {
+            "evidence_id": "bacdffc19b06880460d6ca03",
+            "source_type": "py",
+            "object_ref": "lab/app/__init__.py",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.319609+00:00",
+            "collected_at": "2026-10-18T06:55:50.319615+00:00",
+            "digest": "60dc92ed170e6fb549ea71f52a8c51e97e9dd3036aadf38646acafcb8b682934",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "06e882129341e6bb5df04320",
+            "source_type": "py",
+            "object_ref": "lab/app/bootstrap.py",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.319878+00:00",
+            "collected_at": "2026-10-18T06:55:50.319882+00:00",
+            "digest": "ad8214c1e128af45b3a201d332ee78d5d972c07f602c9ee770d2f12fa779749d",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "8547cf749b918587d19e9a8c",
+            "source_type": "py",
+            "object_ref": "lab/app/cli.py",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.321010+00:00",
+            "collected_at": "2026-10-18T06:55:50.321015+00:00",
+            "digest": "7119df66ef25899bcebbd87d399bf7eef7d8b848d3c936f6091ed6fa094fadb5",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "6159bcf99d266c46aed99ecd",
+            "source_type": "py",
+            "object_ref": "lab/app/service.py",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.321951+00:00",
+            "collected_at": "2026-10-18T06:55:50.321955+00:00",
+            "digest": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "fe530f95c132eec9a12ae288",
+            "source_type": "json",
+            "object_ref": "lab/catalog/change.example.json",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.327466+00:00",
+            "collected_at": "2026-10-18T06:55:50.327472+00:00",
+            "digest": "130f4c3074d9252d424665efea5b00b0c0b9bdb4a8aeb3462beb269020cdf6be",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "7ec0e44c9feb6e2c4c12a82e",
+            "source_type": "json",
+            "object_ref": "lab/catalog/owners.json",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.327607+00:00",
+            "collected_at": "2026-10-18T06:55:50.327609+00:00",
+            "digest": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "07bb2f89526c204a4d7c5ba7",
+            "source_type": "json",
+            "object_ref": "lab/contracts/order-created-v1.json",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.327767+00:00",
+            "collected_at": "2026-10-18T06:55:50.327769+00:00",
+            "digest": "f0a3a7d1dab542cb08849a9eeb9c9ec7cab2fced7c5f4e2b0f917d0d2e8179ca",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "6df6ccaee61ff4af0dabfbc0",
+            "source_type": "json",
+            "object_ref": "lab/contracts/order-created-v2.json",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.327859+00:00",
+            "collected_at": "2026-10-18T06:55:50.327861+00:00",
+            "digest": "d7de5801ba4aece7d7f7743e8d5697b779251cedf2bd4f0f40be138174275268",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "a936553b0ee7196dc8d44a2f",
+            "source_type": "sql",
+            "object_ref": "lab/sql/billing.sql",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.327942+00:00",
+            "collected_at": "2026-10-18T06:55:50.327944+00:00",
+            "digest": "8348334744e1d9b627bf88f49f1b3eb319a133c5b1d06f9a631162081bd3cc89",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "b9d2adb134e1cefc67dd085d",
+            "source_type": "sql",
+            "object_ref": "lab/sql/expand.sql",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.328017+00:00",
+            "collected_at": "2026-10-18T06:55:50.328018+00:00",
+            "digest": "2162cb8603f397020106077af6c5d1a3e2adfc807d0dd7e67a112649659fafa2",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          },
+          {
+            "evidence_id": "568ba0938eaffe5a90bc9fab",
+            "source_type": "sql",
+            "object_ref": "lab/sql/source.sql",
+            "environment_id": "lab",
+            "observed_at": "2026-10-18T06:55:50.328096+00:00",
+            "collected_at": "2026-10-18T06:55:50.328097+00:00",
+            "digest": "3fbdd6597ad30159f961dc80b2fb8f89a81841ba6ba23cde17c8381dcf256d93",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "max_age_seconds": 900,
+            "permitted_scope": "read-only repository lab/app and lab/catalog"
+          }
+        ],
+        "dependencies": [
+          {
+            "source_ref": "postgres:PUBLIC",
+            "target_ref": "lab/app/bootstrap.py#bootstrap",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "06e882129341e6bb5df04320"
+            ],
+            "line": 28,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "PUBLIC",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:pg_roles",
+            "target_ref": "lab/app/bootstrap.py#bootstrap",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "06e882129341e6bb5df04320"
+            ],
+            "line": 14,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "pg_roles",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:pg_database",
+            "target_ref": "lab/app/bootstrap.py#bootstrap",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "06e882129341e6bb5df04320"
+            ],
+            "line": 20,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "pg_database",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 101,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "platform",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py",
+                "team_id": "platform",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 235,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "platform",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py",
+                "team_id": "platform",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 240,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "platform",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py",
+                "team_id": "platform",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 245,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "platform",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py",
+                "team_id": "platform",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 272,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "platform",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py",
+                "team_id": "platform",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 278,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "platform",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py",
+                "team_id": "platform",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "orders.events",
+            "target_ref": "billing",
+            "relation_type": "BROKER_BINDING",
+            "routing_key": "DYNAMIC",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 69,
+            "direction": "exchange-to-queue",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "UNKNOWN_DYNAMIC",
+            "confirmation": "CODE_DECLARATION",
+            "coverage_note": "Conditional code is not proof of active binding.",
+            "owner": "billing",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "billing",
+                "team_id": "billing",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "orders.events",
+            "target_ref": "rare-audit",
+            "relation_type": "BROKER_BINDING",
+            "routing_key": "order.created.v1",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 72,
+            "direction": "exchange-to-queue",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "order.created.v1",
+            "confirmation": "CODE_DECLARATION",
+            "coverage_note": "Conditional code is not proof of active binding.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:lab_state",
+            "target_ref": "lab/app/service.py#initialize",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 83,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "lab_state",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:lab_state",
+            "target_ref": "lab/app/service.py#create_order",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 96,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "lab_state",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py#create_order",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 101,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:outbox",
+            "target_ref": "lab/app/service.py#publish",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 127,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "outbox",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:lab_state",
+            "target_ref": "lab/app/service.py#consume",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 167,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "lab_state",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "billing",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py#consume",
+                "team_id": "billing",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:ledger",
+            "target_ref": "lab/app/service.py#consume",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 183,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "ledger",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "billing",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py#consume",
+                "team_id": "billing",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:processed_events",
+            "target_ref": "lab/app/service.py#consume",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 186,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "processed_events",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "billing",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py#consume",
+                "team_id": "billing",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:processed_events",
+            "target_ref": "lab/app/service.py#consume",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 190,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "processed_events",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "billing",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py#consume",
+                "team_id": "billing",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:lab_state",
+            "target_ref": "lab/app/service.py#analytics",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 206,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "lab_state",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "analytics",
+            "owner_evidence": [
+              {
+                "environment_id": "lab",
+                "object_ref": "lab/app/service.py#analytics",
+                "team_id": "analytics",
+                "source_ref": "lab/catalog/owners.json",
+                "verification_state": "DECLARED"
+              }
+            ],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:lab_state",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 227,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "lab_state",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:transition_log",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 229,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "transition_log",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 240,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 235,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:amount_rub",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 235,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "amount_rub",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 245,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 272,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 278,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:ledger",
+            "target_ref": "lab/app/service.py#transition",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "line": 280,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "ledger",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Literal SQL reference; dynamic SQL not resolved.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "postgres:orders",
+            "target_ref": "lab/sql/source.sql",
+            "relation_type": "SQL_READ_REFERENCE",
+            "evidence_ids": [
+              "568ba0938eaffe5a90bc9fab"
+            ],
+            "line": 18,
+            "direction": "source-to-reader",
+            "validity": "CURRENT_REPOSITORY_SNAPSHOT",
+            "contract": "orders amount semantics",
+            "confirmation": "STATIC_REFERENCE",
+            "coverage_note": "Reference only; not proof of execution.",
+            "owner": "UNKNOWN",
+            "owner_evidence": [],
+            "owner_freshness": "UNKNOWN"
+          },
+          {
+            "source_ref": "billing",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "queue_bind.queue",
+            "line": 69,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "orders.events",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "queue_bind.exchange",
+            "line": 69,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "rare-audit",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "queue_bind.queue",
+            "line": 72,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "orders.events",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "queue_bind.exchange",
+            "line": 72,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "order.created.v1",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "queue_bind.routing_key",
+            "line": 72,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "billing",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "basic_get.queue",
+            "line": 175,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "orders.events",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "basic_publish.exchange",
+            "line": 130,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "orders.events",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "basic_publish.exchange",
+            "line": 261,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "order.created.v2",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "basic_publish.routing_key",
+            "line": 261,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          },
+          {
+            "source_ref": "billing",
+            "target_ref": "lab/app/service.py",
+            "relation_type": "BROKER_CODE_REFERENCE",
+            "method": "basic_get.queue",
+            "line": 262,
+            "confirmation": "STATIC_LITERAL_REFERENCE",
+            "evidence_ids": [
+              "6159bcf99d266c46aed99ecd"
+            ],
+            "coverage_note": "Literal AST reference only; dynamic routing keys unresolved."
+          }
+        ],
+        "snapshot_digest": "95bf2ad6a3db56262f1eed8e7882096429f1df294fa066e9151829d50283233f",
+        "coverage_gaps": [
+          "Static supported syntax only; dynamic SQL and external consumers may be absent.",
+          "No live traces supplied; lack of telemetry never removes a static dependency.",
+          "Repository snapshot does not prove deployed code or broker state."
+        ]
+      },
+      "owners": {
+        "note": "Declared fixture ownership, not a verified live directory. UNKNOWN freshness requires human confirmation before deployment.",
+        "bindings": [
+          {
+            "environment_id": "lab",
+            "object_ref": "billing.v1",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          },
+          {
+            "environment_id": "lab",
+            "object_ref": "billing.v2",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          },
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/analytics.py",
+            "team_id": "analytics",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          },
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py",
+            "team_id": "platform",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          },
+          {
+            "environment_id": "lab",
+            "object_ref": "billing",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          },
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#analytics",
+            "team_id": "analytics",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          },
+          {
+            "environment_id": "lab",
+            "object_ref": "lab/app/service.py#consume",
+            "team_id": "billing",
+            "source_ref": "lab/catalog/owners.json",
+            "verification_state": "DECLARED"
+          }
+        ]
+      },
+      "edges": [
+        {
+          "source": "postgres:public.orders",
+          "target": "postgres:analytics.orders_v1",
+          "source_kind": "pg_catalog",
+          "method": "pg_rewrite + pg_depend",
+          "confirmation": "LIVE_CATALOG_CONFIGURATION",
+          "limitations": "One source database only; catalog dependencies are not evidence of executed queries.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00"
+        },
+        {
+          "source": "rabbitmq:exchange:",
+          "target": "rabbitmq:queue:billing",
+          "source_kind": "rabbitmq_management",
+          "method": "GET /api/bindings/%2F",
+          "confirmation": "LIVE_BROKER_CONFIGURATION",
+          "limitations": "Bindings establish configuration, not observed message delivery; one vhost only.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "routing_key": "billing"
+        },
+        {
+          "source": "rabbitmq:exchange:orders.events",
+          "target": "rabbitmq:queue:billing",
+          "source_kind": "rabbitmq_management",
+          "method": "GET /api/bindings/%2F",
+          "confirmation": "LIVE_BROKER_CONFIGURATION",
+          "limitations": "Bindings establish configuration, not observed message delivery; one vhost only.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "routing_key": "order.created.v1"
+        },
+        {
+          "source": "postgres:PUBLIC",
+          "target": "lab/app/bootstrap.py#bootstrap",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "06e882129341e6bb5df04320"
+          ],
+          "line": 28,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:pg_roles",
+          "target": "lab/app/bootstrap.py#bootstrap",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "06e882129341e6bb5df04320"
+          ],
+          "line": 14,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:pg_database",
+          "target": "lab/app/bootstrap.py#bootstrap",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "06e882129341e6bb5df04320"
+          ],
+          "line": 20,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 101,
+          "owner": "platform"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 235,
+          "owner": "platform"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 240,
+          "owner": "platform"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 245,
+          "owner": "platform"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 272,
+          "owner": "platform"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 278,
+          "owner": "platform"
+        },
+        {
+          "source": "orders.events",
+          "target": "billing",
+          "source_kind": "repository",
+          "method": "BROKER_BINDING",
+          "confirmation": "CODE_DECLARATION",
+          "limitations": "Conditional code is not proof of active binding.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 69,
+          "owner": "billing"
+        },
+        {
+          "source": "orders.events",
+          "target": "rare-audit",
+          "source_kind": "repository",
+          "method": "BROKER_BINDING",
+          "confirmation": "CODE_DECLARATION",
+          "limitations": "Conditional code is not proof of active binding.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 72,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:lab_state",
+          "target": "lab/app/service.py#initialize",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 83,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:lab_state",
+          "target": "lab/app/service.py#create_order",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 96,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py#create_order",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 101,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:outbox",
+          "target": "lab/app/service.py#publish",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 127,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:lab_state",
+          "target": "lab/app/service.py#consume",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 167,
+          "owner": "billing"
+        },
+        {
+          "source": "postgres:ledger",
+          "target": "lab/app/service.py#consume",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 183,
+          "owner": "billing"
+        },
+        {
+          "source": "postgres:processed_events",
+          "target": "lab/app/service.py#consume",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 186,
+          "owner": "billing"
+        },
+        {
+          "source": "postgres:processed_events",
+          "target": "lab/app/service.py#consume",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 190,
+          "owner": "billing"
+        },
+        {
+          "source": "postgres:lab_state",
+          "target": "lab/app/service.py#analytics",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 206,
+          "owner": "analytics"
+        },
+        {
+          "source": "postgres:lab_state",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 227,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:transition_log",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 229,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 240,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 235,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:amount_rub",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 235,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 245,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 272,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 278,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:ledger",
+          "target": "lab/app/service.py#transition",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Literal SQL reference; dynamic SQL not resolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 280,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "postgres:orders",
+          "target": "lab/sql/source.sql",
+          "source_kind": "repository",
+          "method": "SQL_READ_REFERENCE",
+          "confirmation": "STATIC_REFERENCE",
+          "limitations": "Reference only; not proof of execution.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "568ba0938eaffe5a90bc9fab"
+          ],
+          "line": 18,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "billing",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "queue_bind.queue",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 69,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "orders.events",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "queue_bind.exchange",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 69,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "rare-audit",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "queue_bind.queue",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 72,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "orders.events",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "queue_bind.exchange",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 72,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "order.created.v1",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "queue_bind.routing_key",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 72,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "billing",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "basic_get.queue",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 175,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "orders.events",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "basic_publish.exchange",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 130,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "orders.events",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "basic_publish.exchange",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 261,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "order.created.v2",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "basic_publish.routing_key",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 261,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "billing",
+          "target": "lab/app/service.py",
+          "source_kind": "repository",
+          "method": "basic_get.queue",
+          "confirmation": "STATIC_LITERAL_REFERENCE",
+          "limitations": "Literal AST reference only; dynamic routing keys unresolved.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "evidence_ids": [
+            "6159bcf99d266c46aed99ecd"
+          ],
+          "line": 262,
+          "owner": "UNKNOWN"
+        },
+        {
+          "source": "billing.v1",
+          "target": "team:billing",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        },
+        {
+          "source": "billing.v2",
+          "target": "team:billing",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        },
+        {
+          "source": "lab/app/analytics.py",
+          "target": "team:analytics",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        },
+        {
+          "source": "lab/app/service.py",
+          "target": "team:platform",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        },
+        {
+          "source": "billing",
+          "target": "team:billing",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        },
+        {
+          "source": "lab/app/service.py#analytics",
+          "target": "team:analytics",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        },
+        {
+          "source": "lab/app/service.py#consume",
+          "target": "team:billing",
+          "source_kind": "owner_catalog",
+          "method": "lab/catalog/owners.json",
+          "confirmation": "DECLARED_OWNER",
+          "limitations": "Declared ownership only; no live directory verification.",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "freshness": "UNKNOWN"
+        }
+      ],
+      "coverage_gaps": [
+        "Static supported syntax only; dynamic SQL and external consumers may be absent.",
+        "No live traces supplied; lack of telemetry never removes a static dependency.",
+        "Repository snapshot does not prove deployed code or broker state.",
+        "No telemetry collected. No proof of graph completeness.",
+        "Only source PostgreSQL database and RabbitMQ vhost / collected.",
+        "Declared owners are not authenticated live ownership."
+      ],
+      "current": true
+    }
+  ],
+  "jobs": [
+    {
+      "id": "63086fae21c245ff9ae792183ac57744",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.113728+00:00",
+      "operation": "snapshot",
+      "status": "SUCCEEDED",
+      "error": null,
+      "result_id": "cf3b6c83e33f477191f011a89c72c601",
+      "idempotency_key": "amount-transition:1:178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605:snapshot:LIVE RUN:no-basis:no-candidate:1a2c1cf2-e8fa-44d3-94f6-2ec2df49a92d",
+      "request_digest": "ed4c440137f1f862962cc76431b38ed2874182d40e118d016da2d27fbe80598e",
+      "basis_digest": null
+    },
+    {
+      "id": "61fa36b3b21048d0a3c48a2e4af22eaf",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.814416+00:00",
+      "operation": "analysis",
+      "status": "BLOCKED",
+      "error": "Missing CLOUDRU_FOUNDATION_API_KEY and/or CLOUDRU_LLM_MODEL; IAM credentials are not an inference API key.",
+      "result_id": null,
+      "idempotency_key": "amount-transition:1:178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605:analysis:LIVE RUN:6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180:no-candidate:same-request",
+      "request_digest": "a93df32393f3bff1277d084f0047d913435f530917c1c9c99d2cd6b9937e6bd9",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+    },
+    {
+      "id": "4600ef6e25c5446e9b6468e74e146864",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:51.530327+00:00",
+      "operation": "analysis",
+      "status": "SUCCEEDED",
+      "error": null,
+      "result_id": "ffc1443eb70241568d65165fa491c8c1",
+      "idempotency_key": "amount-transition:1:178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605:analysis:REPLAY:6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180:no-candidate:same-request",
+      "request_digest": "d7cc05987f44ebf082bb09ebbba227a05e7a03b3dfcb4b2786ec29366f8543ee",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+    },
+    {
+      "id": "49bfe4bbf1024cc7a8eddaef8c7d952f",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:52.413876+00:00",
+      "operation": "prepare",
+      "status": "SUCCEEDED",
+      "error": null,
+      "result_id": "8a051986550a45ebb081bf5bfcfd5da9",
+      "idempotency_key": "amount-transition:1:178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605:prepare:REPLAY:6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180:no-candidate:same-request",
+      "request_digest": "52f2df7520a97f3c2c3009131af1d989303dd4f489c4d9067e4408b08707aea5",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+    },
+    {
+      "id": "d7ed2077fe7c4a089b7794007a837feb",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:53.131087+00:00",
+      "operation": "verify",
+      "status": "SUCCEEDED",
+      "error": null,
+      "result_id": "1cabc1a11e874d7c8ee3f0f448543024",
+      "idempotency_key": "amount-transition:1:178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605:verify:REPLAY:6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180:a081c040cd28746c93eb661c851dc6ca98c382f56d5ab315f8ace2978c1755e1:same-request",
+      "request_digest": "25a8c9f6e9b80037e17af8a654464317077e4e28c7c3ae1f09a915d9286a566b",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+    }
+  ],
+  "assessments": [
+    {
+      "id": "ffc1443eb70241568d65165fa491c8c1",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:51.553525+00:00",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "analysis": {
+        "findings": [
+          {
+            "object_ref": "lab/sql/expand.sql",
+            "evidence_ids": [
+              "b9d2adb134e1cefc67dd085d",
+              "6159bcf99d266c46aed99ecd",
+              "07bb2f89526c204a4d7c5ba7",
+              "6df6ccaee61ff4af0dabfbc0"
+            ],
+            "status": "RISK",
+            "reason": "The proposed UPDATE sets amount_minor = amount_rub (evidence b9d2adb...), which violates the invariant that amount_minor must equal amount_rub * 100. The service transition S1 explicitly checks for rows where amount_minor IS DISTINCT FROM amount_rub*100 (evidence 6159bcf99d266c46aed99ecd). The contracts for v1 and v2 require amount_minor to be a multiple of 100 and consistent with amount_rub (evidence 07bb2f89526c204a4d7c5ba7, 6df6ccaee61ff4af0dabfbc0). Applying this diff would introduce data inconsistency and break downstream checks."
+          }
+        ],
+        "gaps": [],
+        "replay_source": "/home/runner/work/agent/agent/lab/reports/agent-ci-39066354050/agent-evidence",
+        "limitations": "Historical model analysis; not new inference or reproduced result for current snapshot"
+      },
+      "classification": "BREAKING_OR_UNKNOWN",
+      "assessment_digest": "67ccdd4eaf6a826fe67a14d9402bcfb5a7f78da7c8badff3c4f0ae73932203dd",
+      "current": true
+    }
+  ],
+  "cards": [
+    {
+      "id": "ffb1783a016544e6bfd0cb397502a335",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:51.561568+00:00",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "team": "billing",
+      "responsible": "billing",
+      "assessment_digest": "67ccdd4eaf6a826fe67a14d9402bcfb5a7f78da7c8badff3c4f0ae73932203dd",
+      "grounds": [
+        {
+          "target": "lab/app/service.py#consume",
+          "dependency_object": "rabbitmq:queue:billing",
+          "relation": "STATIC_BROKER_READ",
+          "source_path": "lab/app/service.py",
+          "line": 175,
+          "source_fragment": "channel.basic_get(queue='billing', auto_ack=False)",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+          "freshness": "CURRENT_COLLECTED_REPOSITORY_REFERENCE; deployed interaction NOT_VERIFIED",
+          "owner": "billing",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#consume",
+              "team_id": "billing",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "7008c71f504629c1435be9634360da585f5fc1f20c236ea4f049381b57e38e90",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "snapshot_basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+        }
+      ],
+      "affected_services": [
+        "lab/app/service.py#consume"
+      ],
+      "risk": {
+        "status": "INFERRED_RISK",
+        "description": "Amount unit/contract change can alter downstream totals; static dependency is not reproduction."
+      },
+      "reproduction": {
+        "status": "NOT_RUN_FOR_CURRENT_INPUT"
+      },
+      "repair": {
+        "status": "PREPARED",
+        "candidate_id": "8a051986550a45ebb081bf5bfcfd5da9"
+      },
+      "independent_verification": {
+        "status": "PASS",
+        "verification_id": "1cabc1a11e874d7c8ee3f0f448543024",
+        "coverage": "candidate migration, R1-R5 financial invariants only"
+      },
+      "next_action": "Review scoped result; application remains blocked",
+      "next_action_owner": "billing",
+      "status": "\u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e",
+      "execution_permission": false,
+      "current": true,
+      "card_id": "ffb1783a016544e6bfd0cb397502a335"
+    },
+    {
+      "id": "4c9727597fa34fc894d03f009860650a",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:51.562044+00:00",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "team": "analytics",
+      "responsible": "analytics",
+      "assessment_digest": "67ccdd4eaf6a826fe67a14d9402bcfb5a7f78da7c8badff3c4f0ae73932203dd",
+      "grounds": [
+        {
+          "target": "lab/app/service.py#analytics",
+          "dependency_object": "postgres:analytics.orders_v1",
+          "relation": "STATIC_SQL_READ",
+          "source_path": "lab/app/service.py",
+          "line": 207,
+          "source_fragment": "'SELECT count(*) AS orders, coalesce(sum(amount_rub::numeric * 100),0) AS amount_minor FROM analytics.orders_v1'",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+          "freshness": "CURRENT_COLLECTED_REPOSITORY_REFERENCE; deployed interaction NOT_VERIFIED",
+          "owner": "analytics",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#analytics",
+              "team_id": "analytics",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "b9ca62d832e173507256bfb4f24996d8773b05666c78d7d9c9668a9531d5e66f",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "snapshot_basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+        },
+        {
+          "target": "lab/app/service.py#analytics",
+          "dependency_object": "postgres:analytics.orders_v2",
+          "relation": "STATIC_SQL_READ",
+          "source_path": "lab/app/service.py",
+          "line": 207,
+          "source_fragment": "'SELECT count(*) AS orders,coalesce(sum(amount_minor::numeric),0) AS amount_minor FROM analytics.orders_v2'",
+          "source_sha256": "69b40498eed78627b9bfce9d5d44e4ad3a575171669a8a75cc624d7180bf462e",
+          "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+          "freshness": "CURRENT_COLLECTED_REPOSITORY_REFERENCE; deployed interaction NOT_VERIFIED",
+          "owner": "analytics",
+          "owner_basis": [
+            {
+              "environment_id": "lab",
+              "object_ref": "lab/app/service.py#analytics",
+              "team_id": "analytics",
+              "source_ref": "lab/catalog/owners.json",
+              "verification_state": "DECLARED"
+            }
+          ],
+          "owner_origin": "DECLARED_CATALOG_NOT_AUTO_DISCOVERY",
+          "owner_freshness": "UNKNOWN; requires coordinator/team confirmation",
+          "owner_catalog_sha256": "21e05b2f80ee292d1345beda7afa930a018040ba2e18fe412dad92221210f926",
+          "evidence_id": "c3838d4ba3c6027ad95e6fd428fd876bcd495e2249ae2222c3ebdcf9982b1406",
+          "collected_at": "2026-10-18T06:55:50.335329+00:00",
+          "snapshot_basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180"
+        }
+      ],
+      "affected_services": [
+        "lab/app/service.py#analytics"
+      ],
+      "risk": {
+        "status": "INFERRED_RISK",
+        "description": "Amount unit/contract change can alter downstream totals; static dependency is not reproduction."
+      },
+      "reproduction": {
+        "status": "NOT_RUN_FOR_CURRENT_INPUT"
+      },
+      "repair": {
+        "status": "PREPARED",
+        "candidate_id": "8a051986550a45ebb081bf5bfcfd5da9"
+      },
+      "independent_verification": {
+        "status": "PASS",
+        "verification_id": "1cabc1a11e874d7c8ee3f0f448543024",
+        "coverage": "candidate migration, R1-R5 financial invariants only"
+      },
+      "next_action": "Review scoped result; application remains blocked",
+      "next_action_owner": "analytics",
+      "status": "\u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e",
+      "execution_permission": false,
+      "current": true,
+      "card_id": "4c9727597fa34fc894d03f009860650a"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "c826c3242335401685effa87a3fb9b82",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:52.147181+00:00",
+      "card_id": "ffb1783a016544e6bfd0cb397502a335",
+      "assessment_digest": "67ccdd4eaf6a826fe67a14d9402bcfb5a7f78da7c8badff3c4f0ae73932203dd",
+      "team": "billing",
+      "actor": "billing-reviewer",
+      "decision": "acknowledged",
+      "comment": "",
+      "decision_digest": "3b820a4d4afbc47fff6045b1077229117ac4f179e220ba277d0b26571fa48112",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "current": true,
+      "grants_execution": false
+    }
+  ],
+  "candidates": [
+    {
+      "id": "8a051986550a45ebb081bf5bfcfd5da9",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:52.569331+00:00",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "patches": [
+        {
+          "path": "lab/sql/expand.sql",
+          "content": "ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\nUPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\nDO $$ BEGIN\n IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK(amount_minor >= 0 AND amount_minor % 100 = 0 AND amount_minor / 100 = amount_rub);\n END IF;\nEND $$;\n"
+        }
+      ],
+      "diff": "--- lab/sql/expand.sql\n+++ lab/sql/expand.sql\n@@ -1,8 +1,8 @@\n ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\n-UPDATE orders SET amount_minor=amount_rub WHERE amount_minor IS NULL;\n+UPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\n ALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\n DO $$ BEGIN\n  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n-  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK(amount_minor >= 0 AND amount_minor % 100=0 AND amount_minor/100=amount_rub);\n+  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK(amount_minor >= 0 AND amount_minor % 100 = 0 AND amount_minor / 100 = amount_rub);\n  END IF;\n END $$;\n",
+      "bundle": {
+        "candidate_digest": "a081c040cd28746c93eb661c851dc6ca98c382f56d5ab315f8ace2978c1755e1",
+        "patches": [
+          {
+            "path": "lab/sql/expand.sql",
+            "before_digest": "2ae6a260b5cd727631047097febdbdf4577c94e3affe1e0c090c37cdf10de53c",
+            "source_before_digest": "2162cb8603f397020106077af6c5d1a3e2adfc807d0dd7e67a112649659fafa2",
+            "after_digest": "1c5dfcee98dd888e82b224163e79b9c7db5c2f65bb592e852a22241af616ee2f"
+          }
+        ],
+        "repair_baseline": "submitted_files",
+        "transition_plan": [],
+        "assumptions": [
+          "The rest of expand.sql (column addition, NOT NULL alteration, and constraint creation) is correct and requires no changes.",
+          "Multiplying amount_rub by 100 never exceeds PostgreSQL bigint limits because amount_rub is bounded by 92233720368547758 per source schema."
+        ]
+      },
+      "assessment_digest": "67ccdd4eaf6a826fe67a14d9402bcfb5a7f78da7c8badff3c4f0ae73932203dd",
+      "current": true
+    }
+  ],
+  "verifications": [
+    {
+      "id": "1cabc1a11e874d7c8ee3f0f448543024",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:56:12.613622+00:00",
+      "basis_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+      "result": {
+        "candidate_digest": "32cd6e1899c8aaf94c9648a89a773107c1e318c3d5e975eb21293c8d96d31585",
+        "suite_digest": "0e6126bcef1e10524f642b95db0795f7b0bab27ec7088e42046177eb56733a14",
+        "scenario_id": "T03",
+        "outcome": "PASS",
+        "checks": {
+          "baseline": {
+            "status": "PASS",
+            "evidence": {
+              "order_count": 6,
+              "expected_minor_total": 214848377900,
+              "ledger": {
+                "held-0": 0,
+                "held-1": 100,
+                "held-2": 700,
+                "held-3": 12500,
+                "held-4": 99999900,
+                "held-5": 214748364700
+              },
+              "state": "S0"
+            }
+          },
+          "wrong_migration_rejected": {
+            "status": "PASS",
+            "evidence": {
+              "verdict": "REJECT",
+              "source_unchanged": true,
+              "transactional_DDL_rolled_back": true
+            }
+          },
+          "readonly_verifier": {
+            "status": "PASS",
+            "evidence": {
+              "source_and_billing_roles": "SELECT only"
+            }
+          },
+          "compatible_S0_S5": {
+            "status": "PASS",
+            "evidence": {
+              "states": [
+                {
+                  "order_count": 7,
+                  "expected_minor_total": 214848378100,
+                  "ledger": {
+                    "held-0": 0,
+                    "held-1": 100,
+                    "held-2": 700,
+                    "held-3": 12500,
+                    "held-4": 99999900,
+                    "held-5": 214748364700,
+                    "mixed-1": 200
+                  },
+                  "state": "S1"
+                },
+                {
+                  "order_count": 8,
+                  "expected_minor_total": 214848378400,
+                  "ledger": {
+                    "held-0": 0,
+                    "held-1": 100,
+                    "held-2": 700,
+                    "held-3": 12500,
+                    "held-4": 99999900,
+                    "held-5": 214748364700,
+                    "mixed-1": 200,
+                    "mixed-2": 300
+                  },
+                  "state": "S2"
+                },
+                {
+                  "order_count": 9,
+                  "expected_minor_total": 214848378800,
+                  "ledger": {
+                    "held-0": 0,
+                    "held-1": 100,
+                    "held-2": 700,
+                    "held-3": 12500,
+                    "held-4": 99999900,
+                    "held-5": 214748364700,
+                    "mixed-1": 200,
+                    "mixed-2": 300,
+                    "mixed-3": 400
+                  },
+                  "state": "S3"
+                },
+                {
+                  "order_count": 10,
+                  "expected_minor_total": 214848379300,
+                  "ledger": {
+                    "held-0": 0,
+                    "held-1": 100,
+                    "held-2": 700,
+                    "held-3": 12500,
+                    "held-4": 99999900,
+                    "held-5": 214748364700,
+                    "mixed-1": 200,
+                    "mixed-2": 300,
+                    "mixed-3": 400,
+                    "mixed-4": 500
+                  },
+                  "state": "S4"
+                },
+                {
+                  "order_count": 11,
+                  "expected_minor_total": 214848379900,
+                  "ledger": {
+                    "held-0": 0,
+                    "held-1": 100,
+                    "held-2": 700,
+                    "held-3": 12500,
+                    "held-4": 99999900,
+                    "held-5": 214748364700,
+                    "mixed-1": 200,
+                    "mixed-2": 300,
+                    "mixed-3": 400,
+                    "mixed-4": 500,
+                    "mixed-5": 600
+                  },
+                  "state": "S5"
+                }
+              ],
+              "coverage": "R1-R5 financial transition; R6-R8 require runtime grant/context scenarios"
+            }
+          }
+        },
+        "accepted_properties": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5"
+        ],
+        "coverage": "candidate migration, R1-R5 financial invariants only",
+        "uncovered": [
+          "R6 grants",
+          "R7 discovery completeness",
+          "R8 freshness",
+          "component recovery"
+        ],
+        "environment_manifest_digest": "17c3415926f0b7ff62ce0fe72bf8c59255df3914646e0fff6448516c13ad7b21",
+        "input_snapshot_digest": "99047ac620142d8bfd381690ec6690ad8bed81a4615463ba68b1d80136e3f7b8",
+        "scope": "INDEPENDENT_ISOLATED_FINANCIAL_CANDIDATE; not full T03 acceptance"
+      },
+      "outcome": "PASS",
+      "candidate_id": "8a051986550a45ebb081bf5bfcfd5da9",
+      "execution_permission": false,
+      "current": true
+    }
+  ],
+  "journal": [
+    {
+      "id": "b3a21bdf98964e8fbbb3e8d4db2e2020",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "FIXTURE / CONTROL",
+      "created_at": "2026-10-18T06:55:50.015300+00:00",
+      "action": "CHANGE_CREATED"
+    },
+    {
+      "id": "266b1844864a4f3baabe8c50f3bc71c2",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.113766+00:00",
+      "action": "JOB_QUEUED",
+      "job_id": "63086fae21c245ff9ae792183ac57744"
+    },
+    {
+      "id": "54364e7e7687481a894b40a88fb8f93f",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.335895+00:00",
+      "action": "JOB_COMPLETED",
+      "job_id": "63086fae21c245ff9ae792183ac57744",
+      "current": true
+    },
+    {
+      "id": "c4e5085cb99a4f6981fa8350504791fd",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.814470+00:00",
+      "action": "JOB_QUEUED",
+      "job_id": "61fa36b3b21048d0a3c48a2e4af22eaf"
+    },
+    {
+      "id": "b03951e3fffb4dc9b5acfa943c90ef9f",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.949275+00:00",
+      "action": "LLM_RESERVED",
+      "job_id": "61fa36b3b21048d0a3c48a2e4af22eaf"
+    },
+    {
+      "id": "c3bba6f8e7f847d1856fadd4184d3e46",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.950090+00:00",
+      "action": "LLM_USAGE",
+      "job_id": "61fa36b3b21048d0a3c48a2e4af22eaf",
+      "model": "",
+      "tokens": 0,
+      "usage": [],
+      "seconds": 0.0,
+      "calls": 0,
+      "usage_complete": false,
+      "cost_usd": "NOT_MEASURED",
+      "artifact_ref": "/home/runner/work/agent/agent/interview-evidence/interview-sessions/a3bdd33ac4934c9d9637fdb7d3c39909/generation-1/artifacts/61fa36b3b21048d0a3c48a2e4af22eaf"
+    },
+    {
+      "id": "e64af41f00134dd6b9ad6072fb4f61e6",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "LIVE RUN",
+      "created_at": "2026-10-18T06:55:50.950594+00:00",
+      "action": "JOB_STOPPED",
+      "job_id": "61fa36b3b21048d0a3c48a2e4af22eaf",
+      "error": "Missing CLOUDRU_FOUNDATION_API_KEY and/or CLOUDRU_LLM_MODEL; IAM credentials are not an inference API key."
+    },
+    {
+      "id": "2c048d6b5db44bcab0a3608e369fff30",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:51.530364+00:00",
+      "action": "JOB_QUEUED",
+      "job_id": "4600ef6e25c5446e9b6468e74e146864"
+    },
+    {
+      "id": "b842ae3e9bae4da2a5ccc1e9586be6b0",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:51.563343+00:00",
+      "action": "JOB_COMPLETED",
+      "job_id": "4600ef6e25c5446e9b6468e74e146864",
+      "current": true
+    },
+    {
+      "id": "7c34cb384f0c4a5995ef36b49ef31691",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:52.147216+00:00",
+      "action": "TEAM_DECISION",
+      "decision_id": "c826c3242335401685effa87a3fb9b82"
+    },
+    {
+      "id": "a537a05a9cea4594b7af6a123c9d755a",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:52.413913+00:00",
+      "action": "JOB_QUEUED",
+      "job_id": "49bfe4bbf1024cc7a8eddaef8c7d952f"
+    },
+    {
+      "id": "a1687ee0468d403ca28b35768b50957a",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:52.569837+00:00",
+      "action": "JOB_COMPLETED",
+      "job_id": "49bfe4bbf1024cc7a8eddaef8c7d952f",
+      "current": true
+    },
+    {
+      "id": "73180908451d49f5b445d5a245f2ec35",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:55:53.131128+00:00",
+      "action": "JOB_QUEUED",
+      "job_id": "d7ed2077fe7c4a089b7794007a837feb"
+    },
+    {
+      "id": "fbbae0ecc831407587c86d1db26eeb69",
+      "change_id": "amount-transition",
+      "revision": 1,
+      "input_digest": "178bc4f48abd3649fcf8b774ccc1fa461b4fd46e7760ec634df584012a6b1605",
+      "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "mode": "REPLAY",
+      "created_at": "2026-10-18T06:56:12.614194+00:00",
+      "action": "JOB_COMPLETED",
+      "job_id": "d7ed2077fe7c4a089b7794007a837feb",
+      "current": true
+    }
+  ],
+  "execution_permission": false,
+  "demo_roles": true,
+  "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "PASS_SOURCE_STAGED_NOT_DEPLOYED",
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+  "controller_commit": "fa7b5012ac09a9a80b4e2f2e2d1fed04d7f47159",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39115696177",
+  "checked_at": "2026-10-18T09:32:02.778684+00:00",
+  "services_started": false,
+  "sql_executed": false,
+  "cloud_api_mutations": [],
+  "apply_gate": "BLOCKED",
+  "staging_directory": "/home/dmadmin/agent-lab-staging/107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+  "host_key": "CONSOLE_SHA256_PIN_MATCH",
+  "authentication": "PASS",
+  "upload": "SFTP_NEW_PRIVATE_BUNDLE",
+  "delivery": {
+    "source_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+    "tree_sha": "540a48cc47d87d1656e744aa20ab996d6af7bca8",
+    "bundle_sha256": "0950ff780292027c151a6c59dec170f61e30182cc08a5e8d2c544cf9a9802227",
+    "transferred_bytes": 2676214,
+    "checkout": "/home/dmadmin/agent-lab-staging/107dfd14292a5ab06593d424bf0b94f1cccb0b90/checkout",
+    "clean_checkout": true,
+    "services_started": false,
+    "sql_executed": false
+  },
+  "state_unchanged": true,
+  "state_serial": 19
+}

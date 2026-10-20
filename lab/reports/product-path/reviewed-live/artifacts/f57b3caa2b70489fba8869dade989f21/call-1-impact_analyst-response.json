@@ -1,0 +1,46 @@
+{
+  "id": "chatcmpl-b20acdad-222c-488b-be5c-818d957ceab8",
+  "object": "chat.completion",
+  "created": 1792270838,
+  "model": "openai/gpt-oss-120b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"findings\": [\n    {\n      \"object_ref\": \"lab/sql/expand.sql\",\n      \"evidence_ids\": [\"e89a92d4207b46215d53310a\"],\n      \"status\": \"RISK\",\n      \"reason\": \"The proposed backfill sets `amount_minor = amount_rub` instead of the required `amount_rub * 100`. This violates the `orders_money_consistent` check constraint (which expects `amount_minor % 100 = 0` and `amount_minor / 100 = amount_rub`) and breaks the invariant that `amount_minor` stores minor‑unit rubles. Downstream components (billing ledger, analytics v2, and contract validation) rely on correct minor‑unit values, so the change can cause data inconsistency, constraint violations during the S1 transition, and contract incompatibility errors.\"\n    }\n  ],\n  \"gaps\": []\n}",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need to produce JSON with findings and gaps. We must analyze the proposed change: updating expand.sql to set amount_minor=amount_rub (instead of *100). This breaks consistency: constraint expects amount_minor = amount_rub*100. The change will cause amount_minor to equal amount_rub (i.e., minor units equal rubles). This violates the check constraint and downstream logic expecting minor units. So risk.\n\nWe need to reference objects: the change affects lab/sql/expand.sql, which is executed during transition S1. The edge list includes source: postgres:public.orders to target: postgres:analytics.orders_v1 etc. The change impacts orders table column amount_minor and constraint orders_money_consistent. Also analytics view orders_v1 uses amount_rub, not amount_minor, but later analytics version 2 uses amount_minor. The change may affect transition S1, which runs expand.sql. The risk is that after transition, amount_minor will be wrong, causing billing ledger mismatches, analytics totals, and contract compatibility (event_minor expects amount_minor %100 ==0). So we should produce a finding with status RISK, object_ref maybe \"lab/sql/expand.sql\" or \"postgres:public.orders\". Provide evidence IDs: the evidence for expand.sql is e89a92d4207b46215d53310a (the submitted candidate source). Also the change diff is given. Use that evidence ID.\n\nAlso maybe link to constraint check: not directly evidence but we can reference the constraint definition in expand.sql (the check). The evidence ID for source.sql includes view definition etc. But we can use e89a92d4207b46215d53310a.\n\nThus produce findings array with one object: object_ref \"lab/sql/expand.sql\", evidence_ids [\"e89a92d4207b46215d53310a\"], status \"RISK\", reason \"Backfill sets amount_minor equal to amount_rub instead of amount_rub*100, violating orders_money_consistent constraint and breaking billing minor-unit expectations, causing data inconsistency and contract violations.\"\n\nAlso maybe another finding: the constraint will be added after update, but the update already set wrong values, then constraint will fail if amount_rub not multiple of 100? Actually constraint checks amount_minor %100=0 and amount_minor/100=amount_rub. With amount_minor=amount_rub, amount_minor%100 may be non-zero unless amount_rub is multiple of 100. So constraint addition will fail if any amount_rub not multiple of 100. So risk.\n\nThus one finding.\n\nGaps: we can list coverage gaps already present? The instruction: return JSON {findings:[...],gaps:[]}. Gaps maybe we can note missing runtime verification evidence. But we can leave empty array as per instruction unless we identify gaps. The snapshot includes coverage_gaps list, but we may not need to repeat. The instruction says \"gaps:[]\". So we can leave empty.\n\nReturn JSON."
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.31.0-tp4-b69e9a4d",
+  "usage": {
+    "prompt_tokens": 12475,
+    "total_tokens": 13290,
+    "completion_tokens": 815,
+    "prompt_tokens_details": {
+      "cached_tokens": 32,
+      "created_cache_tokens": 12432,
+      "multimodal_tokens": null
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 612
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

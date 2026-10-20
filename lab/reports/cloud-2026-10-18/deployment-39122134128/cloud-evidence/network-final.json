@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "temporary_rule_expected": "ABSENT",
+  "read_retries": [
+    {
+      "service": "iam.api.cloud.ru",
+      "method": "POST",
+      "prior_attempts": [
+        {
+          "http_status": 504,
+          "error_class": null
+        }
+      ],
+      "final_http_status": 200
+    },
+    {
+      "service": "compute.api.cloud.ru",
+      "method": "GET",
+      "prior_attempts": [
+        {
+          "http_status": 504,
+          "error_class": null
+        }
+      ],
+      "final_http_status": 200
+    }
+  ],
+  "ssh_sources": 1,
+  "ssh_prefix_length": 32,
+  "broad_admin_absent": true,
+  "operator_source_sha256": "411d5c95e5c07f263ffd7d984f77adfca39a9417facb26dde09d51dae9e2e161",
+  "public_web_ports": [
+    "443:443",
+    "80:80"
+  ]
+}

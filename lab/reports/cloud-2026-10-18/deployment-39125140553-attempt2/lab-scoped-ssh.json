@@ -1,0 +1,189 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "f5cd5f26f3b29bd9b6597d5ba5d9c78768784388",
+  "checked_at": "2026-10-18T16:44:13.791437+00:00",
+  "status": "BLOCKED",
+  "existing_compute_changes": "NONE",
+  "cleanup": "PASS_OWN_TEMPORARY_RULE_ABSENT",
+  "phase": "CLEANUP_OWN_RULE",
+  "vm_detail": "LIVE_MATCH",
+  "live_attachment": {
+    "nic_id": "7415eae4-918b-4784-b4b2-a19325f976b6",
+    "group_id": "4dde92a5-23a7-4c97-b48f-361d248b5af3",
+    "vm_id": "c9e589fc-a42a-4cc3-8038-fe7d73929713",
+    "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+    "floating_ip_matches_state": true,
+    "vm_summary_state": "running"
+  },
+  "runner_address_lookup_failures": [],
+  "runner_egress_observations": {
+    "default_https": "172.184.247.4",
+    "ssh_uses_configured_https_proxy": false,
+    "selected": "HTTPS_EGRESS_ROUTE_WITH_SERVER_SOURCE_RECHECK"
+  },
+  "opening_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "create"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "runner_public_ipv4": "172.184.247.4",
+  "tcp_readiness_attempts": [
+    {
+      "attempt": 1,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 4.0
+    },
+    {
+      "attempt": 2,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 12.01
+    },
+    {
+      "attempt": 3,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 20.01
+    },
+    {
+      "attempt": 4,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 28.02
+    },
+    {
+      "attempt": 5,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 36.02
+    },
+    {
+      "attempt": 6,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 44.02
+    },
+    {
+      "attempt": 7,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 52.03
+    },
+    {
+      "attempt": 8,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 60.03
+    },
+    {
+      "attempt": 9,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 68.04
+    },
+    {
+      "attempt": 10,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 76.04
+    },
+    {
+      "attempt": 11,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 84.05
+    },
+    {
+      "attempt": 12,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 92.05
+    },
+    {
+      "attempt": 13,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 100.05
+    },
+    {
+      "attempt": 14,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 108.06
+    },
+    {
+      "attempt": 15,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 116.06
+    },
+    {
+      "attempt": 16,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 124.07
+    },
+    {
+      "attempt": 17,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 132.07
+    },
+    {
+      "attempt": 18,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 140.07
+    },
+    {
+      "attempt": 19,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 148.08
+    },
+    {
+      "attempt": 20,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 156.08
+    },
+    {
+      "attempt": 21,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 164.09
+    },
+    {
+      "attempt": 22,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 172.09
+    },
+    {
+      "attempt": 23,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 180.1
+    },
+    {
+      "attempt": 24,
+      "tcp": "FAILED",
+      "error_class": "TimeoutError",
+      "elapsed_seconds": 188.1
+    }
+  ],
+  "cleanup_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "delete"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "error_class": "ValueError",
+  "error_code": "RULE_CREATED_BUT_RUNNER_TCP_NOT_READY"
+}

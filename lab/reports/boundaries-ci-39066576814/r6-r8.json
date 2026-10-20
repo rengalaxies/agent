@@ -1,0 +1,62 @@
+{
+  "outcome": "PASS",
+  "scope": "controlled CI world only; dispatcher race tests recorded separately",
+  "checks": {
+    "R6_exact_scope": {
+      "status": "PASS",
+      "evidence": {
+        "denied": [
+          "action",
+          "object",
+          "environment",
+          "stale_context",
+          "revoked",
+          "expired",
+          "path_escape",
+          "evaluator_write",
+          "app_write"
+        ]
+      }
+    },
+    "R7_known_world_unknowns": {
+      "status": "PASS",
+      "evidence": {
+        "control_world": "one rare literal SQL reader, no telemetry, missing catalog; then empty source",
+        "rare_reader_found": true,
+        "owner_conflict": "CONFLICT",
+        "other_environment_binding": "excluded",
+        "full_control_world": {
+          "visible_consumers": 1,
+          "hidden_consumers": 1,
+          "detected": 1,
+          "false_positives": 0,
+          "missed": 1,
+          "precision": 1.0,
+          "recall": 0.5
+        },
+        "missing_owner": "UNKNOWN",
+        "empty_discovery": "coverage gaps retained, no compatibility verdict"
+      }
+    },
+    "R8_material_grounds": {
+      "status": "PASS",
+      "evidence": {
+        "invalidated_by": [
+          "source",
+          "contract",
+          "topology",
+          "runtime",
+          "suite_sources",
+          "data_input",
+          "authority",
+          "candidate"
+        ],
+        "suite_digest": "d74a0a62428cae4dd03fe5ae9b5c82f6a8502c2a707ecde6b8c44debed109847",
+        "deployment_freshness": "NOT_QUALIFIED"
+      }
+    }
+  },
+  "automatic_application": "BLOCKED; no grant issued; candidate verifier remains financial-only",
+  "source_commit": "4b17adcba527f7d309b900cf1c35e9f153fc13d5",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39066576814"
+}

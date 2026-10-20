@@ -1,0 +1,101 @@
+{
+  "outcome": "PASS",
+  "source_commit": "373ca9299870ed7379135cefdb8004877ccbb5fc",
+  "mode": "LIVE RUN",
+  "actions_run": "https://github.com/rengalaxies/agent/actions/runs/39068710511",
+  "execution_permission": false,
+  "vm_actions": [],
+  "external_notifications": 0,
+  "scenarios": {
+    "A": {
+      "status": "PASS",
+      "layers": [
+        "browser",
+        "API",
+        "live catalogs",
+        "fresh PostgreSQL/RabbitMQ financial verifier"
+      ],
+      "mode": "LIVE RUN",
+      "verification_id": "94f81acc355f4a70975531fb84fb3f6f"
+    },
+    "H": {
+      "status": "PASS",
+      "layers": [
+        "browser disabled apply",
+        "direct API 403"
+      ]
+    }
+  },
+  "errors": [],
+  "live_usage": [
+    {
+      "id": "9f602151241f456fbc834283da8d659b",
+      "change_id": "live-new",
+      "revision": 1,
+      "input_digest": "a3f43a24783b1f5653fc4f18e4afb16725e7543049e89d3864bd33b4f298151e",
+      "source_commit": "373ca9299870ed7379135cefdb8004877ccbb5fc",
+      "mode": "FIXTURE / CONTROL",
+      "created_at": "2026-10-17T20:58:25.499886+00:00",
+      "action": "LLM_USAGE",
+      "job_id": "c9e1952becb946e4b0825c8d1ded9ee4",
+      "model": "openai/gpt-oss-120b",
+      "tokens": 13001,
+      "usage": [
+        {
+          "prompt_tokens": 12475,
+          "total_tokens": 13001,
+          "completion_tokens": 526,
+          "prompt_tokens_details": {
+            "cached_tokens": 48,
+            "created_cache_tokens": 12416,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 367
+          }
+        }
+      ],
+      "seconds": 4.439,
+      "calls": 1,
+      "usage_complete": true,
+      "cost_usd": "NOT_MEASURED",
+      "artifact_ref": "/home/runner/work/agent/agent/product-evidence/artifacts/c9e1952becb946e4b0825c8d1ded9ee4"
+    },
+    {
+      "id": "b112d140dcdf4491b66bd07094f1fc3c",
+      "change_id": "live-new",
+      "revision": 1,
+      "input_digest": "a3f43a24783b1f5653fc4f18e4afb16725e7543049e89d3864bd33b4f298151e",
+      "source_commit": "373ca9299870ed7379135cefdb8004877ccbb5fc",
+      "mode": "FIXTURE / CONTROL",
+      "created_at": "2026-10-17T20:58:29.772576+00:00",
+      "action": "LLM_USAGE",
+      "job_id": "af188aac30bd4c1cad153b01e0aa8440",
+      "model": "openai/gpt-oss-120b",
+      "tokens": 12914,
+      "usage": [
+        {
+          "prompt_tokens": 12530,
+          "total_tokens": 12914,
+          "completion_tokens": 384,
+          "prompt_tokens_details": {
+            "cached_tokens": 64,
+            "created_cache_tokens": 12464,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 211
+          }
+        }
+      ],
+      "seconds": 3.241,
+      "calls": 1,
+      "usage_complete": true,
+      "cost_usd": "NOT_MEASURED",
+      "artifact_ref": "/home/runner/work/agent/agent/product-evidence/artifacts/af188aac30bd4c1cad153b01e0aa8440"
+    }
+  ],
+  "snapshot_digest": "6b5ab435d0ae1df08c8f61a9501646b6806e3e45dbbb47e7000432a0d9ad3180",
+  "token_total": 25915,
+  "cleanup": "PASS"
+}

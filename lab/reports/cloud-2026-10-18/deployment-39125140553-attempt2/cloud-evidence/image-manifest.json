@@ -1,0 +1,36 @@
+{
+  "product_commit": "107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+  "product_tree": "540a48cc47d87d1656e744aa20ab996d6af7bca8",
+  "controller_commit": "f5cd5f26f3b29bd9b6597d5ba5d9c78768784388",
+  "images": {
+    "app": {
+      "reference": "agent-cloud-product:107dfd14292a5ab06593d424bf0b94f1cccb0b90",
+      "id": "sha256:bb9a7f45bf1945d7e3763c0bacecc64381d301bfb800606639b2dd5ba8e9f023",
+      "repo_digests": []
+    },
+    "postgres": {
+      "reference": "postgres@sha256:38471f330eb885e04de130b768d6db4e10469e2311879c7e5c699f6d2d8a1c74",
+      "id": "sha256:8ba5ca87c6a43b60d370510edff66a43c3c655961b68881590e06605335694cd",
+      "repo_digests": [
+        "postgres@sha256:38471f330eb885e04de130b768d6db4e10469e2311879c7e5c699f6d2d8a1c74"
+      ]
+    },
+    "rabbitmq": {
+      "reference": "rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69",
+      "id": "sha256:de912cbbf07f938bb8aaa5682464a73a00c6a996efdf0880423aeb4eae006c34",
+      "repo_digests": [
+        "rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69"
+      ]
+    },
+    "proxy": {
+      "reference": "caddy@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d",
+      "id": "sha256:aac61abc4024c323602ccb9ee38bd68b147601f518626b2a055e06944e01c510",
+      "repo_digests": [
+        "caddy@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d"
+      ]
+    }
+  },
+  "archive": "/home/runner/work/_temp/cloud-runtime-images.tar.gz",
+  "sha256": "6db4edb9a6fdf6da2927ee3732658aa2c59dda8866756d7d42b303eef6eed5d4",
+  "bytes": 417269204
+}

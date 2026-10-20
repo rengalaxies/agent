@@ -1,0 +1,46 @@
+{
+  "id": "chatcmpl-75d2794d-3918-4d82-bb35-bb8c01c60831",
+  "object": "chat.completion",
+  "created": 1792270708,
+  "model": "openai/gpt-oss-120b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"patches\": [\n    {\n      \"path\": \"lab/sql/expand.sql\",\n      \"content\": \"ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\\nUPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\\nDO $$ BEGIN\\n    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\\n        ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK (amount_minor >= 0 AND amount_minor % 100 = 0 AND amount_minor / 100 = amount_rub);\\n    END IF;\\nEND $$;\"\n    }\n  ],\n  \"transition_plan\": [],\n  \"assumptions\": []\n}",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need to produce a JSON patch fixing the SQL to correctly backfill amount_minor = amount_rub * 100, preserving constraints. Also ensure check constraint consistent. The proposed diff is wrong; we need to produce corrected content.\n\nWe must output JSON with fields patches (list with path and content), transition_plan empty, assumptions empty.\n\nWe must not claim tests passed.\n\nWe need to ensure integer rubles preserved, minor units correct.\n\nThus content should be:\n\nALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_minor bigint;\nUPDATE orders SET amount_minor = amount_rub * 100 WHERE amount_minor IS NULL;\nALTER TABLE orders ALTER COLUMN amount_minor SET NOT NULL;\nDO $$ BEGIN\n IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='orders_money_consistent') THEN\n  ALTER TABLE orders ADD CONSTRAINT orders_money_consistent CHECK (amount_minor >= 0 AND amount_minor % 100 = 0 AND amount_minor / 100 = amount_rub);\n END IF;\nEND $$;\n\nMake sure formatting is okay.\n\nReturn JSON.\n\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.31.0-tp4-b69e9a4d",
+  "usage": {
+    "prompt_tokens": 12530,
+    "total_tokens": 12914,
+    "completion_tokens": 384,
+    "prompt_tokens_details": {
+      "cached_tokens": 64,
+      "created_cache_tokens": 12464,
+      "multimodal_tokens": null
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 211
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

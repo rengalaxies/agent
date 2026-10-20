@@ -1,0 +1,27 @@
+{
+  "project_id": "20853297-65b7-42a8-af40-25c8d2df4e11",
+  "source_commit": "4c6a8f0bd9ec92d6f8a61d490bf85097189c3567",
+  "checked_at": "2026-10-18T09:45:44.422728+00:00",
+  "status": "BLOCKED",
+  "existing_compute_changes": "NONE",
+  "cleanup": "PASS_OWN_TEMPORARY_RULE_ABSENT",
+  "phase": "CLEANUP_OWN_RULE",
+  "opening_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "create"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "cleanup_plan": {
+    "address": "cloudru_evolution_compute_security_group_rule.lab_runner_access[0]",
+    "actions": [
+      "delete"
+    ],
+    "source": "current_runner_only_/32",
+    "port": 22
+  },
+  "error_class": "ValueError",
+  "error_code": "RULE_EXACT_SOURCE_STAGING_FAILED"
+}

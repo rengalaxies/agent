@@ -1,0 +1,48 @@
+{
+  "run_id": "9d36d593-7e34-4174-bcc9-e23060d5c257",
+  "mode": "live",
+  "started_at": "2026-10-17T20:19:54.537239+00:00",
+  "outcome": "BLOCKED",
+  "scenario_suite": "lab/evaluator frozen suite",
+  "manual_time": "NOT_MEASURED",
+  "infrastructure_cost": "NOT_MEASURED",
+  "execution_actions": [],
+  "waiting_seconds": "NOT_MEASURED",
+  "change": {
+    "change_id": "orders-minor-001",
+    "revision": 1,
+    "intent": "Repair the proposed incomplete minor-units backfill. Preserve amount_rub and v1 semantics; amount_minor must equal amount_rub*100 with exact integer arithmetic. This example is a proposed broken diff against the correct reference, not a previously deployed fault."
+  },
+  "diff_digest": "7b72abaa56af47369f03cfb5dc0fbbff955f4f42e8d7892136381e578994a2ab",
+  "source_commit": "46807a9ab58c4f0f7818a4dd56ecf1afa574b3ef",
+  "source_snapshot_digest": "95bf2ad6a3db56262f1eed8e7882096429f1df294fa066e9151829d50283233f",
+  "context_digest": "b910bff1b2f37659cfe4a925c6a17369ddf0cd0b817c8b7dda0c3888b79996a7",
+  "model": "openai/gpt-oss-120b",
+  "limits": {
+    "calls": 2,
+    "llm_seconds": 240,
+    "tokens": 64000,
+    "parallelism": 1,
+    "cost_usd": null
+  },
+  "blocker": "Analyst attempted unsupported verification claim.",
+  "elapsed_seconds": 6.214,
+  "llm_calls": 1,
+  "token_usage": [
+    {
+      "prompt_tokens": 13444,
+      "total_tokens": 14563,
+      "completion_tokens": 1119,
+      "prompt_tokens_details": {
+        "cached_tokens": 48,
+        "created_cache_tokens": 13392,
+        "multimodal_tokens": null
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 716
+      }
+    }
+  ],
+  "model_cost_usd": "NOT_MEASURED",
+  "ended_at": "2026-10-17T20:20:00.751280+00:00"
+}
