@@ -26,6 +26,8 @@ permissions:
 jobs:
   core:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: '.:src:tests:tools'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
