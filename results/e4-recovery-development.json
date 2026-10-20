@@ -1,0 +1,102 @@
+{
+  "experiment": "E4-R durable recovery development demonstration",
+  "confirmatory": false,
+  "scenario_source": "development/T-03 plus synthetic fintech obligation",
+  "crash_exit_code": 23,
+  "stored_before_restart": [
+    "fintech"
+  ],
+  "resumed": {
+    "scenario_id": "E4-3D-DEV",
+    "mode": "V2",
+    "proposal_id": "E4:E4-3D-DEV:V2",
+    "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+    "expected_domains": [
+      "fintech",
+      "mobility",
+      "retail"
+    ],
+    "received_domains": [
+      "fintech",
+      "mobility",
+      "retail"
+    ],
+    "missing_domains": [],
+    "decision": "ACCEPT",
+    "duplicates": 1,
+    "invalid_events": 0,
+    "conflicts": [],
+    "elapsed_ms": 174.7,
+    "worker_exitcodes": {
+      "fintech": -15,
+      "mobility": -15,
+      "retail": -15
+    }
+  },
+  "journal_event_count": 4,
+  "replayed_by_independent_process": "ACCEPT",
+  "missing": {
+    "scenario_id": "E4-3D-DEV",
+    "mode": "V2",
+    "proposal_id": "E4:E4-3D-DEV:V2",
+    "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+    "expected_domains": [
+      "fintech",
+      "mobility",
+      "retail"
+    ],
+    "received_domains": [
+      "fintech",
+      "retail"
+    ],
+    "missing_domains": [
+      "mobility"
+    ],
+    "decision": "NEEDS_REVIEW",
+    "duplicates": 0,
+    "invalid_events": 0,
+    "conflicts": [],
+    "elapsed_ms": 175.78,
+    "worker_exitcodes": {
+      "fintech": -15,
+      "retail": -15
+    }
+  },
+  "after_timeout": {
+    "scenario_id": "E4-3D-DEV",
+    "mode": "V2",
+    "proposal_id": "E4:E4-3D-DEV:V2",
+    "snapshot_id": "5192792c747894f3ff6c3fb52681b6818a043d32c44c48c6fd1d3343ad3e027d",
+    "expected_domains": [
+      "fintech",
+      "mobility",
+      "retail"
+    ],
+    "received_domains": [
+      "fintech",
+      "retail"
+    ],
+    "missing_domains": [
+      "mobility"
+    ],
+    "decision": "NEEDS_REVIEW",
+    "duplicates": 0,
+    "invalid_events": 0,
+    "conflicts": [],
+    "elapsed_ms": 172.46,
+    "worker_exitcodes": {
+      "fintech": -15,
+      "mobility": -15,
+      "retail": -15
+    }
+  },
+  "checks": {
+    "crash_after_durable_write": true,
+    "replay_deduplicates": true,
+    "independent_finalizer": true,
+    "missing_domain_escalates": true,
+    "late_replay_cannot_promote": true
+  },
+  "passed": 5,
+  "total": 5
+}
