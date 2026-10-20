@@ -1,47 +1,80 @@
-# Interview rehearsal - 19 October 2026
+# Проведение интервью — discovery v3, 20 октября 2026
 
-Status: CI_ONLY until a protected Cloud.ru URL and target acceptance are recorded. There is currently no new interview URL. Do not send participants to the existing managed demo or to localhost. The participant installs nothing. GitHub Actions is the remote executor; CI screenshots/JSON are a backup for moderator presentation, not independent participant interaction.
+Текущий runbook по [фокусу HTTP/API и RabbitMQ](../../../docs/product-focus-2026-10-20.md).
+Единый сценарий: [RU / EN](../../../docs/launch-2026-10/02-STAKEHOLDER-INTERVIEWS-RU-EN.md).
+Запись результатов: [шаблон заметок](../../../docs/launch-2026-10/INTERVIEW-NOTES-TEMPLATE.md).
 
-## Access and preflight
+## 1. Формат и цель
 
-The moderator obtains the protected HTTPS URL and separate access credentials from the deployment owner through a private channel. Never place credentials in this document, repository, URL or export. If no accepted HTTPS URL exists, use the saved materials format and say so explicitly. CI HTTP loopback with synthetic Basic credentials proves application checks only, not cloud TLS.
+Сначала разбираем прошлый реальный случай. Показ интерфейса не обязателен.
+Для интервью достаточно созвона и заметок; запуск облака, LLM или SQL-verifier не является условием.
+Не обещать готовую поддержку HTTP-discovery или RabbitMQ-discovery: в текущей пачке изменены материалы, не реализация.
 
-Before each interview, open the protected address in a clean browser context. Unauthenticated access must require authentication. Check exact source commit, readiness and that apply remains BLOCKED. Select a fresh interview session; record its random ID and scenario version. Do not reuse another participant's session. Roles are demonstration labels inside authenticated access, not corporate IAM.
+Участник выбирается по личному опыту изменения межсервисной интеграции.
+HTTP и RabbitMQ имеют одно ядро вопросов и отдельные технические уточнения.
+На интервью с экспертом отмечаем происхождение опыта и не считаем его клиентским пилотом.
 
-## Three situations
+## 2. До разговора
 
-| Session scenario | Start and origin | Task | Expected boundary |
-|---|---|---|---|
-| confirmed | New empty session; existing A breaking example. Collect actual catalog evidence; explicitly choose REPLAY for saved model analysis/SQL. | "Определи, касается ли изменение твоей команды и почему". "Какое следующее действие ты выберешь?" | Separate billing/analytics cards with current grounds; risk is separate from reproduction. Team acknowledgement never grants apply. |
-| unknown-owner | New empty session; existing C declared-owner CONTROL profile, same real collection. Analysis uses FIXTURE / CONTROL. | "Каких сведений не хватает для решения?" | Explicit unknown owner and coordinator question. The missing owner is a controlled input, not a newly discovered production fact. |
-| stale | New empty session; repeat existing A then use the existing new-revision action (D); E basis change requires trusted moderator/CI broker control. | "Что изменилось после новой ревизии?" | Prior cards/decisions/patch/PASS are history; fresh assessment is needed. |
+- Подготовить пустую карточку с session_id и версией discovery-v3-2026-10-20.
+- Проверить роль и предполагаемую релевантность, не заполняя ответы за участника.
+- Согласовать 35–45 минут либо сокращённые 20 минут.
+- Подготовить текстовые карточки HTTP-01 и RMQ-01 из опросника; держать их скрытыми до разбора фактов.
+- Заранее знать, где хранятся заметки, кто имеет доступ и какие условия записи можно фактически предложить.
+- Не запрашивать установку инструментов или доступы для самого разговора.
 
-For each start: choose scenario, create session, use the existing breaking example to create revision 1, open change details, collect sources in LIVE RUN. For confirmed/stale select REPLAY, run analysis, open inbox, choose team and record its decision. Open patch view, prepare saved SQL. Fresh verification runs only in isolated trusted CI; without that executor use the separately saved verifier evidence as historical REPLAY, not a new PASS. Never give the public web app Docker privileges.
+## 3. Во время интервью
 
-For unknown-owner select FIXTURE / CONTROL analysis after collection; read the coordinator card and its explicit ownership-control label. For stale, use new revision, then confirm prior result is no longer current. No new inference is needed for these situations.
+1. Получить разрешение на заметки, отдельно на запись; отказ не препятствует разговору.
+2. Пройти ядро Q1–Q9. Уточнять последний случай и действия, разрешать ответ «всё прошло хорошо».
+3. Использовать релевантную ветку после свободного ответа; не навязывать пагинацию или смену routing key.
+4. Отдельно записать активный труд, ожидание, фактический ущерб и гипотетический риск.
+5. Агенты обсуждаются через фактическое использование или причины неиспользования.
+6. Согласовать следующий шаг, если он уместен, с человеком, действием и датой.
+7. При наличии времени показать одну релевантную карточку концепции; записать версию и момент показа.
+8. Пересказать факты, альтернативы, возражения и договорённости; исправить по словам участника.
 
-## Recording and clean sessions
+Демонстрация не должна превращать последующую реакцию в «спонтанно обнаруженную проблему».
+Никакая оценка полезности не заменяет случая, артефакта или выполненного следующего шага.
 
-Explain the optional minimal observation notice before enabling consent. Recording is off by default. It stores random session ID, scenario/version, mode, timestamps and action/error/decision/help categories; no names, email, free text, keystrokes or screen recording. Technical audit is separate. Declining must not block the scenario.
+## 4. Если отдельно нужен просмотр прототипа
 
-Enable research recording only after explicit consent. Moderator assistance uses the category selector, without narrative identifying notes. Export JSON for that selected session. Deleting research data removes observations and disables consent; necessary technical audit and evidence remain.
+Это отдельная сессия проверки понятности, не продолжение независимого проблемного интервью.
+Нужны версия интерфейса, конкретный вопрос исследования, нейтральное задание и заранее заданные признаки его выполнения.
+Примеры вопросов: может ли участник найти основание вывода, назвать неизвестные области и определить адресата следующего действия.
 
-Finish pending work before reset/end. Reset affects only this session and creates a new empty generation, preserving its old technical evidence. A new session has its own empty SQLite/artifact workspace, no previous team's decisions. End the session, then create a new session for the next participant. Export before ending when recording is desired. Do not infer understanding from clicks or describe elapsed time as labor saved.
+Текущий lab показывает синтетический SQL-сценарий. Его нельзя представлять как реализованный HTTP/API или RabbitMQ discovery.
+Интерфейс и названия сценариев могут раскрывать ожидаемый ответ; такой показ даёт обратную связь о концепции, но не независимую проверку понимания.
+Для наблюдаемой задачи скрыть подсказки либо явно указать ограничение и не заявлять независимый успех.
+Не задавать участнику путь кликов, ожидаемый вывод или решение по умолчанию. Помощь модератора фиксировать.
+Задание и критерии не менять после просмотра результата участника.
 
-## Errors and explicit replay
+Различать текущие источники, сохранённый REPLAY, FIXTURE/CONTROL и реально выполненные проверки.
+Старый PASS не становится текущим из-за показа в браузере.
+Доставлено, ознакомились, проверено и совместимость подтверждена не взаимозаменяемы.
+Показать отсутствие блокировки релиза как планируемую модель, не утверждая, что старый UI уже её реализует.
 
-On a blocked/failed/UNKNOWN job, inspect the displayed reason and preserve its technical record. Do not blindly repeat interrupted work or claim a successful result. If LIVE is unavailable, state that it is unavailable; explicitly select REPLAY and start the existing analysis/prepare actions. The failed LIVE job stays in history. Collection itself has no synthetic fallback: unavailable current sources remain blocked. Do not turn a historical PASS into a current cloud check.
+Если используется живой lab, технический порядок сессий, режимов и экспорта находится в
+[архивном техническом runbook](../../../docs/archive/interview-rehearsal-before-discovery-v3-2026-10-20.md).
+Это справка по старому прототипу, не обязательный путь участника.
+Защищённый адрес и доступы проверяются отдельно перед показом; при отсутствии адреса допустимы явно подписанные материалы.
+Не давать веб-приложению Docker-права ради интервью и не запускать платную модель без отдельной необходимости.
 
-On loss of the protected cloud address, switch format to moderator presentation of saved screenshots/JSON. This does not test independent browser use. Stop research recording and export/delete according to the participant's choice; end the selected session.
+## 5. После разговора
 
-## Backup and executor
+Заполнить карточку: факты до концепции, реакции после и интерпретация отдельно.
+Сохранить возражения и свидетельства отсутствия потребности.
+Перенести в воронку только обезличенный статус; контакты и внутренние материалы хранить отдельно.
+Проверить исполнение обещанного шага по факту; никакие письма не отправляются автоматически этим runbook.
 
-Existing backup screenshots are in `lab/reports/product-path/screenshots/`. This batch adds synthetic-session export and CI browser evidence under `lab/reports/interview/`. Workflow `lab-interview-ci.yml` executes remotely on GitHub Actions without model credentials. All rehearsal reports must state CI_ONLY until target cloud acceptance exists. Agent rehearsal is not a user study.
+Отдельно считать беседы, компании, случаи и полученные материалы.
+Совместный разговор и повторный контакт не превращать в независимые компании.
+При разборе нескольких интервью указывать протокол, ветку, показанную карточку, пропуски и n/N ответивших.
+Синтетические экспорты и CI-репетиции не являются интервью с пользователями.
 
-## Current visible controls
+## 6. История и границы
 
-Scenario dropdown labels are "Подтверждённая зависимость", "Неизвестный владелец (контроль каталога)", and "Устаревание после новой ревизии". Click "Начать отдельную сессию". In "Изменения", keep the "Ломающее: неверный backfill RUB → minor" supported example, fill a session-local "ID изменения", keep "Ревизия" 1 and the displayed exact "Исходный commit", then click "Сохранить изменение". This creates the example; there is no separate load-example button.
-
-Use tabs "Страница изменения", "Inbox команды", "Патч и проверка". Mode is "Режим следующей операции". The action buttons are "Собрать основания", "Запустить анализ", "Подготовить патч", and (trusted isolated CI only) "Независимо проверить". Wait for the job's terminal result before the next operation. Refresh using "Обновить состояние" if needed; preserve any failure displayed in the job history.
-
-In Inbox select the "Демонстрационная роль, не аутентификация" team and keep the default "Ознакомились" when acknowledging and click "Записать решение". In the stale situation, return to "Страница изменения", click "Подготовить новую ревизию", then submit the form with "Сохранить изменение"; preparing the form alone does not create revision2. The session controls are "Сбросить только эту сессию", "Экспорт исследования JSON", "Удалить исследовательские записи", and "Завершить сессию". Default-off recording may stay off for a synthetic rehearsal; an empty research export then correctly records no observations.
+REPORT.md, EVIDENCE-SHA256.json и сохранённые CI-экспорты рядом — исторические доказательства прежних запусков.
+Их результаты и контрольные суммы не переписываются под новую концепцию.
+Фактические интервью не проводились в рамках редактирования этих файлов.
+Научные H1/E3 и frozen-корпус этим протоколом не изменяются.
