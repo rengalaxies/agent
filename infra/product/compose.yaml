@@ -1,0 +1,19 @@
+services:
+  product:
+    build:
+      context: ../..
+      dockerfile: infra/product/Dockerfile
+    image: change-completion:operator-build
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    network_mode: host
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    volumes:
+      - ${PRODUCT_REPOSITORY:?set PRODUCT_REPOSITORY}:/repository:ro
+      - ${PRODUCT_CONTROL:?set PRODUCT_CONTROL}:/control:ro
+      - ${PRODUCT_STATE:?set PRODUCT_STATE}:/state
+    env_file: ${PRODUCT_SECRETS:?set PRODUCT_SECRETS}
+    command: ["--repository", "/repository", "--transition", "/control/transition.json", "--expectations", "/control/expectations.json", "--fixtures", "/control/fixtures", "--trust", "/control/trust.json", "--identities", "/control/identities.json", "--state", "/state", "--worker-actor", "${PRODUCT_WORKER_ACTOR:?set PRODUCT_WORKER_ACTOR}", "--port", "8081"]

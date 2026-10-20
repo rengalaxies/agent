@@ -1,0 +1,29 @@
+{
+  "approved_owners": [
+    "fixture-owner"
+  ],
+  "approved_suite_digests": [
+    "cb32926fa32078bf4780d7c3a9797fd842650f49a39a148b59918ebf874ce0d5"
+  ],
+  "grants": [
+    {
+      "actions": [
+        "verify"
+      ],
+      "actor": "fixture-worker",
+      "basis": {
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "uri": "fixture://before"
+      },
+      "component_ids": [
+        "consumer"
+      ],
+      "environment": "test",
+      "expires_at": "2026-10-17T12:00:00Z",
+      "grant_id": "fixture-grant",
+      "issued_by": "fixture-deployment",
+      "starts_at": "2026-10-16T11:00:00Z"
+    }
+  ],
+  "minimum_cases": 2
+}

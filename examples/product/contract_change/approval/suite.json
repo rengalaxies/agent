@@ -1,0 +1,142 @@
+{
+  "cases": [
+    {
+      "id": "normal",
+      "input": [
+        {
+          "customer_id": 1,
+          "amount": 17
+        },
+        {
+          "customer_id": 2,
+          "amount": 203
+        }
+      ],
+      "expected": {
+        "finance": {
+          "columns": [
+            {
+              "name": "customer_id",
+              "kind": "int",
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "kind": "int",
+              "nullable": false
+            }
+          ],
+          "rows": [
+            [
+              1,
+              1700
+            ],
+            [
+              2,
+              20300
+            ]
+          ]
+        },
+        "audit": {
+          "columns": [
+            {
+              "name": "customer_id",
+              "kind": "int",
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "kind": "int",
+              "nullable": false
+            }
+          ],
+          "rows": [
+            [
+              1,
+              17
+            ],
+            [
+              2,
+              203
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "refund_zero_duplicate",
+      "input": [
+        {
+          "customer_id": 3,
+          "amount": -11
+        },
+        {
+          "customer_id": 4,
+          "amount": 0
+        },
+        {
+          "customer_id": 4,
+          "amount": 0
+        }
+      ],
+      "expected": {
+        "finance": {
+          "columns": [
+            {
+              "name": "customer_id",
+              "kind": "int",
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "kind": "int",
+              "nullable": false
+            }
+          ],
+          "rows": [
+            [
+              3,
+              -1100
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ]
+        },
+        "audit": {
+          "columns": [
+            {
+              "name": "customer_id",
+              "kind": "int",
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "kind": "int",
+              "nullable": false
+            }
+          ],
+          "rows": [
+            [
+              3,
+              -11
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,8 +1,12 @@
 import json
+import io
+from contextlib import redirect_stdout
 from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
 from datamesh_release_protocol.business_case import build_business_case_report
+from datamesh_release_protocol.cli import run_catalog, score_results
 from datamesh_release_protocol.loaders import load_business_case_model
 from datamesh_release_protocol.models import Decision, ScenarioRunResult, ValidationMode
 
@@ -10,14 +14,41 @@ from datamesh_release_protocol.models import Decision, ScenarioRunResult, Valida
 class BusinessCaseTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # Exercise the current development pipeline without rewriting historical
+        # result files or loading retired validator modes into the live schema.
+        temporary = TemporaryDirectory()
+        cls.addClassCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        raw, manifest = root / "raw.json", root / "run-manifest.json"
+        scored, metrics = root / "scored.json", root / "metrics.json"
+        with redirect_stdout(io.StringIO()):
+            run_catalog(
+                scenarios_dir=Path("scenarios/development"),
+                baseline_path=Path("policies/v1-ind.yaml"),
+                output=raw,
+                manifest=manifest,
+                run_id="business-case-regression",
+                purpose="development_regression",
+            )
+            score_results(
+                raw_results_path=raw,
+                run_manifest_path=manifest,
+                scenarios_dir=Path("scenarios/development"),
+                catalog_manifest_path=Path("experiments/development-catalog.yaml"),
+                analysis_plan_path=Path("experiments/analysis-plan-0.3.1.yaml"),
+                oracle_path=Path("oracles/development.yaml"),
+                output=scored,
+                metrics_path=metrics,
+                score_manifest_path=root / "score-manifest.json",
+            )
         cls.results = [
             ScenarioRunResult.model_validate(item)
             for item in json.loads(
-                Path("results/pilot-results.json").read_text(encoding="utf-8")
+                scored.read_text(encoding="utf-8")
             )
         ]
         cls.metrics = json.loads(
-            Path("results/pilot-metrics.json").read_text(encoding="utf-8")
+            metrics.read_text(encoding="utf-8")
         )
         cls.model = load_business_case_model(Path("business/economic-model.yaml"))
 

@@ -1,0 +1,34 @@
+{
+  "approved_owners": [
+    "business-owner"
+  ],
+  "approved_suite_digests": [
+    "0771a3699c76afefc5672564f739f6bbe4b3768d737054b492da06ac457c10c9"
+  ],
+  "grants": [
+    {
+      "actions": [
+        "discover",
+        "patch",
+        "verify",
+        "export"
+      ],
+      "actor": "demo-worker",
+      "basis": {
+        "sha256": "4a1debb06c9ba03ce6693e80043f1b66fe7159c42f718208a7f03794accf89dc",
+        "uri": "requirements.json"
+      },
+      "component_ids": [
+        "events",
+        "analytics",
+        "audit"
+      ],
+      "environment": "test",
+      "expires_at": "2027-10-16T10:00:00Z",
+      "grant_id": "demo-execution-grant",
+      "issued_by": "demo-installation",
+      "starts_at": "2026-10-16T09:00:00Z"
+    }
+  ],
+  "minimum_cases": 2
+}

@@ -1,0 +1,17 @@
+{
+  "profile": "sql-window/1",
+  "targets": [
+    {
+      "component_id": "analytics",
+      "new_window": 90,
+      "old_window": 30,
+      "path": "analytics.sql"
+    },
+    {
+      "component_id": "audit",
+      "new_window": 30,
+      "old_window": 30,
+      "path": "audit.sql"
+    }
+  ]
+}
