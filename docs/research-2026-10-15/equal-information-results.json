@@ -1,0 +1,1833 @@
+{
+  "kind": "diagnostic-conformance-not-accuracy",
+  "cases": 260,
+  "agreements": 260,
+  "rows": [
+    {
+      "id": "I-01",
+      "input_sha256": "32fa3a5908d7e2e804a0567f4a585758f0f4bfcc52aa0422f4949f615a6c9e08",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:0",
+      "input_sha256": "5809e1774e98132a7d33fc93fdbcdd8ca765959ee47bafe697c5a18b41b15e7b",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:1",
+      "input_sha256": "a7a4f55f0baf27c60924dcd1d3ec972bc384a91437bb35f16e1f1f427f32b617",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:2",
+      "input_sha256": "9a01e9214e720b6a0f005f9a5833c48bc8fa5c68c9a4d0e7e1f406c4c86f97c5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:3",
+      "input_sha256": "36f3ccd3830760c8161e0dff96c69b8bdc3692f4e64e51dfebf3c29715caf81d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:4",
+      "input_sha256": "c18a02c426862e468f75f7a263e8e05ce0988354142408ea4594bed05f8bb294",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:5",
+      "input_sha256": "75d3dd736b9736b4e759ba1e98521d5cabb293c11eb776066e93efc5c05b7597",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:6",
+      "input_sha256": "41fe04eb30e8612c81b7aba519c931df5a6eb9f089696b765b62df06376f7eda",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:7",
+      "input_sha256": "64116a413058b036241efe6f86d0ddfb4674dbf9b3770c1ded166c0936d69a77",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:8",
+      "input_sha256": "664b9b8bc2094730e584bdfa6a66f4a06af0fbcf98e943af07f99cdf3cc2b8d7",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:9",
+      "input_sha256": "0d907f5897ba2a99143baaad4f666e6a3d1b6661a76ac01a3ab17c8c8ecc6eb3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:10",
+      "input_sha256": "15cf81073d7aa7835d3981843609052cbe8ff93bdd13a0de040d34403a855acf",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-01:perturbation:11",
+      "input_sha256": "4533bb731b854b4057baa1ee6ed04d5530530415bb8b40c108e8e044d075d4ee",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02",
+      "input_sha256": "b6d926dade86b85cbe729140708e02bc4b2c595259f0e588a6137c6b24b4cf32",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:0",
+      "input_sha256": "c182a01cafa6c413c8ea7c9181545e541913c76d449e76c7353d03fe7fbc5482",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:1",
+      "input_sha256": "75ecff14a6816781d37ac2300b54f2749df8a6ec9280e1758252740b15c0f4e1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:2",
+      "input_sha256": "87d87d67d1ac895a7e001a5f89072d75439b2def11d7e9c06a4291d4e21fce2e",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:3",
+      "input_sha256": "33a5061f9cbe164e1e5555d9fbe030360eefe53e9d4e79f36eae400f76c92f4e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:4",
+      "input_sha256": "87950ab24627f57aa5ea4d211ddc7600e82ca5641cb9476bfc6c6cffd8efdb5e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:5",
+      "input_sha256": "b28ec266bddfa0d6d816b96b3118fba900c1ddc5d31c56a974113017fe620acd",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:6",
+      "input_sha256": "163070359bd4c1f89c4d8b11cb9ca8daefdea3a57d5ac1f3c981acfedf7ee2bb",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:7",
+      "input_sha256": "b039d8eca9abf14a5e73748c4f23b48e09cfa850db9b05f8e10a59c9f7192712",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:8",
+      "input_sha256": "6dd4026f50bbf77ea0f1651a595f1ecc58c9abb650677feba3e0101753348890",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:9",
+      "input_sha256": "e3bff9c8c2d5ca8c38ff07e8ead193e2febc58313285d5e6872d53b90b990d8b",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:10",
+      "input_sha256": "ccd9ddee7feb2e457847e5e68add25b9e7ca7693b68dc0e089466ded22974c5f",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "I-02:perturbation:11",
+      "input_sha256": "978fe1f2bb5c9994dede9cb75670cbf93d1be2167be936f048801f18af712d30",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03",
+      "input_sha256": "0b191ef284b32a15d0e93ce1b2fb4ad26c728923df834e67ed5c449e197dddee",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:0",
+      "input_sha256": "89254256004ab627ad5ed109a43822896950991e7163b247ef3f10edae7e7be4",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:1",
+      "input_sha256": "ec47bcc1f479144d08019bcbd7c9fe8a7fe40dbc976ddeffbab1870d416ee039",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:2",
+      "input_sha256": "538a4bb8a4005fe43527e68b3efe07881e7505b890e93d1f5aa3571d123ab4cd",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:3",
+      "input_sha256": "3df2aa6c42e27da7ce8a2dc8f6a17d5fb2cfd9c15535f82096fb1aa5be5f7b7d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:4",
+      "input_sha256": "e2b302fd8dccc8673570c2638e654390d9d0c5a4429f6e2d6a2d92fcb3555dae",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:5",
+      "input_sha256": "1074bf10e0829296f37d19a1719f5e46c7bd75cdfe30603e58f306f5da95f8e1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:6",
+      "input_sha256": "a5b71eb7352d7f92789185aab314d10a14c4b0ae74aa2c2b80a6672efe19d925",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:7",
+      "input_sha256": "acade65116e41a99067be1f4425eee72f787e13a9ac7fb1a26b3f1897de0bc4f",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:8",
+      "input_sha256": "4a098d87612186091a74614b35d2fc0ec4b00110e1e9ee5c8774ef7eaa5edae3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:9",
+      "input_sha256": "5a83c8e76b91f92bdfef0a6840ed63c1ac797dd3dcd103fd47ccb2e626907010",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:10",
+      "input_sha256": "251c73f3ffd1765b4b2e589a21feac0b87b6c7191de7158ff9c233bfdc966fac",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-03:perturbation:11",
+      "input_sha256": "548232fe6d4aaa31b726bac1265c41084dc89c2163b3f2c0104cbfea080fe269",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04",
+      "input_sha256": "c57364c8e6b7332f5afbdfbc86507077d33493512a8a61f5e079508e93d1ec6f",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:0",
+      "input_sha256": "1a5a8265530dcfd3866cd95697d3d25895cb09df2378572fdea5ad4831aee4c4",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:1",
+      "input_sha256": "44957f6f2be15203090be8f6225830b3488e2effa927fe5d8be2df0c2ff9c0b6",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:2",
+      "input_sha256": "620de71f24c642d4e594d7605d2d457e5cbbcdc38a5292bc979a4708fd030b05",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:3",
+      "input_sha256": "bc0f31b42f42842bd1e1cf4d9febf72012612e109f5bd550cd790fde3f0d6322",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:4",
+      "input_sha256": "b736853185e47495049f57a3e03b47b39ccb4a978fa14a510cf35b7a96fd44db",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:5",
+      "input_sha256": "58fbfd7d363436ec8c83e800604a84b8936a835891939d83035e88ca4c5ed9d5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:6",
+      "input_sha256": "ea642cd29e1a538956ebd792fb6bcc34ced437eeffd1ffffc2206a7c8e0c6b84",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:7",
+      "input_sha256": "5a1ab1009b7a96c7d9e47640ab2c99d47503e70534516b965c473240af663eff",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:8",
+      "input_sha256": "377e13f100d34663e93ae2333909f3f798ea52535764819b5a1d80f6718fb0db",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:9",
+      "input_sha256": "f9e1f94f407dda7283cead12830e9fa46fc590356f92358f5864fbddd00b6b79",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:10",
+      "input_sha256": "0a3f72033b7ffeb60c9cbc081376cefd40fc62613bcb1e1a9e091e31c07d3ac5",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "I-04:perturbation:11",
+      "input_sha256": "b6e793fc5179aff60021aee66893f8010b131298a1663b989dabed92c96f713c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01",
+      "input_sha256": "44a9a80c83b22d07a5f40f9339f9cce272c6f3b9d41d44339a49eb6d4bcbd88d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:0",
+      "input_sha256": "fffe5d255147453bb9ea53ea8ecf048b5a59e73eb05545afab93c8080bb77971",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:1",
+      "input_sha256": "6b702879dcdd56beaff3b647884b4ee90388aeda6d0dd2154d157bf44e25a359",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:2",
+      "input_sha256": "ae64a7e0b4d63c44801fd4df43effa0a3ea8e146478c67289b144869af146092",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:3",
+      "input_sha256": "32d4424b62591ab39734d77637912ee9064a723551a31eb66982e9d444b493eb",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:4",
+      "input_sha256": "aa09277ff5b4b47cd424cc8d40f729a9666e83465d878f31beacbc5e48e2d3f0",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:5",
+      "input_sha256": "1abd62d1c3684ae7c00ede6c02a9c98f95d96009b4f5f266f1cf30ed0e1142a7",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:6",
+      "input_sha256": "590376c6300c385af98b9319bb208e8f4370cc1175f9de2f2ee88eb525decdbe",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:7",
+      "input_sha256": "5403a419aa3c5b456b7cfaab826240fa0dcee556c4ca32bdeb800e3a44c307dc",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:8",
+      "input_sha256": "7db144eb36f051cac6d938af52c2a6f5e148c17b2acf6449b80fc21dc66ba46f",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:9",
+      "input_sha256": "a540808120c0114e6bf34feebc649a304412e398560e40322a71fe59c04075a1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:10",
+      "input_sha256": "21dde9dfc5dc569550bca9894be4a113080ce548f6ef285e356d5f5b57a898e8",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-01:perturbation:11",
+      "input_sha256": "66be3a21903e33f45f32ef9a6fb6d8294b76a4550cc9d1a463cc7477d74b2466",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02",
+      "input_sha256": "5fca9894d521b64a249ddbad6d8330ca31fb34a81a461669693e8906fca607d9",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:0",
+      "input_sha256": "669d5f2961d8a5d63e4f8b5c47e1f59e51c65e86881e324e6aa75c0376bb2f39",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:1",
+      "input_sha256": "70124ca1e067c4c11ddf563731a1900ef9012d433011d8e0f5f6f2893b79e85b",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:2",
+      "input_sha256": "582291a7ac02a25947c64f689cad9ccd0d09e106f51e1eeee217e25e5fe62e85",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:3",
+      "input_sha256": "4d0c35707cff3e2881c65ef5cfc6499fc4d905a603fc229afb1c031e1601fca3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:4",
+      "input_sha256": "90f3f6987dc7ccb8a1e362ea08eed598613e1893aaee785eeb66bb85ab5079e3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:5",
+      "input_sha256": "90256b69e96f32bc87da65ae7ff3e02e51f9956fd0888233d416af8f5549ede9",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:6",
+      "input_sha256": "91b2dca42f5024204510e7ec06ebe99a2190c57ab86368455e7c1a1cd264cd34",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:7",
+      "input_sha256": "083648539f34e8ecf349bd7212edc061e534a432930983a1f7cfa80b9b3fffe6",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:8",
+      "input_sha256": "faf0ef8deff8215f755b205c5352439ee9785825fe0cc65468da79703314b7f5",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:9",
+      "input_sha256": "c5b09bddd00b22062adf3d06ed62bf84858d2dc77dc49ad4fd3c7fe0475567b4",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:10",
+      "input_sha256": "8b873a02537d442028194cde76042530a1fe388ddc6c160756390ca5986b3742",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "L-02:perturbation:11",
+      "input_sha256": "4c7ef20cda41567e9a7dc1b4ddcc0ae1fe5e1a1ecb45c67b62f7d9f52572ed74",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03",
+      "input_sha256": "2dc35fc83b7c0990d10f6aced6c50a219ba90a8ed975066dca2c1e453de65ab0",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:0",
+      "input_sha256": "cf0e56b6afa380bb9fe511ab2e2a9231ea8d7c3d36e3cda4f01131314205b620",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:1",
+      "input_sha256": "708e283054ac47fc03f42fe70c9a8b702525f1f275a374936df8a0a505b188bf",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:2",
+      "input_sha256": "5304dec65c8988672d8a136097431572748d78d804620432685def95b5bf0b6d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:3",
+      "input_sha256": "37c9a78623bdd950335ad446f3919e2b15cd5e1ea4cc7b0c9a1601e8b1652be2",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:4",
+      "input_sha256": "6997f9f318dd6ae8eb1db086bd0e5fa9097d19aa2a53a8f44ed22bcdbbc9e6d3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:5",
+      "input_sha256": "673a986590b6801bfa4d9cb5211aeb06f0011a04b8916b6861220125381fe860",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:6",
+      "input_sha256": "12ae0924a8a0405cb14ac5ea184ebc5508e071366146c74184f6d71cfeeb655c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:7",
+      "input_sha256": "fee3bde50a27b7c87202084cef24b8a8ea47d921cdc584993cfd1d8c797a71dc",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:8",
+      "input_sha256": "676e429a913d90d6bcae8308820b57151ccf5b74c8122e219806fb8af615f015",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:9",
+      "input_sha256": "c2f7e9d8ab18f75da4c50467b92bf9c513469c88dd1cb44e01243761199247c8",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:10",
+      "input_sha256": "44b23848fe250c457d69f71b735ef3ddae6352d2df233e1f28a4a5d9950068f7",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-03:perturbation:11",
+      "input_sha256": "0cf5d6e7a68b93dcbc9a474351a3b84c968820fa87e96c0fccc95861a4f122d0",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04",
+      "input_sha256": "178261586c48e1ed3b146d2568d5318b7dfe2f9a9bda0d857e853fc86bc2f177",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:0",
+      "input_sha256": "190a63c86b5bcfaa9f6d0b856c50f8a6dffaff9f9ea74bdf28d379b1a5dbb8ff",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:1",
+      "input_sha256": "9202c19f8fd93ea38079f6c9afb0e0874d90536af749d7ade2f17770d1530f89",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:2",
+      "input_sha256": "12e48017977aaf9bf5383de9293bb6d8a9dca19135b7885b4e47af5c875983fc",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:3",
+      "input_sha256": "8b1d979437daeee3298b4e73cd1bab61a2a1eea1ebeabc478e8c14461418fc99",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:4",
+      "input_sha256": "8c73122ae7518887e61e714735838f07b1761798f82bae84ad6e882ccf7ee82f",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:5",
+      "input_sha256": "51894b859fe10758cd3c56a3627a212c0850dad1f1750eb47b47ac77baa11258",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:6",
+      "input_sha256": "c02468c19f36a364a8af410fccda9776ae6983b55548e3a2cc5547172eaf2243",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:7",
+      "input_sha256": "1130500996bb06486a2bf7aaadaf07214142b6cae4f9fc642fcaa90ae6ffbb20",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:8",
+      "input_sha256": "f0a23c78499339aeb6921260d7f4b8abf00848c7199776fb4bc0d7c92bdabc56",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:9",
+      "input_sha256": "37a663a8f5e925fa3331cfca0e27871e819e3c84725e631701678a827a74f119",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:10",
+      "input_sha256": "0f6db4173a25dddcf42393840ea727198b6cf8b145ed5129bb4761c62f49ed5d",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "L-04:perturbation:11",
+      "input_sha256": "a1fa1d684eb103289e3bf9f20592bb9b50a98cce6119ff345887607e37013425",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01",
+      "input_sha256": "8374afc143597dce4dfe4c06cf74df9734cf51d602deb47f2bb5751f420350c7",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:0",
+      "input_sha256": "4f0db13c3b724d34c1b7c03746256fcdd7a429340fcbbf78a288ab00a4f05d6e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:1",
+      "input_sha256": "21720f5e45c43c68c2db8dea5b1005f01a1daf9dd9af02c7414851c97acc247b",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:2",
+      "input_sha256": "40c52cbf5f367228d87d3c21b16b6ca2c6451c25a05d9c1ce3f7f1834e6bb6de",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:3",
+      "input_sha256": "3aa3477760173b31e8c963a7db6abb4e0513d0341813dcaf2faaae708a3b7525",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:4",
+      "input_sha256": "d2485a8859678a02c6b09362317a2f0d9641a12c8508387390d7af012ae58d9e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:5",
+      "input_sha256": "6df6e405d941f87bc77abd6540ff680218bbda9bea3ee4a43a792d7257c4aab4",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:6",
+      "input_sha256": "db18a11c70b7111042b2f334316287d9662e0d8e602d0e96e1b68407a50b38ef",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:7",
+      "input_sha256": "cbe7f7b0f2575d4f929dda2445ad57017053f784c25f25ca2a43588d4a04a7ad",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:8",
+      "input_sha256": "ce5c88ea735d858a17a569609e67f6ed83c1188655a3b85d04d3a920af7bd19d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:9",
+      "input_sha256": "05909e2ee2d958b0d826b46c959f5100bd4f83ee6d2f82fdaf958d45c77df542",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:10",
+      "input_sha256": "bb59d6285aace8c32f8223d4729f66690148703ab37f4bf4eefaa2817ba854e4",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-01:perturbation:11",
+      "input_sha256": "dce0dbc3a46b1d2ac63b8dc3a5be97db49ccaa98e7a81d04b7b5a0353f06f0f2",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02",
+      "input_sha256": "6ce17d066096f2bee08dc260353423c69713c37d2829f5d2f90fa2b1baeca7a0",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:0",
+      "input_sha256": "02a4b4c43f22db267e18904eeac9f4b18eb8a715178c7a715a0a11e125d67d7a",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:1",
+      "input_sha256": "6b0f0061c1f7b5f881a8ed947a9b3e6847e5e797d24c20af1d0f3463414e091c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:2",
+      "input_sha256": "8f8f595c4d20b141ce6a03fbc5cf32cceb86a52f5bef089c8bca24e3e3863288",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:3",
+      "input_sha256": "1b7ac737ffbc8151abd01e62695afb98d1bd914f9cf1b75cbc1f15f0b95c8ddf",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:4",
+      "input_sha256": "05e26e2ae7d0b2c6d48a15f29b4f7ac91b9bd571914a987258bbeb48705a1041",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:5",
+      "input_sha256": "457bc7df9bb9f00372a5db26d5bce1f73b55538224c9ff36a0a23886fba9b845",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:6",
+      "input_sha256": "1bc6e7e1f3a70dec26ec71bc7c1b85ddf01e21f8e06c3dff22baff9404e39cc2",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:7",
+      "input_sha256": "89711364007a2b7f1f5ff2bf6c878a3a9d4a80386fa4253e97a273e7fefc757b",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:8",
+      "input_sha256": "820b99488299a9f473cbf988bb65463efdc7d0451eba66399304455cea83817f",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:9",
+      "input_sha256": "4da1c3550831b07a77594e389fb20f998db51c5d2b77ae31f644046ef598889a",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:10",
+      "input_sha256": "af4897229ca281a4b4b209140f0897366461b1ded2b8bc52282e405aebc30b13",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "M-02:perturbation:11",
+      "input_sha256": "bba0501396cb78fa093442ac50c90a20360c4494647a046e7540ee8679d1eb76",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03",
+      "input_sha256": "474e6176439d38515813bb4f91a9b13363122cd38d801234a109fdbf47e332ae",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:0",
+      "input_sha256": "311695f19af44e8745734d47c102981bdaeb12483afcd8279fb93849b59adfa8",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:1",
+      "input_sha256": "4a5dbbddf0787f9cad6040188f07d619aaa49b51cd75bb66272788545f5b75ac",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:2",
+      "input_sha256": "24c629632200a47b9d1d081ed1e7aea15501e98ff81ddf7e38dd6fe21becf139",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:3",
+      "input_sha256": "910d757a67e4d3c8f8ba8269752ecc23b65c53ebdb5c3bbb81866b1548c3c945",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:4",
+      "input_sha256": "028ad6ee60801c713f5ee8deef377f15eaf6adfa958714ffcd1b979a6e097820",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:5",
+      "input_sha256": "88a6e72d503d43163c140ce2fa4f522f7a0dfef0251ced1619a95b849af87798",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:6",
+      "input_sha256": "488319268bf5d55ccf62e310a59a72eed050e049bd90c0021889ac0c822b9cf8",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:7",
+      "input_sha256": "408c8eed79b8c358540e72ccb38c2644005bb94e58fe2aee066b837968467e96",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:8",
+      "input_sha256": "e139f39731cf53c8f43833cc45ce9e5afc794cdfc266cd1084786f00517358b5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:9",
+      "input_sha256": "d4bbb509f216f5b6a676fb2d6a12695f257912c33070d133804b2f1806031554",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:10",
+      "input_sha256": "e54921117d88ccbc97433b291282244834eac4a00f08334a416567f55af987ad",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "M-03:perturbation:11",
+      "input_sha256": "5fc9b825ac859d93fafea82cf2ac068ca8d494e1619341a9316c99b2b7123815",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01",
+      "input_sha256": "6e9ce64694e4e262801e115f556447c3627f311c64d7ba0758e5afeb759bd104",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:0",
+      "input_sha256": "3b604857cc8fed4ddd7f5f5cff933324bbf6040ae29148e6cc4316393488e3d8",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:1",
+      "input_sha256": "46e122f518eddaf214112f804013e4af044445557aeec001f20d7bccaae8455e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:2",
+      "input_sha256": "69eb0ccd21ea28b0593e15901207f5fe176a50bd4f6d5ffc57f3b27d45ce6172",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:3",
+      "input_sha256": "76ee17314b9d0aba38ef6c88178ecec4dcccaaa5aae3ec465570366ecc9493bd",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:4",
+      "input_sha256": "b50bf0c2e873d1540c174167788fdc0d30a9919726764b46933889e15e81da9c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:5",
+      "input_sha256": "37ba49c084ff0694f7f829f047816afe0c96349e18a49f4ce5e0c87bac97a9d5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:6",
+      "input_sha256": "9eb1d876f395feaacf2adb5cd64380cdae8ecf849137e87e7a8e2696a2afa751",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:7",
+      "input_sha256": "a87d9f5477ad657ad5e991cd53ba5514f0f54bccc0f9fe80af656e91299ff51a",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:8",
+      "input_sha256": "ec3b39ac3e782ee7647e00d87c0067fdfc00124e43a105610a82f095464363e3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:9",
+      "input_sha256": "f0e22900fcce9ec250289b0aceb0863fd2188756091847c4e2949283c20d9ac4",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:10",
+      "input_sha256": "28f48481faaa64946bba8e025f4d0b074914e08afa20333690673d15dd7e4243",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-01:perturbation:11",
+      "input_sha256": "b287de952c974de498efcfa06b4790c67d208626aeaaa6617f46e08f624798dd",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02",
+      "input_sha256": "3b7e0c63360f421dfcf47cec704a29b361dca011be21c9c0afab208af94020a6",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:0",
+      "input_sha256": "4e994be3041687c205bb5841723c51c18719d84715b87143887b65c6494cf5d2",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:1",
+      "input_sha256": "7e4d368bc96459d571442f706235a23241ca6116f076382ae6427dd23b16cd66",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:2",
+      "input_sha256": "f985278df78fc37163b0b79b8fb94cd5c263c03568374339283b9ba80321cddd",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:3",
+      "input_sha256": "d41dd35420fddf5936e9f07e77d59a1ebfeb53090a5a0d8dba648cdc9a1d0300",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:4",
+      "input_sha256": "f78bd5b4d04f2bd493839e31266f2ab01647dd0fb386a3e52cbe32621454a1d5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:5",
+      "input_sha256": "f430584fb01bbe1d440ef6761f3569338c099372ad07bb91142b6a1612febf8e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:6",
+      "input_sha256": "2bf400cc27bff81b69da05163ec6f82d78710e082d1603105cb18a1a77873a48",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:7",
+      "input_sha256": "5ff1488b1c4354d648979d0909e02d4107b54fb71154686d97666585a58f7508",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:8",
+      "input_sha256": "53928e3b28325cdaf4772849f2f0d848f1ebd9cd8c5442feb3b4f5fe01d988f5",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:9",
+      "input_sha256": "c6d03ae833172c247b4d5a3e805de3a4de5f70fbf6364a3e342a3f12a6808e63",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:10",
+      "input_sha256": "fe8d30a03d728b5dccfc5a8d4394448e74707850dca3f5ec13ce494a10406aa9",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "P-02:perturbation:11",
+      "input_sha256": "f5b656d4e3290c27afb5becda1debc0a13fa83491475ed653fed9575ef0bdf1d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01",
+      "input_sha256": "8465aa0ae16fdc213a690952d131963d13ae7eda52f30e6e5dfaffe1a02bd494",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:0",
+      "input_sha256": "0b39151ed83f83563743432ae388af459197a610857ad5ef52b047147107b79b",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:1",
+      "input_sha256": "75e1fa6f0a5d5d1fde7f212bbf9c632fb3aaaaebbe5bf82e26dfea8a7a32f6e0",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:2",
+      "input_sha256": "873cbda0a05b9d2aaa58a040e2d6d74a28149106c31f2d39ba1551f305964704",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:3",
+      "input_sha256": "8101b1db3176175550efc1527a11d70f2b4d75335c1bc677ab0c7f1b2d71812b",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:4",
+      "input_sha256": "8f4b9c9e5a3e87fcc41476183bd3823b15b86afacdd21bf027cdd7f871fc7dfb",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:5",
+      "input_sha256": "faec9215f6dddd8cc7572125539bfa2133b794a9259bd7a5d09d56f830c35b7a",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:6",
+      "input_sha256": "45cbbb1c62b1c227d48b5f633b5fa69bfa3d0eaa94c61e306a333d1e693ec20a",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:7",
+      "input_sha256": "2788f11664c74f8df26ef96b85f8827aec1858429533299525cfb04f9b399e79",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:8",
+      "input_sha256": "35348fa4653a2e6ce76945277fdf604bed670588415b828361ec8d4f829676de",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:9",
+      "input_sha256": "1b012ae3e39e226beff1cb4b94ef8b6436cad150a671fd7a45b4ed8225ef463f",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:10",
+      "input_sha256": "2625147e490dc5f692735c92e0b32e5b653ee347bddd634e875a9b333c3591c5",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-01:perturbation:11",
+      "input_sha256": "68b75c66315d42e5068ebabd77c9dd8e62d43a052f15b61c37ad90844d6f9239",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02",
+      "input_sha256": "e45b5ee6068a76c21ece90fc569c6336155fe6d7b5ea2cd08a13d036f2eb228e",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:0",
+      "input_sha256": "8cfae281e0149b8d2f7494131f13494a509f460fe62cb2f86740bde184233256",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:1",
+      "input_sha256": "6dedc51a9e25261f86fd6e1314477ea252ccdbc04665bb30b535d9afdb029733",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:2",
+      "input_sha256": "c94f19ae05abd903106c678b98b689d90119d3592d263a31715a277551653bc0",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:3",
+      "input_sha256": "e8a1697a29ef168d8b9c27328b55667b0acd23dfb7cde354c007f992b2901253",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:4",
+      "input_sha256": "52b9c20aef795cc689aa0fec117a256de0be92c208830b16a85a4f2cf253fd24",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:5",
+      "input_sha256": "d26b883419a8fa42be518b37bc323408f5c598b7c252545d3dd82bc1132de07a",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:6",
+      "input_sha256": "4455d9784d90637317a937a8cc5590ce2903a680574d807321634d1426e2b490",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:7",
+      "input_sha256": "ae2c44852e56a6b8f63124661e9290b16bc5bd390a761f64c1612dbe284615bf",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:8",
+      "input_sha256": "08fa9fa8b82ac1b05554f2e5937711262e6a517eba631712772d458523fe0ac9",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:9",
+      "input_sha256": "51d1d2f8abe011eb27c5664c5b7a5542ccad76e9126a5f959d2261cca7f4a002",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:10",
+      "input_sha256": "76c9abba74e9234238190b77f42b9afd044d54e3e907e9fbc4a596399cf2a652",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-02:perturbation:11",
+      "input_sha256": "c7feb1daa75591aad0ac59506afe7214f483f00c77eb8e5841db26dc737c56d5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03",
+      "input_sha256": "d4fb4be448853842fb534e32a50cb5ecf5fd3bd09c6c97053f80c9469b55f5e7",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:0",
+      "input_sha256": "0ab20aa06782f8c2fcd90005b3c6573956d2abc31da3d9f24037d3dbf01e5b8f",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:1",
+      "input_sha256": "5b2fb7a6b209220e251a918f7d9bd5e7feacd55089c22beb560c9892b7c9d818",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:2",
+      "input_sha256": "67d64d4e7de5bde31e32b14b39025d135d224a51806f0a02063b1e62483456e6",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:3",
+      "input_sha256": "e4887d8b839445c758e91f868e6a9d34a79bfa91c74ea4ed521789ad5aa33c01",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:4",
+      "input_sha256": "31c630f9ea4d2d4b4dca286e8185b013c349368a463d5fed7e82cc475250fac5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:5",
+      "input_sha256": "4697abe0810bdb06a527f74fb06dd099c59c12e83835858b9a3c7a32b80e7ee1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:6",
+      "input_sha256": "c53083348eb13cb01c880f7beb9da699073a698da132fd18b80b3df81846d70c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:7",
+      "input_sha256": "9dfbb3ac1494160f882f632dab8cc0c355dd381e65fe28fc2afef85e73d71604",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:8",
+      "input_sha256": "1ae3f7fdb25a6f14ee789566e6713d5c17eb29a528ed11e53c60845346bb7c70",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:9",
+      "input_sha256": "6d5e01ccf4f999eedeef74acf325e8b6671b83aeca29266dd6c5cd573bda4ff8",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:10",
+      "input_sha256": "eb4589850d378edb26b3d5a100c41fb102dd06148f56290d1e62d3ebaa1088f4",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "T-03:perturbation:11",
+      "input_sha256": "a1ab190811fa56ce11972a6296d41266d8c7d8f900e27ba7186782a6b149d888",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01",
+      "input_sha256": "9a5005a8caa7ec44cb358fada2753e86db9fd49bedf3ed7eae6e70f0f5796cc1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:0",
+      "input_sha256": "6dbd5d912626801e1eeae999fea1d44991766a23bab532ac44c8a503396946f7",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:1",
+      "input_sha256": "55634236700c43e0f1980335833aeb93b728bef23fa6544761c8e20397a91e90",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:2",
+      "input_sha256": "b9d171f765337d28ac89022e689cbe6ae6d2f0117e9f5e82498db06e9a7e4b64",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:3",
+      "input_sha256": "7bfe44e046dc43c0c7af1c19dbc5a0ec73007abc9c350459e8c85be3203e1aab",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:4",
+      "input_sha256": "f9e4525b9356c78189e347d882ae3245395e12edf5543de76b9aee740ca13092",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:5",
+      "input_sha256": "3d2cd0379840873304e047ca2dbe2f1c2b6f24172490ad0892caa689dfab5b3e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:6",
+      "input_sha256": "5862adc9fba66fdbe30461f212c78dd25729f87d6cfb2863f31d59f0ca63c0b9",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:7",
+      "input_sha256": "64d945fddd08c7e23bf8f2e8e540c490741ea8f21eb7f9c2b3872651b6d231bc",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:8",
+      "input_sha256": "b405bd8869b17985429e1604635c40b89d9cda4fdc48068eacbe570bb12cee12",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:9",
+      "input_sha256": "520785d2fbd4fd7c53b0371eb610e80b33ea47b034d7d3a96aed04bad4bb511e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:10",
+      "input_sha256": "7ea052f2e2c4aa4f0ea482bdbfc4cbd342c2e6203979c79ae890089f7b01130d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-01:perturbation:11",
+      "input_sha256": "fd6f7440fb59f6b94b45fe25f863598912fe914d3fb2d973cae088785795f440",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02",
+      "input_sha256": "bd824c3c2169c31e14f75440eb6f4a9510dcf40454736598000696d7bf583e20",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:0",
+      "input_sha256": "fb12c9c78918172c45e7d280c8b30e3aadfe79d6bd54ba033b58cf7dade376e7",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:1",
+      "input_sha256": "87de1e52b7ebe68e64f8dcfbfba989e0cf2bfb99c342004c114479d006543046",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:2",
+      "input_sha256": "8b2d306975f5606d722b71f0d4aa748c96263f09cb6ff03a45fd42a076276222",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:3",
+      "input_sha256": "31a03695a8841d8311e9db1d4d289b8572a3540cd96e3d8519be7a064fd6ce45",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:4",
+      "input_sha256": "fd7e21298a3771996dadcaab8bba4f906d19d7665de99bff163c3d753cb223b5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:5",
+      "input_sha256": "92e85753901377151a47a4346387971ec6e6299c5c502c85a8d34bfb2e29eebd",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:6",
+      "input_sha256": "602a00d19cecb68fbc00ea582d03191f08cf31892e94c3d5069671871d8bb43f",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:7",
+      "input_sha256": "0742d1f3fca7a8fa9789dd9b291b4ee78fc96e0cf7fc483f8a65d82b845901a0",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:8",
+      "input_sha256": "5a9a97ea360a1c085dcd7c232905d01a210c2cd24eea06f1978d1a61c2c7e783",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:9",
+      "input_sha256": "a0ebdad0e36928dc57a89922dcb2ded37cfed2274bf03229d6c8e9a3ae9c612c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:10",
+      "input_sha256": "98435cc7aec4e4cbffd917bbaf79ee70af4088cd32725e4b58029bce2c0aadd1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-02:perturbation:11",
+      "input_sha256": "1f8dbc0ffb81ae955b0ac4102cf7c69d0c1f3d3c1d264af3b53b77ef9d9706a5",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03",
+      "input_sha256": "815ed56439635f36fa632911fccb2aa6e19ed56a22eb07d92d2c3dc37a8737a3",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:0",
+      "input_sha256": "5380ead762f74b47f7715181b251dea7373c230b38a385622f74f5ba952f938a",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:1",
+      "input_sha256": "aa8b95435f97055c41372443cf10e22ed22b74ad673d197e9d44a44522e3fe3d",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:2",
+      "input_sha256": "310002754c34aea1f926d08898061cc4887b62201394c40ef4f6f550d86f9699",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:3",
+      "input_sha256": "3dc2ec9cd43f1cb02b96ec6c556366fd6e194e942df96dec7d1c1c20d148f63f",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:4",
+      "input_sha256": "74c3e7b6f05251d8b1c83024bbd834bd2ffc0c199f2baf389807305825d9c30e",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:5",
+      "input_sha256": "ebc092fd4658758baa07c4694a50ec57d085797e2c2a83b3e033d2a75c3421da",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:6",
+      "input_sha256": "0ccf17d289c34e05bb42078b525dab9add29b2ec5bc31879e785e22926502b88",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:7",
+      "input_sha256": "453558b5c9df49a65eb58fa78e6f922443841f25e10022bd87c7834909d0fc73",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:8",
+      "input_sha256": "e481b1fe4eadd96649178a3de25d63b80b6abb4a8b758704bbf526d00b81aff1",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:9",
+      "input_sha256": "4f7a83c77d675db17046145f7499b3d9ec099ee1e2a2ddc56cb6aedd9beb4099",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:10",
+      "input_sha256": "73e4d8ffe194caa42ecbf1100c6117f47c2444c7e2bb66ceff31486192a82152",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-03:perturbation:11",
+      "input_sha256": "d86845c8421a5ac145a2ae5e04d6c75b47ba68aa29c2a95e5ad84c32e289e69c",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04",
+      "input_sha256": "c9f2b623d80a332cfade95fb143bf7a5a5750d4f6e2f0f9342190fae01b4299f",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:0",
+      "input_sha256": "e5b34fd0ed780ff4374dffbcbf422bb37d0cec9512b04031d2ea997e08097b91",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:1",
+      "input_sha256": "ca904c8005194c34e4e483a74cfcce61552ea2e815b5f2b9aa8c8c84346e9d05",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:2",
+      "input_sha256": "a01467020b49f709373247b6ea7ffc025c9546d7688198a525c247d1728c0c6a",
+      "v2": "NEEDS_REVIEW",
+      "consumer_tests": "NEEDS_REVIEW",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:3",
+      "input_sha256": "0f8d224e9fa659a7c9a9a554a54dcda3bc3a30fb1ecca7be36c20569019c24e6",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:4",
+      "input_sha256": "1122445c2a679b94f9f10666f2dae50c34afe83efc23b4586c46998032805a44",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:5",
+      "input_sha256": "273018b5ea789e38c4ba7a371384551a3556191c18d90c6368a25810f1751d07",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:6",
+      "input_sha256": "d19061db2f85e967a015f3d69ad689de3ce8328ba019c067a0d1f76167128076",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:7",
+      "input_sha256": "80d013728d4d4e968667226b93c95ed7dad76ecca865e2ab69b3fa903c4d75f6",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:8",
+      "input_sha256": "31ab4c67564df58da3970e2b9c9100d3e1e324c8caf476a69b109a831e9a95e2",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:9",
+      "input_sha256": "e3c693bb74b3dc5cfc0d49450097f27735a456e487287a3bef0d136fbe958edd",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:10",
+      "input_sha256": "a90622a6238684379f630f2b5322e6fc882681585bd73122716b8264d807d722",
+      "v2": "ACCEPT",
+      "consumer_tests": "ACCEPT",
+      "agreement": true
+    },
+    {
+      "id": "U-04:perturbation:11",
+      "input_sha256": "3cc511844055a5369426cc21ef24aed239e3c8a925e76203671194b5de34d7cf",
+      "v2": "REJECT",
+      "consumer_tests": "REJECT",
+      "agreement": true
+    }
+  ],
+  "llm_comparison": "NOT_RUN: no configured reproducible inference endpoint",
+  "limitations": [
+    "Same author and typed language; not an independent correctness oracle.",
+    "No real SQL/data execution, Pact/dbt integration, cost or business validation.",
+    "Development cases only; confirmatory evaluation unchanged."
+  ]
+}
