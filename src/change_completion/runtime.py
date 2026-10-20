@@ -15,7 +15,7 @@ from .executor import execute_select
 from .models import Action, ContentRef, Contract, TransitionSpec
 from .providers import PatchProvider, WindowPatchProvider
 from .store import RunStore
-from .verification import ExpectationSuite, TrustPolicy, context_digest, digest_bytes, load_json, verify_observations
+from .verification import ExpectationSuite, TrustPolicy, context_digest, digest_bytes, load_json
 
 RUNTIME_VERSION = "sql-window-runtime/1"
 

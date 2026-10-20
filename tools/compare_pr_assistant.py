@@ -4,12 +4,11 @@ All modes get the same metadata, lineage, SQL and fixtures. Executable consumer
 tests replace formula-string equality with supplied SQL output assertions; the
 V2 assistant retains its frozen literal formula predicate. Neither is an oracle.
 """
-import copy
 from datetime import datetime
 import json
 from pathlib import Path
 
-from run_pr_assistant import ROOT, load_example, artifacts, report
+from run_pr_assistant import ROOT, load_example, artifacts
 from datamesh_release_protocol.change_assistant import metadata_issues, check_regression, advisory_decision
 from datamesh_release_protocol.consumer_test_baseline import consumer_test_decision
 from datamesh_release_protocol.dependency_import import import_sql

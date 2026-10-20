@@ -11,7 +11,6 @@ import os
 from pathlib import Path
 import re
 import shutil
-import subprocess
 import time
 import urllib.request
 import uuid

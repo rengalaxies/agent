@@ -8,7 +8,7 @@ from pathlib import Path
 from threading import RLock
 
 from ..knowledge import KnowledgeRecord,canonical,digest
-from .protocol import WorkItem,make_vote,sign,revision
+from .protocol import WorkItem,make_vote,sign
 from .policy import project
 
 

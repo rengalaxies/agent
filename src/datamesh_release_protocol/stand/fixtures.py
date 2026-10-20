@@ -1,7 +1,5 @@
 """Synthetic E4 fixtures; no imports from evaluation catalog or scoring labels."""
-import json
 from datetime import datetime,timezone,timedelta
-from pathlib import Path
 from ..knowledge import Authority,KnowledgeRecord,KnowledgeStore
 from ..models import DataContract
 

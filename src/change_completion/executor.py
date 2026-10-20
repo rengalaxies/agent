@@ -6,7 +6,6 @@ Only the trusted worker runs as Python; candidates are never Python programs.
 import json
 import math
 from pathlib import Path
-import os
 import subprocess
 import sys
 import tempfile

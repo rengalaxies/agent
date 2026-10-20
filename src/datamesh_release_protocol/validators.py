@@ -7,7 +7,6 @@ from .models import (
     BaselinePolicy,
     BaselineRule,
     CheckResult,
-    ConsumerObligation,
     ConsumerVerdict,
     DataContract,
     Decision,

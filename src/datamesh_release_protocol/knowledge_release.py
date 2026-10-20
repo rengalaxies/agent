@@ -9,7 +9,7 @@ from pydantic import Field, model_validator
 from .engine import finalize
 from .interpreter import TypedObligationInterpreter
 from .validators import _schema_checks
-from .knowledge import KnowledgeSnapshot, KnowledgeStore, digest, utc
+from .knowledge import KnowledgeStore, digest, utc
 from .models import Decision, Migration, StrictModel
 
 

@@ -4,7 +4,7 @@ import urllib.request
 from datetime import datetime,timezone
 from ..knowledge import digest
 from ..knowledge_release import request_fingerprint,MappedRelease
-from .protocol import WorkItem,required_domains,SignedMessage,verify
+from .protocol import WorkItem
 from .policy import project,build_distributed_release
 
 

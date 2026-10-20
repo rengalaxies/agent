@@ -1,12 +1,10 @@
 """Verification supervisor. Trusted Python verifier, never candidate Python."""
-from datetime import datetime
 import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 
-from .models import ContentRef, TransitionSpec
 from .verification import VerificationReport, context_digest
 
 

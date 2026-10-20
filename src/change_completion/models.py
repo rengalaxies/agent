@@ -179,20 +179,3 @@ class EvidenceBinding(Contract):
             raise ValueError("evidence lookup requires timezone")
         return (self.transition_id == transition_id and self.context == context and self.check == check
                 and self.checked_at <= at < self.valid_until)
-
-
-class JournalEvent(Contract):
-    """Event format; persistence, append-only storage and deduplication come later."""
-    event_id: str = Field(min_length=1)
-    transition_id: str = Field(min_length=1)
-    actor: str = Field(min_length=1)
-    at: datetime
-    action: str = Field(min_length=1)
-    basis: ContentRef
-    supersedes: str | None = None
-
-    @model_validator(mode="after")
-    def timezone_and_identity(self):
-        if self.at.utcoffset() is None or self.supersedes == self.event_id:
-            raise ValueError("event needs timezone and cannot supersede itself")
-        return self

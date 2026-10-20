@@ -1,6 +1,8 @@
 """Select persistence explicitly; never fall back to local temporary storage."""
 import os
 from services.audit_pg import AuditUnavailable
+__all__ = ["AuditUnavailable", "audit_record", "audit_ready", "BACKEND"]
+
 BACKEND = os.environ.get("DMRP_AUDIT_BACKEND", "postgres")
 if BACKEND == "object_storage_volume":
     from services.audit_volume import audit_record, audit_ready
