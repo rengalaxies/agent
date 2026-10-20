@@ -1,0 +1,17 @@
+stateDiagram-v2
+  [*] --> REQUESTED
+  REQUESTED --> BUILDING_CONTEXT
+  BUILDING_CONTEXT --> ANALYZING: доступный snapshot
+  BUILDING_CONTEXT --> AVAILABLE: только доступный контекст и пробелы
+  BUILDING_CONTEXT --> ERROR: ошибка сбора
+  BUILDING_CONTEXT --> TIMEOUT: лимит сбора
+  ANALYZING --> AVAILABLE: полный в scope или частичный результат
+  ANALYZING --> ERROR: ошибка анализа
+  ANALYZING --> TIMEOUT: лимит анализа
+  AVAILABLE --> REQUESTED: новый запрос или пересчет оснований
+  ERROR --> REQUESTED: ограниченный повтор
+  TIMEOUT --> REQUESTED: явный новый запрос
+  note right of AVAILABLE
+    coverage и freshness хранятся отдельно
+    частичный результат тоже может устареть
+  end note

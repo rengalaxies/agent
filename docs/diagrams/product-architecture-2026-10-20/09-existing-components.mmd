@@ -1,0 +1,8 @@
+flowchart TD
+  R["Исследовательское ядро и knowledge-1"] --> RI["Синтетические вердикты и исследовательские результаты"]
+  C["change_completion"] --> CI["Очередь, локальные профили, freshness и SQL review"]
+  L["lab PostgreSQL и RabbitMQ"] --> LI["Collectors, карточки, узкий SQL repair и verifier"]
+  RI -.-> E["Оценить пригодность к выбранному случаю"]
+  CI -.-> E
+  LI -.-> E
+  E -.-> T["Будущий консультативный модуль HTTP/API и RabbitMQ"]
