@@ -6,7 +6,6 @@ An operator pins the independent suite digest outside candidate-controlled files
 """
 import ast
 from hashlib import sha256
-import json
 from pathlib import Path
 import re
 import time

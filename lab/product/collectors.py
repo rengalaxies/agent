@@ -6,7 +6,6 @@ No messages are consumed and no management mutation endpoint is used.
 from __future__ import annotations
 import ast
 import base64
-import hashlib
 import json
 import os
 from pathlib import Path

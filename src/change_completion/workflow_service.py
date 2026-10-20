@@ -6,9 +6,9 @@ from pathlib import Path
 from .adapters import discover_repository, read_repository_file
 from .action_policy import ActionRequest, Mandate, evaluate_action
 from .delivery import DeliveryConfig, GatewayDelivery
-from .models import Action, ContentRef, TransitionSpec
+from .models import Action, ContentRef
 from .runtime import _granted, authority_digest, encode, runtime_revision, utc_now
-from .verification import ExpectationSuite, context_digest, digest_bytes, verify_observations
+from .verification import ExpectationSuite, context_digest, digest_bytes
 
 
 @dataclass(frozen=True)

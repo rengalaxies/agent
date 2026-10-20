@@ -17,7 +17,7 @@ from urllib.request import Request, urlopen
 from .distributed import make_event
 from .engine import scenario_snapshot_id
 from .journal import EventJournal
-from .models import Decision, Scenario, ValidationMode
+from .models import Scenario, ValidationMode
 from .validators import validate
 from .loaders import load_baseline_policy
 

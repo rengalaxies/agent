@@ -1,9 +1,8 @@
 """Real disposable services + API/browser scenarios, then separately gated live model path."""
-import argparse,copy,hashlib,json,os,secrets,subprocess,sys,time,urllib.request
+import copy,hashlib,json,os,secrets,subprocess,sys,time
 from datetime import datetime,timezone
 from pathlib import Path
 import httpx
-from lab.runtime.core import digest
 
 ROOT=Path.cwd();OUT=ROOT/'product-evidence';OUT.mkdir(exist_ok=True);OUT.chmod(0o777)
 URL='http://127.0.0.1:8088';client=httpx.Client(base_url=URL,timeout=15)

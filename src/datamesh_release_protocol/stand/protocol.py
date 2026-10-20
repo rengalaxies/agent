@@ -8,7 +8,6 @@ from cryptography.hazmat.primitives import serialization
 from ..knowledge import KnowledgeSnapshot, canonical, digest
 from ..knowledge_release import evaluate_snapshot, request_fingerprint
 from ..models import Decision, Migration, StrictModel
-from ..validators import _schema_checks
 
 
 class WorkItem(StrictModel):

@@ -12,7 +12,6 @@ from datamesh_release_protocol.distributed import run_distributed
 from datamesh_release_protocol.engine import scenario_snapshot_id
 from datamesh_release_protocol.journal import EventJournal
 from datamesh_release_protocol.loaders import load_baseline_policy
-from datamesh_release_protocol.models import ValidationMode
 from run_e4 import three_domains
 
 

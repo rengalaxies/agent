@@ -17,7 +17,6 @@ def execute(root, candidate, change, grant, journal_dir, target, revoked=(), aut
     Unknown outcomes require reconciliation, never blind automatic retry.
     """
     from lab.evaluator.verify import verify, suite_digest
-    from lab.app import service
     if not callable(authority_loader):
         raise Stop('Live authority loader required to recheck revocation immediately before execution.')
     if target not in ('S1', 'S2', 'S3', 'S4', 'S5'):

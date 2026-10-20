@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 import secrets
 
-from .adapters import read_repository_file
 from .run_cli import operator_path, read_operator_file
 from .runtime import encode, run_transition
 from .verification import load_json
