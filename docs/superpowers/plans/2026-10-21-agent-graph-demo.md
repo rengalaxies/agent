@@ -15,6 +15,7 @@
 - Целевая ВМ dm-p1-ui: 2 vCPU / 4 GiB, Ubuntu 24.04.4; адрес 45.151.31.140, пользователь dmadmin. Ключ выбирается по успешной локальной SSH-проверке, а не по предположению об имени v2.
 - Backend публикуется только на 127.0.0.1:18081. Порты 8000/8080 сохраняем за существующими конфигурациями. Сервисы sandbox не публикуются в интернет.
 - Начальные пределы: одно исполняемое задание; до четырёх ожидающих, затем явный busy; общий job deadline 180 секунд; max_files 256, max_file_bytes 65536, max_corpus_bytes 2000000, scan_seconds 15, freshness_seconds 3600, max_tool_lines 60.
+- На установке одновременно работает <=1 sandbox-проект; сохранённые sessions не запускают отдельные окружения автоматически. Новый sandbox запускается после подтверждённой остановки прежнего. Общий workload lock сериализует graph/consumer/test jobs.
 - Плановые memory caps: backend/worker/graph 768 MiB, Orders 192 MiB, Status 128 MiB, каждый consumer job 128 MiB, тестовый runner 256 MiB. Consumer/test jobs и анализ сериализуются.
 - Граф не выполняет тесты и не выдаёт разрешение на выпуск. report_check сохраняет EXTERNAL_REPORTED. Реальная проверка runner и условный вывод графа — разные объекты.
 - Профиль http-requests-2; произвольные wrappers/dynamic URLs, межобластное сравнение разных view и inference неизвестной конфигурации не объявляются поддержанными.
@@ -52,7 +53,7 @@
 | src/agent_graph_demo/store.py, worker.py | Сессии, идемпотентная очередь, leases и история |
 | src/agent_graph_demo/api.py, auth.py | HTTP-маршруты, роли и серверная область доступа |
 | src/agent_graph_demo/web/{index.html,app.js,styles.css} | Экран карты/изменения/оснований/истории |
-| tools/agent_graph_demo/{run_scenario.py,ingest_receipt.py,accept.py} | Доверенный операторский runner, импорт результата, приёмка |
+| tools/agent_graph_demo/{run_scenario.py,ingest_receipt.py,runtime_guard.py,accept.py} | Доверенный операторский runner, root-owned active registry, импорт результата, приёмка |
 | infra/agent_graph_demo/{compose.yaml,Dockerfile,nginx.conf,agent-graph-demo.service} | Воспроизводимое размещение и запуск |
 | infra/agent_graph_demo/{requirements.lock,images.json,README.md} | Закреплённые зависимости, image digests и эксплуатация |
 | tests/graph_demo/test_*.py | Поведенческие unit/integration boundary checks |
@@ -69,6 +70,7 @@
 - JobRecord: id, session_id, session_revision, target_revision:int|null, target_version:ScenarioVersion|null, action, status, input_sha256, created_at, started_at|null, finished_at|null, result_ref|null, error_code|null.
 - StagedSelection: session_id, source_revision, target_revision, previous_manifest_sha256, target_manifest:SnapshotManifest; это непубликованное состояние materialization, не новая SessionRecord.
 - CheckReceipt: id, session_id, session_revision, proposed_manifest_sha256, running_manifest_sha256, dataset_sha256, fixed_check_id, expected_count, actual_count, missing_ids, duplicate_ids, unexpected_ids, status PASS|FAIL|ERROR, command_id, started_at, finished_at, exit_code, origin="operator_runner".
+- SandboxRuntime: generation:int, state:Literal["STOPPED","STARTING","RUNNING","UNKNOWN"], session_id:str|null, project_name:str|null, manifest_sha256:str|null, observed_at; root-owned registry, read-only для web. Текущее SessionRecord.running_manifest_sha256 сверяется с registry; исторический receipt не удостоверяет текущий runtime.
 - Actor: subject, role operator|viewer, allowed_session_ids. Session ownership/grants проверяются сервером.
 - DemoError(code: str, http_status: int); timestamp UTC, JSON без NaN, arbitrary caller fields не сохраняются как authority.
 
@@ -146,7 +148,7 @@ assert applicable(receipt.model_copy(update={"session_revision": session.revisio
 - enqueue(session_id: str, expected_revision: int, action: JobAction, payload: dict, idempotency_key: str)->JobRecord. analyze_change payload = {target_version:Literal["B","D","E"], base_context_id:str, task:str=""}; prepare_context = {task:str=""}; investigate = {context_id:str}. task <=4000 символов, extra fields forbidden.
 - publish_selection(job_id: str, staged: StagedSelection, current_context_id: str, result_ref: str)->SessionRecord; CAS по исходной revision и pending_job_id атомарно публикует целевой manifest/revision/context и освобождает reservation.
 - claim_next()->JobRecord|None; finish(job_id: str, result_ref: str|None, error_code: str|None, status: str)->JobRecord.
-- recover_interrupted()->list[str]; reset_session(id: str, expected_revision: int)->SessionRecord.
+- recover_interrupted()->list[str]; reset_session(id: str, expected_revision: int, idempotency_key: str, runtime: SandboxRuntime)->SessionRecord. runtime читается сервером из root-owned registry под workload lock, не принимается из HTTP. reset разрешён только после STOPPED; RUNNING/STARTING дают operator_stop_required, UNKNOWN — runtime_unknown.
 - DemoWorker.run_once(cancel: threading.Event)->bool uses Task 3 adapter and Task 2 session lock.
 
 - [ ] Написать test_same_key_same_body_returns_same_job, test_same_key_different_body_conflicts, test_one_running_four_waiting_then_busy.
@@ -163,6 +165,7 @@ assert sum(job.status == "QUEUED" for job in jobs) == 4
 - [ ] Добавить test_cancel_or_crash_after_materialization_restores_published_manifest: убить worker после записи B, до publication; после restart job UNKNOWN_AFTER_RESTART, bytes соответствуют последнему опубликованному A, revision=1, новый mutating job разрешён только после reconciliation. Immutable graph history не стирается, поздний результат не текущий.
 - [ ] Написать test_restart_marks_running_unknown_without_retry и test_old_job_after_reset_not_current. Реальный process restart должен сохранять историю и оставлять незавершённое UNKNOWN_AFTER_RESTART.
 - [ ] До publication B UI показывает pending target=B/proposed=A/running=A; после CAS proposed=B/running=A. Смена runtime происходит только после привязанного receipt оператора. Нельзя обновлять running version из ответа модели/браузера.
+- [ ] Добавить test_reset_requires_verified_stop_and_preserves_history: активный runtime даёт 409 без новой сессии; после stop новая A имеет running_manifest_sha256=None и прежняя история сохранена. Пока selection job зарезервирован, reset даёт session_busy. Idempotent reset повторно возвращает ту же новую session.
 - [ ] Повторить tests и записать commit: feat: persist serialized graph demo jobs and history.
 
 ### Task 5: API, серверные права и режим доступа
@@ -171,7 +174,7 @@ assert sum(job.status == "QUEUED" for job in jobs) == 4
 
 **Interfaces:**
 - create_app(settings: DemoSettings)->FastAPI; lifespan создаёт один DemoWorker.
-- DemoSettings: state_root: Path, cli_python: Path, allowed_origins: list[str], auth_config_path: Path, public_mode: bool=False; пути/секреты только server configuration.
+- DemoSettings: state_root: Path, cli_python: Path, allowed_origins: list[str], auth_config_path: Path, runtime_registry_path: Path, public_mode: bool=False; пути/секреты только server configuration. runtime registry монтируется read-only, workload lock — отдельный общий lockfile.
 - authenticate(request)->Actor; authorize_session(actor: Actor, session_id: str, write: bool)->None.
 - Маршруты и HTTP-methods точно из спецификации §6; все session paths используют UUID, evidence — opaque server citation ID.
 
@@ -189,6 +192,7 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 - [ ] Реализовать POST jobs с точным JSON из спецификации §6: action, expected_revision, idempotency_key, payload.target_version/base_context_id/task. Ответ 202 = job_id/status/session_revision/target_revision; malformed=422, authentication=401, forbidden=403, session_busy/revision/idempotency conflict=409, queue full=429. Base context принадлежит этой session и профилю; arbitrary paths/digests не принимаются. Не включать credentials/authorization в logs.
 - [ ] Добавить API test_analyze_payload_binds_version_and_revision и test_cross_session_base_context_rejected: target_version=B и expected_revision=1 резервируют именно B→revision2; чужой base_context_id не принимается; target_version у prepare_context/investigate и target_version=A у analyze_change дают 422.
 - [ ] GET graph/history читает сохранённые артефакты; не запускает implicit scan. Свежесть помечена временем последней оценки; явное обновление ставит job. Не смешивать безопасность read-only viewer с single trusted OS-user моделью.
+- [ ] POST reset принимает expected_revision/idempotency_key, проверяет серверный runtime registry под workload lock. При active/unknown возвращает 409 operator_stop_required/runtime_unknown, а не успешный reset; web не исполняет Docker. После операторского stop reset создаёт A-сессию с running=None. Добавить API test_reset_active_sandbox_requires_operator_stop.
 - [ ] POST proposals: operator-only; схема/цитата/supersedes проходят настоящие проверки модуля. Исправление нормы не делается через UI boolean approve.
 - [ ] Повторить tests; commit: feat: expose authenticated graph demo API.
 
@@ -205,26 +209,31 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 - [ ] Запустить browser acceptance на реальном backend; до UI ожидается отсутствие конкретных controls/данных, не сетевой сбой тестового окружения.
 - [ ] Реализовать один desktop экран: header состояния, карта слева, task/diff/findings в центре, evidence справа, история внизу; удобная типографика, русские подписи, legend, keyboard focus и текстовые статусы.
 - [ ] Добавить test_script_in_source_rendered_as_text, test_partial_and_model_unavailable_visible, test_previous_revision_result_stays_historical. На width 390 экран остаётся читаемым через последовательное расположение панелей.
-- [ ] Управление сценариями с mutating runtime не выдавать за команду агента. Показывать «ожидает действия оператора» до действительного запуска runner; scripted replay маркировать отдельно.
+- [ ] Управление сценариями с mutating runtime не выдавать за команду агента. Показывать «ожидает действия оператора» до действительного запуска runner; scripted replay маркировать отдельно. При operator_stop_required показывать инструкцию операторского stop, сохраняя старую сессию; сброс завершён только после STOPPED и успешного повторного reset.
 - [ ] Показывать кандидатов/конфликты и operator correction; после refresh видна STALE correction, а не безусловно подтверждённое знание.
 - [ ] Сохранить screenshots основного сценария и ошибок, пройти journey глазами; commit: feat: add evidence-first graph demo UI.
 
 ### Task 7: Операторский runner и реальные результаты исполнения
 
-**Files:** Create tools/agent_graph_demo/run_scenario.py, ingest_receipt.py; finish infra/agent_graph_demo/compose.yaml; tests/graph_demo/test_runner.py.
+**Files:** Create tools/agent_graph_demo/run_scenario.py, ingest_receipt.py, runtime_guard.py; finish infra/agent_graph_demo/compose.yaml; tests/graph_demo/test_runner.py.
 
 **Interfaces:**
-- run_scenario.py --session ID --version A|B|D|E --check collection --output DIRECTORY.
-- Compose project name вычисляется из проверенного session UUID с префиксом agent-graph-demo-; служебные пути только из operator config.
+- run_scenario.py run --session ID --version A|B|D|E --expected-generation N --check collection --output DIRECTORY.
+- run_scenario.py stop --session ID --expected-generation N; stop подтверждает отсутствие работающих контейнеров, пишет registry STOPPED и сохраняет историю.
+- activate_sandbox(session: SessionRecord, manifest: SnapshotManifest, expected_generation: int)->SandboxRuntime; stop_sandbox(session_id: str, expected_generation: int)->SandboxRuntime; reconcile_sandbox()->SandboxRuntime в runtime_guard.py.
+- Compose project name = agent-graph-demo-sbx-<проверенный session UUID>; registry /var/lib/agent-graph-demo/runtime/active.json root-owned с read-only доступом app. Постоянный backend project agent-graph-demo и чужие проекты исключены из cleanup; пути/allowlist проектов только из operator config.
 - run_check(session: SessionRecord, manifest: SnapshotManifest)->CheckReceipt.
 - ingest_receipt.py --session ID --receipt PATH imports receipt into demo store and optionally calls graph report_check; сохраняет раздельную provenance.
 
 - [ ] Написать test_receipt_for_wrong_runtime_or_dataset_is_historical, test_caller_cannot_choose_shell_or_compose_file, test_reset_preserves_other_project.
 - [ ] Запустить python -m unittest tests.graph_demo.test_runner -v, подтвердить целевое падение.
+- [ ] Реализовать installation workload lock и root runtime guard по спецификации §5 «Один активный sandbox на установку». Порядок locks: workload → runtime guard (runner) → session; graph worker использует workload → session. Перед каждым новым up остановить прежний exact registered project через его закреплённый compose down --remove-orphans без -v и подтвердить нулевое число его работающих контейнеров. При failed down/UNKNOWN новый up запрещён; после crash STARTING требуется reconciliation, исторические projects не восстанавливаются автоматически.
 - [ ] Реализовать фиксированный набор subprocess argv Compose и checks, без исполнения текста из UI/source. Доставленный manifest сверяется с реально запускаемым артефактом; receipt фиксирует startup/errors отдельно от semantic FAIL.
 - [ ] Сделать реальный A→B→D→E прогон с requests через Docker-сеть. Проверить 250/100/250 Reporting, 250 Billing, отсутствие cross-service Health риска, новый Export edge.
 - [ ] Runner выполняется оператором с sudo Docker вне web. Запись receipt не делает внешний тест внутренним PASS графа; подпись/attestation не заявляется. Импорт несовпадающего current revision не продвигает running state.
-- [ ] Сброс переключает новую сессию в A и сохраняет предыдущие артефакты; cleanup ограничен точным disposable project. Не использовать глобальный docker prune или down -v существующего runtime.
+- [ ] Добавить real Docker test_five_sessions_do_not_accumulate_sandboxes: пять сессий, в каждой A→B→D→E, затем stop/reset; наблюдать переходы и Docker labels. Всегда <=1 работающего зарегистрированного sandbox, после stop/reset 0; предыдущие sandbox-контейнеры удалены, backend и чужой контрольный project остаются живы, история всех пяти сохранена.
+- [ ] Добавить test_concurrent_activate_only_one_runs, test_failed_down_blocks_new_up, test_crash_during_start_requires_reconcile. Две попытки с одной expected-generation не создают два проекта; новый runner после crash не запускает третий без сверки старого/целевого проектов.
+- [ ] Сброс: сначала операторский stop с generation CAS и подтверждённым STOPPED, затем API reset создаёт новую A без автоматического runtime-start. Cleanup ограничен exact registered sandbox, без глобального docker prune или down -v существующего runtime.
 - [ ] Commit: feat: run and record isolated HTTP demo scenarios.
 
 ### Task 8: Воспроизводимая приёмка и упаковка
@@ -237,7 +246,7 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 
 - [ ] Добавить tests для summarizer: наличие FAIL/ERROR/UNKNOWN не превращается в зелёную общую приёмку; настоящий ожидаемый broken-control FAIL отличается от непредвиденного провала.
 - [ ] Запустить python -m unittest tests.graph_demo.test_acceptance -v; реализовать machine-readable report и независимый контроль.
-- [ ] CI строит pinned образы вне ВМ и выполняет real HTTP + browser без платного inference и cloud secrets. Actions permissions=contents:read, отдельные disposable projects и finally-cleanup.
+- [ ] CI строит pinned образы вне ВМ и выполняет real HTTP + browser без платного inference и cloud secrets. Actions permissions=contents:read; sandbox-проекты сменяются последовательно через один runtime guard, finally-cleanup относится только к зарегистрированным disposable projects.
 - [ ] Прогнать python -m unittest discover -s tests -v и python -m ruff check src services tools stand lab/app lab/product lab/runtime --select F401,F811,F841. Запустить accept.py по инструкции с установленным Playwright/Chromium. Не переиспользовать заявленное прежде число 480 как новый результат.
 - [ ] Сверить Dockerfile/lockfile/image digests и package web assets; проверить, что oracle/receipts/deployment credentials исключены из model/graph sources.
 - [ ] Commit: test: qualify reproducible HTTP graph demo and browser journey.
@@ -248,15 +257,15 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 
 **Interfaces:**
 - Версионная доставка в /opt/agent-graph-demo/releases/<accepted-sha>, state в /var/lib/agent-graph-demo; dedicated application UID/GID 10001.
-- Один Compose-проект agent-graph-demo, backend bind 127.0.0.1:18081; SSH tunnel Windows local port 18081 к тому же remote loopback.
+- Постоянный Compose-проект agent-graph-demo для backend и <=1 активного sandbox agent-graph-demo-sbx-<session UUID>; backend bind 127.0.0.1:18081; SSH tunnel Windows local port 18081 к тому же remote loopback.
 - Использовать только принятый точный SHA ядра и прошедшие Task 8 artifacts. Если PR №28 ещё не принят, завершить все независимые задачи и отчёт, deployment не выполнять.
 
 - [ ] Проверить локальные Windows/SSH и sudo, актуальные RAM/disk/ports. Ключи/парольные фразы не выводить; успешный старый whoami не подменяет новую проверку.
 - [ ] Сохранить Nginx config и старые systemd unit/start script с checksums. Зафиксировать ExecStart/Restart старой failed dmrp-ui.service. Если она всё ещё ожидает отсутствующий /opt/dmrp и мешает автозапуску, отключить именно её как обратимый шаг с записью команды восстановления; здоровый изменившийся runtime не трогать автоматически.
 - [ ] Доставить готовые образы и код, сверить SHA/digests. Выдать приложению только собственные state/snapshots и server config; старый secrets.json не читать и не переиспользовать.
-- [ ] Запустить отдельный Compose-проект с memory caps, cpu/log limits и restart policy; systemd восстанавливает именно этот проект. Проверить права и отсутствие Docker socket/sudo у web.
+- [ ] Запустить постоянный backend Compose-проект с memory caps, cpu/log limits и restart policy; systemd восстанавливает backend и только согласованный текущий sandbox после сверки registry, не все исторические проекты. Root runtime registry доступен web read-only; общий workload lock не даёт web прав на Docker. Проверить отсутствие Docker socket/sudo у web.
 - [ ] Выполнить закрытую приёмку через SSH tunnel. Nginx конфигурацию проверять nginx -t перед reload; добавление public origin в этом шаге не требуется.
-- [ ] Воспроизвести A→B→D→E/reset и отрицательный сценарий; записать реальные peak RAM/CPU, timings cold/warm, OOM counters, диск и log growth. Предел приложений до 2 GiB — цель проверки, не обещание до измерений.
+- [ ] Воспроизвести пять последовательных сессий A→B→D→E/stop/reset и отрицательный сценарий; проверить <=1 работающего sandbox и отсутствие накопления его контейнеров. Записать реальные peak RAM/CPU, timings cold/warm, OOM counters, диск и log growth. Предел приложений до 2 GiB — цель проверки, не обещание до измерений.
 - [ ] Проверить restart приложения/worker при незавершённом job, сохранность SQLite и startup служб. Для проверки полного reboot использовать согласованное окно демонстрационного стенда и сохранить открытый recovery-путь.
 - [ ] Задокументировать остановку/rollback только нового проекта и восстановление Nginx. Backup делается с остановленным writer; проверить восстановление в отдельном disposable state.
 - [ ] Commit sanitized deployment/acceptance report: docs: record closed VM demo acceptance.
