@@ -97,6 +97,7 @@ class Limits(Strict):
 
 class ModelConfig(Strict):
     protocol: Literal["quotes-v1", "evidence-refs-v2"] = "quotes-v1"
+    token_parameter: Literal["max_tokens", "max_completion_tokens"] = "max_tokens"
     endpoint: str
     allowed_endpoints: list[str]
     model: str = Field(min_length=1, max_length=200)

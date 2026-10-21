@@ -48,9 +48,13 @@ finish ends the investigation; stop if evidence is insufficient or budget is rea
 class _Flight:
     """One interruptible exchange; an OS resolver may finish after cancellation."""
 
-    def __init__(self, cancel, timeout):
+    def __init__(self, cancel, timeout, deadline_epoch=None, metadata=None):
         self.cancel = cancel
+        self.deadline_epoch = deadline_epoch
+        self.metadata = metadata if metadata is not None else {}
         self.deadline = time.monotonic() + timeout
+        if deadline_epoch is not None:
+            self.deadline = min(self.deadline, time.monotonic() + deadline_epoch - time.time())
         self.done = threading.Event()
         self.lock = threading.Lock()
         self.socket = None
@@ -63,7 +67,8 @@ class _Flight:
             raise GraphError("cancelled")
         if self.reason:
             raise GraphError(self.reason)
-        if time.monotonic() >= self.deadline:
+        if (time.monotonic() >= self.deadline
+                or self.deadline_epoch is not None and time.time() >= self.deadline_epoch):
             raise GraphError("model_timeout")
 
     def remaining(self):
@@ -98,10 +103,10 @@ class ChatModel:
     def __init__(self, config):
         self.config = config
 
-    def complete(self, messages, *, cancel=None, on_finished=None):
+    def complete(self, messages, *, cancel=None, on_finished=None, deadline_epoch=None, metadata=None):
         # Only the request worker owns its finalizer. A timed-out DNS call may
         # still unwind, retaining the installation lock until it actually ends.
-        flight = _Flight(cancel or threading.Event(), self.config.timeout_seconds)
+        flight = _Flight(cancel or threading.Event(), self.config.timeout_seconds, deadline_epoch, metadata)
 
         def request():
             try:
@@ -149,7 +154,7 @@ class ChatModel:
         flight.check()
         config = self.config
         payload = canonical(dict(model=config.model, messages=messages, stream=False,
-                                 max_tokens=config.max_output_tokens, temperature=0,
+                                 **{config.token_parameter: config.max_output_tokens}, temperature=0,
                                  response_format=dict(type="json_schema", json_schema=dict(
                                      name="graph_action", strict=True, schema=model_action_schema(
                                          ReferenceReply if config.protocol == "evidence-refs-v2" else ModelReply))))).encode()
@@ -196,6 +201,7 @@ class ChatModel:
             conn.request("POST", u.path, body=payload, headers=headers)
             wire.settimeout(flight.remaining())
             response = conn.getresponse()
+            flight.metadata["http_status"] = response.status
             flight.check()
             if response.status != 200:
                 # Never include error text, redirect Location, request or credential.
@@ -223,7 +229,15 @@ class ChatModel:
             data = load_json(b"".join(chunks))
             if not isinstance(data, dict):
                 raise GraphError("model_unavailable_or_invalid")
+            usage = data.get("usage", {})
+            if (isinstance(usage, dict) and type(usage.get("prompt_tokens")) is int
+                    and type(usage.get("completion_tokens")) is int
+                    and usage["prompt_tokens"] >= 0 and usage["completion_tokens"] >= 0):
+                flight.metadata["usage"] = {k: usage[k] for k in ("prompt_tokens", "completion_tokens")}
             choices = data.get("choices")
+            if (isinstance(choices, list) and len(choices) == 1 and isinstance(choices[0], dict)
+                    and choices[0].get("finish_reason") in ("stop", "length", "content_filter", "tool_calls")):
+                flight.metadata["finish_reason"] = choices[0]["finish_reason"]
             if (not isinstance(choices, list) or len(choices) != 1
                     or not isinstance(choices[0], dict) or choices[0].get("finish_reason") != "stop"):
                 raise GraphError("model_incomplete_or_refused")
@@ -251,7 +265,12 @@ class ChatModel:
                 response.close()
 
 
-def investigate(graph, context_id, *, model=None, cancel=None):
+def investigate(graph, context_id, *, model=None, cancel=None, deadline_epoch=None):
+    monotonic_deadline = (time.monotonic() + deadline_epoch - time.time()
+                          if deadline_epoch is not None else None)
+    def deadline_check():
+        if deadline_epoch is not None and (time.time() >= deadline_epoch or time.monotonic() >= monotonic_deadline):
+            raise GraphError("investigation_deadline")
     graph.policy.require("maintain")
     graph.policy.require("propose")
     config = graph.policy.model
@@ -275,6 +294,7 @@ def investigate(graph, context_id, *, model=None, cancel=None):
     finished = False
     try:
         for step in range(graph.policy.limits.max_model_steps):
+            deadline_check()
             if cancel.is_set():
                 raise GraphError("cancelled")
             graph._current(context)
@@ -289,12 +309,14 @@ def investigate(graph, context_id, *, model=None, cancel=None):
             started = time.monotonic()
             if isinstance(model, ChatModel):
                 reply, usage = model.complete(messages, cancel=cancel,
-                                               on_finished=graph.store.reservation_finalizer(reservation))
+                                               on_finished=graph.store.reservation_finalizer(reservation),
+                                               **({"deadline_epoch": deadline_epoch} if deadline_epoch is not None else {}))
             else:
                 try:
                     reply, usage = model.complete(messages, cancel=cancel)
                 finally:
                     graph.store.finish_reservation(reservation)
+            deadline_check()
             reply = reply_type.model_validate(reply.model_dump())
             events.append(dict(step=step, action=reply.action, seconds=time.monotonic()-started,
                                usage=usage, reservation=reservation))
@@ -324,14 +346,16 @@ def investigate(graph, context_id, *, model=None, cancel=None):
                 for proposal in reply.proposals:
                     if refs:
                         events[-1].setdefault("evidence_assessments", []).append(refs.assess(proposal))
-                        outcome = refs.propose(proposal)
+                        outcome = refs.propose(proposal, admission_check=deadline_check if deadline_epoch is not None else None)
                         accepted.append(outcome["candidate"]["id"])
                     else:
-                        accepted.append(graph.propose(context_id, proposal, from_model=True)["id"])
+                        accepted.append(graph.propose(context_id, proposal, from_model=True,
+                                                       **({"admission_check": deadline_check} if deadline_epoch is not None else {}))["id"])
                 messages.append(dict(role="user", content=canonical(dict(stored_candidates=accepted, remaining_steps=graph.policy.limits.max_model_steps-step-1))))
             else:
                 if reply.proposals or any(v is not None for v in (reply.source_id, reply.start_line, reply.end_line)):
                     raise GraphError("invalid_model_action")
+                deadline_check()
                 finished = True
                 break
     except GraphError as exc:

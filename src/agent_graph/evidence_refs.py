@@ -96,9 +96,10 @@ def dependency_sufficiency(context, claim, citations):
                 first = min([first] + [d.lineno for d in fn.decorator_list])
             if _covers(citations, e["source_id"], first, last):
                 return dict(status="SUPPORTED_WITHIN_PROFILE", dependency_id=dep["id"],
-                            profile=context["profile"], runtime_verified=False)
+                            profile=context["profile"], runtime_verified=False, scope="STATIC_PROFILE_ONLY")
     return dict(status="INSUFFICIENT", reason="no_covered_directed_dependency_with_service_identity",
-                profile=context["profile"], runtime_verified=False)
+                profile=context["profile"], runtime_verified=False, scope="STATIC_PROFILE_ONLY",
+                dependency_absence="NOT_ESTABLISHED")
 
 
 class EvidenceSession:
@@ -185,7 +186,7 @@ class EvidenceSession:
         return dict(provenance=dict(status="AUTHENTIC_AUTHORIZED_CURRENT"),
                     sufficiency=dependency_sufficiency(self._current(), p.claim, citations))
 
-    def propose(self, proposal):
+    def propose(self, proposal, *, admission_check=None):
         self._graph.policy.require("propose")
         p = ReferenceProposal.model_validate(proposal)
         assessment = self.assess(p)
@@ -199,5 +200,5 @@ class EvidenceSession:
                       statement=f"{claim.consumer_service} ({claim.consumer_repository}) -> "
                                 f"{claim.provider_service} {claim.method} {claim.path_template}",
                       citations=[self.resolve(ref).model_dump() for ref in p.evidence_refs], supersedes=None)
-        record = self._graph.propose(self._context_id, legacy, from_model=True)
+        record = self._graph.propose(self._context_id, legacy, from_model=True, admission_check=admission_check)
         return dict(candidate=record, assessment=assessment)
