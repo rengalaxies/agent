@@ -1,0 +1,271 @@
+{
+  "schema": "graph-component-eval-1",
+  "developer_authored": true,
+  "independent_oracle": false,
+  "cases": [
+    {
+      "case": "discovery",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.005756176999966556,
+      "cold_prepare_seconds": 0.006646191000072577,
+      "source_content_digest": "f383a731caba8e72a1030b71e8f4afcc45a1fa69339d0c2a58918b73ff0af780",
+      "context_id": "3069a5076a71640e593562b97ad6e850379f386eee33438fe7ea5fc07ff2794d",
+      "human_minutes": null
+    },
+    {
+      "case": "decoy",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.006618829999752052,
+      "cold_prepare_seconds": 0.006556244999956107,
+      "source_content_digest": "f383a731caba8e72a1030b71e8f4afcc45a1fa69339d0c2a58918b73ff0af780",
+      "context_id": "61f2a62fc09e9e53eae533c70c6d51b5e4504e2d8f359caef3669535c06c5f36",
+      "human_minutes": null
+    },
+    {
+      "case": "page_limit",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.007375872000011441,
+      "cold_prepare_seconds": 0.00535536300003514,
+      "source_content_digest": "85ba2b16507e5c00ab5b76e95278652f8fcdc00d355dfc21129b0ed461c9f4bf",
+      "context_id": "d2c4f72f85109df2d6a69d95b82e982da508d6fd4a1b279eb1a8be53c6bcd223",
+      "human_minutes": null
+    },
+    {
+      "case": "note_vs_requirement",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.0067868290002479625,
+      "cold_prepare_seconds": 0.0045625660000041535,
+      "source_content_digest": "f383a731caba8e72a1030b71e8f4afcc45a1fa69339d0c2a58918b73ff0af780",
+      "context_id": "8778fc871afd4993be437bc96b706dd331278bf9d575e83a3e68938fba57cfa7",
+      "human_minutes": null
+    },
+    {
+      "case": "dynamic_call",
+      "profile_supported": false,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export"
+      ],
+      "false_negatives": [
+        "reporting"
+      ],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.007699990999753936,
+      "cold_prepare_seconds": 0.007157943000038358,
+      "source_content_digest": "0eee80bd13b03bb2cac2745d88cdc1eec6ac93558d22c177c83e864567dbb9c8",
+      "context_id": "ee785a28aa3ab9a61bb1bee7d2678f99145540bb1840be7b3e8cc2f528bc101f",
+      "human_minutes": null
+    },
+    {
+      "case": "consumer_repair",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.010415349999675527,
+      "cold_prepare_seconds": 0.006473590999576118,
+      "source_content_digest": "7433ecfbbda34c4ae2bfa76cec883440ae5fd0ae06073cc92c3372a2be7e5adb",
+      "context_id": "bf2a6535cb21849579e85dddb8841aa6455b6b4fa89276ea28043c79f0b4121c",
+      "human_minutes": null
+    },
+    {
+      "case": "new_file",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "health",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "health",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.006364535999637155,
+      "cold_prepare_seconds": 0.0047320609996859275,
+      "source_content_digest": "ca9822ecbcae2ef4bcccb94b3a479cfad57fad9e4f678049cc4d3e8c8a98f23f",
+      "context_id": "20d770b1e9e1596ef30b6789a3e046ac1da7359c330307a17e2e25c8a8aaae6e",
+      "human_minutes": null
+    },
+    {
+      "case": "partial_access",
+      "profile_supported": false,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export"
+      ],
+      "false_negatives": [
+        "reporting"
+      ],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.006874175000120886,
+      "cold_prepare_seconds": 0.004695387000083429,
+      "source_content_digest": "f0dece712bf3454b2f83425e74957823b1fd4f808c2d964efc7660b834454106",
+      "context_id": "688e29703803aab5d97785c871dd0b14e6395bf6319cd7fcbac30c3441cef5ad",
+      "human_minutes": null
+    },
+    {
+      "case": "source_instruction",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.006103021999933844,
+      "cold_prepare_seconds": 0.008240767999723175,
+      "source_content_digest": "f383a731caba8e72a1030b71e8f4afcc45a1fa69339d0c2a58918b73ff0af780",
+      "context_id": "fd7b3dc364b39d4fc16d72bc0d9b088278cbff2f72cc6f23d04cb1c6fcb228fd",
+      "human_minutes": null
+    },
+    {
+      "case": "deleted_consumer",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export"
+      ],
+      "observed_consumers": [
+        "export"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.00653506800017567,
+      "cold_prepare_seconds": 0.007015066999883857,
+      "source_content_digest": "e5a52a517e4e2879637a686da5f02fce5bd593e085c1cc6a84a5d62ff3048a90",
+      "context_id": "3dd65b94a786f1d3dc405e343318957f4edf88b35d27e148a9c22196158d8248",
+      "human_minutes": null
+    },
+    {
+      "case": "requirement_conflict",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.007787487999848963,
+      "cold_prepare_seconds": 0.007104884000000311,
+      "source_content_digest": "f383a731caba8e72a1030b71e8f4afcc45a1fa69339d0c2a58918b73ff0af780",
+      "context_id": "ac92ecfb62b17c327c89f67cc04dae46ea8caf337782cfdd49dee7ea64f9b178",
+      "human_minutes": null
+    },
+    {
+      "case": "changed_requirement",
+      "profile_supported": true,
+      "expected_consumers": [
+        "export",
+        "reporting"
+      ],
+      "observed_consumers": [
+        "export",
+        "reporting"
+      ],
+      "false_negatives": [],
+      "false_positives": [],
+      "boundary_check_passed": true,
+      "coverage": "PARTIAL",
+      "machine_seconds": 0.007404115000099409,
+      "cold_prepare_seconds": 0.007185504000062792,
+      "source_content_digest": "9511e6073ba17f0a3127b3be140e7fc10910b94b7bc6af074a4e1c229da74611",
+      "context_id": "2fc67c44c98cef9799cca9288bb3cd749acc8a15d6a073e6012f54e182720d5c",
+      "human_minutes": null
+    }
+  ],
+  "boundary_checks_passed": 12,
+  "supported_false_negatives": 0,
+  "all_case_false_negatives": 2,
+  "false_positives": 0,
+  "model_status": "NOT_RUN",
+  "v4_diagnostic_12": "NOT_RUN",
+  "strong_agent_comparison": "NOT_RUN",
+  "human_labor_saving": null,
+  "actual_inference_cost": 0,
+  "unknown_counted_as_success": false
+}

@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "source_base_commit": "55c55c88d85e71eda640ab35e5d376519959a448",
+  "python": "3.12.14",
+  "platform": "Linux",
+  "full_regression": {
+    "command": "PYTHONPATH=.:src:tests:tools python -m unittest discover -s tests -q",
+    "tests": 452,
+    "seconds": 54.24,
+    "status": "PASS"
+  },
+  "graph_tests": {
+    "tests": 31,
+    "status": "PASS",
+    "includes_real_http_stub": true,
+    "real_model": false
+  },
+  "component_series": {
+    "cases": 12,
+    "boundary_checks_passed": 12,
+    "supported_false_negatives": 0,
+    "all_case_false_negatives": 2,
+    "false_positives": 0,
+    "independent_oracle": false
+  },
+  "cli_smoke": {
+    "status": "PASS",
+    "consumers": [
+      "reporting",
+      "export"
+    ],
+    "freshness": "CURRENT"
+  },
+  "lint": {
+    "command": "ruff==0.17.1 check src services tools stand lab/app lab/product lab/runtime --select F401,F811,F841",
+    "status": "PASS"
+  },
+  "model_quality": "NOT_MEASURED",
+  "gpu_run": "NOT_RUN",
+  "v4_diagnostic_12": "NOT_RUN",
+  "strong_agent_baseline": "NOT_RUN",
+  "human_labor_saving": "NOT_MEASURED",
+  "new_paid_resources_created": false,
+  "resolved_during_validation": [
+    "Historical callsites were incorrectly carried into new repaired results; now immutable history stays in old result.",
+    "Missing or dynamic provider declarations were confused with operation removal; now unknown.",
+    "HTTP/1.0 response socket lifetime could invalidate a complete JSON response after deadline handling; EOF/length handling fixed and tested."
+  ],
+  "dependencies": {
+    "pydantic": "2.14.1",
+    "PyYAML": "6.0.3",
+    "fastapi": "0.156.5",
+    "httpx": "0.28.1",
+    "cryptography": "46.0.7",
+    "psycopg": "3.3.6",
+    "ruff": "0.17.1"
+  },
+  "source_sha256": {
+    "examples/agent_graph/bootstrap.py": "84f86063e447cacaa0d07d10c0e48b8fc22277f585e0aa5c64123012daace971",
+    "examples/agent_graph/corpus/export/client.py": "3292bc48d191918cc4e404bc1834e7cf49aef1a2bfee38ea680e2a624de529f5",
+    "examples/agent_graph/corpus/health/client.py": "47c839120d949a68af354175d6a3e7e25df1e773eeff7c6fcd15141a83b6a0c9",
+    "examples/agent_graph/corpus/orders/api.py": "e8ec4a438ae12559861a8bfec67a15442335e146f4bcd13984b3391c6c231dea",
+    "examples/agent_graph/corpus/reporting/client.py": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
+    "examples/agent_graph/cost_model.py": "3d6213ef3645e69676f5b69d26bcc9d5604da31b072ca1232661c583a3280c92",
+    "examples/agent_graph/demo.py": "8a5b77418d53a1e7ee8f6b6f52ad56648c76de5801991b90b6a996f919d60d02",
+    "examples/agent_graph/evaluate.py": "82897a52cc1f3a0b850f6361ccebb42430eaeb5c3d093427b4b1c2757428df74",
+    "examples/agent_graph/fixture.py": "cde27db8b5a44fd3ba1f05cae54eef80d5637f0deffafbe868496692a91db239",
+    "infra/agent_graph/serve_local.py": "b70a376b5052ca3eacc6ce7e1dd69e9ccfc038ae4563cdcc72bdda70491232e2",
+    "schemas/agent-graph-1.json": "28d7a3878c788fd8701cc0adb801c5628f013565cffcdb5b83145eb1855c0852",
+    "src/agent_graph/__init__.py": "61cc5638a7923278754f632c1f4ee2796c15770e72bd97a41a2235d3fe7b0527",
+    "src/agent_graph/__main__.py": "ceab0c7258d592453a9e278c73d2a9434a6cbfcb97642717d849a2ad2278c05d",
+    "src/agent_graph/contracts.py": "5abb286f846f7c6d1ecc0a28077fdce145706e8042c37fedc979bf15faa167a8",
+    "src/agent_graph/discovery.py": "42e358f872fd0676742ab6e73ff8d87a19ea1d89581fd4ab76fc77999a0d0534",
+    "src/agent_graph/engine.py": "725516a67acdc402b51ddce68252b2cd4fe385f331c0a8a83c1699a9c672c798",
+    "src/agent_graph/inference.py": "61e9683f46e5360e4f18fe42890ddfb54fe1ed12a6e7c134f16d2ede1601babc",
+    "src/agent_graph/sources.py": "a90637ca647cea411dacbb78323facb5434d74c6dd6cdac86b9fd7f8b6232b2d",
+    "src/agent_graph/store.py": "496bc8143ac06b18dbd12f1d5eee69336ae8b4ed4958f2c9cce279dbfbf90d7c",
+    "tests/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/graph/test_graph.py": "e856b0062ade1508ff08911494f323ff3a8e26c785dbde1cca25712edaea24b8",
+    "tests/graph/test_inference.py": "ca681e5d8c548acfafd206e270a33e4bee717d2c4f08fadbdeaa06042ecddd7b"
+  }
+}
