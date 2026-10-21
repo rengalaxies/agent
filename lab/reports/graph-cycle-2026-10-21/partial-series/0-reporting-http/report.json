@@ -1,0 +1,216 @@
+{
+  "case": "reporting-http",
+  "model": "Qwen/Qwen3-Coder-Next",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "87152dd996bb30f4001bb93909887cdbb61ad0d918d3df514956475445f54321",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "Qwen/Qwen3-Coder-Next",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 45.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 46760,
+    "currency": "RUB",
+    "micro_per_million_tokens": 244000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 11409440
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 2,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": null,
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "propose",
+      "source_id": null,
+      "start_line": null,
+      "end_line": null,
+      "proposals": [
+        {
+          "key": "reporting->orders GET /orders",
+          "kind": "hypothesis",
+          "statement": "The reporting client calls GET /orders on orders.test, matching the orders service’s @app.get(”/orders”) endpoint.",
+          "citations": [
+            {
+              "source_id": "8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f",
+              "start_line": 6,
+              "end_line": 6,
+              "quote": "@app.get(”/orders”)"
+            },
+            {
+              "source_id": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca",
+              "start_line": 7,
+              "end_line": 7,
+              "quote": "response = requests.get(BASE_URL + “/orders”, params={“day”: day}, timeout=10)"
+            }
+          ],
+          "supersedes": null
+        }
+      ]
+    }
+  ],
+  "proposals": [
+    {
+      "proposal": {
+        "key": "reporting->orders GET /orders",
+        "kind": "hypothesis",
+        "statement": "The reporting client calls GET /orders on orders.test, matching the orders service’s @app.get(”/orders”) endpoint.",
+        "citations": [
+          {
+            "source_id": "8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f",
+            "start_line": 6,
+            "end_line": 6,
+            "quote": "@app.get(”/orders”)"
+          },
+          {
+            "source_id": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca",
+            "start_line": 7,
+            "end_line": 7,
+            "quote": "response = requests.get(BASE_URL + “/orders”, params={“day”: day}, timeout=10)"
+          }
+        ],
+        "supersedes": null
+      },
+      "decision": "REJECTED",
+      "reason": "evidence_mismatch"
+    }
+  ],
+  "requests": [
+    {
+      "global_request": 1,
+      "usage": {
+        "prompt_tokens": 585,
+        "completion_tokens": 98,
+        "total_tokens": 683
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.6574311549999976
+    },
+    {
+      "global_request": 2,
+      "usage": {
+        "prompt_tokens": 950,
+        "completion_tokens": 84,
+        "total_tokens": 1034
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.763587493000003
+    },
+    {
+      "global_request": 3,
+      "usage": {
+        "prompt_tokens": 1300,
+        "completion_tokens": 342,
+        "total_tokens": 1642
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 4.363221158000002
+    },
+    {
+      "global_request": 4,
+      "usage": {
+        "prompt_tokens": 1807,
+        "completion_tokens": 262,
+        "total_tokens": 2069
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 5.91815590600001
+    },
+    {
+      "global_request": 5,
+      "usage": {
+        "prompt_tokens": 2030,
+        "completion_tokens": 261,
+        "total_tokens": 2291
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 5.404545518000006
+    }
+  ],
+  "protocol_passed": false,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "0e1d778664a34f30bbedca468d98b299",
+    "context_id": "8286ba803a4f0008e9067cd0e5aec7b2388f4ba844d5795d3fe9cb1a6f9ebd7e",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "model": "Qwen/Qwen3-Coder-Next",
+    "status": "PARTIAL",
+    "reason": "evidence_mismatch",
+    "events": [
+      {
+        "step": 0,
+        "action": "propose",
+        "seconds": 6.4053528889999995,
+        "usage": {
+          "prompt_tokens": 2030,
+          "completion_tokens": 261
+        },
+        "reservation": "78cdb91fb9504b7eae281513c89354db"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 2,
+      "reserved_token_units": 69699,
+      "reserved_micro": 17006556
+    },
+    "model_quality_established": false,
+    "id": "ae9316fe2ae7a2208f988abf06fc4650b46aa18981d1e8b42c7e043724b04ce8"
+  },
+  "seconds": 31.531252458999973,
+  "request_count": 5,
+  "continuation_requests": 1,
+  "prior_run": "39612624655",
+  "usage_observed": {
+    "prompt_tokens": 6672,
+    "completion_tokens": 1047
+  },
+  "usage_complete": true,
+  "estimated_cost_rub": "1.069452",
+  "known_usage_cost_rub": "1.069452",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL"
+}

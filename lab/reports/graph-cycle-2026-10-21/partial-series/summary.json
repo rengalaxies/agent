@@ -1,0 +1,92 @@
+{
+  "status": "PROTOCOL_OR_BUDGET_FAILURE_NO_RETRY",
+  "requests": 15,
+  "request_cap": 40,
+  "results": [
+    {
+      "case": "reporting-http",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "protocol_passed": false,
+      "transport_action_protocol_passed": true,
+      "quality": {
+        "required_found": false,
+        "forbidden": [],
+        "extra_keys": [],
+        "tool_and_citation_coverage": false,
+        "passed": false,
+        "scope": "synthetic proposal keys plus provenance; manual statement review required"
+      },
+      "request_count": 5,
+      "usage_observed": {
+        "prompt_tokens": 6672,
+        "completion_tokens": 1047
+      },
+      "usage_complete": true,
+      "estimated_cost_rub": "1.069452"
+    },
+    {
+      "case": "export-E",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "protocol_passed": false,
+      "transport_action_protocol_passed": true,
+      "quality": {
+        "required_found": false,
+        "forbidden": [],
+        "extra_keys": [],
+        "tool_and_citation_coverage": false,
+        "passed": false,
+        "scope": "synthetic proposal keys plus provenance; manual statement review required"
+      },
+      "request_count": 3,
+      "usage_observed": {
+        "prompt_tokens": 3231,
+        "completion_tokens": 447
+      },
+      "usage_complete": true,
+      "estimated_cost_rub": "0.503250"
+    },
+    {
+      "case": "status-decoy",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "protocol_passed": false,
+      "transport_action_protocol_passed": true,
+      "quality": {
+        "required_found": false,
+        "forbidden": [],
+        "extra_keys": [],
+        "tool_and_citation_coverage": false,
+        "passed": false,
+        "scope": "synthetic proposal keys plus provenance; manual statement review required"
+      },
+      "request_count": 4,
+      "usage_observed": {
+        "prompt_tokens": 5212,
+        "completion_tokens": 765
+      },
+      "usage_complete": true,
+      "estimated_cost_rub": "0.822524"
+    },
+    {
+      "case": "reporting-http",
+      "model": "openai/gpt-oss-120b",
+      "protocol_passed": false,
+      "transport_action_protocol_passed": false,
+      "quality": {
+        "required_found": false,
+        "forbidden": [],
+        "extra_keys": [],
+        "tool_and_citation_coverage": false,
+        "passed": false,
+        "scope": "synthetic proposal keys plus provenance; manual statement review required"
+      },
+      "request_count": 3,
+      "usage_observed": {
+        "prompt_tokens": 1720,
+        "completion_tokens": 408
+      },
+      "usage_complete": false,
+      "estimated_cost_rub": null
+    }
+  ],
+  "actual_billed_cost": "NOT_MEASURED"
+}

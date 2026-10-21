@@ -11,7 +11,7 @@ import run
 CORE = Path(os.environ.get("GRAPH_CORE", "../graph-core-candidate")).resolve()
 sys.path.insert(0, str(CORE / "src"))
 from agent_graph.contracts import GraphError, ModelConfig, ModelReply
-from agent_graph.inference import ChatModel
+from agent_graph.inference import ChatModel, model_payload
 from agent_graph.store import Store
 
 
@@ -51,6 +51,9 @@ class ExperimentTests(unittest.TestCase):
         reviewed = patch.object(run, "reviewed_first_case", return_value=None)
         reviewed.start()
         self.addCleanup(reviewed.stop)
+        frozen = patch.object(run, "completed_cases", return_value=[])
+        frozen.start()
+        self.addCleanup(frozen.stop)
 
     def test_corporate_config_preserves_cost_guard(self):
         for model in run.CONFIG["models"]:
@@ -60,6 +63,29 @@ class ExperimentTests(unittest.TestCase):
             self.assertEqual(config.max_output_tokens, 4096)
             self.assertEqual(config.allowed_endpoints, [run.ENDPOINT])
             self.assertEqual(config.api_key_env, "CLOUDRU_FOUNDATION_API_KEY")
+
+    def test_cloud_payload_uses_documented_completion_token_limit(self):
+        for name in run.CONFIG["models"]:
+            config = ModelConfig.model_validate(run.model_config(name))
+            body = json.loads(model_payload(config, [{"role": "user", "content": "synthetic"}]))
+            self.assertEqual(body["max_completion_tokens"], 4096)
+            self.assertNotIn("max_tokens", body)
+            self.assertNotIn("reasoning_effort", body)
+            self.assertEqual(body["response_format"]["type"], "json_schema")
+            self.assertEqual(config.timeout_seconds, 60)
+
+    @patch.object(ChatModel, "_request", scripted_request)
+    def test_remaining_two_cases_preserve_all_fifteen_attempts(self):
+        frozen = [json.loads(p.read_text()) for p in (run.HISTORY_ROOT / "partial-series").glob("*/report.json")]
+        with tempfile.TemporaryDirectory() as tmp, patch.object(run, "completed_cases", return_value=frozen), patch.dict(os.environ, {
+            "GITHUB_ACTIONS": "true", "GITHUB_RUN_ATTEMPT": "1", "CLOUDRU_FOUNDATION_API_KEY": "synthetic"}), patch.object(
+                sys, "argv", ["run.py", "--core", str(CORE), "--output", tmp + "/out", "--live"]):
+            self.assertEqual(run.main(), 0)
+            summary = json.loads(Path(tmp + "/out/summary.json").read_text())
+            self.assertEqual(len(summary["results"]), 6)
+            self.assertEqual(summary["requests"], 24)
+            self.assertEqual(summary["results"][3]["request_count"], 3)
+            self.assertFalse(summary["results"][3]["usage_complete"])
 
     def test_global_and_per_case_ledger_are_conservative(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -41,6 +41,11 @@ PRIOR_RUN = "39612624655"
 REVIEWED_FIRST = HISTORY_ROOT / "continuation-2/0-reporting-http/report.json"
 
 
+def completed_cases():
+    root = HISTORY_ROOT / "partial-series"
+    return [json.loads(p.read_text()) for p in sorted(root.glob("*/report.json"))]
+
+
 def reviewed_first_case():
     if not REVIEWED_FIRST.exists():
         return None
@@ -166,7 +171,7 @@ def model_config(model):
                 configuration_id=CONFIG["experiment_id"] + ":" + model,
                 api_key_env="CLOUDRU_FOUNDATION_API_KEY", allow_source_transfer=True,
                 route="corporate", context_tokens=65536, max_prompt_bytes=24000,
-                max_output_tokens=CONFIG["max_output_tokens"], timeout_seconds=45.0,
+                max_output_tokens=CONFIG["max_output_tokens"], timeout_seconds=60.0,
                 installation_token_cap=1_000_000, run_token_cap=100_000,
                 currency="RUB", micro_per_million_tokens=rate,
                 installation_micro_cap=244_000_000, run_micro_cap=(rate // 10))
@@ -314,6 +319,7 @@ def run_case(core, root, case_id, model_name, ledger, store):
                   estimated_cost_rub=str(cost) if usage_complete else None,
                   known_usage_cost_rub=str(cost), actual_billed_cost="NOT_MEASURED",
                   native_function_calling="NOT_USED_FINITE_JSON_ACTION_PROTOCOL")
+    report["token_limit_parameter"] = "max_completion_tokens"
     dump(root / "report.json", report)
     return report
 
@@ -352,22 +358,38 @@ def main():
     ledger_dir.mkdir(parents=True, mode=0o700)
     ledger = Ledger(ledger_dir / "attempts.sqlite3")
     store = Store(state / "core")
-    reviewed = reviewed_first_case()
+    frozen = completed_cases()
+    frozen_by_pair = {(r["model"], r["case"]): r for r in frozen}
+    reviewed = reviewed_first_case() if not frozen else None
     prior = reviewed or prior_case()
-    if prior:
-        for _ in range(prior["request_count"]):
-            ledger.reserve(prior["case"], prior["model"])
+    histories = frozen or ([prior] if prior else [])
+    if histories:
+        for historical in histories:
+            for _ in range(historical["request_count"]):
+                ledger.reserve(historical["case"], historical["model"])
         # Carry forward conservative charged reserves, never reset them on resume.
         from agent_graph.contracts import ModelConfig
-        config = ModelConfig.model_validate(model_config(prior["model"]))
-        reservation = store.reserve(CONFIG["experiment_id"], "historical-run-" + PRIOR_RUN,
-                                    prior["investigation"]["budget"]["reserved_token_units"], config)
-        store.finish_reservation(reservation)
+        config = ModelConfig.model_validate(model_config(CONFIG["models"][0]))
+        units = max(r["investigation"]["budget"]["reserved_token_units"] for r in histories)
+        index = 0
+        while units:
+            charge = min(units, config.run_token_cap)
+            reservation = store.reserve(CONFIG["experiment_id"], f"historical-{PRIOR_RUN}-{index}", charge, config)
+            store.finish_reservation(reservation)
+            units -= charge
+            index += 1
     results, stopped = [], None
     try:
         for model_index, model in enumerate(CONFIG["models"]):
             for case_index, case in enumerate(CONFIG["cases"]):
-                if model_index == case_index == 0 and reviewed:
+                frozen_case = frozen_by_pair.get((model, case))
+                if frozen_case:
+                    report = {**frozen_case, "transport_action_protocol_passed": protocol_ok(frozen_case["investigation"])}
+                    dump(output / f"{model_index}-{case}/report.json", frozen_case)
+                    dump(output / f"{model_index}-{case}/review.json", dict(
+                        source_run="39614092142", frozen=True, new_requests=0,
+                        transport_action_protocol_passed=report["transport_action_protocol_passed"]))
+                elif model_index == case_index == 0 and reviewed:
                     # The five prior sends already exercised read → propose → REJECTED.
                     # Preserve the raw report; only add a separate protocol assessment.
                     report = {**reviewed, "transport_action_protocol_passed": protocol_ok(reviewed["investigation"])}
@@ -386,10 +408,10 @@ def main():
                                     quality=report["quality"], request_count=report["request_count"],
                                     usage_observed=report["usage_observed"], usage_complete=report["usage_complete"],
                                     estimated_cost_rub=report["estimated_cost_rub"]))
-                if not report["transport_action_protocol_passed"]:
+                if not frozen_case and not report["transport_action_protocol_passed"]:
                     stopped = "PROTOCOL_OR_BUDGET_FAILURE_NO_RETRY"
                     break
-                if model_index == case_index == 0 and not reviewed and not report["quality"]["passed"]:
+                if model_index == case_index == 0 and not frozen_case and not reviewed and not report["quality"]["passed"]:
                     stopped = "FIRST_QWEN_CASE_GATE_FAILED_NO_RETRY"
                     break
             if stopped:

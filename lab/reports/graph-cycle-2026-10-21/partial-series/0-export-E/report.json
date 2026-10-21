@@ -1,0 +1,221 @@
+{
+  "case": "export-E",
+  "model": "Qwen/Qwen3-Coder-Next",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "69761d75ef1c6b5c1e1520d53c466d2e0f20f5bc9da5a536baf00db2cd091de7",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "Qwen/Qwen3-Coder-Next",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 45.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 100000,
+    "currency": "RUB",
+    "micro_per_million_tokens": 244000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 24400000
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": {
+    "before_basis": "58b13e6d6b7ae77a3dbe7e06ddec7e6ed3c97024720196c4bc81c78417a5987d",
+    "after_basis": "69761d75ef1c6b5c1e1520d53c466d2e0f20f5bc9da5a536baf00db2cd091de7",
+    "same_view": true,
+    "before_export_edges": 0,
+    "after_export_edges": 1
+  },
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "c43a1368e0a822bfa9441bcc73ebe234f0a3b94cf2c1bfa0d958ecd754990f83",
+      "start_line": 6,
+      "end_line": 6,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "a28932cd4a6bc787bc1f18b2a21b39c6cd06e3b71a9617625cd7619063928c6c",
+      "start_line": 1,
+      "end_line": 15,
+      "proposals": []
+    },
+    {
+      "action": "propose",
+      "source_id": null,
+      "start_line": null,
+      "end_line": null,
+      "proposals": [
+        {
+          "key": "export->orders GET /orders",
+          "kind": "hypothesis",
+          "statement": "The client.py module in the export repository makes an HTTP GET request to /orders on orders.test, matching the orders service endpoint declared in api.py.",
+          "citations": [
+            {
+              "source_id": "a28932cd4a6bc787bc1f18b2a21b39c6cd06e3b71a9617625cd7619063928c6c",
+              "start_line": 9,
+              "end_line": 9,
+              "quote": "response = http.get(BASE_URL + /orders, params={day: day, cursor: cursor}, timeout=10)"
+            },
+            {
+              "source_id": "c43a1368e0a822bfa9441bcc73ebe234f0a3b94cf2c1bfa0d958ecd754990f83",
+              "start_line": 6,
+              "end_line": 6,
+              "quote": "@app.get(/orders)"
+            }
+          ],
+          "supersedes": null
+        }
+      ]
+    }
+  ],
+  "proposals": [
+    {
+      "proposal": {
+        "key": "export->orders GET /orders",
+        "kind": "hypothesis",
+        "statement": "The client.py module in the export repository makes an HTTP GET request to /orders on orders.test, matching the orders service endpoint declared in api.py.",
+        "citations": [
+          {
+            "source_id": "a28932cd4a6bc787bc1f18b2a21b39c6cd06e3b71a9617625cd7619063928c6c",
+            "start_line": 9,
+            "end_line": 9,
+            "quote": "response = http.get(BASE_URL + /orders, params={day: day, cursor: cursor}, timeout=10)"
+          },
+          {
+            "source_id": "c43a1368e0a822bfa9441bcc73ebe234f0a3b94cf2c1bfa0d958ecd754990f83",
+            "start_line": 6,
+            "end_line": 6,
+            "quote": "@app.get(/orders)"
+          }
+        ],
+        "supersedes": null
+      },
+      "decision": "REJECTED",
+      "reason": "evidence_mismatch"
+    }
+  ],
+  "requests": [
+    {
+      "global_request": 6,
+      "usage": {
+        "prompt_tokens": 669,
+        "completion_tokens": 97,
+        "total_tokens": 766
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.8856785059999908
+    },
+    {
+      "global_request": 7,
+      "usage": {
+        "prompt_tokens": 975,
+        "completion_tokens": 86,
+        "total_tokens": 1061
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.785579155999997
+    },
+    {
+      "global_request": 8,
+      "usage": {
+        "prompt_tokens": 1587,
+        "completion_tokens": 264,
+        "total_tokens": 1851
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 4.053067327999983
+    }
+  ],
+  "protocol_passed": false,
+  "transport_action_protocol_passed": true,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "5d8b510b2e0240118b01d35c22ec1c17",
+    "context_id": "fb33a42cd1e4c0978040a5fc7ae653c4e406babab89030f9177f3999e68f2109",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "model": "Qwen/Qwen3-Coder-Next",
+    "status": "PARTIAL",
+    "reason": "evidence_mismatch",
+    "events": [
+      {
+        "step": 0,
+        "action": "read_source",
+        "seconds": 4.267302838999996,
+        "usage": {
+          "prompt_tokens": 669,
+          "completion_tokens": 97
+        },
+        "reservation": "773165bc609e4fa281d610db71aeff72"
+      },
+      {
+        "step": 1,
+        "action": "read_source",
+        "seconds": 3.30415279799999,
+        "usage": {
+          "prompt_tokens": 975,
+          "completion_tokens": 86
+        },
+        "reservation": "70ac89c519a54c008cb6a5b9a6bb9142"
+      },
+      {
+        "step": 2,
+        "action": "propose",
+        "seconds": 5.153933065999993,
+        "usage": {
+          "prompt_tokens": 1587,
+          "completion_tokens": 264
+        },
+        "reservation": "a71d92c5a45a46f1807cd563a1260289"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 4,
+      "reserved_token_units": 109824,
+      "reserved_micro": 26797056
+    },
+    "model_quality_established": false,
+    "id": "c8bb15a73e129a70260f5a526006f947374175235ae790a30053b24a2b93ba7d"
+  },
+  "seconds": 12.741202990000005,
+  "request_count": 3,
+  "continuation_requests": 3,
+  "prior_run": null,
+  "usage_observed": {
+    "prompt_tokens": 3231,
+    "completion_tokens": 447
+  },
+  "usage_complete": true,
+  "estimated_cost_rub": "0.503250",
+  "known_usage_cost_rub": "0.503250",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL"
+}

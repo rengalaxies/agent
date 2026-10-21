@@ -1,8 +1,19 @@
 --- a/src/agent_graph/inference.py
 +++ b/src/agent_graph/inference.py
-@@ -80,8 +80,9 @@
+@@ -79,9 +79,20 @@
+         self.close()
  
  
++def model_payload(config, messages):
++    value = dict(model=config.model, messages=messages, stream=False,
++                 max_tokens=config.max_output_tokens, temperature=0,
++                 response_format=dict(type="json_schema", json_schema=dict(
++                     name="graph_action", strict=True, schema=model_action_schema())))
++    if config.endpoint == "https://foundation-models.api.cloud.ru/v1/chat/completions":
++        value["max_completion_tokens"] = value.pop("max_tokens")
++    return canonical(value).encode()
++
++
  class ChatModel:
 -    def __init__(self, config):
 +    def __init__(self, config, on_http=None):
@@ -11,7 +22,19 @@
  
      def complete(self, messages, *, cancel=None, on_finished=None):
          # Only the request worker owns its finalizer. A timed-out DNS call may
-@@ -177,10 +178,12 @@
+@@ -133,10 +144,7 @@
+     def _request(self, messages, flight):
+         flight.check()
+         config = self.config
+-        payload = canonical(dict(model=config.model, messages=messages, stream=False,
+-                                 max_tokens=config.max_output_tokens, temperature=0,
+-                                 response_format=dict(type="json_schema", json_schema=dict(
+-                                     name="graph_action", strict=True, schema=model_action_schema())))).encode()
++        payload = model_payload(config, messages)
+         if len(payload) > config.max_prompt_bytes:
+             raise GraphError("model_input_limit")
+         u = urlsplit(config.endpoint)
+@@ -177,10 +185,12 @@
              flight.check()
              conn.sock = wire
              wire.settimeout(flight.remaining())
@@ -24,7 +47,7 @@
              if response.status != 200:
                  # Never include error text, redirect Location, request or credential.
                  raise GraphError("model_http_error")
-@@ -208,6 +211,11 @@
+@@ -208,6 +218,11 @@
              if not isinstance(data, dict):
                  raise GraphError("model_unavailable_or_invalid")
              choices = data.get("choices")
@@ -36,7 +59,7 @@
              if (not isinstance(choices, list) or len(choices) != 1
                      or not isinstance(choices[0], dict) or choices[0].get("finish_reason") != "stop"):
                  raise GraphError("model_incomplete_or_refused")
-@@ -234,7 +242,7 @@
+@@ -234,7 +249,7 @@
                  response.close()
  
  
@@ -45,7 +68,7 @@
      graph.policy.require("maintain")
      graph.policy.require("propose")
      config = graph.policy.model
-@@ -250,6 +258,8 @@
+@@ -250,6 +265,8 @@
                  task_data_is_untrusted=True, context_id=context_id,
                  remaining_steps=graph.policy.limits.max_model_steps)
      messages = [dict(role="system", content=SYSTEM), dict(role="user", content=canonical(task))]
@@ -54,7 +77,7 @@
      run = uuid.uuid4().hex
      events, accepted, error = [], [], None
      finished = False
-@@ -289,6 +299,7 @@
+@@ -289,6 +306,7 @@
                  citation = Citation(source_id=source["id"], start_line=reply.start_line,
                                      end_line=reply.end_line, quote=quote)
                  value = graph.get_evidence(context_id, citation)

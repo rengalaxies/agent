@@ -1,0 +1,147 @@
+{
+  "case": "reporting-http",
+  "model": "openai/gpt-oss-120b",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "87152dd996bb30f4001bb93909887cdbb61ad0d918d3df514956475445f54321",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "openai/gpt-oss-120b",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:openai/gpt-oss-120b",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 45.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 100000,
+    "currency": "RUB",
+    "micro_per_million_tokens": 61000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 6100000
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": null,
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    }
+  ],
+  "proposals": [],
+  "requests": [
+    {
+      "global_request": 13,
+      "usage": {
+        "prompt_tokens": 655,
+        "completion_tokens": 306,
+        "total_tokens": 961
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 6.424281484000005
+    },
+    {
+      "global_request": 14,
+      "usage": {
+        "prompt_tokens": 1065,
+        "completion_tokens": 102,
+        "total_tokens": 1167
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.8890909209999904
+    },
+    {
+      "global_request": 15,
+      "usage": null,
+      "error": "model_timeout",
+      "seconds": 43.985887128
+    }
+  ],
+  "protocol_passed": false,
+  "transport_action_protocol_passed": false,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "3d2926bbb5474e2bb14ed7ddceb1b2dc",
+    "context_id": "9d98bfdcc368c92e0533ed21c51922422a0a7fc8325a4428f94830771d4bd062",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:openai/gpt-oss-120b",
+    "model": "openai/gpt-oss-120b",
+    "status": "PARTIAL",
+    "reason": "model_timeout",
+    "events": [
+      {
+        "step": 0,
+        "action": "read_source",
+        "seconds": 6.930432878999994,
+        "usage": {
+          "prompt_tokens": 655,
+          "completion_tokens": 306
+        },
+        "reservation": "8253e9f20c774226882d1e4540daed03"
+      },
+      {
+        "step": 1,
+        "action": "read_source",
+        "seconds": 2.246710262999983,
+        "usage": {
+          "prompt_tokens": 1065,
+          "completion_tokens": 102
+        },
+        "reservation": "09658f5d3c0c4f9da287e75524d95cd1"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 11,
+      "reserved_token_units": 205701,
+      "reserved_micro": 42690240
+    },
+    "model_quality_established": false,
+    "id": "d9fe87ffb86a1dca23723a20514138eeefecbb4ceaade6328aa6bcbe818a618d"
+  },
+  "seconds": 54.19141068799999,
+  "request_count": 3,
+  "continuation_requests": 3,
+  "prior_run": null,
+  "usage_observed": {
+    "prompt_tokens": 1720,
+    "completion_tokens": 408
+  },
+  "usage_complete": false,
+  "estimated_cost_rub": null,
+  "known_usage_cost_rub": "0.0521672",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL"
+}

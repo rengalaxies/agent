@@ -58,6 +58,14 @@ The earlier orchestration required a positive quality result before continuing, 
 
 The prompts/tool rendering changed after the first Qwen diagnosis; GPT uses the clarified version without that debugging history. This is an exploratory integration comparison, not an unbiased model benchmark or evidence of product advantage over a coding agent. Read individual statements/citations and all raw safe reports alongside scores.
 
+### Protocol parameter correction before the last two distinct cases
+
+[Partial series 39614092142](https://github.com/rengalaxies/agent/actions/runs/39614092142) completed all Qwen cases and attempted GPT Reporting: 15 total sends, all counted, no refunds. Qwen Export and Status proposals failed exact evidence checks; Status also proposed the semantically wrong `orders->health` direction. GPT read both sources, then its third send hit the 45-second deadline. That send has no observed HTTP status/usage; missing usage and billing remain **unknown**, not zero. Four model/case pairs are frozen with original failures in `partial-series/`; none is requested again.
+
+The [official Cloud.ru chat example](https://cloud.ru/docs/foundation-models/ug/topics/guides__llm-chat-request) uses `max_completion_tokens`. The prior core adapter used `max_tokens`. The patch now emits the documented parameter only for the exact Foundation Models endpoint, retains the same 4096 token limit/schema/guards, and leaves other endpoints unchanged. A local payload regression verifies the exact parameter and absence of speculative reasoning options. This discrepancy is a correction, not proof that it caused the timeout; no timeout body was available. Cloud.ru documentation for `reasoning_effort` was not confirmed, so that option is not sent.
+
+Only GPT Export and GPT Status, each previously unrun, use the corrected token parameter and a 60-second request deadline (the existing core maximum, still within the 300-second case timer). A failed request is never retried. The ledger starts at 15 and caps the overall experiment at 40; these last two cases can add at most 12, giving a bound of 27. Existing aggregate token reserves are carried forward at the conservative maximum published rate, in chunks that each retain the core run cap. No guard is disabled to import the history. Actual usage is not inferred from those reserves. Scoring/oracle expectations remain unchanged.
+
 ## Security and reproducibility
 
 Only the live step receives `CLOUDRU_FOUNDATION_API_KEY` via GitHub Secrets. No IAM/SSH/Workflow Studio credentials, environment dumps, SDK debug logs, arbitrary URL/ref input, `pull_request_target`, or untrusted PR checkout with secrets. The model endpoint is fixed HTTPS and the core makes no redirect or endpoint fallback. Source code is never executed; synthetic AST/quote inspection only.

@@ -1,6 +1,6 @@
 name: Cloud.ru bounded graph model cycle
-# Reviewed first case reached validator rejection; freeze its five sends.
-# Carry all charges and run only the remaining five distinct model/case pairs.
+# Freeze all four observed model/case results and all 15 charged attempts.
+# Only the two as-yet-unrun GPT cases use the documented completion-token cap.
 on:
   # A new dispatch-only workflow is not available before default-branch registration.
   # This single, owner-controlled integration branch has an intentional live push.

@@ -1,0 +1,46 @@
+{
+  "config": {
+    "experiment_id": "cloudru-graph-cycle-20261021-v1",
+    "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+    "core_acceptance": "OPEN_DRAFT_NOT_INDEPENDENTLY_ACCEPTED",
+    "demo_plan_sha": "778b7668fd78e7c9dbaa8c0e6ce07b48ce9d82e4",
+    "models": [
+      "Qwen/Qwen3-Coder-Next",
+      "openai/gpt-oss-120b"
+    ],
+    "cases": [
+      "reporting-http",
+      "export-E",
+      "status-decoy"
+    ],
+    "request_cap": 40,
+    "case_request_cap": 6,
+    "case_seconds": 300,
+    "max_output_tokens": 4096,
+    "parallelism": 1,
+    "retries": 0,
+    "tariff": {
+      "currency": "RUB",
+      "checked_on": "2026-10-21",
+      "source": "https://cloud.ru/products/evolution-ai-factory/catalog-foundation-models",
+      "status": "OFFICIAL_PUBLISHED_CATALOG_NOT_ACCOUNT_INVOICE",
+      "per_million": {
+        "Qwen/Qwen3-Coder-Next": {
+          "input": "122",
+          "output": "244"
+        },
+        "openai/gpt-oss-120b": {
+          "input": "15.86",
+          "output": "61"
+        }
+      }
+    }
+  },
+  "config_sha256": "22c482991d9f90e09a4ec96dcd3099ad7b1bd5cb90662d88e2ffe898fb72faf1",
+  "expectations_sha256": "e743643ac65b44ded1f22e7376286c988350ee6091262902e91227ff65176a08",
+  "adapter_patch_sha256": "adfbfa06846906c6454bb01b64037f08780f2e6631cd356adc1233f47ec390ad",
+  "source_sha": "dd007592cdfb63d9aee468dd745239667f36efb8",
+  "grant": "OWNER_CONFIRMED",
+  "prior_evidence_sha256": "42e31b66b7449fa126163defb7baee5fc163c25ac602eb6c4598717904542057",
+  "core_acceptance": "CANDIDATE_ONLY_NOT_ACCEPTANCE_OR_VM_PERMISSION"
+}
