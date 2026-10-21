@@ -65,8 +65,9 @@
 В contracts.py определить единственные общие типы (Pydantic, extra=forbid):
 - ScenarioVersion = Literal["A", "B", "D", "E"]; JobAction = Literal["prepare_context", "analyze_change", "investigate"].
 - SnapshotManifest: schema_version=1, scenario_version, product_sha, extractor_profile, dataset_sha256, repositories[{id,service,revision,files[{path,sha256}]}], manifest_sha256. manifest_sha256 считается по каноническому JSON остальных полей.
-- SessionRecord: id, revision, scenario_version, proposed_manifest_sha256, running_manifest_sha256|null, base_context_id|null, current_context_id|null, created_at.
-- JobRecord: id, session_id, session_revision, action, status, input_sha256, created_at, started_at|null, finished_at|null, result_ref|null, error_code|null.
+- SessionRecord: id, revision (начальная 1), scenario_version, proposed_manifest_sha256, running_manifest_sha256|null, base_context_id|null, current_context_id|null, pending_job_id|null, created_at.
+- JobRecord: id, session_id, session_revision, target_revision:int|null, target_version:ScenarioVersion|null, action, status, input_sha256, created_at, started_at|null, finished_at|null, result_ref|null, error_code|null.
+- StagedSelection: session_id, source_revision, target_revision, previous_manifest_sha256, target_manifest:SnapshotManifest; это непубликованное состояние materialization, не новая SessionRecord.
 - CheckReceipt: id, session_id, session_revision, proposed_manifest_sha256, running_manifest_sha256, dataset_sha256, fixed_check_id, expected_count, actual_count, missing_ids, duplicate_ids, unexpected_ids, status PASS|FAIL|ERROR, command_id, started_at, finished_at, exit_code, origin="operator_runner".
 - Actor: subject, role operator|viewer, allowed_session_ids. Session ownership/grants проверяются сервером.
 - DemoError(code: str, http_status: int); timestamp UTC, JSON без NaN, arbitrary caller fields не сохраняются как authority.
@@ -101,7 +102,8 @@ assert check_ids([1] * 250)["passed"] is False
 
 **Interfaces:**
 - create_session(root: Path, product_sha: str, profile: str) -> SessionRecord.
-- materialize_version(root: Path, session_id: str, expected_revision: int, version: ScenarioVersion) -> tuple[SessionRecord, SnapshotManifest].
+- materialize_version(root: Path, session: SessionRecord, version: ScenarioVersion) -> StagedSelection; вызывается worker после проверки reservation/revision, меняет рабочие bytes, но не публикует session.
+- restore_version(root: Path, session_id: str, published_manifest_sha256: str) -> None; восстанавливает рабочие bytes при незавершённом selection до допуска новых задач.
 - build_policy(session_root: Path, manifest: SnapshotManifest, actor: Actor) -> agent_graph.contracts.Policy.
 - applicable(receipt: CheckReceipt, session: SessionRecord, dataset_sha256: str) -> bool.
 
@@ -141,7 +143,8 @@ assert applicable(receipt.model_copy(update={"session_revision": session.revisio
 
 **Interfaces:**
 - DemoStore.create_session(session: SessionRecord)->SessionRecord; get_session(id: str)->SessionRecord; add_receipt(receipt: CheckReceipt)->dict с applicable:bool и current:bool.
-- enqueue(session_id: str, expected_revision: int, action: JobAction, payload: dict, idempotency_key: str)->JobRecord.
+- enqueue(session_id: str, expected_revision: int, action: JobAction, payload: dict, idempotency_key: str)->JobRecord. analyze_change payload = {target_version:Literal["B","D","E"], base_context_id:str, task:str=""}; prepare_context = {task:str=""}; investigate = {context_id:str}. task <=4000 символов, extra fields forbidden.
+- publish_selection(job_id: str, staged: StagedSelection, current_context_id: str, result_ref: str)->SessionRecord; CAS по исходной revision и pending_job_id атомарно публикует целевой manifest/revision/context и освобождает reservation.
 - claim_next()->JobRecord|None; finish(job_id: str, result_ref: str|None, error_code: str|None, status: str)->JobRecord.
 - recover_interrupted()->list[str]; reset_session(id: str, expected_revision: int)->SessionRecord.
 - DemoWorker.run_once(cancel: threading.Event)->bool uses Task 3 adapter and Task 2 session lock.
@@ -155,9 +158,11 @@ assert sum(job.status == "QUEUED" for job in jobs) == 4
 ```
 
 - [ ] Запустить python -m unittest tests.graph_demo.test_jobs -v и подтвердить падение до реализации.
-- [ ] Реализовать SQLite transactions и CAS по session revision. Очередь, jobs, transitions и refs артефактов постоянны; claim транзакционно разрешает один активный job в установке.
+- [ ] Реализовать admission/CAS/publication по полному контракту спецификации §6 «Выбор предложенной версии через POST jobs». Идемпотентность проверяется до stale revision; reservation сериализует изменения одной сессии. Очередь, jobs, transitions и refs постоянны; claim разрешает один активный job в установке.
+- [ ] Добавить test_concurrent_selection_same_revision_only_one_accepted: два разных ключа с expected_revision=1 дают ровно один 202; второй 409 session_busy/revision_conflict. До завершения первого session.revision остаётся 1, pending target=B; после CAS revision=2/proposed=B/running=A. Повтор первого тела возвращает прежний job; тот же ключ с target=D даёт 409 idempotency_conflict.
+- [ ] Добавить test_cancel_or_crash_after_materialization_restores_published_manifest: убить worker после записи B, до publication; после restart job UNKNOWN_AFTER_RESTART, bytes соответствуют последнему опубликованному A, revision=1, новый mutating job разрешён только после reconciliation. Immutable graph history не стирается, поздний результат не текущий.
 - [ ] Написать test_restart_marks_running_unknown_without_retry и test_old_job_after_reset_not_current. Реальный process restart должен сохранять историю и оставлять незавершённое UNKNOWN_AFTER_RESTART.
-- [ ] На B фиксировать proposed manifest B при running A; смена runtime происходит только после привязанного receipt оператора. Нельзя обновлять running version из ответа модели/браузера.
+- [ ] До publication B UI показывает pending target=B/proposed=A/running=A; после CAS proposed=B/running=A. Смена runtime происходит только после привязанного receipt оператора. Нельзя обновлять running version из ответа модели/браузера.
 - [ ] Повторить tests и записать commit: feat: persist serialized graph demo jobs and history.
 
 ### Task 5: API, серверные права и режим доступа
@@ -181,7 +186,8 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 
 - [ ] Запустить python -m unittest tests.graph_demo.test_api -v, зафиксировать ожидаемые падения.
 - [ ] Применить HTTP Basic для закрытого/малого demo с серверной operator/viewer конфигурацией, constant-time credential comparison и session grants. Конфигурация вне Git, браузер не выбирает роль или actor. В публичном режиме только HTTPS за доверенным Nginx; direct backend остаётся loopback.
-- [ ] Реализовать POST jobs с 202/job ID; malformed=422, authentication=401, forbidden=403, stale/idempotency conflict=409, queue full=429. Не включать credentials/authorization в logs.
+- [ ] Реализовать POST jobs с точным JSON из спецификации §6: action, expected_revision, idempotency_key, payload.target_version/base_context_id/task. Ответ 202 = job_id/status/session_revision/target_revision; malformed=422, authentication=401, forbidden=403, session_busy/revision/idempotency conflict=409, queue full=429. Base context принадлежит этой session и профилю; arbitrary paths/digests не принимаются. Не включать credentials/authorization в logs.
+- [ ] Добавить API test_analyze_payload_binds_version_and_revision и test_cross_session_base_context_rejected: target_version=B и expected_revision=1 резервируют именно B→revision2; чужой base_context_id не принимается; target_version у prepare_context/investigate и target_version=A у analyze_change дают 422.
 - [ ] GET graph/history читает сохранённые артефакты; не запускает implicit scan. Свежесть помечена временем последней оценки; явное обновление ставит job. Не смешивать безопасность read-only viewer с single trusted OS-user моделью.
 - [ ] POST proposals: operator-only; схема/цитата/supersedes проходят настоящие проверки модуля. Исправление нормы не делается через UI boolean approve.
 - [ ] Повторить tests; commit: feat: expose authenticated graph demo API.
@@ -195,7 +201,7 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 - uiRenderSession(session), uiRenderGraph(graph), uiRenderEvidence(citation), uiPollJob(jobId) в app.js; содержимое source вставляется textContent.
 - Карта строится из nodes/edges результата: группировка сервис → операция → consumer, стабильная сортировка и SVG paths; зависимости не захардкожены.
 
-- [ ] Написать browser journey test_open_risk_follow_evidence_and_history: выбрать B, запустить анализ, открыть Reporting и исходный фрагмент, увидеть proposed=B/running=A; после receipt B увидеть тестовый FAIL отдельно от graph risk.
+- [ ] Написать browser journey test_open_risk_follow_evidence_and_history: выбор B отправляет ровно analyze_change JSON из спецификации §6 с expected_revision/base_context_id; queued target=B не выдаётся за опубликованный proposed. После job открыть Reporting и источник, увидеть proposed=B/running=A; после receipt B увидеть тестовый FAIL отдельно от graph risk. Двойной клик повторяет idempotency key, а не создаёт две materialization.
 - [ ] Запустить browser acceptance на реальном backend; до UI ожидается отсутствие конкретных controls/данных, не сетевой сбой тестового окружения.
 - [ ] Реализовать один desktop экран: header состояния, карта слева, task/diff/findings в центре, evidence справа, история внизу; удобная типографика, русские подписи, legend, keyboard focus и текстовые статусы.
 - [ ] Добавить test_script_in_source_rendered_as_text, test_partial_and_model_unavailable_visible, test_previous_revision_result_stays_historical. На width 390 экран остаётся читаемым через последовательное расположение панелей.
