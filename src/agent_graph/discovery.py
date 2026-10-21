@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+from collections import Counter
 import re
 from urllib.parse import parse_qs, urlsplit
 
@@ -37,14 +38,39 @@ def constant(node, constants):
 UNRESOLVED = object()
 
 
-def module_constants(tree):
-    stores = {}
+def bindings(tree):
+    """Conservative file-wide binding counts, including non-Name AST targets."""
+    stores = Counter()
     for node in ast.walk(tree):
         if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
-            stores[node.id] = stores.get(node.id, 0) + 1
-        if isinstance(node, ast.arg):
-            stores[node.arg] = stores.get(node.arg, 0) + 1
+            stores[node.id] += 1
+        elif isinstance(node, ast.arg):
+            stores[node.arg] += 1
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            stores[node.name] += 1
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                stores[alias.asname or alias.name.split(".")[0]] += 1
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            stores[node.name] += 1
+        elif isinstance(node, (ast.MatchAs, ast.MatchStar)) and node.name:
+            stores[node.name] += 1
+        elif isinstance(node, ast.MatchMapping) and node.rest:
+            stores[node.rest] += 1
+        elif isinstance(node, ast.Attribute) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            value = node.value
+            while isinstance(value, ast.Attribute):
+                value = value.value
+            if isinstance(value, ast.Name):
+                stores[value.id] += 1
+    return stores
+
+
+def module_constants(tree):
+    stores = bindings(tree)
     constants = {}
+    if stores["*"]:
+        return constants
     for node in tree.body:
         if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
             name = node.targets[0].id
@@ -61,7 +87,8 @@ def imports(tree):
         if isinstance(n, ast.Import):
             modules.update(a.asname or a.name for a in n.names if a.name == "requests")
         if isinstance(n, ast.ImportFrom) and n.module == "requests":
-            functions.update({a.asname or a.name: a.name for a in n.names if a.name in METHODS | {"request"}})
+            functions.update({a.asname or a.name: a.name if n.level == 0 else "unsupported"
+                              for a in n.names if a.name in METHODS | {"request"}})
     return modules, functions
 
 
@@ -84,10 +111,20 @@ def providers(policy, sources):
                         op = dict(id=operation_id(policy, source["service"], method, path),
                                   service=source["service"], method=method.upper(), path=path,
                                   evidence=[evidence(source)], default_known=False)
-                        for p in operation.get("parameters", []) + item.get("parameters", []):
-                            if "$ref" in p:
-                                gaps.append(dict(code="openapi_ref_unsupported", source_id=source["id"]))
-                            if p.get("name") == "page_size" and isinstance(p.get("schema"), dict):
+                        effective = {}
+                        for level in (item, operation):
+                            parameters = level.get("parameters", [])
+                            if not isinstance(parameters, list):
+                                raise ValueError("invalid_parameters")
+                            for p in parameters:
+                                if not isinstance(p, dict):
+                                    raise ValueError("invalid_parameter")
+                                if "$ref" in p:
+                                    gaps.append(dict(code="openapi_ref_unsupported", source_id=source["id"]))
+                                else:
+                                    effective[(p.get("name"), p.get("in"))] = p
+                        for p in effective.values():
+                            if p.get("name") == "page_size" and p.get("in") == "query" and isinstance(p.get("schema"), dict):
                                 value = p["schema"].get("default", UNRESOLVED)
                                 if value is None or type(value) is int:
                                     op.update(default_known=True, page_size_default=value)
@@ -171,6 +208,44 @@ def match_url(policy, operations, method, url):
         return [], "unsupported_url"
 
 
+def parameter_keys(call, method, constants, *, cursor_loop):
+    """Keys actually sent by a supported params dict; None denotes unknown usage.
+
+    Only GET takes params positionally. POST/PUT/PATCH positional data/json are
+    bodies. Cursor variables are allowed as a syntactic loop observation; an
+    unknown page_size value can never suppress a default-change risk.
+    """
+    max_args = {"get": 2, "post": 3, "put": 3, "patch": 3, "request": 2}.get(method, 1)
+    if len(call.args) > max_args or any(k.arg is None for k in call.keywords):
+        return None
+    kw = [k.value for k in call.keywords if k.arg == "params"]
+    if len(kw) > 1 or method == "get" and len(call.args) == 2 and kw:
+        return None
+    params = call.args[1] if method == "get" and len(call.args) == 2 else kw[0] if kw else None
+    if params is None or constant(params, constants) is None:
+        return set()
+    if not isinstance(params, ast.Dict) or not all(isinstance(k, ast.Constant) and isinstance(k.value, str) for k in params.keys):
+        return None
+    keys = set()
+    values = {k.value: v for k, v in zip(params.keys, params.values)}
+    for key, value in values.items():
+        if key not in ("page_size", "cursor"):
+            continue  # Other query values don't decide whether these keys exist.
+        nodes = value.elts if isinstance(value, (ast.List, ast.Tuple)) else [value]
+        sent = False
+        for node in nodes:
+            resolved = constant(node, constants)
+            if resolved is UNRESOLVED:
+                if key == "cursor" and cursor_loop and isinstance(node, ast.Name):
+                    sent = True
+                    continue
+                return None
+            sent |= resolved is not None
+        if sent:
+            keys.add(key)
+    return keys
+
+
 def consumers(policy: Policy, sources, operations):
     dependencies, gaps = [], []
     for source in sources.values():
@@ -183,8 +258,10 @@ def consumers(policy: Policy, sources, operations):
         modules, functions = imports(tree)
         constants = module_constants(tree)
         # Rebinding an imported name anywhere is outside this conservative grammar.
-        rebound = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del))}
-        rebound.update(n.arg for n in ast.walk(tree) if isinstance(n, ast.arg))
+        counts = bindings(tree)
+        rebound = {name for name, count in counts.items() if count > 1}
+        if counts["*"]:
+            rebound.update(modules | functions.keys())
         parents = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
         for call in [n for n in ast.walk(tree) if isinstance(n, ast.Call)]:
             name = None
@@ -222,14 +299,11 @@ def consumers(policy: Policy, sources, operations):
                 fn = parents[fn]
                 in_loop |= isinstance(fn, (ast.While, ast.For, ast.AsyncFor, ast.comprehension))
             # kwargs expansion can hide an explicit page size or cursor.
-            params = next((k.value for k in call.keywords if k.arg == "params"), None)
-            unknown_kwargs = any(k.arg is None for k in call.keywords)
-            params_known = params is None or isinstance(params, ast.Dict) and all(isinstance(k, ast.Constant) for k in params.keys)
-            keys = [k.value for k in params.keys] if isinstance(params, ast.Dict) and params_known else []
             has_cursor_read = any(isinstance(n, ast.Subscript) and isinstance(n.slice, ast.Constant)
                                   and n.slice.value == "next_cursor" for n in ast.walk(fn))
+            keys = parameter_keys(call, name, constants, cursor_loop=in_loop and has_cursor_read)
             usage = "SINGLE_REQUEST_OBSERVED"
-            if unknown_kwargs or not params_known:
+            if keys is None:
                 usage = "UNKNOWN_USAGE"
                 gaps.append(dict(code="dynamic_parameters", evidence=evidence(source, call)))
             elif in_loop and "cursor" in keys and has_cursor_read:
