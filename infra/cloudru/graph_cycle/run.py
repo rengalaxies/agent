@@ -38,6 +38,25 @@ HISTORY_ROOT = HERE.parents[2] / "lab/reports/graph-cycle-2026-10-21"
 PRIOR = HISTORY_ROOT / "continuation-1"
 READ_HISTORY = HISTORY_ROOT / "initial"
 PRIOR_RUN = "39612624655"
+REVIEWED_FIRST = HISTORY_ROOT / "continuation-2/0-reporting-http/report.json"
+
+
+def reviewed_first_case():
+    if not REVIEWED_FIRST.exists():
+        return None
+    report = json.loads(REVIEWED_FIRST.read_text())
+    if (report["core_sha"] != CONFIG["core_sha"] or report["request_count"] != 5
+            or report["investigation"]["reason"] != "evidence_mismatch"
+            or report["proposals"][-1]["decision"] != "REJECTED"
+            or any(c.get("http_status") != 200 or c.get("finish_reason") != "stop" for c in report["requests"])):
+        raise RuntimeError("reviewed_first_case_mismatch")
+    return report
+
+
+def protocol_ok(investigation):
+    # Exact-evidence rejection is a validator outcome, not an HTTP/JSON protocol error.
+    return investigation["status"] == "COMPLETED" or investigation["reason"] in {
+        "evidence_mismatch", "invalid_evidence_range", "evidence_range_limit", "proposal_limit"}
 
 
 def prior_case():
@@ -287,7 +306,8 @@ def run_case(core, root, case_id, model_name, ledger, store):
     report = dict(case=case_id, model=model_name, core_sha=CONFIG["core_sha"], basis=context["basis"],
                   config=policy.model.model_dump(), limits=policy.limits.model_dump(),
                   transition=transition, actions=actions, proposals=records, requests=calls,
-                  protocol_passed=protocol, quality=quality, investigation=result,
+                  protocol_passed=protocol, transport_action_protocol_passed=protocol_ok(result),
+                  quality=quality, investigation=result,
                   seconds=previous_seconds + time.monotonic() - started, request_count=len(calls),
                   continuation_requests=continuation_calls, prior_run=PRIOR_RUN if prior else None,
                   usage_observed=totals, usage_complete=usage_complete,
@@ -332,7 +352,8 @@ def main():
     ledger_dir.mkdir(parents=True, mode=0o700)
     ledger = Ledger(ledger_dir / "attempts.sqlite3")
     store = Store(state / "core")
-    prior = prior_case()
+    reviewed = reviewed_first_case()
+    prior = reviewed or prior_case()
     if prior:
         for _ in range(prior["request_count"]):
             ledger.reserve(prior["case"], prior["model"])
@@ -346,15 +367,29 @@ def main():
     try:
         for model_index, model in enumerate(CONFIG["models"]):
             for case_index, case in enumerate(CONFIG["cases"]):
-                report = run_case(core, output / f"{model_index}-{case}", case, model, ledger, store)
+                if model_index == case_index == 0 and reviewed:
+                    # The five prior sends already exercised read → propose → REJECTED.
+                    # Preserve the raw report; only add a separate protocol assessment.
+                    report = {**reviewed, "transport_action_protocol_passed": protocol_ok(reviewed["investigation"])}
+                    dump(output / "0-reporting-http/report.json", reviewed)
+                    dump(output / "0-reporting-http/review.json", dict(
+                        source_run="39613302638", source_report_sha256=sha(REVIEWED_FIRST),
+                        original_protocol_passed=report["protocol_passed"],
+                        transport_action_protocol_passed=report["transport_action_protocol_passed"],
+                        investigation_completed=False,
+                        validator="REJECTED_EVIDENCE_MISMATCH", quality_passed=False,
+                        further_requests_for_this_case=0))
+                else:
+                    report = run_case(core, output / f"{model_index}-{case}", case, model, ledger, store)
                 results.append(dict(case=case, model=model, protocol_passed=report["protocol_passed"],
+                                    transport_action_protocol_passed=report["transport_action_protocol_passed"],
                                     quality=report["quality"], request_count=report["request_count"],
                                     usage_observed=report["usage_observed"], usage_complete=report["usage_complete"],
                                     estimated_cost_rub=report["estimated_cost_rub"]))
-                if not report["protocol_passed"]:
+                if not report["transport_action_protocol_passed"]:
                     stopped = "PROTOCOL_OR_BUDGET_FAILURE_NO_RETRY"
                     break
-                if model_index == case_index == 0 and not report["quality"]["passed"]:
+                if model_index == case_index == 0 and not reviewed and not report["quality"]["passed"]:
                     stopped = "FIRST_QWEN_CASE_GATE_FAILED_NO_RETRY"
                     break
             if stopped:

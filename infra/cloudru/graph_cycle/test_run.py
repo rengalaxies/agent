@@ -48,6 +48,9 @@ class ExperimentTests(unittest.TestCase):
         self.prior_patch = patch.object(run, "prior_case", return_value=None)
         self.prior_patch.start()
         self.addCleanup(self.prior_patch.stop)
+        reviewed = patch.object(run, "reviewed_first_case", return_value=None)
+        reviewed.start()
+        self.addCleanup(reviewed.stop)
 
     def test_corporate_config_preserves_cost_guard(self):
         for model in run.CONFIG["models"]:
@@ -136,6 +139,8 @@ class ExperimentTests(unittest.TestCase):
             finally:
                 store.close()
             self.assertFalse(report["protocol_passed"])
+            self.assertTrue(report["transport_action_protocol_passed"])
+            self.assertFalse(report["quality"]["passed"])
             self.assertEqual(report["proposals"][0]["decision"], "REJECTED")
             self.assertEqual(report["proposals"][0]["reason"], "evidence_mismatch")
 
@@ -220,6 +225,21 @@ class ExperimentTests(unittest.TestCase):
             self.assertEqual(len(report["results"]), 6)
             self.assertEqual(report["results"][0]["request_count"], 6)
             self.assertEqual(report["requests"], sum(r["request_count"] for r in report["results"]))
+
+    @patch.object(ChatModel, "_request", scripted_request)
+    def test_reviewed_rejection_skips_first_case_and_runs_remaining_series(self):
+        reviewed = json.loads(run.REVIEWED_FIRST.read_text())
+        with tempfile.TemporaryDirectory() as tmp, patch.object(run, "reviewed_first_case", return_value=reviewed), patch.dict(os.environ, {
+            "GITHUB_ACTIONS": "true", "GITHUB_RUN_ATTEMPT": "1", "CLOUDRU_FOUNDATION_API_KEY": "synthetic"}), patch.object(
+                sys, "argv", ["run.py", "--core", str(CORE), "--output", tmp + "/out", "--live"]):
+            self.assertEqual(run.main(), 0)
+            summary = json.loads(Path(tmp + "/out/summary.json").read_text())
+            self.assertEqual(len(summary["results"]), 6)
+            self.assertFalse(summary["results"][0]["quality"]["passed"])
+            self.assertFalse(summary["results"][0]["protocol_passed"])
+            self.assertTrue(summary["results"][0]["transport_action_protocol_passed"])
+            self.assertEqual(summary["results"][0]["request_count"], 5)
+            self.assertEqual(summary["requests"], sum(r["request_count"] for r in summary["results"]))
 
 
 if __name__ == "__main__":
