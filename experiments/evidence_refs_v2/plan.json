@@ -1,14 +1,21 @@
 {
   "experiment_id": "evidence-refs-v2-next-2026-10-21",
-  "status": "PREPARED_OFFLINE_ONLY",
+  "status": "RUNNER_PREPARED_NOT_RUN",
   "live_enabled": false,
   "protocol": "evidence-refs-v2",
   "core_base_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
   "historical_pr31_sha": "5b5b95559b4c50d8a3ca39b3a6a76e0d6f53fa7e",
-  "models": ["Qwen/Qwen3-Coder-Next", "openai/gpt-oss-120b"],
-  "case_order": ["reporting-http", "export-E", "status-decoy"],
+  "models": [
+    "Qwen/Qwen3-Coder-Next",
+    "openai/gpt-oss-120b"
+  ],
+  "case_order": [
+    "reporting-http",
+    "export-E",
+    "status-decoy"
+  ],
   "schedule": "serial; each case Qwen then GPT, fresh context/session/history, no coaching or continuation",
-  "task": "Investigate directed HTTP dependencies. Read the callsite and provider declaration, including decorators. Propose only supported typed claims using evidence_refs returned in this session; finish after supported findings or insufficient evidence. Operator addresses: orders=https://orders.test; status=https://inventory.test. All candidates remain unapproved.",
+  "task": "Read every listed source in full, including potential decoys, before proposing. Investigate directed HTTP dependencies. Read the callsite and provider declaration, including decorators. Propose only supported typed claims using evidence_refs returned in this session; finish after supported findings or insufficient evidence. Operator addresses: orders=https://orders.test; status=https://inventory.test. All candidates remain unapproved.",
   "parameters": {
     "temperature": 0,
     "stream": false,
@@ -17,27 +24,31 @@
     "request_timeout_seconds": 60,
     "context_tokens": 131072,
     "max_prompt_bytes": 60000,
-    "max_model_steps": 6,
+    "max_model_steps": 5,
     "max_tool_lines": 60,
     "retries": 0,
     "parallel_requests": 1,
     "response_format": "strict_json_schema",
-    "native_tool_calls": false
+    "native_tool_calls": false,
+    "read_policy": "all listed sources fully before first proposal"
   },
   "deadlines": {
-    "series_seconds": 1800,
+    "series_seconds": 2100,
     "case_seconds": 300,
     "rule": "Persist absolute series and case deadlines at first start; timeout=min(60, series_remaining, case_remaining). Checks before reservation, send, every transport stage and admission. Never pause, extend or reset on restart. Any late result is PARTIAL and cannot be admitted."
   },
   "budget_proposal_not_authorization": {
     "historical_requests": 21,
     "historical_usage_incomplete_requests": 1,
-    "max_new_requests_per_model_case": 6,
-    "max_new_requests": 36,
-    "proposed_lifetime_request_cap": 57,
+    "max_new_requests_per_model_case": 5,
+    "max_new_requests": 30,
+    "proposed_lifetime_request_cap": 51,
     "money_cap": null,
     "actual_billed_cost": "NOT_MEASURED",
-    "live_blockers": ["explicit authorization for NEW requests and money cap", "current grant/billing applicability", "review and pin final runner/core commit", "implement and test shared absolute deadline propagation into transport and candidate admission"]
+    "live_blockers": [
+      "explicit NEW request/money limit (grant already confirmed)",
+      "review and integrate this runner on main; run expected exact main SHA"
+    ]
   },
   "scoring": {
     "transport": "HTTP/status/finish_reason/usage, timeout keeps unknown usage; every attempted send consumes a ledger reservation",
@@ -46,5 +57,23 @@
     "sufficiency": "SUPPORTED_WITHIN_PROFILE including directed consumer/provider identity and covered declarations/callsites",
     "quality": "held-out typed oracle, no forbidden/extra claims and both evidence sides read; report rejected semantic claims too",
     "success": "All four protocol/provenance/sufficiency/quality pass; candidate remains UNAPPROVED_CANDIDATE; no comparison of model superiority from this small corpus"
+  },
+  "addresses": [
+    {
+      "service": "orders",
+      "base_url": "https://orders.test"
+    },
+    {
+      "service": "status",
+      "base_url": "https://inventory.test"
+    }
+  ],
+  "budget": {
+    "worst_micro_per_million_tokens": 244000000,
+    "rate_scope": "Conservative input+output RUB upper rate, not observed billing; guard only. Both models use the same bound.",
+    "grant": "CONFIRMED_BY_OWNER; no reconfirmation required",
+    "new_limit": "NOT_YET_AUTHORIZED; initialize requires explicit request/money caps",
+    "recommended_new_requests": 30,
+    "theoretical_no_slack_requests": 26
   }
 }
