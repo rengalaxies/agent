@@ -1,0 +1,148 @@
+{
+  "case": "export-E",
+  "model": "openai/gpt-oss-120b",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "69761d75ef1c6b5c1e1520d53c466d2e0f20f5bc9da5a536baf00db2cd091de7",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "openai/gpt-oss-120b",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:openai/gpt-oss-120b",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 60.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 100000,
+    "currency": "RUB",
+    "micro_per_million_tokens": 61000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 6100000
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": {
+    "before_basis": "58b13e6d6b7ae77a3dbe7e06ddec7e6ed3c97024720196c4bc81c78417a5987d",
+    "after_basis": "69761d75ef1c6b5c1e1520d53c466d2e0f20f5bc9da5a536baf00db2cd091de7",
+    "same_view": true,
+    "before_export_edges": 0,
+    "after_export_edges": 1
+  },
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "a28932cd4a6bc787bc1f18b2a21b39c6cd06e3b71a9617625cd7619063928c6c",
+      "start_line": 1,
+      "end_line": 15,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "c43a1368e0a822bfa9441bcc73ebe234f0a3b94cf2c1bfa0d958ecd754990f83",
+      "start_line": 1,
+      "end_line": 12,
+      "proposals": []
+    }
+  ],
+  "proposals": [],
+  "requests": [
+    {
+      "global_request": 16,
+      "usage": {
+        "prompt_tokens": 654,
+        "completion_tokens": 259,
+        "total_tokens": 913
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 6.0038106740000075
+    },
+    {
+      "global_request": 17,
+      "usage": {
+        "prompt_tokens": 1185,
+        "completion_tokens": 102,
+        "total_tokens": 1287
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.1172268580000093
+    }
+  ],
+  "protocol_passed": false,
+  "transport_action_protocol_passed": true,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "3f94965f9d644069bd6254b291ccadd0",
+    "context_id": "af2f3553c610cf95a5390549d1eedf237f1ac4b99be83ad5e4bdfd3121b19225",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:openai/gpt-oss-120b",
+    "model": "openai/gpt-oss-120b",
+    "status": "PARTIAL",
+    "reason": "invalid_evidence_range",
+    "events": [
+      {
+        "step": 0,
+        "action": "read_source",
+        "seconds": 10.98546293599999,
+        "usage": {
+          "prompt_tokens": 654,
+          "completion_tokens": 259
+        },
+        "reservation": "e4870178605c4adfb5c649634cff608f"
+      },
+      {
+        "step": 1,
+        "action": "read_source",
+        "seconds": 6.8463739749999775,
+        "usage": {
+          "prompt_tokens": 1185,
+          "completion_tokens": 102
+        },
+        "reservation": "4e524df6491d48818513eebb061d5063"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 5,
+      "reserved_token_units": 232202,
+      "reserved_micro": 51807605
+    },
+    "model_quality_established": false,
+    "id": "615a9a2c44e96ee2a22e134d074476e3d615c141aa497ae218be0a660830c21c"
+  },
+  "seconds": 17.852194911999987,
+  "request_count": 2,
+  "continuation_requests": 2,
+  "prior_run": null,
+  "usage_observed": {
+    "prompt_tokens": 1839,
+    "completion_tokens": 361
+  },
+  "usage_complete": true,
+  "estimated_cost_rub": "0.05118754",
+  "known_usage_cost_rub": "0.05118754",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL",
+  "token_limit_parameter": "max_completion_tokens"
+}

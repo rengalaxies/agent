@@ -96,6 +96,7 @@ class Limits(Strict):
 
 
 class ModelConfig(Strict):
+    protocol: Literal["quotes-v1", "evidence-refs-v2"] = "quotes-v1"
     endpoint: str
     allowed_endpoints: list[str]
     model: str = Field(min_length=1, max_length=200)
@@ -202,9 +203,9 @@ class ModelReply(Strict):
     proposals: list[Proposal] = Field(max_length=8)
 
 
-def model_action_schema():
+def model_action_schema(reply_type=ModelReply):
     """Strict structured-output APIs require every property, nullable if optional."""
-    schema = ModelReply.model_json_schema()
+    schema = reply_type.model_json_schema()
     def visit(value):
         if isinstance(value, dict):
             value.pop("default", None)
