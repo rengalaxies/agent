@@ -114,6 +114,12 @@ class ExperimentTests(unittest.TestCase):
                 for messages in (root / "case").glob("messages-*.json"):
                     self.assertNotIn("never_sent_to_model", messages.read_text())
                     self.assertNotIn('"dependencies"', messages.read_text())
+                    for message in json.loads(messages.read_text()):
+                        if message["role"] == "user":
+                            evidence = json.loads(message["content"]).get("untrusted_source")
+                            if evidence:
+                                self.assertEqual("\n".join(line["text"] for line in evidence["numbered_lines"]), evidence["quote"])
+                                self.assertEqual(evidence["numbered_lines"][0]["line"], evidence["start_line"])
 
     def test_core_rejects_fabricated_quote(self):
         def forged(model, messages, flight):
@@ -175,12 +181,12 @@ class ExperimentTests(unittest.TestCase):
         def corrected(model, messages, flight):
             filtered = [m for m in messages if not (m["role"] == "assistant" and
                         json.loads(m["content"])["action"] == "propose" and
-                        json.loads(m["content"])["source_id"] is not None)]
+                        (json.loads(m["content"])["source_id"] is not None or "“" in m["content"]))]
             return scripted_request(model, filtered, flight)
         with tempfile.TemporaryDirectory() as tmp, patch.object(run, "prior_case", return_value=prior), patch.object(ChatModel, "_request", corrected):
             root = Path(tmp)
             ledger = run.Ledger(root / "ledger.sqlite3")
-            for _ in range(3):
+            for _ in range(prior["request_count"]):
                 ledger.reserve("reporting-http", run.CONFIG["models"][0])
             store = Store(root / "state")
             try:
@@ -189,10 +195,10 @@ class ExperimentTests(unittest.TestCase):
                 store.close()
             self.assertTrue(report["protocol_passed"], report["investigation"])
             self.assertTrue(report["quality"]["passed"])
-            self.assertEqual(report["request_count"], 5)
-            self.assertEqual(ledger.count(), 5)
-            self.assertEqual(report["limits"]["max_model_steps"], 3)
-            self.assertEqual(report["config"]["run_token_cap"], 100000 - 38063)
+            self.assertEqual(report["request_count"], 6)
+            self.assertEqual(ledger.count(), 6)
+            self.assertEqual(report["limits"]["max_model_steps"], 2)
+            self.assertEqual(report["config"]["run_token_cap"], 100000 - 53240)
 
     def test_continuation_rejects_changed_snapshot(self):
         prior = json.loads((run.PRIOR / "0-reporting-http/report.json").read_text())
@@ -204,7 +210,7 @@ class ExperimentTests(unittest.TestCase):
         def corrected(model, messages, flight):
             filtered = [m for m in messages if not (m["role"] == "assistant" and
                         json.loads(m["content"])["action"] == "propose" and
-                        json.loads(m["content"])["source_id"] is not None)]
+                        (json.loads(m["content"])["source_id"] is not None or "“" in m["content"]))]
             return scripted_request(model, filtered, flight)
         with tempfile.TemporaryDirectory() as tmp, patch.object(run, "prior_case", return_value=prior), patch.object(ChatModel, "_request", corrected), patch.dict(os.environ, {
             "GITHUB_ACTIONS": "true", "GITHUB_RUN_ATTEMPT": "1", "CLOUDRU_FOUNDATION_API_KEY": "synthetic"}), patch.object(
@@ -212,7 +218,7 @@ class ExperimentTests(unittest.TestCase):
             self.assertEqual(run.main(), 0)
             report = json.loads(Path(tmp + "/out/summary.json").read_text())
             self.assertEqual(len(report["results"]), 6)
-            self.assertEqual(report["results"][0]["request_count"], 5)
+            self.assertEqual(report["results"][0]["request_count"], 6)
             self.assertEqual(report["requests"], sum(r["request_count"] for r in report["results"]))
 
 

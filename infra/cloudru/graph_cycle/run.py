@@ -34,7 +34,10 @@ TASK = (
     "Citations must include BOTH callsite and provider; copy quotes verbatim including ASCII quotation marks. "
     "Operator service-address mapping (not dependencies): orders=https://orders.test; status=https://inventory.test."
 )
-PRIOR = HERE.parents[2] / "lab/reports/graph-cycle-2026-10-21/initial"
+HISTORY_ROOT = HERE.parents[2] / "lab/reports/graph-cycle-2026-10-21"
+PRIOR = HISTORY_ROOT / "continuation-1"
+READ_HISTORY = HISTORY_ROOT / "initial"
+PRIOR_RUN = "39612624655"
 
 
 def prior_case():
@@ -45,9 +48,9 @@ def prior_case():
 def validated_resume(graph, context, prior):
     """Revalidate previously read evidence against this exact synthetic snapshot."""
     from agent_graph.contracts import Citation, GraphError, canonical
-    if prior["basis"] != context["basis"] or prior["core_sha"] != CONFIG["core_sha"] or prior["request_count"] != 3:
+    if prior["basis"] != context["basis"] or prior["core_sha"] != CONFIG["core_sha"] or prior["request_count"] != 4:
         raise GraphError("resume_basis_or_budget_mismatch")
-    messages = json.loads((PRIOR / "0-reporting-http/messages-3.json").read_text())
+    messages = json.loads((READ_HISTORY / "0-reporting-http/messages-3.json").read_text())
     seed, old_actions = [], []
     for i in range(2, len(messages), 2):
         action = json.loads(messages[i]["content"])
@@ -60,14 +63,18 @@ def validated_resume(graph, context, prior):
         actual = graph.get_evidence(context["id"], citation)
         if actual != evidence:
             raise GraphError("resume_evidence_mismatch")
+        actual["numbered_lines"] = [dict(line=citation.start_line+j, text=line)
+                                    for j, line in enumerate(actual["quote"].splitlines())]
         seed.extend([dict(role="assistant", content=canonical(action)),
                      dict(role="user", content=canonical(dict(untrusted_source=actual)))])
         old_actions.append(action)
     seed.append(dict(role="assistant", content=canonical(prior["actions"][-1])))
-    seed.append(dict(role="user", content=canonical(dict(operator_protocol_correction="Previous action was rejected: invalid_model_action. No proposal was stored. "
+    seed.append(dict(role="user", content=canonical(dict(operator_protocol_correction="Previous action was rejected: evidence_mismatch. No proposal was stored. "
         "Correct the action format; propose requires all three source fields null. Use inventory repository/service "
         "names in keys, exact unchanged quotes from BOTH sources. Do not guess typographic quotes. "
-        "Continue from already read, revalidated sources. At most three requests remain; finish after proposing."))))
+        "Use numbered_lines text and exact line numbers in citations. Preserve leading spaces and ASCII quotes; "
+        "do not copy curly quotes or wrong bounds from the rejected proposal. No quote normalization is permitted. "
+        "Continue from already read, revalidated sources. At most two requests remain; finish after proposing."))))
     return seed, old_actions
 
 
@@ -282,7 +289,7 @@ def run_case(core, root, case_id, model_name, ledger, store):
                   transition=transition, actions=actions, proposals=records, requests=calls,
                   protocol_passed=protocol, quality=quality, investigation=result,
                   seconds=previous_seconds + time.monotonic() - started, request_count=len(calls),
-                  continuation_requests=continuation_calls, prior_run="39611545230" if prior else None,
+                  continuation_requests=continuation_calls, prior_run=PRIOR_RUN if prior else None,
                   usage_observed=totals, usage_complete=usage_complete,
                   estimated_cost_rub=str(cost) if usage_complete else None,
                   known_usage_cost_rub=str(cost), actual_billed_cost="NOT_MEASURED",
@@ -332,7 +339,7 @@ def main():
         # Carry forward conservative charged reserves, never reset them on resume.
         from agent_graph.contracts import ModelConfig
         config = ModelConfig.model_validate(model_config(prior["model"]))
-        reservation = store.reserve(CONFIG["experiment_id"], "historical-run-39611545230",
+        reservation = store.reserve(CONFIG["experiment_id"], "historical-run-" + PRIOR_RUN,
                                     prior["investigation"]["budget"]["reserved_token_units"], config)
         store.finish_reservation(reservation)
     results, stopped = [], None

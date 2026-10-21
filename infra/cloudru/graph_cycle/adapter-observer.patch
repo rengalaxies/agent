@@ -54,3 +54,11 @@
      run = uuid.uuid4().hex
      events, accepted, error = [], [], None
      finished = False
+@@ -289,6 +299,7 @@
+                 citation = Citation(source_id=source["id"], start_line=reply.start_line,
+                                     end_line=reply.end_line, quote=quote)
+                 value = graph.get_evidence(context_id, citation)
++                value["numbered_lines"] = [dict(line=citation.start_line+i, text=line) for i, line in enumerate(value["quote"].splitlines())]
+                 messages.append(dict(role="user", content=canonical(dict(untrusted_source=value))))
+             elif reply.action == "propose":
+                 if any(v is not None for v in (reply.source_id, reply.start_line, reply.end_line)) or not reply.proposals:

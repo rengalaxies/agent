@@ -1,6 +1,6 @@
 name: Cloud.ru bounded graph model cycle
-# Diagnosed continuation: carry run 39611545230's three charged Qwen calls;
-# revalidate prior reads and allow at most three further sends for that case.
+# Final diagnosed continuation: carry both runs' four charged Qwen calls;
+# number the revalidated source lines and allow at most two further sends.
 on:
   # A new dispatch-only workflow is not available before default-branch registration.
   # This single, owner-controlled integration branch has an intentional live push.
