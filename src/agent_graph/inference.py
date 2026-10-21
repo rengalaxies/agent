@@ -113,6 +113,7 @@ class ChatModel:
         try:
             worker.start()
         except BaseException:
+            flight.abort("cancelled")
             if on_finished:
                 on_finished()
             raise

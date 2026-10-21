@@ -95,31 +95,38 @@ class TransportRegressions(unittest.TestCase):
     def test_r1_connect_tls_and_send_obey_deadline(self):
         phases = [(socket.socket, "connect"), (ssl.SSLSocket, "do_handshake"), (http.client.HTTPConnection, "send")]
         for owner, name in phases:
-            with self.subTest(phase=name):
-                release, ended = threading.Event(), threading.Event()
-                original = getattr(owner, name)
-                def paused(*args, **kwargs):
-                    try:
-                        release.wait(1.2)
-                        return original(*args, **kwargs)
-                    finally:
-                        ended.set()
-                with http_stub() as (url, seen, calls):
-                    options = dict(timeout_seconds=0.15)
-                    if name == "do_handshake":
-                        url = url.replace("http:", "https:")
-                        options.update(route="corporate", micro_per_million_tokens=1,
-                                       installation_micro_cap=100000, run_micro_cap=100000)
-                    try:
-                        with patch.object(owner, name, paused), patch.dict("os.environ", {"GRAPH_LLM_API_KEY": "regression-only"}):
-                            start = time.monotonic()
-                            with self.assertRaises(GraphError):
-                                ChatModel(config(url, **options)).complete([])
-                            self.assertLess(time.monotonic()-start, 0.65)
-                    finally:
-                        release.set()
-                        self.assertTrue(ended.wait(2))
-                    self.assertEqual(calls, [])
+            for cancelled in (False, True):
+                with self.subTest(phase=name, cancelled=cancelled):
+                    release, ended, cancel = threading.Event(), threading.Event(), threading.Event()
+                    original = getattr(owner, name)
+                    def paused(*args, _original=original, _release=release, _ended=ended, **kwargs):
+                        try:
+                            _release.wait(1.2)
+                            return _original(*args, **kwargs)
+                        finally:
+                            _ended.set()
+                    with http_stub() as (url, seen, calls):
+                        options = dict(timeout_seconds=5 if cancelled else 0.15)
+                        if name == "do_handshake":
+                            url = url.replace("http:", "https:")
+                            options.update(route="corporate", micro_per_million_tokens=1,
+                                           installation_micro_cap=100000, run_micro_cap=100000)
+                        timer = threading.Timer(0.15, cancel.set)
+                        if cancelled:
+                            timer.start()
+                        try:
+                            with patch.object(owner, name, paused), patch.dict("os.environ", {"GRAPH_LLM_API_KEY": "regression-only"}):
+                                start = time.monotonic()
+                                with self.assertRaisesRegex(GraphError, "cancelled" if cancelled else "model_timeout"):
+                                    ChatModel(config(url, **options)).complete([], cancel=cancel)
+                                self.assertLess(time.monotonic()-start, 0.65)
+                        finally:
+                            timer.cancel()
+                            if cancelled:
+                                timer.join()
+                            release.set()
+                            self.assertTrue(ended.wait(2))
+                        self.assertEqual(calls, [])
 
     def test_r1_headers_obey_wall_deadline(self):
         with http_stub(headers_drip=0.06) as (url, seen, calls):
@@ -163,6 +170,31 @@ class TransportRegressions(unittest.TestCase):
                 release.set()
             self.assertFalse(seen.wait(0.15))
 
+    def test_r1_cancel_interrupts_dns_without_late_connection(self):
+        release, ended, cancel = threading.Event(), threading.Event(), threading.Event()
+        original = socket.getaddrinfo
+        def resolver(*args, **kwargs):
+            try:
+                release.wait(1.2)
+                return original(*args, **kwargs)
+            finally:
+                ended.set()
+        timer = threading.Timer(0.15, cancel.set)
+        with http_stub() as (url, seen, calls):
+            timer.start()
+            try:
+                with patch("socket.getaddrinfo", resolver):
+                    start = time.monotonic()
+                    with self.assertRaisesRegex(GraphError, "cancelled"):
+                        ChatModel(config(url, timeout_seconds=5)).complete([], cancel=cancel)
+                    self.assertLess(time.monotonic()-start, 0.65)
+            finally:
+                release.set()
+                timer.cancel()
+                timer.join()
+                self.assertTrue(ended.wait(2))
+            self.assertFalse(seen.wait(0.15))
+
     def test_r1_expired_lease_does_not_unlock_a_live_owner(self):
         with tempfile.TemporaryDirectory() as directory:
             first, second = Store(Path(directory)/"state"), Store(Path(directory)/"state")
@@ -179,6 +211,40 @@ class TransportRegressions(unittest.TestCase):
             finally:
                 first.close()
                 second.close()
+
+    def test_r1_process_crash_releases_owner_without_refunding_charge(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            policy = create_fixture(root)
+            store = Store(root/"state")
+            child = None
+            try:
+                with http_stub(headers_drip=0.06) as (url, seen, calls):
+                    policy.model = config(url, timeout_seconds=5)
+                    c = Graph(policy, store).prepare_context()
+                    path = root/"policy.json"
+                    path.write_text(policy.model_dump_json())
+                    child = subprocess.Popen([sys.executable, "-m", "agent_graph", "--policy", str(path),
+                                              "--state", str(root/"state"), "investigate", "--context", c["id"]],
+                                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                    self.assertTrue(seen.wait(5))
+                    child.kill()
+                    child.communicate(timeout=5)
+                    before = store.budget_totals(policy.installation_id)
+                    self.assertEqual(before["attempts"], 1)
+                    with self.assertRaisesRegex(GraphError, "model_busy"):
+                        store.reserve(policy.installation_id, "restart", 10, policy.model)
+                    # Simulate passage of the crash lease without a long sleep.
+                    store.db.execute("UPDATE reservations SET until=0")
+                    token = store.reserve(policy.installation_id, "restart", 10, policy.model)
+                    store.finish_reservation(token)
+                    self.assertEqual(store.budget_totals(policy.installation_id)["reserved_token_units"],
+                                     before["reserved_token_units"]+10)
+            finally:
+                if child and child.poll() is None:
+                    child.kill()
+                    child.communicate(timeout=5)
+                store.close()
 
     def test_r1_pending_resolver_keeps_lock_after_partial_and_store_close(self):
         with tempfile.TemporaryDirectory() as directory:

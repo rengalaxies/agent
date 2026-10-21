@@ -7,10 +7,17 @@ import math
 import os
 from pathlib import Path
 import sqlite3
+import threading
 import time
 import uuid
 
 from .contracts import GraphError, canonical, digest, load_json
+
+
+def proposal_identity(view, record):
+    # Keep the original publication/citations immutable; subsequent contexts
+    # with the same basis reuse its identity, including records from v1 stores.
+    return digest([view, {k: v for k, v in record.items() if k not in ("context_id", "id")}])
 
 
 class Store:
@@ -77,12 +84,33 @@ class Store:
     def proposals(self, view):
         return [load_json(r[0]) for r in self.db.execute("SELECT data FROM proposals WHERE view=? ORDER BY id", (view,))]
 
-    def propose(self, view, proposal, expected_head):
-        id = digest([view, proposal])
+    def propose(self, view, proposal, expected_head, *, limit):
+        id = proposal_identity(view, proposal)
         data = {**proposal, "id": id}
         with self.transaction():
             if self.head(view)[1] != expected_head:
                 raise GraphError("concurrent_update")
+            rows = self.proposals(view)
+            duplicate = next((r for r in rows if proposal_identity(view, r) == id), None)
+            if duplicate:
+                return duplicate
+            superseded = {r["proposal"]["supersedes"] for r in rows if r["proposal"]["supersedes"]}
+            target = proposal["proposal"]["supersedes"]
+            old = next((r for r in rows if r["id"] == target), None)
+            if target:
+                if (not old or old["proposal"]["key"] != proposal["proposal"]["key"]
+                        or proposal["proposal"]["kind"] != "human_correction"):
+                    raise GraphError("invalid_supersession")
+                if target in superseded:
+                    raise GraphError("concurrent_update")
+            # The limit is the active set at this basis, not lifetime history.
+            # Replacement frees its target's slot atomically with insertion.
+            active = {proposal_identity(view, r) for r in rows
+                      if r["basis"] == proposal["basis"] and r["id"] not in superseded}
+            if old and old["basis"] == proposal["basis"]:
+                active.discard(proposal_identity(view, old))
+            if len(active) >= limit:
+                raise GraphError("proposal_limit")
             self.db.execute("INSERT OR IGNORE INTO proposals VALUES(?,?,?)", (id, view, canonical(data)))
         return data
 
@@ -91,9 +119,11 @@ class Store:
         fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
+        except OSError as exc:
             os.close(fd)
-            raise GraphError("model_busy") from None
+            if isinstance(exc, BlockingIOError):
+                raise GraphError("model_busy") from None
+            raise
         try:
             id = self._reserve(installation, run, tokens, config)
         except BaseException:
@@ -137,7 +167,14 @@ class Store:
         """Transfer ownership to a request worker; never use this connection there."""
         fd = self._leases.pop(id)
         path = self.path
+        guard = threading.Lock()
+        finished = False
         def finish():
+            nonlocal finished
+            with guard:
+                if finished:
+                    return
+                finished = True
             try:
                 db = sqlite3.connect(path, timeout=5)
                 try:

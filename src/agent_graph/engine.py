@@ -6,7 +6,7 @@ import time
 import uuid
 
 from . import PROFILE, SCHEMA
-from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal, digest
+from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal
 from .discovery import extract
 from .sources import collect
 from .store import Store
@@ -71,14 +71,15 @@ class Graph:
     def dependencies(self, context_id, operation_id=None):
         c = self.context(context_id)
         graph = c["graph"]
+        assessment = self.freshness(c)
         result = dict(schema=SCHEMA, context_id=c["id"], basis=c["basis"], profile=PROFILE,
                       installation_id=c["installation_id"], environment=c["environment"],
-                      coverage=c["coverage"], freshness=self.freshness(c),
+                      coverage=c["coverage"], freshness=assessment,
                       operations=[o for o in graph["operations"] if operation_id is None or o["id"] == operation_id],
                       dependencies=[d for d in graph["dependencies"] if operation_id is None or d["operation_id"] == operation_id],
                       requirements=[r for r in graph["requirements"] if operation_id is None or r["operation_id"] == operation_id],
                       candidates=graph["candidates"], conflicts=graph["conflicts"], gaps=graph["gaps"],
-                      proposals=self.proposals(c), scope=c["scope"])
+                      proposals=self.proposals(c, assessment=assessment), scope=c["scope"])
         return result
 
     def get_evidence(self, context_id, citation):
@@ -110,30 +111,25 @@ class Graph:
                 raise GraphError("model_cannot_correct")
         for citation in p.citations:
             self.get_evidence(context_id, citation)
-        existing = self.store.proposals(self.view)
-        old = next((x for x in existing if x["id"] == p.supersedes), None)
-        if p.supersedes and (not old or old["proposal"]["key"] != p.key
-                             or p.kind != "human_correction"):
-            raise GraphError("invalid_supersession")
         record = dict(proposal=p.model_dump(), context_id=context_id, basis=context["basis"],
                       actor=self.policy.subject, origin="model" if from_model else "external",
                       trust="HUMAN_CORRECTION" if p.kind == "human_correction" else "UNAPPROVED_CANDIDATE")
-        # Identical resubmission remains idempotent, including at the proposal cap.
-        if len(existing) >= self.policy.limits.max_proposals and digest([self.view, record]) not in {x["id"] for x in existing}:
-            raise GraphError("proposal_limit")
-        return self.store.propose(self.view, record, context["id"])
+        return self.store.propose(self.view, record, context["id"], limit=self.policy.limits.max_proposals)
 
-    def proposals(self, context):
+    def proposals(self, context, *, assessment=None):
+        assessment = self.freshness(context) if assessment is None else assessment
         rows = self.store.proposals(self.view)
         output = []
         superseded = {x["proposal"]["supersedes"] for x in rows if x["proposal"]["supersedes"]}
         for row in rows:
-            fresh = row["basis"] == context["basis"]
+            fresh = assessment if row["basis"] == context["basis"] else {
+                **assessment, "status": "STALE", "reasons": assessment["reasons"] + ["proposal_basis_differs"]}
             conflicting = [x["id"] for x in rows if x["id"] != row["id"]
                            and x["proposal"]["key"] == row["proposal"]["key"]
                            and x["proposal"]["statement"] != row["proposal"]["statement"]
                            and x["basis"] == row["basis"] and x["id"] not in superseded]
-            output.append({**row, "status": "SUPERSEDED" if row["id"] in superseded else "CURRENT" if fresh else "STALE",
+            output.append({**row, "status": "SUPERSEDED" if row["id"] in superseded else fresh["status"],
+                           "freshness": fresh,
                            "conflicts_with": conflicting})
         return output
 
@@ -152,6 +148,8 @@ class Graph:
     def analyze_change(self, base_context_id, task=""):
         self.policy.require("maintain")
         base = self.context(base_context_id)
+        if base.get("profile") != PROFILE:
+            raise GraphError("base_profile_mismatch")
         current = self.prepare_context(task or base["task"], base.get("operation_id"))
         old_ops = {o["id"]: o for o in base["graph"]["operations"]}
         new_ops = {o["id"]: o for o in current["graph"]["operations"]}

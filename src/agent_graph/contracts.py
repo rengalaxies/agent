@@ -91,7 +91,8 @@ class Limits(Strict):
     freshness_seconds: int = Field(default=3600, ge=1, le=86400)
     max_model_steps: int = Field(default=4, ge=1, le=12)
     max_tool_lines: int = Field(default=60, ge=1, le=200)
-    max_proposals: int = Field(default=24, ge=1, le=100)
+    max_proposals: int = Field(default=24, ge=1, le=100,
+                              description="Active non-superseded proposals at the current basis; immutable history is excluded.")
 
 
 class ModelConfig(Strict):
