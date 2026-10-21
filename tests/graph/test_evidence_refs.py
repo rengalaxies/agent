@@ -255,7 +255,18 @@ class SavedSeriesTests(unittest.TestCase):
                         historic_sources = json.loads(messages[1]["content"])["sources"]
                         mapping = {s["source_id"]: next(v["id"] for v in context["sources"].values()
                                    if v["repository"] == s["repository"] and v["path"] == s["path"]) for s in historic_sources}
+                        session = EvidenceSession(graph, context["id"])
                         for action in report["actions"]:
+                            if action["action"] == "read_source":
+                                source_id = mapping[action["source_id"]]
+                                if case == "export" and model == 1 and action["end_line"] == 12:
+                                    # Original GPT read exceeded the 9-line provider.
+                                    # References must not silently clamp that range.
+                                    with self.assertRaises(GraphError) as caught:
+                                        session.read(source_id, action["start_line"], action["end_line"])
+                                    self.assertEqual(caught.exception.code, "invalid_evidence_range")
+                                else:
+                                    session.read(source_id, action["start_line"], action["end_line"])
                             for p in action["proposals"]:
                                 rebound = {**p, "citations": [{**c, "source_id": mapping[c["source_id"]]} for c in p["citations"]]}
                                 with self.assertRaises(GraphError) as caught:
