@@ -114,6 +114,33 @@ Backend публикуется только на 127.0.0.1:18081. Порты 800
 
 Браузер передаёт task, известный scenario/action ID, expected session revision и idempotency key. Он не выбирает пути на хосте, executable, policy, произвольный URL, доверенные digests или identity субъекта. CSRF/origin проверяются на изменяющих запросах. Обычный опрос состояния не выполняет скрытый дорогостоящий перескан.
 
+### Выбор предложенной версии через POST jobs
+
+Отдельный маршрут materialize не добавляется. Оператор UI вызывает POST /api/demo/sessions/{id}/jobs с таким JSON:
+
+```json
+{
+  "action": "analyze_change",
+  "expected_revision": 1,
+  "idempotency_key": "select-B-001",
+  "payload": {
+    "target_version": "B",
+    "base_context_id": "published-context-id",
+    "task": "Ограничить страницу Orders до 100 заказов"
+  }
+}
+```
+
+Для analyze_change обязательны target_version из B/D/E и опубликованный base_context_id той же сессии и профиля; task — необязательная строка до 4000 символов. manifest выбирается сервером из закреплённого сценария, пути и digests из браузера не принимаются. Для prepare_context payload содержит только необязательный task; исходную A материализует создание сессии. Для investigate payload содержит только context_id опубликованного контекста. Лишние поля/сочетания дают 422.
+
+Правила очереди и публикации:
+1. Сначала проверяется идемпотентный повтор: одинаковые actor/session/key и каноническое тело возвращают тот же job даже после публикации новой revision; другое тело с тем же ключом — 409 idempotency_conflict.
+2. Для нового запроса одной SQLite-транзакцией проверяются expected_revision=r и отсутствие незавершённого mutating job этой сессии, резервируется job с session_revision=r и target_revision=r+1, устанавливается pending_job_id. Ответ 202 содержит job_id, status, session_revision и target_revision. Второе конкурентное переключение с тем же r получает 409 session_busy либо revision_conflict; приём запроса ещё не меняет опубликованные proposed/running.
+3. Worker под общей блокировкой выполнения и session lock повторно сверяет revision/pending_job_id, проверяет закреплённый целевой manifest, материализует его в стабильные рабочие корни и вызывает analyze_change с зарезервированным base_context_id. Изменение корней и вызов CLI — один сериализованный job.
+4. При успешно завершённом CLI-вызове CAS по r/pending_job_id одной транзакцией публикует revision=r+1, scenario_version, proposed_manifest_sha256, current_context_id и result_ref, затем снимает reservation. Полнота анализа/найденный риск остаются отдельными полями: SUCCEEDED не означает «изменение безопасно». running_manifest_sha256 не меняется.
+5. При ошибке, отмене, deadline или crash незавершённая materialization восстанавливается из последнего опубликованного manifest до допуска следующего mutating job. Сначала под теми же lock выполняется reconciliation файлов и reservation, затем reservation снимается. SQLite и файловая система не объявляются одной атомарной транзакцией. Принятые модулем immutable записи сохраняются в истории; непубликованный/поздний результат не становится текущим. Восстановление не перезаписывает уже опубликованную более новую revision.
+6. UI показывает queued target_version отдельно от опубликованного proposed и реально running; reset/correction во время reservation возвращают 409 session_busy. Это исключает незаметную смену кандидата между нажатием анализа и получением результата.
+
 Жизненный цикл задания: QUEUED, RUNNING, SUCCEEDED, PARTIAL, FAILED, CANCELLED, UNKNOWN_AFTER_RESTART. Семантический тестовый FAIL хранится отдельно от успешного выполнения задачи сбора результата. Отмена не считается подтверждённой остановкой внешнего inference billing.
 
 Начальные пределы: одно исполняемое задание; до четырёх ожидающих, затем явный busy; общий job deadline 180 секунд; max_files 256, max_file_bytes 65536, max_corpus_bytes 2000000, scan_seconds 15, freshness_seconds 3600, max_tool_lines 60. Лимиты — стартовая конфигурация, не измеренная производительность. Очередь и история устойчивы к рестарту; RUNNING без подтверждённого завершения становится UNKNOWN, автоматически не повторяется.
