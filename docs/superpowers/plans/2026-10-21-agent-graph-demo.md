@@ -161,7 +161,7 @@ assert sum(job.status == "QUEUED" for job in jobs) == 4
 
 - [ ] Запустить python -m unittest tests.graph_demo.test_jobs -v и подтвердить падение до реализации.
 - [ ] Реализовать admission/CAS/publication по полному контракту спецификации §6 «Выбор предложенной версии через POST jobs». Идемпотентность проверяется до stale revision; reservation сериализует изменения одной сессии. Очередь, jobs, transitions и refs постоянны; claim разрешает один активный job в установке.
-- [ ] Добавить test_concurrent_selection_same_revision_only_one_accepted: два разных ключа с expected_revision=1 дают ровно один 202; второй 409 session_busy/revision_conflict. До завершения первого session.revision остаётся 1, pending target=B; после CAS revision=2/proposed=B/running=A. Повтор первого тела возвращает прежний job; тот же ключ с target=D даёт 409 idempotency_conflict.
+- [ ] Добавить test_concurrent_selection_same_revision_only_one_accepted: два разных ключа с expected_revision=1 дают ровно один 202; второй 409 session_busy/revision_conflict. До завершения первого session.revision остаётся 1, pending target=B; после CAS revision=2/proposed=B/running=A. Текущий selection-result сопоставляется с job.target_revision=2, а не старой job.session_revision=1; после следующего revision3 результат2 исторический. Повтор первого тела возвращает прежний job; тот же ключ с target=D даёт 409 idempotency_conflict.
 - [ ] Добавить test_cancel_or_crash_after_materialization_restores_published_manifest: убить worker после записи B, до publication; после restart job UNKNOWN_AFTER_RESTART, bytes соответствуют последнему опубликованному A, revision=1, новый mutating job разрешён только после reconciliation. Immutable graph history не стирается, поздний результат не текущий.
 - [ ] Написать test_restart_marks_running_unknown_without_retry и test_old_job_after_reset_not_current. Реальный process restart должен сохранять историю и оставлять незавершённое UNKNOWN_AFTER_RESTART.
 - [ ] До publication B UI показывает pending target=B/proposed=A/running=A; после CAS proposed=B/running=A. Смена runtime происходит только после привязанного receipt оператора. Нельзя обновлять running version из ответа модели/браузера.
@@ -303,7 +303,7 @@ assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
 
 ## Execution handoff и результат
 
-Этот план подготовлен и самопроверен, но ещё не исполнен. После просмотра плана владельцем продукта локальный Codex использует executing-plans и изолированную рабочую ветку/worktree; выбранный способ исполнения сохраняется.
+Этот план подготовлен и самопроверен, но ещё не исполнен. Владелец рассмотрел план и разрешил передачу локальному Codex после уточнения контракта выбора версии и ограничения одного sandbox. Оба уточнения внесены в спецификацию и Tasks 2–7, 9; повторный выбор способа исполнения не требуется. Локальный Codex использует executing-plans и изолированную рабочую ветку/worktree.
 
 1. Прочитать PR №29/spec/plan, актуальный PR №28 и AGENTS.md; проверить состояние локального дерева, не затирать чужие изменения.
 2. Для независимых demo-файлов можно работать до окончания ревью ядра. Для интеграции использовать отдельный worktree/ветку от точного кандидата ядра, явно указав stacked base; main/ветку PR №28 не менять. После принятия ядра обновить основание и повторить релевантные проверки до deployment.
