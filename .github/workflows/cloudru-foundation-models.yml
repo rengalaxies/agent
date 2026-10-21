@@ -1,0 +1,42 @@
+name: Cloud.ru Foundation Models qualification
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: preflight has no network; generate requires confirmed grant and budget
+        type: choice
+        options: [preflight, catalog, generate]
+        default: preflight
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-foundation-models-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    # Reviewed default branch only. Never checkout an input ref or PR code with secrets.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Offline safety tests (no model credentials)
+        run: python3 -m unittest discover -s infra/cloudru/foundation_models -p 'test_*.py' -v
+      - name: Explicitly selected qualification
+        env:
+          FM_MODE: ${{ inputs.mode }}
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+          FM_BUDGET_APPROVED: ${{ vars.CLOUDRU_FM_BUDGET_APPROVED }}
+          FM_GRANT_CONFIRMED: ${{ vars.CLOUDRU_FM_GRANT_CONFIRMED }}
+        run: python3 infra/cloudru/foundation_models/probe.py --mode "$FM_MODE"
+      - name: Safe report
+        if: always()
+        run: |
+          if [ -f foundation-models-report.json ]; then
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat foundation-models-report.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
