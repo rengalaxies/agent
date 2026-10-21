@@ -120,6 +120,7 @@
           },
           "max_proposals": {
             "default": 24,
+            "description": "Active non-superseded proposals at the current basis; immutable history is excluded.",
             "maximum": 100,
             "minimum": 1,
             "title": "Max Proposals",

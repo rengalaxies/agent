@@ -1,19 +1,20 @@
 {
   "status": "PASS",
-  "source_base_commit": "55c55c88d85e71eda640ab35e5d376519959a448",
+  "source_base_commit": "60914d650a8a1609a3023973164a07c5ab54b202",
   "python": "3.12.14",
   "platform": "Linux",
   "full_regression": {
-    "command": "PYTHONPATH=.:src:tests:tools python -m unittest discover -s tests -q",
-    "tests": 452,
-    "seconds": 54.24,
+    "command": "PYTHONPATH=.:src:tests:tools python -m unittest discover -s tests -v",
+    "tests": 480,
+    "seconds": 55.548,
     "status": "PASS"
   },
   "graph_tests": {
-    "tests": 31,
+    "tests": 59,
     "status": "PASS",
     "includes_real_http_stub": true,
-    "real_model": false
+    "real_model": false,
+    "regression_tests_added": 28
   },
   "component_series": {
     "cases": 12,
@@ -29,7 +30,9 @@
       "reporting",
       "export"
     ],
-    "freshness": "CURRENT"
+    "freshness": "CURRENT",
+    "profile": "http-requests-2",
+    "coverage": "PARTIAL"
   },
   "lint": {
     "command": "ruff==0.17.1 check src services tools stand lab/app lab/product lab/runtime --select F401,F811,F841",
@@ -49,7 +52,7 @@
   "dependencies": {
     "pydantic": "2.14.1",
     "PyYAML": "6.0.3",
-    "fastapi": "0.156.5",
+    "fastapi": "0.156.8",
     "httpx": "0.28.1",
     "cryptography": "46.0.7",
     "psycopg": "3.3.6",
@@ -66,17 +69,63 @@
     "examples/agent_graph/evaluate.py": "82897a52cc1f3a0b850f6361ccebb42430eaeb5c3d093427b4b1c2757428df74",
     "examples/agent_graph/fixture.py": "cde27db8b5a44fd3ba1f05cae54eef80d5637f0deffafbe868496692a91db239",
     "infra/agent_graph/serve_local.py": "b70a376b5052ca3eacc6ce7e1dd69e9ccfc038ae4563cdcc72bdda70491232e2",
-    "schemas/agent-graph-1.json": "28d7a3878c788fd8701cc0adb801c5628f013565cffcdb5b83145eb1855c0852",
-    "src/agent_graph/__init__.py": "61cc5638a7923278754f632c1f4ee2796c15770e72bd97a41a2235d3fe7b0527",
+    "schemas/agent-graph-1.json": "c3a2f3322074b550d313a7bd369e7c8ca6332948e620c1035c77c6b8cd1fb483",
+    "src/agent_graph/__init__.py": "de64e16848e7980011c8e588e6c59ec2f611dd7a7cdf6ecc68d9814102714bbd",
     "src/agent_graph/__main__.py": "ceab0c7258d592453a9e278c73d2a9434a6cbfcb97642717d849a2ad2278c05d",
-    "src/agent_graph/contracts.py": "5abb286f846f7c6d1ecc0a28077fdce145706e8042c37fedc979bf15faa167a8",
-    "src/agent_graph/discovery.py": "42e358f872fd0676742ab6e73ff8d87a19ea1d89581fd4ab76fc77999a0d0534",
-    "src/agent_graph/engine.py": "725516a67acdc402b51ddce68252b2cd4fe385f331c0a8a83c1699a9c672c798",
-    "src/agent_graph/inference.py": "61e9683f46e5360e4f18fe42890ddfb54fe1ed12a6e7c134f16d2ede1601babc",
+    "src/agent_graph/contracts.py": "b3a8e6988114686c538c37cb57b83cf8f0b243d6ef54f5b9461fd442365b8487",
+    "src/agent_graph/discovery.py": "12a22bfcb503c07fd811910ea10714d46e49cd1e82d69ee830c6f05459ef1237",
+    "src/agent_graph/engine.py": "de2788bc41f8610303a3c08f216a6529c3166b98af5ad7b61771f2849bba5316",
+    "src/agent_graph/inference.py": "727b21535bd7ec583b3ad2ddd98a29cc64679d115bb7993932c5e6801abd8e35",
     "src/agent_graph/sources.py": "a90637ca647cea411dacbb78323facb5434d74c6dd6cdac86b9fd7f8b6232b2d",
-    "src/agent_graph/store.py": "496bc8143ac06b18dbd12f1d5eee69336ae8b4ed4958f2c9cce279dbfbf90d7c",
+    "src/agent_graph/store.py": "92b7905c7e37f567ced6f680843a871a301b6137ca49f600b0a32eced753fa05",
     "tests/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/graph/test_discovery_regressions.py": "cb164862d1d7b3d616f4901b55daa769f9c55a5dc9088bbb71d4f4c9a5a324d5",
     "tests/graph/test_graph.py": "e856b0062ade1508ff08911494f323ff3a8e26c785dbde1cca25712edaea24b8",
-    "tests/graph/test_inference.py": "ca681e5d8c548acfafd206e270a33e4bee717d2c4f08fadbdeaa06042ecddd7b"
+    "tests/graph/test_inference.py": "ca681e5d8c548acfafd206e270a33e4bee717d2c4f08fadbdeaa06042ecddd7b",
+    "tests/graph/test_knowledge_regressions.py": "a96de9736011aaeae75ea4a150cdb523ce165b69a4b7a14cb7a934c58ccda884",
+    "tests/graph/test_transport_regressions.py": "bd9138012df132fc14fd25d06638ecbd89071255924946323d9b7463dad24ca4"
+  },
+  "validation_scope": "AUTHOR_LOCAL_RECHECK; remote CI is reported separately for the published SHA",
+  "schema_check": {
+    "status": "PASS",
+    "matches": [
+      "operator_policy",
+      "proposal",
+      "external_check",
+      "model_action"
+    ]
+  },
+  "local_markdown_links": {
+    "scope": "Changed Markdown relative links against PR base",
+    "checked": 71,
+    "missing": 0
+  },
+  "blocker_regressions": {
+    "basis_sha": "60914d650a8a1609a3023973164a07c5ab54b202",
+    "before_fix": "R1/R5: 6 tests failed (5 failures, 4 subcase errors); R2-R4: 7 tests, 17 failures; R6-R7: 7 tests failed (4 failures, 3 errors).",
+    "baseline_subset_replay": {
+      "tests": 24,
+      "failures": 32,
+      "errors": 7,
+      "note": "Subcase failures/errors, not counts of separate defects; replay used src at basis_sha."
+    },
+    "after_fix": "All R1-R7 regressions PASS within the full suite; not an independent review or v4 evaluation.",
+    "tests": [
+      "tests/graph/test_transport_regressions.py",
+      "tests/graph/test_discovery_regressions.py",
+      "tests/graph/test_knowledge_regressions.py"
+    ],
+    "remaining_followups": [
+      "P3-URL",
+      "P3-DECORATOR"
+    ]
+  },
+  "artifact_sha256": {
+    "examples/agent_graph/reports/component-results.json": "c1323e0cc39cfaf473ada0957e7234599c3f3d2b3fd6caad1aba12bce39da48e",
+    "examples/agent_graph/reports/demo-results.json": "a81cf223cd3ac478b1747737324feacb183bfde096b3f9c1bee5e2acba058078",
+    "examples/agent_graph/reports/cost-estimates.json": "58ee011212080621df195aead9fb090442942b5ba92fa0789879e67765f45a99",
+    "docs/agent-graph-implementation-2026-10-21.md": "036c89ab4ea1223ba7c1a0056d74de3fec599323eafcbbe060753b4d96e35f45",
+    "docs/useful-graph-open-questions-2026-10-21.md": "e1683b2971121fe3a0f591d4082633b31631ed24ab405e4a83569896516422d9",
+    "examples/agent_graph/README.md": "2748c7210e2d4605db4cde8a896bdbade2fa0533d191a6f55ae9cc4be34f0aca"
   }
 }
