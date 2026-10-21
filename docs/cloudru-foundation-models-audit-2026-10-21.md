@@ -65,3 +65,73 @@ The current GitHub connector exposes no workflow-dispatch action. Its generic GE
 Workflow page: https://github.com/rengalaxies/agent/actions/workflows/cloudru-foundation-models.yml . Once this workflow has reached the default branch through the normal reviewed process, manual actions are **Run workflow → branch main → mode preflight → Run workflow**, then **mode catalog**. The catalog run also reports secret presence. These steps are not currently executable for this unmerged workflow; selecting the draft branch would skip its job. Do not merge solely to enable dispatch, rerun unrelated inference workflows, or choose `generate` for this check. No change to secrets, VM, triggers or branch restrictions was made for this recheck.
 
 Follow-up offline validation: 10 tests pass, including all four combinations of availability of the two requested models and absence of generation in catalog mode even with both approval vars set. Secret presence, HTTP status and current model availability remain untested until a real qualification run completes.
+
+## Independent review of PR #30
+
+Reviewed the complete diff and credential-bearing execution path at
+`c6353fb21929b4cb20f1a2aed4ee51a0ccf4a410`, against main
+`5c8daf78d34d510d48ecd9b1e194678bb13ed00c`. No blocking defect was found in
+the probe or workflow. The missing regression coverage was corrected without
+changing their behavior or weakening dispatch restrictions:
+
+- The existing 10 adapter tests did not cover the CLI's actual stdout/stderr,
+  report file and exit status, or redirects through the configured opener.
+  There are now 13 tests, including CLI execution with synthetic credentials,
+  malformed responses, credential-bearing transport exceptions, and all five
+  redirect statuses through the real opener with HTTPS I/O replaced offline.
+- Workflow security assumptions previously had no committed regression test,
+  and the adapter suite ran only during post-merge qualification. Four tests in
+  `tests/test_foundation_models_workflow.py` now cover the dispatch/main gate,
+  exact event-SHA checkout, pinned action, credential scoping and absence of
+  infrastructure keys or artifact actions. They also run the adapter suite.
+  Adding this file activates the existing `core-tests.yml` PR path filter;
+  these tests receive no model credentials and need no new workflow trigger.
+- Offline mutation checks rejected a PR trigger, a mutable checkout ref,
+  infrastructure credential injection and redirect following.
+
+Validation: 13 adapter tests and 4 workflow tests PASS; actionlint 1.7.12 PASS
+for `.github/workflows/cloudru-foundation-models.yml`; `git diff --check` PASS.
+The full core suite on Windows/Python 3.14 ran 323 tests with 33 failures and
+80 errors. A separate checkout of the unchanged main ran 319 tests with the
+same 33 failures and 80 errors, with identical failing test names and no new
+failures. Examples include POSIX-only `os.O_DIRECTORY`/`os.O_NOFOLLOW`, Unix
+permission expectations and fixture verification failures. This comparison
+does not claim a passing full suite; Linux GitHub CI remains the platform check.
+
+Existing main workflows cannot perform this isolated check: `lab-model-probe`,
+`lab-agent-ci` and `lab-product-ci` perform inference; `lab-preflight` binds
+infrastructure credentials and reads infrastructure/VM state. None provides a
+catalog-only input. Do not dispatch them for this task. The new workflow is
+absent from main until merge, and its main-only guard intentionally prevents a
+PR-branch dispatch. No alternate trigger, ref override or protection bypass was
+added.
+
+After normal reviewed merge, dispatch preflight explicitly on main:
+
+```sh
+gh workflow run cloudru-foundation-models.yml --repo rengalaxies/agent --ref main -f mode=preflight
+gh run list --repo rengalaxies/agent --workflow cloudru-foundation-models.yml --branch main --event workflow_dispatch --limit 5
+```
+
+Inspect the corresponding run (replace `RUN_ID` with its numeric ID):
+
+```sh
+gh run watch RUN_ID --repo rengalaxies/agent --exit-status
+gh run view RUN_ID --repo rengalaxies/agent --json headSha,conclusion,jobs
+```
+
+Verify the `qualify` job actually succeeded, its SHA includes the reviewed
+change, and its report says `CONFIG_PRESENT_ACCESS_UNTESTED`. A skipped job
+does not establish secret presence. Only then dispatch catalog:
+
+```sh
+gh workflow run cloudru-foundation-models.yml --repo rengalaxies/agent --ref main -f mode=catalog
+```
+
+Inspect that run the same way. `TARGET_LISTED_INFERENCE_UNTESTED` plus the two
+`catalog.models_available` flags establishes the catalog result only, not
+inference, grant coverage or pricing. Neither command selects `generate` or
+requires changing approval vars. An Environment-only secret is unavailable to
+this workflow; a missing-key result must be resolved through the normal
+reviewed configuration process. This independent review performed no Actions
+dispatch, live Cloud.ru request, generation, VM change or merge.
