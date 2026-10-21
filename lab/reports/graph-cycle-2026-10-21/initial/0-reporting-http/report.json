@@ -1,0 +1,181 @@
+{
+  "case": "reporting-http",
+  "model": "Qwen/Qwen3-Coder-Next",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "87152dd996bb30f4001bb93909887cdbb61ad0d918d3df514956475445f54321",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "Qwen/Qwen3-Coder-Next",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 45.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 100000,
+    "currency": "RUB",
+    "micro_per_million_tokens": 244000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 24400000
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": null,
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "propose",
+      "source_id": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca",
+      "start_line": 6,
+      "end_line": 6,
+      "proposals": [
+        {
+          "key": "d2c6e753e5918aadd0d8b40a12dd8e5a6f0984c4f2a6e0d6fa1a3c818bf715ca->8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f GET /orders",
+          "kind": "hypothesis",
+          "statement": "The client.py module makes an HTTP GET request to /orders on orders.test, which matches the FastAPI endpoint defined in api.py at line 6.",
+          "citations": [
+            {
+              "source_id": "8424c76effb718d307b597340e7fb4a82e18f0ff18d158afd916c37b5756497f",
+              "start_line": 6,
+              "end_line": 6,
+              "quote": "@app.get(“/orders”)"
+            }
+          ],
+          "supersedes": null
+        }
+      ]
+    }
+  ],
+  "proposals": [],
+  "requests": [
+    {
+      "global_request": 1,
+      "usage": {
+        "prompt_tokens": 585,
+        "completion_tokens": 98,
+        "total_tokens": 683
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.6574311549999976
+    },
+    {
+      "global_request": 2,
+      "usage": {
+        "prompt_tokens": 950,
+        "completion_tokens": 84,
+        "total_tokens": 1034
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.763587493000003
+    },
+    {
+      "global_request": 3,
+      "usage": {
+        "prompt_tokens": 1300,
+        "completion_tokens": 342,
+        "total_tokens": 1642
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 4.363221158000002
+    }
+  ],
+  "protocol_passed": false,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "e9e314e372a54351a043482d4a4ffc10",
+    "context_id": "1f08a3925ce9d11ab24d513d6382f128825f7be97b93b1200a5f2bb26998b152",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "model": "Qwen/Qwen3-Coder-Next",
+    "status": "PARTIAL",
+    "reason": "invalid_model_action",
+    "events": [
+      {
+        "step": 0,
+        "action": "read_source",
+        "seconds": 5.290926904999999,
+        "usage": {
+          "prompt_tokens": 585,
+          "completion_tokens": 98
+        },
+        "reservation": "b4a43a11fb9e4c60931ebba6d96d6b37"
+      },
+      {
+        "step": 1,
+        "action": "read_source",
+        "seconds": 3.0467984829999963,
+        "usage": {
+          "prompt_tokens": 950,
+          "completion_tokens": 84
+        },
+        "reservation": "882924d94f234f91a827251a320edc62"
+      },
+      {
+        "step": 2,
+        "action": "propose",
+        "seconds": 5.497997115999993,
+        "usage": {
+          "prompt_tokens": 1300,
+          "completion_tokens": 342
+        },
+        "reservation": "227fd96af1564a6aa70f711602d259e5"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 3,
+      "reserved_token_units": 38063,
+      "reserved_micro": 9287372
+    },
+    "model_quality_established": false,
+    "id": "93c571ca8774ee69441d9d83902a3ab66c07cf36c482437618de809af31a6bb4"
+  },
+  "seconds": 13.861872214999991,
+  "request_count": 3,
+  "usage_observed": {
+    "prompt_tokens": 2835,
+    "completion_tokens": 524
+  },
+  "usage_complete": true,
+  "estimated_cost_rub": "0.473726",
+  "known_usage_cost_rub": "0.473726",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL"
+}

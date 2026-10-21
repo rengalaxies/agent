@@ -44,6 +44,11 @@ def scripted_request(model, messages, flight):
 
 
 class ExperimentTests(unittest.TestCase):
+    def setUp(self):
+        self.prior_patch = patch.object(run, "prior_case", return_value=None)
+        self.prior_patch.start()
+        self.addCleanup(self.prior_patch.stop)
+
     def test_corporate_config_preserves_cost_guard(self):
         for model in run.CONFIG["models"]:
             config = ModelConfig.model_validate(run.model_config(model))
@@ -164,6 +169,51 @@ class ExperimentTests(unittest.TestCase):
             report = json.loads(Path(tmp + "/out/summary.json").read_text())
             self.assertEqual(report["status"], "BLOCKED_ACTIONS_FIRST_ATTEMPT_REQUIRED")
             self.assertEqual(report["requests"], 0)
+
+    def test_diagnosed_continuation_revalidates_reads_and_keeps_six_call_cap(self):
+        prior = json.loads((run.PRIOR / "0-reporting-http/report.json").read_text())
+        def corrected(model, messages, flight):
+            filtered = [m for m in messages if not (m["role"] == "assistant" and
+                        json.loads(m["content"])["action"] == "propose" and
+                        json.loads(m["content"])["source_id"] is not None)]
+            return scripted_request(model, filtered, flight)
+        with tempfile.TemporaryDirectory() as tmp, patch.object(run, "prior_case", return_value=prior), patch.object(ChatModel, "_request", corrected):
+            root = Path(tmp)
+            ledger = run.Ledger(root / "ledger.sqlite3")
+            for _ in range(3):
+                ledger.reserve("reporting-http", run.CONFIG["models"][0])
+            store = Store(root / "state")
+            try:
+                report = run.run_case(CORE, root / "case", "reporting-http", run.CONFIG["models"][0], ledger, store)
+            finally:
+                store.close()
+            self.assertTrue(report["protocol_passed"], report["investigation"])
+            self.assertTrue(report["quality"]["passed"])
+            self.assertEqual(report["request_count"], 5)
+            self.assertEqual(ledger.count(), 5)
+            self.assertEqual(report["limits"]["max_model_steps"], 3)
+            self.assertEqual(report["config"]["run_token_cap"], 100000 - 38063)
+
+    def test_continuation_rejects_changed_snapshot(self):
+        prior = json.loads((run.PRIOR / "0-reporting-http/report.json").read_text())
+        with self.assertRaises(GraphError):
+            run.validated_resume(None, {"basis": "changed"}, prior)
+
+    def test_whole_continuation_keeps_prior_charges(self):
+        prior = json.loads((run.PRIOR / "0-reporting-http/report.json").read_text())
+        def corrected(model, messages, flight):
+            filtered = [m for m in messages if not (m["role"] == "assistant" and
+                        json.loads(m["content"])["action"] == "propose" and
+                        json.loads(m["content"])["source_id"] is not None)]
+            return scripted_request(model, filtered, flight)
+        with tempfile.TemporaryDirectory() as tmp, patch.object(run, "prior_case", return_value=prior), patch.object(ChatModel, "_request", corrected), patch.dict(os.environ, {
+            "GITHUB_ACTIONS": "true", "GITHUB_RUN_ATTEMPT": "1", "CLOUDRU_FOUNDATION_API_KEY": "synthetic"}), patch.object(
+                sys, "argv", ["run.py", "--core", str(CORE), "--output", tmp + "/out", "--live"]):
+            self.assertEqual(run.main(), 0)
+            report = json.loads(Path(tmp + "/out/summary.json").read_text())
+            self.assertEqual(len(report["results"]), 6)
+            self.assertEqual(report["results"][0]["request_count"], 5)
+            self.assertEqual(report["requests"], sum(r["request_count"] for r in report["results"]))
 
 
 if __name__ == "__main__":

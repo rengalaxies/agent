@@ -28,7 +28,47 @@ TASK = (
     "with the actual service IDs, and a concise statement explaining the evidence. "
     "Proposals remain unapproved. Do not invent dependencies, tests or approvals. "
     "Use only read_source, propose and finish. Finish after supported findings or insufficient evidence."
+    " Action fields: read_source requires source_id and integer start_line/end_line, proposals=[]. "
+    "For propose and finish, source_id=null, start_line=null, end_line=null, always. "
+    "A proposal key uses repository/service names from inventory, NEVER source hashes. "
+    "Citations must include BOTH callsite and provider; copy quotes verbatim including ASCII quotation marks. "
+    "Operator service-address mapping (not dependencies): orders=https://orders.test; status=https://inventory.test."
 )
+PRIOR = HERE.parents[2] / "lab/reports/graph-cycle-2026-10-21/initial"
+
+
+def prior_case():
+    path = PRIOR / "0-reporting-http/report.json"
+    return json.loads(path.read_text()) if path.exists() else None
+
+
+def validated_resume(graph, context, prior):
+    """Revalidate previously read evidence against this exact synthetic snapshot."""
+    from agent_graph.contracts import Citation, GraphError, canonical
+    if prior["basis"] != context["basis"] or prior["core_sha"] != CONFIG["core_sha"] or prior["request_count"] != 3:
+        raise GraphError("resume_basis_or_budget_mismatch")
+    messages = json.loads((PRIOR / "0-reporting-http/messages-3.json").read_text())
+    seed, old_actions = [], []
+    for i in range(2, len(messages), 2):
+        action = json.loads(messages[i]["content"])
+        evidence = json.loads(messages[i+1]["content"])["untrusted_source"]
+        if action["action"] != "read_source" or action["proposals"]:
+            raise GraphError("invalid_resume_action")
+        if any(action[k] != evidence[k] for k in ("source_id", "start_line", "end_line")):
+            raise GraphError("resume_evidence_mismatch")
+        citation = Citation.model_validate({k: evidence[k] for k in ("source_id", "start_line", "end_line", "quote")})
+        actual = graph.get_evidence(context["id"], citation)
+        if actual != evidence:
+            raise GraphError("resume_evidence_mismatch")
+        seed.extend([dict(role="assistant", content=canonical(action)),
+                     dict(role="user", content=canonical(dict(untrusted_source=actual)))])
+        old_actions.append(action)
+    seed.append(dict(role="assistant", content=canonical(prior["actions"][-1])))
+    seed.append(dict(role="user", content=canonical(dict(operator_protocol_correction="Previous action was rejected: invalid_model_action. No proposal was stored. "
+        "Correct the action format; propose requires all three source fields null. Use inventory repository/service "
+        "names in keys, exact unchanged quotes from BOTH sources. Do not guess typographic quotes. "
+        "Continue from already read, revalidated sources. At most three requests remain; finish after proposing."))))
+    return seed, old_actions
 
 
 def sha(path):
@@ -133,6 +173,8 @@ def run_case(core, root, case_id, model_name, ledger, store):
     from agent_graph.inference import ChatModel, investigate
 
     started = time.monotonic()
+    prior = prior_case() if case_id == "reporting-http" and model_name == CONFIG["models"][0] else None
+    previous_seconds = prior["seconds"] if prior else 0
     corpus = root / "corpus"
     names = build_corpus(core, corpus, case_id)
     addresses = [dict(service="orders", base_url="https://orders.test"),
@@ -143,6 +185,10 @@ def run_case(core, root, case_id, model_name, ledger, store):
         repositories=[dict(id=n, service=n, root=str(corpus / n), revision=CONFIG["core_sha"] + ":" + case_id) for n in names],
         addresses=addresses, limits=dict(max_model_steps=6, max_tool_lines=60),
         model=model_config(model_name)))
+    if prior:
+        policy.limits.max_model_steps = CONFIG["case_request_cap"] - prior["request_count"]
+        policy.model.run_token_cap -= prior["investigation"]["budget"]["reserved_token_units"]
+        policy.model.run_micro_cap -= prior["investigation"]["budget"]["reserved_micro"]
     records, actions, calls = [], [], []
 
     class AuditedGraph(Graph):
@@ -176,10 +222,14 @@ def run_case(core, root, case_id, model_name, ledger, store):
     source_paths = {s["id"]: s["repository"] + "/" + s["path"] for s in context["sources"].values()}
     source_manifest = [{"path": source_paths[s["id"]], "sha256": s["sha256"]} for s in context["sources"].values()]
     dump(root / "source-manifest.json", source_manifest)
+    seed = None
+    if prior:
+        seed, old_actions = validated_resume(graph, context, prior)
+        actions.extend(old_actions)
 
     def on_http(event, safe):
         if event == "request":
-            if time.monotonic() - started >= CONFIG["case_seconds"]:
+            if previous_seconds + time.monotonic() - started >= CONFIG["case_seconds"]:
                 raise GraphError("case_deadline")
             try:
                 number = ledger.reserve(case_id, model_name)
@@ -207,15 +257,18 @@ def run_case(core, root, case_id, model_name, ledger, store):
                     calls[-1]["seconds"] = time.monotonic() - calls[-1].pop("started", time.monotonic())
 
     cancel = threading.Event()
-    timer = threading.Timer(max(0.001, CONFIG["case_seconds"] - (time.monotonic() - started)), cancel.set)
+    timer = threading.Timer(max(0.001, CONFIG["case_seconds"] - previous_seconds - (time.monotonic() - started)), cancel.set)
     timer.start()
     try:
-        result = investigate(graph, context["id"], model=RecordingModel(policy.model, on_http), cancel=cancel)
+        result = investigate(graph, context["id"], model=RecordingModel(policy.model, on_http), cancel=cancel,
+                             resume_messages=seed)
     finally:
         timer.cancel()
     # This file is read only AFTER all model calls for the case are over.
     expected = json.loads((HERE / "expectations.json").read_text())
     quality = score_case(case_id, records, actions, source_paths, expected)
+    continuation_calls = len(calls)
+    calls = (prior["requests"] if prior else []) + calls
     usage_complete = all(isinstance(c.get("usage"), dict) and
                          all(k in c["usage"] for k in ("prompt_tokens", "completion_tokens")) for c in calls)
     totals = {k: sum(c.get("usage", {}).get(k, 0) for c in calls if isinstance(c.get("usage"), dict))
@@ -228,7 +281,8 @@ def run_case(core, root, case_id, model_name, ledger, store):
                   config=policy.model.model_dump(), limits=policy.limits.model_dump(),
                   transition=transition, actions=actions, proposals=records, requests=calls,
                   protocol_passed=protocol, quality=quality, investigation=result,
-                  seconds=time.monotonic() - started, request_count=len(calls),
+                  seconds=previous_seconds + time.monotonic() - started, request_count=len(calls),
+                  continuation_requests=continuation_calls, prior_run="39611545230" if prior else None,
                   usage_observed=totals, usage_complete=usage_complete,
                   estimated_cost_rub=str(cost) if usage_complete else None,
                   known_usage_cost_rub=str(cost), actual_billed_cost="NOT_MEASURED",
@@ -253,6 +307,7 @@ def main():
     dump(output / "manifest.json", dict(config=CONFIG, config_sha256=sha(HERE / "experiment.json"),
         expectations_sha256=sha(HERE / "expectations.json"), adapter_patch_sha256=sha(HERE / "adapter-observer.patch"),
         source_sha=os.environ.get("GITHUB_SHA", "LOCAL"), grant="OWNER_CONFIRMED",
+        prior_evidence_sha256=sha(PRIOR / "0-reporting-http/report.json") if prior_case() else None,
         core_acceptance="CANDIDATE_ONLY_NOT_ACCEPTANCE_OR_VM_PERMISSION"))
     if not args.live:
         dump(output / "summary.json", dict(status="PREPARED_NO_NETWORK", requests=0))
@@ -270,6 +325,16 @@ def main():
     ledger_dir.mkdir(parents=True, mode=0o700)
     ledger = Ledger(ledger_dir / "attempts.sqlite3")
     store = Store(state / "core")
+    prior = prior_case()
+    if prior:
+        for _ in range(prior["request_count"]):
+            ledger.reserve(prior["case"], prior["model"])
+        # Carry forward conservative charged reserves, never reset them on resume.
+        from agent_graph.contracts import ModelConfig
+        config = ModelConfig.model_validate(model_config(prior["model"]))
+        reservation = store.reserve(CONFIG["experiment_id"], "historical-run-39611545230",
+                                    prior["investigation"]["budget"]["reserved_token_units"], config)
+        store.finish_reservation(reservation)
     results, stopped = [], None
     try:
         for model_index, model in enumerate(CONFIG["models"]):

@@ -1,0 +1,28 @@
+{
+  "status": "PROTOCOL_OR_BUDGET_FAILURE_NO_RETRY",
+  "requests": 3,
+  "request_cap": 40,
+  "results": [
+    {
+      "case": "reporting-http",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "protocol_passed": false,
+      "quality": {
+        "required_found": false,
+        "forbidden": [],
+        "extra_keys": [],
+        "tool_and_citation_coverage": false,
+        "passed": false,
+        "scope": "synthetic proposal keys plus provenance; manual statement review required"
+      },
+      "request_count": 3,
+      "usage_observed": {
+        "prompt_tokens": 2835,
+        "completion_tokens": 524
+      },
+      "usage_complete": true,
+      "estimated_cost_rub": "0.473726"
+    }
+  ],
+  "actual_billed_cost": "NOT_MEASURED"
+}

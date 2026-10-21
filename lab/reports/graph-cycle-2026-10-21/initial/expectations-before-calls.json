@@ -1,0 +1,44 @@
+{
+  "schema": "held-out-graph-cycle-1",
+  "never_sent_to_model": true,
+  "reporting-http": {
+    "required": [
+      "reporting->orders GET /orders"
+    ],
+    "forbidden": [],
+    "required_sources": [
+      "reporting/client.py",
+      "orders/api.py"
+    ]
+  },
+  "export-E": {
+    "required": [
+      "export->orders GET /orders"
+    ],
+    "forbidden": [],
+    "required_sources": [
+      "export/client.py",
+      "orders/api.py"
+    ],
+    "pre_E_dependency_count": 0,
+    "same_view_before_after": true
+  },
+  "status-decoy": {
+    "required": [
+      "health->status GET /orders"
+    ],
+    "forbidden": [
+      "health->orders GET /orders"
+    ],
+    "required_sources": [
+      "health/client.py",
+      "status/api.py"
+    ]
+  },
+  "criteria": {
+    "protocol": "COMPLETED investigate with valid strict ModelReply, usage and finite actions; native function calling is not part of this core's protocol",
+    "quality": "All required proposal keys present, no forbidden keys; required callsite and provider sources read through read_source before proposing and both cited. Extra keys are reported, not silently scored correct.",
+    "validator": "Existing core scope, exact-quote, freshness, capability and proposal-limit checks; ACCEPTED_UNAPPROVED_CANDIDATE is not semantic verification or release approval",
+    "first_case_gate": "Only continue after Qwen reporting protocol, evidence and quality pass; no retries after failure"
+  }
+}

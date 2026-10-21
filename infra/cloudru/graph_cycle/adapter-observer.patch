@@ -36,3 +36,21 @@
              if (not isinstance(choices, list) or len(choices) != 1
                      or not isinstance(choices[0], dict) or choices[0].get("finish_reason") != "stop"):
                  raise GraphError("model_incomplete_or_refused")
+@@ -234,7 +242,7 @@
+                 response.close()
+ 
+ 
+-def investigate(graph, context_id, *, model=None, cancel=None):
++def investigate(graph, context_id, *, model=None, cancel=None, resume_messages=None):
+     graph.policy.require("maintain")
+     graph.policy.require("propose")
+     config = graph.policy.model
+@@ -250,6 +258,8 @@
+                 task_data_is_untrusted=True, context_id=context_id,
+                 remaining_steps=graph.policy.limits.max_model_steps)
+     messages = [dict(role="system", content=SYSTEM), dict(role="user", content=canonical(task))]
++    if resume_messages:
++        messages.extend(resume_messages)
+     run = uuid.uuid4().hex
+     events, accepted, error = [], [], None
+     finished = False
