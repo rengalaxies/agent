@@ -8,6 +8,7 @@ import urllib.request
 
 BASE = "https://foundation-models.api.cloud.ru/v1"
 TARGET = "Qwen/Qwen3-Coder-Next"
+CATALOG_MODELS = (TARGET, "openai/gpt-oss-120b")
 MAX_BYTES = 262144
 
 
@@ -78,8 +79,11 @@ def probe(mode, env, transport=request_json):
         row["result"] = "INVALID_CATALOG"
         report["result"] = "BLOCKED_CATALOG"
         return report
-    available = any(isinstance(m, dict) and m.get("id") == TARGET for m in models)
-    # Only emit our fixed model ID; arbitrary API content never enters reports.
+    found = {model: any(isinstance(m, dict) and m.get("id") == model for m in models)
+             for model in CATALOG_MODELS}
+    available = found[TARGET]
+    # Only emit our fixed model IDs; arbitrary API content never enters reports.
+    row["models_available"] = found
     row["target_available"] = available
     report["result"] = "TARGET_LISTED_INFERENCE_UNTESTED" if available else "TARGET_NOT_LISTED"
     if mode != "generate" or not available:

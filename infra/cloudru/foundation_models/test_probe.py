@@ -46,6 +46,20 @@ class SafetyTests(unittest.TestCase):
             self.assertEqual(transport.call_count, 1)
             self.assertEqual(result["generation"]["result"], "NOT_RUN")
 
+    def test_catalog_reports_each_requested_model_independently(self):
+        for ids in ([], [probe.TARGET], ["openai/gpt-oss-120b"], list(probe.CATALOG_MODELS)):
+            with self.subTest(ids=ids):
+                transport = MagicMock(return_value=({"http_status": 200}, {
+                    "data": [{"id": model} for model in ids]}))
+                # Catalog must not generate even if approval vars are already set.
+                env = dict(self.env, FM_BUDGET_APPROVED="true", FM_GRANT_CONFIRMED="true")
+                result = probe.probe("catalog", env, transport)
+                self.assertEqual(result["catalog"]["models_available"],
+                                 {model: model in ids for model in probe.CATALOG_MODELS})
+                self.assertEqual(result["catalog"]["http_status"], 200)
+                self.assertEqual(result["generation"]["result"], "NOT_RUN")
+                transport.assert_called_once_with("/models", "DO-NOT-EMIT-KEY")
+
     def test_generation_is_fixed_and_bounded(self):
         env = dict(self.env, FM_BUDGET_APPROVED="true", FM_GRANT_CONFIRMED="true")
         transport = MagicMock(side_effect=[
