@@ -1,18 +1,12 @@
 name: Cloud.ru bounded graph model cycle
-# Freeze all four observed model/case results and all 15 charged attempts.
-# Only the two as-yet-unrun GPT cases use the documented completion-token cap.
+# Experiment closed after 21 unique attempts. Current workflow is offline only.
 on:
-  # A new dispatch-only workflow is not available before default-branch registration.
-  # This single, owner-controlled integration branch has an intentional live push.
-  push:
-    branches: [codex/cloudru-graph-model-cycle]
-    paths: [.github/workflows/cloudru-graph-model-cycle.yml]
   workflow_dispatch:
     inputs:
       mode:
         type: choice
-        description: prepare has no model requests; series is the owner-authorized bounded experiment
-        options: [prepare, series]
+        description: Closed experiment; offline preparation only, no model requests
+        options: [prepare]
         default: prepare
 permissions:
   contents: read
@@ -55,11 +49,6 @@ jobs:
       - name: Prepare without model calls
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'prepare'
         run: work/venv/bin/python infra/cloudru/graph_cycle/run.py --core work/core --output graph-cycle-report
-      - name: Serial real graph cycle; first-Qwen protocol and quality gate
-        if: github.event_name == 'push' || inputs.mode == 'series'
-        env:
-          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
-        run: work/venv/bin/python infra/cloudru/graph_cycle/run.py --core work/core --output graph-cycle-report --live
       - name: Upload only safe synthetic experiment reports
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

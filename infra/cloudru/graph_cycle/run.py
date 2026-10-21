@@ -46,6 +46,10 @@ def completed_cases():
     return [json.loads(p.read_text()) for p in sorted(root.glob("*/report.json"))]
 
 
+def experiment_closed():
+    return (HERE / "closed.json").exists()
+
+
 def reviewed_first_case():
     if not REVIEWED_FIRST.exists():
         return None
@@ -345,6 +349,9 @@ def main():
     if not args.live:
         dump(output / "summary.json", dict(status="PREPARED_NO_NETWORK", requests=0))
         return 0
+    if experiment_closed():
+        dump(output / "summary.json", dict(status="EXPERIMENT_CLOSED_NO_NETWORK", requests=0))
+        return 1
     if not os.environ.get("CLOUDRU_FOUNDATION_API_KEY", "").strip():
         dump(output / "summary.json", dict(status="BLOCKED_MISSING_FOUNDATION_KEY", requests=0))
         return 1

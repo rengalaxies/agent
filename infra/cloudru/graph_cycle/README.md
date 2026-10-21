@@ -1,5 +1,7 @@
 # Cloud.ru graph model cycle
 
+**Experiment closed after 21 unique HTTP attempts.** Read the [final report](../../../lab/reports/graph-cycle-2026-10-21/REPORT.md). No model case passed the complete evidence-qualified cycle. The current workflow is dispatch-only/offline (`prepare`), receives no model secret, and `run.py --live` is blocked by `closed.json`. The live run source SHA is `8a30003aea3ad6c0c42bb1f9aaf67811898b085d`; subsequent report/closure commits did not repeat the experiment. Launch instructions below describe historical execution and must not be used to spend the remaining allowance implicitly.
+
 This is an integration experiment, not acceptance of the graph core or VM/demo deployment. Owner authorization covers Foundation Models grant use and at most 40 model HTTP requests for this experiment, including diagnostics. No new resources or secret/variable settings are created.
 
 ## Pinned inputs and acceptance
@@ -92,12 +94,11 @@ The observation-only patch is not reapplied if already present. Core regression 
 
 `.github/workflows/cloudru-graph-model-cycle.yml` has a deliberate first live `push` trigger restricted to the owner-controlled `codex/cloudru-graph-model-cycle` branch and workflow-file path. This makes the initial authorized experiment runnable before default-branch dispatch registration; it is not triggered by arbitrary PRs or by source/report edits. Only push the workflow after all code/tests/oracle are committed and reviewed locally. Checkout is the exact push SHA plus the hard-pinned core SHA. This PR is **draft and must not be auto-merged**.
 
-Dispatch (`prepare` default, `series` explicit) is also declared, but a new dispatch-only workflow may require default-branch registration. Do not promise dispatch from an unregistered branch or merge this PR merely for a button. When GitHub supports dispatch for the registered workflow:
+The historical workflow declared `prepare` and explicit `series`; the closed current version only declares `prepare`. New dispatch-only workflows may require default-branch registration. Do not promise dispatch from an unregistered branch or merge this PR merely for a button. Historical commands are retained for reproduction of the run setup, not authorization to rerun the experiment:
 
 ```bash
 gh workflow run cloudru-graph-model-cycle.yml --repo rengalaxies/agent --ref codex/cloudru-graph-model-cycle -f mode=prepare
-# Only if this experiment has not already consumed its one initial series:
-gh workflow run cloudru-graph-model-cycle.yml --repo rengalaxies/agent --ref codex/cloudru-graph-model-cycle -f mode=series
+# The closed current workflow rejects mode=series; no new live command is provided.
 gh run list --repo rengalaxies/agent --workflow cloudru-graph-model-cycle.yml --limit 5
 gh run watch RUN_ID --repo rengalaxies/agent --exit-status
 gh run download RUN_ID --repo rengalaxies/agent --dir work/graph-cycle-results

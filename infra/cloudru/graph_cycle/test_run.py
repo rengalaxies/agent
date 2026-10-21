@@ -54,6 +54,9 @@ class ExperimentTests(unittest.TestCase):
         frozen = patch.object(run, "completed_cases", return_value=[])
         frozen.start()
         self.addCleanup(frozen.stop)
+        closed = patch.object(run, "experiment_closed", return_value=False)
+        closed.start()
+        self.addCleanup(closed.stop)
 
     def test_corporate_config_preserves_cost_guard(self):
         for model in run.CONFIG["models"]:
@@ -206,6 +209,13 @@ class ExperimentTests(unittest.TestCase):
             report = json.loads(Path(tmp + "/out/summary.json").read_text())
             self.assertEqual(report["status"], "BLOCKED_ACTIONS_FIRST_ATTEMPT_REQUIRED")
             self.assertEqual(report["requests"], 0)
+
+    def test_closed_experiment_blocks_new_live_runs_before_secret_or_network(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.object(run, "experiment_closed", return_value=True), patch.object(
+                sys, "argv", ["run.py", "--core", str(CORE), "--output", tmp + "/out", "--live"]), patch.object(
+                    ChatModel, "complete", side_effect=AssertionError("network")):
+            self.assertEqual(run.main(), 1)
+            self.assertEqual(json.loads(Path(tmp + "/out/summary.json").read_text())["status"], "EXPERIMENT_CLOSED_NO_NETWORK")
 
     def test_diagnosed_continuation_revalidates_reads_and_keeps_six_call_cap(self):
         prior = json.loads((run.PRIOR / "0-reporting-http/report.json").read_text())
