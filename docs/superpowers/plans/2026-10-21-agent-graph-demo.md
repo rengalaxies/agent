@@ -82,6 +82,13 @@
 - oracle.check_ids(actual: list[int]) -> dict с expected_count=250, actual_count, missing_ids, duplicate_ids, unexpected_ids, passed.
 
 - [ ] Написать test_A_complete_B_loses_150_D_repairs и test_duplicate_count_does_not_pass: A Reporting/Billing дают IDs 1..250; B Reporting даёт 1..100, Billing 1..250; D Reporting снова полон; 250 повторений одного ID не проходят oracle.
+Минимальные assertions oracle:
+```python
+assert check_ids(list(range(1, 251)))["passed"] is True
+assert check_ids(list(range(1, 101)))["missing_ids"] == list(range(101, 251))
+assert check_ids([1] * 250)["passed"] is False
+```
+
 - [ ] Запустить: python -m unittest tests.graph_demo.test_scenario -v. До реализации подтвердить целевое падение, не случайную ошибку окружения.
 - [ ] Реализовать базовый API без лимита при page_size=None, версию B с default 100 и реальным срезом данных. Одинаковый dataset, фиксированные варианты source; D меняет только Reporting. Вызовы consumers соответствуют поддержанному literal/module-constant requests-профилю.
 - [ ] Health вызывает Status, а не Orders; tests фиксируют это даже при одинаковом /orders. Добавить случай cursor вне диапазона и отказа API без молчаливого принятия частичных данных.
@@ -99,6 +106,12 @@
 - applicable(receipt: CheckReceipt, session: SessionRecord, dataset_sha256: str) -> bool.
 
 - [ ] Написать tests test_manifest_binds_every_source, test_late_receipt_is_historical, test_root_and_view_stable_A_to_E: изменение byte меняет digest; неправильный dataset/revision/running version не применимы; A/B/D/E используют одну policy область.
+Минимальные assertions при привязанном fixture receipt:
+```python
+assert applicable(receipt, session, receipt.dataset_sha256) is True
+assert applicable(receipt.model_copy(update={"session_revision": session.revision - 1}), session, receipt.dataset_sha256) is False
+```
+
 - [ ] Запустить python -m unittest tests.graph_demo.test_snapshots -v и подтвердить падение до реализации.
 - [ ] Реализовать архив неизменяемых manifests и стабильные рабочие корни на сессию. Все materialize и graph executions используют один session lock. Экспорт/сброс не удаляет архив прежней сессии.
 - [ ] Включить корни Orders/Reporting/Billing/Health/Status/Export без рёбер; Export изначально содержит лишь неисполняемый HTTP-запросов placeholder-модуль. Oracle, модельные секреты, deployment и generated receipts вне corpus.
@@ -127,13 +140,20 @@
 **Files:** Create store.py, worker.py, tests/graph_demo/test_jobs.py.
 
 **Interfaces:**
-- DemoStore.create_session(...)->SessionRecord; get_session(id)->SessionRecord.
+- DemoStore.create_session(session: SessionRecord)->SessionRecord; get_session(id: str)->SessionRecord; add_receipt(receipt: CheckReceipt)->dict с applicable:bool и current:bool.
 - enqueue(session_id: str, expected_revision: int, action: JobAction, payload: dict, idempotency_key: str)->JobRecord.
 - claim_next()->JobRecord|None; finish(job_id: str, result_ref: str|None, error_code: str|None, status: str)->JobRecord.
 - recover_interrupted()->list[str]; reset_session(id: str, expected_revision: int)->SessionRecord.
 - DemoWorker.run_once(cancel: threading.Event)->bool uses Task 3 adapter and Task 2 session lock.
 
 - [ ] Написать test_same_key_same_body_returns_same_job, test_same_key_different_body_conflicts, test_one_running_four_waiting_then_busy.
+Assertions очереди (идентификаторы/поля — из Interfaces):
+```python
+assert first.id == retry_same_body.id
+assert sum(job.status == "RUNNING" for job in jobs) == 1
+assert sum(job.status == "QUEUED" for job in jobs) == 4
+```
+
 - [ ] Запустить python -m unittest tests.graph_demo.test_jobs -v и подтвердить падение до реализации.
 - [ ] Реализовать SQLite transactions и CAS по session revision. Очередь, jobs, transitions и refs артефактов постоянны; claim транзакционно разрешает один активный job в установке.
 - [ ] Написать test_restart_marks_running_unknown_without_retry и test_old_job_after_reset_not_current. Реальный process restart должен сохранять историю и оставлять незавершённое UNKNOWN_AFTER_RESTART.
@@ -151,6 +171,14 @@
 - Маршруты и HTTP-methods точно из спецификации §6; все session paths используют UUID, evidence — opaque server citation ID.
 
 - [ ] Написать tests test_requires_auth, test_viewer_cannot_write, test_other_session_not_disclosed, test_origin_required_on_mutation, test_unknown_action_and_paths_rejected.
+Assertions TestClient (operator/viewer auth и origin задаются fixture):
+```python
+assert anonymous.get(session_url).status_code == 401
+assert viewer.post(jobs_url, json=prepare_payload).status_code == 403
+assert operator.post(jobs_url, json=prepare_payload).status_code == 202
+assert operator.post(jobs_url, json=changed_payload_same_key).status_code == 409
+```
+
 - [ ] Запустить python -m unittest tests.graph_demo.test_api -v, зафиксировать ожидаемые падения.
 - [ ] Применить HTTP Basic для закрытого/малого demo с серверной operator/viewer конфигурацией, constant-time credential comparison и session grants. Конфигурация вне Git, браузер не выбирает роль или actor. В публичном режиме только HTTPS за доверенным Nginx; direct backend остаётся loopback.
 - [ ] Реализовать POST jobs с 202/job ID; malformed=422, authentication=401, forbidden=403, stale/idempotency conflict=409, queue full=429. Не включать credentials/authorization в logs.
