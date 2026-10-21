@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+import fcntl
 import math
 import os
 from pathlib import Path
@@ -21,6 +22,8 @@ class Store:
         path = directory / "graph.sqlite3"
         if path.is_symlink():
             raise GraphError("invalid_state_path")
+        self.path, self.directory = path, directory
+        self._leases = {}
         self.db = sqlite3.connect(path, timeout=5, isolation_level=None)
         os.chmod(path, 0o600)
         self.db.executescript("""
@@ -32,6 +35,11 @@ class Store:
         """)
 
     def close(self):
+        # Abrupt owner teardown keeps the durable charge/lease. The OS releases
+        # a live request's detached lock only when its worker/process ends.
+        for fd in self._leases.values():
+            os.close(fd)
+        self._leases.clear()
         self.db.close()
 
     @contextmanager
@@ -79,6 +87,22 @@ class Store:
         return data
 
     def reserve(self, installation, run, tokens, config):
+        lock = self.directory / ("inflight-" + digest(installation) + ".lock")
+        fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            os.close(fd)
+            raise GraphError("model_busy") from None
+        try:
+            id = self._reserve(installation, run, tokens, config)
+        except BaseException:
+            os.close(fd)
+            raise
+        self._leases[id] = fd
+        return id
+
+    def _reserve(self, installation, run, tokens, config):
         micro = math.ceil(tokens * config.micro_per_million_tokens / 1_000_000)
         id = uuid.uuid4().hex
         with self.transaction():
@@ -102,7 +126,28 @@ class Store:
         return id
 
     def finish_reservation(self, id):
-        self.db.execute("UPDATE reservations SET active=0 WHERE id=?", (id,))
+        try:
+            self.db.execute("UPDATE reservations SET active=0 WHERE id=?", (id,))
+        finally:
+            fd = self._leases.pop(id, None)
+            if fd is not None:
+                os.close(fd)
+
+    def reservation_finalizer(self, id):
+        """Transfer ownership to a request worker; never use this connection there."""
+        fd = self._leases.pop(id)
+        path = self.path
+        def finish():
+            try:
+                db = sqlite3.connect(path, timeout=5)
+                try:
+                    db.execute("UPDATE reservations SET active=0 WHERE id=?", (id,))
+                    db.commit()
+                finally:
+                    db.close()
+            finally:
+                os.close(fd)
+        return finish
 
     def budget_totals(self, installation):
         row = self.db.execute("SELECT count(*),coalesce(sum(tokens),0),coalesce(sum(micro),0) FROM reservations WHERE installation=?",

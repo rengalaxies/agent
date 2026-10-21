@@ -30,11 +30,107 @@ not verified technical edges. Stop when evidence is insufficient or budget is re
 """
 
 
+class _Flight:
+    """One interruptible exchange; an OS resolver may finish after cancellation."""
+
+    def __init__(self, cancel, timeout):
+        self.cancel = cancel
+        self.deadline = time.monotonic() + timeout
+        self.done = threading.Event()
+        self.lock = threading.Lock()
+        self.socket = None
+        self.reason = None
+        self.result = None
+        self.error = None
+
+    def check(self):
+        if self.cancel.is_set():
+            raise GraphError("cancelled")
+        if self.reason:
+            raise GraphError(self.reason)
+        if time.monotonic() >= self.deadline:
+            raise GraphError("model_timeout")
+
+    def remaining(self):
+        self.check()
+        return max(0.001, self.deadline - time.monotonic())
+
+    def own(self, sock):
+        with self.lock:
+            if self.reason:
+                sock.close()
+                raise GraphError(self.reason)
+            self.socket = sock
+        self.check()
+
+    def close(self):
+        with self.lock:
+            sock, self.socket = self.socket, None
+        if sock:
+            try:
+                sock.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+            sock.close()
+
+    def abort(self, reason):
+        with self.lock:
+            self.reason = reason
+        self.close()
+
+
 class ChatModel:
     def __init__(self, config):
         self.config = config
 
-    def complete(self, messages, *, cancel=None):
+    def complete(self, messages, *, cancel=None, on_finished=None):
+        # Only the request worker owns its finalizer. A timed-out DNS call may
+        # still unwind, retaining the installation lock until it actually ends.
+        flight = _Flight(cancel or threading.Event(), self.config.timeout_seconds)
+
+        def request():
+            try:
+                flight.result = self._request(messages, flight)
+                flight.check()
+            except Exception as exc:
+                try:
+                    flight.check()
+                except GraphError as stopped:
+                    flight.error = stopped
+                else:
+                    flight.error = exc if isinstance(exc, GraphError) else GraphError("model_unavailable_or_invalid")
+            finally:
+                try:
+                    flight.close()
+                    if on_finished:
+                        on_finished()
+                except Exception:
+                    flight.error = GraphError("invalid_input_or_state")
+                finally:
+                    flight.done.set()
+
+        worker = threading.Thread(target=request, daemon=True, name="graph-model-request")
+        try:
+            worker.start()
+        except BaseException:
+            if on_finished:
+                on_finished()
+            raise
+        try:
+            while not flight.done.wait(min(0.02, max(0.001, flight.deadline - time.monotonic()))):
+                flight.check()
+        except GraphError as exc:
+            flight.abort(exc.code)
+            raise
+        except BaseException:
+            flight.abort("cancelled")
+            raise
+        if flight.error:
+            raise flight.error
+        return flight.result
+
+    def _request(self, messages, flight):
+        flight.check()
         config = self.config
         payload = canonical(dict(model=config.model, messages=messages, stream=False,
                                  max_tokens=config.max_output_tokens, temperature=0,
@@ -42,12 +138,7 @@ class ChatModel:
                                      name="graph_action", strict=True, schema=model_action_schema())))).encode()
         if len(payload) > config.max_prompt_bytes:
             raise GraphError("model_input_limit")
-        cancel = cancel or threading.Event()
-        if cancel.is_set():
-            raise GraphError("cancelled")
         u = urlsplit(config.endpoint)
-        timeout = config.timeout_seconds
-        deadline = time.monotonic() + timeout
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         secret = os.environ.get(config.api_key_env)
         if secret:
@@ -56,17 +147,39 @@ class ChatModel:
             headers["Authorization"] = "Bearer " + secret
         if config.route == "corporate" and not secret:
             raise GraphError("missing_model_secret")
-        conn = (http.client.HTTPSConnection(u.hostname, u.port, timeout=timeout, context=ssl.create_default_context())
-                if u.scheme == "https" else http.client.HTTPConnection(u.hostname, u.port, timeout=timeout))
+        port = u.port or (443 if u.scheme == "https" else 80)
+        conn = http.client.HTTPConnection(u.hostname, port, timeout=config.timeout_seconds)
+        conn.auto_open = 0  # Never reconnect after cancellation closes the socket.
+        response = None
         try:
-            conn.connect()
-            wire = conn.sock
-            if cancel.is_set() or time.monotonic() >= deadline:
-                raise GraphError("cancelled_or_timeout")
-            conn.sock.settimeout(max(0.01, deadline - time.monotonic()))
+            addresses = socket.getaddrinfo(u.hostname, port, type=socket.SOCK_STREAM)
+            flight.check()  # No late connection after a cancelled system lookup.
+            for family, kind, proto, _, address in addresses:
+                wire = socket.socket(family, kind, proto)
+                flight.own(wire)
+                wire.settimeout(flight.remaining())
+                try:
+                    wire.connect(address)
+                    break
+                except OSError:
+                    flight.close()
+                    flight.check()
+            else:
+                raise GraphError("model_unavailable_or_invalid")
+            if u.scheme == "https":
+                context = ssl.create_default_context()
+                flight.check()
+                wire = context.wrap_socket(wire, server_hostname=u.hostname, do_handshake_on_connect=False)
+                flight.own(wire)
+                wire.settimeout(flight.remaining())
+                wire.do_handshake()
+            flight.check()
+            conn.sock = wire
+            wire.settimeout(flight.remaining())
             conn.request("POST", u.path, body=payload, headers=headers)
-            wire.settimeout(max(0.01, deadline - time.monotonic()))
+            wire.settimeout(flight.remaining())
             response = conn.getresponse()
+            flight.check()
             if response.status != 200:
                 # Never include error text, redirect Location, request or credential.
                 raise GraphError("model_http_error")
@@ -78,11 +191,7 @@ class ChatModel:
                     if response.length not in (None, 0):
                         raise GraphError("model_incomplete_or_refused")
                     break
-                if cancel.is_set():
-                    raise GraphError("cancelled")
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
-                    raise GraphError("model_timeout")
+                remaining = flight.remaining()
                 # read1 permits wall deadline/cancellation checks between chunks.
                 # Keep the socket reference: HTTP/1.0 or Connection: close can
                 # detach conn.sock while response.fp is still reading the body.
@@ -95,15 +204,20 @@ class ChatModel:
                     raise GraphError("model_response_limit")
                 chunks.append(chunk)
             data = load_json(b"".join(chunks))
-            choices = data["choices"]
-            if len(choices) != 1 or choices[0]["finish_reason"] != "stop":
+            if not isinstance(data, dict):
+                raise GraphError("model_unavailable_or_invalid")
+            choices = data.get("choices")
+            if (not isinstance(choices, list) or len(choices) != 1
+                    or not isinstance(choices[0], dict) or choices[0].get("finish_reason") != "stop"):
                 raise GraphError("model_incomplete_or_refused")
-            msg = choices[0]["message"]
-            if msg.get("refusal") or msg.get("tool_calls"):
+            msg = choices[0].get("message")
+            if (not isinstance(msg, dict) or not isinstance(msg.get("content"), str)
+                    or msg.get("refusal") or msg.get("tool_calls")):
                 raise GraphError("model_incomplete_or_refused")
             reply = ModelReply.model_validate(load_json(msg["content"]))
             usage = data.get("usage", {})
-            if (type(usage.get("prompt_tokens")) is not int or usage["prompt_tokens"] < 0
+            if (not isinstance(usage, dict)
+                    or type(usage.get("prompt_tokens")) is not int or usage["prompt_tokens"] < 0
                     or type(usage.get("completion_tokens")) is not int or usage["completion_tokens"] < 0
                     or usage["completion_tokens"] > config.max_output_tokens):
                 raise GraphError("invalid_model_usage")
@@ -115,6 +229,8 @@ class ChatModel:
             raise GraphError("model_unavailable_or_invalid") from None
         finally:
             conn.close()
+            if response:
+                response.close()
 
 
 def investigate(graph, context_id, *, model=None, cancel=None):
@@ -150,10 +266,14 @@ def investigate(graph, context_id, *, model=None, cancel=None):
             reservation = graph.store.reserve(graph.policy.installation_id, run,
                                               estimated + config.max_output_tokens, config)
             started = time.monotonic()
-            try:
-                reply, usage = model.complete(messages, cancel=cancel)
-            finally:
-                graph.store.finish_reservation(reservation)
+            if isinstance(model, ChatModel):
+                reply, usage = model.complete(messages, cancel=cancel,
+                                               on_finished=graph.store.reservation_finalizer(reservation))
+            else:
+                try:
+                    reply, usage = model.complete(messages, cancel=cancel)
+                finally:
+                    graph.store.finish_reservation(reservation)
             events.append(dict(step=step, action=reply.action, seconds=time.monotonic()-started,
                                usage=usage, reservation=reservation))
             messages.append(dict(role="assistant", content=reply.model_dump_json()))
