@@ -1,0 +1,68 @@
+name: Cloud.ru bounded graph model cycle
+on:
+  # A new dispatch-only workflow is not available before default-branch registration.
+  # This single, owner-controlled integration branch has an intentional live push.
+  push:
+    branches: [codex/cloudru-graph-model-cycle]
+    paths: [.github/workflows/cloudru-graph-model-cycle.yml]
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        description: prepare has no model requests; series is the owner-authorized bounded experiment
+        options: [prepare, series]
+        default: prepare
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-graph-cycle-20261021-v1
+  cancel-in-progress: false
+jobs:
+  experiment:
+    if: >-
+      github.repository == 'rengalaxies/agent' && github.run_attempt == 1 &&
+      (github.ref == 'refs/heads/codex/cloudru-graph-model-cycle' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Checkout exact unaccepted core candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: rengalaxies/agent
+          ref: f1c4546725e759ffc06ca0281f7103132dbcfe73
+          path: work/core
+          persist-credentials: false
+      - name: Pin runtime and apply observation-only adapter extension
+        run: |
+          python3 -c 'import sys; assert sys.version_info[:2] == (3, 12)'
+          python3 -m venv work/venv
+          work/venv/bin/pip install --disable-pip-version-check -r infra/cloudru/graph_cycle/requirements.lock
+          git -C work/core apply --check ../../infra/cloudru/graph_cycle/adapter-observer.patch
+          git -C work/core apply ../../infra/cloudru/graph_cycle/adapter-observer.patch
+      - name: Core regression and offline cycle safety checks (no model secret)
+        env:
+          GRAPH_CORE: ${{ github.workspace }}/work/core
+          PYTHONPATH: ${{ github.workspace }}/work/core/src
+        run: |
+          work/venv/bin/python -m unittest discover -s work/core/tests/graph -v
+          work/venv/bin/python -m unittest discover -s infra/cloudru/graph_cycle -p 'test_*.py' -v
+      - name: Prepare without model calls
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'prepare'
+        run: work/venv/bin/python infra/cloudru/graph_cycle/run.py --core work/core --output graph-cycle-report
+      - name: Serial real graph cycle; first-Qwen protocol and quality gate
+        if: github.event_name == 'push' || inputs.mode == 'series'
+        env:
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+        run: work/venv/bin/python infra/cloudru/graph_cycle/run.py --core work/core --output graph-cycle-report --live
+      - name: Upload only safe synthetic experiment reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: graph-cycle-${{ github.run_id }}-${{ github.sha }}
+          path: graph-cycle-report/
+          if-no-files-found: warn
+          retention-days: 14

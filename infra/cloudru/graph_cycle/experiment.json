@@ -1,0 +1,24 @@
+{
+  "experiment_id": "cloudru-graph-cycle-20261021-v1",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "core_acceptance": "OPEN_DRAFT_NOT_INDEPENDENTLY_ACCEPTED",
+  "demo_plan_sha": "778b7668fd78e7c9dbaa8c0e6ce07b48ce9d82e4",
+  "models": ["Qwen/Qwen3-Coder-Next", "openai/gpt-oss-120b"],
+  "cases": ["reporting-http", "export-E", "status-decoy"],
+  "request_cap": 40,
+  "case_request_cap": 6,
+  "case_seconds": 300,
+  "max_output_tokens": 4096,
+  "parallelism": 1,
+  "retries": 0,
+  "tariff": {
+    "currency": "RUB",
+    "checked_on": "2026-10-21",
+    "source": "https://cloud.ru/products/evolution-ai-factory/catalog-foundation-models",
+    "status": "OFFICIAL_PUBLISHED_CATALOG_NOT_ACCOUNT_INVOICE",
+    "per_million": {
+      "Qwen/Qwen3-Coder-Next": {"input": "122", "output": "244"},
+      "openai/gpt-oss-120b": {"input": "15.86", "output": "61"}
+    }
+  }
+}
