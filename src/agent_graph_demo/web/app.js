@@ -44,6 +44,16 @@ const errors = {
   authentication_required: "Требуется вход.",
   session_forbidden: "Нет доступа к этому показу.",
 };
+// Core usage codes are static observations; UNKNOWN_USAGE must never read as a single request.
+const usageLabels = {
+  SINGLE_REQUEST_OBSERVED: "Одиночный запрос в коде",
+  CURSOR_LOOP_OBSERVED: "Обход страниц в коде",
+  EXPLICIT_PAGE_SIZE: "Явный page_size в запросе",
+  UNKNOWN_USAGE: "Использование не распознано",
+};
+function usageLabel(usage) {
+  return usageLabels[usage] || usageLabels.UNKNOWN_USAGE;
+}
 function formatTime(value, date = false) {
   return (
     new Intl.DateTimeFormat("ru-RU", {
@@ -208,15 +218,23 @@ async function loadGraph(jobId = null) {
     if (state.sid !== sid || token !== state.graphToken) return;
     renderImpact(j.result, g);
   } else {
+    // A later correction or rescan publishes without an analysis. Show the last
+    // analysis only for the context it produced, never the correction record.
     const last = [...state.session.jobs]
       .reverse()
       .find(
-        (j) => j.result_ref && j.target_revision === state.session.revision,
+        (j) =>
+          j.action === "analyze_change" &&
+          j.result_ref &&
+          j.target_revision === state.session.revision,
       );
     if (last) {
       const j = await api(`/jobs/${last.id}`);
       if (state.sid !== sid || token !== state.graphToken) return;
-      renderImpact(j.result, g);
+      renderImpact(
+        j.result?.context_used_id === g.context_id ? j.result : null,
+        g,
+      );
     } else renderImpact(null, g);
   }
   $("evidence-meta").textContent = "Выберите зависимость на карте.";
@@ -248,7 +266,7 @@ function renderGraph(g) {
       node("strong", `${d.consumer} → ${op.service || "Неизвестный сервис"}`),
       node(
         "small",
-        `${op.method || "GET"} ${op.path || "/"} · ${d.usage === "CURSOR_LOOP_OBSERVED" ? "Обход страниц в коде" : "Одиночный запрос в коде"}`,
+        `${op.method || "GET"} ${op.path || "/"} · ${usageLabel(d.usage)}`,
       ),
     );
     b.addEventListener("click", () => selectEdge(d, op, b));
@@ -429,7 +447,11 @@ function renderImpact(result, g) {
         "p",
         result?.unknowns?.length
           ? "Поддержанный анализатором поведенческий риск не установлен. Это не означает, что изменение безопасно."
-          : "Обнаруженные связи доступны слева. Выберите B для анализа нового лимита; D — фиксированное исправление Reporting, подготовленное оператором.",
+          : result?.deltas?.length
+            ? "Изменение объявления найдено, но связей с ним в обследованном корпусе нет. Это не доказательство отсутствия потребителей."
+            : !result?.deltas && state.session?.scenario_version !== "A"
+              ? "Для этого основания анализ изменения не выполнялся. Прежние анализы доступны в истории."
+              : "Обнаруженные связи доступны слева. Выберите B для анализа нового лимита; D — фиксированное исправление Reporting, подготовленное оператором.",
       ),
     );
   if (result?.unknowns?.length)
