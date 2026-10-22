@@ -1,0 +1,11 @@
+{
+  "checked_date": "2026-10-22",
+  "source": "https://cloud.ru/products/evolution-ai-factory/catalog-foundation-models",
+  "currency": "RUB",
+  "basis": "Published catalog prices per million tokens; estimation only, no account billing access",
+  "models": {
+    "Qwen/Qwen3-Coder-Next": {"input_per_million": "122", "output_per_million": "244"},
+    "openai/gpt-oss-120b": {"input_per_million": "15.86", "output_per_million": "61"}
+  },
+  "reservation_upper_rate_per_million": "244"
+}

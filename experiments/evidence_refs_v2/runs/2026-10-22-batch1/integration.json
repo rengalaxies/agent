@@ -1,0 +1,26 @@
+{
+  "code_sha": "a9385c565d5471698da62987b226dcff4cbdea86",
+  "initial_main_sha": "08a52704269c75d8d78a8fcf4ed8b9f10cf45722",
+  "integration": [
+    {"pr": 28, "head": "f1c4546725e759ffc06ca0281f7103132dbcfe73", "merge": "614e19ec3cf004918fee94bcfb914863007661f9"},
+    {"pr": 32, "head": "4354ef613e187e4244984b9ad09e0672792b0714", "merge": "54fc6f8854e7003bc89a02b39067567306f117a7"},
+    {"pr": 34, "head": "af15c6ce429c366f73b4d954829cefc6867c2eea", "merge_into_pr33": "0d655494db0d04cb9776df9f620d345780922e0e"},
+    {"pr": 33, "original_reviewed_head": "9c62add55c5ce907d5e80b6b436809a72a0a5166", "accepted_head": "0d655494db0d04cb9776df9f620d345780922e0e", "merge": "a9385c565d5471698da62987b226dcff4cbdea86"}
+  ],
+  "actions": {
+    "regression_red": "https://github.com/rengalaxies/agent/actions/runs/39735294034",
+    "regression_green": "https://github.com/rengalaxies/agent/actions/runs/39735442558",
+    "integrated_core": "https://github.com/rengalaxies/agent/actions/runs/39736085178",
+    "integrated_graph": "https://github.com/rengalaxies/agent/actions/runs/39736088286",
+    "initialize": "https://github.com/rengalaxies/agent/actions/runs/39736283575",
+    "execute": "https://github.com/rengalaxies/agent/actions/runs/39736391432"
+  },
+  "focused_review": "PR34 only; independent subagent; no blocking findings; Linux CI green",
+  "platform": "Runtime tests performed on Linux Actions; existing store requires fcntl and is unsupported on local Windows",
+  "baseline_lint_finding": {"issue": "https://github.com/rengalaxies/agent/issues/8", "run": 39736081551, "path": ".github/workflows/cloudru-foundation-models.yml:37", "code": "SC2129", "classification": "pre-existing style finding from PR30; new workflow syntax checked with actionlint"},
+  "historical_pr31_merged": false,
+  "new_cloud_resources_created": false,
+  "vm_ssh_changes": false,
+  "credentials_exported": false,
+  "new_budget": {"requests": 30, "microrub": 100000000, "rub": "100"}
+}
