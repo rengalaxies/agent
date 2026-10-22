@@ -1,0 +1,342 @@
+{
+  "schema": "graph-demo-1",
+  "synthetic": true,
+  "real_model_run": false,
+  "base_consumers": [
+    "export",
+    "reporting"
+  ],
+  "first_findings": [
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "dependency_id": "549349e692341eca2ae84fc273e3b186825e252cf8fabb6e9a841cbe5cf4e82f",
+      "consumer": "reporting",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "callsite": {
+        "repository": "reporting",
+        "path": "client.py",
+        "line": 7
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "3890471ad59073ab6d354eb4d8af677c1dad02fd5badbac5477927c604627288",
+          "start_line": 7,
+          "end_line": 7,
+          "quote": "    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)"
+        },
+        {
+          "source_id": "3890471ad59073ab6d354eb4d8af677c1dad02fd5badbac5477927c604627288",
+          "start_line": 6,
+          "end_line": 9,
+          "quote": "def load_day(day):\n    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]"
+        }
+      ],
+      "requirement_ids": [
+        "reporting-complete"
+      ],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    },
+    {
+      "code": "RECHECK_REQUIRED",
+      "dependency_id": "fa9c8ea9273f2e22b383a634d446b64d8432a22bb9c3286fff840ec5b7575987",
+      "consumer": "export",
+      "usage": "CURSOR_LOOP_OBSERVED",
+      "callsite": {
+        "repository": "export",
+        "path": "client.py",
+        "line": 9
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "9de3b58241a66a4e8ac196aaff392b68e3b41efc0b40fa335ce1f999e3f6dd41",
+          "start_line": 9,
+          "end_line": 9,
+          "quote": "        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)"
+        },
+        {
+          "source_id": "9de3b58241a66a4e8ac196aaff392b68e3b41efc0b40fa335ce1f999e3f6dd41",
+          "start_line": 6,
+          "end_line": 15,
+          "quote": "def load_day(day):\n    items, cursor = [], None\n    while True:\n        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items"
+        }
+      ],
+      "requirement_ids": [],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "old_context_freshness": {
+    "status": "STALE",
+    "assessed_at": "2026-10-21T10:43:45.949036+00:00",
+    "comparison_basis": "CURRENT_CORPUS",
+    "reasons": [
+      "basis_changed",
+      "partial_coverage"
+    ]
+  },
+  "repaired_findings": [
+    {
+      "code": "RECHECK_REQUIRED",
+      "dependency_id": "6833f6b9c868a917a6d379a26c6d44be53e9a43cd4d08c9b8085e329dbdb8218",
+      "consumer": "reporting",
+      "usage": "CURSOR_LOOP_OBSERVED",
+      "callsite": {
+        "repository": "reporting",
+        "path": "client.py",
+        "line": 9
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "695d835e1e2d6d71ac756d21191e20f7da364ff9d51b5ac76e969342615e009f",
+          "start_line": 9,
+          "end_line": 9,
+          "quote": "        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)"
+        },
+        {
+          "source_id": "695d835e1e2d6d71ac756d21191e20f7da364ff9d51b5ac76e969342615e009f",
+          "start_line": 6,
+          "end_line": 15,
+          "quote": "def load_day(day):\n    items, cursor = [], None\n    while True:\n        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items"
+        }
+      ],
+      "requirement_ids": [
+        "reporting-complete"
+      ],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    },
+    {
+      "code": "RECHECK_REQUIRED",
+      "dependency_id": "fa9c8ea9273f2e22b383a634d446b64d8432a22bb9c3286fff840ec5b7575987",
+      "consumer": "export",
+      "usage": "CURSOR_LOOP_OBSERVED",
+      "callsite": {
+        "repository": "export",
+        "path": "client.py",
+        "line": 9
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "9de3b58241a66a4e8ac196aaff392b68e3b41efc0b40fa335ce1f999e3f6dd41",
+          "start_line": 9,
+          "end_line": 9,
+          "quote": "        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)"
+        },
+        {
+          "source_id": "9de3b58241a66a4e8ac196aaff392b68e3b41efc0b40fa335ce1f999e3f6dd41",
+          "start_line": 6,
+          "end_line": 15,
+          "quote": "def load_day(day):\n    items, cursor = [], None\n    while True:\n        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items"
+        }
+      ],
+      "requirement_ids": [],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "expanded_findings": [
+    {
+      "code": "RECHECK_REQUIRED",
+      "dependency_id": "6833f6b9c868a917a6d379a26c6d44be53e9a43cd4d08c9b8085e329dbdb8218",
+      "consumer": "reporting",
+      "usage": "CURSOR_LOOP_OBSERVED",
+      "callsite": {
+        "repository": "reporting",
+        "path": "client.py",
+        "line": 9
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "695d835e1e2d6d71ac756d21191e20f7da364ff9d51b5ac76e969342615e009f",
+          "start_line": 9,
+          "end_line": 9,
+          "quote": "        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)"
+        },
+        {
+          "source_id": "695d835e1e2d6d71ac756d21191e20f7da364ff9d51b5ac76e969342615e009f",
+          "start_line": 6,
+          "end_line": 15,
+          "quote": "def load_day(day):\n    items, cursor = [], None\n    while True:\n        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items"
+        }
+      ],
+      "requirement_ids": [
+        "reporting-complete"
+      ],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    },
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "dependency_id": "695d21aecb602a41112ff94a41579084a8ccb3c21d0d06482a6218cbe5d4766d",
+      "consumer": "health",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "callsite": {
+        "repository": "health",
+        "path": "new_client.py",
+        "line": 2
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "d51f50a9aa54f434e841455287b7b53cda5f342fdeb234e90cddd486397c71f6",
+          "start_line": 2,
+          "end_line": 2,
+          "quote": "requests.get(\"https://orders.test/orders\")"
+        },
+        {
+          "source_id": "d51f50a9aa54f434e841455287b7b53cda5f342fdeb234e90cddd486397c71f6",
+          "start_line": 1,
+          "end_line": 1,
+          "quote": "import requests"
+        }
+      ],
+      "requirement_ids": [],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    },
+    {
+      "code": "RECHECK_REQUIRED",
+      "dependency_id": "fa9c8ea9273f2e22b383a634d446b64d8432a22bb9c3286fff840ec5b7575987",
+      "consumer": "export",
+      "usage": "CURSOR_LOOP_OBSERVED",
+      "callsite": {
+        "repository": "export",
+        "path": "client.py",
+        "line": 9
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 100, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = None):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}",
+          "source_id": "a4e9e1aa341e56c9b0999246f8e3e98f3ad70d85eb539c8688334704cdff36bf",
+          "start_line": 7
+        },
+        {
+          "source_id": "dce419933c58c98279d7185ddde899504f05e254be8f278dac4079d5cf909681",
+          "start_line": 7,
+          "end_line": 9,
+          "quote": "def list_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}"
+        },
+        {
+          "source_id": "9de3b58241a66a4e8ac196aaff392b68e3b41efc0b40fa335ce1f999e3f6dd41",
+          "start_line": 9,
+          "end_line": 9,
+          "quote": "        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)"
+        },
+        {
+          "source_id": "9de3b58241a66a4e8ac196aaff392b68e3b41efc0b40fa335ce1f999e3f6dd41",
+          "start_line": 6,
+          "end_line": 15,
+          "quote": "def load_day(day):\n    items, cursor = [], None\n    while True:\n        response = http.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items"
+        }
+      ],
+      "requirement_ids": [],
+      "check": "Run consumer with more than 100 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "contexts_differ": true,
+  "baseline_comparison": "NOT_RUN",
+  "human_time": "NOT_MEASURED",
+  "paid_inference_cost": 0
+}

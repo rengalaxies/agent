@@ -1,0 +1,721 @@
+{
+  "schema": "agent-graph-1",
+  "operator_policy": {
+    "$defs": {
+      "ApprovedRequirement": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "repository": {
+            "title": "Repository",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "issuer": {
+            "title": "Issuer",
+            "type": "string"
+          },
+          "service": {
+            "title": "Service",
+            "type": "string"
+          },
+          "method": {
+            "default": "GET",
+            "title": "Method",
+            "type": "string"
+          },
+          "path_template": {
+            "title": "Path Template",
+            "type": "string"
+          },
+          "consumer": {
+            "title": "Consumer",
+            "type": "string"
+          },
+          "predicate": {
+            "enum": [
+              "complete_collection",
+              "first_page_only"
+            ],
+            "title": "Predicate",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "repository",
+          "path",
+          "sha256",
+          "issuer",
+          "service",
+          "path_template",
+          "consumer",
+          "predicate"
+        ],
+        "title": "ApprovedRequirement",
+        "type": "object"
+      },
+      "Limits": {
+        "additionalProperties": false,
+        "properties": {
+          "max_files": {
+            "default": 256,
+            "maximum": 10000,
+            "minimum": 1,
+            "title": "Max Files",
+            "type": "integer"
+          },
+          "max_file_bytes": {
+            "default": 65536,
+            "maximum": 262144,
+            "minimum": 1,
+            "title": "Max File Bytes",
+            "type": "integer"
+          },
+          "max_corpus_bytes": {
+            "default": 2000000,
+            "maximum": 20000000,
+            "minimum": 1,
+            "title": "Max Corpus Bytes",
+            "type": "integer"
+          },
+          "scan_seconds": {
+            "default": 15.0,
+            "exclusiveMinimum": 0,
+            "maximum": 120,
+            "title": "Scan Seconds",
+            "type": "number"
+          },
+          "freshness_seconds": {
+            "default": 3600,
+            "maximum": 86400,
+            "minimum": 1,
+            "title": "Freshness Seconds",
+            "type": "integer"
+          },
+          "max_model_steps": {
+            "default": 4,
+            "maximum": 12,
+            "minimum": 1,
+            "title": "Max Model Steps",
+            "type": "integer"
+          },
+          "max_tool_lines": {
+            "default": 60,
+            "maximum": 200,
+            "minimum": 1,
+            "title": "Max Tool Lines",
+            "type": "integer"
+          },
+          "max_proposals": {
+            "default": 24,
+            "description": "Active non-superseded proposals at the current basis; immutable history is excluded.",
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Max Proposals",
+            "type": "integer"
+          }
+        },
+        "title": "Limits",
+        "type": "object"
+      },
+      "ModelConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "endpoint": {
+            "title": "Endpoint",
+            "type": "string"
+          },
+          "allowed_endpoints": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Endpoints",
+            "type": "array"
+          },
+          "model": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Model",
+            "type": "string"
+          },
+          "configuration_id": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Configuration Id",
+            "type": "string"
+          },
+          "api_key_env": {
+            "default": "GRAPH_LLM_API_KEY",
+            "pattern": "^[A-Z][A-Z0-9_]{0,80}$",
+            "title": "Api Key Env",
+            "type": "string"
+          },
+          "allow_source_transfer": {
+            "default": false,
+            "title": "Allow Source Transfer",
+            "type": "boolean"
+          },
+          "route": {
+            "default": "loopback",
+            "enum": [
+              "loopback",
+              "corporate"
+            ],
+            "title": "Route",
+            "type": "string"
+          },
+          "context_tokens": {
+            "default": 16384,
+            "maximum": 131072,
+            "minimum": 4096,
+            "title": "Context Tokens",
+            "type": "integer"
+          },
+          "max_output_tokens": {
+            "default": 1024,
+            "maximum": 4096,
+            "minimum": 64,
+            "title": "Max Output Tokens",
+            "type": "integer"
+          },
+          "max_prompt_bytes": {
+            "default": 10000,
+            "maximum": 100000,
+            "minimum": 512,
+            "title": "Max Prompt Bytes",
+            "type": "integer"
+          },
+          "timeout_seconds": {
+            "default": 20.0,
+            "maximum": 60,
+            "minimum": 0.1,
+            "title": "Timeout Seconds",
+            "type": "number"
+          },
+          "installation_token_cap": {
+            "default": 1000000,
+            "minimum": 1,
+            "title": "Installation Token Cap",
+            "type": "integer"
+          },
+          "run_token_cap": {
+            "default": 100000,
+            "minimum": 1,
+            "title": "Run Token Cap",
+            "type": "integer"
+          },
+          "currency": {
+            "default": "USD",
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency",
+            "type": "string"
+          },
+          "micro_per_million_tokens": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Micro Per Million Tokens",
+            "type": "integer"
+          },
+          "installation_micro_cap": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Installation Micro Cap",
+            "type": "integer"
+          },
+          "run_micro_cap": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Run Micro Cap",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "endpoint",
+          "allowed_endpoints",
+          "model",
+          "configuration_id"
+        ],
+        "title": "ModelConfig",
+        "type": "object"
+      },
+      "Repository": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "service": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+            "title": "Service",
+            "type": "string"
+          },
+          "root": {
+            "title": "Root",
+            "type": "string"
+          },
+          "revision": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Revision",
+            "type": "string"
+          },
+          "include": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Include",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "service",
+          "root",
+          "revision"
+        ],
+        "title": "Repository",
+        "type": "object"
+      },
+      "ServiceAddress": {
+        "additionalProperties": false,
+        "properties": {
+          "service": {
+            "title": "Service",
+            "type": "string"
+          },
+          "base_url": {
+            "title": "Base Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service",
+          "base_url"
+        ],
+        "title": "ServiceAddress",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "installation_id": {
+        "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+        "title": "Installation Id",
+        "type": "string"
+      },
+      "environment": {
+        "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+        "title": "Environment",
+        "type": "string"
+      },
+      "subject": {
+        "maxLength": 100,
+        "minLength": 1,
+        "title": "Subject",
+        "type": "string"
+      },
+      "capabilities": {
+        "items": {
+          "enum": [
+            "read_context",
+            "maintain",
+            "propose",
+            "report_check",
+            "correct"
+          ],
+          "type": "string"
+        },
+        "title": "Capabilities",
+        "type": "array"
+      },
+      "repositories": {
+        "items": {
+          "$ref": "#/$defs/Repository"
+        },
+        "maxItems": 32,
+        "minItems": 1,
+        "title": "Repositories",
+        "type": "array"
+      },
+      "addresses": {
+        "items": {
+          "$ref": "#/$defs/ServiceAddress"
+        },
+        "title": "Addresses",
+        "type": "array"
+      },
+      "requirements": {
+        "items": {
+          "$ref": "#/$defs/ApprovedRequirement"
+        },
+        "title": "Requirements",
+        "type": "array"
+      },
+      "limits": {
+        "$ref": "#/$defs/Limits"
+      },
+      "model": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ModelConfig"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "installation_id",
+      "environment",
+      "subject",
+      "capabilities",
+      "repositories",
+      "addresses"
+    ],
+    "title": "Policy",
+    "type": "object"
+  },
+  "proposal": {
+    "$defs": {
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start_line": {
+            "minimum": 1,
+            "title": "Start Line",
+            "type": "integer"
+          },
+          "end_line": {
+            "minimum": 1,
+            "title": "End Line",
+            "type": "integer"
+          },
+          "quote": {
+            "maxLength": 6000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start_line",
+          "end_line",
+          "quote"
+        ],
+        "title": "Citation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "key": {
+        "maxLength": 160,
+        "minLength": 1,
+        "title": "Key",
+        "type": "string"
+      },
+      "kind": {
+        "enum": [
+          "hypothesis",
+          "requirement_candidate",
+          "human_correction"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "statement": {
+        "maxLength": 4000,
+        "minLength": 1,
+        "title": "Statement",
+        "type": "string"
+      },
+      "citations": {
+        "items": {
+          "$ref": "#/$defs/Citation"
+        },
+        "maxItems": 8,
+        "minItems": 1,
+        "title": "Citations",
+        "type": "array"
+      },
+      "supersedes": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Supersedes"
+      }
+    },
+    "required": [
+      "key",
+      "kind",
+      "statement",
+      "citations"
+    ],
+    "title": "Proposal",
+    "type": "object"
+  },
+  "external_check": {
+    "$defs": {
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start_line": {
+            "minimum": 1,
+            "title": "Start Line",
+            "type": "integer"
+          },
+          "end_line": {
+            "minimum": 1,
+            "title": "End Line",
+            "type": "integer"
+          },
+          "quote": {
+            "maxLength": 6000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start_line",
+          "end_line",
+          "quote"
+        ],
+        "title": "Citation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "context_id": {
+        "title": "Context Id",
+        "type": "string"
+      },
+      "candidate_digest": {
+        "pattern": "^[a-f0-9]{64}$",
+        "title": "Candidate Digest",
+        "type": "string"
+      },
+      "artifact_digest": {
+        "pattern": "^[a-f0-9]{64}$",
+        "title": "Artifact Digest",
+        "type": "string"
+      },
+      "command": {
+        "maxLength": 500,
+        "minLength": 1,
+        "title": "Command",
+        "type": "string"
+      },
+      "exit_code": {
+        "title": "Exit Code",
+        "type": "integer"
+      },
+      "citations": {
+        "items": {
+          "$ref": "#/$defs/Citation"
+        },
+        "maxItems": 8,
+        "minItems": 1,
+        "title": "Citations",
+        "type": "array"
+      }
+    },
+    "required": [
+      "context_id",
+      "candidate_digest",
+      "artifact_digest",
+      "command",
+      "exit_code",
+      "citations"
+    ],
+    "title": "ExternalCheck",
+    "type": "object"
+  },
+  "model_action": {
+    "$defs": {
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start_line": {
+            "minimum": 1,
+            "title": "Start Line",
+            "type": "integer"
+          },
+          "end_line": {
+            "minimum": 1,
+            "title": "End Line",
+            "type": "integer"
+          },
+          "quote": {
+            "maxLength": 6000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start_line",
+          "end_line",
+          "quote"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "Proposal": {
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Key",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "hypothesis",
+              "requirement_candidate",
+              "human_correction"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "statement": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Statement",
+            "type": "string"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/$defs/Citation"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Citations",
+            "type": "array"
+          },
+          "supersedes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes"
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "statement",
+          "citations",
+          "supersedes"
+        ],
+        "title": "Proposal",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "action": {
+        "enum": [
+          "read_source",
+          "propose",
+          "finish"
+        ],
+        "title": "Action",
+        "type": "string"
+      },
+      "source_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Source Id"
+      },
+      "start_line": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Start Line"
+      },
+      "end_line": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "End Line"
+      },
+      "proposals": {
+        "items": {
+          "$ref": "#/$defs/Proposal"
+        },
+        "maxItems": 8,
+        "title": "Proposals",
+        "type": "array"
+      }
+    },
+    "required": [
+      "action",
+      "source_id",
+      "start_line",
+      "end_line",
+      "proposals"
+    ],
+    "title": "ModelReply",
+    "type": "object"
+  }
+}

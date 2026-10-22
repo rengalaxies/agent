@@ -1,0 +1,18 @@
+{
+  "endpoint": "http://127.0.0.1:8000/v1/chat/completions",
+  "allowed_endpoints": ["http://127.0.0.1:8000/v1/chat/completions"],
+  "model": "graph-maintainer",
+  "configuration_id": "qwen30-bf16-vllm0151-16k-c1-NOT-QUALIFIED",
+  "allow_source_transfer": true,
+  "route": "loopback",
+  "max_prompt_bytes": 10000,
+  "context_tokens": 16384,
+  "max_output_tokens": 1024,
+  "timeout_seconds": 20.0,
+  "run_token_cap": 196608,
+  "installation_token_cap": 2500000,
+  "currency": "RUB",
+  "micro_per_million_tokens": 0,
+  "run_micro_cap": 0,
+  "installation_micro_cap": 0
+}

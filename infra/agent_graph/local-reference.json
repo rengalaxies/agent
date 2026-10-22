@@ -1,0 +1,23 @@
+{
+  "status": "PREPARED_NOT_GPU_QUALIFIED",
+  "model_repository": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+  "model_revision": "b2cff646eb4bb1d68355c01b18ae02e7cf42d120",
+  "license": "Apache-2.0",
+  "vllm_version": "0.15.1",
+  "image_tag": "vllm/vllm-openai:v0.15.1",
+  "image_digest": null,
+  "served_model_name": "graph-maintainer",
+  "max_model_len": 16384,
+  "max_num_seqs": 1,
+  "dtype": "bfloat16",
+  "gpu_candidate": "1 x A100 80GB; fit and throughput not measured",
+  "host_ram_gib_proposal": 128,
+  "host_cpu_proposal": 16,
+  "disk_gib_proposal": 200,
+  "fp8_candidate_repository": "Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+  "fp8_candidate_revision": "dcaee4d4dfc5ee71ad501f01f530e5652438fde0",
+  "fp8_gpu_candidate": "1 x L40S 48GB; not qualified; compare quality against BF16",
+  "measured_peak_vram_bytes": null,
+  "measured_latency_seconds": null,
+  "measured_correct_results": null
+}

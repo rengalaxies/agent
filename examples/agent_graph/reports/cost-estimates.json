@@ -1,0 +1,84 @@
+{
+  "kind": "ESTIMATES_NOT_MEASUREMENTS",
+  "currency_conversion": null,
+  "prices_checked": "2026-10-21",
+  "weight_floors": [
+    {
+      "parameters_billions": 30.5,
+      "bf16_gib_floor": 56.81067705154419,
+      "fp8_gib_floor": 28.405338525772095,
+      "int4_gib_floor": 14.202669262886047
+    },
+    {
+      "parameters_billions": 80,
+      "bf16_gib_floor": 149.01161193847656,
+      "fp8_gib_floor": 74.50580596923828,
+      "int4_gib_floor": 37.25290298461914
+    },
+    {
+      "parameters_billions": 685,
+      "bf16_gib_floor": 1275.9119272232056,
+      "fp8_gib_floor": 637.9559636116028,
+      "int4_gib_floor": 318.9779818058014
+    }
+  ],
+  "qwen30_kv_bytes_per_token_bf16": 98304,
+  "kv_gib": {
+    "16384": 1.5,
+    "32768": 3.0,
+    "262144": 24.0
+  },
+  "scenarios": [
+    {
+      "changes": 100,
+      "initial_input": 400000,
+      "update_input": 100000,
+      "input_per_change": 40000,
+      "output_per_change": 4000,
+      "retry_fraction": 0.2,
+      "input_tokens": 5400000.0,
+      "output_tokens": 540000.0,
+      "deepseek_flash_peak_usd": 2.268,
+      "cloud_haiku_reference_rub": 1591.002,
+      "human_hours_assumption": 14.666666666666668,
+      "human_cost_rub_at_2000_per_hour": 29333.333333333336
+    },
+    {
+      "changes": 1000,
+      "initial_input": 2000000,
+      "update_input": 500000,
+      "input_per_change": 40000,
+      "output_per_change": 4000,
+      "retry_fraction": 0.2,
+      "input_tokens": 51000000.0,
+      "output_tokens": 5100000.0,
+      "deepseek_flash_peak_usd": 21.42,
+      "cloud_haiku_reference_rub": 15026.13,
+      "human_hours_assumption": 74.66666666666667,
+      "human_cost_rub_at_2000_per_hour": 149333.33333333334
+    },
+    {
+      "changes": 10000,
+      "initial_input": 10000000,
+      "update_input": 2000000,
+      "input_per_change": 40000,
+      "output_per_change": 4000,
+      "retry_fraction": 0.2,
+      "input_tokens": 494400000.0,
+      "output_tokens": 49440000.0,
+      "deepseek_flash_peak_usd": 207.648,
+      "cloud_haiku_reference_rub": 145665.072,
+      "human_hours_assumption": 674.6666666666666,
+      "human_cost_rub_at_2000_per_hour": 1349333.3333333333
+    }
+  ],
+  "vm_2xa100_80gb_rub_hour": 732,
+  "vm_8h_rub": 5856,
+  "vm_730h_rub": 534360,
+  "budget_proposal_not_authorization": {
+    "gpu_hours": 8,
+    "vm_rub": 5856,
+    "storage_network_contingency_assumption_rub": 1000,
+    "total_rub": 6856
+  }
+}
