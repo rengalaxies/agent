@@ -1,0 +1,156 @@
+{
+  "scope": "DERIVED_FROM_TARGET_RECEIPTS",
+  "shows": 5,
+  "actual_checks": 20,
+  "expected_B_failures": 5,
+  "check_duration_min_seconds": 4.960909,
+  "check_duration_median_seconds": 5.400442,
+  "check_duration_max_seconds": 6.188317,
+  "checks": [
+    {
+      "version": "A",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.078668
+    },
+    {
+      "version": "B",
+      "reporting": 100,
+      "billing": 250,
+      "status": "FAIL",
+      "duration_seconds": 5.532599
+    },
+    {
+      "version": "D",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.341311
+    },
+    {
+      "version": "E",
+      "reporting": 250,
+      "billing": 250,
+      "export": 250,
+      "status": "PASS",
+      "duration_seconds": 5.997044
+    },
+    {
+      "version": "A",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.055382
+    },
+    {
+      "version": "B",
+      "reporting": 100,
+      "billing": 250,
+      "status": "FAIL",
+      "duration_seconds": 5.447285
+    },
+    {
+      "version": "D",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.359818
+    },
+    {
+      "version": "E",
+      "reporting": 250,
+      "billing": 250,
+      "export": 250,
+      "status": "PASS",
+      "duration_seconds": 6.188317
+    },
+    {
+      "version": "A",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.008826
+    },
+    {
+      "version": "B",
+      "reporting": 100,
+      "billing": 250,
+      "status": "FAIL",
+      "duration_seconds": 5.544082
+    },
+    {
+      "version": "D",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.428953
+    },
+    {
+      "version": "E",
+      "reporting": 250,
+      "billing": 250,
+      "export": 250,
+      "status": "PASS",
+      "duration_seconds": 5.888358
+    },
+    {
+      "version": "A",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 4.960909
+    },
+    {
+      "version": "B",
+      "reporting": 100,
+      "billing": 250,
+      "status": "FAIL",
+      "duration_seconds": 5.339434
+    },
+    {
+      "version": "D",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.531691
+    },
+    {
+      "version": "E",
+      "reporting": 250,
+      "billing": 250,
+      "export": 250,
+      "status": "PASS",
+      "duration_seconds": 5.899665
+    },
+    {
+      "version": "A",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.100611
+    },
+    {
+      "version": "B",
+      "reporting": 100,
+      "billing": 250,
+      "status": "FAIL",
+      "duration_seconds": 5.371931
+    },
+    {
+      "version": "D",
+      "reporting": 250,
+      "billing": 250,
+      "status": "PASS",
+      "duration_seconds": 5.288986
+    },
+    {
+      "version": "E",
+      "reporting": 250,
+      "billing": 250,
+      "export": 250,
+      "status": "PASS",
+      "duration_seconds": 5.928902
+    }
+  ]
+}

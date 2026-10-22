@@ -1,0 +1,21 @@
+dm-p1-ui
+Thu Oct 22 09:30:34 AM UTC 2026
+active
+active
+active
+enabled
+failed
+agent-graph-demo-web-1 Up 9 minutes 127.0.0.1:18081->18081/tcp
+34512047	/opt/agent-graph-demo
+2420790	/var/lib/agent-graph-demo/state
+253890	/var/lib/agent-graph-demo/runtime
+Filesystem       1B-blocks       Used   Available Use% Mounted on
+/dev/vda2      31591473152 4562120704 25616977920  16% /
+               total        used        free      shared  buff/cache   available
+Mem:            3915         571        1733           5        1875        3344
+Swap:              0           0           0
+ 12:30:34 up 4 days, 13:43,  4 users,  load average: 0.03, 0.17, 0.29
+/opt/agent-graph-demo/releases/ca6b9cfff0e278fbf3503c308741e4ac96524645
+sha256:dc39a66df73ffedac92539067b5fbb4166c71102cff188ebd9f708a69d3f5820
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      4096       127.0.0.1:18081      0.0.0.0:*

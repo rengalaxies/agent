@@ -1,0 +1,87 @@
+{
+  "scope": "TARGET_VM_API_AND_SERVICE_RECOVERY",
+  "status": "PASS",
+  "started_epoch": 1792660801.1942904,
+  "queue": {
+    "admissions": [
+      202,
+      202,
+      202,
+      202,
+      429
+    ],
+    "queued_while_operator_lock_held": 4,
+    "observed_peak_running": 1,
+    "all_admitted_jobs_finished": true,
+    "atomic_snapshot_method": "single readonly SELECT on web journal, not core store",
+    "intervals": [
+      {
+        "id": "5effeb1a-4e2b-4474-a5a8-5614b8d50347",
+        "started_at": "2026-10-22T09:20:13.240743+00:00",
+        "finished_at": "2026-10-22T09:20:17.666257+00:00"
+      },
+      {
+        "id": "0da7e23c-0a49-4724-a0d4-a99b4ff7ef3d",
+        "started_at": "2026-10-22T09:20:17.672916+00:00",
+        "finished_at": "2026-10-22T09:20:21.875454+00:00"
+      },
+      {
+        "id": "ac651023-663c-4c5b-a621-8ecf4c38649d",
+        "started_at": "2026-10-22T09:20:21.882399+00:00",
+        "finished_at": "2026-10-22T09:20:26.057542+00:00"
+      },
+      {
+        "id": "b25c8035-d39c-4944-b574-7e7c275d4c04",
+        "started_at": "2026-10-22T09:20:26.063629+00:00",
+        "finished_at": "2026-10-22T09:20:30.340873+00:00"
+      }
+    ],
+    "no_overlapping_execution": true
+  },
+  "api_boundaries": {
+    "model_disabled": 503,
+    "arbitrary_path_rejected": 422
+  },
+  "web_privileges": {
+    "uid": 10001,
+    "gid": 10001,
+    "docker_socket": false,
+    "sudo_binary": null,
+    "operator_config_readable": false,
+    "password_readable": false,
+    "cloud_env_names": [],
+    "state_writable": true,
+    "runtime_writable": false,
+    "core_writable": false,
+    "cap_eff": "0000000000000000",
+    "no_new_privs": "1"
+  },
+  "host_files": "640 0:10001 /etc/agent-graph-demo/auth.json\n600 0:0 /etc/agent-graph-demo/operator.json\n600 0:0 /etc/agent-graph-demo/release.env\n700 10001:10001 /var/lib/agent-graph-demo/state\n750 0:10001 /var/lib/agent-graph-demo/runtime\n640 0:10001 /var/lib/agent-graph-demo/runtime/active.json\n644 10001:10001 /var/lib/agent-graph-demo/state/web.sqlite\n",
+  "backend_restart": {
+    "status": "PASS",
+    "history_before": {
+      "jobs": 5,
+      "checks": 4,
+      "context": "24d565b8d0d93490286470cb17f149e4a6352494b545973a9e062f39cc3522aa"
+    },
+    "history_after": {
+      "jobs": 5,
+      "checks": 4,
+      "context": "24d565b8d0d93490286470cb17f149e4a6352494b545973a9e062f39cc3522aa"
+    }
+  },
+  "docker_restart": {
+    "status": "PASS",
+    "backend_automatically_recovered": true,
+    "sandbox_did_not_restart": true,
+    "runtime_after_restart": "UNKNOWN",
+    "explicit_reconcile_and_rerun": "PASS",
+    "history_preserved": true
+  },
+  "finished_epoch": 1792660871.3816407,
+  "ready_session": "a295a591-7e3d-4088-b325-269de1f9ced4",
+  "sandbox_after_stop": 0,
+  "history_sessions": 17,
+  "observation_timer": "enabled and active",
+  "whole_vm_reboot": false
+}

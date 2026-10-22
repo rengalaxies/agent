@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "scope": "FINAL_TARGET_READ_ONLY",
+  "installation": {
+    "source_sha": "ca6b9cfff0e278fbf3503c308741e4ac96524645",
+    "image_id": "sha256:dc39a66df73ffedac92539067b5fbb4166c71102cff188ebd9f708a69d3f5820",
+    "backup": "/var/backups/agent-graph-demo/20261022T090903Z",
+    "bind": "127.0.0.1:18081",
+    "model_mode": "UNAVAILABLE_NO_CALLS"
+  },
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "shows": [
+    {
+      "session_id": "2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "health_status_only": true,
+      "export_detected": true,
+      "checks": 5,
+      "jobs": 5
+    },
+    {
+      "session_id": "8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "health_status_only": true,
+      "export_detected": true,
+      "checks": 4,
+      "jobs": 4
+    },
+    {
+      "session_id": "7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "health_status_only": true,
+      "export_detected": true,
+      "checks": 4,
+      "jobs": 4
+    },
+    {
+      "session_id": "a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "health_status_only": true,
+      "export_detected": true,
+      "checks": 4,
+      "jobs": 4
+    },
+    {
+      "session_id": "62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "health_status_only": true,
+      "export_detected": true,
+      "checks": 4,
+      "jobs": 4
+    }
+  ],
+  "sandbox_containers": 0,
+  "registry": {
+    "generation": 92,
+    "image": "sha256:dc39a66df73ffedac92539067b5fbb4166c71102cff188ebd9f708a69d3f5820",
+    "manifest_sha256": "f29249bf481a9e4f1cbcbd738e030564fd7d3c27d1c0e77287c80541c6bce22a",
+    "observed_at": "2026-10-22T09:30:32.249933+00:00",
+    "product_sha": "ca6b9cfff0e278fbf3503c308741e4ac96524645",
+    "project_name": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+    "reason": null,
+    "session_id": "2ccbfcca-23be-40c1-8432-64a088a115ac",
+    "state": "STOPPED"
+  },
+  "ready_session": "a295a591-7e3d-4088-b325-269de1f9ced4",
+  "tunnel_unauthenticated_http": 401,
+  "tunnel_authenticated_http": 200
+}
