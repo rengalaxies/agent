@@ -44,6 +44,16 @@ const errors = {
   authentication_required: "Требуется вход.",
   session_forbidden: "Нет доступа к этому показу.",
 };
+// Core usage codes are static observations; UNKNOWN_USAGE must never read as a single request.
+const usageLabels = {
+  SINGLE_REQUEST_OBSERVED: "Одиночный запрос в коде",
+  CURSOR_LOOP_OBSERVED: "Обход страниц в коде",
+  EXPLICIT_PAGE_SIZE: "Явный page_size в запросе",
+  UNKNOWN_USAGE: "Использование не распознано",
+};
+function usageLabel(usage) {
+  return usageLabels[usage] || usageLabels.UNKNOWN_USAGE;
+}
 function formatTime(value, date = false) {
   return (
     new Intl.DateTimeFormat("ru-RU", {
@@ -248,7 +258,7 @@ function renderGraph(g) {
       node("strong", `${d.consumer} → ${op.service || "Неизвестный сервис"}`),
       node(
         "small",
-        `${op.method || "GET"} ${op.path || "/"} · ${d.usage === "CURSOR_LOOP_OBSERVED" ? "Обход страниц в коде" : "Одиночный запрос в коде"}`,
+        `${op.method || "GET"} ${op.path || "/"} · ${usageLabel(d.usage)}`,
       ),
     );
     b.addEventListener("click", () => selectEdge(d, op, b));
