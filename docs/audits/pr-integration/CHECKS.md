@@ -43,7 +43,7 @@
 | Та же приёмка и `test_correction_on_b_does_not_fail_later_rescan_and_analysis` | #40 `d407ade` | [HTTP graph demo](https://github.com/rengalaxies/agent/actions/runs/39818224651), [core](https://github.com/rengalaxies/agent/actions/runs/39818224669) | success |
 | Отчёт пачки 1 с поправкой формулировок | #35 `f8cb0e1` | [offline](https://github.com/rengalaxies/agent/actions/runs/39816013086), [core](https://github.com/rengalaxies/agent/actions/runs/39816013099) | success |
 | Lint-фикс | #39 `205bbd7` | [P1 regression](https://github.com/rengalaxies/agent/actions/runs/39816456541) | success; actionlint запускается только на push в main |
-| Сочетание #35+#39+#40+#41+аудит | #42 draft `80cee68` | см. PR #42 | COMBINED_PENDING |
+| Сочетание #35+#39+#40+#41+аудит: новое ядро вместе с исправленным worker и UI | #42 draft `80cee68` (закрыт после прогона) | [demo](https://github.com/rengalaxies/agent/actions/runs/39819246777), [graph](https://github.com/rengalaxies/agent/actions/runs/39819246776), [core](https://github.com/rengalaxies/agent/actions/runs/39819246927), [P1](https://github.com/rengalaxies/agent/actions/runs/39819246783) | success |
 
 ## Что не проверялось
 
