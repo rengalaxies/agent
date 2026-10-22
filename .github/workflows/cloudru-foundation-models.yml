@@ -36,7 +36,9 @@ jobs:
         if: always()
         run: |
           if [ -f foundation-models-report.json ]; then
-            echo '```json' >> "$GITHUB_STEP_SUMMARY"
-            cat foundation-models-report.json >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            {
+              echo '```json'
+              cat foundation-models-report.json
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
           fi
