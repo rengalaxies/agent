@@ -124,6 +124,8 @@ def providers(policy, sources):
                                 else:
                                     effective[(p.get("name"), p.get("in"))] = p
                         for p in effective.values():
+                            if p.get("name") == "page_size" and p.get("in") == "query":
+                                op["page_size_declared"] = True
                             if p.get("name") == "page_size" and p.get("in") == "query" and isinstance(p.get("schema"), dict):
                                 value = p["schema"].get("default", UNRESOLVED)
                                 if value is None or type(value) is int:
@@ -138,6 +140,7 @@ def providers(policy, sources):
         except (SyntaxError, ValueError, RecursionError):
             gaps.append(dict(code="python_parse_error", source_id=source["id"]))
             continue
+        constants = module_constants(tree)
         fastapi = {a.asname or a.name for n in tree.body if isinstance(n, ast.ImportFrom)
                    and n.module == "fastapi" for a in n.names if a.name == "FastAPI"}
         apps = {n.targets[0].id for n in tree.body if isinstance(n, ast.Assign) and len(n.targets) == 1
@@ -165,10 +168,17 @@ def providers(policy, sources):
                 args = fn.args.posonlyargs + fn.args.args
                 defaults = dict(zip([a.arg for a in args][-len(fn.args.defaults):], fn.args.defaults)) if fn.args.defaults else {}
                 defaults.update({a.arg: value for a, value in zip(fn.args.kwonlyargs, fn.args.kw_defaults) if value is not None})
+                if any(a.arg == "page_size" for a in args + fn.args.kwonlyargs):
+                    op["page_size_declared"] = True
                 if "page_size" in defaults:
-                    value = constant(defaults["page_size"], {})
+                    value = constant(defaults["page_size"], constants)
                     if value is None or type(value) is int:
                         op.update(default_known=True, page_size_default=value)
+                    else:
+                        # Query(...), names and calls are outside this grammar. Record it so an
+                        # unresolved default never reads as "declaration unchanged".
+                        gaps.append(dict(code="page_size_default_unresolved", operation_id=op["id"],
+                                         source_id=source["id"]))
                 operations.append(op)
     grouped = {}
     for op in operations:
@@ -177,6 +187,8 @@ def providers(policy, sources):
             continue
         old = grouped[op["id"]]
         old["evidence"].extend(op["evidence"])
+        if op.get("page_size_declared"):
+            old["page_size_declared"] = True
         if old["default_known"] and op["default_known"] and old["page_size_default"] != op["page_size_default"]:
             old["default_conflict"] = True
             gaps.append(dict(code="provider_declaration_conflict", operation_id=op["id"]))
