@@ -95,6 +95,35 @@ class DiscoveryRegressions(unittest.TestCase):
         self.assertTrue(any(f["consumer"] == "reporting" and f["code"] == "POSSIBLE_TRUNCATION"
                             for f in result["findings"]))
 
+    def test_r6_referenced_openapi_page_default_change_requires_recheck_not_silence(self):
+        # Architecture audit 2026-10-22: a pretty-printed contract whose page_size schema or
+        # parameter is a $ref changed None -> 100 with no delta, and the schema case had no gap.
+        (self.root/"corpus/orders/api.py").unlink()
+        path = self.root/"corpus/orders/openapi.json"
+        def contract(default, by_reference):
+            if by_reference == "schema":
+                parameter = dict(name="page_size", **{"in": "query"}, schema={"$ref": "#/components/schemas/Page"})
+                components = dict(schemas=dict(Page=dict(type="integer", default=default)))
+            else:
+                parameter = {"$ref": "#/components/parameters/Page"}
+                components = dict(parameters=dict(Page=dict(name="page_size", **{"in": "query"},
+                                                            schema=dict(type="integer", default=default))))
+            return json.dumps(dict(openapi="3.1.1", paths={"/orders": dict(get=dict(parameters=[parameter]))},
+                                   components=components), indent=2)
+        for by_reference in ("schema", "parameter"):
+            with self.subTest(by_reference=by_reference):
+                path.write_text(contract(None, by_reference))
+                base = self.graph.prepare_context()
+                self.assertIn("page_size_default_unresolved", {g["code"] for g in base["graph"]["gaps"]})
+                self.assertEqual(base["coverage"], "PARTIAL")
+                path.write_text(contract(100, by_reference))
+                result = self.graph.analyze_change(base["id"])
+                self.assertEqual([d["code"] for d in result["deltas"]], ["PAGE_DEFAULT_UNRESOLVED"])
+                self.assertEqual([(f["consumer"], f["code"]) for f in result["findings"]
+                                  if f["consumer"] == "reporting"], [("reporting", "RECHECK_REQUIRED")])
+                unchanged = self.graph.analyze_change(self.graph.prepare_context()["id"])
+                self.assertEqual(unchanged["deltas"], [])
+
     def test_r3_shadowed_imports_never_become_resolved_edges(self):
         cases = [
             'from requests import get\ndef get(url):\n return []\nget("https://orders.test/orders")\n',
