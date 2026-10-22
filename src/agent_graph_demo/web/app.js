@@ -336,7 +336,26 @@ async function showEvidence(id) {
   const token = ++state.evidenceToken;
   const sid = state.sid;
   const graphToken = state.graphToken;
-  const e = await api(`/sessions/${sid}/evidence/${id}`);
+  state.evidence = null;
+  $("correct").disabled = true;
+  $("evidence-meta").textContent = "Загружаем основание выбранной связи…";
+  $("source").textContent = "Ожидание точного фрагмента снимка…";
+  $("evidence-diagnostics").textContent = "Основание ещё не получено";
+  let e;
+  try {
+    e = await api(`/sessions/${sid}/evidence/${id}`);
+  } catch (error) {
+    if (
+      token === state.evidenceToken &&
+      state.sid === sid &&
+      graphToken === state.graphToken
+    ) {
+      $("evidence-meta").textContent = "Основание недоступно";
+      $("source").textContent =
+        "Не удалось получить фрагмент. Выберите связь повторно, чтобы повторить запрос.";
+    } else return;
+    throw error;
+  }
   if (
     token !== state.evidenceToken ||
     state.sid !== sid ||

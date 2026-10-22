@@ -195,6 +195,12 @@ def journey(base_url, username, password, operator, output, store):
             page.evaluate(
                 "() => { api = window.__realDemoApi; delete window.__realDemoApi; }"
             )
+            page.evaluate(
+                "() => showEvidence('ffffffffffffffffffffffffffffffff').catch(() => {})"
+            )
+            assert page.locator("#evidence-meta").inner_text() == "Основание недоступно"
+            assert "requests.get" not in page.locator("#source").inner_text()
+            assert page.locator("#correct").is_disabled()
             # Explicit synthetic fixture checks HTML escaping. It is not a model response or graph success.
             fixture = dict(
                 repository="explicit-ui-test-fixture",

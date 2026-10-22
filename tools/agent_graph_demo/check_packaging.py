@@ -35,7 +35,7 @@ root=Path(sys.argv[1]);sid=sys.argv[2];store=Store(root)
 store.create(sid,'explicit-packaging-fixture',Snapshots(root,'TEST').create(sid))
 connection=store.connect();connection.execute('SELECT * FROM sessions').fetchall()
 print('READY',flush=True)
-time.sleep(60)
+sys.stdin.read()
 """
     proc = subprocess.Popen(
         [sys.executable, "-c", child, str(state), sid],
@@ -44,6 +44,7 @@ time.sleep(60)
         group=APP_GID,
         extra_groups=[APP_GID],
         stdout=subprocess.PIPE,
+        stdin=subprocess.PIPE,
         text=True,
     )
     try:
@@ -91,7 +92,7 @@ print('PASS')
             )
         )
     finally:
-        proc.terminate()
+        proc.stdin.close()
         proc.wait(timeout=5)
         proc.stdout.close()
 
