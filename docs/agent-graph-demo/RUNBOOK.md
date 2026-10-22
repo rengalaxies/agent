@@ -110,3 +110,19 @@ python tools/agent_graph_demo/run_scenario.py --config /etc/agent-graph-demo/ope
 7. Самостоятельный внешний доступ: **NOT_CONFIGURED**. Нужны утверждённые hostname/DNS/TLS и allowed_origins https; до этого только локальный операторский просмотр. Nginx fragment не является готовым публичным HTTP vhost. Viewer задаётся только server auth config, с конкретными allowed_session_ids.
 
 Точные локальные результаты и оставшиеся проверки — в [ACCEPTANCE.md](ACCEPTANCE.md). При изменении ядра обновить lock отдельным совместимостным изменением, выполнить CLI/API/browser suites; не принимать несовпадающий hash автоматически.
+
+## Закрытая поставка immutable image
+
+После приёмки и merge приложения можно вручную запустить `agent-graph-demo-delivery.yml`
+на main с `expected_main_sha=<полный проверенный SHA>`. Workflow не развёртывает
+приложение и не получает cloud/model/SSH secrets. Он собирает образ вне ВМ,
+сверяет `/app` с разрешёнными Git-файлами, non-root/env, filenames/credential patterns
+во всех image layers и соответствие config digest архива проверенному image ID.
+Это статическая проверка упаковки, не общая сертификация безопасности base image.
+
+Artifact `graph-demo-delivery-<SHA>` хранится **1 день**: image archive, разрешённые
+source/core archives, hash-locked wheels, image-audit.json и SHA256SUMS. Сначала
+проверить SHA256SUMS и audit PASS, затем передать файлы существующим SSH/SCP.
+На ВМ только load image и установка готовых wheels, без Docker build. Digest,
+checksum, резервная копия конфигураций, фактические проверки ВМ и rollback должны
+быть закреплены отдельным отчётом установки; CI не заменяет эту приёмку.

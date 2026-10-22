@@ -1,0 +1,64 @@
+name: HTTP graph demo immutable delivery
+on:
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        type: string
+        required: true
+        description: Exact reviewed main SHA to build, inspect and export; no deployment
+permissions:
+  contents: read
+concurrency:
+  group: graph-demo-delivery
+  cancel-in-progress: false
+jobs:
+  package:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+      BUILDX_CONFIG: /tmp/graph-demo-buildx
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Require exact reviewed source
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_MAIN_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+          test "$GITHUB_REPOSITORY" = rengalaxies/agent
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download hash-locked wheels and build outside VM
+        run: |
+          python -m pip download --only-binary=:all: --require-hashes -r infra/agent_graph_demo/requirements.lock --dest work/wheels
+          docker build --network=none -f infra/agent_graph_demo/Dockerfile --build-arg PRODUCT_SHA="$EXPECTED_MAIN_SHA" -t agent-graph-demo:delivery .
+          mkdir -p work/delivery
+          docker save agent-graph-demo:delivery | gzip -1 > work/delivery/image.tar.gz
+      - name: Inspect image, package allowlisted sources, record checksums
+        run: |
+          python tools/agent_graph_demo/inspect_delivery.py --image agent-graph-demo:delivery --source-sha "$EXPECTED_MAIN_SHA" --archive work/delivery/image.tar.gz --output work/delivery/image-audit.json
+          git archive --format=tar.gz -o work/delivery/release.tar.gz "$EXPECTED_MAIN_SHA" src/agent_graph_demo examples/agent_graph_demo tools/agent_graph_demo infra/agent_graph_demo docs/agent-graph-demo/RUNBOOK.md
+          git archive --format=tar.gz -o work/delivery/core.tar.gz a9385c565d5471698da62987b226dcff4cbdea86 src/agent_graph
+          tar -czf work/delivery/wheels.tar.gz -C work wheels
+          cd work/delivery
+          sha256sum image.tar.gz release.tar.gz core.tar.gz wheels.tar.gz image-audit.json > SHA256SUMS
+      - name: Publish only inspected delivery, minimum retention
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: graph-demo-delivery-${{ inputs.expected_main_sha }}
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+          path: |
+            work/delivery/image.tar.gz
+            work/delivery/release.tar.gz
+            work/delivery/core.tar.gz
+            work/delivery/wheels.tar.gz
+            work/delivery/image-audit.json
+            work/delivery/SHA256SUMS

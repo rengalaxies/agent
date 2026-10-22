@@ -128,6 +128,20 @@ class APITests(DemoCase):
         self.assertEqual(e.status_code, 200)
         self.assertEqual(e.json()["context_id"], base)
 
+    def test_historical_refresh_diff_keeps_executed_version_after_later_selection(self):
+        base = self.prepare()
+        self.run_job("analyze_change", target_version="B", base_context_id=base)
+        refreshed = self.run_job("prepare_context")
+        context_b = self.store.session(self.sid)["current_context_id"]
+        self.run_job("analyze_change", target_version="D", base_context_id=context_b)
+        suffix = "?job_id=" + refreshed["id"]
+        graph = self.client.get(self.base + "/graph" + suffix).json()
+        diff = self.client.get(self.base + "/diff" + suffix).json()
+        self.assertEqual(graph["demo_version"], "B")
+        self.assertTrue(graph["historical"])
+        self.assertEqual(diff["version"], "B")
+        self.assertIn("B/orders/app.py", diff["text"])
+
     def test_reset_requires_stop_and_preserves_history_idempotently(self):
         self.prepare()
         m = self.store.session(self.sid)["proposed_manifest_sha256"]

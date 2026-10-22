@@ -40,6 +40,22 @@ class RunnerTests(DemoCase):
                 g.stop(self.sid, 2)
             docker.assert_not_called()
 
+    def test_generated_sandbox_plan_limits_cpu_for_every_service(self):
+        g = self.guard()
+        with (
+            patch.object(g, "image_id", return_value="sha256:" + "1" * 64),
+            patch.object(g, "compare", return_value=[]),
+            patch.object(g, "down"),
+            patch.object(g, "docker", side_effect=DemoError("stop_before_real_up")),
+        ):
+            with self.assertRaisesRegex(DemoError, "stop_before_real_up"), g.exclusive():
+                g.activate_locked(self.sid, self.snap.manifest(self.sid, "A"),
+                                  Path("/trusted/corpus"), Path("/trusted/dataset.json"), 1)
+        plan = json.loads(g.plan(g.read()).read_text())
+        self.assertEqual(set(plan["services"]), {"orders", "status", "reporting", "billing", "health", "export"})
+        for service in plan["services"].values():
+            self.assertEqual(service["cpus"], 0.5)
+
     def test_failed_down_marks_unknown_and_blocks_activation_until_reconcile(self):
         g = self.guard()
         self.running()

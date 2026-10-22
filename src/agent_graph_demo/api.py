@@ -18,6 +18,7 @@ from .contracts import (
     JobRequest,
     ResetRequest,
     Strict,
+    VERSIONS,
     canonical,
 )
 from .graph_cli import GraphCLI
@@ -280,7 +281,14 @@ def create_app(settings: DemoSettings):
             j = store.job(job_id)
             if j["session_id"] != sid:
                 raise DemoError("session_forbidden", 403)
-            version = j["target_version"] or "A"
+            if j.get("graph_ref"):
+                version = store.get_artifact(sid, j["graph_ref"], "graph")["demo_version"]
+            elif j["target_version"]:
+                version = j["target_version"]
+            else:
+                raise DemoError("historical_diff_unavailable")
+            if version not in VERSIONS:
+                raise DemoError("historical_diff_unavailable")
         base = snapshots.session_root(sid) / "snapshots/A/corpus"
         target = snapshots.session_root(sid) / "snapshots" / version / "corpus"
         patches = []
