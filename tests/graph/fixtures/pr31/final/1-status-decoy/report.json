@@ -1,0 +1,244 @@
+{
+  "case": "status-decoy",
+  "model": "openai/gpt-oss-120b",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "15792be11b8235c00544084f9204ca5235605cca90ee35e308f0cb6d15c6b3de",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "openai/gpt-oss-120b",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:openai/gpt-oss-120b",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 60.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 100000,
+    "currency": "RUB",
+    "micro_per_million_tokens": 61000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 6100000
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": null,
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "1ebb42bf0d910ba76934c8c211eb1214fb2809b10222984ea2d4731e095cf081",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "82eb3f4bc703488e27b0b313e9123b1e47caf9fb9bf836c718095b9bb564b47c",
+      "start_line": 1,
+      "end_line": 9,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+      "start_line": 1,
+      "end_line": 5,
+      "proposals": []
+    },
+    {
+      "action": "propose",
+      "source_id": null,
+      "start_line": null,
+      "end_line": null,
+      "proposals": [
+        {
+          "key": "health->status GET /orders",
+          "kind": "hypothesis",
+          "statement": "The health service makes an HTTP GET request to https://inventory.test/orders, which matches the status service’s FastAPI endpoint @app.get(“/orders”), indicating a dependency from health to status on the GET /orders operation.",
+          "citations": [
+            {
+              "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+              "start_line": 5,
+              "end_line": 5,
+              "quote": "return fetch(“https://inventory.test/orders”, timeout=10)"
+            },
+            {
+              "source_id": "1ebb42bf0d910ba76934c8c211eb1214fb2809b10222984ea2d4731e095cf081",
+              "start_line": 6,
+              "end_line": 6,
+              "quote": "@app.get(“/orders”)"
+            }
+          ],
+          "supersedes": null
+        }
+      ]
+    }
+  ],
+  "proposals": [
+    {
+      "proposal": {
+        "key": "health->status GET /orders",
+        "kind": "hypothesis",
+        "statement": "The health service makes an HTTP GET request to https://inventory.test/orders, which matches the status service’s FastAPI endpoint @app.get(“/orders”), indicating a dependency from health to status on the GET /orders operation.",
+        "citations": [
+          {
+            "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+            "start_line": 5,
+            "end_line": 5,
+            "quote": "return fetch(“https://inventory.test/orders”, timeout=10)"
+          },
+          {
+            "source_id": "1ebb42bf0d910ba76934c8c211eb1214fb2809b10222984ea2d4731e095cf081",
+            "start_line": 6,
+            "end_line": 6,
+            "quote": "@app.get(“/orders”)"
+          }
+        ],
+        "supersedes": null
+      },
+      "decision": "REJECTED",
+      "reason": "evidence_mismatch"
+    }
+  ],
+  "requests": [
+    {
+      "global_request": 18,
+      "usage": {
+        "prompt_tokens": 772,
+        "completion_tokens": 308,
+        "total_tokens": 1080
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 2.5037136340000075
+    },
+    {
+      "global_request": 19,
+      "usage": {
+        "prompt_tokens": 1195,
+        "completion_tokens": 133,
+        "total_tokens": 1328
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.6298656680000079
+    },
+    {
+      "global_request": 20,
+      "usage": {
+        "prompt_tokens": 1626,
+        "completion_tokens": 135,
+        "total_tokens": 1761
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.170233044000014
+    },
+    {
+      "global_request": 21,
+      "usage": {
+        "prompt_tokens": 1941,
+        "completion_tokens": 697,
+        "total_tokens": 2638
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 4.620677881000006
+    }
+  ],
+  "protocol_passed": false,
+  "transport_action_protocol_passed": true,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "659da0fc460148109be5b4b2be2aa6d5",
+    "context_id": "dce73788e0d1595ea0d7512a342f7e733cdde03f428f48fb2ebcf723cbe51f70",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:openai/gpt-oss-120b",
+    "model": "openai/gpt-oss-120b",
+    "status": "PARTIAL",
+    "reason": "evidence_mismatch",
+    "events": [
+      {
+        "step": 0,
+        "action": "read_source",
+        "seconds": 5.212853975999991,
+        "usage": {
+          "prompt_tokens": 772,
+          "completion_tokens": 308
+        },
+        "reservation": "576cb1b64fff41f2b17222dd017fa4fe"
+      },
+      {
+        "step": 1,
+        "action": "read_source",
+        "seconds": 2.6854659130000016,
+        "usage": {
+          "prompt_tokens": 1195,
+          "completion_tokens": 133
+        },
+        "reservation": "7eae0e23700841f08ae48a6e19114b20"
+      },
+      {
+        "step": 2,
+        "action": "read_source",
+        "seconds": 6.459180844000002,
+        "usage": {
+          "prompt_tokens": 1626,
+          "completion_tokens": 135
+        },
+        "reservation": "9edb659365bb42358f787c9efe66a046"
+      },
+      {
+        "step": 3,
+        "action": "propose",
+        "seconds": 8.413576747999997,
+        "usage": {
+          "prompt_tokens": 1941,
+          "completion_tokens": 697
+        },
+        "reservation": "3a35ac6ba82948008658ed26cd19cccb"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 9,
+      "reserved_token_units": 290871,
+      "reserved_micro": 55386414
+    },
+    "model_quality_established": false,
+    "id": "357776b9eccb2ff37affbb8b53f1e52d1958bb7b21e49776c18a42885d6e0f4d"
+  },
+  "seconds": 22.796915146999993,
+  "request_count": 4,
+  "continuation_requests": 4,
+  "prior_run": null,
+  "usage_observed": {
+    "prompt_tokens": 5534,
+    "completion_tokens": 1273
+  },
+  "usage_complete": true,
+  "estimated_cost_rub": "0.16542224",
+  "known_usage_cost_rub": "0.16542224",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL",
+  "token_limit_parameter": "max_completion_tokens"
+}

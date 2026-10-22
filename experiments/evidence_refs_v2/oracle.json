@@ -1,0 +1,15 @@
+{
+  "scope": "OFFLINE evaluator only; never include this file in model messages",
+  "reporting-http": {
+    "required": [{"consumer_repository":"reporting","consumer_service":"reporting","provider_service":"orders","method":"GET","path_template":"/orders"}],
+    "forbidden": []
+  },
+  "export-E": {
+    "required": [{"consumer_repository":"export","consumer_service":"export","provider_service":"orders","method":"GET","path_template":"/orders"}],
+    "forbidden": []
+  },
+  "status-decoy": {
+    "required": [{"consumer_repository":"health","consumer_service":"health","provider_service":"status","method":"GET","path_template":"/orders"}],
+    "forbidden": [{"consumer_repository":"health","consumer_service":"health","provider_service":"orders","method":"GET","path_template":"/orders"}, {"consumer_repository":"orders","consumer_service":"orders","provider_service":"health","method":"GET","path_template":"/orders"}, {"consumer_repository":"status","consumer_service":"status","provider_service":"health","method":"GET","path_template":"/orders"}]
+  }
+}

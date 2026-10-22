@@ -1,0 +1,50 @@
+{
+  "experiment_id": "evidence-refs-v2-next-2026-10-21",
+  "status": "PREPARED_OFFLINE_ONLY",
+  "live_enabled": false,
+  "protocol": "evidence-refs-v2",
+  "core_base_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "historical_pr31_sha": "5b5b95559b4c50d8a3ca39b3a6a76e0d6f53fa7e",
+  "models": ["Qwen/Qwen3-Coder-Next", "openai/gpt-oss-120b"],
+  "case_order": ["reporting-http", "export-E", "status-decoy"],
+  "schedule": "serial; each case Qwen then GPT, fresh context/session/history, no coaching or continuation",
+  "task": "Investigate directed HTTP dependencies. Read the callsite and provider declaration, including decorators. Propose only supported typed claims using evidence_refs returned in this session; finish after supported findings or insufficient evidence. Operator addresses: orders=https://orders.test; status=https://inventory.test. All candidates remain unapproved.",
+  "parameters": {
+    "temperature": 0,
+    "stream": false,
+    "token_parameter": "max_completion_tokens",
+    "max_output_tokens": 4096,
+    "request_timeout_seconds": 60,
+    "context_tokens": 131072,
+    "max_prompt_bytes": 60000,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "retries": 0,
+    "parallel_requests": 1,
+    "response_format": "strict_json_schema",
+    "native_tool_calls": false
+  },
+  "deadlines": {
+    "series_seconds": 1800,
+    "case_seconds": 300,
+    "rule": "Persist absolute series and case deadlines at first start; timeout=min(60, series_remaining, case_remaining). Checks before reservation, send, every transport stage and admission. Never pause, extend or reset on restart. Any late result is PARTIAL and cannot be admitted."
+  },
+  "budget_proposal_not_authorization": {
+    "historical_requests": 21,
+    "historical_usage_incomplete_requests": 1,
+    "max_new_requests_per_model_case": 6,
+    "max_new_requests": 36,
+    "proposed_lifetime_request_cap": 57,
+    "money_cap": null,
+    "actual_billed_cost": "NOT_MEASURED",
+    "live_blockers": ["explicit authorization for NEW requests and money cap", "current grant/billing applicability", "review and pin final runner/core commit", "implement and test shared absolute deadline propagation into transport and candidate admission"]
+  },
+  "scoring": {
+    "transport": "HTTP/status/finish_reason/usage, timeout keeps unknown usage; every attempted send consumes a ledger reservation",
+    "protocol": "finish within deadline and steps; no invalid action/range/reference",
+    "provenance": "AUTHENTIC_AUTHORIZED_CURRENT assessed separately per proposal",
+    "sufficiency": "SUPPORTED_WITHIN_PROFILE including directed consumer/provider identity and covered declarations/callsites",
+    "quality": "held-out typed oracle, no forbidden/extra claims and both evidence sides read; report rejected semantic claims too",
+    "success": "All four protocol/provenance/sufficiency/quality pass; candidate remains UNAPPROVED_CANDIDATE; no comparison of model superiority from this small corpus"
+  }
+}

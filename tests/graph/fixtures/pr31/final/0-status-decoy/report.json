@@ -1,0 +1,263 @@
+{
+  "case": "status-decoy",
+  "model": "Qwen/Qwen3-Coder-Next",
+  "core_sha": "f1c4546725e759ffc06ca0281f7103132dbcfe73",
+  "basis": "15792be11b8235c00544084f9204ca5235605cca90ee35e308f0cb6d15c6b3de",
+  "config": {
+    "endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "allowed_endpoints": [
+      "https://foundation-models.api.cloud.ru/v1/chat/completions"
+    ],
+    "model": "Qwen/Qwen3-Coder-Next",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "api_key_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "allow_source_transfer": true,
+    "route": "corporate",
+    "context_tokens": 65536,
+    "max_output_tokens": 4096,
+    "max_prompt_bytes": 24000,
+    "timeout_seconds": 45.0,
+    "installation_token_cap": 1000000,
+    "run_token_cap": 100000,
+    "currency": "RUB",
+    "micro_per_million_tokens": 244000000,
+    "installation_micro_cap": 244000000,
+    "run_micro_cap": 24400000
+  },
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 6,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "transition": null,
+  "actions": [
+    {
+      "action": "read_source",
+      "source_id": "82eb3f4bc703488e27b0b313e9123b1e47caf9fb9bf836c718095b9bb564b47c",
+      "start_line": 6,
+      "end_line": 6,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "1ebb42bf0d910ba76934c8c211eb1214fb2809b10222984ea2d4731e095cf081",
+      "start_line": 6,
+      "end_line": 6,
+      "proposals": []
+    },
+    {
+      "action": "read_source",
+      "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+      "start_line": 1,
+      "end_line": 5,
+      "proposals": []
+    },
+    {
+      "action": "propose",
+      "source_id": null,
+      "start_line": null,
+      "end_line": null,
+      "proposals": [
+        {
+          "key": "orders->health GET /orders",
+          "kind": "hypothesis",
+          "statement": "The orders service defines a GET /orders endpoint (api.py:6), and the health service’s client.py:5 calls https://inventory.test/orders using requests.get, suggesting a dependency from orders to health for /orders.",
+          "citations": [
+            {
+              "source_id": "82eb3f4bc703488e27b0b313e9123b1e47caf9fb9bf836c718095b9bb564b47c",
+              "start_line": 6,
+              "end_line": 6,
+              "quote": "@app.get(“/orders”)"
+            },
+            {
+              "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+              "start_line": 5,
+              "end_line": 5,
+              "quote": "return fetch(“https://inventory.test/orders”, timeout=10)"
+            }
+          ],
+          "supersedes": null
+        },
+        {
+          "key": "status->health GET /orders",
+          "kind": "hypothesis",
+          "statement": "The status service defines a GET /orders endpoint (api.py:6), and the health service’s client.py:5 calls https://inventory.test/orders using requests.get, suggesting a dependency from status to health for /orders.",
+          "citations": [
+            {
+              "source_id": "1ebb42bf0d910ba76934c8c211eb1214fb2809b10222984ea2d4731e095cf081",
+              "start_line": 6,
+              "end_line": 6,
+              "quote": "@app.get(“/orders”)"
+            },
+            {
+              "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+              "start_line": 5,
+              "end_line": 5,
+              "quote": "return fetch(“https://inventory.test/orders”, timeout=10)"
+            }
+          ],
+          "supersedes": null
+        }
+      ]
+    }
+  ],
+  "proposals": [
+    {
+      "proposal": {
+        "key": "orders->health GET /orders",
+        "kind": "hypothesis",
+        "statement": "The orders service defines a GET /orders endpoint (api.py:6), and the health service’s client.py:5 calls https://inventory.test/orders using requests.get, suggesting a dependency from orders to health for /orders.",
+        "citations": [
+          {
+            "source_id": "82eb3f4bc703488e27b0b313e9123b1e47caf9fb9bf836c718095b9bb564b47c",
+            "start_line": 6,
+            "end_line": 6,
+            "quote": "@app.get(“/orders”)"
+          },
+          {
+            "source_id": "deeb5b81bf1c7f0ae0a83ebe4212a3ef0bf49014e9dd807d1f031df0f7eaed7d",
+            "start_line": 5,
+            "end_line": 5,
+            "quote": "return fetch(“https://inventory.test/orders”, timeout=10)"
+          }
+        ],
+        "supersedes": null
+      },
+      "decision": "REJECTED",
+      "reason": "evidence_mismatch"
+    }
+  ],
+  "requests": [
+    {
+      "global_request": 9,
+      "usage": {
+        "prompt_tokens": 823,
+        "completion_tokens": 98,
+        "total_tokens": 921
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.8144912000000204
+    },
+    {
+      "global_request": 10,
+      "usage": {
+        "prompt_tokens": 1133,
+        "completion_tokens": 82,
+        "total_tokens": 1215
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.4988056349999965
+    },
+    {
+      "global_request": 11,
+      "usage": {
+        "prompt_tokens": 1441,
+        "completion_tokens": 79,
+        "total_tokens": 1520
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 1.682791688000009
+    },
+    {
+      "global_request": 12,
+      "usage": {
+        "prompt_tokens": 1815,
+        "completion_tokens": 506,
+        "total_tokens": 2321
+      },
+      "http_status": 200,
+      "finish_reason": "stop",
+      "seconds": 6.302280476000021
+    }
+  ],
+  "protocol_passed": false,
+  "transport_action_protocol_passed": true,
+  "quality": {
+    "required_found": false,
+    "forbidden": [],
+    "extra_keys": [],
+    "tool_and_citation_coverage": false,
+    "passed": false,
+    "scope": "synthetic proposal keys plus provenance; manual statement review required"
+  },
+  "investigation": {
+    "schema": "graph-investigation-1",
+    "run_id": "cc60d01249b546358ab28bc0eb016b15",
+    "context_id": "44225e7f0b6e3a306c6d2ea0dcb67f50eb52eda3fb8cf1efe85d65ff95f200dd",
+    "configuration_id": "cloudru-graph-cycle-20261021-v1:Qwen/Qwen3-Coder-Next",
+    "model": "Qwen/Qwen3-Coder-Next",
+    "status": "PARTIAL",
+    "reason": "evidence_mismatch",
+    "events": [
+      {
+        "step": 0,
+        "action": "read_source",
+        "seconds": 3.45304600099999,
+        "usage": {
+          "prompt_tokens": 823,
+          "completion_tokens": 98
+        },
+        "reservation": "4b1abb471dfc44bc9841d059d6827f9e"
+      },
+      {
+        "step": 1,
+        "action": "read_source",
+        "seconds": 1.8858968860000118,
+        "usage": {
+          "prompt_tokens": 1133,
+          "completion_tokens": 82
+        },
+        "reservation": "b711c2e0a0714e26b136c13ba037a35a"
+      },
+      {
+        "step": 2,
+        "action": "read_source",
+        "seconds": 3.0732421250000073,
+        "usage": {
+          "prompt_tokens": 1441,
+          "completion_tokens": 79
+        },
+        "reservation": "c646e3110bf44d4681d72e8233d59037"
+      },
+      {
+        "step": 3,
+        "action": "propose",
+        "seconds": 6.688494558999992,
+        "usage": {
+          "prompt_tokens": 1815,
+          "completion_tokens": 506
+        },
+        "reservation": "04ae83adf6e34198a72e05389a3177d1"
+      }
+    ],
+    "candidate_ids": [],
+    "budget": {
+      "attempts": 8,
+      "reserved_token_units": 164713,
+      "reserved_micro": 40189972
+    },
+    "model_quality_established": false,
+    "id": "5b7785d77cf1e9eab7e8f5fc446c9cd626edde232573d3b5d62fc00d472ba555"
+  },
+  "seconds": 15.117142108999985,
+  "request_count": 4,
+  "continuation_requests": 4,
+  "prior_run": null,
+  "usage_observed": {
+    "prompt_tokens": 5212,
+    "completion_tokens": 765
+  },
+  "usage_complete": true,
+  "estimated_cost_rub": "0.822524",
+  "known_usage_cost_rub": "0.822524",
+  "actual_billed_cost": "NOT_MEASURED",
+  "native_function_calling": "NOT_USED_FINITE_JSON_ACTION_PROTOCOL"
+}
