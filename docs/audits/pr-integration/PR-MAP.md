@@ -39,9 +39,9 @@
 
 | Ветка | Коммиты | Что исправляет |
 |---|---|---|
-| `fix/workflow-lint-sc2129` | `205bbd7` | Красный `actionlint` на main (SC2129 в cloudru-foundation-models.yml) |
-| `fix/demo-evidence-labels` | `9374712`, `3e473f8`, `fddb1c2` | UI завышает силу свидетельств, панель последствий теряет анализ, ACCEPTANCE завышает проверку рестарта |
-| `fix/graph-unresolved-page-default` | `5d7ee0f`, `84cca17` | Ядро молча пропускает изменение нелитерального default `page_size`; перезакрепление демо на новое ядро |
+| `fix/workflow-lint-sc2129` (#39) | `205bbd7` | Красный `actionlint` на main (SC2129 в cloudru-foundation-models.yml) |
+| `fix/demo-evidence-labels` (#40) | `9374712`, `3e473f8`, `fddb1c2`, `d407ade` | UI завышает силу свидетельств, панель последствий теряет анализ, ACCEPTANCE завышает проверку рестарта, уточнение ломает следующие job (F9) |
+| `fix/graph-unresolved-page-default` (#41) | `5d7ee0f`, `84cca17` | Ядро молча пропускает изменение нелитерального default `page_size`; перезакрепление демо на новое ядро |
 | `docs/pr-integration-audit` | этот каталог | Карта, findings, матрица проверок, итоговый SHA |
 
 Порядок интеграции: #38, #35, lint, UI, ядро, аудит. Все пять веток с

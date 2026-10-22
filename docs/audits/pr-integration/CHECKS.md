@@ -5,8 +5,7 @@
 Ядро и демо используют `fcntl`, `O_NOFOLLOW` и `dir_fd`, поэтому их unittest
 локально не импортируются: прогон `tests/graph_demo` на `main` дал 5 ошибок
 импорта `No module named 'fcntl'`. Всё, что требует Linux, Docker или Chromium,
-проверяется в GitHub Actions на ветках аудита. Строки со статусом "CI" ниже
-заполняются ссылкой на прогон.
+проверяется в GitHub Actions на ветках аудита, ссылки на прогоны ниже.
 
 ## Локально, воспроизводимо
 
@@ -34,13 +33,17 @@
 
 ## В CI (Linux, Docker, Chromium)
 
-| Проверка | Workflow | Ветка | Результат |
+| Проверка | Голова | Прогон | Результат |
 |---|---|---|---|
-| 116+ регрессий ядра, включая `test_r5_*` | Graph evidence references / Core research regression | `fix/graph-unresolved-page-default` | CI |
-| Демо: API, очередь, восстановление, CLI против нового ядра | HTTP graph demo | `fix/graph-unresolved-page-default` | CI |
-| Docker + Chromium A→B→D→E, пять сессий | HTTP graph demo | `fix/graph-unresolved-page-default` | CI |
-| Демо UI, browser acceptance с уточнением на B | HTTP graph demo | `fix/demo-evidence-labels` | CI |
-| Workflow lint | Workflow security and syntax check (после merge в main) | `main` | CI |
+| Регрессии ядра, включая оба `test_r5_*` (в логе `... ok`) | #41 `84cca17` | [Graph evidence references](https://github.com/rengalaxies/agent/actions/runs/39816552153) | success |
+| Core research regression | #41 `84cca17` | [39816552131](https://github.com/rengalaxies/agent/actions/runs/39816552131) | success |
+| Демо: API, очередь, восстановление, CLI, Docker + Chromium A→B→D→E, пять сессий, новое ядро | #41 `84cca17` | [HTTP graph demo](https://github.com/rengalaxies/agent/actions/runs/39816552183) | success |
+| P1 deployment regression | #41 `84cca17` | [39816552109](https://github.com/rengalaxies/agent/actions/runs/39816552109) | success |
+| Приёмка с уточнением на B, до исправления F9 | #40 `fddb1c2` | [HTTP graph demo](https://github.com/rengalaxies/agent/actions/runs/39816507144) | **failure**: `TimeoutError` в `browser_acceptance.py:146`, E не завершился (F9) |
+| Та же приёмка и `test_correction_on_b_does_not_fail_later_rescan_and_analysis` | #40 `d407ade` | [HTTP graph demo](https://github.com/rengalaxies/agent/actions/runs/39818224651), [core](https://github.com/rengalaxies/agent/actions/runs/39818224669) | success |
+| Отчёт пачки 1 с поправкой формулировок | #35 `f8cb0e1` | [offline](https://github.com/rengalaxies/agent/actions/runs/39816013086), [core](https://github.com/rengalaxies/agent/actions/runs/39816013099) | success |
+| Lint-фикс | #39 `205bbd7` | [P1 regression](https://github.com/rengalaxies/agent/actions/runs/39816456541) | success; actionlint запускается только на push в main |
+| Сочетание #35+#39+#40+#41+аудит | #42 draft `80cee68` | см. PR #42 | COMBINED_PENDING |
 
 ## Что не проверялось
 
