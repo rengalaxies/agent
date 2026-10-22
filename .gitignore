@@ -13,3 +13,6 @@ results/*.json
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm
+
+# Disposable demo builds, credentials, state and acceptance artifacts
+/work/

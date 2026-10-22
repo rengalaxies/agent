@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Граф зависимостей · HTTP-демо</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <script src="/assets/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#workspace">К рабочей области</a>
+    <header>
+      <a class="brand" href="/">Граф зависимостей</a
+      ><span>Исполняемое HTTP-демо · синтетические данные</span
+      ><span id="access-mode"></span
+      ><button id="new-session">Новый показ</button>
+    </header>
+    <main>
+      <div class="intro">
+        <div>
+          <h1>Что изменится у потребителей?</h1>
+          <p>
+            От изменения API — к основанию, реальному последствию и исправлению.
+          </p>
+        </div>
+        <label
+          >Сохранённый показ<select
+            id="sessions"
+            aria-label="Сохранённый показ"
+          >
+            <option value="">Выберите показ</option>
+          </select></label
+        >
+      </div>
+      <p id="message" role="status" aria-live="polite">
+        Загрузка сохранённых показов…
+      </p>
+      <div class="version-strip" aria-label="Версии">
+        <span>Предложено <strong id="proposed">—</strong></span
+        ><span>Запущено <strong id="running">Не подтверждено</strong></span
+        ><span id="check-summary">Проверка не выполнялась</span
+        ><span id="freshness">Обследование ещё не выполнялось</span>
+      </div>
+      <section class="change-bar" aria-labelledby="change-title">
+        <div>
+          <h2 id="change-title">Выберите изменение</h2>
+          <p>
+            Выбор готовит исходники для анализа. Запуск сервисов выполняет
+            оператор отдельно.
+          </p>
+        </div>
+        <div class="actions">
+          <button id="prepare">Обследовать исходники</button
+          ><button data-version="B">B · Лимит 100</button
+          ><button data-version="D">D · Исправить Reporting</button
+          ><button data-version="E">E · Добавить Export</button
+          ><button id="retry" hidden>Повторить отправку</button
+          ><button id="cancel" hidden>Отменить задание</button>
+        </div>
+        <label class="task"
+          >Задача разработчика<input
+            id="task"
+            maxlength="2000"
+            value="Проверить влияние ограничения страницы Orders на потребителей"
+        /></label>
+      </section>
+      <div id="workspace" class="workspace" tabindex="-1">
+        <section class="map-panel" aria-labelledby="map-title">
+          <div class="section-heading">
+            <h2 id="map-title">Карта зависимостей</h2>
+            <span class="tag">Статический анализ</span>
+          </div>
+          <p class="muted">
+            Потребитель → сервис / операция. Откройте связь, чтобы увидеть
+            точный исходник.
+          </p>
+          <svg
+            id="graph-drawing"
+            viewBox="0 0 340 110"
+            role="img"
+            aria-label="Выбранная зависимость"
+          >
+            <text x="14" y="56">Пока нет выбранной связи</text>
+          </svg>
+          <div id="edges" class="edge-list"></div>
+          <p id="coverage" class="note">Нет данных. Начните с обследования.</p>
+          <details>
+            <summary>Границы и недостающие данные</summary>
+            <pre id="gaps">Нет результата</pre>
+          </details>
+          <section class="knowledge">
+            <h3>Предложения и решения</h3>
+            <p>
+              Кандидат модели не становится ребром графа. Человеческое уточнение
+              не переписывает факт вызова.
+            </p>
+            <div id="proposals">Нет предложений.</div>
+            <p class="note">
+              Модель недоступна: квалификация выполняется отдельно. Этот показ
+              работает без LLM.
+            </p>
+          </section>
+        </section>
+        <section class="story-panel" aria-labelledby="impact-title">
+          <h2 id="impact-title">Изменение и последствие</h2>
+          <div id="impact" class="impact">
+            <p>
+              Сначала обследуйте версию A. Затем выберите B, чтобы проверить
+              влияние нового лимита.
+            </p>
+          </div>
+          <section class="checks" aria-labelledby="checks-title">
+            <div class="section-heading">
+              <h3 id="checks-title">Фактическая проверка</h3>
+              <button id="refresh">Получить результаты</button>
+            </div>
+            <p>
+              Независимая проверка сравнивает все 250 ID и выявляет пропуски,
+              дубли и лишние значения.
+            </p>
+            <div id="checks">
+              Проверка не выполнялась. Отсутствие результата не означает успех.
+            </div>
+            <h3>Внешние отчёты</h3>
+            <div id="external-reports">Нет внешних отчётов.</div>
+            <details>
+              <summary>Действие оператора</summary>
+              <p id="operator-hint">Выберите или создайте показ.</p>
+              <pre id="operator-command"></pre>
+            </details>
+          </section>
+          <details>
+            <summary>Diff исходников</summary>
+            <pre id="diff">Изменений пока нет</pre>
+          </details>
+        </section>
+        <aside class="evidence-panel" aria-labelledby="evidence-title">
+          <h2 id="evidence-title">На чём основана связь</h2>
+          <p id="evidence-meta">Выберите зависимость на карте.</p>
+          <pre id="source" tabindex="0">
+Здесь появится точный фрагмент неизменяемого снимка.</pre
+          >
+          <details id="correction-details">
+            <summary>Предложить уточнение знания</summary>
+            <form id="correction">
+              <p>
+                Запишется человеческое решение с этим основанием и текущей
+                версией. Утверждённое требование и исходник останутся прежними.
+              </p>
+              <label
+                >Ключ утверждения<input
+                  id="correction-key"
+                  maxlength="160"
+                  required /></label
+              ><label
+                >Уточнение<textarea
+                  id="statement"
+                  maxlength="4000"
+                  required
+                ></textarea></label
+              ><label
+                >Заменяет прежнее решение<select id="supersedes">
+                  <option value="">Новое утверждение</option>
+                </select></label
+              ><button type="submit" id="correct">Сохранить уточнение</button>
+            </form>
+          </details>
+          <details>
+            <summary>Диагностика основания</summary>
+            <pre id="evidence-diagnostics">Нет выбранного основания</pre>
+          </details>
+        </aside>
+      </div>
+      <section class="history-panel" aria-labelledby="history-title">
+        <h2 id="history-title">История показа</h2>
+        <p>
+          Откройте прежнее обследование или анализ. Его версия и применимость
+          останутся видимыми.
+        </p>
+        <ol id="history"></ol>
+        <button id="current" hidden>Вернуться к текущему результату</button>
+      </section>
+      <details class="diagnostics">
+        <summary>Техническое состояние и сброс</summary>
+        <pre id="diagnostics">Показ не выбран</pre>
+        <p>
+          Сброс создаст новый показ A и сохранит прежнюю историю. Сначала
+          оператор должен подтвердить остановку sandbox.
+        </p>
+        <button id="reset">Сбросить после остановки</button>
+      </details>
+      <footer>
+        Граф объясняет наблюдаемые связи и условные риски. Проверку выполняет
+        отдельный runner. Решение о выпуске остаётся за командой.
+      </footer>
+    </main>
+  </body>
+</html>

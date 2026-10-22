@@ -1,0 +1,70 @@
+name: HTTP graph demo
+on:
+  pull_request:
+    paths:
+      - 'src/agent_graph_demo/**'
+      - 'examples/agent_graph_demo/**'
+      - 'tools/agent_graph_demo/**'
+      - 'infra/agent_graph_demo/**'
+      - 'tests/graph_demo/**'
+      - '.github/workflows/agent-graph-demo.yml'
+      - 'pyproject.toml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: graph-demo-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  accept:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: src:.
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: External exact core dependency (no copy in application diff or image)
+        run: |
+          echo "DEMO_CORE_ROOT=$RUNNER_TEMP/agent-graph-core" >> "$GITHUB_ENV"
+          echo "BUILDX_CONFIG=$RUNNER_TEMP/demo-buildx" >> "$GITHUB_ENV"
+          git worktree add --detach "$RUNNER_TEMP/agent-graph-core" a9385c565d5471698da62987b226dcff4cbdea86
+      - name: Install dedicated runtime and test tools
+        run: |
+          python -m pip install --require-hashes -r infra/agent_graph_demo/requirements.lock
+          python -m pip install httpx==0.28.1 playwright==1.62.0 ruff==0.14.2
+          python -m playwright install --with-deps chromium
+      - name: API, queue, recovery and real CLI tests
+        run: |
+          mkdir -p work
+          python -m unittest discover -s tests/graph_demo -t . -v > work/app-tests.log 2>&1
+          python -m ruff check src/agent_graph_demo examples/agent_graph_demo tools/agent_graph_demo tests/graph_demo --select F401,F811,F841
+          node --check src/agent_graph_demo/web/app.js
+      - name: Accepted core regression
+        working-directory: ${{ runner.temp }}/agent-graph-core
+        run: PYTHONPATH=src:. python -m unittest discover -s tests/graph -t . -v > "$GITHUB_WORKSPACE/work/core-tests.log" 2>&1
+      - name: Prepare wheelhouse and build off-VM
+        id: image
+        run: |
+          python -m pip download --only-binary=:all: --require-hashes -r infra/agent_graph_demo/requirements.lock --dest work/wheels
+          docker build --network=none -f infra/agent_graph_demo/Dockerfile --build-arg PRODUCT_SHA="$GITHUB_SHA" -t agent-graph-demo:accept .
+          echo "image_id=$(docker image inspect agent-graph-demo:accept --format '{{.Id}}')" >> "$GITHUB_OUTPUT"
+      - name: Real Docker and browser A-B-D-E, lifecycle and five shows
+        run: python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROOT" --image '${{ steps.image.outputs.image_id }}' --product-sha "$GITHUB_SHA" --output work/acceptance
+      - name: Safe acceptance artifacts only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: http-graph-demo-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            work/app-tests.log
+            work/core-tests.log
+            work/acceptance/ACCEPTANCE.json
+            work/acceptance/*.png
