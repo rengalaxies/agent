@@ -102,21 +102,35 @@ class Worker:
                 seen = {}
                 from .contracts import canonical
 
+                # A proposal keeps citations from the context it was made on, which may be
+                # neither this graph's context nor the analysis base (e.g. a B correction seen at E).
+                origins = {}
+                for proposal in graph.get("proposals", []):
+                    for c in proposal["proposal"]["citations"]:
+                        origins.setdefault(
+                            canonical(c), (proposal["context_id"], proposal["basis"])
+                        )
                 for citation in citations([graph, result]):
                     key = canonical(citation)
                     if key not in seen:
-                        evidence_context = graph["context_id"]
-                        try:
-                            evidence = call(
-                                "evidence", context=evidence_context, message=citation
+                        candidates = [(graph["context_id"], graph["basis"])]
+                        if key in origins:
+                            candidates.append(origins[key])
+                        if p.get("base_context_id"):
+                            candidates.append(
+                                (p["base_context_id"], result.get("base_basis"))
                             )
-                        except DemoError as exc:
-                            if exc.code != "not_found" or not p.get("base_context_id"):
-                                raise
-                            evidence_context = p["base_context_id"]
-                            evidence = call(
-                                "evidence", context=evidence_context, message=citation
-                            )
+                        for i, (evidence_context, basis) in enumerate(candidates):
+                            try:
+                                evidence = call(
+                                    "evidence",
+                                    context=evidence_context,
+                                    message=citation,
+                                )
+                                break
+                            except DemoError as exc:
+                                if exc.code != "not_found" or i == len(candidates) - 1:
+                                    raise
                         evidence_version = manifest["scenario_version"]
                         if evidence_context != graph["context_id"]:
                             evidence_version = next(
@@ -126,11 +140,7 @@ class Worker:
                             )
                         evidence.update(
                             context_id=evidence_context,
-                            basis=(
-                                result.get("base_basis")
-                                if evidence_context != graph["context_id"]
-                                else graph["basis"]
-                            ),
+                            basis=basis,
                             scenario_version=evidence_version,
                             citation=citation,
                         )

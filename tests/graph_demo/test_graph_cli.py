@@ -105,6 +105,53 @@ class CLITests(DemoCase):
         g = self.store.get_artifact(self.sid, self.store.session(self.sid)["graph_ref"])
         self.assertTrue(any(p["status"] == "STALE" for p in g["proposals"]))
 
+    def test_correction_on_b_does_not_fail_later_rescan_and_analysis(self):
+        # Audit 2026-10-22 (PR #40 CI): the B correction's citation exists only in the
+        # B context, so a D rescan and the D->E analysis failed with not_found.
+        base = self.prepare()
+        self.run_job("analyze_change", target_version="B", base_context_id=base)
+        s = self.store.session(self.sid)
+        b_context = s["current_context_id"]
+        graph = self.store.get_artifact(self.sid, s["graph_ref"])
+        reporting = next(d for d in graph["dependencies"] if d["consumer"] == "Reporting")
+        cited = self.store.get_artifact(self.sid, reporting["evidence"][0]["evidence_id"])
+        self.store.enqueue(
+            self.sid,
+            "operator",
+            dict(
+                action="propose",
+                expected_revision=s["revision"],
+                idempotency_key="b-note",
+                payload=dict(
+                    context_id=b_context,
+                    proposal=dict(
+                        key=reporting["id"],
+                        kind="human_correction",
+                        statement="Reporting owner notified about the B limit",
+                        citations=[cited["citation"]],
+                        supersedes=None,
+                    ),
+                ),
+            ),
+        )
+        self.worker.run_once()
+        self.run_job("analyze_change", target_version="D", base_context_id=b_context)
+        self.run_job("prepare_context")
+        self.run_job(
+            "analyze_change",
+            target_version="E",
+            base_context_id=self.store.session(self.sid)["current_context_id"],
+        )
+        g = self.store.get_artifact(self.sid, self.store.session(self.sid)["graph_ref"])
+        note = next(p for p in g["proposals"] if p["trust"] == "HUMAN_CORRECTION")
+        self.assertEqual(note["status"], "STALE")
+        evidence = self.store.get_artifact(
+            self.sid, note["proposal"]["citations"][0]["evidence_id"]
+        )
+        self.assertEqual(
+            (evidence["context_id"], evidence["scenario_version"]), (b_context, "B")
+        )
+
     def test_invalid_output_overflow_deadline_and_cancel_safe(self):
         for script, expected in [
             ("print('not-json')", "cli_invalid_json"),
