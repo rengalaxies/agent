@@ -42,7 +42,7 @@ PYTHONPATH=src python -m agent_graph \
 не устанавливаются и исходники не исполняются. `store.read_orders` в примере
 не реализован: вывод условен относительно поведения helper, не production факт.
 
-Профиль `http-requests-2`: module-level `import requests [as alias]`, `from requests import get`
+Профиль `http-requests-3`: module-level `import requests [as alias]`, `from requests import get`
 и аналоги, литеральный `requests.request(method, url)`, literal URL или
 конкатенация с однократно присвоенной module constant. Изменяемые/shadowed
 имена, kwargs/динамический params, Session и распознанные неподдержанные
@@ -58,6 +58,12 @@ HTTP-клиенты дают пробел. Произвольный wrapper мо
 дает UNKNOWN_USAGE. Именованный cursor в наблюдаемом цикле остается
 синтаксическим признаком, без доказательства полноты. OpenAPI parameters
 объединяются по name/in: определение операции заменяет определение path.
+Default `page_size` у FastAPI-маршрута читается из literal или однократно
+присвоенной module constant. Иной default (`Query(100)`, вызов, изменяемое имя)
+дает пробел `page_size_default_unresolved`, а изменение такого объявления в
+`analyze_change` дает `PAGE_DEFAULT_UNRESOLVED` и `RECHECK_REQUIRED` для
+потребителей вместо пустого результата. До `http-requests-3` такое изменение
+не давало ни delta, ни пробела.
 Смена версии профиля инвалидирует basis прежнего extractor; immutable история
 остается доступна, для текущей работы нужен новый prepare_context.
 `analyze_change` между разными profiles возвращает base_profile_mismatch:
