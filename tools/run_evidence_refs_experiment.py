@@ -130,13 +130,21 @@ def run_series(ledger, work, *, model_factory=AccountedModel):
                               evaluation=score(report, oracle[case], {s["id"]: len(s["text"].splitlines()) for s in context["sources"].values()}))
                 ledger.finish_case(key, result)
                 reason = report["reason"] or ""
+                last = ledger.state["attempts"][-1] if ledger.state["attempts"] else {}
                 if reason.startswith("ledger_") or reason in {
                     "new_budget_exhausted", "budget_exhausted", "model_busy", "cancelled",
                     "missing_model_secret", "invalid_model_usage", "investigation_deadline", "series_or_case_deadline",
                     "clock_moved_backwards", "series_not_running",
+                    "model_timeout", "model_http_error", "unsupported_content_encoding",
+                    "model_response_limit", "invalid_secret",
                 }:
                     raise GraphError(reason)
-                last = ledger.state["attempts"][-1] if ledger.state["attempts"] else {}
+                # A generic transport/schema code is infrastructure-uncertain
+                # without an observed HTTP 200 and usage. Stop before another
+                # case; a known-usage invalid model action can still be scored.
+                if reason == "model_unavailable_or_invalid" and (
+                        last.get("http_status") != 200 or last.get("usage") is None):
+                    raise GraphError(reason)
                 if last.get("http_status") in (401, 403, 429):
                     raise GraphError("foundation_authorization_or_quota_rejected")
                 ledger.check(key)
