@@ -43,6 +43,8 @@
 | Та же приёмка и `test_correction_on_b_does_not_fail_later_rescan_and_analysis` | #40 `d407ade` | [HTTP graph demo](https://github.com/rengalaxies/agent/actions/runs/39818224651), [core](https://github.com/rengalaxies/agent/actions/runs/39818224669) | success |
 | Отчёт пачки 1 с поправкой формулировок | #35 `f8cb0e1` | [offline](https://github.com/rengalaxies/agent/actions/runs/39816013086), [core](https://github.com/rengalaxies/agent/actions/runs/39816013099) | success |
 | Lint-фикс | #39 `205bbd7` | [P1 regression](https://github.com/rengalaxies/agent/actions/runs/39816456541) | success; actionlint запускается только на push в main |
+| Workflow lint (actionlint + shellcheck, все workflows) на main | `e9ddccf` (merge #39) | [Workflow security and syntax check](https://github.com/rengalaxies/agent/actions/runs/39824112513) | success; до #39 на main failure ([39752641028](https://github.com/rengalaxies/agent/actions/runs/39752641028)) |
+| Workflow lint на принятом main | `c8cd01d` (merge #41) | [39824355345](https://github.com/rengalaxies/agent/actions/runs/39824355345) | success |
 | Сочетание #35+#39+#40+#41+аудит: новое ядро вместе с исправленным worker и UI | #42 draft `80cee68` (закрыт после прогона) | [demo](https://github.com/rengalaxies/agent/actions/runs/39819246777), [graph](https://github.com/rengalaxies/agent/actions/runs/39819246776), [core](https://github.com/rengalaxies/agent/actions/runs/39819246927), [P1](https://github.com/rengalaxies/agent/actions/runs/39819246783) | success |
 
 ## Что не проверялось
