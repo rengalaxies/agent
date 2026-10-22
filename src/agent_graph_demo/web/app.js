@@ -54,6 +54,24 @@ const usageLabels = {
 function usageLabel(usage) {
   return usageLabels[usage] || usageLabels.UNKNOWN_USAGE;
 }
+// Core finding codes; an unknown code falls back to recheck, never to a weaker claim.
+const findingLabels = {
+  POSSIBLE_TRUNCATION: [
+    "возможна потеря части заказов",
+    "Лимит страницы изменился, а в коде виден одиночный запрос. Требование полной коллекции нужно проверять реальным запуском.",
+  ],
+  OPERATION_REMOVED: [
+    "операция, которую вызывает код, удалена",
+    "В новой версии поставщика объявление этой операции не найдено, а вызов в коде потребителя был. Нужно проверить, куда теперь идёт запрос.",
+  ],
+  RECHECK_REQUIRED: [
+    "требуется повторная проверка",
+    "Статический признак не подтверждает корректность поведения.",
+  ],
+};
+function findingLabel(code) {
+  return findingLabels[code] || findingLabels.RECHECK_REQUIRED;
+}
 function formatTime(value, date = false) {
   return (
     new Intl.DateTimeFormat("ru-RU", {
@@ -424,19 +442,10 @@ function renderImpact(result, g) {
   const findings = result?.findings || [];
   for (const f of findings) {
     const div = node("div", undefined, "finding");
+    const [title, detail] = findingLabel(f.code);
     div.append(
-      node(
-        "strong",
-        f.code === "POSSIBLE_TRUNCATION"
-          ? `${f.consumer}: возможна потеря части заказов`
-          : `${f.consumer}: требуется повторная проверка`,
-      ),
-      node(
-        "p",
-        f.code === "POSSIBLE_TRUNCATION"
-          ? "Лимит страницы изменился, а в коде виден одиночный запрос. Требование полной коллекции нужно проверять реальным запуском."
-          : "Статический признак не подтверждает корректность поведения.",
-      ),
+      node("strong", `${f.consumer}: ${title}`),
+      node("p", detail),
       node("p", "Тест графом не выполнялся. Допуск к выпуску не выдавался."),
     );
     box.append(div);
