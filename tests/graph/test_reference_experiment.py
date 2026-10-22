@@ -47,25 +47,25 @@ class ExperimentTests(unittest.TestCase):
 
     def test_series_deadline_is_shared_by_both_models_and_all_cases(self):
         other = self.packet["plan"]["models"][1]
-        result = self.ledger.simulate_attempt(other, "status-decoy", now=2799)
-        self.assertEqual(result["deadline"], 2800)
+        result = self.ledger.simulate_attempt(other, "status-decoy", now=3099)
+        self.assertEqual(result["deadline"], 3100)
         self.assertEqual(result["timeout_seconds"], 1)
-        self.assert_code("series_deadline", lambda: self.ledger.simulate_attempt(self.model, self.case, now=2800))
+        self.assert_code("series_deadline", lambda: self.ledger.simulate_attempt(self.model, self.case, now=3100))
 
     def test_all_attempts_charged_no_refund_on_unknown_or_restart(self):
-        for i in range(6):
+        for i in range(5):
             self.ledger.simulate_attempt(self.model, self.case, now=1000+i)
         self.ledger.close()
         self.ledger = RehearsalLedger(self.path, self.packet, now=1010)
-        self.assertEqual(self.ledger.db.execute("SELECT count(*) FROM attempts").fetchone()[0], 27)
+        self.assertEqual(self.ledger.db.execute("SELECT count(*) FROM attempts").fetchone()[0], 26)
         self.assert_code("case_request_limit", lambda: self.ledger.simulate_attempt(self.model, self.case, now=1010))
 
     def test_shared_total_cap_and_registered_cases(self):
         for case in self.packet["plan"]["case_order"]:
             for model in self.packet["plan"]["models"]:
-                for _ in range(6):
+                for _ in range(5):
                     self.ledger.simulate_attempt(model, case, now=1000)
-        self.assertEqual(self.ledger.db.execute("SELECT count(*) FROM attempts").fetchone()[0], 57)
+        self.assertEqual(self.ledger.db.execute("SELECT count(*) FROM attempts").fetchone()[0], 51)
         self.assert_code("series_request_limit", lambda: self.ledger.simulate_attempt(self.model, self.case, now=1001))
         self.assert_code("unregistered_case", lambda: self.ledger.simulate_attempt("unregistered", self.case, now=1001))
 

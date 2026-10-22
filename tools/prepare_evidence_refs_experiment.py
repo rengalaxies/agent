@@ -44,12 +44,13 @@ def manifest():
         raise GraphError("historical_ledger_mismatch")
     core_files = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                   for p in sorted((ROOT / "src/agent_graph").glob("*.py"))}
-    packet = dict(plan=plan, corpus_sha256=files, core_files_sha256=core_files,
+    runner_files = [ROOT / "tools" / name for name in ("run_evidence_refs_experiment.py", "evidence_refs_ledger.py")]
+    packet = dict(plan=plan, runner_files_sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in runner_files}, corpus_sha256=files, core_files_sha256=core_files,
                   harness_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   system=REFERENCE_SYSTEM, schema=model_action_schema(ReferenceReply),
                   oracle_sha256=hashlib.sha256((ROOT / "experiments/evidence_refs_v2/oracle.json").read_bytes()).hexdigest(),
                   historical_requests=history, live_enabled=False,
-                  execution="NO_MODEL_CALLS; new requests require a separately reviewed runner and authorization")
+                  execution="NO_MODEL_CALLS; runner prepared; no live authorization; initialize requires separately specified NEW limits")
     return {**packet, "manifest_digest": digest(packet)}
 
 
@@ -64,6 +65,7 @@ class RehearsalLedger:
         self.db = sqlite3.connect(path, isolation_level=None)
         self.packet = packet
         self.db.executescript("""
+            CREATE TABLE IF NOT EXISTS stops(reason TEXT);
             CREATE TABLE IF NOT EXISTS series(digest TEXT, started REAL, deadline REAL, last_seen REAL);
             CREATE TABLE IF NOT EXISTS cases(model TEXT, name TEXT, deadline REAL, PRIMARY KEY(model,name));
             CREATE TABLE IF NOT EXISTS attempts(id INTEGER PRIMARY KEY, model TEXT, name TEXT,
@@ -92,6 +94,18 @@ class RehearsalLedger:
             raise
 
     def simulate_attempt(self, model, case, *, now):
+        stopped = self.db.execute("SELECT reason FROM stops LIMIT 1").fetchone()
+        if stopped:
+            raise GraphError(stopped[0])
+        try:
+            return self._simulate_attempt(model, case, now=now)
+        except GraphError as exc:
+            if exc.code in ("case_deadline", "series_deadline", "clock_moved_backwards"):
+                # Autocommit outside the rolled-back admission transaction.
+                self.db.execute("INSERT INTO stops VALUES(?)", (exc.code,))
+            raise
+
+    def _simulate_attempt(self, model, case, *, now):
         plan = self.packet["plan"]
         if model not in plan["models"] or case not in plan["case_order"]:
             raise GraphError("unregistered_case")

@@ -1,0 +1,90 @@
+name: Cloud.ru evidence refs v2 (manual, accepted main only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [initialize, execute]
+        required: true
+        description: Initialize ledger without model calls, or execute its authorized series once
+      expected_main_sha:
+        type: string
+        required: true
+        description: Exact accepted main SHA; no PR/ref checkout is accepted
+      new_request_cap:
+        type: string
+        default: '0'
+        description: NEW requests authorized separately; initialize only, 1-30 (recommended 30)
+      new_money_microrub:
+        type: string
+        default: '0'
+        description: NEW conservative reservation cap in micro-RUB; initialize only, explicit positive limit
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evidence-refs-v2-series
+  cancel-in-progress: false
+
+jobs:
+  bounded-series:
+    if: github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write # Durable accounting commits only; no secrets/settings API.
+    env:
+      PYTHONPATH: '.:src'
+      EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+      NEW_REQUEST_CAP: ${{ inputs.new_request_cap }}
+      NEW_MONEY_MICRORUB: ${{ inputs.new_money_microrub }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_MAIN_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+          test "$GITHUB_REPOSITORY" = rengalaxies/agent
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runner dependencies
+        run: python -m pip install 'pydantic>=2.10,<3'
+      - name: Prepare and validate fixed corpus/protocol without credentials
+        run: python tools/run_evidence_refs_experiment.py prepare --output work/evidence-refs-v2/manifest.json
+      - name: Initialize durable ledger (no model secret, no model calls)
+        if: inputs.mode == 'initialize'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python tools/run_evidence_refs_experiment.py initialize
+          --source-sha "$EXPECTED_MAIN_SHA"
+          --new-request-cap "$NEW_REQUEST_CAP"
+          --new-money-microrub "$NEW_MONEY_MICRORUB"
+          --output work/evidence-refs-v2/initialization.json
+      - name: Execute the new series once with its existing limits
+        if: inputs.mode == 'execute'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+        run: >-
+          python tools/run_evidence_refs_experiment.py execute
+          --source-sha "$EXPECTED_MAIN_SHA"
+          --output work/evidence-refs-v2/report.json
+      - name: Upload allowlisted safe reports, never credentials or private state
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-refs-v2-safe-reports
+          path: |
+            work/evidence-refs-v2/manifest.json
+            work/evidence-refs-v2/initialization.json
+            work/evidence-refs-v2/report.json
+          if-no-files-found: warn

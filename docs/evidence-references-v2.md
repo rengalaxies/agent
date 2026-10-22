@@ -102,3 +102,19 @@ read range, выдуманная ссылка, нехватка доказате
 
 Следующий эксперимент и команды воспроизведения: [план](../experiments/evidence_refs_v2/README.md).
 Новых модельных вызовов нет; закрытый пакет PR №31, secrets/vars и ВМ не изменяются.
+
+## Дополнение технического ревью и runner
+
+Отдельная ветка поверх SHA `4354ef613e187e4244984b9ad09e0672792b0714` добавляет
+optional `ModelConfig.token_parameter` (default `max_tokens`; runner явно выбирает
+`max_completion_tokens`), absolute `deadline_epoch` у ChatModel/investigate и
+trusted-only `admission_check` у Graph/Store/EvidenceSession.propose. Отсутствие
+новых аргументов сохраняет старый путь; JSON модели не содержит callbacks/deadlines.
+Admission guard проверяется внутри транзакции, чтобы поздний insert откатился.
+Потребителю собственного Store, включающему deadline, нужно поддержать optional
+`admission_check`; старый вызов без deadline не передаёт этот новый keyword.
+
+Статические оценки явно помечены STATIC_PROFILE_ONLY; недостаточность не означает
+доказанное отсутствие зависимости. Независимые синтетические controls используют
+другие repository/service IDs, filenames, POST, host/port/base path и побайтно
+одинаковый provider decoy. Они не переименовывают исторические ответы моделей.

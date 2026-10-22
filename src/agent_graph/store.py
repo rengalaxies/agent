@@ -84,10 +84,12 @@ class Store:
     def proposals(self, view):
         return [load_json(r[0]) for r in self.db.execute("SELECT data FROM proposals WHERE view=? ORDER BY id", (view,))]
 
-    def propose(self, view, proposal, expected_head, *, limit):
+    def propose(self, view, proposal, expected_head, *, limit, admission_check=None):
         id = proposal_identity(view, proposal)
         data = {**proposal, "id": id}
         with self.transaction():
+            if admission_check:
+                admission_check()
             if self.head(view)[1] != expected_head:
                 raise GraphError("concurrent_update")
             rows = self.proposals(view)
@@ -112,6 +114,8 @@ class Store:
             if len(active) >= limit:
                 raise GraphError("proposal_limit")
             self.db.execute("INSERT OR IGNORE INTO proposals VALUES(?,?,?)", (id, view, canonical(data)))
+            if admission_check:
+                admission_check()
         return data
 
     def reserve(self, installation, run, tokens, config):

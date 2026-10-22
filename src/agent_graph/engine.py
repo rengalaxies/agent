@@ -100,7 +100,7 @@ class Graph:
         return dict(source_id=source["id"], repository=source["repository"], path=source["path"],
                     revision=source["revision"], sha256=source["sha256"], **citation.model_dump(exclude={"source_id"}))
 
-    def propose(self, context_id, proposal, *, from_model=False):
+    def propose(self, context_id, proposal, *, from_model=False, admission_check=None):
         self.policy.require("propose")
         context = self.context(context_id)
         self._current(context)
@@ -114,7 +114,8 @@ class Graph:
         record = dict(proposal=p.model_dump(), context_id=context_id, basis=context["basis"],
                       actor=self.policy.subject, origin="model" if from_model else "external",
                       trust="HUMAN_CORRECTION" if p.kind == "human_correction" else "UNAPPROVED_CANDIDATE")
-        return self.store.propose(self.view, record, context["id"], limit=self.policy.limits.max_proposals)
+        return self.store.propose(self.view, record, context["id"], limit=self.policy.limits.max_proposals,
+                                  **({"admission_check": admission_check} if admission_check is not None else {}))
 
     def proposals(self, context, *, assessment=None):
         assessment = self.freshness(context) if assessment is None else assessment
