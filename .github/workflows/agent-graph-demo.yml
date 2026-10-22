@@ -21,8 +21,6 @@ jobs:
     timeout-minutes: 25
     env:
       PYTHONPATH: src:.
-      DEMO_CORE_ROOT: ${{ runner.temp }}/agent-graph-core
-      BUILDX_CONFIG: ${{ runner.temp }}/demo-buildx
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -32,7 +30,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: External exact core dependency (no copy in application diff or image)
-        run: git worktree add --detach "$DEMO_CORE_ROOT" a9385c565d5471698da62987b226dcff4cbdea86
+        run: |
+          echo "DEMO_CORE_ROOT=$RUNNER_TEMP/agent-graph-core" >> "$GITHUB_ENV"
+          echo "BUILDX_CONFIG=$RUNNER_TEMP/demo-buildx" >> "$GITHUB_ENV"
+          git worktree add --detach "$RUNNER_TEMP/agent-graph-core" a9385c565d5471698da62987b226dcff4cbdea86
       - name: Install dedicated runtime and test tools
         run: |
           python -m pip install --require-hashes -r infra/agent_graph_demo/requirements.lock

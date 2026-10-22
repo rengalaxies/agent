@@ -12,7 +12,7 @@ from agent_graph_demo.snapshots import Snapshots, atomic_json
 from agent_graph_demo.store import Store
 from agent_graph_demo.worker import Worker
 
-CORE = Path(os.environ.get("DEMO_CORE_ROOT", "/workspace/work/demo-core-main"))
+CORE = Path(os.environ.get("DEMO_CORE_ROOT", str(Path(__file__).resolve().parents[2])))
 
 
 class DemoCase(unittest.TestCase):

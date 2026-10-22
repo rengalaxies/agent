@@ -9,12 +9,14 @@ import secrets
 import subprocess
 import sys
 import time
+import traceback
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 import base64
 
 from agent_graph_demo.contracts import CORE_SHA, PROFILE, DemoError, now
-from agent_graph_demo.snapshots import atomic_json
+from agent_graph_demo.snapshots import Snapshots, atomic_json
+from examples.agent_graph_demo.oracle import DATASET_SHA256
 from agent_graph_demo.store import Store
 from tests.graph_demo.browser_acceptance import journey
 from tests.graph_demo.operator_acceptance import guard_probes
@@ -84,6 +86,7 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
         "core_accepted_main": True,
         "profile": PROFILE,
         "runtime_image": image,
+        "dataset_sha256": DATASET_SHA256,
         "model_mode": "UNAVAILABLE_NO_CALLS",
         "started_at": now(),
         "limitations": [
@@ -151,9 +154,18 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
             "http://127.0.0.1:18081", "acceptance", password, operator, output, store
         )
         report["browser"] = browser
+        report["scenario_manifests"] = {
+            v: Snapshots(state, product_sha).manifest(browser["session_id"], v)
+            for v in ("A", "B", "D", "E")
+        }
         report["runtime_guards"] = guard_probes(
             operator, browser["session_id"], "E", output
         )
+        report["resources"] = {
+            "target_vm": "NOT_MEASURED",
+            "scope": "steady provider samples after checks, not peak workload",
+            "providers": report["runtime_guards"]["steady_provider_stats"],
+        }
         assert request("/sessions"), "actual backend stopped during guard probes"
         # Five sequential sessions share one runtime, preserve history and leave zero containers after stop.
         sid = browser["session_id"]
@@ -181,8 +193,22 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
             status="PASS", sequential_sessions=shown, sandbox_projects_after_stop=0
         )
         return report
-    except BaseException:
+    except BaseException as exc:
         report["status"] = "FAIL"
+        report["failure"] = {
+            "type": type(exc).__name__,
+            "code": exc.code
+            if isinstance(exc, DemoError)
+            else "acceptance_assertion_or_execution_failed",
+            "frames": [
+                {
+                    "file": Path(frame.filename).name,
+                    "line": frame.lineno,
+                    "function": frame.name,
+                }
+                for frame in traceback.extract_tb(exc.__traceback__)[-8:]
+            ],
+        }
         raise
     finally:
         proc.terminate()

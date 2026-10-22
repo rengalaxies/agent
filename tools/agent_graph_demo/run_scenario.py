@@ -51,16 +51,24 @@ def run(config, sid, version, expected_generation, output):
         for name, text in sources(version).items():
             f = dest / "corpus" / name
             f.parent.mkdir(parents=True, exist_ok=True)
-            f.write_text(text)
-            f.chmod(0o444)
+            if f.exists():
+                if f.is_symlink() or f.read_text() != text:
+                    raise DemoError("operator_snapshot_changed")
+            else:
+                f.write_text(text)
+                f.chmod(0o444)
         for directory in [
             dest / "corpus",
             *(d for d in (dest / "corpus").rglob("*") if d.is_dir()),
         ]:
             directory.chmod(0o755)
         dataset = dest / "dataset.json"
-        dataset.write_bytes(DATASET_BYTES)
-        dataset.chmod(0o444)
+        if dataset.exists():
+            if dataset.is_symlink() or dataset.read_bytes() != DATASET_BYTES:
+                raise DemoError("operator_dataset_changed")
+        else:
+            dataset.write_bytes(DATASET_BYTES)
+            dataset.chmod(0o444)
         started = now()
         runtime = None
         receipt = dict(
