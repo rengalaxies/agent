@@ -287,6 +287,7 @@ class RuntimeGuard:
                 cap_drop=["ALL"],
                 security_opt=["no-new-privileges:true"],
                 pids_limit=64,
+                cpus=0.5,
                 tmpfs=["/tmp:size=16m"],
                 restart="no",
                 labels=labels,
