@@ -104,6 +104,20 @@ def journey(base_url, username, password, operator, output, store):
             page.wait_for_function(
                 "() => document.querySelector('#checks').textContent.includes('Есть потери данных')"
             )
+            # Audit 2026-10-22: a correction at B replaced the B analysis with the version-A hint.
+            page.locator("#edges button").filter(has_text="Reporting → Orders").click()
+            page.wait_for_function(
+                "() => document.querySelector('#evidence-meta').textContent.includes('reporting / client.py')"
+            )
+            page.locator("#correction-details summary").click()
+            page.locator("#statement").fill("Владелец Reporting уведомлён о лимите")
+            page.locator("#correct").click()
+            page.wait_for_function(
+                "() => [...document.querySelectorAll('#history button')].some(b => b.textContent.startsWith('Человеческое уточнение') && !b.disabled)"
+                " && !document.querySelector('#prepare').disabled",
+                timeout=180000,
+            )
+            assert "Reporting: возможна потеря" in page.locator("#impact").inner_text()
             for width, height, label in [
                 (1440, 1100, "desktop-B"),
                 (390, 844, "mobile-B"),
