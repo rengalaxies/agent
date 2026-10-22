@@ -37,6 +37,8 @@ def main():
     container = command("docker", "create", "--network", "none", a.image).decode().strip()
     try:
         with tarfile.open(fileobj=io.BytesIO(command("docker", "export", container))) as root:
+            assert all(m.isfile() or m.isdir() for m in root
+                       if m.name.removeprefix("./").startswith("app/")), "unexpected application link/device"
             actual = {m.name.removeprefix("./"): hashlib.sha256(root.extractfile(m).read()).hexdigest()
                       for m in root if m.isfile() and m.name.removeprefix("./").startswith("app/")}
             assert actual == expected, "application filesystem differs from allowlisted Git sources"
@@ -48,6 +50,7 @@ def main():
     with tarfile.open(a.archive, "r:gz") as archive:
         manifest = json.load(archive.extractfile("manifest.json"))
         assert len(manifest) == 1
+        assert hashlib.sha256(archive.extractfile(manifest[0]["Config"]).read()).hexdigest() == image["Id"].removeprefix("sha256:"), "archive does not contain inspected image"
         for layer in manifest[0]["Layers"]:
             with tarfile.open(fileobj=archive.extractfile(layer), mode="r|") as contents:
                 for member in contents:
