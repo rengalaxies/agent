@@ -117,3 +117,7 @@ make business-pilot
 ## Пакет 2: распределённый стенд
 
 Реализованы три доменных процесса, подписанные события, TTL, устойчивые ответы и журнал решений, два адаптера. Пройдены 588 ускоренных и 37 номинальных локальных испытаний E4, 111 unittest-тестов и семь проверок восстановления. [Отчёт и границы](docs/package-2-distributed-2026-09-29.md), [запуск](stand/README.md), [сводка результатов](results/e4-local-manifest.json). Основной E3 и облачный E4 не проводились.
+
+## HTTP graph demo (batch 2)
+
+Executable Orders/Status and A/B/D/E consumers, a durable CLI-backed queue and a Russian evidence UI are a separate application from the historical research `ui/`. See [runbook and deployment handoff](docs/agent-graph-demo/RUNBOOK.md) and [actual acceptance scope](docs/agent-graph-demo/ACCEPTANCE.md). The graph core is an exact read-only dependency, with no model calls or VM changes in this demo PR.

@@ -1,0 +1,16 @@
+[Unit]
+Description=Agent Graph HTTP demo (operator-installed pinned release)
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/agent-graph-demo/current
+EnvironmentFile=/etc/agent-graph-demo/release.env
+ExecStart=/usr/bin/docker compose -p agent-graph-demo -f infra/agent_graph_demo/compose.yaml up -d --no-build
+ExecStop=/usr/bin/docker compose -p agent-graph-demo -f infra/agent_graph_demo/compose.yaml stop web
+TimeoutStartSec=120
+
+[Install]
+WantedBy=multi-user.target

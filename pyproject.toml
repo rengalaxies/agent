@@ -27,3 +27,4 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 change_completion = ["web/*.html"]
+agent_graph_demo = ["web/*.html", "web/*.js", "web/*.css"]
