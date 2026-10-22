@@ -1,0 +1,316 @@
+{
+  "source_sha": "a9385c565d5471698da62987b226dcff4cbdea86",
+  "manifest_digest": "bbe773c16ee200867020d8df355ac64ac6b008426ce5b9aebebb10a07cefabf8",
+  "status": "COMPLETED_NEW_SERIES",
+  "series_elapsed_seconds": 235.0813820362091,
+  "new_requests": 23,
+  "historical_requests": 21,
+  "reserved_rub": "76.630396",
+  "new_usage": {
+    "observed_prompt_tokens": 29593,
+    "observed_completion_tokens": 6674,
+    "unknown_attempts": 0,
+    "total_prompt_tokens": 29593,
+    "total_completion_tokens": 6674
+  },
+  "historical_usage": {
+    "observed_prompt_tokens": 24208,
+    "observed_completion_tokens": 4301,
+    "unknown_attempts": 1,
+    "total_prompt_tokens": null,
+    "total_completion_tokens": null
+  },
+  "historical_known_usage_estimate_rub": "2.66400298",
+  "rows": [
+    {
+      "case": "reporting-http",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "status": "PARTIAL",
+      "reason": "invalid_model_action",
+      "requests": 3,
+      "http_statuses": [
+        200,
+        200,
+        200
+      ],
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "actions": [
+        "read_source",
+        "read_source",
+        "propose"
+      ],
+      "evaluation": {
+        "all_passed": false,
+        "candidates_admitted": false,
+        "corpus_read_protocol_passed": true,
+        "held_out_quality_passed": false,
+        "proposed_claims": [],
+        "protocol_passed": false,
+        "provenance_passed": false,
+        "rejected_or_unassessed_claims": 0,
+        "runtime_verified": false,
+        "sufficiency_passed": false,
+        "trust": "UNAPPROVED_CANDIDATE"
+      },
+      "observed_input": 3363,
+      "observed_output": 541,
+      "unknown_usage_ids": [],
+      "known_usage_estimate_rub": "0.54229",
+      "request_elapsed_seconds": 25.837148499999998,
+      "case_elapsed_seconds": 25.83847165107727,
+      "candidates": []
+    },
+    {
+      "case": "reporting-http",
+      "model": "openai/gpt-oss-120b",
+      "status": "COMPLETED",
+      "reason": null,
+      "requests": 5,
+      "http_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "actions": [
+        "read_source",
+        "read_source",
+        "read_source",
+        "propose",
+        "finish"
+      ],
+      "evaluation": {
+        "all_passed": true,
+        "candidates_admitted": true,
+        "corpus_read_protocol_passed": true,
+        "held_out_quality_passed": true,
+        "proposed_claims": [
+          {
+            "consumer_repository": "reporting",
+            "consumer_service": "reporting",
+            "method": "GET",
+            "path_template": "/orders",
+            "provider_service": "orders"
+          }
+        ],
+        "protocol_passed": true,
+        "provenance_passed": true,
+        "rejected_or_unassessed_claims": 0,
+        "runtime_verified": false,
+        "sufficiency_passed": true,
+        "trust": "UNAPPROVED_CANDIDATE"
+      },
+      "observed_input": 6595,
+      "observed_output": 1798,
+      "unknown_usage_ids": [],
+      "known_usage_estimate_rub": "0.2142747",
+      "request_elapsed_seconds": 37.28054389899998,
+      "case_elapsed_seconds": 37.249253034591675,
+      "candidates": [
+        "934430aeb397c00982a9f0b96e748ca4bf743cf58e28496faf870af7ad0c0f62"
+      ]
+    },
+    {
+      "case": "export-E",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "status": "PARTIAL",
+      "reason": "invalid_model_action",
+      "requests": 3,
+      "http_statuses": [
+        200,
+        200,
+        200
+      ],
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "actions": [
+        "read_source",
+        "read_source",
+        "propose"
+      ],
+      "evaluation": {
+        "all_passed": false,
+        "candidates_admitted": false,
+        "corpus_read_protocol_passed": true,
+        "held_out_quality_passed": false,
+        "proposed_claims": [],
+        "protocol_passed": false,
+        "provenance_passed": false,
+        "rejected_or_unassessed_claims": 0,
+        "runtime_verified": false,
+        "sufficiency_passed": false,
+        "trust": "UNAPPROVED_CANDIDATE"
+      },
+      "observed_input": 3488,
+      "observed_output": 705,
+      "unknown_usage_ids": [],
+      "known_usage_estimate_rub": "0.597556",
+      "request_elapsed_seconds": 24.207346675999986,
+      "case_elapsed_seconds": 23.94107937812805,
+      "candidates": []
+    },
+    {
+      "case": "export-E",
+      "model": "openai/gpt-oss-120b",
+      "status": "COMPLETED",
+      "reason": null,
+      "requests": 4,
+      "http_statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "actions": [
+        "read_source",
+        "read_source",
+        "propose",
+        "finish"
+      ],
+      "evaluation": {
+        "all_passed": true,
+        "candidates_admitted": true,
+        "corpus_read_protocol_passed": true,
+        "held_out_quality_passed": true,
+        "proposed_claims": [
+          {
+            "consumer_repository": "export",
+            "consumer_service": "export",
+            "method": "GET",
+            "path_template": "/orders",
+            "provider_service": "orders"
+          }
+        ],
+        "protocol_passed": true,
+        "provenance_passed": true,
+        "rejected_or_unassessed_claims": 0,
+        "runtime_verified": false,
+        "sufficiency_passed": true,
+        "trust": "UNAPPROVED_CANDIDATE"
+      },
+      "observed_input": 4600,
+      "observed_output": 1418,
+      "unknown_usage_ids": [],
+      "known_usage_estimate_rub": "0.159454",
+      "request_elapsed_seconds": 36.71331110099999,
+      "case_elapsed_seconds": 37.17878770828247,
+      "candidates": [
+        "2c39b6e23dbe551d9167f4ccaeda48f134d3a6701db8608e7311506357f13a6b"
+      ]
+    },
+    {
+      "case": "status-decoy",
+      "model": "Qwen/Qwen3-Coder-Next",
+      "status": "PARTIAL",
+      "reason": "invalid_model_action",
+      "requests": 4,
+      "http_statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "actions": [
+        "read_source",
+        "read_source",
+        "read_source",
+        "propose"
+      ],
+      "evaluation": {
+        "all_passed": false,
+        "candidates_admitted": false,
+        "corpus_read_protocol_passed": true,
+        "held_out_quality_passed": false,
+        "proposed_claims": [],
+        "protocol_passed": false,
+        "provenance_passed": false,
+        "rejected_or_unassessed_claims": 0,
+        "runtime_verified": false,
+        "sufficiency_passed": false,
+        "trust": "UNAPPROVED_CANDIDATE"
+      },
+      "observed_input": 6287,
+      "observed_output": 430,
+      "unknown_usage_ids": [],
+      "known_usage_estimate_rub": "0.871934",
+      "request_elapsed_seconds": 26.803593702,
+      "case_elapsed_seconds": 26.70141577720642,
+      "candidates": []
+    },
+    {
+      "case": "status-decoy",
+      "model": "openai/gpt-oss-120b",
+      "status": "PARTIAL",
+      "reason": "invalid_model_action",
+      "requests": 4,
+      "http_statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "actions": [
+        "read_source",
+        "read_source",
+        "read_source",
+        "propose"
+      ],
+      "evaluation": {
+        "all_passed": false,
+        "candidates_admitted": false,
+        "corpus_read_protocol_passed": true,
+        "held_out_quality_passed": false,
+        "proposed_claims": [],
+        "protocol_passed": false,
+        "provenance_passed": false,
+        "rejected_or_unassessed_claims": 0,
+        "runtime_verified": false,
+        "sufficiency_passed": false,
+        "trust": "UNAPPROVED_CANDIDATE"
+      },
+      "observed_input": 5260,
+      "observed_output": 1782,
+      "unknown_usage_ids": [],
+      "known_usage_estimate_rub": "0.1921256",
+      "request_elapsed_seconds": 44.7051356070001,
+      "case_elapsed_seconds": 44.6939263343811,
+      "candidates": []
+    }
+  ],
+  "actual_billed_cost": "NOT_MEASURED",
+  "pricing_source": "https://cloud.ru/products/evolution-ai-factory/catalog-foundation-models",
+  "new_known_usage_estimate_rub": "2.5776343"
+}
