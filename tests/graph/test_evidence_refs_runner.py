@@ -334,6 +334,27 @@ class ScoreTests(unittest.TestCase):
 
 
 class StopTests(unittest.TestCase):
+    def test_transport_failure_stops_series_without_spending_on_other_cases(self):
+        for reason, status in [("model_timeout", None), ("model_unavailable_or_invalid", None),
+                               ("model_http_error", 503), ("unsupported_content_encoding", 200)]:
+            with self.subTest(reason=reason):
+                backend = Backend()
+                ledger = RunLedger(backend, manifest(), "a" * 40)
+                ledger.initialize(30, 100_000_000)
+                ledger.claim("OFFLINE-TRANSPORT-STOP", started_epoch=time.time())
+                def fail(model, messages, *, metadata, on_finished, **kwargs):
+                    metadata.update(http_status=status, usage=None)
+                    on_finished()
+                    raise GraphError(reason)
+                with tempfile.TemporaryDirectory() as d, patch.object(ChatModel, "complete", fail):
+                    with self.assertRaisesRegex(GraphError, reason):
+                        run_series(ledger, Path(d))
+                saved = RunLedger(backend, manifest(), "a" * 40)
+                self.assertEqual(saved.state["status"], "STOPPED_" + reason)
+                self.assertEqual(len(saved.state["attempts"]), 1)
+                self.assertEqual(len(saved.state["cases"]), 1)
+                self.assertEqual(saved.report()["new_unknown_usage_ids"], [22])
+
     def test_exhausted_budget_or_cancel_stops_before_other_cases(self):
         for cancelled in [False, True]:
             with self.subTest(cancelled=cancelled):
