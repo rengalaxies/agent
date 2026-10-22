@@ -1,0 +1,68 @@
+{
+  "scope": "TARGET_VM_LOADED_UI_AND_REAL_PROVIDER_STOP",
+  "started_epoch": 1792661092.6335568,
+  "recheck_E": {
+    "id": "8ab98e3670714822b7d87e690f1a1cd3",
+    "session_id": "2ccbfcca-23be-40c1-8432-64a088a115ac",
+    "session_revision": 4,
+    "version": "E",
+    "proposed_manifest_sha256": "f29249bf481a9e4f1cbcbd738e030564fd7d3c27d1c0e77287c80541c6bce22a",
+    "running_manifest_sha256": "f29249bf481a9e4f1cbcbd738e030564fd7d3c27d1c0e77287c80541c6bce22a",
+    "dataset_sha256": "0baa6249f1d956451e22e5f86a229bf5cd4c758bb807ecc987b09a5d73a6c9c0",
+    "fixed_check_id": "collection",
+    "command_id": "collection-v1",
+    "started_at": "2026-10-22T09:24:53.422862+00:00",
+    "finished_at": "2026-10-22T09:24:59.348646+00:00",
+    "origin": "operator_runner",
+    "status": "PASS",
+    "graph_status": "EXTERNAL_REPORTED",
+    "independently_verified": false,
+    "consumers": {
+      "Reporting": {
+        "expected_count": 250,
+        "actual_count": 250,
+        "missing_ids": [],
+        "duplicate_ids": [],
+        "unexpected_ids": [],
+        "passed": true,
+        "status": "PASS"
+      },
+      "Billing": {
+        "expected_count": 250,
+        "actual_count": 250,
+        "missing_ids": [],
+        "duplicate_ids": [],
+        "unexpected_ids": [],
+        "passed": true,
+        "status": "PASS"
+      },
+      "Export": {
+        "expected_count": 250,
+        "actual_count": 250,
+        "missing_ids": [],
+        "duplicate_ids": [],
+        "unexpected_ids": [],
+        "passed": true,
+        "status": "PASS"
+      }
+    },
+    "runtime_stage": "CHECK",
+    "health_control": {
+      "status": "available",
+      "service": "Status"
+    },
+    "exit_code": 0,
+    "runtime_generation": 84,
+    "artifact_sha256": "0ec98397b15f024ec4d0e6ddf30ad90f1747e47b719dd8f264b01e7b9494de22"
+  },
+  "provider_stop": {
+    "service": "Status",
+    "observed_runtime": "UNKNOWN",
+    "ui_fully_loaded": true,
+    "automatic_restart": false
+  },
+  "status": "PASS",
+  "ready_session": "a295a591-7e3d-4088-b325-269de1f9ced4",
+  "sandbox_after_stop": 0,
+  "finished_epoch": 1792661108.7826242
+}

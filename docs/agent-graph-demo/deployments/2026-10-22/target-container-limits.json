@@ -1,0 +1,132 @@
+[
+  {
+    "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-orders-1",
+    "image": "sha256:dc39a66df73ffedac92539067b5fbb4166c71102cff188ebd9f708a69d3f5820",
+    "user": "10001:10001",
+    "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+    "memory": 201326592,
+    "nano_cpus": 500000000,
+    "pids": 64,
+    "readonly_rootfs": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "restart": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "log": {
+      "Type": "json-file",
+      "Config": {
+        "max-file": "2",
+        "max-size": "5m"
+      }
+    },
+    "oom_killed": false,
+    "mounts": [
+      {
+        "destination": "/corpus",
+        "read_write": false,
+        "type": "bind"
+      },
+      {
+        "destination": "/dataset.json",
+        "read_write": false,
+        "type": "bind"
+      }
+    ]
+  },
+  {
+    "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-status-1",
+    "image": "sha256:dc39a66df73ffedac92539067b5fbb4166c71102cff188ebd9f708a69d3f5820",
+    "user": "10001:10001",
+    "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+    "memory": 134217728,
+    "nano_cpus": 500000000,
+    "pids": 64,
+    "readonly_rootfs": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "restart": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "log": {
+      "Type": "json-file",
+      "Config": {
+        "max-file": "2",
+        "max-size": "5m"
+      }
+    },
+    "oom_killed": false,
+    "mounts": [
+      {
+        "destination": "/corpus",
+        "read_write": false,
+        "type": "bind"
+      },
+      {
+        "destination": "/dataset.json",
+        "read_write": false,
+        "type": "bind"
+      }
+    ]
+  },
+  {
+    "name": "/agent-graph-demo-web-1",
+    "image": "sha256:dc39a66df73ffedac92539067b5fbb4166c71102cff188ebd9f708a69d3f5820",
+    "user": "10001:10001",
+    "project": "agent-graph-demo",
+    "memory": 805306368,
+    "nano_cpus": 1500000000,
+    "pids": 128,
+    "readonly_rootfs": true,
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "restart": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "log": {
+      "Type": "json-file",
+      "Config": {
+        "max-file": "2",
+        "max-size": "5m"
+      }
+    },
+    "oom_killed": false,
+    "mounts": [
+      {
+        "destination": "/etc/demo",
+        "read_write": false,
+        "type": "bind"
+      },
+      {
+        "destination": "/var/lib/agent-graph-demo/runtime",
+        "read_write": false,
+        "type": "bind"
+      },
+      {
+        "destination": "/var/lib/agent-graph-demo/state",
+        "read_write": true,
+        "type": "bind"
+      },
+      {
+        "destination": "/core",
+        "read_write": false,
+        "type": "bind"
+      }
+    ]
+  }
+]

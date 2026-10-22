@@ -99,6 +99,10 @@ python tools/agent_graph_demo/run_scenario.py --config /etc/agent-graph-demo/ope
 
 ## Handoff развёртыванию — подготовлено, не выполнено
 
+Этот раздел описывает исходный handoff приложения. Последующая закрытая установка
+на существующую dm-p1-ui выполнена 22 октября 2026:
+[точные SHA/digest, целевая приёмка, SSH tunnel, показ и откат](deployments/2026-10-22/README.md).
+
 Цель: Ubuntu 24.04 / 2 vCPU / 4 GiB. Не меняли общую ВМ, старую dmrp-ui.service, Nginx, secrets/vars. Сборка off-VM, перенос неизменяемого image и отдельного read-only core pin. Основной Compose: [compose.yaml](../../infra/agent_graph_demo/compose.yaml), systemd и Nginx fragment рядом.
 
 1. Повторно обследовать фактические процессы/порты/старые unit; сохранить конфигурацию и журналы. Не запускать старую службу ради нового демо.

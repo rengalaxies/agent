@@ -1,0 +1,775 @@
+{
+  "scope": "TARGET_VM_OBSERVED_SAMPLES",
+  "sample_count": 1340,
+  "started_epoch": 1792660221.6484826,
+  "finished_epoch": 1792660942.8434908,
+  "median_interval_seconds": 0.5348544120788574,
+  "sampling_interruptions": 39,
+  "phases": {
+    "actual": {
+      "samples": 382,
+      "host_used_peak_mib": 782.37109375,
+      "host_available_min_mib": 3133.515625,
+      "host_cpu_peak_percent_total_capacity": 90.990990990991,
+      "observed_container_memory_sum_peak_mib": 124.12890625,
+      "root_disk_peak_gib": 4.248546600341797
+    },
+    "analysis": {
+      "samples": 563,
+      "host_used_peak_mib": 701.73046875,
+      "host_available_min_mib": 3214.15625,
+      "host_cpu_peak_percent_total_capacity": 94.44444444444444,
+      "observed_container_memory_sum_peak_mib": 123.90625,
+      "root_disk_peak_gib": 4.247852325439453
+    },
+    "idle": {
+      "samples": 328,
+      "host_used_peak_mib": 667.79296875,
+      "host_available_min_mib": 3248.09375,
+      "host_cpu_peak_percent_total_capacity": 52.83018867924528,
+      "observed_container_memory_sum_peak_mib": 40.91796875,
+      "root_disk_peak_gib": 4.248626708984375
+    },
+    "queue_probe": {
+      "samples": 51,
+      "host_used_peak_mib": 606.3515625,
+      "host_available_min_mib": 3309.53515625,
+      "host_cpu_peak_percent_total_capacity": 55.14018691588785,
+      "observed_container_memory_sum_peak_mib": 53.78125,
+      "root_disk_peak_gib": 4.247112274169922
+    },
+    "restart": {
+      "samples": 16,
+      "host_used_peak_mib": 681.73046875,
+      "host_available_min_mib": 3234.15625,
+      "host_cpu_peak_percent_total_capacity": 87.1559633027523,
+      "observed_container_memory_sum_peak_mib": 108.30859375,
+      "root_disk_peak_gib": 4.248237609863281
+    }
+  },
+  "host_used_peak_mib": 782.37109375,
+  "host_available_min_mib": 3133.515625,
+  "web_kernel_memory_peak_mib": 72.4140625,
+  "observed_sandbox_kernel_memory_peak_mib": 32.37890625,
+  "observed_containers": 101,
+  "observed_oom_kills": 0,
+  "root_disk_start_gib": 4.229221343994141,
+  "root_disk_end_gib": 4.248626708984375,
+  "containers": {
+    "4c12f0fde0f182d1974321a4a52e552e7b17216509382a162f882651106cbaca": {
+      "name": "/agent-graph-demo-web-1",
+      "project": "agent-graph-demo",
+      "memory_peak": 75931648,
+      "cpu_peak_percent_one_core": 110.01044762577423,
+      "oom_kill": 0
+    },
+    "6b0ac73aa1fc371b28854b5787309e540fbef3b0da0d46a9e0a71933ddc021f0": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-status-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 32198656,
+      "cpu_peak_percent_one_core": 52.437345731847316,
+      "oom_kill": 0
+    },
+    "d02e9f480d611b0dcd2037687467e8aacc1a0618ce5191f710ad9eab8cacd495": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-orders-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 33947648,
+      "cpu_peak_percent_one_core": 53.617024285135905,
+      "oom_kill": 0
+    },
+    "7c36ec3068573f687afd1c04ac8783b8f07ab8d612554ebe3fc621b0000ee31d": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-health-run-c9416ddee8e3",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 16781312,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "01590c5962ce6efe8d063b73478f4fc3a3f01ba27634ed8afa8bfbc5c73882c7": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-billing-run-32e41cfea5b0",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 15790080,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "12b5daa7d9d8f88a702233926a94fd2d5df17f2bb3c40ffa298b3da608b959f5": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-reporting-run-621475419b41",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 15282176,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "004cca0fa105f5c9f08f6aa201feb2c240ea4a2ec3217b7b14d8a0bd91ae776c": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-orders-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 33882112,
+      "cpu_peak_percent_one_core": 51.65527703614779,
+      "oom_kill": 0
+    },
+    "59f2d1bc9a7a4d2ae40c39edf6ce753aefdeb2f76abdac95c6db9b0ff0e900a6": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-status-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 32165888,
+      "cpu_peak_percent_one_core": 49.416065737876565,
+      "oom_kill": 0
+    },
+    "99239325cafd58b740aa5c7a60dd1602f3abb8ddd4c98036969bbca8f19ef4d5": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-health-run-20e9d49ff8f5",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 17903616,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "da4557b709e6b1ddd18d0e0796d8610fb59a23297ca5d2094abe416af6c8586f": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-reporting-run-c40505eddff0",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 16502784,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "b0e65afb6aeffadcc5f53c8e959fa5afef8208b09001720334d9e2e1249f3f7c": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-billing-run-b35de62f35f4",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 11272192,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "f1a1bcf6bd73e94915b0045fd3e52f67853fa06fc0c935fa5b75aad3e9893dca": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-status-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 32174080,
+      "cpu_peak_percent_one_core": 48.26467776206486,
+      "oom_kill": 0
+    },
+    "f2a9cbf96a892de47856084ef89eb9380260f3007378c23a790fc3595d783ae6": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-orders-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 33902592,
+      "cpu_peak_percent_one_core": 51.309716656250295,
+      "oom_kill": 0
+    },
+    "a6f3cdc3915e7b3603f21afcf92237dcf36a880e09d35548a0e81c92b928b36e": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-health-run-71792fd698bf",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 7692288,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "4d88dbc11b3a505980f8c92b9749b830f83abd73e22fd2692fc27ccfaa4189a5": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-status-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 32169984,
+      "cpu_peak_percent_one_core": 52.63418149029447,
+      "oom_kill": 0
+    },
+    "1114ced74b4400b655f8d34929bad8436ad4666ed5a76d0a7bc71fe465c1ac6d": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-orders-1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 33894400,
+      "cpu_peak_percent_one_core": 53.657861163647034,
+      "oom_kill": 0
+    },
+    "c0683a43a36bc5683344a3a81713eaea026c3ac8253329b42082c6fd6a64a90b": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-health-run-375a503bb6a5",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 17653760,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "60effe971db8055d9ab0d75bac025885498ff19d0557b28e71cd5fd89c1dcde2": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-billing-run-535689f95b19",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 17641472,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "0add5f66dc622c9ad03017aed3a5a538f30d077e3bfbcfc67550dd3c02736203": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-reporting-run-8fc8c902aec1",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 14864384,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "7eeffa54481d20338bff734598463b09784b9d2394dd6dc4a8aa692a8e627b70": {
+      "name": "/agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac-billing-run-e983e17bc66f",
+      "project": "agent-graph-demo-sbx-2ccbfcca-23be-40c1-8432-64a088a115ac",
+      "memory_peak": 11030528,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "d314356f8d500a26a24dacb1513a08073188f3d5058aae90f79ab7e8cb37b43c": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-orders-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 33927168,
+      "cpu_peak_percent_one_core": 50.26447914549635,
+      "oom_kill": 0
+    },
+    "23ffe65cc463e610979420f4945d55a76757bc15ca75fa9d818ae993454962ef": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-status-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 32190464,
+      "cpu_peak_percent_one_core": 48.204085927804904,
+      "oom_kill": 0
+    },
+    "f922108c9dd1f22b6fe9d3a04648354f331a2704d207e42a1a8d91d74760659e": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-health-run-337ebc650af3",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 16580608,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "33a5e69d44285aeb9a67628997c26293832db268a75e0ac51174dacea1142751": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-billing-run-979c9a3595da",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 17649664,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "6deefdde27d1c3f7bbcb5128b1da1eeb6e1846f8be2230f7003597cf58ffcc89": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-reporting-run-db61fbf37b5c",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 13500416,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "07260b4fb5f7c06a9bc59a6f8371eca58b5e48a48879ba8f24aca56bec7fe25d": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-billing-run-ab60e6340e76",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 5414912,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "431b774be4d9df240c7c9dc5eb010338507db9a7416d6dbc8cecef9800e6d47c": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-orders-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 33898496,
+      "cpu_peak_percent_one_core": 48.864257714553794,
+      "oom_kill": 0
+    },
+    "59053356ad2731fb1d1dbb05d54ddf535eded48aa3ac2546bbe88a09a165524c": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-status-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 32182272,
+      "cpu_peak_percent_one_core": 48.96674591323108,
+      "oom_kill": 0
+    },
+    "9f1da00055bf5662ca08101ca24b58cd49774a1a2b917f9a2b97afd3bede7d7c": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-health-run-3f3f136293f7",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 17661952,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "2310bd03dc575ab2835aa395aa9c3fe8dccb9a6b0547166cdd73500b6bd96d5d": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-billing-run-b8699f6c0d37",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 17661952,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "9bd1e34188460c80b51463ea63479d315a51fb635ec0b68df4e115a70ede5cd0": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-reporting-run-2409c1fd300c",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 14405632,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "0acccc16b696341aa237a144a1baa5245304a61471ce2aae8ac74e2cfb98fd56": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-billing-run-6148c98f3c44",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 8392704,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "8286a986c51706fe9c10e45b8882b37816d339b281e74170bfdbf0df14eb096f": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-orders-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 33910784,
+      "cpu_peak_percent_one_core": 51.18253245913322,
+      "oom_kill": 0
+    },
+    "d4c0550196adc93c0360f794f078d572a7781c7fa4f7da18610c0fc6af05a114": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-status-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 32174080,
+      "cpu_peak_percent_one_core": 46.9897048452031,
+      "oom_kill": 0
+    },
+    "c455705c571e118af50ee0b5c2a28e26a316852a50a8225dbe6826d04e2840e7": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-health-run-162a75b604b0",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 7512064,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "c70d14c887b8c94ce9619afcd3e73f4354f6a4c273c13d6a1e38ae81d2bca14b": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-status-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 32227328,
+      "cpu_peak_percent_one_core": 49.916086226962,
+      "oom_kill": 0
+    },
+    "61e5725be32f6fd4a1d71237791d3dff27171492b5c5aa1ccb604632485f5596": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-orders-1",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 33906688,
+      "cpu_peak_percent_one_core": 53.814798331286084,
+      "oom_kill": 0
+    },
+    "7159c841539521eb98b6c3d1f2ad1bdf518a6ba7067af99a1d5a74a215c8dd18": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-health-run-d94105cd2f2a",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 13717504,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "9208889a91bbd7055c5cf928eedb3c5fb170a4cd9cf57093308305e4448c5872": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-billing-run-9a4bc2ece8c6",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 15491072,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "0a36df3aa00661be1e68faf4cea3a374144b611df2d2f37210043b02c5ffd332": {
+      "name": "/agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c-reporting-run-5ca3ef82db69",
+      "project": "agent-graph-demo-sbx-8a840a72-cd6f-40d7-8c27-5fa93438147c",
+      "memory_peak": 8318976,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "9dc297c173b76ebffd56a0013e43b7480afe4e65fa0adab76216c85939ac1b50": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-orders-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 33947648,
+      "cpu_peak_percent_one_core": 32.3539808275129,
+      "oom_kill": 0
+    },
+    "3d052f94276ea5b98e527627b7418025e443d211a5ebeca14760367f3422914d": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-status-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 32190464,
+      "cpu_peak_percent_one_core": 29.087809223576944,
+      "oom_kill": 0
+    },
+    "bf235e8eb476e0c20a980db9e885f053c61b8edd0512a2b3a202e701e7e5bb41": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-orders-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 33890304,
+      "cpu_peak_percent_one_core": 49.863677072063226,
+      "oom_kill": 0
+    },
+    "a2e6f2575875f1cd53dff0ba25a7cd7d2576c545d2b5eb352de750b8e6bf05ec": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-status-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 32186368,
+      "cpu_peak_percent_one_core": 52.00609752665136,
+      "oom_kill": 0
+    },
+    "ff038bc0133241d9e05a24ab8ffdd67076b505344d4b4878ff77279a9bfd4d5e": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-health-run-a35dcec0807f",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 17649664,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "969f406ba3356309be3140f0afec6f9596f299d79afa7f113b8f3da05573a57d": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-billing-run-828d1d316288",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 17641472,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "f19ea9c94a5c35391486aa00bddff0fa1578738f157ad77c302f8c305928ff04": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-reporting-run-b675721adaf8",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 11124736,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "2539b539708b88b262246acd0805c4f4729f282be845b4c41096ef6f1bad758a": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-health-run-6ee92c94c782",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 9121792,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "925aae7b08548d4dcf794c7c1b654d5337b8646af49934224c852926d2f5bb33": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-status-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 32182272,
+      "cpu_peak_percent_one_core": 40.618823858425095,
+      "oom_kill": 0
+    },
+    "b2ae432ca3924f792aff520a246d39ce4041e475a301e0015572cd7ae0a8460e": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-orders-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 33910784,
+      "cpu_peak_percent_one_core": 51.640127137578695,
+      "oom_kill": 0
+    },
+    "e11d4527c5d5786ea88a60c709e301c2840b53fb1d5c115f36f601aba0c27fe4": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-health-run-21255de77b1b",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 17649664,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "d217b6a5bfec5c3e1d1c361e3b15571f01161f2c009b5d7b5a09acde835c600b": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-billing-run-f6ea6abccadc",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 11579392,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "ec7be486faa661226e364e3fc66f9efc20d878c38202476d90b111d4e137eaba": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-orders-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 33902592,
+      "cpu_peak_percent_one_core": 48.45967492162482,
+      "oom_kill": 0
+    },
+    "46dc80eed648af42d412548ea9632a1dc8b2fa3c8665e0ecf9e7fd38d0ef2adb": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-status-1",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 32182272,
+      "cpu_peak_percent_one_core": 48.62967456578012,
+      "oom_kill": 0
+    },
+    "0eddc7bca19771de0abede6a2081fddecbc42156ede1c062aa43c43eba3e21f9": {
+      "name": "/agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3-health-run-08f75ac91880",
+      "project": "agent-graph-demo-sbx-7ae67de3-5693-4d70-b2fc-754f268ef3b3",
+      "memory_peak": 11296768,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "cfadf0c0ba780e87bb0c0aec72a075c561affb51fbd8dfa66a0a63e6ccae2e94": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-status-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 32178176,
+      "cpu_peak_percent_one_core": 50.55294312614337,
+      "oom_kill": 0
+    },
+    "b763df8d90c72d95b4cf3cf6590c26231e238baf1d20a3ffe8ecd44c61291787": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-orders-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 33705984,
+      "cpu_peak_percent_one_core": 49.283530058859434,
+      "oom_kill": 0
+    },
+    "ad482d928ef7583f0b1454ec025ca2af19154b4167aaf4c5c42f853b70401ae6": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-c5828d38be28",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 17670144,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "ee26e0ce4764bceb06b22843b5dac4952b6a520f769ff83fbe21acfb2a09b647": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-28656f6a8338",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 14909440,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "4d164da40ed2e0d78a451ab4ac425ad993469b45492f62d7e0ab38d041586b76": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-status-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 32186368,
+      "cpu_peak_percent_one_core": 50.78576124883967,
+      "oom_kill": 0
+    },
+    "67f048c5f0c88a5aa84e050333a4fdceec9936002b43143179b85e5cd6747b7b": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-orders-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 33902592,
+      "cpu_peak_percent_one_core": 51.0214963921654,
+      "oom_kill": 0
+    },
+    "8ac110a67e2c8c4438c2ff40c186d62ba01d38ab976bd755a83f02586acf4ec3": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-ca5151fa0abb",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 17899520,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "341d12ba12e1ca2b6f04ea8472d32b84bbc8266548f3772563e8f399100e7aff": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-2f646d3be9fb",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 6914048,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "b087552f20873095c6b0780f6208341e0033bca178f68c06b63647506bcb2ccb": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-orders-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 33898496,
+      "cpu_peak_percent_one_core": 41.68121234179548,
+      "oom_kill": 0
+    },
+    "992dddc4a46d3e872e705d59b691c22cd1778ac1512cac11689d1c0ce22d0ecf": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-status-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 32186368,
+      "cpu_peak_percent_one_core": 42.942931931285756,
+      "oom_kill": 0
+    },
+    "c561d13a411b636bdacb5733ad90e2de4caef26e4343208b0c793e76c871788e": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-d23066ebf622",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 14696448,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "44b7d4f90d9e5b91caa53170baa1ccc634cae87de219424462c902ee4c8a66a8": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-9ee7c416ffe9",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 17649664,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "05d1f102d2e882ece203bafea8461349e2870292a48574c077a3861a4c8dba99": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-status-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 32190464,
+      "cpu_peak_percent_one_core": 32.78778944396352,
+      "oom_kill": 0
+    },
+    "b675da053f6c20eb6ca6116233d31cbc9366679211308c1f656e4dda432bff23": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-orders-1",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 33910784,
+      "cpu_peak_percent_one_core": 33.94441339837109,
+      "oom_kill": 0
+    },
+    "aceed5b8d82c92e84feb78153021a6c1d1e33e4f3762c54d876a32d68b2dab4f": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-billing-run-d22b640db9c4",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 16433152,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "346824fa8eb8672838dfd70cab90e96dc22d1fe96889a83dc5864561b53af102": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-export-run-b7271e9fe42c",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 15745024,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "9ef002924244f80f8ee43d22e84ff8bf9a29bcd3e90650dd5d07263a9164730a": {
+      "name": "/agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a-health-run-d0d797c383d8",
+      "project": "agent-graph-demo-sbx-a46966ce-d475-4e1e-a08e-4926ecd23e3a",
+      "memory_peak": 13668352,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "610d7d3296c42969d4b6bf44ce5de1f00684a9ba4251eae36b935c9bb247a116": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-status-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 32186368,
+      "cpu_peak_percent_one_core": 51.77567059995122,
+      "oom_kill": 0
+    },
+    "443063900db3a52162eef563e010b11c3b6be9efd667730615fa16fc02b145d1": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-orders-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 33927168,
+      "cpu_peak_percent_one_core": 48.66652510285565,
+      "oom_kill": 0
+    },
+    "93bfe0ef2aa6eb29cf698f29beee530877b28fff1da5a97566fbf18958462777": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-status-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 32182272,
+      "cpu_peak_percent_one_core": 50.01770260816202,
+      "oom_kill": 0
+    },
+    "ae95b6ecdba822f6f7eaa5f4d69c272fa5bd0447bcd1c6a7f2248e60b900a061": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-orders-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 33894400,
+      "cpu_peak_percent_one_core": 48.007875879382965,
+      "oom_kill": 0
+    },
+    "34c60b79cea34d955edb9754188e97917adbc9f70740ae94955d9f0ad67a201a": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-health-run-9ab55a153d72",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 10506240,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "1b892b62e8d0de9c4bf60970e3d51e797a649001f70ba464e827679c65a622c4": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-health-run-8d98dfc4b762",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 17657856,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "1745cbb4b6101902c68516d549d9535323e22776fa4177cd990533cb5c005013": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-orders-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 33886208,
+      "cpu_peak_percent_one_core": 46.74361174696026,
+      "oom_kill": 0
+    },
+    "d87ded65ffcbb9161206f794f3ae19a5e228c14d4c0df82cfa3dae1bea144357": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-status-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 32178176,
+      "cpu_peak_percent_one_core": 48.785295360801925,
+      "oom_kill": 0
+    },
+    "61336fef96d4537e7f9bdeb3ed03a89b1e3a484fc3f7ddb7faa67279a0661520": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-health-run-59c6209f7f89",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 15425536,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "8cc639968dcc99817077a7eecd449d6d8c5c7e261a2a4571a2d606951a4688ba": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-billing-run-0f94bada1963",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 17915904,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "2d2d2b73d4084111494c4226e3dfcb19e8459926df471c2c44a2877d53301e6f": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-reporting-run-3ba21abb184e",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 14974976,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "a6915b97ff878a1b0c7a0869de19b1c3a7228560deab689eaedff9a30d95632b": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-billing-run-cd9cff091b0a",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 10706944,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "607919cc24ef131d7a67d567ff4763bf8bf46debe1649e1a4f87adffa74c502a": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-status-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 32194560,
+      "cpu_peak_percent_one_core": 48.5579435885854,
+      "oom_kill": 0
+    },
+    "1555aca39e35ff1d3b7fb5dbe9466662c936a216c8f6518d3e2e679382c4ac73": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-orders-1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 33914880,
+      "cpu_peak_percent_one_core": 49.47023352732908,
+      "oom_kill": 0
+    },
+    "11427d4b0b0db21a60cdf2be1e56afb48fcd8049c77bd81b2fbae80cee3139fe": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-health-run-3f040481e1f1",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 6881280,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "69655e4ebabb7346ff214decbc7740e8722b16506c05d873df1e558b6896a6b1": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-export-run-901c2b7f6629",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 17928192,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "bf36e021625a80433dd322151799817757971e939d8c855734250550dfcacdd1": {
+      "name": "/agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea-health-run-169d5a599090",
+      "project": "agent-graph-demo-sbx-62754929-9aea-4f5f-83d4-2ec575a749ea",
+      "memory_peak": 15319040,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "759300ce463afa1a1b70e46b154299f1d1681055c6f82064e70f39a24606ab0d": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-health-run-7cd098034132",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 10752000,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "20073a2265a8ab39dbb77ab296bed3b2731e4c25a2adf1d6fe7436bc627d136b": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-orders-1",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 33951744,
+      "cpu_peak_percent_one_core": 41.383140858029314,
+      "oom_kill": 0
+    },
+    "1930becb9e6b1ec599b8ff5842a7a71b8bb1d57064868c24cac987c0e421f24f": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-status-1",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 32190464,
+      "cpu_peak_percent_one_core": 36.85216818230448,
+      "oom_kill": 0
+    },
+    "a41e445f31c7fd193600669d65d22f803d3fefea0e5084fe3a1cbc0519a5fb06": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-health-run-aa888757af55",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 15724544,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "7ed34f65ba4b88dfb8f8ee3918f99d3fe3ff3d461e49266cbff6960a64332503": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-billing-run-0c06aaacf354",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 9060352,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "49816d0fd2b4a8d05e5063cc28bc21080af1fd1eda5402b8d9bec00ccb0c842d": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-health-run-ca5e7aaecf5f",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 16592896,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "3c52c342cb5e2407f744c79fc42c8ac4463900a28eac83df3ce5dab05e679a20": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-health-run-327fb3b8ea4a",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 10690560,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "d8e1d0ebd703db271d08c33104157c73885d2c8a6191579074a542f5d66cbf2c": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-status-1",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 32178176,
+      "cpu_peak_percent_one_core": 47.00684680561157,
+      "oom_kill": 0
+    },
+    "a7f6cecc511db7a8b17205f603c77c41485c34ad74558aec1749c9469b3a5939": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-orders-1",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 33943552,
+      "cpu_peak_percent_one_core": 48.59499520121478,
+      "oom_kill": 0
+    },
+    "ebe9c8718416c92f99753713d8c20cad23591b74cdc7e5437f8ad61f1d3726c1": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-health-run-a9bee4a9392a",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 14757888,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "deabe47ac14423ed100bf9393338fa9d5de50745201e8a82d59a95d5e310d313": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-billing-run-17347ab83a9d",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 11567104,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    },
+    "f69dc53c2559722e8ec4dab252f7579a1a64befa8de16f49d40953666c25be04": {
+      "name": "/agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec-health-run-3254e396d140",
+      "project": "agent-graph-demo-sbx-b99466b6-66af-449d-bb72-2b23be87c6ec",
+      "memory_peak": 17481728,
+      "cpu_peak_percent_one_core": 0,
+      "oom_kill": 0
+    }
+  },
+  "method": {
+    "host_memory": "MemTotal minus MemAvailable from /proc/meminfo",
+    "host_cpu": "delta /proc/stat, idle+iowait excluded; 100%=both VM CPUs",
+    "container_memory": "cgroup v2 memory.current and retained memory.peak",
+    "container_cpu": "delta cgroup cpu.stat usage_usec; 100%=one core",
+    "disk": "shutil.disk_usage on root filesystem",
+    "limits": "Observed sampled peaks, not a proof of all instantaneous maxima; very short containers may be missed. Negative counter-reset CPU intervals after restart excluded. Sampling overhead included."
+  }
+}
