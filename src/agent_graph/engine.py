@@ -173,10 +173,20 @@ class Graph:
                     and old["default_known"] and new["default_known"]
                     and old.get("page_size_default") != new.get("page_size_default")):
                 code = "PAGE_DEFAULT_CHANGED"
+            elif ((old.get("page_size_declared") or new.get("page_size_declared"))
+                    and not (old["default_known"] and new["default_known"])
+                    and [e["quote"] for e in old["evidence"]] != [e["quote"] for e in new["evidence"]]):
+                # The declaration changed but its default is outside the grammar on
+                # at least one side: unknown, never "no supported delta".
+                code = "PAGE_DEFAULT_UNRESOLVED"
             if code is None:
                 continue
-            delta = dict(operation_id=id, code=code, before=old.get("page_size_default"),
-                         after=new.get("page_size_default") if new else None,
+            def default(op):
+                return op.get("page_size_default") if op["default_known"] else "UNRESOLVED"
+            delta = dict(operation_id=id, code=code,
+                         before=default(old) if code == "PAGE_DEFAULT_UNRESOLVED" else old.get("page_size_default"),
+                         after=default(new) if code == "PAGE_DEFAULT_UNRESOLVED"
+                         else new.get("page_size_default") if new else None,
                          evidence=old["evidence"] + (new["evidence"] if new else []))
             deltas.append(delta)
             # Current scan can discover a NEW consumer in a formerly irrelevant file.

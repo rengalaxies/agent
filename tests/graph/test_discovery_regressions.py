@@ -63,6 +63,38 @@ class DiscoveryRegressions(unittest.TestCase):
                 if known:
                     self.assertEqual(op["page_size_default"], value)
 
+    def provider(self, constant, parameter):
+        original = Path(__file__).resolve().parents[2]/"examples/agent_graph/corpus/orders/api.py"
+        (self.root/"corpus/orders/api.py").write_text(
+            original.read_text().replace("page_size: int | None = None", parameter)
+            .replace("from fastapi import FastAPI", "from fastapi import FastAPI, Query\n\nDEFAULT = " + constant))
+
+    def test_r5_unresolved_page_default_change_requires_recheck_not_silence(self):
+        # Audit 2026-10-22: Query(None) -> Query(100) produced no delta and no finding.
+        self.provider("None", "page_size: int | None = Query(None)")
+        base = self.graph.prepare_context()
+        self.assertIn("page_size_default_unresolved", {g["code"] for g in base["graph"]["gaps"]})
+        self.provider("None", "page_size: int | None = Query(100)")
+        result = self.graph.analyze_change(base["id"])
+        self.assertEqual([(d["code"], d["before"], d["after"]) for d in result["deltas"]],
+                         [("PAGE_DEFAULT_UNRESOLVED", "UNRESOLVED", "UNRESOLVED")])
+        self.assertEqual([(f["consumer"], f["code"]) for f in result["findings"]
+                          if f["consumer"] == "reporting"], [("reporting", "RECHECK_REQUIRED")])
+        self.assertEqual(result["unknowns"], [])
+        unchanged = self.graph.analyze_change(self.graph.prepare_context()["id"])
+        self.assertEqual(unchanged["deltas"], [])
+
+    def test_r5_module_constant_page_default_change_is_classified(self):
+        # Audit 2026-10-22: DEFAULT = None -> DEFAULT = 100 left the signature text unchanged.
+        self.provider("None", "page_size: int | None = DEFAULT")
+        base = self.graph.prepare_context()
+        self.provider("100", "page_size: int | None = DEFAULT")
+        result = self.graph.analyze_change(base["id"])
+        self.assertEqual([(d["code"], d["before"], d["after"]) for d in result["deltas"]],
+                         [("PAGE_DEFAULT_CHANGED", None, 100)])
+        self.assertTrue(any(f["consumer"] == "reporting" and f["code"] == "POSSIBLE_TRUNCATION"
+                            for f in result["findings"]))
+
     def test_r3_shadowed_imports_never_become_resolved_edges(self):
         cases = [
             'from requests import get\ndef get(url):\n return []\nget("https://orders.test/orders")\n',

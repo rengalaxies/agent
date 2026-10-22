@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "DEMO_CORE_ROOT=$RUNNER_TEMP/agent-graph-core" >> "$GITHUB_ENV"
           echo "BUILDX_CONFIG=$RUNNER_TEMP/demo-buildx" >> "$GITHUB_ENV"
-          git worktree add --detach "$RUNNER_TEMP/agent-graph-core" a9385c565d5471698da62987b226dcff4cbdea86
+          git worktree add --detach "$RUNNER_TEMP/agent-graph-core" 5d7ee0f6b0bd9c4a8d91c26f24ad5f21e6471dab
       - name: Install dedicated runtime and test tools
         run: |
           python -m pip install --require-hashes -r infra/agent_graph_demo/requirements.lock
