@@ -147,7 +147,7 @@ def journey(base_url, username, password, operator, output, store):
                 "() => document.querySelector('#freshness').textContent.includes('Исторический')"
             )
             assert "Reporting: возможна потеря" in page.locator("#impact").inner_text()
-            assert "Export" not in page.locator("#graph-drawing").inner_text()
+            assert "Export" not in page.locator("#graph-drawing").text_content()
             page.get_by_role("button", name="Вернуться к текущему результату").click()
             page.wait_for_function(
                 "() => !document.querySelector('#freshness').textContent.includes('Исторический')"

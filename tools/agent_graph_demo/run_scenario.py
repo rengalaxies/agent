@@ -9,7 +9,7 @@ import uuid
 
 from agent_graph_demo.contracts import DemoError, now
 from agent_graph_demo.snapshots import Snapshots, atomic_json
-from agent_graph_demo.store import Store
+from tools.agent_graph_demo.state_access import StateAccess
 from examples.agent_graph_demo.oracle import DATASET_BYTES, DATASET_SHA256, check_ids
 from examples.agent_graph_demo.scenarios import sources
 from tools.agent_graph_demo.runtime_guard import RuntimeGuard
@@ -23,7 +23,7 @@ def run(config, sid, version, expected_generation, output):
         config["image"],
         config["product_sha"],
     )
-    store = Store(config["state_root"])
+    store = StateAccess(config["state_root"])
     snapshots = Snapshots(config["state_root"], config["product_sha"])
     with guard.exclusive():
         s = store.session(sid)

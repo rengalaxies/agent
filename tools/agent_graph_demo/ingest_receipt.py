@@ -6,7 +6,7 @@ from pathlib import Path
 
 from agent_graph_demo.contracts import DemoError
 from agent_graph_demo.locks import locked
-from agent_graph_demo.store import Store
+from tools.agent_graph_demo.state_access import StateAccess
 
 
 def ingest(state_root, path):
@@ -30,7 +30,7 @@ def ingest(state_root, path):
         graph_status="EXTERNAL_REPORTED",
         independently_verified=False,
     )
-    store = Store(state_root)
+    store = StateAccess(state_root)
     with locked(Path(state_root) / "workload.lock"):
         store.session(r["session_id"])
         return store.artifact(r["session_id"], "external_report", r)

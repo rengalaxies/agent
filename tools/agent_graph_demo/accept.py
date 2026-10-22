@@ -92,6 +92,32 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
         ],
     }
     try:
+        package = guard.docker(
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "--read-only",
+            "--user",
+            "0:0",
+            "--cap-drop",
+            "ALL",
+            "--cap-add",
+            "CHOWN",
+            "--cap-add",
+            "SETUID",
+            "--cap-add",
+            "SETGID",
+            "--cap-add",
+            "DAC_OVERRIDE",
+            "--tmpfs",
+            "/packaging:size=32m,mode=755",
+            image,
+            "python",
+            "/app/tools/agent_graph_demo/check_packaging.py",
+        )
+        report["packaging_permissions"] = json.loads(package)
+        assert report["packaging_permissions"]["status"] == "PASS"
         credentials = base64.b64encode(("acceptance:" + password).encode()).decode()
 
         def request(path, body=None):

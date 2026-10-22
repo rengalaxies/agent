@@ -12,6 +12,7 @@ import uuid
 from agent_graph_demo.contracts import DemoError, now
 from agent_graph_demo.locks import locked
 from agent_graph_demo.snapshots import atomic_json
+from tools.agent_graph_demo.state_access import APP_UID, APP_GID
 
 DOCKER = ["docker", "--host=unix:///var/run/docker.sock"]
 
@@ -24,6 +25,25 @@ class RuntimeGuard:
         if not re.fullmatch(r"(?:[a-zA-Z0-9./:_-]+@)?sha256:[a-f0-9]{64}", image):
             raise DemoError("immutable_image_required")
         self.root.mkdir(parents=True, exist_ok=True, mode=0o750)
+        if os.geteuid() == 0:
+            self.state_root.mkdir(parents=True, exist_ok=True, mode=0o700)
+            if self.state_root.stat().st_uid != APP_UID:
+                raise DemoError("state_root_must_belong_to_app_uid")
+            os.chown(self.root, 0, APP_GID)
+            self.root.chmod(0o750)
+            lock = self.state_root / "workload.lock"
+            try:
+                fd = os.open(
+                    lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW, 0o600
+                )
+            except FileExistsError:
+                if lock.is_symlink() or lock.stat().st_uid != APP_UID:
+                    raise DemoError("workload_lock_owner_mismatch")
+            else:
+                try:
+                    os.fchown(fd, APP_UID, APP_GID)
+                finally:
+                    os.close(fd)
         # Do not inherit a Docker endpoint selector pointing to a different host.
         self.env = {
             k: v
@@ -78,6 +98,8 @@ class RuntimeGuard:
         }
         atomic_json(self.registry, r)
         self.registry.chmod(0o640)
+        if os.geteuid() == 0:
+            os.chown(self.registry, 0, APP_GID)
         return r
 
     def project(self, sid):

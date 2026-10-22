@@ -46,7 +46,7 @@ class JobTests(DemoCase):
         accepted = [r for r in outcomes if isinstance(r, dict)]
         self.assertEqual(len(accepted), 1)
         self.assertEqual(self.store.session(self.sid)["scenario_version"], "A")
-        self.assertTrue(self.store.session(self.sid)["needs_refresh"])
+        self.assertFalse(self.store.session(self.sid)["needs_refresh"])
         self.assertEqual(self.store.session(self.sid)["revision"], 1)
         self.worker.run_once()
         s = self.store.session(self.sid)
@@ -92,6 +92,7 @@ class JobTests(DemoCase):
         Worker(self.store, self.snap, self.cli, hook=fail).run_once()
         self.assertEqual(self.store.job(j["id"])["status"], "FAILED")
         self.assertEqual(self.store.session(self.sid)["current_context_id"], base)
+        self.assertTrue(self.store.session(self.sid)["needs_refresh"])
         self.assertEqual(self.store.session(self.sid)["scenario_version"], "A")
 
     def test_real_process_crash_recovery_unknown_no_retry(self):

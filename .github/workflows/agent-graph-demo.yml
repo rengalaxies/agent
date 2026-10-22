@@ -45,7 +45,8 @@ jobs:
           python -m ruff check src/agent_graph_demo examples/agent_graph_demo tools/agent_graph_demo tests/graph_demo --select F401,F811,F841
           node --check src/agent_graph_demo/web/app.js
       - name: Accepted core regression
-        run: PYTHONPATH="$DEMO_CORE_ROOT/src:$DEMO_CORE_ROOT" python -m unittest discover -s "$DEMO_CORE_ROOT/tests/graph" -t "$DEMO_CORE_ROOT" -v > work/core-tests.log 2>&1
+        working-directory: ${{ runner.temp }}/agent-graph-core
+        run: PYTHONPATH=src:. python -m unittest discover -s tests/graph -t . -v > "$GITHUB_WORKSPACE/work/core-tests.log" 2>&1
       - name: Prepare wheelhouse and build off-VM
         id: image
         run: |
