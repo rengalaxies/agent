@@ -140,7 +140,7 @@ class APITests(DemoCase):
         self.assertEqual(graph["demo_version"], "B")
         self.assertTrue(graph["historical"])
         self.assertEqual(diff["version"], "B")
-        self.assertIn("B/reporting/client.py", diff["text"])
+        self.assertIn("B/orders/app.py", diff["text"])
 
     def test_reset_requires_stop_and_preserves_history_idempotently(self):
         self.prepare()
