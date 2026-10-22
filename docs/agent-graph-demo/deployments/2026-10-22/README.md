@@ -26,7 +26,7 @@
 Целевое ревью охватило Basic auth и server-side viewer scope, Origin, фиксированные
 CLI и аргументы, ограничения путей и symlink, очередь/общий flock, версии и immutable
 evidence, разделение web/operator, обработку исходников, восстановление и журнал.
-Дополнительный независимый review приложения подтвердил отсутствие оставшихся
+Дополнительный review приложения не нашёл оставшихся
 блокирующих проблем после [PR37](https://github.com/rengalaxies/agent/pull/37):
 
 - Исторический diff refreshed/correction job B/D/E мог ошибочно брать A при пустом
@@ -181,7 +181,7 @@ independently_verified=false: web/core не перепроверяют дове�
 
 [target-extra-report.json](target-extra-report.json):
 
-- Anonymous 401; неверный Origin 403. Scoped viewer читает разрешённую сессию (200),
+- Anonymous 401; неверный Origin 403. Scoped viewer читает разрешённую сессию (200; scope выставлен приёмкой в `/etc/agent-graph-demo/auth.json` через `allowed_session_ids` и оставлен на стенде),
   чужая сессия и mutation дают 403. Arbitrary path payload — 422.
 - Модельный endpoint — 503 model_unavailable, реальных model calls **0**.
 - При удерживаемом общем operator lock приняты четыре jobs (202), пятый — 429.

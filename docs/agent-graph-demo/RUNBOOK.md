@@ -97,7 +97,7 @@ python tools/agent_graph_demo/run_scenario.py --config /etc/agent-graph-demo/ope
 - Backend: один процесс uvicorn, один durable worker, SQLite отдельно от core store; root-runner обращается к web SQLite только через фиксированный helper под UID 10001 (иначе root-owned WAL блокирует приложение); один RUNNING и максимум четыре QUEUED. Deadline выполнения 180 секунд; stdout CLI 2 MiB, stderr наружу не передаётся, process group terminate/kill+wait.
 - Advisory corpus: до 256 файлов, 64 KiB/file, 2 MB total, scan 15 секунд, freshness 3600 секунд, evidence максимум 60 строк — core policy defaults закреплённого pin.
 
-## Handoff развёртыванию — подготовлено, не выполнено
+## Исходный handoff развёртыванию (выполнен 22 октября 2026)
 
 Этот раздел описывает исходный handoff приложения. Последующая закрытая установка
 на существующую dm-p1-ui выполнена 22 октября 2026:
