@@ -158,9 +158,14 @@ class CoreAnalyzer:
         cancel = threading.Event()
         watcher = threading.Thread(target=_watch, args=(cancel, cancelled), daemon=True)
         watcher.start()
+        graph, gs, _ = self._parts()
         try:
-            return run_investigation(self.graph, context_id, model=self.model, cancel=cancel,
-                                     deadline_epoch=deadline_epoch, constitution_path=self.constitution_path)
+            # graph_* tools read the persistent graph within the same grants as the service query;
+            # graph ids are not evidence receipts, so anything built on them stays a candidate.
+            return run_investigation(graph, context_id, model=self.model, cancel=cancel,
+                                     deadline_epoch=deadline_epoch, constitution_path=self.constitution_path,
+                                     graph_store=gs, runtime_sources=[s.id for s in self.runtime_sources],
+                                     ownership_sources=OWNERSHIP_SOURCES)
         except GraphError:
             return None  # model failures leave the static result; the report keeps its own diagnostics
         finally:
@@ -198,7 +203,9 @@ class CoreAnalyzer:
                 texts = list(req.jira.text_fields.values())
                 operation_ids, reason = match_operations(GraphOperations(query).operations(), texts)
                 impacts = [query.impact(op, depth=2, limit=50) for op in operation_ids]
+                investigation = self._investigate(context["id"], cancelled, deadline_epoch)
                 result = jira_result(req, query, impacts, context=context, intent_reason=reason,
+                                     investigation=investigation,
                                      code_version=self.code_version, constitution_version=self.constitution_version,
                                      started_at=started, seconds=time.monotonic() - clock)
         except GraphError as exc:

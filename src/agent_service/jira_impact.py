@@ -32,9 +32,29 @@ def _unknown(items, code, subject=None):
         items.append(item)
 
 
+def _model_use(investigation):
+    """ModelUse and Costs of a constitution run; unknown token counts stay None, never zero."""
+    if investigation is None:
+        return None, {"model_calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reserved_micro": None,
+                      "currency": None}
+    usage = [e.get("usage") or {} for e in investigation.get("events", [])]
+    known = all(isinstance(u.get("prompt_tokens"), int) for u in usage)
+    model = {"configuration_id": investigation["configuration_id"], "model": investigation["model"],
+             "protocol": investigation["protocol"]}
+    return model, {"model_calls": len(usage) + sum(d.get("layer") == "transport"
+                                                   for d in investigation.get("diagnostics", [])),
+                   "prompt_tokens": sum(u["prompt_tokens"] for u in usage) if known else None,
+                   "completion_tokens": sum(u["completion_tokens"] for u in usage) if known else None,
+                   "reserved_micro": investigation.get("budget", {}).get("reserved_micro"), "currency": None}
+
+
 def jira_result(request, query, impacts: list[dict], *, context: dict, intent_reason: str, code_version: str,
-                constitution_version: str, started_at: str, seconds: float):
-    """``impacts`` holds ``query.impact()`` for every operation the task names."""
+                constitution_version: str, started_at: str, seconds: float, investigation=None):
+    """``impacts`` holds ``query.impact()`` for every operation the task names.
+
+    A model run (``investigation``) is recorded as model use and costs. Its
+    hypotheses are not rendered here yet; they are flagged as unverified.
+    """
     claims, checks, unknowns = [], [], [{"code": "jira_without_diff", "subject": None}]
     affected, paths, relationships, evidence = {}, [], {}, {}
     requirements = context["graph"].get("requirements", [])
@@ -92,6 +112,9 @@ def jira_result(request, query, impacts: list[dict], *, context: dict, intent_re
     sources = {(s["source_kind"], s["source_id"]): {k: s[k] for k in ("source_kind", "source_id", "freshness")}
                for impact in impacts for s in impact["sources"]}
     graph_version = impacts[0]["graph_version"] if impacts else request.graph_version
+    model, costs = _model_use(investigation)
+    if investigation and investigation.get("hypothesis_ids"):
+        _unknown(unknowns, "model_hypothesis_unverified")
     if not impacts:
         status, reason = "ABSTAINED", "intent_unclear"
         summary = f"The task does not name an operation found in the graph ({intent_reason})."
@@ -121,9 +144,7 @@ def jira_result(request, query, impacts: list[dict], *, context: dict, intent_re
         "unknowns": unknowns, "source_freshness": [sources[k] for k in sorted(sources)],
         "evidence": list(evidence.values()) if status not in ("ABSTAINED",) else [],
         "relationships": list(relationships.values()) if status not in ("ABSTAINED",) else [],
-        "model": None,
-        "costs": {"model_calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reserved_micro": None,
-                  "currency": None},
+        "model": model, "costs": costs,
         "timings": {"started_at": started_at, "finished_at": _now(), "seconds": {"analysis": seconds}},
     }
     return parse_document(document)
