@@ -113,6 +113,12 @@
 | G-08 | Capabilities, read-view isolation, запрет исполнения/доставки, ограниченные tools, external reports без PASS | Один доверенный OS-user, не SSO/multi-tenant; live egress и attestation не проверены |
 | G-09 | Воспроизводимая компонентная серия и сценарная стоимость | Диагностика v4 из 12 задач, сильный агент с notes, труд/эффект и спрос не измерены |
 
+Статус G-03/G-05 на 22.10.2026 ([аудит архитектуры](audits/architecture/DOC-DRIFT.md), D5):
+модель в текущем коде граф не расширяет. В `evidence-refs-v2` кандидат принимается,
+только если то же ребро уже нашёл статический extractor; в `quotes-v1` кандидат
+остаётся текстом `UNAPPROVED_CANDIDATE` и в `dependencies` не попадает.
+Обнаружение зависимостей сейчас целиком делает AST-грамматика.
+
 Проверки и их точные totals сохранены в
 [validation.json](../examples/agent_graph/reports/validation.json). Компонентная
 серия из 12 developer-authored случаев - отдельная проверка границ, не
