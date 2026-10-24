@@ -38,7 +38,7 @@ REASONS: dict[str, frozenset[str]] = {
     "PARTIAL": frozenset({
         "coverage_gaps", "source_stale", "runtime_unavailable", "model_unavailable",
         "model_step_limit", "deadline_reached", "unclassified_change", "owner_unknown",
-        "budget_exhausted"}),
+        "budget_exhausted", "hypotheses_only"}),
     "ABSTAINED": frozenset({
         "insufficient_evidence", "no_supported_delta", "intent_unclear", "out_of_scope",
         "no_consumer_found_within_profile"}),

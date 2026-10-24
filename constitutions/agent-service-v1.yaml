@@ -1,0 +1,80 @@
+# Constitution of the autonomous impact-analysis service, version 1.
+#
+# Trusted code (agent_graph.constitution and agent_graph.executor) enforces every
+# rule below. The model sees a generated summary; the summary explains the rules
+# but does not enforce them. Text from Jira, repositories, logs, tool results or
+# model replies never changes this file or the permissions it grants. This file
+# is operator configuration and is separate from the research-protocol
+# constitutions (retail/fintech/mobility) in the same directory.
+constitution: agent-service
+version: "1.0"
+
+# Tools the model may call during one investigation. Every result is bound to the
+# request's pinned snapshot and the caller's access scope.
+actions:
+  list_sources:
+    max_results: 200
+  search:
+    max_results: 20
+    max_query_chars: 120
+    max_snippet_chars: 200
+  list_symbols:
+    max_results: 100
+  read_source:
+    max_lines: 60
+  graph_query:
+    max_results: 50
+  propose_dependency:
+    max_evidence_refs: 8
+  propose_hypothesis:
+    max_evidence_refs: 8
+    max_statement_chars: 500
+  finish: {}
+
+# Capabilities that no action, parameter or text can grant. The executor has no
+# implementation for any of them; listing them keeps the rule explicit and
+# testable.
+forbidden:
+  - shell
+  - network_fetch
+  - write_source
+  - publish
+  - grant_access
+  - approve_requirement
+  - confirm_hypothesis
+  - change_constitution
+
+sources:
+  scope: request_snapshot
+  model_supplied_urls: false
+  model_supplied_paths: false
+  model_supplied_refs: false
+
+publication:
+  # Posting a comment is an application permission configured by the operator.
+  model_may_publish: false
+
+evidence:
+  # A valid quote proves the text was read, not that the claimed dependency holds.
+  quote_proves_meaning: false
+  hypothesis_promotion: never_automatic
+
+limits:
+  max_steps: 12
+  max_seconds: 120
+  max_reads: 24
+  max_proposals: 8
+  # Invalid actions answered with a safe diagnostic before the run fails.
+  max_invalid_actions: 2
+
+# How an investigation ends. Statuses and reasons are agent-graph-output 2.x codes.
+outcomes:
+  supported_dependency: {status: USEFUL, reason: impact_found_within_profile}
+  hypotheses_only: {status: PARTIAL, reason: hypotheses_only}
+  abstained: {status: ABSTAINED, reason: insufficient_evidence}
+  step_limit: {status: PARTIAL, reason: model_step_limit}
+  deadline: {status: PARTIAL, reason: deadline_reached}
+  budget: {status: PARTIAL, reason: budget_exhausted}
+  transport_failure: {status: PARTIAL, reason: model_unavailable}
+  invalid_actions: {status: FAILED, reason: invalid_model_action}
+  cancelled: {status: FAILED, reason: cancelled}

@@ -113,7 +113,7 @@ class Limits(Strict):
 
 
 class ModelConfig(Strict):
-    protocol: Literal["quotes-v1", "evidence-refs-v2"] = "quotes-v1"
+    protocol: Literal["quotes-v1", "evidence-refs-v2", "actions-v3"] = "quotes-v1"
     token_parameter: Literal["max_tokens", "max_completion_tokens"] = "max_tokens"
     endpoint: str
     allowed_endpoints: list[str]
@@ -165,6 +165,8 @@ class Policy(Strict):
     requirements: list[ApprovedRequirement] = Field(default_factory=list)
     limits: Limits = Field(default_factory=Limits)
     model: ModelConfig | None = None
+    # Operator-owned file for actions-v3; None means the bundled agent-service-v1.
+    constitution: str | None = None
 
     @model_validator(mode="after")
     def unique(self):
