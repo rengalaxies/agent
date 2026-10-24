@@ -175,7 +175,7 @@ class Graph:
                 code = "PAGE_DEFAULT_CHANGED"
             elif ((old.get("page_size_declared") or new.get("page_size_declared"))
                     and not (old["default_known"] and new["default_known"])
-                    and [e["quote"] for e in old["evidence"]] != [e["quote"] for e in new["evidence"]]):
+                    and old.get("declarations") != new.get("declarations")):
                 # The declaration changed but its default is outside the grammar on
                 # at least one side: unknown, never "no supported delta".
                 code = "PAGE_DEFAULT_UNRESOLVED"

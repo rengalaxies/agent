@@ -1,5 +1,7 @@
 # Product
 
+> Scope: the implemented synthetic web demo. The current autonomous Jira/PR service direction, graph, boxed installation and MVP gaps are defined in [the product proposal](docs/product/pilot/README.md). This file does not claim that the target autonomous service is implemented.
+
 <!-- impeccable:product-schema 1 -->
 
 ## Platform

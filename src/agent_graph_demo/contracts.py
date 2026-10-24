@@ -10,8 +10,8 @@ from urllib.parse import urlsplit
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 VERSIONS = ("A", "B", "D", "E")
-CORE_SHA = "5d7ee0f6b0bd9c4a8d91c26f24ad5f21e6471dab"
-PROFILE = "http-requests-3"
+CORE_SHA = "18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70"
+PROFILE = "http-requests-4"
 
 
 def now():
