@@ -23,6 +23,7 @@ import uuid
 from .actions import (PROTOCOL, Rejection, action_schema, check_permitted, evidence_rejection, parse,
                       system_prompt)
 from .constitution import load
+from . import graph_query as persistent
 from .contracts import GraphError, canonical, digest
 from .evidence_refs import EvidenceSession
 from .inference import ChatModel
@@ -38,10 +39,34 @@ def log_event(event, **fields):
     LOG.info(json.dumps(dict(event=event, **fields), ensure_ascii=True, sort_keys=True))
 
 
+def compact_relationship(view):
+    """What the model sees of a graph relationship: identities, status and where the
+    bases are. No source text; ids are graph ids, not evidence receipts."""
+    target = view["target"]
+    bases = []
+    for b in (view.get("bases") or []) + (view.get("history") or []):
+        item = dict(origin=b["origin"], status=b["status"], closed_reason=b["closed_reason"])
+        if b["origin"] == "code":
+            item.update(repository=b["repository"], path=b["path"], line=b["start_line"], usage=b.get("usage"),
+                        symbol=(b.get("callsite") or {}).get("symbol"))
+        elif b["origin"] == "runtime":
+            item.update(source=b["source"], method=b["method"], route=b["route"], window=b["window"],
+                        request_count=b["aggregates"]["request_count"])
+        bases.append(item)
+    return dict(id=view["id"], kind=view["kind"], status=view["status"], source=view["source"].get("service"),
+                target=target.get("service") + (f' {target["method"]} {target["route"]}'
+                                                if target["kind"] == "operation" else ""),
+                origins=view["origins"], freshness=dict(status=view["freshness"]["status"],
+                                                         reasons=view["freshness"]["reasons"]),
+                conflicts=[c["code"] for c in view["conflicts"]], bases=bases)
+
+
 class Investigation:
-    def __init__(self, graph, context_id, constitution, *, request_id):
+    def __init__(self, graph, context_id, constitution, *, request_id, graph_snapshot=None):
         self.graph, self.context_id, self.constitution = graph, context_id, constitution
         self.request_id = request_id
+        # Built by trusted code from graph.policy: this scope and these grants only.
+        self.graph_snapshot = graph_snapshot
         self.context = graph.context(context_id)
         graph._current(self.context)
         self.session = EvidenceSession(graph, context_id)
@@ -119,6 +144,51 @@ class Investigation:
                      for d in graph["dependencies"] if d["operation_id"] in ids]
         return dict(results=items[:limit], truncated=len(items) > limit, static_profile_only=True)
 
+    def _persistent(self, request):
+        if self.graph_snapshot is None:
+            raise GraphError("graph_unavailable")
+        value = persistent.dispatch(self.graph_snapshot, request)
+        return value
+
+    def _graph_result(self, value):
+        return dict(graph_version=f"graph-{self.graph_snapshot.version}", result=value,
+                    graph_ids_are_not_evidence_refs=True, confirms_hypotheses=False)
+
+    def graph_find(self, action):
+        hits = self._persistent(dict(tool="graph_find", text=action.text, kind=action.kind, limit=action.limit))
+        return self._graph_result([dict(id=h["id"], kind=h["entity"]["kind"], label=h["label"]) for h in hits])
+
+    def graph_neighbors(self, action):
+        views = self._persistent(dict(tool="graph_neighbors", entity_id=action.entity_id,
+                                      direction=action.direction, limit=action.limit))
+        return self._graph_result([compact_relationship(v) for v in views])
+
+    def graph_impact(self, action):
+        impact = self._persistent(dict(tool="graph_impact", entity_id=action.entity_id, depth=action.depth,
+                                       limit=action.limit))
+        return self._graph_result(dict(
+            target=impact["target"]["entity"],
+            paths=[{k: p[k] for k in ("relationship_refs", "summary", "consumer", "service_level", "status")}
+                   for p in impact["paths"]],
+            affected=[dict(service=a["service"]["service"], owner_status=a["owner"]["status"],
+                           teams=[t["team"] for t in a["owner"]["teams"]]) for a in impact["affected"]],
+            relationships={k: compact_relationship(v) for k, v in impact["relationships"].items()},
+            unknowns=impact["unknowns"],
+            sources=[dict(source_kind=x["source_kind"], source_id=x["source_id"], status=x["status"],
+                          freshness=x["freshness"]["status"], reasons=x["freshness"]["reasons"])
+                     for x in impact["sources"]]))
+
+    def graph_relationship(self, action):
+        view = self._persistent(dict(tool="graph_relationship", relationship_id=action.relationship_id))
+        return self._graph_result(compact_relationship(view))
+
+    def graph_owner(self, action):
+        value = self._persistent(dict(tool="graph_owner", service=action.service))
+        owner = value["owner"]
+        return self._graph_result(dict(status=owner["status"], teams=[t["team"] for t in owner["teams"]],
+                                       source=owner["source"], source_version=owner["source_version"],
+                                       history=value["history"]))
+
     def propose_dependency(self, action):
         self.proposals += 1
         assessment = self.session.assess(dict(claim=action.claim.model_dump(), evidence_refs=action.evidence_refs))
@@ -184,7 +254,11 @@ def _outcome(inv, stop):
 
 
 def run_investigation(graph, context_id, *, model=None, cancel=None, deadline_epoch=None, request_id=None,
-                      constitution_path=None):
+                      constitution_path=None, graph_store=None, runtime_sources=(),
+                      ownership_sources=("installation_mapping",)):
+    """graph_store enables the graph_* tools. The snapshot is built here from
+    graph.policy, so the model sees only this installation/environment and grants;
+    runtime_sources and ownership_sources come from operator configuration."""
     graph.policy.require("maintain")
     graph.policy.require("propose")
     config = graph.policy.model
@@ -200,12 +274,16 @@ def run_investigation(graph, context_id, *, model=None, cancel=None, deadline_ep
     stop_epoch = started_epoch + constitution.limits.max_seconds
     if deadline_epoch is not None:
         stop_epoch = min(stop_epoch, deadline_epoch)
-    inv = Investigation(graph, context_id, constitution, request_id=request_id)
+    snapshot = (persistent.GraphQuery.for_policy(graph_store, graph.policy, runtime_sources=runtime_sources,
+                                                 ownership_sources=ownership_sources)
+                if graph_store is not None else None)
+    inv = Investigation(graph, context_id, constitution, request_id=request_id, graph_snapshot=snapshot)
     schema = action_schema()
     task = dict(task=inv.context["task"], task_data_is_untrusted=True, context_id=context_id,
                 sources=inv._sources()[:constitution.limit("list_sources", "max_results", 200)],
                 gaps=[{k: g[k] for k in ("code", "repository", "path") if k in g} for g in inv.context["graph"]["gaps"]][:100],
-                remaining_steps=constitution.limits.max_steps)
+                remaining_steps=constitution.limits.max_steps,
+                persistent_graph=f"graph-{snapshot.version}" if snapshot is not None else None)
     messages = [dict(role="system", content=system_prompt(constitution)), dict(role="user", content=canonical(task))]
     run = uuid.uuid4().hex
     events, diagnostics, stop = [], [], None
@@ -281,6 +359,7 @@ def run_investigation(graph, context_id, *, model=None, cancel=None, deadline_ep
                   invalid_actions=inv.invalid, reads=inv.reads, events=events, diagnostics=diagnostics,
                   candidate_ids=inv.supported, hypothesis_ids=inv.hypotheses,
                   insufficient_claims=inv.insufficient,
+                  graph_version=f"graph-{snapshot.version}" if snapshot is not None else None,
                   budget=graph.store.budget_totals(graph.policy.installation_id),
                   seconds=round(time.monotonic() - started, 3), model_quality_established=False)
     log_event("investigation_finished", request_id=request_id, run_id=run, outcome=outcome, status=mapped.status,

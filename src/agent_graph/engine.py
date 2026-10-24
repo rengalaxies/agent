@@ -6,10 +6,10 @@ import time
 import uuid
 
 from . import PROFILE, SCHEMA
-from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal
+from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal, digest
 from .discovery import extract
 from .sources import collect, pinned_freshness, pinned_only
-from .store import Store
+from .store import Store, cited_bases, scope_id
 
 
 MAX_EVIDENCE_BATCH = 5000
@@ -19,10 +19,37 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def content_keys(context):
+    return {(s["repository"], s["path"]): s["sha256"] for s in context["sources"].values()}
+
+
+def config_digest(policy, repositories):
+    """Configuration a proposal's sufficiency depends on: the service address map and the
+    approved requirements stored in the repositories it cites. Other repositories and
+    their requirements are excluded, so adding a repository keeps knowledge."""
+    return digest([policy.addresses_dump(),
+                   [r.model_dump() for r in policy.requirements if r.repository in repositories]])
+
+
+def holds(row, keys, policy, view):
+    """A proposal holds in a context while every cited file has the same content there and
+    the address map and requirements are those it was made under. A v1 row has no stored
+    configuration; its own view, which includes both, must then match."""
+    bases = row.get("cited_bases") or []
+    config = config_digest(policy, {b["repository"] for b in bases})
+    same_config = row["cited_config"] == config if row.get("cited_config") else row.get("cited_view") == view
+    return bool(bases) and same_config and all(
+        keys.get((b["repository"], b["path"])) == b["sha256"] for b in bases)
+
+
 class Graph:
     def __init__(self, policy: Policy, store: Store):
         self.policy, self.store = policy, store
         self.view = policy.view_id()
+        # Knowledge is shared by installation/environment and filtered by read grants,
+        # so a wider or narrower view neither loses nor leaks it.
+        self.scope = scope_id(policy.installation_id, policy.environment)
+        self.grants = {r.id for r in policy.repositories}
 
     def prepare_context(self, task="", operation_id=None, revisions=None):
         """revisions: commit per git repository; worktree repositories stay unpinned."""
@@ -158,22 +185,35 @@ class Graph:
         record = dict(proposal=p.model_dump(), context_id=context_id, basis=context["basis"],
                       actor=self.policy.subject, origin="model" if from_model else "external",
                       trust="HUMAN_CORRECTION" if p.kind == "human_correction" else "UNAPPROVED_CANDIDATE")
+        keys, bases = content_keys(context), cited_bases(context, [c.model_dump() for c in p.citations])
         return self.store.propose(self.view, record, context["id"], limit=self.policy.limits.max_proposals,
+                                  scope=self.scope, grants=self.grants, bases=bases,
+                                  config=config_digest(self.policy, {b["repository"] for b in bases}),
+                                  active=lambda row: holds(row, keys, self.policy, self.view),
                                   **({"admission_check": admission_check} if admission_check is not None else {}))
 
     def proposals(self, context, *, assessment=None):
+        """Each proposal is judged by the files it cites, not by the whole corpus basis.
+
+        An unrelated edit (a README) keeps it CURRENT in the new context; a change of a
+        cited file, of the service address map or of approved requirements makes it STALE
+        with proposal_basis_differs. History stays readable.
+        """
         assessment = self.freshness(context) if assessment is None else assessment
-        rows = self.store.proposals(self.view)
+        rows = self.store.scoped_proposals(self.scope, self.grants)
+        keys = content_keys(context)
         output = []
         superseded = {x["proposal"]["supersedes"] for x in rows if x["proposal"]["supersedes"]}
+        holding = {x["id"] for x in rows if holds(x, keys, self.policy, self.view)}
         for row in rows:
-            fresh = assessment if row["basis"] == context["basis"] else {
+            fresh = assessment if row["id"] in holding else {
                 **assessment, "status": "STALE", "reasons": assessment["reasons"] + ["proposal_basis_differs"]}
             conflicting = [x["id"] for x in rows if x["id"] != row["id"]
                            and x["proposal"]["key"] == row["proposal"]["key"]
                            and x["proposal"]["statement"] != row["proposal"]["statement"]
-                           and x["basis"] == row["basis"] and x["id"] not in superseded]
-            output.append({**row, "status": "SUPERSEDED" if row["id"] in superseded else fresh["status"],
+                           and x["id"] in holding and row["id"] in holding and x["id"] not in superseded]
+            public = {k: v for k, v in row.items() if k not in ("cited_bases", "cited_config", "cited_view")}
+            output.append({**public, "status": "SUPERSEDED" if row["id"] in superseded else fresh["status"],
                            "freshness": fresh,
                            "conflicts_with": conflicting})
         return output
