@@ -5,7 +5,9 @@
 разработки отсутствует. Протокол 2А ещё не подключён, поэтому фазы development и evaluation
 сейчас отказываются стартовать. Это сделано намеренно, а не по недосмотру.
 
-Ветка `claude/mvp-2b-prep-9d9655`, основа `main` 9d7480d. Задача: остаток #50.
+Ветка `claude/mvp-2b-prep-9d9655`, основа: коммит контрактов 2А `d8dd64a` (agent-graph-output 2.0)
+поверх `main` 9d7480d. Задача: остаток #50. Action-протокол и исполнитель 2А в эту основу ещё
+не входят.
 
 ## Что сделано
 
@@ -15,7 +17,7 @@
 | Программа `2b-r1` | `.../2b-r1/program.json` | зафиксирована до прогона |
 | Корпус 1 + 20 + 40 случаев | `.../2b-r1/cases/{transport,development,evaluation}/` | эталон проверен исполнением фикстур |
 | Эталон | `.../2b-r1/oracle/*.json` | только для оценщика |
-| Manifest с объёмом и стоимостью | `.../2b-r1/manifest.json` | digest `cddfccc4...65bfa` на этом коммите |
+| Manifest с объёмом и стоимостью | `.../2b-r1/manifest.json` | digest `1e659342...41a03` на этом коммите |
 | Транспорт Cloud.ru | `tools/autonomous_mvp/transport.py` | офлайн |
 | Адаптер к action-протоколу | `tools/autonomous_mvp/protocol.py` | interim на main, 2А ждёт SHA |
 | Runner и ledger | `tools/autonomous_mvp/{runner,ledger}.py` | офлайн |
@@ -174,9 +176,19 @@ Ledger резервирует худший случай перед первым 
   строкой. Без SDK, прокси, редиректов и повторов. Ключ читается из `CLOUDRU_FOUNDATION_API_KEY`
   в момент отправки; заголовок с переводом строки отклоняется.
 - `protocol.py` содержит тонкий адаптер. Runner видит только нормализованные `StepOutcome` и
-  `ClaimRecord`: слой отказа, код, безопасный путь поля, подлинность и достаточность каждого
-  утверждения, уровень уверенности. Сейчас зарегистрированы `evidence-refs-v2-interim` (протокол
-  main) и заглушка `agent-service-v1`, которая не открывает случаи до интеграции 2А.
+  `ClaimRecord`. Сейчас зарегистрированы `evidence-refs-v2-interim` (протокол main) и заглушка
+  `agent-service-v1`, которая не открывает случаи до интеграции action-протокола 2А.
+- Записи адаптера используют словарь agent-graph-output 2.0 (`src/agent_graph/output_contracts.py`):
+  `kind` fact/hypothesis как у `Claim`, `origin` code/model_hypothesis, `provenance`
+  AUTHENTIC/UNVERIFIED/REJECTED, `sufficiency` контракта, `unknowns` из `UnknownCode`. Кандидат вне
+  статической грамматики превращается в `HypothesisEvidence` (`hypothesis_evidence()`), и контракт
+  сам не даёт ему стать достаточным. Отказ невалидного действия несёт `errors` в форме
+  `ContractError.errors`: `path`, `type`, `rule`, без значений входа; незнакомый сегмент пути
+  становится `*`.
+- Итог случая (`final`) сверяется с контрактом: пара `status`/`reason_code` должна быть в `REASONS`,
+  `unknowns` и `gaps` должны состоять из кодов `UnknownCode` и `GapCode`. Иначе случай не засчитан.
+  Принятое утверждение, нарушающее правила `AnalysisResult` (факт без достаточного кодового
+  основания, достаточная гипотеза, ссылка на REJECTED), нарушает обязательное условие G2.
 - `runner.py` выполняет случай: материализует Git-фикстуры, ведёт диалог до лимита шагов и
   абсолютного срока. Ответ, пришедший после срока, исполнителю не показывается. Содержимое
   ответов модели нигде не сохраняется.
@@ -202,7 +214,7 @@ Windows 11, Python 3.14.5, pydantic 2.14.1, venv в worktree.
 PYTHONPATH=".;src" .venv/Scripts/python -m unittest discover -s tools/autonomous_mvp/tests -t .
 ```
 
-Результат: 63 теста, OK, 7 пропущено. Пропущены тесты, которым нужен `agent_graph` на POSIX
+Результат: 67 тестов, OK, 7 пропущено. Пропущены тесты, которым нужен `agent_graph` на POSIX
 (`fcntl`, `O_DIRECTORY`): 6 тестов адаптера `evidence-refs-v2-interim` и сверка корпуса со
 статическим extractor. Эти 7 тестов я отдельно прогнал локально через временный shim с
 подменой `fcntl` и чтения файлов: 7 из 7 OK. Shim в репозиторий не попал, поэтому на Linux они
@@ -211,7 +223,7 @@ PYTHONPATH=".;src" .venv/Scripts/python -m unittest discover -s tools/autonomous
 ```bash
 python tools/autonomous_mvp/generate_cases.py --check        # CHECKED 64
 python -m tools.autonomous_mvp.oracle_check                  # ORACLE_CHECK cases=61 failed=0
-python -m tools.autonomous_mvp.program --check               # MANIFEST_CURRENT cddfccc4...
+python -m tools.autonomous_mvp.program --check               # MANIFEST_CURRENT 1e659342...
 actionlint .github/workflows/autonomous-mvp-model.yml         # 1.7.7, без замечаний (без shellcheck)
 ruff check tools/autonomous_mvp --select F401,F811,F841      # 0.17.1, All checks passed
 ```
@@ -287,11 +299,14 @@ gh workflow run autonomous-mvp-model.yml --repo rengalaxies/agent --ref main -f 
 
 ## Ограничения и открытые вопросы
 
-- **Контракт 2А.** В `a8394d3` (ветка `claude/mvp-2a-core-205322`) у `finish` есть только
-  `outcome` и `reason`; `unknowns` есть только у `propose_hypothesis`, `impact` нет совсем. Метрики
-  "признание неизвестного" и "точность impact" без этого не измеримы. Варианты: 2А добавляет
-  `unknowns` и `impact` в `finish`, либо до первого прогона создаётся ревизия программы, где эти
-  метрики переходят в пачку 4 (AnalysisResult). Выбор за координатором.
+- **Impact в контракте 2.0.** Признание неизвестного выражается контрактом: `Unknown(code=
+  requirement_unknown, subject=<сервис>)` и `Gap(code=source_unavailable, repository=...)`; scorer
+  их уже принимает. Для вердиктов AT_RISK / NOT_AT_RISK по сервису в 2.0 кода нет: ближайшее,
+  `Finding POSSIBLE_TRUNCATION`, строит ядро по diff, а не модель. Кроме того, в черновике
+  actions-v3 (`a8394d3`) у `finish` есть только `outcome` и `reason`. Пока это не решено, метрика
+  T8 "точность impact" не измерима и G8 не пройдёт. Варианты: 2А или пачка 4 добавляет код
+  вердикта impact, либо до первого прогона выходит ревизия программы без T8. Выбор за
+  координатором.
 - **PR CI не запускает `tools/autonomous_mvp/tests`.** `core-tests.yml` ищет тесты только в
   `tests/`. Нужна строка `python -m unittest discover -s tools/autonomous_mvp/tests -t .` в
   `core-tests.yml` или `graph-evidence-refs.yml`; эти файлы вне моей зоны.
@@ -305,6 +320,7 @@ gh workflow run autonomous-mvp-model.yml --repo rengalaxies/agent --ref main -f 
 
 ## Следующий шаг
 
-Получить от координатора SHA коммита контрактов 2А, сделать rebase, написать адаптер
-`agent-service-v1` поверх `Investigation.handle`, решить вопрос `impact`/`unknowns`, пересобрать
-manifest и обновить этот отчёт. Живой прогон остаётся за владельцем после слияния в `main`.
+Rebase на контракты 2А (`d8dd64a`) сделан. Дальше: получить SHA коммита с action-протоколом и
+исполнителем 2А, сделать rebase, написать адаптер `agent-service-v1` поверх
+`Investigation.handle`, решить вопрос кода impact, пересобрать manifest и обновить этот отчёт.
+Живой прогон остаётся за владельцем после слияния в `main`.
