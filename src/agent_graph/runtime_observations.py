@@ -84,17 +84,16 @@ def relationship_id(kind, from_id, to_id):
     return digest([kind, from_id, to_id])
 
 
-# assess() status -> (FreshnessReason, UnknownCode) of output_contracts. None where
-# the 2.0 contract has no code yet; batch-3.md lists the missing ones.
+# assess() status -> (FreshnessReason, UnknownCode) of output_contracts 2.1.
 ASSESSMENT_CODES = {
     "OBSERVED": (None, None),
     "NO_TRAFFIC_OBSERVED": ("no_traffic_in_window", "runtime_not_observed"),
     "SAMPLED_NOT_OBSERVED": ("sampled_source", "runtime_not_observed"),
     "WINDOW_GAP": ("window_gap", "runtime_window_gap"),
     "SOURCE_UNAVAILABLE": ("source_unavailable", "runtime_not_observed"),
-    "CALLEE_NOT_INSTRUMENTED": (None, "runtime_not_observed"),
-    "ROUTE_NOT_RECORDED": (None, None),
-    "OTHER_ROUTE_OBSERVED": (None, None),
+    "CALLEE_NOT_INSTRUMENTED": ("not_instrumented", "runtime_not_instrumented"),
+    "ROUTE_NOT_RECORDED": ("route_not_recorded", "runtime_route_not_recorded"),
+    "OTHER_ROUTE_OBSERVED": ("route_conflict", "runtime_route_conflict"),
 }
 
 

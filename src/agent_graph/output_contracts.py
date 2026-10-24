@@ -18,7 +18,8 @@ from .contracts import GraphError, Strict, digest
 
 SCHEMA_ID = "agent-graph-output"
 SCHEMA_MAJOR = 2
-SCHEMA_MINOR = 0
+# 2.1 (batch 3): runtime freshness/unknown/gap codes and Claim.subject. Additive only.
+SCHEMA_MINOR = 1
 SCHEMA_VERSION = f"{SCHEMA_MAJOR}.{SCHEMA_MINOR}"
 
 Timestamp = Annotated[str, Field(
@@ -70,15 +71,17 @@ GapCode = Literal[
     "unknown_http_client", "dynamic_or_unsupported_call", "unsupported_url", "ambiguous_mapping",
     "unmapped_call", "dynamic_parameters",
     # Requirements and other bases.
-    "requirement_basis_stale", "runtime_source_unavailable", "ownership_source_unavailable"]
+    "requirement_basis_stale", "runtime_source_unavailable", "ownership_source_unavailable",
+    "runtime_window_gap"]
 UnknownCode = Literal[
     "requirement_unknown", "owner_unknown", "owner_conflict", "jira_without_diff",
     "unclassified_change", "helper_semantics_unknown", "runtime_not_observed",
-    "runtime_window_gap", "result_set_size_unknown", "model_hypothesis_unverified"]
+    "runtime_window_gap", "result_set_size_unknown", "model_hypothesis_unverified",
+    "runtime_not_instrumented", "runtime_route_not_recorded", "runtime_route_conflict"]
 FreshnessReason = Literal[
     "basis_changed", "age_exceeded", "partial_coverage", "current_corpus_unavailable",
     "proposal_basis_differs", "source_unavailable", "no_traffic_in_window", "sampled_source",
-    "window_gap", "worktree_not_reproducible"]
+    "window_gap", "worktree_not_reproducible", "not_instrumented", "route_not_recorded", "route_conflict"]
 
 EvidenceOrigin = Literal["code", "runtime", "model_hypothesis", "correction", "external_report"]
 Provenance = Literal["AUTHENTIC", "UNVERIFIED", "REJECTED"]
@@ -371,6 +374,9 @@ class Claim(Strict):
     applicability: Text
     uncertainty: Literal["LOW", "MEDIUM", "HIGH", "UNKNOWN"]
     unknowns: list[UnknownCode] = Field(default_factory=list, max_length=16)
+    # 2.1: what the claim is about. A fact about an operation needs evidence that
+    # names that operation; a runtime service edge without a route does not.
+    subject: Entity | None = None
 
 
 class Delta(Strict):
@@ -512,6 +518,13 @@ class AnalysisResult(_Document):
                     e.origin != "model_hypothesis" and e.provenance == "AUTHENTIC"
                     and e.sufficiency in FactSufficiency for e in cited):
                 raise ValueError("fact_without_sufficient_evidence")
+            subject = claim.subject
+            if claim.kind == "fact" and subject is not None and subject.kind == "operation" and not any(
+                    e.provenance == "AUTHENTIC" and e.sufficiency in FactSufficiency and (
+                        e.origin == "code" or e.origin == "runtime" and e.method == subject.method
+                        and e.route == subject.route and e.provider.service == subject.service)
+                    for e in cited):
+                raise ValueError("fact_without_operation_evidence")
             if any(e.provenance == "REJECTED" for e in cited):
                 raise ValueError("claim_cites_rejected_evidence")
         if self.status == "USEFUL" and not self.claims:
