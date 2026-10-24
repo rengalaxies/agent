@@ -68,8 +68,14 @@ class GraphQuery:
         self._by_rel = {}
         for b in self._bases:
             self._by_rel.setdefault(b["relationship"], []).append(b)
-        self._rels = {k: v for k, v in relationships.items() if k in self._by_rel}
-        visible = {x for r in self._rels.values() for x in (r["source"], r["target"])}
+        rels = {k: v for k, v in relationships.items() if k in self._by_rel}
+        # A service becomes visible through code or runtime only. The installation-wide
+        # ownership mapping must not reveal services of revoked repositories.
+        visible = {x for r in rels.values() if r["kind"] != "owns" for x in (r["source"], r["target"])}
+        self._rels = {k: v for k, v in rels.items() if v["kind"] != "owns" or v["target"] in visible}
+        self._bases = [b for b in self._bases if b["relationship"] in self._rels]
+        self._by_rel = {k: v for k, v in self._by_rel.items() if k in self._rels}
+        visible |= {r["source"] for r in self._rels.values()}
         visible |= {b["data"]["callsite"]["id"] for b in self._bases if b["data"].get("callsite")}
         self._entities = {k: v for k, v in entities.items() if k in visible}
         self._sources = {(s["source_kind"], s["source_id"]): s for s in graph_store.sources(self.scope)
