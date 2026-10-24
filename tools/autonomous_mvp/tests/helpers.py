@@ -33,9 +33,9 @@ class FakeSession:
         if data["action"] == "read":
             return StepOutcome(action="read_source", valid=True, tool=dict(source_id="s"), messages=msgs)
         if data["action"] == "propose":
-            claims = [ClaimRecord(claim=c["claim"], kind=c.get("kind", "dependency"),
+            claims = [ClaimRecord(claim=c["claim"], kind=c.get("kind", "fact"), origin=c.get("origin", "code"),
                                   ref_digests=[ref_digest(r) for r in c.get("refs", ["issued"])],
-                                  provenance=c.get("provenance", "AUTHENTIC_AUTHORIZED_CURRENT"),
+                                  provenance=c.get("provenance", "AUTHENTIC"),
                                   sufficiency="SUPPORTED_WITHIN_PROFILE", admitted=c.get("admitted", True),
                                   confidence=c.get("confidence", "CONFIRMED_WITHIN_PROFILE")) for c in data["claims"]]
             return StepOutcome(action="propose", valid=True, claims=claims, messages=msgs)
@@ -43,7 +43,7 @@ class FakeSession:
             return StepOutcome(action="finish", valid=True, terminal=data.get("terminal", "FINISHED"),
                                final=data.get("final"), messages=msgs)
         return StepOutcome(action="<unparsed>", valid=False, layer="schema", reason_code="schema_violation",
-                           field_path="/action", expected_type="literal_error", messages=msgs)
+                           errors=[dict(path="action", type="literal_error")], messages=msgs)
 
     def close(self):
         self.protocol.closed += 1

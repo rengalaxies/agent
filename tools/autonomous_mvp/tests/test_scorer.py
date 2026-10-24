@@ -9,19 +9,31 @@ ORACLE = program_mod.load_oracle(BASE)
 EVAL = sorted(k for k, c in CASES.items() if c["split"] == "evaluation")
 
 
-def admitted(c, confidence=None, refs=("issued",), provenance="AUTHENTIC_AUTHORIZED_CURRENT"):
+REASON = dict(USEFUL="impact_found_within_profile", PARTIAL="coverage_gaps", ABSTAINED="insufficient_evidence",
+              FAILED="invalid_model_action")
+
+
+def admitted(c, confidence=None, refs=("issued",), provenance="AUTHENTIC"):
+    """A claim record as an executor would admit it: a fact when confirmed, otherwise a hypothesis."""
     claim = {k: c[k] for k in scorer.FIELDS}
-    return dict(claim=claim, kind="dependency", ref_digests=[hashlib.sha256(r.encode()).hexdigest() for r in refs],
-                provenance=provenance, provenance_reason=None, sufficiency="SUPPORTED_WITHIN_PROFILE", admitted=True,
-                confidence=confidence or c["max_confidence"])
+    level = confidence or c["max_confidence"]
+    fact = level == "CONFIRMED_WITHIN_PROFILE"
+    return dict(claim=claim, kind="fact" if fact else "hypothesis", origin="code" if fact else "model_hypothesis",
+                ref_digests=[hashlib.sha256(r.encode()).hexdigest() for r in refs], provenance=provenance,
+                provenance_reason=None, sufficiency="SUPPORTED_WITHIN_PROFILE" if fact else "INSUFFICIENT",
+                unknowns=[] if fact else ["model_hypothesis_unverified"], admitted=True, confidence=level)
 
 
 def ideal_result(case_id):
     """What a perfect model on a full protocol would leave in the ledger."""
     o, c = ORACLE[case_id], CASES[case_id]
-    final = dict(status=o["acceptable_statuses"][0], unknowns=list(o["required_unknowns"]), impact=dict(o["impact"]))
+    status = o["acceptable_statuses"][0]
+    final = dict(status=status, reason_code=REASON[status],
+                 gaps=[dict(code="source_unavailable", repository=r) for r in o["required_unknowns"]],
+                 unknowns=[dict(code="requirement_unknown", subject=s) for s, v in o["impact"].items() if v == "UNKNOWN"],
+                 impact={s: v for s, v in o["impact"].items() if v != "UNKNOWN"})
     terminal = "STEP_LIMIT" if o["harness_stop"] == "STEP_LIMIT" else "FINISHED"
-    steps = [dict(step=0, action="read_source", valid=True, layer=None, reason_code=None, field_path=None, claims=[])]
+    steps = [dict(step=0, action="read_source", valid=True, layer=None, reason_code=None, errors=[], claims=[])]
     return dict(case_id=case_id, repeat=1, family=c["family"], split=c["split"], terminal=terminal, reason_code=None,
                 steps=steps, claims=[admitted(x) for x in o["required_claims"]], final=final, invalid_actions=0,
                 requests=1, wall_seconds=12.0, max_model_steps=c["limits"]["max_model_steps"],
@@ -105,11 +117,46 @@ class Verdicts(unittest.TestCase):
     def test_no_evaluation_at_all_is_disabled(self):
         self.assertEqual(scorer.verdict(PROGRAM, CASES, [], ORACLE)["verdict"], "DISABLED")
 
+    def test_admitted_hypothesis_marked_sufficient_breaks_the_contract_gate(self):
+        def sufficient(phase, results):
+            r = find(results, "F11_config_context")
+            r["claims"][0]["sufficiency"] = "SUPPORTED_WITHIN_PROFILE"
+        v = evaluate(sufficient)
+        self.assertEqual(v["measurements"]["evidence"]["contract_violations"], 3)
+        self.assertFalse(v["gates"]["G2_accepted_forged_or_unauthentic_refs"])
+
+    def test_reason_code_from_another_status_fails_the_case(self):
+        def mismatch(phase, results):
+            r = find(results, "F01_true_consumer")
+            r["final"] = dict(r["final"], status="USEFUL", reason_code="coverage_gaps")
+        v = evaluate(mismatch)
+        self.assertEqual(v["measurements"]["semantics"]["case_pass"]["numerator"], 117)
+        self.assertEqual(v["measurements"]["abstention"]["status_accuracy"]["numerator"], 117)
+
+    def test_unknown_code_outside_the_contract_is_not_accepted(self):
+        def invented(phase, results):
+            r = find(results, "F08_justified_unknown")
+            r["final"]["unknowns"] = [dict(code="probably_fine", subject=u["subject"]) for u in r["final"]["unknowns"]]
+        v = evaluate(invented)
+        self.assertEqual(v["measurements"]["families"]["F08_justified_unknown"]["numerator"], 6)
+
+    def test_candidate_maps_to_a_valid_hypothesis_evidence_and_a_sufficient_one_is_refused(self):
+        from pydantic import ValidationError
+        from tools.autonomous_mvp.protocol import hypothesis_evidence
+        record = admitted(ORACLE["E04a"]["required_claims"][0])
+        doc = hypothesis_evidence(record, model_configuration_id="amvp-2b:openai/gpt-oss-120b",
+                                  visibility=["routing"], checked_at="2026-10-24T12:00:00Z")
+        self.assertEqual((doc["origin"], doc["sufficiency"]), ("model_hypothesis", "INSUFFICIENT"))
+        with self.assertRaises(ValidationError):
+            hypothesis_evidence(dict(record, sufficiency="SUPPORTED_WITHIN_PROFILE"),
+                                model_configuration_id="m", visibility=["routing"], checked_at="2026-10-24T12:00:00Z")
+
     def test_unknown_impact_answered_as_at_risk_fails_acknowledgement_but_not_gates(self):
         def overclaim(phase, results):
             for r in results:
                 if r["family"] == "F08_justified_unknown":
-                    r["final"]["impact"] = {k: "AT_RISK" for k in r["final"]["impact"]}
+                    r["final"]["impact"] = {u["subject"]: "AT_RISK" for u in r["final"]["unknowns"]}
+                    r["final"]["unknowns"] = []
         v = evaluate(overclaim)
         self.assertTrue(all(v["gates"].values()))
         ack = v["measurements"]["abstention"]["unknown_acknowledgement"]

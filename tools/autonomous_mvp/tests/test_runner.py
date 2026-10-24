@@ -97,7 +97,7 @@ class Limits(RunnerHarness):
         result = state["case_runs"][0]["result"]
         self.assertEqual(result["terminal"], "ACTION_REJECTED_LIMIT")
         self.assertEqual(len(transport.sent), self.program["parameters"]["max_invalid_actions_per_case"] + 1)
-        self.assertEqual(result["steps"][0]["field_path"], "/action")
+        self.assertEqual(result["steps"][0]["errors"], [dict(path="action", type="literal_error")])
 
     def test_truncated_output_is_an_action_failure_not_a_transport_failure(self):
         self.program["phases"]["transport"]["repeat"] = 1

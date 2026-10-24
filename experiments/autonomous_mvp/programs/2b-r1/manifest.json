@@ -77,6 +77,7 @@
     "src/agent_graph/engine.py": "56ceeb21ea874aa6132ee3b2c7880d9e7486e8721735733221fec90de977886a",
     "src/agent_graph/evidence_refs.py": "27908e35566cce20b56120e588edf3dcc5ac33e0d325b0ab04d21d930ebb9a8b",
     "src/agent_graph/inference.py": "d2375a1efe5159f008f4574030aba91e4e6097414a92c6ca8ec7c4f817fbc5ee",
+    "src/agent_graph/output_contracts.py": "8893c14b10ea5a24bb7db2344af50f889046d3f2c55355f09ee604bdb82b8cac",
     "src/agent_graph/sources.py": "a90637ca647cea411dacbb78323facb5434d74c6dd6cdac86b9fd7f8b6232b2d",
     "src/agent_graph/store.py": "1c036a3610be8b6a7aadd25a62db0f2dc56be05c0e8265d24a2e4d45c3124555",
     "tools/autonomous_mvp/__init__.py": "72ef993c5ddaa5cbb16237d2992878261471bfc1b4bcc7c9a4475cd4124a4717",
@@ -85,12 +86,12 @@
     "tools/autonomous_mvp/ledger.py": "23717da20f8ad52681d7169a79fe3770c8bac60e5c224c364c58904f98d2d8b3",
     "tools/autonomous_mvp/oracle_check.py": "dd2ea99446fa2ea0c2446f0e82d3c4272e0acac3a23cbce3c20994191ed2dc8d",
     "tools/autonomous_mvp/program.py": "a26e82d518ba22f859c8501890b421a292ccb2e90549aaa3870d8f9cc937f7ed",
-    "tools/autonomous_mvp/protocol.py": "6f0755f8f78650eddc0c42d54e76fb81d497cf7269763262f8b350ebf193e4ba",
+    "tools/autonomous_mvp/protocol.py": "8f74bb0110962d4ca628950d934538cdb75641760d5aa295cd77791ff4c838fd",
     "tools/autonomous_mvp/runner.py": "5836adebf13670c9e43d2c343dc1dcfdf2b8f53345d0c01fd917bcff241d73b6",
-    "tools/autonomous_mvp/scorer.py": "70f3c4db166bd5460dab78228eb3537487d530cc66f1026b5ad101a10e1b15cd",
+    "tools/autonomous_mvp/scorer.py": "72d4a789f37590d1fa78a835c23a6e92a95c6c7e2ddc1fcfdfa1c6b53cca92f1",
     "tools/autonomous_mvp/transport.py": "e90c228b44e4008e970375e37a5e2ac5957b754f01a5cae9e9f55bd57ae1f04f"
   },
-  "manifest_digest": "cddfccc4104e69283319d1d5ac1503ca3c47da816e8c9f66cfa46c771c965bfa",
+  "manifest_digest": "1e659342e5b77432c05512efa07a0381c32e713747e1d3b23f14c0b163541a03",
   "oracle_scope": "evaluator only; never passed to the protocol, the model or its configuration",
   "program": {
     "baseline": "None. No paid closed model is part of this program; a labelled comparison would be a separate revision.",
@@ -328,7 +329,7 @@
         "src/agent_graph/evidence_refs.py": "27908e35566cce20b56120e588edf3dcc5ac33e0d325b0ab04d21d930ebb9a8b",
         "src/agent_graph/inference.py": "d2375a1efe5159f008f4574030aba91e4e6097414a92c6ca8ec7c4f817fbc5ee",
         "src/agent_graph/sources.py": "a90637ca647cea411dacbb78323facb5434d74c6dd6cdac86b9fd7f8b6232b2d",
-        "tools/autonomous_mvp/protocol.py": "6f0755f8f78650eddc0c42d54e76fb81d497cf7269763262f8b350ebf193e4ba"
+        "tools/autonomous_mvp/protocol.py": "8f74bb0110962d4ca628950d934538cdb75641760d5aa295cd77791ff4c838fd"
       },
       "constitution": null,
       "interim": true,

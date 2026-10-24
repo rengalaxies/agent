@@ -102,14 +102,14 @@ class InterimAdapter(unittest.TestCase):
         result = self.run_case("D03", script)
         c = result["claims"][0]
         self.assertEqual((c["provenance"], c["sufficiency"], c["admitted"]),
-                         ("AUTHENTIC_AUTHORIZED_CURRENT", "INSUFFICIENT", False))
+                         ("AUTHENTIC", "INSUFFICIENT", False))
 
     def test_schema_violation_reports_a_path_without_echoing_model_keys(self):
         bad = json.dumps(dict(action="finish", source_id=None, start_line=None, end_line=None, proposals=[],
                               leaked_value_sk_live_123=True))
         result = self.run_case("S01", lambda step, state: reply(bad))
         first = result["steps"][0]
-        self.assertEqual((first["layer"], first["field_path"]), ("schema", "/<extra>"))
+        self.assertEqual((first["layer"], first["errors"]), ("schema", [dict(path="*", type="extra_forbidden")]))
         self.assertNotIn("leaked_value", json.dumps(result))
 
     def test_unlisted_source_read_is_a_tool_admissibility_rejection(self):

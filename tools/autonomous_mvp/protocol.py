@@ -10,6 +10,12 @@ to the protocol (batch 2A). Two adapters are registered:
   unknowns, impact or hypotheses beyond the static grammar.
 * `agent-service-v1` is the 2A protocol. It is not integrated yet and refuses to
   open a case, so no evaluation can silently run on the interim protocol.
+
+Records use the agent-graph-output 2.0 vocabulary (`agent_graph.output_contracts`):
+claim kind fact/hypothesis, evidence origin, provenance AUTHENTIC/UNVERIFIED/
+REJECTED, sufficiency, UnknownCode, result status/reason. A model candidate
+outside the static grammar is a HypothesisEvidence and is never sufficient. An
+invalid action carries `errors` in the ContractError shape: path, type, rule.
 """
 from __future__ import annotations
 
@@ -31,12 +37,14 @@ class ProtocolUnavailable(Exception):
 
 @dataclass
 class ClaimRecord:
-    claim: dict
-    kind: str  # "dependency" (static profile) or "hypothesis"
+    claim: dict  # consumer_service, provider_service, method, path_template (+ consumer_repository if known)
+    kind: str  # Claim.kind of the 2.0 contract: "fact" or "hypothesis"
     ref_digests: list = field(default_factory=list)  # sha256 of every evidence_ref string offered
-    provenance: str = "NOT_ASSESSED"  # AUTHENTIC_AUTHORIZED_CURRENT | REJECTED | NOT_ASSESSED
+    origin: str = "code"  # EvidenceOrigin: "code" for a static-profile fact, "model_hypothesis" otherwise
+    provenance: str = "UNVERIFIED"  # Provenance: AUTHENTIC | UNVERIFIED | REJECTED
     provenance_reason: str | None = None
-    sufficiency: str = "NOT_ASSESSED"  # SUPPORTED_WITHIN_PROFILE | INSUFFICIENT | NOT_ASSESSED
+    sufficiency: str = "NOT_ASSESSED"  # Sufficiency of the 2.0 contract
+    unknowns: list = field(default_factory=list)  # UnknownCode values, required for hypotheses
     admitted: bool = False
     confidence: str = "NOT_ADMITTED"
 
@@ -47,12 +55,13 @@ class StepOutcome:
     valid: bool
     layer: str | None = None
     reason_code: str | None = None
-    field_path: str | None = None
-    expected_type: str | None = None
+    errors: list = field(default_factory=list)  # ContractError shape: [{"path", "type", "rule"?}]
     tool: dict | None = None
     claims: list = field(default_factory=list)
     terminal: str | None = None  # None, "FINISHED" or "ABSTAINED"
-    final: dict | None = None  # status/reason_code/unknowns/impact when the protocol supports them
+    # When the protocol supports it: {"status", "reason_code", "unknowns": [{"code", "subject"}],
+    # "gaps": [{"code", "repository"}], "impact": {service: AT_RISK|NOT_AT_RISK|UNKNOWN}}.
+    final: dict | None = None
     messages: list = field(default_factory=list, repr=False)  # appended to the dialogue, never persisted
 
     def safe(self):
@@ -81,17 +90,52 @@ def _schema_fields(schema):
     return names
 
 
-def safe_field_path(loc, allowed):
-    """A validator location may contain model-chosen keys; keep only schema names and indexes."""
-    parts = []
-    for item in loc:
-        if type(item) is int:
-            parts.append(str(item))
-        elif isinstance(item, str) and item in allowed:
-            parts.append(item)
-        else:
-            parts.append("<extra>")
-    return "/" + "/".join(parts)
+def safe_errors(exc, allowed):
+    """ContractError-shaped diagnostics of an action ValidationError.
+
+    Same rules as output_contracts.safe_errors: no input values or messages, and a
+    location segment that is not a schema name or an index becomes "*".
+    """
+    result = []
+    for error in exc.errors(include_url=False, include_input=False, include_context=False):
+        path = [str(p) if type(p) is int or p in allowed else "*" for p in error["loc"]]
+        item = dict(path=".".join(path), type=error["type"])
+        if error["type"] == "value_error":
+            rule = str(error.get("msg", "")).rsplit(" ", 1)[-1]
+            if rule.replace("_", "").isalpha() and rule.islower() and 3 <= len(rule) <= 60:
+                item["rule"] = rule
+        result.append(item)
+    return result[:8]
+
+
+PROVENANCE = {"AUTHENTIC_AUTHORIZED_CURRENT": "AUTHENTIC", "REJECTED": "REJECTED", "NOT_ASSESSED": "UNVERIFIED"}
+
+
+def contract_violations(record):
+    """Rules of AnalysisResult.semantics and HypothesisEvidence applied to one claim record."""
+    from agent_graph.output_contracts import FactSufficiency
+    problems = []
+    if record["admitted"] and record["kind"] == "fact" and not (
+            record["origin"] != "model_hypothesis" and record["provenance"] == "AUTHENTIC"
+            and record["sufficiency"] in FactSufficiency):
+        problems.append("fact_without_sufficient_evidence")
+    if record["origin"] == "model_hypothesis" and record["sufficiency"] in FactSufficiency:
+        problems.append("hypothesis_cannot_be_sufficient")
+    if record["admitted"] and record["provenance"] == "REJECTED":
+        problems.append("claim_cites_rejected_evidence")
+    return problems
+
+
+def hypothesis_evidence(record, *, model_configuration_id, visibility, checked_at):
+    """The HypothesisEvidence of a candidate, validated by the 2.0 contract (raises if invalid)."""
+    from pydantic import TypeAdapter
+    from agent_graph.output_contracts import HypothesisEvidence
+    return TypeAdapter(HypothesisEvidence).validate_python(dict(
+        id="hyp:" + ref_digest(json.dumps(record["claim"], sort_keys=True))[:40],
+        provenance=record["provenance"], sufficiency=record["sufficiency"],
+        freshness=dict(status="CURRENT", checked_at=checked_at), visibility=list(visibility),
+        model_configuration_id=model_configuration_id, supporting_refs=list(record["ref_digests"])[:16],
+        unknowns=list(record["unknowns"]))).model_dump(mode="json")
 
 
 class ActionProtocol:
@@ -181,12 +225,12 @@ class _RefsV2Session:
     def response_format(self):
         return dict(type="json_schema", json_schema=dict(name="graph_action", strict=True, schema=self.p.schema))
 
-    def _reject(self, action, layer, code, content, path=None, expected=None, remaining=0):
-        feedback = dict(action_rejected=dict(layer=layer, reason_code=code, field_path=path),
+    def _reject(self, action, layer, code, content, errors=(), remaining=0):
+        feedback = dict(action_rejected=dict(layer=layer, reason_code=code, errors=list(errors)),
                         remaining_steps=remaining)
-        return StepOutcome(action=action, valid=False, layer=layer, reason_code=code, field_path=path,
-                           expected_type=expected, messages=[dict(role="assistant", content=content),
-                                                             dict(role="user", content=self.canonical(feedback))])
+        return StepOutcome(action=action, valid=False, layer=layer, reason_code=code, errors=list(errors),
+                           messages=[dict(role="assistant", content=content),
+                                     dict(role="user", content=self.canonical(feedback))])
 
     def step(self, content, *, remaining_steps):
         from pydantic import ValidationError
@@ -201,9 +245,8 @@ class _RefsV2Session:
         try:
             reply = ReferenceReply.model_validate(data)
         except ValidationError as exc:
-            first = exc.errors()[0]
             return self._reject(action, "schema", "schema_violation", content,
-                                safe_field_path(first["loc"], self.p.fields), first["type"], remaining_steps)
+                                safe_errors(exc, self.p.fields), remaining_steps)
         source_fields = (reply.source_id, reply.start_line, reply.end_line)
         if reply.action == "read_source":
             if reply.proposals or any(v is None for v in source_fields):
@@ -224,13 +267,14 @@ class _RefsV2Session:
                                     content, remaining=remaining_steps)
             claims, results = [], []
             for proposal in reply.proposals:
-                record = ClaimRecord(claim=proposal.claim.model_dump(), kind="dependency",
+                # The interim protocol only proposes static-profile facts; it has no hypothesis action.
+                record = ClaimRecord(claim=proposal.claim.model_dump(), kind="fact", origin="code",
                                      ref_digests=[ref_digest(r) for r in proposal.evidence_refs])
                 assessment = self.refs.assess(proposal)
-                record.provenance = assessment["provenance"]["status"]
+                record.provenance = PROVENANCE[assessment["provenance"]["status"]]
                 record.provenance_reason = assessment["provenance"].get("reason")
                 record.sufficiency = assessment["sufficiency"]["status"]
-                if record.provenance == "AUTHENTIC_AUTHORIZED_CURRENT" and record.sufficiency == "SUPPORTED_WITHIN_PROFILE":
+                if record.provenance == "AUTHENTIC" and record.sufficiency == "SUPPORTED_WITHIN_PROFILE":
                     try:
                         self.refs.propose(proposal, admission_check=self.admission_check)
                         record.admitted, record.confidence = True, "CONFIRMED_WITHIN_PROFILE"
