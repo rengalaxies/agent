@@ -157,6 +157,23 @@ class KnowledgeTests(StandCase):
         self.assertEqual(result[orders["id"]]["status"], "STALE")
         self.assertIn("proposal_basis_differs", result[orders["id"]]["freshness"]["reasons"])
 
+    def test_reassigned_address_or_changed_requirement_makes_knowledge_stale(self):
+        """2A review: sufficiency also depends on the address map and requirements."""
+        store, _ = self.open()
+        graph = Graph(self.policy(), store)
+        base = self.context(graph)
+        made = graph.propose(base["id"], dict(key="usage", kind="hypothesis", statement="Reads one page",
+                                              citations=[self.citation(base, "reporting", "client.py")]))
+        swapped = Policy.model_validate(self.stand.policy(addresses=[
+            dict(service="billing", base_url="https://orders.test"),
+            dict(service="orders", base_url="https://billing.test")]))
+        moved = Graph(swapped, store)
+        (row,) = moved.proposals(self.context(moved))
+        self.assertEqual((row["id"], row["status"]), (made["id"], "STALE"))
+        self.assertIn("proposal_basis_differs", row["freshness"]["reasons"])
+        no_rules = Graph(Policy.model_validate(self.stand.policy(requirements=[])), store)
+        self.assertEqual([p["status"] for p in no_rules.proposals(self.context(no_rules))], ["STALE"])
+
     def test_adding_an_allowed_repository_keeps_earlier_knowledge(self):
         store, _ = self.open()
         narrow = ["orders", "billing", "audit", "archive"]
