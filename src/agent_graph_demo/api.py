@@ -294,7 +294,7 @@ def create_app(settings: DemoSettings):
         patches = []
         for f in sorted(base.rglob("*")):
             if f.is_file():
-                name = str(f.relative_to(base))
+                name = f.relative_to(base).as_posix()
                 patches.extend(
                     difflib.unified_diff(
                         f.read_text().splitlines(),

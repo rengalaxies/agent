@@ -15,11 +15,13 @@ def atomic_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_name(path.name + ".tmp")
-    with temp.open("w") as out:
+    with temp.open("w", newline="\n") as out:
         out.write(canonical(value) + "\n")
         out.flush()
         os.fsync(out.fileno())
     os.replace(temp, path)
+    if os.name != "posix":
+        return  # Windows development host: no directory fsync
     fd = os.open(path.parent, os.O_DIRECTORY)
     try:
         os.fsync(fd)
@@ -66,7 +68,7 @@ class Snapshots:
             for name, text in data.items():
                 f = dest / "corpus" / name
                 f.parent.mkdir(parents=True, exist_ok=True)
-                f.write_text(text)
+                f.write_bytes(text.encode())  # exact bytes; no CRLF translation
                 f.chmod(0o444)
             atomic_json(dest / "manifest.json", m)
             (dest / "manifest.json").chmod(0o444)
@@ -86,7 +88,7 @@ class Snapshots:
             for f in repo["files"]:
                 expected[f"{repo['id']}/{f['path']}"] = f["sha256"]
         actual = {
-            str(f.relative_to(root / "corpus")): hashlib.sha256(
+            f.relative_to(root / "corpus").as_posix(): hashlib.sha256(
                 f.read_bytes()
             ).hexdigest()
             for f in (root / "corpus").rglob("*")
