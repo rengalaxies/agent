@@ -3,6 +3,8 @@
 import threading
 import time
 
+from agent_graph.output_contracts import ContractError, check_core_codes
+
 from .contracts import DemoError
 from .locks import locked
 
@@ -98,6 +100,12 @@ class Worker:
                     graph = call("dependencies", context=p["context_id"])
                 else:
                     raise DemoError("model_unavailable")
+                for document in (graph, result):
+                    try:
+                        check_core_codes(document)
+                    except ContractError:
+                        # An unknown core code is incompatible output, never a green job.
+                        raise DemoError("incompatible_core_output") from None
                 graph["demo_version"] = manifest["scenario_version"]
                 seen = {}
                 from .contracts import canonical
@@ -110,41 +118,45 @@ class Worker:
                         origins.setdefault(
                             canonical(c), (proposal["context_id"], proposal["basis"])
                         )
+                pending = {}
                 for citation in citations([graph, result]):
                     key = canonical(citation)
-                    if key not in seen:
-                        candidates = [(graph["context_id"], graph["basis"])]
-                        if key in origins:
-                            candidates.append(origins[key])
-                        if p.get("base_context_id"):
-                            candidates.append(
-                                (p["base_context_id"], result.get("base_basis"))
-                            )
-                        for i, (evidence_context, basis) in enumerate(candidates):
-                            try:
-                                evidence = call(
-                                    "evidence",
-                                    context=evidence_context,
-                                    message=citation,
-                                )
-                                break
-                            except DemoError as exc:
-                                if exc.code != "not_found" or i == len(candidates) - 1:
-                                    raise
-                        evidence_version = manifest["scenario_version"]
-                        if evidence_context != graph["context_id"]:
-                            evidence_version = next(
-                                g["demo_version"]
-                                for g in self.store.artifacts(s["id"], "graph")
-                                if g["context_id"] == evidence_context
-                            )
-                        evidence.update(
-                            context_id=evidence_context,
-                            basis=basis,
-                            scenario_version=evidence_version,
-                            citation=citation,
+                    if key in pending:
+                        continue
+                    candidates = [(graph["context_id"], graph["basis"])]
+                    if key in origins:
+                        candidates.append(origins[key])
+                    if p.get("base_context_id"):
+                        candidates.append((p["base_context_id"], result.get("base_basis")))
+                    pending[key] = (citation, candidates)
+                # One core process validates every citation of the job (no per-citation fan-out).
+                checked = call("evidence_batch", message=dict(items=[
+                    dict(contexts=[c for c, _ in candidates], citation=citation)
+                    for citation, candidates in pending.values()]))["results"] if pending else []
+                if len(checked) != len(pending):
+                    raise DemoError("cli_invalid_json")
+                for (key, (citation, candidates)), outcome in zip(pending.items(), checked):
+                    if not isinstance(outcome, dict) or "evidence" not in outcome:
+                        code = outcome.get("error") if isinstance(outcome, dict) else None
+                        raise DemoError(code if isinstance(code, str) and code.replace("_", "").isalnum()
+                                        else "cli_invalid_json")
+                    evidence_context = outcome["context_id"]
+                    basis = dict(candidates)[evidence_context]
+                    evidence = outcome["evidence"]
+                    evidence_version = manifest["scenario_version"]
+                    if evidence_context != graph["context_id"]:
+                        evidence_version = next(
+                            g["demo_version"]
+                            for g in self.store.artifacts(s["id"], "graph")
+                            if g["context_id"] == evidence_context
                         )
-                        seen[key] = self.store.artifact(s["id"], "evidence", evidence)
+                    evidence.update(
+                        context_id=evidence_context,
+                        basis=basis,
+                        scenario_version=evidence_version,
+                        citation=citation,
+                    )
+                    seen[key] = self.store.artifact(s["id"], "evidence", evidence)
 
                 def attach(value):
                     if isinstance(value, dict):

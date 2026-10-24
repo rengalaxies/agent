@@ -88,6 +88,7 @@ class Graph:
                       dependencies=[d for d in graph["dependencies"] if operation_id is None or d["operation_id"] == operation_id],
                       requirements=[r for r in graph["requirements"] if operation_id is None or r["operation_id"] == operation_id],
                       candidates=graph["candidates"], conflicts=graph["conflicts"], gaps=graph["gaps"],
+                      file_coverage=graph.get("file_coverage", []),
                       proposals=self.proposals(c, assessment=assessment), scope=c["scope"])
         return result
 

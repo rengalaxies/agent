@@ -610,6 +610,36 @@ def display_verdict(document) -> dict:
                 reason_code=parsed.reason_code, errors=[])
 
 
+def _codes(literal) -> frozenset:
+    return frozenset(literal.__args__)
+
+
+CORE_CODE_FIELDS = (("findings", "code", _codes(FindingCode)), ("findings", "usage", _codes(UsageCode)),
+                    ("deltas", "code", _codes(DeltaCode)), ("gaps", "code", _codes(GapCode)),
+                    ("dependencies", "usage", _codes(UsageCode)))
+
+
+def check_core_codes(document: dict) -> None:
+    """Reader check for core (agent-graph-1) outputs consumed by the application.
+
+    Every finding/delta/gap/usage code must be one this release knows; otherwise
+    ContractError("unknown_code") with the field path, never a silent fallback.
+    """
+    if not isinstance(document, dict):
+        raise ContractError("invalid_document")
+    errors = []
+    for key, field, known in CORE_CODE_FIELDS:
+        items = document.get(key, [])
+        if not isinstance(items, list):
+            errors.append(dict(path=key, type="list_type"))
+            continue
+        for index, item in enumerate(items):
+            if isinstance(item, dict) and field in item and item[field] not in known:
+                errors.append(dict(path=f"{key}.{index}.{field}", type="literal_error"))
+    if errors:
+        raise ContractError("unknown_code", errors[:32])
+
+
 def json_schema() -> dict:
     schema = _DOCUMENT.json_schema(by_alias=True)
     return {"$schema": "https://json-schema.org/draft/2020-12/schema",

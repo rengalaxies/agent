@@ -54,7 +54,7 @@ const usageLabels = {
 function usageLabel(usage) {
   return usageLabels[usage] || usageLabels.UNKNOWN_USAGE;
 }
-// Core finding codes; an unknown code falls back to recheck, never to a weaker claim.
+// Core finding codes (agent-graph-output FindingCode).
 const findingLabels = {
   POSSIBLE_TRUNCATION: [
     "возможна потеря части заказов",
@@ -68,9 +68,18 @@ const findingLabels = {
     "требуется повторная проверка",
     "Статический признак не подтверждает корректность поведения.",
   ],
+  UNCLASSIFIED_CHANGE_RECHECK: [
+    "изменение операции неизвестного типа",
+    "Объявление операции изменилось, но ни один известный классификатор его не описывает. Это не доказанная поломка; нужна проверка потребителя.",
+  ],
 };
+// A code this page does not know is shown as unknown, never as a weaker or safer claim.
+const unknownFinding = [
+  "неизвестный код находки",
+  "Ядро вернуло код, который эта версия приложения не знает. Результат нельзя считать проверенным.",
+];
 function findingLabel(code) {
-  return findingLabels[code] || findingLabels.RECHECK_REQUIRED;
+  return findingLabels[code] || unknownFinding;
 }
 function formatTime(value, date = false) {
   return (
