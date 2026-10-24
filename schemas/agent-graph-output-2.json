@@ -1,0 +1,2282 @@
+{
+  "$defs": {
+    "AccessScope": {
+      "additionalProperties": false,
+      "properties": {
+        "repositories": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Repositories",
+          "type": "array"
+        },
+        "runtime_sources": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Runtime Sources",
+          "type": "array"
+        },
+        "view_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "View Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "view_id",
+        "repositories"
+      ],
+      "title": "AccessScope",
+      "type": "object"
+    },
+    "AffectedService": {
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "relationship_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Relationship Refs",
+          "type": "array"
+        },
+        "service": {
+          "$ref": "#/$defs/ServiceEntity"
+        }
+      },
+      "required": [
+        "service",
+        "owner",
+        "relationship_refs"
+      ],
+      "title": "AffectedService",
+      "type": "object"
+    },
+    "AnalysisRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "access_scope": {
+          "$ref": "#/$defs/AccessScope"
+        },
+        "constitution_version": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Constitution Version",
+          "type": "string"
+        },
+        "deadline": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Deadline",
+          "type": "string"
+        },
+        "environment": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Environment",
+          "type": "string"
+        },
+        "graph_version": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "installation_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Installation Id",
+          "type": "string"
+        },
+        "jira": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JiraTrigger"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "kind": {
+          "const": "analysis_request",
+          "default": "analysis_request",
+          "title": "Kind",
+          "type": "string"
+        },
+        "model_configuration_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model Configuration Id"
+        },
+        "pr": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PullRequestTrigger"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "replay_of": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Replay Of"
+        },
+        "repository_revisions": {
+          "maxProperties": 64,
+          "minProperties": 1,
+          "patternProperties": {
+            "^[a-zA-Z0-9_.-]{1,80}$": {
+              "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+              "type": "string"
+            }
+          },
+          "title": "Repository Revisions",
+          "type": "object"
+        },
+        "request_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema": {
+          "const": "agent-graph-output",
+          "default": "agent-graph-output",
+          "title": "Schema",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.0",
+          "pattern": "^(0|[1-9][0-9]{0,3})\\.(0|[1-9][0-9]{0,3})$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_event": {
+          "$ref": "#/$defs/SourceEvent"
+        },
+        "trigger_kind": {
+          "enum": [
+            "jira",
+            "pr",
+            "replay"
+          ],
+          "title": "Trigger Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "installation_id",
+        "environment",
+        "request_id",
+        "trigger_kind",
+        "source_event",
+        "repository_revisions",
+        "graph_version",
+        "constitution_version",
+        "model_configuration_id",
+        "deadline",
+        "access_scope"
+      ],
+      "title": "AnalysisRequest",
+      "type": "object"
+    },
+    "AnalysisResult": {
+      "additionalProperties": false,
+      "properties": {
+        "affected": {
+          "items": {
+            "$ref": "#/$defs/AffectedService"
+          },
+          "maxItems": 64,
+          "title": "Affected",
+          "type": "array"
+        },
+        "checks": {
+          "items": {
+            "$ref": "#/$defs/TeamCheck"
+          },
+          "maxItems": 64,
+          "title": "Checks",
+          "type": "array"
+        },
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 128,
+          "title": "Claims",
+          "type": "array"
+        },
+        "code_version": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Code Version",
+          "type": "string"
+        },
+        "constitution_version": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Constitution Version",
+          "type": "string"
+        },
+        "correlation_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Correlation Id",
+          "type": "string"
+        },
+        "costs": {
+          "$ref": "#/$defs/Costs"
+        },
+        "deltas": {
+          "items": {
+            "$ref": "#/$defs/Delta"
+          },
+          "maxItems": 128,
+          "title": "Deltas",
+          "type": "array"
+        },
+        "environment": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Environment",
+          "type": "string"
+        },
+        "event_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "code": "#/$defs/CodeEvidence",
+                "correction": "#/$defs/CorrectionEvidence",
+                "external_report": "#/$defs/ExternalReportEvidence",
+                "model_hypothesis": "#/$defs/HypothesisEvidence",
+                "runtime": "#/$defs/RuntimeEvidence"
+              },
+              "propertyName": "origin"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CodeEvidence"
+              },
+              {
+                "$ref": "#/$defs/RuntimeEvidence"
+              },
+              {
+                "$ref": "#/$defs/HypothesisEvidence"
+              },
+              {
+                "$ref": "#/$defs/CorrectionEvidence"
+              },
+              {
+                "$ref": "#/$defs/ExternalReportEvidence"
+              }
+            ]
+          },
+          "maxItems": 512,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "maxItems": 256,
+          "title": "Findings",
+          "type": "array"
+        },
+        "gaps": {
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "maxItems": 512,
+          "title": "Gaps",
+          "type": "array"
+        },
+        "graph_version": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "impact_paths": {
+          "items": {
+            "$ref": "#/$defs/ImpactPath"
+          },
+          "maxItems": 64,
+          "title": "Impact Paths",
+          "type": "array"
+        },
+        "installation_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Installation Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "analysis_result",
+          "default": "analysis_result",
+          "title": "Kind",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModelUse"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "profile": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Profile",
+          "type": "string"
+        },
+        "reason_code": {
+          "enum": [
+            "budget_exhausted",
+            "cancelled",
+            "commit_unavailable",
+            "coverage_gaps",
+            "deadline_exceeded",
+            "deadline_reached",
+            "forbidden",
+            "impact_found_within_profile",
+            "incompatible_contract",
+            "insufficient_evidence",
+            "intent_unclear",
+            "internal_error",
+            "invalid_model_action",
+            "model_step_limit",
+            "model_transport_error",
+            "model_unavailable",
+            "newer_head",
+            "newer_request",
+            "newer_resource_version",
+            "no_consumer_found_within_profile",
+            "no_supported_delta",
+            "out_of_scope",
+            "owner_unknown",
+            "preliminary_impact_found",
+            "repository_not_allowed",
+            "runtime_unavailable",
+            "source_stale",
+            "source_unavailable",
+            "unclassified_change"
+          ],
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "relationships": {
+          "items": {
+            "$ref": "#/$defs/GraphRelationship"
+          },
+          "maxItems": 512,
+          "title": "Relationships",
+          "type": "array"
+        },
+        "request_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "resource_version": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Resource Version",
+          "type": "string"
+        },
+        "schema": {
+          "const": "agent-graph-output",
+          "default": "agent-graph-output",
+          "title": "Schema",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "2.0",
+          "pattern": "^(0|[1-9][0-9]{0,3})\\.(0|[1-9][0-9]{0,3})$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshots": {
+          "items": {
+            "$ref": "#/$defs/SnapshotUse"
+          },
+          "maxItems": 64,
+          "title": "Snapshots",
+          "type": "array"
+        },
+        "source_freshness": {
+          "items": {
+            "$ref": "#/$defs/SourceFreshness"
+          },
+          "maxItems": 64,
+          "title": "Source Freshness",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "USEFUL",
+            "PARTIAL",
+            "ABSTAINED",
+            "FAILED",
+            "SUPERSEDED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "superseded_by": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Superseded By"
+        },
+        "timings": {
+          "$ref": "#/$defs/Timings"
+        },
+        "trigger_kind": {
+          "enum": [
+            "jira",
+            "pr",
+            "replay"
+          ],
+          "title": "Trigger Kind",
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "$ref": "#/$defs/Unknown"
+          },
+          "maxItems": 64,
+          "title": "Unknowns",
+          "type": "array"
+        },
+        "usefulness_confirmed": {
+          "const": false,
+          "default": false,
+          "title": "Usefulness Confirmed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "profile",
+        "code_version",
+        "constitution_version",
+        "installation_id",
+        "environment",
+        "request_id",
+        "event_id",
+        "resource_version",
+        "correlation_id",
+        "trigger_kind",
+        "snapshots",
+        "graph_version",
+        "status",
+        "reason_code",
+        "summary",
+        "model",
+        "costs",
+        "timings"
+      ],
+      "title": "AnalysisResult",
+      "type": "object"
+    },
+    "CallsiteEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "environment": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Environment",
+          "type": "string"
+        },
+        "installation_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Installation Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "callsite",
+          "default": "callsite",
+          "title": "Kind",
+          "type": "string"
+        },
+        "line": {
+          "minimum": 1,
+          "title": "Line",
+          "type": "integer"
+        },
+        "path": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "repository": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Repository",
+          "type": "string"
+        },
+        "service": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Service",
+          "type": "string"
+        }
+      },
+      "required": [
+        "installation_id",
+        "environment",
+        "service",
+        "repository",
+        "path",
+        "line"
+      ],
+      "title": "CallsiteEntity",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "fact",
+            "hypothesis"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "uncertainty": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "UNKNOWN"
+          ],
+          "title": "Uncertainty",
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "enum": [
+              "requirement_unknown",
+              "owner_unknown",
+              "owner_conflict",
+              "jira_without_diff",
+              "unclassified_change",
+              "helper_semantics_unknown",
+              "runtime_not_observed",
+              "runtime_window_gap",
+              "result_set_size_unknown",
+              "model_hypothesis_unverified"
+            ],
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Unknowns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "statement",
+        "evidence_refs",
+        "applicability",
+        "uncertainty"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "CodeEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "blob": {
+          "anyOf": [
+            {
+              "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Blob"
+        },
+        "commit": {
+          "anyOf": [
+            {
+              "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Commit"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "origin": {
+          "const": "code",
+          "default": "code",
+          "title": "Origin",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "AUTHENTIC",
+            "UNVERIFIED",
+            "REJECTED"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "repository": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Repository",
+          "type": "string"
+        },
+        "snapshot": {
+          "enum": [
+            "GIT_COMMIT",
+            "WORKTREE"
+          ],
+          "title": "Snapshot",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "sufficiency": {
+          "enum": [
+            "SUPPORTED_WITHIN_PROFILE",
+            "OBSERVED_WITHIN_WINDOW",
+            "INSUFFICIENT",
+            "NOT_ASSESSED"
+          ],
+          "title": "Sufficiency",
+          "type": "string"
+        },
+        "visibility": {
+          "description": "Repository/source ids a reader must be granted.",
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Visibility",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "provenance",
+        "sufficiency",
+        "freshness",
+        "visibility",
+        "snapshot",
+        "repository",
+        "commit",
+        "blob",
+        "content_sha256",
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "title": "CodeEvidence",
+      "type": "object"
+    },
+    "CorrectionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Actor",
+          "type": "string"
+        },
+        "correction_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Correction Id",
+          "type": "string"
+        },
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "origin": {
+          "const": "correction",
+          "default": "correction",
+          "title": "Origin",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "AUTHENTIC",
+            "UNVERIFIED",
+            "REJECTED"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "sufficiency": {
+          "enum": [
+            "SUPPORTED_WITHIN_PROFILE",
+            "OBSERVED_WITHIN_WINDOW",
+            "INSUFFICIENT",
+            "NOT_ASSESSED"
+          ],
+          "title": "Sufficiency",
+          "type": "string"
+        },
+        "visibility": {
+          "description": "Repository/source ids a reader must be granted.",
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Visibility",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "provenance",
+        "sufficiency",
+        "freshness",
+        "visibility",
+        "correction_id",
+        "actor"
+      ],
+      "title": "CorrectionEvidence",
+      "type": "object"
+    },
+    "Costs": {
+      "additionalProperties": false,
+      "description": "None means unknown, never zero.",
+      "properties": {
+        "completion_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Completion Tokens"
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z]{3}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Currency"
+        },
+        "model_calls": {
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "prompt_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Prompt Tokens"
+        },
+        "reserved_micro": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reserved Micro"
+        }
+      },
+      "required": [
+        "model_calls",
+        "prompt_tokens",
+        "completion_tokens",
+        "reserved_micro",
+        "currency"
+      ],
+      "title": "Costs",
+      "type": "object"
+    },
+    "Delta": {
+      "additionalProperties": false,
+      "properties": {
+        "after": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "After"
+        },
+        "before": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Before"
+        },
+        "code": {
+          "enum": [
+            "OPERATION_REMOVED",
+            "PAGE_DEFAULT_CHANGED",
+            "PAGE_DEFAULT_UNRESOLVED",
+            "UNCLASSIFIED_OPERATION_CHANGE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "operation": {
+          "$ref": "#/$defs/OperationEntity"
+        }
+      },
+      "required": [
+        "operation",
+        "code",
+        "before",
+        "after",
+        "evidence_refs"
+      ],
+      "title": "Delta",
+      "type": "object"
+    },
+    "ExternalReportEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Sha256",
+          "type": "string"
+        },
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "independently_verified": {
+          "const": false,
+          "default": false,
+          "title": "Independently Verified",
+          "type": "boolean"
+        },
+        "origin": {
+          "const": "external_report",
+          "default": "external_report",
+          "title": "Origin",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "AUTHENTIC",
+            "UNVERIFIED",
+            "REJECTED"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "reporter": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Reporter",
+          "type": "string"
+        },
+        "sufficiency": {
+          "enum": [
+            "SUPPORTED_WITHIN_PROFILE",
+            "OBSERVED_WITHIN_WINDOW",
+            "INSUFFICIENT",
+            "NOT_ASSESSED"
+          ],
+          "title": "Sufficiency",
+          "type": "string"
+        },
+        "visibility": {
+          "description": "Repository/source ids a reader must be granted.",
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Visibility",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "provenance",
+        "sufficiency",
+        "freshness",
+        "visibility",
+        "reporter",
+        "artifact_sha256"
+      ],
+      "title": "ExternalReportEvidence",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "callsite": {
+          "$ref": "#/$defs/CallsiteEntity"
+        },
+        "code": {
+          "enum": [
+            "POSSIBLE_TRUNCATION",
+            "OPERATION_REMOVED",
+            "RECHECK_REQUIRED",
+            "UNCLASSIFIED_CHANGE_RECHECK"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "compatibility_confirmed": {
+          "const": false,
+          "default": false,
+          "title": "Compatibility Confirmed",
+          "type": "boolean"
+        },
+        "consumer": {
+          "$ref": "#/$defs/ServiceEntity"
+        },
+        "dependency_freshness": {
+          "enum": [
+            "CURRENT",
+            "STALE"
+          ],
+          "title": "Dependency Freshness",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "requirement_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Requirement Ids",
+          "type": "array"
+        },
+        "test_executed": {
+          "const": false,
+          "default": false,
+          "title": "Test Executed",
+          "type": "boolean"
+        },
+        "usage": {
+          "enum": [
+            "SINGLE_REQUEST_OBSERVED",
+            "CURSOR_LOOP_OBSERVED",
+            "EXPLICIT_PAGE_SIZE",
+            "UNKNOWN_USAGE"
+          ],
+          "title": "Usage",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "consumer",
+        "usage",
+        "callsite",
+        "dependency_freshness",
+        "evidence_refs"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Freshness": {
+      "additionalProperties": false,
+      "properties": {
+        "checked_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Checked At",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "enum": [
+              "basis_changed",
+              "age_exceeded",
+              "partial_coverage",
+              "current_corpus_unavailable",
+              "proposal_basis_differs",
+              "source_unavailable",
+              "no_traffic_in_window",
+              "sampled_source",
+              "window_gap",
+              "worktree_not_reproducible"
+            ],
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Reasons",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "CURRENT",
+            "STALE",
+            "UNKNOWN"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid From"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "status",
+        "checked_at"
+      ],
+      "title": "Freshness",
+      "type": "object"
+    },
+    "Gap": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "source_unavailable",
+            "directory_unreadable",
+            "symlink_directory_omitted",
+            "symlink_omitted",
+            "submodule_omitted",
+            "lfs_pointer_omitted",
+            "binary_omitted",
+            "file_limit",
+            "not_regular_source",
+            "source_unreadable",
+            "sensitive_source",
+            "invalid_source_path",
+            "commit_unavailable",
+            "object_unavailable",
+            "openapi_ref_unsupported",
+            "page_size_default_unresolved",
+            "invalid_contract",
+            "python_parse_error",
+            "provider_route_unsupported",
+            "provider_declaration_conflict",
+            "unknown_http_client",
+            "dynamic_or_unsupported_call",
+            "unsupported_url",
+            "ambiguous_mapping",
+            "unmapped_call",
+            "dynamic_parameters",
+            "requirement_basis_stale",
+            "runtime_source_unavailable",
+            "ownership_source_unavailable"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "repository": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repository"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
+    "GraphRelationship": {
+      "additionalProperties": false,
+      "properties": {
+        "change_origin": {
+          "enum": [
+            "code_scan",
+            "runtime_sync",
+            "ownership_sync",
+            "model_proposal",
+            "correction",
+            "migration"
+          ],
+          "title": "Change Origin",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "declares",
+            "calls",
+            "owns",
+            "may_affect"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "origins": {
+          "items": {
+            "enum": [
+              "code",
+              "runtime",
+              "model_hypothesis",
+              "correction",
+              "external_report"
+            ],
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Origins",
+          "type": "array"
+        },
+        "source": {
+          "discriminator": {
+            "mapping": {
+              "callsite": "#/$defs/CallsiteEntity",
+              "operation": "#/$defs/OperationEntity",
+              "service": "#/$defs/ServiceEntity",
+              "team": "#/$defs/TeamEntity"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServiceEntity"
+            },
+            {
+              "$ref": "#/$defs/OperationEntity"
+            },
+            {
+              "$ref": "#/$defs/CallsiteEntity"
+            },
+            {
+              "$ref": "#/$defs/TeamEntity"
+            }
+          ],
+          "title": "Source"
+        },
+        "status": {
+          "enum": [
+            "ACTIVE",
+            "STALE",
+            "CONFLICT",
+            "RETRACTED",
+            "TOMBSTONED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "target": {
+          "discriminator": {
+            "mapping": {
+              "callsite": "#/$defs/CallsiteEntity",
+              "operation": "#/$defs/OperationEntity",
+              "service": "#/$defs/ServiceEntity",
+              "team": "#/$defs/TeamEntity"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServiceEntity"
+            },
+            {
+              "$ref": "#/$defs/OperationEntity"
+            },
+            {
+              "$ref": "#/$defs/CallsiteEntity"
+            },
+            {
+              "$ref": "#/$defs/TeamEntity"
+            }
+          ],
+          "title": "Target"
+        },
+        "visibility": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Visibility",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source",
+        "target",
+        "status",
+        "origins",
+        "evidence_refs",
+        "freshness",
+        "change_origin",
+        "visibility"
+      ],
+      "title": "GraphRelationship",
+      "type": "object"
+    },
+    "HypothesisEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "model_configuration_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Model Configuration Id",
+          "type": "string"
+        },
+        "origin": {
+          "const": "model_hypothesis",
+          "default": "model_hypothesis",
+          "title": "Origin",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "AUTHENTIC",
+            "UNVERIFIED",
+            "REJECTED"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "sufficiency": {
+          "enum": [
+            "SUPPORTED_WITHIN_PROFILE",
+            "OBSERVED_WITHIN_WINDOW",
+            "INSUFFICIENT",
+            "NOT_ASSESSED"
+          ],
+          "title": "Sufficiency",
+          "type": "string"
+        },
+        "supporting_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Supporting Refs",
+          "type": "array"
+        },
+        "unknowns": {
+          "items": {
+            "enum": [
+              "requirement_unknown",
+              "owner_unknown",
+              "owner_conflict",
+              "jira_without_diff",
+              "unclassified_change",
+              "helper_semantics_unknown",
+              "runtime_not_observed",
+              "runtime_window_gap",
+              "result_set_size_unknown",
+              "model_hypothesis_unverified"
+            ],
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Unknowns",
+          "type": "array"
+        },
+        "visibility": {
+          "description": "Repository/source ids a reader must be granted.",
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Visibility",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "provenance",
+        "sufficiency",
+        "freshness",
+        "visibility",
+        "model_configuration_id",
+        "supporting_refs",
+        "unknowns"
+      ],
+      "title": "HypothesisEvidence",
+      "type": "object"
+    },
+    "ImpactPath": {
+      "additionalProperties": false,
+      "properties": {
+        "relationship_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Relationship Refs",
+          "type": "array"
+        },
+        "summary": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relationship_refs",
+        "summary"
+      ],
+      "title": "ImpactPath",
+      "type": "object"
+    },
+    "JiraTrigger": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[A-Z][A-Z0-9_]{0,30}-[1-9][0-9]{0,9}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "project": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Project",
+          "type": "string"
+        },
+        "revision": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "text_fields": {
+          "maxProperties": 8,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,39}$": {
+              "maxLength": 20000,
+              "type": "string"
+            }
+          },
+          "title": "Text Fields",
+          "type": "object"
+        },
+        "updated_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "project",
+        "key",
+        "revision",
+        "updated_at",
+        "text_fields"
+      ],
+      "title": "JiraTrigger",
+      "type": "object"
+    },
+    "ModelUse": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Configuration Id",
+          "type": "string"
+        },
+        "model": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "protocol": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Protocol",
+          "type": "string"
+        }
+      },
+      "required": [
+        "configuration_id",
+        "model",
+        "protocol"
+      ],
+      "title": "ModelUse",
+      "type": "object"
+    },
+    "OperationEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "environment": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Environment",
+          "type": "string"
+        },
+        "installation_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Installation Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "operation",
+          "default": "operation",
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "HEAD",
+            "OPTIONS"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "route": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Route",
+          "type": "string"
+        },
+        "service": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Service",
+          "type": "string"
+        }
+      },
+      "required": [
+        "installation_id",
+        "environment",
+        "service",
+        "method",
+        "route"
+      ],
+      "title": "OperationEntity",
+      "type": "object"
+    },
+    "Owner": {
+      "additionalProperties": false,
+      "description": "A named team is an addressee, never an approver. Unknown owners stay unknown.",
+      "properties": {
+        "checked_at": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checked At"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "enum": [
+                "service_catalog",
+                "codeowners",
+                "installation_mapping"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source"
+        },
+        "source_version": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Version"
+        },
+        "status": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "CONFLICT"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "teams": {
+          "items": {
+            "$ref": "#/$defs/TeamEntity"
+          },
+          "maxItems": 8,
+          "title": "Teams",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "teams",
+        "source"
+      ],
+      "title": "Owner",
+      "type": "object"
+    },
+    "PullRequestTrigger": {
+      "additionalProperties": false,
+      "properties": {
+        "base_sha": {
+          "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+          "title": "Base Sha",
+          "type": "string"
+        },
+        "head_sha": {
+          "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+          "title": "Head Sha",
+          "type": "string"
+        },
+        "pr_id": {
+          "minimum": 1,
+          "title": "Pr Id",
+          "type": "integer"
+        },
+        "provider": {
+          "const": "github",
+          "title": "Provider",
+          "type": "string"
+        },
+        "repository": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Repository",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "repository",
+        "pr_id",
+        "base_sha",
+        "head_sha"
+      ],
+      "title": "PullRequestTrigger",
+      "type": "object"
+    },
+    "RuntimeAggregates": {
+      "additionalProperties": false,
+      "properties": {
+        "errors": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Errors"
+        },
+        "requests": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requests"
+        },
+        "sampled": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sampled"
+        }
+      },
+      "title": "RuntimeAggregates",
+      "type": "object"
+    },
+    "RuntimeEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregates": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuntimeAggregates"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "consumer": {
+          "$ref": "#/$defs/ServiceEntity"
+        },
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "HEAD",
+                "OPTIONS"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "origin": {
+          "const": "runtime",
+          "default": "runtime",
+          "title": "Origin",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "AUTHENTIC",
+            "UNVERIFIED",
+            "REJECTED"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "provider": {
+          "$ref": "#/$defs/ServiceEntity"
+        },
+        "route": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Route"
+        },
+        "source": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Source",
+          "type": "string"
+        },
+        "source_version": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Version"
+        },
+        "sufficiency": {
+          "enum": [
+            "SUPPORTED_WITHIN_PROFILE",
+            "OBSERVED_WITHIN_WINDOW",
+            "INSUFFICIENT",
+            "NOT_ASSESSED"
+          ],
+          "title": "Sufficiency",
+          "type": "string"
+        },
+        "visibility": {
+          "description": "Repository/source ids a reader must be granted.",
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Visibility",
+          "type": "array"
+        },
+        "window_end": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Window End",
+          "type": "string"
+        },
+        "window_start": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Window Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "provenance",
+        "sufficiency",
+        "freshness",
+        "visibility",
+        "source",
+        "consumer",
+        "provider",
+        "window_start",
+        "window_end"
+      ],
+      "title": "RuntimeEvidence",
+      "type": "object"
+    },
+    "ServiceEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "environment": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Environment",
+          "type": "string"
+        },
+        "installation_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Installation Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "service",
+          "default": "service",
+          "title": "Kind",
+          "type": "string"
+        },
+        "service": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Service",
+          "type": "string"
+        }
+      },
+      "required": [
+        "installation_id",
+        "environment",
+        "service"
+      ],
+      "title": "ServiceEntity",
+      "type": "object"
+    },
+    "SnapshotUse": {
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "anyOf": [
+            {
+              "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Commit"
+        },
+        "mode": {
+          "enum": [
+            "GIT_COMMIT",
+            "WORKTREE"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "repository": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Repository",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "base",
+            "head",
+            "consumer"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "tree": {
+          "anyOf": [
+            {
+              "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tree"
+        }
+      },
+      "required": [
+        "repository",
+        "mode",
+        "commit",
+        "tree",
+        "role"
+      ],
+      "title": "SnapshotUse",
+      "type": "object"
+    },
+    "SourceEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "resource_version": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Resource Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "resource_version"
+      ],
+      "title": "SourceEvent",
+      "type": "object"
+    },
+    "SourceFreshness": {
+      "additionalProperties": false,
+      "properties": {
+        "freshness": {
+          "$ref": "#/$defs/Freshness"
+        },
+        "source_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "git",
+            "runtime",
+            "jira",
+            "ownership",
+            "model"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_kind",
+        "source_id",
+        "freshness"
+      ],
+      "title": "SourceFreshness",
+      "type": "object"
+    },
+    "TeamCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_refs": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "consumer": {
+          "$ref": "#/$defs/ServiceEntity"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "consumer",
+        "text",
+        "claim_refs"
+      ],
+      "title": "TeamCheck",
+      "type": "object"
+    },
+    "TeamEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "installation_id": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Installation Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "team",
+          "default": "team",
+          "title": "Kind",
+          "type": "string"
+        },
+        "team": {
+          "pattern": "^[a-zA-Z0-9_.-]{1,80}$",
+          "title": "Team",
+          "type": "string"
+        }
+      },
+      "required": [
+        "installation_id",
+        "team"
+      ],
+      "title": "TeamEntity",
+      "type": "object"
+    },
+    "Timings": {
+      "additionalProperties": false,
+      "properties": {
+        "finished_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Finished At",
+          "type": "string"
+        },
+        "seconds": {
+          "maxProperties": 32,
+          "patternProperties": {
+            "^[a-zA-Z0-9_.-]{1,80}$": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          "title": "Seconds",
+          "type": "object"
+        },
+        "started_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Started At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "started_at",
+        "finished_at"
+      ],
+      "title": "Timings",
+      "type": "object"
+    },
+    "Unknown": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "requirement_unknown",
+            "owner_unknown",
+            "owner_conflict",
+            "jira_without_diff",
+            "unclassified_change",
+            "helper_semantics_unknown",
+            "runtime_not_observed",
+            "runtime_window_gap",
+            "result_set_size_unknown",
+            "model_hypothesis_unverified"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "subject": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_.:/-]{1,200}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subject"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Unknown",
+      "type": "object"
+    }
+  },
+  "$id": "https://github.com/rengalaxies/agent/schemas/agent-graph-output-2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Structure only. Status/reason pairs, fact backing, references and version rules are enforced by agent_graph.output_contracts.",
+  "discriminator": {
+    "mapping": {
+      "analysis_request": "#/$defs/AnalysisRequest",
+      "analysis_result": "#/$defs/AnalysisResult"
+    },
+    "propertyName": "kind"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/AnalysisRequest"
+    },
+    {
+      "$ref": "#/$defs/AnalysisResult"
+    }
+  ],
+  "title": "agent-graph-output 2.0"
+}
