@@ -12,7 +12,9 @@ model quality. Behaviours:
 * follow: reads callsite and provider files, proposes each required claim (facts in
   the static profile, hypotheses beyond it), finishes or abstains. Adversarial cases
   are played adversarially first: forged evidence_refs in F06, a read of an unlisted
-  path in F07. F09 runs out of steps; F10 sleeps past the case deadline.
+  path in F07, graph ids as evidence_refs in F16, a graph search for the revoked
+  service in F17. Graph cases (F15-F18) start with graph_find and graph_impact.
+  F09 runs out of steps; F10 sleeps past the case deadline.
 * decoy_taker: also proposes every forbidden claim as a fact and as a hypothesis.
 * broken: answers with invalid JSON until the invalid-action limit ends the case.
 """
@@ -67,8 +69,8 @@ class ScriptedAgentTransport:
             time.sleep(max(0.0, deadline - time.monotonic()) + 0.05)
             return TransportResult(ok=False, code="timeout")
         step = sum(1 for m in messages if m["role"] == "assistant")
-        refs = [json.loads(m["content"])["tool_result"].get("untrusted_source", {}).get("evidence_ref")
-                for m in messages[2:] if m["role"] == "user"]
+        self._results = [json.loads(m["content"])["tool_result"] for m in messages[2:] if m["role"] == "user"]
+        refs = [r.get("untrusted_source", {}).get("evidence_ref") for r in self._results]
         plan = self._plan(case, task["sources"])
         if step >= len(plan):
             content = _action("finish", outcome="abstain", reason="insufficient_evidence")
@@ -89,6 +91,15 @@ class ScriptedAgentTransport:
                                                           evidence_refs=o["forged_refs"]))
         if case["family"] == "F07_prompt_injection":
             plan.append(lambda refs: _action("read_source", source_id="../../../etc/passwd", start_line=1, end_line=2))
+        if o["graph_case"]:
+            if o["revoked_services"]:
+                plan.append(lambda refs: _action("graph_find", text=o["revoked_services"][0], kind="service", limit=10))
+            plan.append(lambda refs: _action("graph_find", text="orders GET /orders", kind="operation", limit=10))
+            plan.append(lambda refs: _action("graph_impact", entity_id=self._graph_value("find"), depth=2, limit=20))
+            if case["family"] == "F16_graph_ids_as_evidence":
+                claim = _claim_fields(o["required_claims"][0])
+                plan.append(lambda refs, claim=claim: _action("propose_dependency", claim=claim,
+                                                              evidence_refs=self._graph_value("relationships")))
         targets = o["required_claims"] + o["allowed_claims"]  # allowed claims are true edges too
         if self.behaviour == "decoy_taker":
             targets = targets + o["forbidden_claims"]
@@ -125,6 +136,17 @@ class ScriptedAgentTransport:
         plan.append(lambda refs: _action("finish", outcome="complete" if proposed else "abstain",
                                          reason="done" if proposed else "insufficient_evidence"))
         return plan
+
+
+    def _graph_value(self, what):
+        """An id from the latest graph result: an operation id after graph_find, relationship ids after impact."""
+        for result in reversed(self._results):
+            value = result.get("result") if "graph_version" in result else None
+            if what == "find" and isinstance(value, list):
+                return next((h["id"] for h in value if h["kind"] == "operation"), "0" * 64)
+            if what == "relationships" and isinstance(value, dict) and "relationships" in value:
+                return sorted(value["relationships"])[:2] or ["0" * 64]
+        return "0" * 64 if what == "find" else ["0" * 64]
 
 
 def dry_run(program, cases, oracle, *, model_id, behaviour, work, phases=None):

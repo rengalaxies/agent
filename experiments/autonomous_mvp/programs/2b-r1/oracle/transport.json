@@ -8,6 +8,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -27,6 +28,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "reporting.export_day sends GET https://orders.test/orders; no completeness requirement is present, so the impact of a smaller page is unknown, not proven.",
       "required_claims": [
         {
@@ -40,6 +42,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "reporting",

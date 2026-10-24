@@ -76,13 +76,13 @@ def run_case(case, repeat, *, transport, model, program, phase_deadline_epoch, w
     deadline_epoch = min(phase_deadline_epoch, time.time() + case["limits"]["case_seconds"])
     attempts = [] if attempts is None else attempts
     repos = fixtures.materialize(case, work / "repos")
-    versions, steps, claims, final, invalid = {}, [], [], None, 0
+    versions, steps, claims, final, invalid, graph = {}, [], [], None, 0, None
     try:
         # Unavailable repositories stay in the policy; the core reports them as commit_unavailable.
         report, accounted, versions = protocol_mod.run(
             case, repos, model=model, parameters=call_parameters(program), transport=transport, work=work,
             deadline_epoch=deadline_epoch, run_id=program["run_id"], attempts=attempts, breaker=breaker)
-        terminal, steps, claims, final = protocol_mod.case_result(report, accounted)
+        terminal, steps, claims, final, graph = protocol_mod.case_result(report, accounted)
         reason, invalid = report["reason_code"], report["invalid_actions"]
     except (RunnerError, fixtures.FixtureError):
         raise
@@ -95,7 +95,7 @@ def run_case(case, repeat, *, transport, model, program, phase_deadline_epoch, w
         else:  # A harness fault is not model behaviour; keep only the class name and stop.
             terminal, reason = "HARNESS_ERROR", type(exc).__name__
     result = dict(case_id=case["case_id"], repeat=repeat, family=case["family"], split=case["split"],
-                  terminal=terminal, reason_code=reason, steps=steps, claims=claims, final=final,
+                  terminal=terminal, reason_code=reason, steps=steps, claims=claims, final=final, graph=graph,
                   invalid_actions=invalid, requests=len(attempts), wall_seconds=round(time.monotonic() - started, 3),
                   deadline_seconds=case["limits"]["case_seconds"], max_model_steps=case["limits"]["max_model_steps"],
                   commits={k: v["commit"] for k, v in repos.items() if v["available"]},

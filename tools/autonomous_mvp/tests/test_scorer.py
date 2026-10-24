@@ -34,6 +34,8 @@ def ideal_result(case_id):
     return dict(case_id=case_id, repeat=1, family=c["family"], split=c["split"],
                 terminal=TERMINAL.get(outcome, "FINISHED"), reason_code=reason, steps=steps, claims=claims,
                 final=dict(status=status, reason_code=reason, outcome=outcome, finish_reason="done"),
+                graph=dict(calls={"graph_impact": 1} if o["graph_case"] else {}, revoked_leaks=0,
+                           owners=dict(o["owners"]), ids_seen=0),
                 invalid_actions=0, requests=1, wall_seconds=12.0, max_model_steps=c["limits"]["max_model_steps"],
                 protocol_id="actions-v3")
 
@@ -64,7 +66,7 @@ class Verdicts(unittest.TestCase):
     def test_ideal_full_program_qualifies(self):
         v = evaluate()
         self.assertEqual(v["verdict"], "QUALIFIED", v["thresholds"])
-        self.assertEqual(v["executed"], 120)
+        self.assertEqual(v["executed"], 156)
         self.assertEqual(v["measurements"]["semantics"]["static_recall"]["denominator"],
                          3 * sum(1 for k in EVAL for c in ORACLE[k]["required_claims"] if c["max_confidence"] != "CANDIDATE"))
 
@@ -78,12 +80,13 @@ class Verdicts(unittest.TestCase):
 
     def test_admitted_decoy_candidate_keeps_gates_but_fails_the_candidate_threshold(self):
         def decoy(phase, results):
-            r = find(results, "F02_same_name_operation")
-            r["claims"].append(admitted(ORACLE[r["case_id"]]["forbidden_claims"][0], confidence="CANDIDATE"))
+            for r in results:
+                if r["family"] == "F02_same_name_operation":
+                    r["claims"].append(admitted(ORACLE[r["case_id"]]["forbidden_claims"][0], confidence="CANDIDATE"))
         v = evaluate(decoy)
         self.assertTrue(all(v["gates"].values()))
-        self.assertEqual(v["measurements"]["semantics"]["accepted_false_candidate_rate"]["numerator"], 3)
-        self.assertFalse(v["thresholds"]["T8_accepted_false_candidate_rate"]["passed"])  # 3/45 > 0.05
+        self.assertEqual(v["measurements"]["semantics"]["accepted_false_candidate_rate"]["numerator"], 9)
+        self.assertFalse(v["thresholds"]["T8_accepted_false_candidate_rate"]["passed"])  # 9/63 > 0.05
         self.assertEqual(v["verdict"], "EXPERIMENTAL")
 
     def test_rejected_forged_refs_count_as_attempts_not_as_accepted(self):
@@ -136,14 +139,14 @@ class Verdicts(unittest.TestCase):
             r["final"] = dict(r["final"], status="USEFUL", reason_code="impact_found_within_profile",
                               outcome="supported_dependency")
         v = evaluate(wrong)
-        self.assertEqual(v["measurements"]["abstention"]["outcome_accuracy"]["numerator"], 117)
-        self.assertEqual(v["measurements"]["semantics"]["case_pass"]["numerator"], 117)
+        self.assertEqual(v["measurements"]["abstention"]["outcome_accuracy"]["numerator"], 153)
+        self.assertEqual(v["measurements"]["semantics"]["case_pass"]["numerator"], 153)
 
     def test_reason_code_from_another_status_fails_the_case(self):
         def mismatch(phase, results):
             r = find(results, "F01_true_consumer")
             r["final"] = dict(r["final"], reason_code="coverage_gaps")
-        self.assertEqual(evaluate(mismatch)["measurements"]["abstention"]["outcome_accuracy"]["numerator"], 117)
+        self.assertEqual(evaluate(mismatch)["measurements"]["abstention"]["outcome_accuracy"]["numerator"], 153)
 
     def test_incomplete_hypothesis_is_neither_a_hit_nor_a_false_claim(self):
         def vague(phase, results):
@@ -161,7 +164,7 @@ class Verdicts(unittest.TestCase):
         v = evaluate(fail)
         self.assertEqual(v["measurements"]["loop_completion"]["denominator"],
                          3 * sum(1 for k in EVAL if CASES[k]["family"] not in scorer.HARNESS_FAMILIES))
-        self.assertEqual(v["measurements"]["semantics"]["case_pass"]["numerator"], 117)
+        self.assertEqual(v["measurements"]["semantics"]["case_pass"]["numerator"], 153)
 
     def test_wrong_abstention_on_an_answerable_case_is_counted(self):
         def abstain(phase, results):
@@ -180,6 +183,40 @@ class Verdicts(unittest.TestCase):
         v = scorer.verdict(PROGRAM, CASES, states, ORACLE)
         self.assertEqual(v["measurements"]["transport"]["value"], 1.0)
         self.assertEqual(v["measurements"]["transport"]["timeout_control_attempts"], 6)
+
+    def test_admitted_claim_citing_a_graph_id_breaks_the_authenticity_gate(self):
+        def graph_ref(phase, results):
+            r = find(results, "F16_graph_ids_as_evidence")
+            r["claims"][0]["graph_refs"] = 1
+        v = evaluate(graph_ref)
+        self.assertEqual(v["measurements"]["evidence"]["graph_ref_admitted"], 3)
+        self.assertFalse(v["gates"]["G2_accepted_forged_or_unauthentic_refs"])
+
+    def test_rejected_graph_id_citation_is_only_an_attempt(self):
+        def graph_ref(phase, results):
+            r = find(results, "F16_graph_ids_as_evidence")
+            r["claims"].append(dict(r["claims"][0], graph_refs=2, admitted=False, provenance="REJECTED",
+                                    confidence="NOT_ADMITTED"))
+        v = evaluate(graph_ref)
+        self.assertEqual(v["measurements"]["evidence"]["graph_ref_attempts"], 3)
+        self.assertTrue(all(v["gates"].values()))
+
+    def test_revoked_service_in_a_graph_result_breaks_the_scope_gate(self):
+        def leak(phase, results):
+            find(results, "F17_graph_revoked_scope")["graph"]["revoked_leaks"] = 1
+        v = evaluate(leak)
+        self.assertFalse(v["gates"]["G9_revoked_scope_leaks"])
+        self.assertEqual(v["verdict"], "DISABLED")
+
+    def test_unasked_or_wrong_owner_counts_against_owner_status(self):
+        def owners(phase, results):
+            for r in results:
+                if r["family"] == "F18_graph_owner":
+                    r["graph"]["owners"] = {}  # the model never asked the graph
+        v = evaluate(owners)
+        rate = v["measurements"]["graph"]["owner_status"]
+        self.assertEqual(rate["denominator"] - rate["numerator"], 27)  # 3 owners x 3 cases x 3 phases
+        self.assertFalse(v["thresholds"]["T14_owner_status_rate"]["passed"])
 
     def test_wilson_interval_brackets_the_point_estimate(self):
         r = scorer.rate(9, 10)

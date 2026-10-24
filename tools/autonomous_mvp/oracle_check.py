@@ -159,6 +159,16 @@ def check_case(case, oracle, work):
         tests[t["repository"]] = statuses
         if (statuses["before"], statuses["after"]) != (t["before"], t["after"]):
             problems.append("requirement_test_mismatch:" + t["repository"])
+    # Owners follow the operator mapping: one team KNOWN, several CONFLICT, none UNKNOWN.
+    mapping = (case.get("ownership") or {}).get("services", {})
+    for service, status in oracle["owners"].items():
+        teams = mapping.get(service)
+        expected = "UNKNOWN" if not teams else "KNOWN" if isinstance(teams, str) or len(teams) == 1 else "CONFLICT"
+        if status != expected:
+            problems.append("owner_not_grounded:" + service)
+    revoked = {r["id"] for r in case["repositories"] if r.get("scope") == "revoked"}
+    if set(oracle["revoked_services"]) != revoked:
+        problems.append("revoked_scope_mismatch")
     consequence = oracle["grounding"].get("known_consequence")
     for service, verdict in oracle["impact"].items():
         after = counts.get((service, 20))

@@ -85,6 +85,31 @@ class Adversarial(Harness):
         self.assertNotIn("leaked", json.dumps(row))
 
 
+class GraphTools(Harness):
+    """Persistent graph built by the runner, queried through the executor's graph_* tools."""
+
+    def test_graph_ids_cited_as_evidence_are_rejected_and_the_code_read_is_needed(self):
+        _, row = self.single("D22", agent())
+        steps = row["result"]["steps"]
+        self.assertEqual([s["action"] for s in steps[:2]], ["graph_find", "graph_impact"])
+        rejected = [c for c in row["result"]["claims"] if c["graph_refs"]]
+        self.assertEqual([(c["provenance"], c["admitted"]) for c in rejected], [("REJECTED", False)])
+        self.assertEqual(steps[2]["reason_code"], "invalid_evidence_reference")
+        self.assertEqual(row["result"]["final"]["outcome"], "supported_dependency")
+
+    def test_revoked_repository_is_invisible_in_graph_results(self):
+        _, row = self.single("D23", agent())
+        graph = row["result"]["graph"]
+        self.assertEqual(graph["calls"].get("graph_find"), 2)  # one search was for the revoked service
+        self.assertEqual(graph["revoked_leaks"], 0)
+        self.assertNotIn("shadow-ledger", graph["owners"])
+
+    def test_owner_statuses_come_from_the_operator_mapping(self):
+        _, row = self.single("D24", agent())
+        self.assertEqual(row["result"]["graph"]["owners"],
+                         {"ops-report": "KNOWN", "cash-flow": "CONFLICT", "night-audit": "UNKNOWN"})
+
+
 class Limits(Harness):
     def test_step_limit_control_stops_after_two_requests(self):
         _, row = self.single("D14", agent())

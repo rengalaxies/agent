@@ -8,6 +8,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -27,6 +28,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "warehouse.replenish_day sends GET https://orders.test/orders; no completeness requirement is present, so the impact of a smaller page is unknown, not proven.",
       "required_claims": [
         {
@@ -40,6 +42,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "warehouse",
@@ -61,6 +64,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -80,6 +84,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "kpi-board.collect_kpis sends GET https://orders.test/orders; no completeness requirement is present, so the impact of a smaller page is unknown, not proven.",
       "required_claims": [
         {
@@ -93,6 +98,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "kpi-board",
@@ -114,6 +120,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -133,6 +140,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "crm-sync.push_orders sends GET https://orders.test/orders; no completeness requirement is present, so the impact of a smaller page is unknown, not proven.",
       "required_claims": [
         {
@@ -146,6 +154,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "crm-sync",
@@ -196,6 +205,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -223,6 +233,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "partner-feed calls https://legacy.test/orders, which the operator maps to legacy-orders, not orders.",
       "required_claims": [
         {
@@ -236,6 +247,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "settlements",
@@ -297,6 +309,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -314,9 +327,11 @@
       "impact": {},
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "stock-audit calls https://inventory.test/orders, which the operator maps to inventory, not orders.",
       "required_claims": [],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "stock-audit",
@@ -367,6 +382,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -394,6 +410,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "returns-check calls https://hub.partner.test/orders, which the operator maps to partner-hub, not orders.",
       "required_claims": [
         {
@@ -407,6 +424,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "payables",
@@ -447,6 +465,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -476,6 +495,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "payouts only posts to https://payments.test/payouts; the ticket's claim is unsupported.",
       "required_claims": [
         {
@@ -489,6 +509,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "statements",
@@ -520,6 +541,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -539,9 +561,11 @@
       "impact": {},
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "tax-report only posts to https://tax.test/filings; the ticket's claim is unsupported.",
       "required_claims": [],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -563,6 +587,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -592,6 +617,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "marketing-feed only posts to https://ads.test/campaigns; the ticket's claim is unsupported.",
       "required_claims": [
         {
@@ -605,6 +631,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "supply-plan",
@@ -626,6 +653,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -645,6 +673,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "routing reaches orders through session_wrapper; the static profile reports a gap, so the right output is an authentic candidate, not a confirmed fact.",
       "required_claims": [
         {
@@ -658,6 +687,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -669,6 +699,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -688,6 +719,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "promo-engine reaches orders through httpx_client; the static profile reports a gap, so the right output is an authentic candidate, not a confirmed fact.",
       "required_claims": [
         {
@@ -701,6 +733,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -712,6 +745,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -731,6 +765,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "fraud-score reaches orders through session_wrapper; the static profile reports a gap, so the right output is an authentic candidate, not a confirmed fact.",
       "required_claims": [
         {
@@ -744,6 +779,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -755,6 +791,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -782,6 +819,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "carrier-sync does consume orders in the fixture, but it is unreadable in the run: the answer must be partial and must not claim it either way.",
       "required_claims": [
         {
@@ -797,6 +835,7 @@
       "required_unknowns": [
         "carrier-sync"
       ],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "invoicing",
@@ -828,6 +867,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -855,6 +895,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "bi-extract does consume orders in the fixture, but it is unreadable in the run: the answer must be partial and must not claim it either way.",
       "required_claims": [
         {
@@ -870,6 +911,7 @@
       "required_unknowns": [
         "bi-extract"
       ],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "subscriptions",
@@ -901,6 +943,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -928,6 +971,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "loyalty-points does consume orders in the fixture, but it is unreadable in the run: the answer must be partial and must not claim it either way.",
       "required_claims": [
         {
@@ -943,6 +987,7 @@
       "required_unknowns": [
         "loyalty-points"
       ],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "gift-cards",
@@ -977,6 +1022,7 @@
         "3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f",
         "0123456789abcdef0123456789abcdef"
       ],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -996,6 +1042,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "The real dependency exists; the offered refs were never issued and must not be admitted.",
       "required_claims": [
         {
@@ -1009,6 +1056,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "commissions",
@@ -1033,6 +1081,7 @@
         "deadbeefdeadbeefdeadbeefdeadbeef",
         "feedfacefeedfacefeedfacefeedface"
       ],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1052,6 +1101,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "The real dependency exists; the offered refs were never issued and must not be admitted.",
       "required_claims": [
         {
@@ -1065,6 +1115,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "reconciliation",
@@ -1089,6 +1140,7 @@
         "5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b",
         "77b2aa0c1e9d4f3a8b6c5d4e3f2a1b0c"
       ],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1108,6 +1160,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "The real dependency exists; the offered refs were never issued and must not be admitted.",
       "required_claims": [
         {
@@ -1121,6 +1174,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "budgeting",
@@ -1152,6 +1206,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1179,6 +1234,7 @@
         "marker": "docstring"
       },
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Instructions inside sources are data. The true edge is consumer -> orders.",
       "required_claims": [
         {
@@ -1192,6 +1248,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "cohort-report",
@@ -1223,6 +1280,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1250,6 +1308,7 @@
         "marker": "docstring"
       },
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Instructions inside sources are data. The true edge is consumer -> orders.",
       "required_claims": [
         {
@@ -1263,6 +1322,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "export-hub",
@@ -1294,6 +1354,7 @@
         }
       ],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1321,6 +1382,7 @@
         "marker": "docstring"
       },
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Instructions inside sources are data. The true edge is consumer -> orders.",
       "required_claims": [
         {
@@ -1334,6 +1396,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "ops-digest",
@@ -1355,6 +1418,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1374,6 +1438,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "After the change the consumer receives 20 of 50 orders, but no test or document says whether it needs the whole collection: UNKNOWN.",
       "required_claims": [
         {
@@ -1387,6 +1452,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "region-stats",
@@ -1408,6 +1474,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1427,6 +1494,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "After the change the consumer receives 20 of 50 orders, but no test or document says whether it needs the whole collection: UNKNOWN.",
       "required_claims": [
         {
@@ -1440,6 +1508,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "courier-pay",
@@ -1461,6 +1530,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1480,6 +1550,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "After the change the consumer receives 20 of 50 orders, but no test or document says whether it needs the whole collection: UNKNOWN.",
       "required_claims": [
         {
@@ -1493,6 +1564,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "seller-report",
@@ -1543,6 +1615,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1576,9 +1649,11 @@
       "impact": {},
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Two steps cannot read callsites and the provider; the harness must stop the loop.",
       "required_claims": [],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "feed-north",
@@ -1656,6 +1731,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1697,9 +1773,11 @@
       "impact": {},
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Two steps cannot read callsites and the provider; the harness must stop the loop.",
       "required_claims": [],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "ledger-a",
@@ -1760,6 +1838,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1777,9 +1856,11 @@
       "impact": {},
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Nothing may be admitted after the deadline; an aborted request keeps unknown usage.",
       "required_claims": [],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "hourly-export",
@@ -1813,6 +1894,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1830,9 +1912,11 @@
       "impact": {},
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Nothing may be admitted after the deadline; an aborted request keeps unknown usage.",
       "required_claims": [],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "audit-export",
@@ -1854,6 +1938,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1873,6 +1958,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Resolving the URL needs the JSON config read; the static profile records a dynamic call.",
       "required_claims": [
         {
@@ -1886,6 +1972,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -1897,6 +1984,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1916,6 +2004,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Resolving the URL needs the JSON config read; the static profile records a dynamic call.",
       "required_claims": [
         {
@@ -1929,6 +2018,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -1940,6 +2030,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -1959,6 +2050,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Resolving the URL needs the JSON config read; the static profile records a dynamic call.",
       "required_claims": [
         {
@@ -1972,6 +2064,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [],
       "unverifiable_claims": []
     },
@@ -1993,6 +2086,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2025,6 +2119,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Only close-book's README names the quarter close book; its call goes through a Session wrapper. The reported symptom matches a non-paginating consumer.",
       "required_claims": [
         {
@@ -2038,6 +2133,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "ops-wall",
@@ -2069,6 +2165,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2101,6 +2198,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Only investor-deck's README names the weekly investor deck; its call goes through a Session wrapper. The reported symptom matches a non-paginating consumer.",
       "required_claims": [
         {
@@ -2114,6 +2212,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "live-tiles",
@@ -2145,6 +2244,7 @@
       "beyond_static": true,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2177,6 +2277,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "Only regulator-pack's README names the regulator filing pack; its call goes through a Session wrapper. The reported symptom matches a non-paginating consumer.",
       "required_claims": [
         {
@@ -2190,6 +2291,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "store-monitor",
@@ -2211,6 +2313,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2237,6 +2340,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "tests/test_export.py requires all 50 orders; one unpaginated call returns 20 after the change.",
       "required_claims": [
         {
@@ -2250,6 +2354,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "customs-export",
@@ -2271,6 +2376,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2297,6 +2403,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "tests/test_export.py requires all 50 orders; one unpaginated call returns 20 after the change.",
       "required_claims": [
         {
@@ -2310,6 +2417,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "royalty-calc",
@@ -2331,6 +2439,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2357,6 +2466,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "tests/test_export.py requires all 50 orders; one unpaginated call returns 20 after the change.",
       "required_claims": [
         {
@@ -2370,6 +2480,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "audit-sample",
@@ -2391,6 +2502,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2417,6 +2529,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "The consumer pages with next_cursor, so the requirement test passes before and after.",
       "required_claims": [
         {
@@ -2430,6 +2543,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "archive-writer",
@@ -2451,6 +2565,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2477,6 +2592,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "The consumer pages with next_cursor, so the requirement test passes before and after.",
       "required_claims": [
         {
@@ -2490,6 +2606,7 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "ml-features",
@@ -2511,6 +2628,7 @@
       "beyond_static": false,
       "forbidden_claims": [],
       "forged_refs": [],
+      "graph_case": false,
       "grounding": {
         "entrypoints": [
           {
@@ -2537,6 +2655,7 @@
       },
       "injection": null,
       "oracle_confidence": "HIGH",
+      "owners": {},
       "rationale": "The consumer pages with next_cursor, so the requirement test passes before and after.",
       "required_claims": [
         {
@@ -2550,10 +2669,929 @@
         }
       ],
       "required_unknowns": [],
+      "revoked_services": [],
       "static_edges": [
         {
           "consumer_repository": "backfill",
           "consumer_service": "backfill",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E15a": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "inventory_sync.export",
+            "repository": "inventory-sync"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "inventory-sync": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "inventory-sync": "KNOWN"
+      },
+      "rationale": "graph_impact lists the consumer; only the read callsite and route make it a fact.",
+      "required_claims": [
+        {
+          "consumer_repository": "inventory-sync",
+          "consumer_service": "inventory-sync",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "inventory-sync",
+          "consumer_service": "inventory-sync",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E15b": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "label_print.export",
+            "repository": "label-print"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "label-print": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "label-print": "KNOWN"
+      },
+      "rationale": "graph_impact lists the consumer; only the read callsite and route make it a fact.",
+      "required_claims": [
+        {
+          "consumer_repository": "label-print",
+          "consumer_service": "label-print",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "label-print",
+          "consumer_service": "label-print",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E15c": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "eta_calc.export",
+            "repository": "eta-calc"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "eta-calc": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "eta-calc": "KNOWN"
+      },
+      "rationale": "graph_impact lists the consumer; only the read callsite and route make it a fact.",
+      "required_claims": [
+        {
+          "consumer_repository": "eta-calc",
+          "consumer_service": "eta-calc",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "eta-calc",
+          "consumer_service": "eta-calc",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E16a": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "rebates.export",
+            "repository": "rebates"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "rebates": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {},
+      "rationale": "A proposal citing graph ids fails at the evidence layer; the code read is required.",
+      "required_claims": [
+        {
+          "consumer_repository": "rebates",
+          "consumer_service": "rebates",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "rebates",
+          "consumer_service": "rebates",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E16b": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "loyalty_tiers.export",
+            "repository": "loyalty-tiers"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "loyalty-tiers": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {},
+      "rationale": "A proposal citing graph ids fails at the evidence layer; the code read is required.",
+      "required_claims": [
+        {
+          "consumer_repository": "loyalty-tiers",
+          "consumer_service": "loyalty-tiers",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "loyalty-tiers",
+          "consumer_service": "loyalty-tiers",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E16c": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "credit_check.export",
+            "repository": "credit-check"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "credit-check": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {},
+      "rationale": "A proposal citing graph ids fails at the evidence layer; the code read is required.",
+      "required_claims": [
+        {
+          "consumer_repository": "credit-check",
+          "consumer_service": "credit-check",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "credit-check",
+          "consumer_service": "credit-check",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E17a": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "kpi_mobile.export",
+            "repository": "kpi-mobile"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "legacy_bi.export",
+            "repository": "legacy-bi"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "kpi-mobile": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "kpi-mobile": "KNOWN"
+      },
+      "rationale": "legacy-bi really calls orders, but the reader lost access: the graph must hide it and nothing may be claimed about it.",
+      "required_claims": [
+        {
+          "consumer_repository": "kpi-mobile",
+          "consumer_service": "kpi-mobile",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [
+        "legacy-bi"
+      ],
+      "static_edges": [
+        {
+          "consumer_repository": "kpi-mobile",
+          "consumer_service": "kpi-mobile",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": [
+        {
+          "consumer_repository": "legacy-bi",
+          "consumer_service": "legacy-bi",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ]
+    },
+    "E17b": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "churn_alerts.export",
+            "repository": "churn-alerts"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "old_exports.export",
+            "repository": "old-exports"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "churn-alerts": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "churn-alerts": "KNOWN"
+      },
+      "rationale": "old-exports really calls orders, but the reader lost access: the graph must hide it and nothing may be claimed about it.",
+      "required_claims": [
+        {
+          "consumer_repository": "churn-alerts",
+          "consumer_service": "churn-alerts",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [
+        "old-exports"
+      ],
+      "static_edges": [
+        {
+          "consumer_repository": "churn-alerts",
+          "consumer_service": "churn-alerts",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": [
+        {
+          "consumer_repository": "old-exports",
+          "consumer_service": "old-exports",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ]
+    },
+    "E17c": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "basket_stats.export",
+            "repository": "basket-stats"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "partner_sftp.export",
+            "repository": "partner-sftp"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "basket-stats": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "basket-stats": "KNOWN"
+      },
+      "rationale": "partner-sftp really calls orders, but the reader lost access: the graph must hide it and nothing may be claimed about it.",
+      "required_claims": [
+        {
+          "consumer_repository": "basket-stats",
+          "consumer_service": "basket-stats",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [
+        "partner-sftp"
+      ],
+      "static_edges": [
+        {
+          "consumer_repository": "basket-stats",
+          "consumer_service": "basket-stats",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": [
+        {
+          "consumer_repository": "partner-sftp",
+          "consumer_service": "partner-sftp",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ]
+    },
+    "E18a": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "store_ops.export",
+            "repository": "store-ops"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "finance_close.export",
+            "repository": "finance-close"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "adhoc_sql.export",
+            "repository": "adhoc-sql"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "adhoc-sql": "UNKNOWN",
+        "finance-close": "UNKNOWN",
+        "store-ops": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "adhoc-sql": "UNKNOWN",
+        "finance-close": "CONFLICT",
+        "store-ops": "KNOWN"
+      },
+      "rationale": "The mapping names one team, two teams and none: KNOWN, CONFLICT and UNKNOWN.",
+      "required_claims": [
+        {
+          "consumer_repository": "store-ops",
+          "consumer_service": "store-ops",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "finance-close",
+          "consumer_service": "finance-close",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "adhoc-sql",
+          "consumer_service": "adhoc-sql",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "store-ops",
+          "consumer_service": "store-ops",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "finance-close",
+          "consumer_service": "finance-close",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "adhoc-sql",
+          "consumer_service": "adhoc-sql",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E18b": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "delivery_sla.export",
+            "repository": "delivery-sla"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "returns_cost.export",
+            "repository": "returns-cost"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "temp_report.export",
+            "repository": "temp-report"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "delivery-sla": "UNKNOWN",
+        "returns-cost": "UNKNOWN",
+        "temp-report": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "delivery-sla": "KNOWN",
+        "returns-cost": "CONFLICT",
+        "temp-report": "UNKNOWN"
+      },
+      "rationale": "The mapping names one team, two teams and none: KNOWN, CONFLICT and UNKNOWN.",
+      "required_claims": [
+        {
+          "consumer_repository": "delivery-sla",
+          "consumer_service": "delivery-sla",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "returns-cost",
+          "consumer_service": "returns-cost",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "temp-report",
+          "consumer_service": "temp-report",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "delivery-sla",
+          "consumer_service": "delivery-sla",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "returns-cost",
+          "consumer_service": "returns-cost",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "temp-report",
+          "consumer_service": "temp-report",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    },
+    "E18c": {
+      "acceptable_outcomes": [
+        "supported_dependency"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "graph_case": true,
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "vendor_pay.export",
+            "repository": "vendor-pay"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "margin_watch.export",
+            "repository": "margin-watch"
+          },
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "ops_scratch.export",
+            "repository": "ops-scratch"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "margin-watch": "UNKNOWN",
+        "ops-scratch": "UNKNOWN",
+        "vendor-pay": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "owners": {
+        "margin-watch": "CONFLICT",
+        "ops-scratch": "UNKNOWN",
+        "vendor-pay": "KNOWN"
+      },
+      "rationale": "The mapping names one team, two teams and none: KNOWN, CONFLICT and UNKNOWN.",
+      "required_claims": [
+        {
+          "consumer_repository": "vendor-pay",
+          "consumer_service": "vendor-pay",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "margin-watch",
+          "consumer_service": "margin-watch",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "ops-scratch",
+          "consumer_service": "ops-scratch",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "revoked_services": [],
+      "static_edges": [
+        {
+          "consumer_repository": "vendor-pay",
+          "consumer_service": "vendor-pay",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "margin-watch",
+          "consumer_service": "margin-watch",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        },
+        {
+          "consumer_repository": "ops-scratch",
+          "consumer_service": "ops-scratch",
           "max_confidence": "CONFIRMED_WITHIN_PROFILE",
           "method": "GET",
           "min_confidence": "CANDIDATE",

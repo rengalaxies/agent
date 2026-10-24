@@ -9,6 +9,10 @@ the outcome. This module only supplies:
   the ledger and turns transport failures into the executor's GraphError codes.
 * the case policy: pinned Git snapshots of the fixtures, operator addresses and the
   bundled constitution (a derived copy only lowers max_steps for step-limit controls);
+* the persistent graph for the graph_* tools, built by trusted code: the code of every
+  granted and revoked repository plus the operator ownership mapping. The model's
+  policy excludes revoked repositories, so its graph snapshot must not show them;
+  AccountedModel watches graph results for leaks, graph ids and owner statuses;
 * `case_result`, which maps the executor report into the 2B records in
   agent-graph-output 2.0 terms (fact/hypothesis, provenance, sufficiency and
   ContractError-shaped diagnostics). The claim of each proposal is recovered with the
@@ -45,13 +49,54 @@ def text_sha256(path):
 class AccountedModel:
     """The model object handed to run_investigation. One call is one booked attempt."""
 
-    def __init__(self, transport, model, parameters, *, attempts, breaker=None, family=None):
+    def __init__(self, transport, model, parameters, *, attempts, breaker=None, family=None, revoked=()):
         self.transport, self.model, self.parameters = transport, model, parameters
         self.attempts, self.breaker, self.family = attempts, breaker, family
         self.parsed = []  # per attempt: typed proposal of the reply, or None
+        self.revoked = tuple(revoked)
+        self.graph = dict(calls={}, revoked_leaks=0, owners={})
+        self.graph_ids = set()  # digests of every id a graph result showed the model
+
+    def _observe(self, messages):
+        """Safe facts about the last graph result the model is about to see: ids, owners, leaks."""
+        if len(messages) < 4 or messages[-1]["role"] != "user" or messages[-2]["role"] != "assistant":
+            return
+        try:
+            result = json.loads(messages[-1]["content"]).get("tool_result")
+        except (ValueError, AttributeError):
+            return
+        if not isinstance(result, dict) or "graph_version" not in result:
+            return
+        from agent_graph.actions import Rejection, parse
+        try:
+            action = parse(messages[-2]["content"])
+        except Rejection:
+            return
+        self.graph["calls"][action.name] = self.graph["calls"].get(action.name, 0) + 1
+        text = json.dumps(result)
+        self.graph["revoked_leaks"] += sum(1 for r in self.revoked if r in text)
+
+        def ids(value):
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    if len(k) == 64:
+                        self.graph_ids.add(ref_digest(k))
+                    ids(v)
+            elif isinstance(value, list):
+                for v in value:
+                    ids(v)
+            elif isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdef" for c in value):
+                self.graph_ids.add(ref_digest(value))
+        ids(result["result"])
+        if action.name == "graph_owner":
+            self.graph["owners"][action.service] = result["result"]["status"]
+        if action.name == "graph_impact":
+            for a in result["result"]["affected"]:
+                self.graph["owners"][a["service"]] = a["owner_status"]
 
     def complete_raw(self, messages, schema, *, cancel=None, deadline_epoch=None):
         from agent_graph.contracts import GraphError
+        self._observe(messages)
         payload = dict(model=self.model["id"], messages=messages, stream=False,
                        temperature=self.parameters["temperature"],
                        **{self.parameters["token_parameter"]: self.model["max_completion_tokens"]},
@@ -113,9 +158,11 @@ def constitution_for(case, work):
     return str(path), load(path)[1]
 
 
-def case_policy(case, repos, model, parameters, constitution_path, run_id):
+def case_policy(case, repos, model, parameters, constitution_path, run_id, *, include_revoked=False):
+    """The reader's policy; include_revoked=True gives the wider policy the graph was synced with earlier."""
     from agent_graph.contracts import Policy
     p = parameters
+    granted = [r for r in case["repositories"] if include_revoked or r.get("scope", "granted") != "revoked"]
     # The executor reserves messages + schema + 4096 + max output per call; bound it for every step.
     tokens = (p["max_prompt_bytes"] + 4096 + model["max_completion_tokens"]) * case["limits"]["max_model_steps"]
     # Whole RUB per million tokens, rounded up: the core store bound is never below the published rate.
@@ -126,7 +173,7 @@ def case_policy(case, repos, model, parameters, constitution_path, run_id):
         installation_id="amvp-2b", environment="synthetic-fixture", subject="amvp-2b-runner",
         capabilities=["read_context", "maintain", "propose"], constitution=constitution_path,
         repositories=[dict(id=r["id"], service=r["service"], root=repos[r["id"]]["root"],
-                           revision=repos[r["id"]]["commit"], snapshot="git") for r in case["repositories"]],
+                           revision=repos[r["id"]]["commit"], snapshot="git") for r in granted],
         addresses=case["addresses"], limits=dict(max_tool_lines=60),
         model=dict(endpoint=endpoint, allowed_endpoints=[endpoint], model=model["id"],
                    configuration_id=f"{run_id}:{model['id']}", api_key_env=p["credential_env"],
@@ -150,18 +197,30 @@ def run(case, repos, *, model, parameters, transport, work, deadline_epoch, run_
     from agent_graph.engine import Graph
     from agent_graph.executor import run_investigation
     from agent_graph.store import Store
+    from agent_graph.graph_store import GraphStore, OwnershipMapping
     constitution_path, constitution_version = constitution_for(case, work)
     policy = case_policy(case, repos, model, parameters, constitution_path, run_id)
+    revoked = [r for r, v in repos.items() if v.get("scope") == "revoked"]
+    task = render_task(case["task"])
     store = Store(Path(work) / "private-state")
     try:
+        gs = GraphStore(store)
+        if revoked:
+            # The graph was built while the revoked repositories were still granted.
+            wider = case_policy(case, repos, model, parameters, constitution_path, run_id, include_revoked=True)
+            gs.sync_code(Graph(wider, store).prepare_context(task, revisions={r: v["commit"] for r, v in repos.items()}))
+        if case.get("ownership") is not None:
+            gs.sync_ownership(policy.installation_id, policy.environment, OwnershipMapping.model_validate(case["ownership"]))
         graph = Graph(policy, store)
-        context = graph.prepare_context(render_task(case["task"]),
-                                        revisions={r: v["commit"] for r, v in repos.items()})
+        context = graph.prepare_context(task, revisions={r: v["commit"] for r, v in repos.items() if r not in revoked})
+        if not revoked:
+            gs.sync_code(context)
         accounted = AccountedModel(transport, model, parameters, attempts=attempts, breaker=breaker,
-                                   family=case["family"])
+                                   family=case["family"], revoked=revoked)
         report = run_investigation(graph, context["id"], model=accounted, deadline_epoch=deadline_epoch,
-                                   request_id=case["case_id"])
-        return report, accounted, dict(constitution_version=constitution_version)
+                                   request_id=case["case_id"], graph_store=gs)
+        return report, accounted, dict(constitution_version=constitution_version,
+                                       graph_version=report.get("graph_version"))
     finally:
         store.close()
 
@@ -184,6 +243,7 @@ def case_result(report, accounted):
         if proposal is None:
             continue
         record = dict(claim=proposal["claim"], kind=proposal["kind"], ref_digests=proposal["refs"],
+                      graph_refs=sum(1 for r in proposal["refs"] if r in accounted.graph_ids),
                       origin="code" if proposal["kind"] == "fact" else "model_hypothesis",
                       provenance="UNVERIFIED", provenance_reason=None, sufficiency="NOT_ASSESSED",
                       unknowns=proposal["unknowns"], admitted=False, confidence="NOT_ADMITTED")
@@ -205,7 +265,8 @@ def case_result(report, accounted):
         terminal = TERMINALS.get(report["outcome"], "HARNESS_ERROR")
     final = dict(status=report["status"], reason_code=report["reason_code"], outcome=report["outcome"],
                  finish_reason=finish.get("reason"))
-    return terminal, steps, claims, final
+    graph = dict(accounted.graph, ids_seen=len(accounted.graph_ids))
+    return terminal, steps, claims, final, graph
 
 
 def contract_violations(record):

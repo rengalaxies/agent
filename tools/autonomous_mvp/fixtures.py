@@ -99,7 +99,7 @@ def materialize(case, work):
         expected = commit_sha(repo["files"])
         if repo["availability"] != "available":
             result[repo["id"]] = dict(root=str(work / repo["id"]), commit=expected,
-                                      service=repo["service"], available=False)
+                                      service=repo["service"], available=False, scope=repo.get("scope", "granted"))
             continue
         root = work / repo["id"]
         root.mkdir(parents=True)
@@ -115,5 +115,7 @@ def materialize(case, work):
             raise FixtureError("fixture_commit_mismatch")
         if _git(root, "status", "--porcelain"):
             raise FixtureError("fixture_worktree_dirty")
-        result[repo["id"]] = dict(root=str(root), commit=actual, service=repo["service"], available=True)
+        # scope "revoked": synced into the persistent graph earlier, outside the reader's grants now.
+        result[repo["id"]] = dict(root=str(root), commit=actual, service=repo["service"], available=True,
+                                  scope=repo.get("scope", "granted"))
     return result

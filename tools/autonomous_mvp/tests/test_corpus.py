@@ -12,7 +12,8 @@ ORACLE = program_mod.load_oracle(BASE)
 SECTION_8 = {"F01_true_consumer", "F02_same_name_operation", "F03_false_hint", "F04_unsupported_wrapper",
              "F05_source_unavailable", "F06_forged_refs", "F07_prompt_injection", "F08_justified_unknown",
              "F09_step_limit", "F10_timeout", "F11_config_context", "F12_intent_link",
-             "F13_requirement_at_risk", "F14_paginating_consumer"}
+             "F13_requirement_at_risk", "F14_paginating_consumer", "F15_graph_impact", "F16_graph_ids_as_evidence",
+             "F17_graph_revoked_scope", "F18_graph_owner"}
 
 
 def split(name):
@@ -35,7 +36,7 @@ class CorpusShape(unittest.TestCase):
     def test_every_section_8_family_is_in_both_splits(self):
         self.assertEqual({c["family"] for c in split("development")}, SECTION_8)
         self.assertEqual({c["family"] for c in split("evaluation")}, SECTION_8)
-        self.assertEqual((len(split("development")), len(split("evaluation"))), (20, 40))
+        self.assertEqual((len(split("development")), len(split("evaluation"))), (24, 52))
 
     def test_development_and_evaluation_share_no_names_tasks_or_snapshots(self):
         dev, ev = split("development"), split("evaluation")
