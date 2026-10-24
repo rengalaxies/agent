@@ -82,6 +82,31 @@ class ReproducibilityTests(StandCase):
         self.assertEqual(g.freshness(c)["status"], "CURRENT")
         self.assertEqual(g.freshness(c)["comparison_basis"], "PINNED_COMMITS")
 
+    def test_repository_unavailable_since_prepare_keeps_the_context_current(self):
+        # Reported by mvp-2b-prep on dde1f90: a repository root missing at prepare time
+        # made every later freshness check UNKNOWN, so investigations failed stale_context.
+        policy = self.stand.policy(repositories=["orders", "reporting"])
+        policy["repositories"][1]["root"] = str(Path(self.work.name) / "missing")
+        g = self.graph(policy)
+        pins = {k: v for k, v in self.stand.revisions().items() if k in ("orders", "reporting")}
+        c = g.prepare_context(revisions=pins)
+        self.assertIn(dict(code="commit_unavailable", repository="reporting"), c["graph"]["gaps"])
+        self.assertEqual(g.freshness(c)["status"], "CURRENT")
+        self.assertEqual(g.freshness(c)["reasons"], ["partial_coverage"])
+        g._current(c)  # the investigation precondition holds
+
+    def test_repository_lost_after_prepare_is_not_current(self):
+        copy = Path(self.work.name) / "reporting-copy"
+        shutil.copytree(self.stand.repo("reporting"), copy)
+        policy = self.stand.policy(repositories=["orders", "reporting"])
+        policy["repositories"][1]["root"] = str(copy)
+        g = self.graph(policy)
+        pins = {k: v for k, v in self.stand.revisions().items() if k in ("orders", "reporting")}
+        c = g.prepare_context(revisions=pins)
+        self.assertEqual(g.freshness(c)["status"], "CURRENT")
+        shutil.rmtree(copy, onexc=lambda f, path, _: (os.chmod(path, stat.S_IWRITE), f(path)))
+        self.assertEqual(g.freshness(c)["status"], "UNKNOWN")
+
 
 class CommitIdentityTests(StandCase):
     def orders(self, context):
