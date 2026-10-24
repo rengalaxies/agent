@@ -33,6 +33,7 @@ https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 | `2a982dd` | этот отчёт, STATUS, DECISIONS D3–D8 |
 | `c850731` | CI: PyYAML, демо без внешнего ядра, тесты 2Б в core-tests |
 | `8fbe2e3` | CI: Linux-замер задания с многими цитатами |
+| `b8ee515` | контекст остаётся текущим, если репозиторий был недоступен с момента prepare (баг от 2Б) |
 
 ## Контракты
 
@@ -216,22 +217,29 @@ Linux-прогон этих наборов не выполнен.
 
 ## Тексты PR для владельца
 
-Из сессий PR не открыть: нет `gh`, браузер не вошёл в GitHub. Порядок
-открытия и слияния: сначала 2А против `main`, затем 3, 4 и 2Б против
-`claude/mvp-2a-core-205322`. После слияния 2А GitHub предложит перенацелить
-их на `main`. Ветки 2Б, 3 и 4 основаны на коммите контрактов `d8dd64a`, поэтому
-их diff против ветки 2А покажет только их собственные коммиты; перед слиянием
-их нужно перебазировать на голову 2А (задача волны 2).
+Из сессий PR не открыть: нет `gh`, браузер не вошёл в GitHub. Стек на
+24.10.2026, поздний вечер:
+
+| PR | Ветка | База | Сливать |
+|---|---|---|---|
+| 2А | `claude/mvp-2a-core-205322` | `main` | первым |
+| 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А, когда закрыт блокер из STATUS |
+| 4 | `claude/mvp-4-service-2a` | `claude/mvp-3-runtime-2a` | после 3, когда ветка 4 вольёт ветку 3 |
+| 2Б | `claude/mvp-2b-prep-9d9655` | `claude/mvp-2a-core-205322` | после 2А; после слияния 3 пересобрать manifest 2Б |
+
+После слияния нижнего PR GitHub перенацелит верхний на новую базу
+автоматически, если ветка базы удалена, или его нужно перенацелить вручную.
 
 ### PR 2А
 
-База `main`, ветка `claude/mvp-2a-core-205322`:
 https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 
 Заголовок: `feat(graph): batch 2A pinned Git core, output contracts and executable constitution`
 
 ```markdown
 Часть [#50](https://github.com/rengalaxies/agent/issues/50): пачка 2А. #50 не закрывает: квалификация модели — пачка 2Б.
+
+Нижний PR стека: 3 и 2Б идут против этой ветки, 4 — против 3.
 
 ## Что меняется
 
@@ -242,88 +250,90 @@ https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 - Конституция `constitutions/agent-service-v1.yaml`, протокол `actions-v3`, диагностика `invalid_model_action` по слоям без текста ответа модели, ограниченные инструменты, гипотезы вне грамматики без автоматического повышения.
 - Демо исполняет поставляемое ядро и сверяет `core_identity`; цитаты проверяются одним процессом на задание вместо процесса на цитату.
 - `results.py` собирает валидный `AnalysisResult` из выдачи ядра для PR и для Jira до diff.
-- CI: PyYAML в `graph-evidence-refs.yml`, демо без внешнего ядра `18e8b71`, Linux-замер задания с многими цитатами (artifact `citation-measurement-<sha>`).
+- CI: PyYAML в `graph-evidence-refs.yml`, демо без внешнего ядра `18e8b71`, тесты runner 2Б в `core-tests.yml`, Linux-замер задания с многими цитатами (artifact `citation-measurement-<sha>`).
 
 ## Проверки
 
-Офлайн на Windows: `tests/graph` 189 (2 падения среды), `tests/graph_demo` 38 (7 падений среды), полный `tests` 550 без новых падений против `9d7480d`. Подробно и с разделением «реализовано / проверено офлайн / не проверено»: `docs/implementation/autonomous-mvp/batch-2a.md`.
+Офлайн на Windows: `tests/graph` 191 (2 падения среды), `tests/graph_demo` 38 (7 падений среды), полный `tests` 550 без новых падений против `9d7480d`. Подробно и с разделением «реализовано / проверено офлайн / не проверено»: `docs/implementation/autonomous-mvp/batch-2a.md`, сводка всех пачек: `STATUS.md`.
 
 Не проверено: Linux CI (первый прогон — этот PR), настоящая модель, браузерная приёмка демо. Docker-шаг `agent-graph-demo.yml` упадёт, пока пачка 5А не положит `src/agent_graph` в образ демо.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
 
-### PR 3 (стек)
+### PR 3
 
-База `claude/mvp-2a-core-205322`, ветка `claude/mvp-3-runtime-2a`:
 https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/mvp-3-runtime-2a
 
-Заголовок: `feat(runtime): batch 3 part 1 graph data model and access log adapter`
+Заголовок: `feat(graph): batch 3 persistent code and runtime graph`
 
 ```markdown
-Часть [#51](https://github.com/rengalaxies/agent/issues/51). Стек поверх PR 2А; сливать после него. Ветка основана на коммите контрактов 2А `d8dd64a`; перед слиянием её нужно перебазировать на голову 2А.
+Часть [#51](https://github.com/rengalaxies/agent/issues/51). Стек: база — ветка 2А, сливать после PR 2А. PR 4 идёт против этой ветки.
 
 ## Что меняется
 
-- Модель данных постоянного графа до миграции: стабильные ID, перенос оснований, tombstone, владение, конфликт кода и наблюдений, свежесть по типам источников (`docs/implementation/autonomous-mvp/batch-3.md`).
-- Адаптер `access-log-jsonl-1` (`src/agent_graph/runtime_observations.py`), выдающий `RuntimeEvidence` и `GraphRelationship` agent-graph-output 2.0.
-- Стенд с настоящими HTTP-вызовами `tools/agent_service/runtime_stand/`.
+- Постоянный граф (`src/agent_graph/graph_store.py`, store schema 2): сущности, связи и основания по `(installation, environment)`, стабильный ID места вызова без номера строки, история и tombstone.
+- Предложения и исправления оцениваются по процитированным файлам, а не по basis всего корпуса: несвязанная правка их не обесценивает, изменение процитированного файла делает статус явным.
+- Фильтрация доступа (cache, счётчики, история, старые ID), свежесть по типам источников, конфликт кода и наблюдений, ownership из installation mapping, обновление по событию и периодическая сверка, ограниченный graph query, просмотр для человека (`graph_view.py`).
+- Миграция store v1 → v2 с резервной копией; старые контексты и исправления читаются.
+- Адаптер `access-log-jsonl-1` и стенд с настоящими HTTP-вызовами.
+- Контракт `agent-graph-output` 2.1: только добавления — runtime-коды и `Claim.subject`.
 
 ## Проверки
 
-Офлайн на Windows: 12 тестов адаптера OK, сквозной тест проходит `parse_document`.
+Офлайн на Windows: тесты `test_graph_store`, `test_graph_query`, `test_graph_view`, `test_runtime_observations`, `test_output_contracts` OK; полный `tests/graph` без новых падений против базы. Приёмка раздела 9 по тестам — в `docs/implementation/autonomous-mvp/batch-3.md`.
 
-Не проверено: подключение к access logs или трассам клиента (нет доступа), хранение графа, инвалидация по основаниям, фильтрация доступа, миграция и просмотр — следующая часть пачки 3.
+Не проверено: Linux (первый прогон — этот PR), подключение к runtime-источнику клиента (нет доступа). До слияния: кандидат зависимости должен устаревать при смене карты адресов сервисов (см. STATUS.md, раздел 2А).
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
 
-### PR 4 (стек)
+### PR 4
 
-База `claude/mvp-2a-core-205322`, ветка `claude/mvp-4-service-814d77`:
-https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/mvp-4-service-814d77
+https://github.com/rengalaxies/agent/compare/claude/mvp-3-runtime-2a...claude/mvp-4-service-2a
 
-Заголовок: `feat(service): batch 4 offline Jira and PR service with one comment per resource`
+Заголовок: `feat(service): batch 4 Jira and PR service on the 2A core`
 
 ```markdown
-Часть [#52](https://github.com/rengalaxies/agent/issues/52). Стек поверх PR 2А; сливать после него. Ветка основана на коммите контрактов 2А `d8dd64a`; перед слиянием её нужно перебазировать на голову 2А.
+Часть [#52](https://github.com/rengalaxies/agent/issues/52). Стек: база — ветка 3, сливать после PR 3.
 
 ## Что меняется
 
-- `src/agent_service/`: `EventEnvelope`, `PublicationIntent`, SQLite-очередь одной установки с дедупликацией, lease, ограниченными повторами и восстановлением.
-- Коннекторы GitHub и Jira Cloud: события, получение ресурса, один обновляемый комментарий приложения на ресурс, поиск уже созданного комментария перед повторным create.
-- Анализ вызывается через `AnalysisRequest`/`AnalysisResult` 2.0; показ решает `display_verdict`.
+- `src/agent_service/`: `EventEnvelope`, `PublicationIntent`, SQLite-очередь одной установки с дедупликацией, lease, ограниченными повторами и восстановлением после рестарта.
+- Коннекторы GitHub и Jira Cloud: события, получение ресурса, один обновляемый комментарий приложения на ресурс, поиск уже созданного комментария перед повторным create, сверка пропущенных событий.
+- Анализ ядром 2А (`CoreAnalyzer`): PR — `analyze_change` на закреплённых base/head и `change_result`; Jira — `preliminary_result` до diff. Статусы задаёт сборщик 2А.
+- Модель вызывается через исполнитель конституции только при `core.model_qualified: true`; без квалификации вызовов нет.
+- Сквозной офлайн smoke: `python -m agent_service smoke`.
 
 ## Проверки
 
-Офлайн на Windows: `tests/service` 56 тестов OK на локальных HTTP-стендах.
+Офлайн на Windows: `tests/service` 65 тестов OK на локальных HTTP-стендах и Git-стенде Orders/Reporting; полный набор без новых падений против базы.
 
-Не проверено: живые GitHub App и Jira (нет приложения, тестового репозитория, проекта Jira и права публикации), Linux. Настоящий анализ не подключён: по умолчанию `NotWiredAnalyzer` даёт видимый отказ `analysis_not_wired`; подключение к `agent_graph.results` — волна 2.
+Не проверено: живые GitHub App и Jira (нет приложения, тестового репозитория, проекта Jira и права публикации), Linux.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
 
-### PR 2Б (стек)
+### PR 2Б
 
-База `claude/mvp-2a-core-205322`, ветка `claude/mvp-2b-prep-9d9655`:
 https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/mvp-2b-prep-9d9655
 
-Заголовок: `feat(experiment): batch 2B open-model qualification program, runner and ledger`
+Заголовок: `feat(experiment): batch 2B open-model qualification program on the 2A executor`
 
 ```markdown
-Часть [#50](https://github.com/rengalaxies/agent/issues/50): подготовка пачки 2Б. Стек поверх PR 2А; сливать после него. Ветка основана на коммите контрактов 2А `d8dd64a`; перед слиянием её нужно перебазировать на голову 2А и подключить `actions-v3`.
+Часть [#50](https://github.com/rengalaxies/agent/issues/50): пачка 2Б, офлайн-часть. Стек: база — ветка 2А, сливать после PR 2А. Серия 22.10 не тронута.
 
 ## Что меняется
 
-- Новая программа `experiments/autonomous_mvp/programs/2b-r1`: корпус transport + 20 development + 40 evaluation случаев, эталон только для оценщика, manifest с объёмом и стоимостью, пороги до прогона. Серия 22.10 не тронута.
-- `tools/autonomous_mvp/`: транспорт Cloud.ru, runner, ledger, scorer.
+- Программа `experiments/autonomous_mvp/programs/2b-r1`: корпус transport + 20 development + 40 evaluation случаев, эталон только для оценщика, manifest с объёмом и стоимостью, пороги до прогона.
+- `tools/autonomous_mvp/`: транспорт Cloud.ru, связка с исполнителем 2А (`actions-v3`, `run_investigation`), runner, ledger, scorer, dry-run всей программы.
 - Workflow `.github/workflows/autonomous-mvp-model.yml` для запуска с `main`.
 
 ## Проверки
 
-Офлайн на Windows: 67 тестов OK, 7 пропущены (нужен POSIX `agent_graph` до 2А). Проверка эталона исполнением фикстур, актуальность manifest, actionlint.
+Офлайн на Windows: 70 тестов OK без пропусков; dry-run всей программы через тот же код, что в live: 143 case-runs, QUALIFIED. Сценарий знает эталон, так что это проверка трубопровода и scorer, не качества модели.
 
-Не проверено: ни одного запроса к модели. Нужны слияние в `main` для dispatch, секрет `CLOUDRU_FOUNDATION_API_KEY` в Actions и решение по коду вердикта влияния в `actions-v3` (без него метрика T8 не измерима). Development и evaluation намеренно не стартуют до подключения протокола 2А.
+Не проверено: ни одного запроса к модели. Живой прогон — после слияния стека в `main`, в окружении с секретом `CLOUDRU_FOUNDATION_API_KEY`. Если перед этим слит PR 3, manifest нужно пересобрать: он хеширует файлы ядра и конституции.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
