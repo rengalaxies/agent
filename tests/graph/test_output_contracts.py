@@ -103,7 +103,7 @@ class VersionTests(unittest.TestCase):
 
     def test_unknown_major_is_incompatible_and_not_green(self):
         for version, code in (("3.0", "unsupported_schema_major"), ("1.4", "unsupported_schema_major"),
-                              ("2.1", "newer_schema_minor"), ("2", "invalid_schema_version"),
+                              ("2.9", "newer_schema_minor"), ("2", "invalid_schema_version"),
                               (2.0, "invalid_schema_version")):
             with self.subTest(version=version):
                 with self.assertRaises(ContractError) as caught:

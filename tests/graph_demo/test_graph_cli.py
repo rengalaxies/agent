@@ -108,7 +108,11 @@ class CLITests(DemoCase):
         )
         self.run_job("analyze_change", target_version="B", base_context_id=base)
         g = self.store.get_artifact(self.sid, self.store.session(self.sid)["graph_ref"])
-        self.assertTrue(any(p["status"] == "STALE" for p in g["proposals"]))
+        # Batch 3 (spec section 9): knowledge depends on the files it cites. B changes
+        # orders/app.py only, so the note on the unchanged consumer call stays CURRENT.
+        statuses = {p["id"]: p["status"] for p in g["proposals"]}
+        self.assertEqual(statuses.pop(first), "SUPERSEDED")
+        self.assertEqual(set(statuses.values()), {"CURRENT"})
 
     def test_correction_on_b_does_not_fail_later_rescan_and_analysis(self):
         # Audit 2026-10-22 (PR #40 CI): the B correction's citation exists only in the
