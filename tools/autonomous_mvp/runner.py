@@ -5,10 +5,11 @@
         --source-sha <accepted main SHA>
     python -m tools.autonomous_mvp.runner report --ledger-dir work/ledgers --output work/report
 
-Live modes require the exact clean source SHA and the committed manifest.
-Every case runs read -> ... -> finish through the protocol adapter with no
-retries, a step limit and an absolute deadline. The oracle is never loaded here
-except by `report`, after all requests are done.
+Live modes require the exact clean source SHA and the committed manifest. Every
+case runs through the real 2A executor (`agent_graph.executor.run_investigation`)
+with the bundled constitution, no retries, a step limit and an absolute deadline.
+The oracle is never loaded here except by `report`, after all requests are done.
+`tools.autonomous_mvp.dryrun` drives this same code with a scripted transport.
 """
 from __future__ import annotations
 
@@ -27,7 +28,7 @@ from tools.autonomous_mvp.transport import CloudRuTransport
 
 ROOT = program_mod.ROOT
 SAFE_TERMINALS = {"FINISHED", "ABSTAINED", "STEP_LIMIT", "DEADLINE", "TRANSPORT_FAILED", "ACTION_REJECTED_LIMIT",
-                  "INPUT_LIMIT", "HARNESS_ERROR"}
+                  "BUDGET", "CANCELLED", "CORE_REFUSED", "HARNESS_ERROR"}
 
 
 class RunnerError(Exception):
@@ -59,81 +60,46 @@ class Breaker:
             raise RunnerError("breaker_transport_failure_rate")
 
 
-def run_case(case, repeat, *, protocol, transport, model, parameters, phase_deadline, work, breaker=None,
-             attempts=None, mono=time.monotonic):
-    """Run one case-run. Returns (attempts, result); both contain safe fields only.
+def call_parameters(program):
+    """Request parameters plus the provider fields the executor's model configuration needs."""
+    return dict(program["parameters"], chat_endpoint=program["provider"]["chat_endpoint"],
+                credential_env=program["provider"]["credential_env"])
 
-    `attempts` is filled in place, so a caller that sees an exception still
-    books every request that was actually sent.
+
+def run_case(case, repeat, *, transport, model, program, phase_deadline_epoch, work, breaker=None, attempts=None):
+    """Run one case-run through the executor. Returns (attempts, result), safe fields only.
+
+    `attempts` is filled in place, so a caller that sees an exception still books
+    every request that was actually sent.
     """
-    started = mono()
-    deadline = min(phase_deadline, started + case["limits"]["case_seconds"])
-    max_steps = case["limits"]["max_model_steps"]
+    started = time.monotonic()
+    deadline_epoch = min(phase_deadline_epoch, time.time() + case["limits"]["case_seconds"])
     attempts = [] if attempts is None else attempts
-    steps, claims = [], []
-    terminal, reason, final, invalid = None, None, None, 0
     repos = fixtures.materialize(case, work / "repos")
-    session = protocol.open_case(case, repos, work, deadline_passed=lambda: mono() >= deadline)
+    versions, steps, claims, final, invalid = {}, [], [], None, 0
     try:
-        messages = session.initial_messages(max_steps)
-        for index in range(max_steps):
-            if mono() >= deadline:
-                terminal, reason = "DEADLINE", "deadline_before_request"
-                break
-            payload = dict(model=model["id"], messages=messages, stream=False,
-                           temperature=parameters["temperature"],
-                           **{parameters["token_parameter"]: model["max_completion_tokens"]},
-                           response_format=session.response_format())
-            if len(json.dumps(payload, ensure_ascii=False).encode()) > parameters["max_prompt_bytes"]:
-                terminal, reason = "INPUT_LIMIT", "max_prompt_bytes"
-                break
-            result = transport.complete(payload, deadline=min(deadline, mono() + parameters["request_timeout_seconds"]))
-            late = mono() >= deadline
-            attempt = dict(result.safe(), step=index, late=late)
-            attempts.append(attempt)
-            if breaker is not None:
-                breaker.observe(attempt, case["family"])
-            if late:
-                # A response that arrives after the deadline is never shown to the executor.
-                terminal, reason = "DEADLINE", "response_after_deadline" if result.ok else result.code
-                break
-            if not result.ok:
-                terminal, reason = "TRANSPORT_FAILED", result.code
-                break
-            if result.finish_reason != "stop":
-                outcome = protocol_mod.StepOutcome(action="<unparsed>", valid=False, layer="completion",
-                                                   reason_code="finish_" + (result.finish_reason or "missing"))
-                outcome.messages = [dict(role="user", content=json.dumps(dict(action_rejected=dict(
-                    layer="completion", reason_code=outcome.reason_code), remaining_steps=max_steps - index - 1)))]
-            else:
-                outcome = session.step(result.content, remaining_steps=max_steps - index - 1)
-            steps.append(dict(outcome.safe(), step=index))
-            claims.extend(steps[-1]["claims"])
-            messages = messages + outcome.messages
-            if not outcome.valid:
-                invalid += 1
-                if invalid > parameters["max_invalid_actions_per_case"]:
-                    terminal, reason = "ACTION_REJECTED_LIMIT", outcome.reason_code
-                    break
-            if outcome.terminal:
-                terminal, final = outcome.terminal, outcome.final
-                break
-        else:
-            terminal, reason = "STEP_LIMIT", "max_model_steps"
-    except RunnerError:
+        # Unavailable repositories stay in the policy; the core reports them as commit_unavailable.
+        report, accounted, versions = protocol_mod.run(
+            case, repos, model=model, parameters=call_parameters(program), transport=transport, work=work,
+            deadline_epoch=deadline_epoch, run_id=program["run_id"], attempts=attempts, breaker=breaker)
+        terminal, steps, claims, final = protocol_mod.case_result(report, accounted)
+        reason, invalid = report["reason_code"], report["invalid_actions"]
+    except (RunnerError, fixtures.FixtureError):
         raise
-    except fixtures.FixtureError:
-        raise
-    except Exception as exc:  # A protocol bug is not model behaviour; record only the class name.
-        terminal, reason = "HARNESS_ERROR", type(exc).__name__
-    finally:
-        session.close()
+    except Exception as exc:
+        from agent_graph.contracts import GraphError
+        if isinstance(exc, GraphError):
+            # The core refused the case (for example stale_context): a result of the system
+            # under test, scored as a failed case-run, not a reason to stop the phase.
+            terminal, reason = "CORE_REFUSED", exc.code
+        else:  # A harness fault is not model behaviour; keep only the class name and stop.
+            terminal, reason = "HARNESS_ERROR", type(exc).__name__
     result = dict(case_id=case["case_id"], repeat=repeat, family=case["family"], split=case["split"],
                   terminal=terminal, reason_code=reason, steps=steps, claims=claims, final=final,
-                  invalid_actions=invalid, requests=len(attempts), wall_seconds=round(mono() - started, 3),
-                  deadline_seconds=case["limits"]["case_seconds"], max_model_steps=max_steps,
+                  invalid_actions=invalid, requests=len(attempts), wall_seconds=round(time.monotonic() - started, 3),
+                  deadline_seconds=case["limits"]["case_seconds"], max_model_steps=case["limits"]["max_model_steps"],
                   commits={k: v["commit"] for k, v in repos.items() if v["available"]},
-                  protocol_id=protocol.protocol_id)
+                  protocol_id=protocol_mod.PROTOCOL_ID, **versions)
     if terminal not in SAFE_TERMINALS:
         raise RunnerError("invalid_terminal")
     return attempts, result
@@ -164,22 +130,18 @@ def requirement_met(phase, required_state):
 
 
 def execute_phase(phase, model_id, *, program, cases, manifest_digest, source_sha, transport, backend_for,
-                  work, actions_run="local", protocol=None, clock=time.time, mono=time.monotonic):
+                  work, actions_run="local", clock=time.time):
     spec = program["phases"][phase]
     model = next((m for m in program["models"] if m["id"] == model_id), None)
     if model is None:
         raise RunnerError("model_not_in_program")
-    protocol = protocol or protocol_mod.load(program["protocol"]["evaluation" if phase.startswith("evaluation")
-                                                                  else phase])
-    if phase.startswith("evaluation") and (protocol.interim or not set(protocol_mod.CAPABILITIES) <= protocol.capabilities):
-        raise RunnerError("evaluation_requires_full_protocol")
     if spec["requires"]:
         required = ledger_mod.Ledger(backend_for(spec["requires"]), dict(
             run_id=program["run_id"], phase=spec["requires"], model=model_id, manifest_digest=manifest_digest,
             source_sha=source_sha), clock=clock).state
         if not requirement_met(phase, required):
             raise RunnerError("phase_requirement_not_met:" + spec["requires"])
-    available = transport.list_models(deadline=mono() + 30)
+    available = transport.list_models(deadline=time.monotonic() + 30)
     if not available["ok"]:
         raise RunnerError("model_list_" + available["code"])
     if model_id not in available["models"]:
@@ -192,7 +154,6 @@ def execute_phase(phase, model_id, *, program, cases, manifest_digest, source_sh
         request_cap=max_requests, money_cap_micro=max_requests * worst, worst_micro_per_request=worst,
         price=model["price"], phase_seconds=spec["phase_seconds"]), clock=clock)
     led.claim(actions_run, started_epoch=clock())
-    phase_deadline = mono() + spec["phase_seconds"]
     breaker = Breaker()
     try:
         for case, repeat in runs:
@@ -202,14 +163,15 @@ def execute_phase(phase, model_id, *, program, cases, manifest_digest, source_sh
             case_work.mkdir(parents=True)
             attempts = []
             try:
-                _, result = run_case(case, repeat, protocol=protocol, transport=transport, model=model,
-                                     parameters=program["parameters"], phase_deadline=phase_deadline,
-                                     work=case_work, breaker=breaker, attempts=attempts, mono=mono)
+                _, result = run_case(case, repeat, transport=transport, model=model, program=program,
+                                     phase_deadline_epoch=led.state["deadline_epoch"], work=case_work,
+                                     breaker=breaker, attempts=attempts)
             except RunnerError as exc:
                 led.finish_case(key, attempts, dict(case_id=case["case_id"], repeat=repeat, family=case["family"],
                                                     split=case["split"], terminal="TRANSPORT_FAILED",
                                                     reason_code=exc.code, steps=[], claims=[], final=None,
-                                                    invalid_actions=0, requests=len(attempts)))
+                                                    invalid_actions=0, requests=len(attempts),
+                                                    protocol_id=protocol_mod.PROTOCOL_ID))
                 raise
             led.finish_case(key, attempts, result)
             shutil.rmtree(case_work, ignore_errors=True)
@@ -234,7 +196,8 @@ def source_identity(expected):
 
     if git("rev-parse", "HEAD").strip() != expected or git("status", "--porcelain", "--untracked-files=no"):
         raise RunnerError("runner_source_not_pinned_clean")
-    if git("ls-files", "--others", "--exclude-standard", "--", "src", "tools", "experiments/autonomous_mvp").strip():
+    if git("ls-files", "--others", "--exclude-standard", "--", "src", "tools", "constitutions",
+           "experiments/autonomous_mvp").strip():
         raise RunnerError("runner_source_not_pinned_clean")
     if int(os.environ.get("GITHUB_RUN_ATTEMPT", "1")) != 1:
         raise RunnerError("actions_rerun_forbidden")
@@ -261,7 +224,20 @@ def save_safe(path, data):
         if secret and len(secret) >= 8 and secret in text:
             raise RunnerError("report_secret_detected")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text + "\n", encoding="utf-8")
+    path.write_bytes((text + "\n").encode("utf-8"))
+
+
+def github_states(program, repository):
+    """Ledgers of every model and phase from the accounting branches, read-only."""
+    states = []
+    for m in program["models"]:
+        for phase in program["phases"]:
+            _, state = ledger_mod.GitHubContentsBackend(
+                repository, os.environ.get("GH_TOKEN", ""),
+                f"experiment-state/autonomous-mvp/{program['run_id']}/{model_slug(m['id'])}", f"{phase}.json").read()
+            if state is not None:
+                states.append(state)
+    return states
 
 
 def main(argv=None):
@@ -282,19 +258,10 @@ def main(argv=None):
             states = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(args.ledger_dir.rglob("*.json"))]
             states = [s.get("state", s) for s in states]
         else:
-            # Authoritative copies from the accounting branches, read-only.
-            states = []
-            for m in program["models"]:
-                for phase in program["phases"]:
-                    _, state = ledger_mod.GitHubContentsBackend(
-                        args.repository, os.environ.get("GH_TOKEN", ""),
-                        f"experiment-state/autonomous-mvp/{program['run_id']}/{model_slug(m['id'])}",
-                        f"{phase}.json").read()
-                    if state is not None:
-                        states.append(state)
+            states = github_states(program, args.repository)
         report = scorer.report(program, cases, program_mod.load_oracle(base), states)
         save_safe(args.output / "report.json", report)
-        (args.output / "report.md").write_text(scorer.markdown(report), encoding="utf-8")
+        (args.output / "report.md").write_bytes(scorer.markdown(report).encode("utf-8"))
         print("REPORT " + " ".join(f"{m}={v['verdict']}" for m, v in report["models"].items()))
         return
     manifest = committed_manifest(args.program)
@@ -347,6 +314,6 @@ def main(argv=None):
 if __name__ == "__main__":
     try:
         main()
-    except (RunnerError, ledger_mod.LedgerError, fixtures.FixtureError, protocol_mod.ProtocolUnavailable) as exc:
+    except (RunnerError, ledger_mod.LedgerError, fixtures.FixtureError) as exc:
         print("STOPPED " + exc.code)
         raise SystemExit(1) from None

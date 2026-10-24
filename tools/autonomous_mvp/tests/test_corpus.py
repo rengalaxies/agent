@@ -6,7 +6,6 @@ import tempfile
 import unittest
 
 from tools.autonomous_mvp import fixtures, generate_cases, oracle_check, program as program_mod
-from tools.autonomous_mvp.tests.helpers import POSIX_CORE
 
 BASE, PROGRAM, CASES = program_mod.load()
 ORACLE = program_mod.load_oracle(BASE)
@@ -48,7 +47,9 @@ class CorpusShape(unittest.TestCase):
 
     def test_every_expected_claim_has_a_confidence_band_and_every_case_an_outcome(self):
         for case_id, o in ORACLE.items():
-            self.assertTrue(o["acceptable_statuses"], case_id)
+            self.assertTrue(o["acceptable_outcomes"], case_id)
+            from agent_graph.constitution import OUTCOMES
+            self.assertLessEqual(set(o["acceptable_outcomes"]), set(OUTCOMES), case_id)
             self.assertTrue(o["rationale"], case_id)
             for c in o["required_claims"] + o["forbidden_claims"] + o["allowed_claims"] + o["unverifiable_claims"]:
                 order = ("CANDIDATE", "CONFIRMED_WITHIN_PROFILE")
@@ -97,7 +98,6 @@ class OracleGrounding(unittest.TestCase):
         self.assertTrue(self.check("D20", o))
 
 
-@unittest.skipUnless(POSIX_CORE, "agent_graph collection needs POSIX O_DIRECTORY/fcntl; runs on the Linux runner")
 class StaticProfileAgreement(unittest.TestCase):
     """Static edges must be inside the extractor's grammar and beyond-static claims outside it."""
 

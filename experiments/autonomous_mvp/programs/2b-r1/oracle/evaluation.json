@@ -1,9 +1,8 @@
 {
   "cases": {
     "E01a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -55,9 +54,8 @@
       "unverifiable_claims": []
     },
     "E01b": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -109,9 +107,8 @@
       "unverifiable_claims": []
     },
     "E01c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -163,9 +160,8 @@
       "unverifiable_claims": []
     },
     "E02a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [
         {
@@ -263,10 +259,10 @@
       "unverifiable_claims": []
     },
     "E02b": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "ABSTAINED",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency",
+        "hypotheses_only",
+        "abstained"
       ],
       "allowed_claims": [
         {
@@ -335,9 +331,8 @@
       "unverifiable_claims": []
     },
     "E02c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [
         {
@@ -435,9 +430,8 @@
       "unverifiable_claims": []
     },
     "E03a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -509,10 +503,8 @@
       "unverifiable_claims": []
     },
     "E03b": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "ABSTAINED",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "abstained"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -554,9 +546,8 @@
       "unverifiable_claims": []
     },
     "E03c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -628,9 +619,8 @@
       "unverifiable_claims": []
     },
     "E04a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "hypotheses_only"
       ],
       "allowed_claims": [],
       "beyond_static": true,
@@ -672,9 +662,8 @@
       "unverifiable_claims": []
     },
     "E04b": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "hypotheses_only"
       ],
       "allowed_claims": [],
       "beyond_static": true,
@@ -716,9 +705,8 @@
       "unverifiable_claims": []
     },
     "E04c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "hypotheses_only"
       ],
       "allowed_claims": [],
       "beyond_static": true,
@@ -760,8 +748,8 @@
       "unverifiable_claims": []
     },
     "E05a": {
-      "acceptable_statuses": [
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -833,8 +821,8 @@
       ]
     },
     "E05b": {
-      "acceptable_statuses": [
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -906,8 +894,8 @@
       ]
     },
     "E05c": {
-      "acceptable_statuses": [
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -979,9 +967,8 @@
       ]
     },
     "E06a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1036,9 +1023,8 @@
       "unverifiable_claims": []
     },
     "E06b": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1093,9 +1079,8 @@
       "unverifiable_claims": []
     },
     "E06c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1150,9 +1135,8 @@
       "unverifiable_claims": []
     },
     "E07a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1222,9 +1206,8 @@
       "unverifiable_claims": []
     },
     "E07b": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1294,9 +1277,8 @@
       "unverifiable_claims": []
     },
     "E07c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1366,9 +1348,8 @@
       "unverifiable_claims": []
     },
     "E08a": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1420,9 +1401,8 @@
       "unverifiable_claims": []
     },
     "E08b": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1474,9 +1454,8 @@
       "unverifiable_claims": []
     },
     "E08c": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -1528,10 +1507,9 @@
       "unverifiable_claims": []
     },
     "E09a": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "ABSTAINED",
-        "FAILED"
+      "acceptable_outcomes": [
+        "step_limit",
+        "abstained"
       ],
       "allowed_claims": [
         {
@@ -1633,10 +1611,9 @@
       "unverifiable_claims": []
     },
     "E09b": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "ABSTAINED",
-        "FAILED"
+      "acceptable_outcomes": [
+        "step_limit",
+        "abstained"
       ],
       "allowed_claims": [
         {
@@ -1764,10 +1741,10 @@
       "unverifiable_claims": []
     },
     "E10a": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "FAILED",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "deadline",
+        "supported_dependency",
+        "abstained"
       ],
       "allowed_claims": [
         {
@@ -1817,10 +1794,10 @@
       "unverifiable_claims": []
     },
     "E10b": {
-      "acceptable_statuses": [
-        "PARTIAL",
-        "FAILED",
-        "USEFUL"
+      "acceptable_outcomes": [
+        "deadline",
+        "supported_dependency",
+        "abstained"
       ],
       "allowed_claims": [
         {
@@ -1870,9 +1847,8 @@
       "unverifiable_claims": []
     },
     "E11a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "hypotheses_only"
       ],
       "allowed_claims": [],
       "beyond_static": true,
@@ -1914,9 +1890,8 @@
       "unverifiable_claims": []
     },
     "E11b": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "hypotheses_only"
       ],
       "allowed_claims": [],
       "beyond_static": true,
@@ -1958,9 +1933,8 @@
       "unverifiable_claims": []
     },
     "E11c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "hypotheses_only"
       ],
       "allowed_claims": [],
       "beyond_static": true,
@@ -2002,9 +1976,8 @@
       "unverifiable_claims": []
     },
     "E12a": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [
         {
@@ -2079,9 +2052,8 @@
       "unverifiable_claims": []
     },
     "E12b": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [
         {
@@ -2156,9 +2128,8 @@
       "unverifiable_claims": []
     },
     "E12c": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [
         {
@@ -2233,8 +2204,8 @@
       "unverifiable_claims": []
     },
     "E13a": {
-      "acceptable_statuses": [
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -2293,8 +2264,8 @@
       "unverifiable_claims": []
     },
     "E13b": {
-      "acceptable_statuses": [
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -2353,8 +2324,8 @@
       "unverifiable_claims": []
     },
     "E13c": {
-      "acceptable_statuses": [
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -2413,8 +2384,8 @@
       "unverifiable_claims": []
     },
     "E14a": {
-      "acceptable_statuses": [
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -2473,8 +2444,8 @@
       "unverifiable_claims": []
     },
     "E14b": {
-      "acceptable_statuses": [
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,
@@ -2533,8 +2504,8 @@
       "unverifiable_claims": []
     },
     "E14c": {
-      "acceptable_statuses": [
-        "USEFUL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,

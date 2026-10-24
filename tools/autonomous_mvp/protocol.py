@@ -1,114 +1,211 @@
-"""Thin adapter between the 2B runner and an action protocol.
+"""Run one 2B case through the real 2A executor (actions-v3, constitution agent-service-v1).
 
-The runner, ledger and scorer only see the normalized records defined here.
-Which actions exist, how they are validated and what the executor admits belong
-to the protocol (batch 2A). Two adapters are registered:
+There is no second protocol implementation here. `agent_graph.executor.run_investigation`
+owns the dialogue, the action layers, the constitution limits, the evidence checks and
+the outcome. This module only supplies:
 
-* `evidence-refs-v2-interim` wraps the protocol already on main
-  (`agent_graph.evidence_refs`, read_source/propose/finish). It can exercise the
-  transport and the loop now, but it cannot express abstention reasons,
-  unknowns, impact or hypotheses beyond the static grammar.
-* `agent-service-v1` is the 2A protocol. It is not integrated yet and refuses to
-  open a case, so no evaluation can silently run on the interim protocol.
-
-Records use the agent-graph-output 2.0 vocabulary (`agent_graph.output_contracts`):
-claim kind fact/hypothesis, evidence origin, provenance AUTHENTIC/UNVERIFIED/
-REJECTED, sufficiency, UnknownCode, result status/reason. A model candidate
-outside the static grammar is a HypothesisEvidence and is never sufficient. An
-invalid action carries `errors` in the ContractError shape: path, type, rule.
+* `AccountedModel`, the `complete_raw` model the executor calls, over a 2B transport
+  (Cloud.ru in live runs, a scripted transport offline). It books every attempt for
+  the ledger and turns transport failures into the executor's GraphError codes.
+* the case policy: pinned Git snapshots of the fixtures, operator addresses and the
+  bundled constitution (a derived copy only lowers max_steps for step-limit controls);
+* `case_result`, which maps the executor report into the 2B records in
+  agent-graph-output 2.0 terms (fact/hypothesis, provenance, sufficiency and
+  ContractError-shaped diagnostics). The claim of each proposal is recovered with the
+  executor's own `actions.parse` on the reply; no reply text is stored.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from decimal import ROUND_CEILING, Decimal
 import hashlib
 import json
 from pathlib import Path
+import time
 
+PROTOCOL_ID = "actions-v3"
 CONFIDENCE = ("NOT_ADMITTED", "CANDIDATE", "CONFIRMED_WITHIN_PROFILE")
-LAYERS = ("json", "schema", "field_combination", "tool_admissibility", "evidence", "completion")
-CAPABILITIES = ("status", "abstain_reason", "unknowns", "impact", "hypothesis", "search")
-
-
-class ProtocolUnavailable(Exception):
-    def __init__(self, code):
-        self.code = code
-        super().__init__(code)
-
-
-@dataclass
-class ClaimRecord:
-    claim: dict  # consumer_service, provider_service, method, path_template (+ consumer_repository if known)
-    kind: str  # Claim.kind of the 2.0 contract: "fact" or "hypothesis"
-    ref_digests: list = field(default_factory=list)  # sha256 of every evidence_ref string offered
-    origin: str = "code"  # EvidenceOrigin: "code" for a static-profile fact, "model_hypothesis" otherwise
-    provenance: str = "UNVERIFIED"  # Provenance: AUTHENTIC | UNVERIFIED | REJECTED
-    provenance_reason: str | None = None
-    sufficiency: str = "NOT_ASSESSED"  # Sufficiency of the 2.0 contract
-    unknowns: list = field(default_factory=list)  # UnknownCode values, required for hypotheses
-    admitted: bool = False
-    confidence: str = "NOT_ADMITTED"
-
-
-@dataclass
-class StepOutcome:
-    action: str  # allowlisted action name, or "<unparsed>"
-    valid: bool
-    layer: str | None = None
-    reason_code: str | None = None
-    errors: list = field(default_factory=list)  # ContractError shape: [{"path", "type", "rule"?}]
-    tool: dict | None = None
-    claims: list = field(default_factory=list)
-    terminal: str | None = None  # None, "FINISHED" or "ABSTAINED"
-    # When the protocol supports it: {"status", "reason_code", "unknowns": [{"code", "subject"}],
-    # "gaps": [{"code", "repository"}], "impact": {service: AT_RISK|NOT_AT_RISK|UNKNOWN}}.
-    final: dict | None = None
-    messages: list = field(default_factory=list, repr=False)  # appended to the dialogue, never persisted
-
-    def safe(self):
-        data = asdict(self)
-        data.pop("messages")
-        data["claims"] = [asdict(c) if isinstance(c, ClaimRecord) else c for c in self.claims]
-        return data
+TERMINALS = {"step_limit": "STEP_LIMIT", "deadline": "DEADLINE", "transport_failure": "TRANSPORT_FAILED",
+             "invalid_actions": "ACTION_REJECTED_LIMIT", "budget": "BUDGET", "cancelled": "CANCELLED"}
+# transport.py code -> executor GraphError code (agent_graph.executor.TRANSPORT)
+TRANSPORT_CODES = {"timeout": "model_timeout", "deadline_before_send": "model_timeout",
+                   "deadline_during_body": "model_timeout", "missing_secret": "missing_model_secret",
+                   "body_limit": "model_response_limit", "unsupported_content_encoding": "unsupported_content_encoding",
+                   "http_rate_limited": "model_http_error", "http_unauthorized": "model_http_error",
+                   "http_server_error": "model_http_error", "http_error": "model_http_error"}
 
 
 def ref_digest(value):
     return hashlib.sha256(str(value).encode()).hexdigest()
 
 
-def _schema_fields(schema):
-    names = set()
-
-    def visit(node):
-        if isinstance(node, dict):
-            names.update(node.get("properties", {}))
-            for v in node.values():
-                visit(v)
-        elif isinstance(node, list):
-            for v in node:
-                visit(v)
-    visit(schema)
-    return names
+def text_sha256(path):
+    return hashlib.sha256(Path(path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
-def safe_errors(exc, allowed):
-    """ContractError-shaped diagnostics of an action ValidationError.
+class AccountedModel:
+    """The model object handed to run_investigation. One call is one booked attempt."""
 
-    Same rules as output_contracts.safe_errors: no input values or messages, and a
-    location segment that is not a schema name or an index becomes "*".
-    """
-    result = []
-    for error in exc.errors(include_url=False, include_input=False, include_context=False):
-        path = [str(p) if type(p) is int or p in allowed else "*" for p in error["loc"]]
-        item = dict(path=".".join(path), type=error["type"])
-        if error["type"] == "value_error":
-            rule = str(error.get("msg", "")).rsplit(" ", 1)[-1]
-            if rule.replace("_", "").isalpha() and rule.islower() and 3 <= len(rule) <= 60:
-                item["rule"] = rule
-        result.append(item)
-    return result[:8]
+    def __init__(self, transport, model, parameters, *, attempts, breaker=None, family=None):
+        self.transport, self.model, self.parameters = transport, model, parameters
+        self.attempts, self.breaker, self.family = attempts, breaker, family
+        self.parsed = []  # per attempt: typed proposal of the reply, or None
+
+    def complete_raw(self, messages, schema, *, cancel=None, deadline_epoch=None):
+        from agent_graph.contracts import GraphError
+        payload = dict(model=self.model["id"], messages=messages, stream=False,
+                       temperature=self.parameters["temperature"],
+                       **{self.parameters["token_parameter"]: self.model["max_completion_tokens"]},
+                       response_format=dict(type="json_schema", json_schema=dict(
+                           name="agent_action", strict=True, schema=schema)))
+        if len(json.dumps(payload, ensure_ascii=False).encode()) > self.parameters["max_prompt_bytes"]:
+            raise GraphError("model_input_limit")  # nothing was sent, so no attempt is booked
+        timeout = self.parameters["request_timeout_seconds"]
+        if deadline_epoch is not None:
+            timeout = min(timeout, deadline_epoch - time.time())
+        result = self.transport.complete(payload, deadline=time.monotonic() + timeout)
+        late = deadline_epoch is not None and time.time() >= deadline_epoch
+        attempt = dict(result.safe(), step=len(self.attempts), late=late)
+        self.attempts.append(attempt)
+        self.parsed.append(_proposal(result.content) if result.ok else None)
+        if self.breaker is not None:
+            self.breaker.observe(attempt, self.family)
+        if not result.ok:
+            raise GraphError(TRANSPORT_CODES.get(result.code, "model_unavailable_or_invalid"))
+        if result.finish_reason != "stop" or result.has_tool_calls:
+            raise GraphError("model_incomplete_or_refused")  # same rule as agent_graph ChatModel
+        if result.usage is None or result.usage["completion_tokens"] > self.model["max_completion_tokens"]:
+            raise GraphError("invalid_model_usage")
+        return result.content, dict(result.usage)
 
 
-PROVENANCE = {"AUTHENTIC_AUTHORIZED_CURRENT": "AUTHENTIC", "REJECTED": "REJECTED", "NOT_ASSESSED": "UNVERIFIED"}
+def _proposal(content):
+    """Typed claim of a propose action, via the executor's own parser; None otherwise."""
+    from agent_graph.actions import Rejection, parse
+    from agent_graph.contracts import digest
+    try:
+        action = parse(content)
+    except Rejection:
+        return None
+    if action.name == "propose_dependency":
+        claim = action.claim.model_dump()
+        return dict(kind="fact", digest=digest(claim), claim=claim,
+                    refs=[ref_digest(r) for r in action.evidence_refs], unknowns=[])
+    if action.name == "propose_hypothesis":
+        c = action.claim
+        return dict(kind="hypothesis", digest=None, claim=dict(
+            consumer_service=c.consumer_service, provider_service=c.provider_service, method=c.method,
+            path_template=c.route), refs=[ref_digest(r) for r in action.evidence_refs], unknowns=list(action.unknowns))
+    return None
+
+
+def constitution_for(case, work):
+    """The bundled constitution; step-limit controls get a copy with only max_steps lowered."""
+    import yaml
+    from agent_graph.constitution import DEFAULT_PATH, load
+    _, bundled_version = load(DEFAULT_PATH)
+    steps = case["limits"]["max_model_steps"]
+    data = yaml.safe_load(Path(DEFAULT_PATH).read_text(encoding="utf-8"))
+    if steps == data["limits"]["max_steps"]:
+        return str(DEFAULT_PATH), bundled_version
+    data["limits"]["max_steps"] = steps
+    path = Path(work) / "constitution-step-control.yaml"
+    path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+    return str(path), load(path)[1]
+
+
+def case_policy(case, repos, model, parameters, constitution_path, run_id):
+    from agent_graph.contracts import Policy
+    p = parameters
+    # The executor reserves messages + schema + 4096 + max output per call; bound it for every step.
+    tokens = (p["max_prompt_bytes"] + 4096 + model["max_completion_tokens"]) * case["limits"]["max_model_steps"]
+    # Whole RUB per million tokens, rounded up: the core store bound is never below the published rate.
+    rate = int(max(Decimal(model["price"]["input_per_million"]), Decimal(model["price"]["output_per_million"]))
+               .to_integral_value(rounding=ROUND_CEILING))
+    endpoint = p["chat_endpoint"]
+    return Policy.model_validate(dict(
+        installation_id="amvp-2b", environment="synthetic-fixture", subject="amvp-2b-runner",
+        capabilities=["read_context", "maintain", "propose"], constitution=constitution_path,
+        repositories=[dict(id=r["id"], service=r["service"], root=repos[r["id"]]["root"],
+                           revision=repos[r["id"]]["commit"], snapshot="git") for r in case["repositories"]],
+        addresses=case["addresses"], limits=dict(max_tool_lines=60),
+        model=dict(endpoint=endpoint, allowed_endpoints=[endpoint], model=model["id"],
+                   configuration_id=f"{run_id}:{model['id']}", api_key_env=p["credential_env"],
+                   protocol=PROTOCOL_ID, token_parameter=p["token_parameter"], allow_source_transfer=True,
+                   route="corporate", context_tokens=p["context_tokens"],
+                   max_output_tokens=model["max_completion_tokens"], max_prompt_bytes=p["max_prompt_bytes"],
+                   timeout_seconds=min(60.0, float(p["request_timeout_seconds"])),
+                   installation_token_cap=tokens, run_token_cap=tokens, currency="RUB",
+                   # The 2B ledger holds the program money cap; the core store gets the same case bound.
+                   micro_per_million_tokens=rate * 1_000_000, installation_micro_cap=tokens * rate,
+                   run_micro_cap=tokens * rate)))
+
+
+def render_task(task):
+    """The ticket is untrusted text, bounded to the core's 2000-character task limit."""
+    return f"[{task['kind']} {task['key']}] {task['summary']}\n{task['description']}"[:2000]
+
+
+def run(case, repos, *, model, parameters, transport, work, deadline_epoch, run_id, attempts, breaker=None):
+    """Prepare the pinned context and run the real executor. Returns (report, accounted model, versions)."""
+    from agent_graph.engine import Graph
+    from agent_graph.executor import run_investigation
+    from agent_graph.store import Store
+    constitution_path, constitution_version = constitution_for(case, work)
+    policy = case_policy(case, repos, model, parameters, constitution_path, run_id)
+    store = Store(Path(work) / "private-state")
+    try:
+        graph = Graph(policy, store)
+        context = graph.prepare_context(render_task(case["task"]),
+                                        revisions={r: v["commit"] for r, v in repos.items()})
+        accounted = AccountedModel(transport, model, parameters, attempts=attempts, breaker=breaker,
+                                   family=case["family"])
+        report = run_investigation(graph, context["id"], model=accounted, deadline_epoch=deadline_epoch,
+                                   request_id=case["case_id"])
+        return report, accounted, dict(constitution_version=constitution_version)
+    finally:
+        store.close()
+
+
+def case_result(report, accounted):
+    """Executor report -> 2B steps, claims and final, with no reply text."""
+    rejected = {d["step"]: d for d in report["diagnostics"]}
+    insufficient = set(report["insufficient_claims"])
+    steps, claims = [], []
+    for event in report["events"]:
+        step = event["step"]
+        if event.get("accepted"):
+            steps.append(dict(step=step, action=event["action"], valid=True, layer=None, reason_code=None, errors=[]))
+        else:
+            d = rejected.get(step, event)
+            steps.append(dict(step=step, action=d.get("action") or "<unparsed>", valid=False, layer=d["layer"],
+                              reason_code=d["reason_code"],
+                              errors=[dict(path=d.get("field_path") or "", type=d.get("expected") or d["reason_code"])]))
+        proposal = accounted.parsed[step] if step < len(accounted.parsed) else None
+        if proposal is None:
+            continue
+        record = dict(claim=proposal["claim"], kind=proposal["kind"], ref_digests=proposal["refs"],
+                      origin="code" if proposal["kind"] == "fact" else "model_hypothesis",
+                      provenance="UNVERIFIED", provenance_reason=None, sufficiency="NOT_ASSESSED",
+                      unknowns=proposal["unknowns"], admitted=False, confidence="NOT_ADMITTED")
+        if event.get("accepted"):
+            record["provenance"] = "AUTHENTIC"  # every cited receipt resolved in this session
+            if proposal["kind"] == "fact":
+                ok = proposal["digest"] not in insufficient
+                record.update(sufficiency="SUPPORTED_WITHIN_PROFILE" if ok else "INSUFFICIENT", admitted=ok,
+                              confidence="CONFIRMED_WITHIN_PROFILE" if ok else "NOT_ADMITTED")
+            else:
+                record.update(admitted=True, confidence="CANDIDATE")
+        elif steps[-1]["layer"] == "evidence":
+            record.update(provenance="REJECTED", provenance_reason=steps[-1]["reason_code"])
+        claims.append(record)
+    finish = report.get("finish") or {}
+    if finish:
+        terminal = "ABSTAINED" if finish.get("outcome") == "abstain" else "FINISHED"
+    else:
+        terminal = TERMINALS.get(report["outcome"], "HARNESS_ERROR")
+    final = dict(status=report["status"], reason_code=report["reason_code"], outcome=report["outcome"],
+                 finish_reason=finish.get("reason"))
+    return terminal, steps, claims, final
 
 
 def contract_violations(record):
@@ -138,182 +235,18 @@ def hypothesis_evidence(record, *, model_configuration_id, visibility, checked_a
         unknowns=list(record["unknowns"]))).model_dump(mode="json")
 
 
-class ActionProtocol:
-    protocol_id = "abstract"
-    interim = True
-    capabilities: frozenset = frozenset()
-
-    def fingerprint(self):
-        """Hashes that pin prompt, schema and executor code into the manifest."""
-        raise NotImplementedError
-
-    def open_case(self, case, repos, work, *, deadline_passed):
-        """Return a session with initial_messages(), response_format(), step() and close()."""
-        raise NotImplementedError
-
-
-class EvidenceRefsV2Interim(ActionProtocol):
-    """Adapter over the existing main protocol; Linux only (POSIX store and O_NOFOLLOW reads)."""
-
-    protocol_id = "evidence-refs-v2-interim"
-    interim = True
-    capabilities = frozenset()
-
-    def __init__(self):
-        from agent_graph.contracts import model_action_schema
-        from agent_graph.evidence_refs import ReferenceReply
-        from agent_graph.inference import REFERENCE_SYSTEM
-        self.system = REFERENCE_SYSTEM
-        self.schema = model_action_schema(ReferenceReply)
-        self.fields = _schema_fields(self.schema)
-
-    def fingerprint(self):
-        root = Path(__file__).resolve().parents[2]
-        # LF-normalized, so a Windows checkout and the Linux runner agree.
-        code = {p: hashlib.sha256((root / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest() for p in (
-            "src/agent_graph/evidence_refs.py", "src/agent_graph/contracts.py", "src/agent_graph/engine.py",
-            "src/agent_graph/inference.py", "src/agent_graph/discovery.py", "src/agent_graph/sources.py",
-            "tools/autonomous_mvp/protocol.py")}
-        return dict(protocol_id=self.protocol_id, interim=True, capabilities=sorted(self.capabilities),
-                    system_sha256=hashlib.sha256(self.system.encode()).hexdigest(),
-                    schema_sha256=hashlib.sha256(json.dumps(self.schema, sort_keys=True).encode()).hexdigest(),
-                    constitution=None, code_sha256=code)
-
-    def open_case(self, case, repos, work, *, deadline_passed):
-        from agent_graph.contracts import GraphError
-
-        def admission_check():
-            # Runs inside the store transaction: a late admission rolls back.
-            if deadline_passed():
-                raise GraphError("investigation_deadline")
-        return _RefsV2Session(self, case, repos, Path(work), admission_check)
-
-
-def render_task(task):
-    """The ticket is untrusted text. Bounded to the core's 2000-character task limit."""
-    text = f"[{task['kind']} {task['key']}] {task['summary']}\n{task['description']}"
-    return text[:2000]
-
-
-class _RefsV2Session:
-    def __init__(self, protocol, case, repos, work, admission_check):
-        from agent_graph.contracts import Policy, canonical
-        from agent_graph.engine import Graph
-        from agent_graph.evidence_refs import EvidenceSession
-        from agent_graph.store import Store
-        self.p, self.canonical, self.admission_check = protocol, canonical, admission_check
-        policy = Policy.model_validate(dict(
-            installation_id="amvp-2b", environment="synthetic-fixture", subject="amvp-2b-runner",
-            capabilities=["read_context", "maintain", "propose"],
-            repositories=[dict(id=r["id"], service=r["service"], root=repos[r["id"]]["root"],
-                               revision=repos[r["id"]]["commit"]) for r in case["repositories"]],
-            addresses=case["addresses"],
-            limits=dict(max_model_steps=case["limits"]["max_model_steps"], max_tool_lines=60)))
-        self.store = Store(work / "private-state")
-        self.graph = Graph(policy, self.store)
-        self.context = self.graph.prepare_context(render_task(case["task"]))
-        self.refs = EvidenceSession(self.graph, self.context["id"])
-        self.inventory = [dict(source_id=s["id"], repository=s["repository"], path=s["path"],
-                               lines=len(s["text"].splitlines()), service=s["service"])
-                          for s in self.context["sources"].values()]
-
-    def initial_messages(self, remaining_steps):
-        task = dict(task=self.context["task"], sources=self.inventory, gaps=self.context["graph"]["gaps"],
-                    task_data_is_untrusted=True, context_id=self.context["id"], remaining_steps=remaining_steps)
-        return [dict(role="system", content=self.p.system), dict(role="user", content=self.canonical(task))]
-
-    def response_format(self):
-        return dict(type="json_schema", json_schema=dict(name="graph_action", strict=True, schema=self.p.schema))
-
-    def _reject(self, action, layer, code, content, errors=(), remaining=0):
-        feedback = dict(action_rejected=dict(layer=layer, reason_code=code, errors=list(errors)),
-                        remaining_steps=remaining)
-        return StepOutcome(action=action, valid=False, layer=layer, reason_code=code, errors=list(errors),
-                           messages=[dict(role="assistant", content=content),
-                                     dict(role="user", content=self.canonical(feedback))])
-
-    def step(self, content, *, remaining_steps):
-        from pydantic import ValidationError
-        from agent_graph.contracts import GraphError, load_json
-        from agent_graph.evidence_refs import ReferenceReply
-        try:
-            data = load_json(content)
-        except (ValueError, RecursionError):
-            return self._reject("<unparsed>", "json", "invalid_json", content, remaining=remaining_steps)
-        action = data.get("action") if isinstance(data, dict) else None
-        action = action if action in ("read_source", "propose", "finish") else "<unparsed>"
-        try:
-            reply = ReferenceReply.model_validate(data)
-        except ValidationError as exc:
-            return self._reject(action, "schema", "schema_violation", content,
-                                safe_errors(exc, self.p.fields), remaining_steps)
-        source_fields = (reply.source_id, reply.start_line, reply.end_line)
-        if reply.action == "read_source":
-            if reply.proposals or any(v is None for v in source_fields):
-                return self._reject(action, "field_combination", "read_requires_range_and_no_proposals",
-                                    content, remaining=remaining_steps)
-            try:
-                value = self.refs.read(reply.source_id, reply.start_line, reply.end_line)
-            except GraphError as exc:
-                return self._reject(action, "tool_admissibility", exc.code, content, remaining=remaining_steps)
-            return StepOutcome(action=action, valid=True, tool=dict(
-                source_id=reply.source_id, start_line=reply.start_line, end_line=reply.end_line),
-                messages=[dict(role="assistant", content=content),
-                          dict(role="user", content=self.canonical(dict(untrusted_source=value,
-                                                                         remaining_steps=remaining_steps)))])
-        if reply.action == "propose":
-            if any(v is not None for v in source_fields) or not reply.proposals:
-                return self._reject(action, "field_combination", "propose_requires_proposals_and_null_range",
-                                    content, remaining=remaining_steps)
-            claims, results = [], []
-            for proposal in reply.proposals:
-                # The interim protocol only proposes static-profile facts; it has no hypothesis action.
-                record = ClaimRecord(claim=proposal.claim.model_dump(), kind="fact", origin="code",
-                                     ref_digests=[ref_digest(r) for r in proposal.evidence_refs])
-                assessment = self.refs.assess(proposal)
-                record.provenance = PROVENANCE[assessment["provenance"]["status"]]
-                record.provenance_reason = assessment["provenance"].get("reason")
-                record.sufficiency = assessment["sufficiency"]["status"]
-                if record.provenance == "AUTHENTIC" and record.sufficiency == "SUPPORTED_WITHIN_PROFILE":
-                    try:
-                        self.refs.propose(proposal, admission_check=self.admission_check)
-                        record.admitted, record.confidence = True, "CONFIRMED_WITHIN_PROFILE"
-                    except GraphError as exc:
-                        record.provenance_reason = record.provenance_reason or exc.code
-                claims.append(record)
-                results.append(dict(admitted=record.admitted, provenance=record.provenance,
-                                    sufficiency=record.sufficiency, reason=record.provenance_reason))
-            # A well-formed propose is a valid action even when the executor
-            # admits none of its claims; the claim records carry that verdict.
-            return StepOutcome(action=action, valid=True, claims=claims,
-                               messages=[dict(role="assistant", content=content),
-                                         dict(role="user", content=self.canonical(dict(
-                                             proposal_results=results, remaining_steps=remaining_steps)))])
-        if reply.proposals or any(v is not None for v in source_fields):
-            return self._reject(action, "field_combination", "finish_requires_empty_fields", content,
-                                remaining=remaining_steps)
-        return StepOutcome(action=action, valid=True, terminal="FINISHED")
-
-    def close(self):
-        self.store.close()
-
-
-class AgentServiceV1Pending(ActionProtocol):
-    """Placeholder for the 2A protocol: integration happens on rebase onto its contracts commit."""
-
-    protocol_id = "agent-service-v1"
-    interim = False
-    capabilities = frozenset(CAPABILITIES)
-
-    def __init__(self):
-        raise ProtocolUnavailable("protocol_2a_not_integrated")
-
-
-PROTOCOLS = {EvidenceRefsV2Interim.protocol_id: EvidenceRefsV2Interim,
-             AgentServiceV1Pending.protocol_id: AgentServiceV1Pending}
-
-
-def load(protocol_id):
-    if protocol_id not in PROTOCOLS:
-        raise ProtocolUnavailable("unknown_protocol")
-    return PROTOCOLS[protocol_id]()
+def fingerprint():
+    """Hashes that pin the executor, prompt, schema and constitution into the manifest."""
+    from agent_graph.actions import action_schema, system_prompt
+    from agent_graph.constitution import DEFAULT_PATH, load
+    root = Path(__file__).resolve().parents[2]
+    constitution, version = load(DEFAULT_PATH)
+    files = ("src/agent_graph/actions.py", "src/agent_graph/executor.py", "src/agent_graph/constitution.py",
+             "src/agent_graph/evidence_refs.py", "src/agent_graph/engine.py", "src/agent_graph/sources.py",
+             "src/agent_graph/git_sources.py", "src/agent_graph/discovery.py", "src/agent_graph/output_contracts.py",
+             "constitutions/agent-service-v1.yaml", "tools/autonomous_mvp/protocol.py")
+    return dict(protocol=PROTOCOL_ID, executor="agent_graph.executor.run_investigation",
+                constitution_version=version,
+                system_sha256=hashlib.sha256(system_prompt(constitution).encode()).hexdigest(),
+                schema_sha256=hashlib.sha256(json.dumps(action_schema(), sort_keys=True).encode()).hexdigest(),
+                code_sha256={f: text_sha256(root / f) for f in files})

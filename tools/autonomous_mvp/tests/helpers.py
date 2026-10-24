@@ -1,93 +1,42 @@
-"""Offline doubles. The fake protocol stands in for the 2A executor so runner,
-ledger and scorer logic can be tested without agent_graph; it is never used live."""
+"""Offline helpers. Every test drives the real runner and the real 2A executor;
+only the transport is scripted (tools.autonomous_mvp.dryrun or ScriptedTransport)."""
 from __future__ import annotations
 
 import json
-import os
+from pathlib import Path
 import time
 
-from tools.autonomous_mvp import program as program_mod
-from tools.autonomous_mvp.protocol import ClaimRecord, StepOutcome, ref_digest
+from tools.autonomous_mvp import dryrun, ledger, program as program_mod, runner
 
-POSIX_CORE = hasattr(os, "O_DIRECTORY")
-try:
-    import fcntl  # noqa: F401
-except ImportError:
-    POSIX_CORE = False
+BASE, PROGRAM, CASES = program_mod.load()
+ORACLE = program_mod.load_oracle(BASE)
+MODEL = PROGRAM["models"][0]["id"]
 
 
-class FakeSession:
-    def __init__(self, protocol, case):
-        self.protocol, self.case = protocol, case
-
-    def initial_messages(self, remaining_steps):
-        return [dict(role="system", content="fake"), dict(role="user", content=self.case["case_id"])]
-
-    def response_format(self):
-        return dict(type="json_schema", json_schema=dict(name="fake", strict=True, schema={}))
-
-    def step(self, content, *, remaining_steps):
-        self.protocol.seen.append(content)
-        data = json.loads(content)
-        msgs = [dict(role="assistant", content=content), dict(role="user", content="ok")]
-        if data["action"] == "read":
-            return StepOutcome(action="read_source", valid=True, tool=dict(source_id="s"), messages=msgs)
-        if data["action"] == "propose":
-            claims = [ClaimRecord(claim=c["claim"], kind=c.get("kind", "fact"), origin=c.get("origin", "code"),
-                                  ref_digests=[ref_digest(r) for r in c.get("refs", ["issued"])],
-                                  provenance=c.get("provenance", "AUTHENTIC"),
-                                  sufficiency="SUPPORTED_WITHIN_PROFILE", admitted=c.get("admitted", True),
-                                  confidence=c.get("confidence", "CONFIRMED_WITHIN_PROFILE")) for c in data["claims"]]
-            return StepOutcome(action="propose", valid=True, claims=claims, messages=msgs)
-        if data["action"] == "finish":
-            return StepOutcome(action="finish", valid=True, terminal=data.get("terminal", "FINISHED"),
-                               final=data.get("final"), messages=msgs)
-        return StepOutcome(action="<unparsed>", valid=False, layer="schema", reason_code="schema_violation",
-                           errors=[dict(path="action", type="literal_error")], messages=msgs)
-
-    def close(self):
-        self.protocol.closed += 1
-
-
-class FakeProtocol:
-    protocol_id = "fake-test-protocol"
-    interim = False
-    capabilities = frozenset(("status", "abstain_reason", "unknowns", "impact", "hypothesis", "search"))
-
-    def __init__(self):
-        self.seen, self.closed = [], 0
-
-    def open_case(self, case, repos, work, *, deadline_passed):
-        return FakeSession(self, case)
-
-
-def act(action, **extra):
-    return json.dumps(dict(action=action, **extra))
-
-
-def claim(consumer, provider="orders", path="/orders"):
-    return dict(consumer_repository=consumer, consumer_service=consumer, provider_service=provider,
-                method="GET", path_template=path)
-
-
-def small_program(**phase_overrides):
-    """The real 2b-r1 program with a one-model, small-phase shape for tests."""
-    _, program, cases = program_mod.load()
-    program = json.loads(json.dumps(program))
+def one_model_program(**phase_overrides):
+    program = json.loads(json.dumps(PROGRAM))
     program["models"] = [program["models"][0]]
     for name, values in phase_overrides.items():
         program["phases"][name].update(values)
-    return program, cases
+    return program
 
 
-class Clock:
-    """Wall and monotonic clocks advanced together by tests."""
+def subset(*case_ids):
+    return {k: CASES[k] for k in case_ids}
 
-    def __init__(self):
-        self.offset = 0.0
 
-    def wall(self):
-        return time.time() + self.offset
+def run_phase(directory, phase, transport, *, program=None, cases=None):
+    """execute_phase exactly as the live runner calls it, with file ledgers in `directory`."""
+    work = Path(directory) / f"work-{phase}-{time.monotonic_ns()}"
+    return runner.execute_phase(phase, MODEL, program=program or one_model_program(), cases=cases or CASES,
+                                manifest_digest="m" * 64, source_sha="a" * 40, transport=transport,
+                                backend_for=lambda p: ledger.FileBackend(Path(directory) / "ledgers" / f"{p}.json"),
+                                work=work)
 
-    def mono(self):
-        return time.monotonic() + self.offset
+
+def agent(behaviour="follow", cases=None):
+    return dryrun.ScriptedAgentTransport(cases or CASES, ORACLE, models=[MODEL], behaviour=behaviour)
+
+
+def stored(directory, phase):
+    return json.loads((Path(directory) / "ledgers" / f"{phase}.json").read_text())["state"]

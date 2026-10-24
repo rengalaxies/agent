@@ -1,9 +1,8 @@
 {
   "cases": {
     "S01": {
-      "acceptable_statuses": [
-        "USEFUL",
-        "PARTIAL"
+      "acceptable_outcomes": [
+        "supported_dependency"
       ],
       "allowed_claims": [],
       "beyond_static": false,

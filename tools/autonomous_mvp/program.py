@@ -100,21 +100,16 @@ def estimate(program, cases):
 
 def code_files():
     files = sorted((ROOT / "tools/autonomous_mvp").glob("*.py")) + sorted((ROOT / "src/agent_graph").glob("*.py"))
-    files.append(ROOT / ".github/workflows/autonomous-mvp-model.yml")
+    files += [ROOT / ".github/workflows/autonomous-mvp-model.yml", ROOT / "constitutions/agent-service-v1.yaml"]
     return {str(p.relative_to(ROOT)).replace("\\", "/"): text_sha256(p) for p in files if p.exists()}
 
 
-def protocol_fingerprints(program):
+def protocol_fingerprint(program):
     from tools.autonomous_mvp import protocol
-    out = {}
-    for phase, protocol_id in sorted(program["protocol"].items()):
-        if phase == "note":
-            continue
-        try:
-            out[phase] = protocol.load(protocol_id).fingerprint()
-        except protocol.ProtocolUnavailable as exc:
-            out[phase] = dict(protocol_id=protocol_id, available=False, code=exc.code)
-    return out
+    found = protocol.fingerprint()
+    if found["protocol"] != program["protocol"]["id"]:
+        raise ValueError("program_protocol_mismatch")
+    return found
 
 
 def manifest(name="2b-r1"):
@@ -123,7 +118,7 @@ def manifest(name="2b-r1"):
              if p.name != "manifest.json"}
     by_split = {s: sorted(k for k, c in cases.items() if c["split"] == s) for s in SPLITS}
     packet = dict(schema="amvp-manifest-1", program=program, program_files_sha256=files, cases=by_split,
-                  code_sha256=code_files(), protocols=protocol_fingerprints(program),
+                  code_sha256=code_files(), protocol=protocol_fingerprint(program),
                   volume_and_cost=estimate(program, cases),
                   oracle_scope="evaluator only; never passed to the protocol, the model or its configuration")
     return dict(packet, manifest_digest=digest(packet))
