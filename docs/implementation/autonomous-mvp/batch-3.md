@@ -1,7 +1,8 @@
 # Пачка 3, часть 1: модель данных графа и runtime-адаптер
 
 Задача: https://github.com/rengalaxies/agent/issues/51. Сессия `mvp-3-runtime`,
-ветка `claude/mvp-3-runtime-1b13b3`, основание `main` 9d7480d.
+ветка `claude/mvp-3-runtime-1b13b3`, основание: коммит контрактов 2А
+`d8dd64a` (ветка `claude/mvp-2a-core-205322`) поверх `main` 9d7480d.
 
 Эта часть фиксирует модель данных постоянного графа до миграции и даёт один
 настоящий runtime-адаптер. Хранение графа, инвалидацию по основаниям, фильтрацию
@@ -16,7 +17,7 @@
 | Адаптер `access-log-jsonl-1` в `src/agent_graph/runtime_observations.py` | реализован, проверен офлайн |
 | Стенд `tools/agent_service/runtime_stand/` с настоящими HTTP-вызовами | реализован, проверен локально (Windows, Python 3.14) |
 | Подключение к access logs или трассам клиента | не проверено: нет доступа ни к одному источнику клиента |
-| Evidence-контракт 2А (`src/agent_graph/output_contracts.py`) | ещё не запушен; адаптер выдаёт форму раздела 5 SPEC через одну функцию `evidence()` |
+| Приведение к контракту 2А (`output_contracts.py`, agent-graph-output 2.0) | сделано: `RuntimeEvidence`, `GraphRelationship`, `SourceFreshness`; сквозной тест проходит `parse_document` |
 | Запись наблюдений в граф | не сделана, это следующая волна |
 
 ## Что есть в коде сейчас
@@ -61,18 +62,19 @@
 
 | Сущность | ID | Что не входит в ID |
 |---|---|---|
-| Сервис | `digest([installation, environment, "service", service])` | репозиторий, адрес, команда |
-| Операция API | `digest([installation, environment, service, METHOD, route])`, как в `discovery.operation_id` | версия кода, файл объявления |
+| Сервис | `output_contracts.entity_id(ServiceEntity)`, то есть `digest` от `{kind, installation_id, environment, service}` | репозиторий, адрес, команда |
+| Операция API | `entity_id(OperationEntity)` = `digest([installation, environment, service, METHOD, route])`, как в `discovery.operation_id` | версия кода, файл объявления |
 | Место вызова | `digest([installation, environment, "callsite", consumer_service, repository, path, operation_id, enclosing_symbol, ordinal])` | номер строки, commit, содержимое |
 | Репозиторий | `digest([installation, environment, "repository", repository_id])` | revision |
 | Команда | `digest([installation, "team", team_key])` | окружение: команда одна на установку |
 | Источник runtime | `digest([installation, environment, "runtime_source", source_id])` | файлы сегментов |
-| Связь | `digest([kind, from_id, to_id])` | основания, окна, статус |
+| Связь | `digest([kind, from_id, to_id])`, `kind` из `GraphRelationship` (`calls`, `declares`, `owns`, `may_affect`) | основания, окна, статус |
 
 Правила:
 
 - `route` берётся из объявления (OpenAPI path, декоратор FastAPI) или из поля
-  `route` наблюдения. Метод приводится к верхнему регистру. Сырой путь запроса
+  `route` наблюдения и приводится `output_contracts.normalize_route` (схлопывание
+  `//`, без хвостового `/`). Метод приводится к верхнему регистру. Сырой путь запроса
   (`/orders/123`) никогда не превращается в шаблон маршрута: угадывание
   шаблона склеило бы разные операции.
 - Место вызова идентифицируется функцией, в которой оно стоит
@@ -102,6 +104,10 @@
 `CALLS_SERVICE` из runtime не порождает `CALLS_OPERATION`. Если в логе нет
 маршрута, граф знает только "Reporting обращается к Orders".
 
+В контракте 2.0 оба класса вызова выражены одним `GraphRelationship.kind="calls"`.
+Различает их цель: `ServiceEntity` для `CALLS_SERVICE`, `OperationEntity` для
+`CALLS_OPERATION`. Имена в таблице остаются внутренними именами модели.
+
 ### Основание
 
 Основание (basis) это единица, которую можно проверить и инвалидировать отдельно.
@@ -117,8 +123,11 @@
 Происхождение, семантическая достаточность и свежесть хранятся тремя полями:
 
 - `provenance`: откуда основание, с digest входа;
-- `sufficiency`: что оно доказывает. Для runtime `SERVICE_EDGE_ONLY` или
-  `OPERATION_OBSERVED`. Для цитаты `TEXT_READ` не равно `DEPENDENCY_PROVEN`;
+- `sufficiency`: что оно доказывает. Для runtime в контракте 2.0 это
+  `OBSERVED_WITHIN_WINDOW` для того ребра, к которому основание прикреплено.
+  Уровень (`service` или `operation`) выражен наличием `method`/`route` в
+  `RuntimeEvidence` и полем `semantic_level` наблюдения. Валидная цитата
+  доказывает прочтение, а не зависимость;
 - `freshness`: `CURRENT`, `STALE` или `UNKNOWN` с причинами.
 
 Флага "достоверно" нет.
@@ -292,15 +301,60 @@ Tombstone хранит ID, причину, время, версию источн
 
 `read_access_logs(source, start, end)` возвращает JSON-совместимый `dict`:
 состояние источника, покрытие по сервисам, `gaps`, `rejected` по причинам,
-`unattributed` и `observations`. Каждое наблюдение является основанием `origin=runtime`
-с полями раздела 5 SPEC: стабильные ID сторон, окно, `method`/`route` при
-наличии, агрегаты, `provenance`, `sufficiency`, `freshness`, `visibility`.
+`unattributed` и `observations`. Наблюдение хранит больше, чем контракт:
+полные агрегаты (оценка при sampling, `client_error_count`, `latency_ms`) и ID
+сегментов.
 
-`assess(result, caller, callee, method=None, route=None)` даёт оценку из таблицы
-свежести. `relationships(result)` превращает наблюдения в связи
-`CALLS_SERVICE`/`CALLS_OPERATION` с ID из этого документа. Функция
-`evidence(observation)` единственная, которую нужно привести к контракту 2А
-после rebase.
+Выдача в форме agent-graph-output 2.0, каждая запись проходит валидацию моделей
+`output_contracts`:
+
+| Функция | Модель 2.0 | Содержимое |
+|---|---|---|
+| `evidence(observation)`, `evidence_records(result)` | `RuntimeEvidence` | `provenance=AUTHENTIC` (SHA-256 сегмента сверен), `sufficiency=OBSERVED_WITHIN_WINDOW`, `consumer`/`provider`, `window_start`/`window_end`, `method`/`route` только при наличии, `aggregates` (`requests`, `errors` если у всех записей есть `status`, `sampled`), `source_version` = digest списка сегментов, `visibility=[source.id]` |
+| `relationships(result)` | `GraphRelationship` | `kind=calls`, `status` `ACTIVE` или `STALE` по свежести, `origins=[runtime]`, `change_origin=runtime_sync`, `evidence_refs` на `RuntimeEvidence` |
+| `source_freshness(result)` | `SourceFreshness` | `source_kind=runtime`; `UNKNOWN` с `source_unavailable` для недоступного источника, иначе причины `partial_coverage`, `window_gap`, `sampled_source`, `age_exceeded` |
+| `assess(...)` | поля `freshness_reason` (`FreshnessReason`) и `unknown` (`UnknownCode`) | соответствие ниже |
+
+| Оценка `assess` | `FreshnessReason` | `UnknownCode` |
+|---|---|---|
+| `OBSERVED` | нет | нет |
+| `NO_TRAFFIC_OBSERVED` | `no_traffic_in_window` | `runtime_not_observed` |
+| `SAMPLED_NOT_OBSERVED` | `sampled_source` | `runtime_not_observed` |
+| `WINDOW_GAP` | `window_gap` | `runtime_window_gap` |
+| `SOURCE_UNAVAILABLE` | `source_unavailable` | `runtime_not_observed` |
+| `CALLEE_NOT_INSTRUMENTED` | нет кода | `runtime_not_observed` (неточно) |
+| `ROUTE_NOT_RECORDED` | нет кода | нет кода |
+| `OTHER_ROUTE_OBSERVED` | нет кода | нет кода; у связи есть статус `CONFLICT` |
+
+Тест `test_assessment_codes_exist_in_the_output_contract` падает, если код
+из этой таблицы исчезнет из контракта.
+
+### Чего не хватает в контракте 2.0
+
+`output_contracts.py` принадлежит mvp-2a-core, поэтому я его не правил.
+Предложения для следующей минорной версии:
+
+1. Коды для трёх исходов `assess`: `runtime_not_instrumented`,
+   `runtime_route_not_recorded`, `runtime_route_conflict` (в `UnknownCode`;
+   первый и в `FreshnessReason`). Сейчас неинструментированный сервис
+   выражается общим `runtime_not_observed`, а два других исхода кодом не
+   выражаются вовсе.
+2. Достаточность по уровню. `RuntimeEvidence` без маршрута получает
+   `OBSERVED_WITHIN_WINDOW`, и `AnalysisResult.semantics` примет его как опору
+   факта "Reporting вызывает GET /orders". Нужна проверка, что факт об операции
+   цитирует основание с `route`, или отдельное значение достаточности для
+   сервисного ребра. Это прямой риск ложной уверенности из раздела 15 SPEC.
+3. `CallsiteEntity` содержит `line`, значит `entity_id` места вызова меняется
+   при вставке строки выше вызова. Это расходится с моделью этого документа
+   (`enclosing_symbol` + ordinal) и с требованием не терять исправления при
+   несвязанной правке. Решать нужно до миграции хранилища.
+4. `RuntimeAggregates` без оценки при sampling, 4xx и латентности. Адаптер
+   держит их в наблюдении; для просмотра человеком и приоритизации их стоит
+   добавить как необязательные поля.
+5. `Gap` без интервала и сервиса: разрыв окна (`not_covered`,
+   `corrupt_records`, `segment_digest_mismatch`) в `AnalysisResult.gaps`
+   выражается только как `runtime_source_unavailable`, что неверно по смыслу.
+   Нужен код `runtime_window_gap` в `GapCode` и поля интервала.
 
 ## Стенд
 
@@ -343,7 +397,7 @@ PYTHONPATH=.:src python -m unittest tests.graph.test_runtime_observations -v
 |---|---|
 | `test_zero_traffic_in_a_fully_covered_window_is_reported_but_proves_no_absence` | ноль трафика даёт `NO_TRAFFIC_OBSERVED`, `proves_absence=false` |
 | `test_record_without_route_yields_a_service_edge_and_never_an_api_dependency` | без `route` только `CALLS_SERVICE`, сырой `path` не становится маршрутом |
-| `test_two_services_with_the_same_path_stay_two_operations` | Orders и Inventory с `GET /orders` дают разные ID, совпадающие с `discovery.operation_id` своего сервиса |
+| `test_two_services_with_the_same_path_stay_two_operations` | Orders и Inventory с `GET /orders` дают разные ID, совпадающие с `discovery.operation_id` своего сервиса; `/orders/` и `/orders` сливаются в одно наблюдение |
 | `test_uncovered_part_of_window_is_a_gap_not_zero_traffic` | разрыв окна даёт `WINDOW_GAP` с точным интервалом |
 | `test_unavailable_source_gives_no_observations_and_says_so` | недоступный каталог даёт `UNAVAILABLE` и `SOURCE_UNAVAILABLE` |
 | `test_corrupt_line_keeps_valid_records_and_blocks_the_no_traffic_claim` | битая строка не теряет целые записи и запрещает вывод "трафика нет" |
@@ -351,8 +405,9 @@ PYTHONPATH=.:src python -m unittest tests.graph.test_runtime_observations -v
 | `test_sampled_segment_gives_an_estimate_and_never_reports_no_traffic` | sampling 0.1 даёт оценку и `SAMPLED_NOT_OBSERVED` |
 | `test_untrusted_records_are_rejected_or_left_unattributed` | время без зоны, чужое окружение, чужой emitter, `..` в маршруте, неизвестный псевдоним не попадает в выдачу |
 | `test_old_window_is_stale_under_the_configured_age` | свежесть по `access_log_max_age_seconds`, ID наблюдения от времени проверки не зависит |
+| `test_assessment_codes_exist_in_the_output_contract` | коды `assess` есть в `FreshnessReason`/`UnknownCode` контракта |
 | `test_naive_window_is_refused` | окно без зоны отвергается |
-| `test_real_http_calls_produce_the_expected_directed_edges` | сквозной прогон стенда, повторное чтение даёт те же ID |
+| `test_real_http_calls_produce_the_expected_directed_edges` | сквозной прогон стенда, повторное чтение даёт те же ID, `AnalysisResult` с runtime-основаниями проходит `parse_document` |
 
 ## Прогоны
 
@@ -361,6 +416,12 @@ PYTHONPATH=.:src python -m unittest tests.graph.test_runtime_observations -v
 
 - `python -m unittest tests.graph.test_runtime_observations -v`: 12 тестов, OK.
   С `-W error::ResourceWarning` тоже OK.
+- После rebase на `d8dd64a` и приведения к контракту:
+  `python -m unittest tests.graph.test_runtime_observations tests.graph.test_output_contracts`
+  даёт 33 теста (13 мои, 20 контрактов 2А), OK. Новые проверки тоже ловят
+  поломки: код вне контракта (1 падение), потерянный `sampled` (1), связь со
+  ссылкой на несуществующее основание (1), отключённая нормализация маршрута
+  (1, после того как тест начал проверять слияние `/orders/` и `/orders`).
 - Проверка, что тесты падают по делу: по очереди внесены четыре поломки в
   адаптер. Сырой `path` как маршрут: падают 2 теста. `assess` игнорирует
   разрывы: 3. Битая строка не снимает покрытие: 1. Окружение выпало из ID
@@ -372,7 +433,10 @@ PYTHONPATH=.:src python -m unittest tests.graph.test_runtime_observations -v
   `CALLS_SERVICE` 4 запроса (404 на `/missing` маршрута не имеет);
   `health → inventory` `CALLS_OPERATION GET /orders` 2 и `CALLS_SERVICE` 2.
   Ребра `reporting → inventory` нет. Один запрос без идентичности вызывающего
-  попал в `unattributed`. `assess(export → orders)` равен `NO_TRAFFIC_OBSERVED`.
+  попал в `unattributed`. `assess(export → orders)` равен `NO_TRAFFIC_OBSERVED`
+  (`no_traffic_in_window`, `runtime_not_observed`). Стенд пишет также
+  `contract.json`: 4 `RuntimeEvidence`, 4 `GraphRelationship`, `SourceFreshness`
+  `CURRENT`.
 - Остальные модули `tests/graph` на Windows не запускаются:
   `ModuleNotFoundError: No module named 'fcntl'` из `store.py`. Это свойство
   `main`, новые файлы его не трогают. Полный прогон `tests/graph` на Linux
@@ -380,10 +444,12 @@ PYTHONPATH=.:src python -m unittest tests.graph.test_runtime_observations -v
 
 ## Rebase на контракты 2А
 
-На момент этой работы ветка 2А с `src/agent_graph/output_contracts.py` не
-запушена. Наблюдения выдаются по форме раздела 5 SPEC. Когда координатор
-пришлёт SHA, ветка перебазируется, и `evidence()` начнёт возвращать модель
-2А. Остальной код адаптера от этого не зависит.
+Ветка перебазирована на `d8dd64a` (`feat(contracts): add versioned
+agent-graph-output 2.0 contracts`). Конфликтов не было: файлы не пересекаются.
+`runtime_observations.py` импортирует только `contracts` и `output_contracts`,
+от `store.py` и `sources.py` не зависит, поэтому работает и на Windows.
+Пока коммит 2А не слит в `main`, PR этой ветки показывает и его; сливать
+нужно после PR 2А.
 
 ## Что осталось следующей волне
 
@@ -394,6 +460,8 @@ PYTHONPATH=.:src python -m unittest tests.graph.test_runtime_observations -v
   фрагмента.
 - Фильтрация доступа: скрытие оснований, счётчиков, cache, истории и подсказок
   поиска по текущему view; старый `context_id` или receipt не обходит права.
+- Решение по `CallsiteEntity.line` и остальным пунктам "Чего не хватает в
+  контракте 2.0" вместе с mvp-2a-core.
 - Миграция: перевод ID мест вызова с `call_line` на `enclosing_symbol` и
   ordinal; перенос предложений v1 на `dependency_key` с проверкой старых
   контекстов и исправлений; прежнее хранилище не удаляется.
