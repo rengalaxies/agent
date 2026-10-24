@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 import re
 from typing import Callable, Protocol
 
-from agent_graph.output_contracts import (SCHEMA_ID, SCHEMA_VERSION, AnalysisResult, ContractError, dump_document,
+from agent_graph.output_contracts import (SCHEMA_ID, SCHEMA_VERSION, AnalysisResult, display_verdict, dump_document,
                                           parse_document)
 
 from .envelope import digest
@@ -126,11 +126,13 @@ def _evidence_label(e) -> dict:
 
 
 def view_from_result(document, request: dict) -> ResultView:
-    try:
-        result = parse_document(document)
-    except ContractError as exc:
+    # display_verdict is 2A's single rule for what may be shown; INCOMPATIBLE is never rendered as a finding.
+    verdict = display_verdict(document)
+    if verdict["display"] == "INCOMPATIBLE":
         version = document.get("schema_version") if isinstance(document, dict) else None
-        return incompatible(exc.code, {"schema_version": str(version)[:20]} if version is not None else None)
+        return incompatible(verdict["reason_code"],
+                            {"schema_version": str(version)[:20]} if version is not None else None)
+    result = parse_document(document)
     if not isinstance(result, AnalysisResult):
         return incompatible("not_a_result")
     source_event = request["source_event"]
