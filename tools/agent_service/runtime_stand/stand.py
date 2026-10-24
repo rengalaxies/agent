@@ -155,14 +155,13 @@ def run_stand(out: Path):
 
 
 def summary(stand, result, assessments):
-    from agent_graph.runtime_observations import relationships
     return dict(
         verified="stand only: loopback HTTP + local access logs; customer source not connected",
         calls=stand["calls"], source_status=result["source"]["status"],
         source_reasons=result["source"]["reasons"],
-        edges=[dict(kind=e["kind"], caller=e["caller"], callee=e["callee"],
-                    operation=e["operation"] and f'{e["operation"]["method"]} {e["operation"]["route"]}',
-                    requests=e["bases"][0]["aggregates"]["request_count"]) for e in relationships(result)],
+        edges=[dict(kind=o["kind"], caller=o["caller"]["service"], callee=o["callee"]["service"],
+                    operation=o["operation"] and f'{o["method"]} {o["route"]}',
+                    requests=o["aggregates"]["request_count"]) for o in result["observations"]],
         unattributed=result["unattributed"], assessments=assessments)
 
 
@@ -171,7 +170,8 @@ def main(argv=None):
     parser.add_argument("--out", required=True, type=Path, help="new directory for logs and the report")
     args = parser.parse_args(argv)
     sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
-    from agent_graph.runtime_observations import AccessLogSource, assess, read_access_logs
+    from agent_graph.runtime_observations import (
+        AccessLogSource, assess, evidence_records, read_access_logs, relationships, source_freshness)
     stand = run_stand(args.out)
     result = read_access_logs(AccessLogSource.model_validate(stand["source"]),
                               stand["window"]["start"], stand["window"]["end"])
@@ -181,6 +181,10 @@ def main(argv=None):
     report = summary(stand, result, assessments)
     (args.out / "observations.json").write_text(json.dumps(result, indent=2))
     (args.out / "summary.json").write_text(json.dumps(report, indent=2))
+    # agent-graph-output 2.0 shapes: RuntimeEvidence, GraphRelationship, SourceFreshness.
+    (args.out / "contract.json").write_text(json.dumps(dict(
+        evidence=evidence_records(result), relationships=relationships(result),
+        source_freshness=source_freshness(result)), indent=2))
     print(json.dumps(report, indent=2))
 
 

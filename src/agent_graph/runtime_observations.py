@@ -18,12 +18,14 @@ import stat
 from pydantic import Field, model_validator
 
 from .contracts import GraphError, Strict, digest
+from .output_contracts import (
+    SCHEMA_ID, SCHEMA_VERSION, Freshness, GraphRelationship, OperationEntity, RuntimeAggregates,
+    RuntimeEvidence, ServiceEntity, SourceFreshness, entity_id, normalize_route)
 
 ADAPTER = "access-log-jsonl-1"
 SCHEMA = "agent-runtime-observations-1"
 SEGMENT_SCHEMA = "access-log-segment-1"
-# Spec section 5 shape until mvp-2a-core pushes output_contracts.py.
-EVIDENCE_CONTRACT = "spec-5-provisional"
+EVIDENCE_CONTRACT = f"{SCHEMA_ID}-{SCHEMA_VERSION}"
 
 METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
 ROUTE = re.compile(r"^/[A-Za-z0-9._~{}:/-]{0,199}$")
@@ -68,17 +70,32 @@ class FreshnessPolicy(Strict):
     access_log_max_age_seconds: int = Field(default=86400, ge=1, le=90 * 86400)
 
 
-def service_id(installation, environment, service):
-    return digest([installation, environment, "service", service])
+def service_entity(installation, environment, service):
+    return ServiceEntity(installation_id=installation, environment=environment, service=service)
 
 
-def operation_id(installation, environment, service, method, route):
-    # Same formula as discovery.operation_id: runtime and code meet on one node.
-    return digest([installation, environment, service, method.upper(), route])
+def operation_entity(installation, environment, service, method, route):
+    # entity_id keeps discovery.operation_id's formula: runtime and code meet on one node.
+    return OperationEntity(installation_id=installation, environment=environment, service=service,
+                           method=method.upper(), route=normalize_route(route))
 
 
 def relationship_id(kind, from_id, to_id):
     return digest([kind, from_id, to_id])
+
+
+# assess() status -> (FreshnessReason, UnknownCode) of output_contracts. None where
+# the 2.0 contract has no code yet; batch-3.md lists the missing ones.
+ASSESSMENT_CODES = {
+    "OBSERVED": (None, None),
+    "NO_TRAFFIC_OBSERVED": ("no_traffic_in_window", "runtime_not_observed"),
+    "SAMPLED_NOT_OBSERVED": ("sampled_source", "runtime_not_observed"),
+    "WINDOW_GAP": ("window_gap", "runtime_window_gap"),
+    "SOURCE_UNAVAILABLE": ("source_unavailable", "runtime_not_observed"),
+    "CALLEE_NOT_INSTRUMENTED": (None, "runtime_not_observed"),
+    "ROUTE_NOT_RECORDED": (None, None),
+    "OTHER_ROUTE_OBSERVED": (None, None),
+}
 
 
 def iso(value: datetime):
@@ -325,7 +342,8 @@ def _record(line, segment, source, aliases, start, end, pairs, unattributed):
     method = record.get("method")
     method = method.upper() if isinstance(method, str) and method.upper() in METHODS else None
     route = record.get("route")
-    route = route if isinstance(route, str) and ROUTE.fullmatch(route) and ".." not in route else None
+    route = (normalize_route(route) if isinstance(route, str) and ROUTE.fullmatch(route) and ".." not in route
+             else None)
     status = record.get("status")
     status = status if type(status) is int and 100 <= status <= 599 else None
     duration = record.get("duration_ms")
@@ -369,12 +387,12 @@ def _result(source, start, end, checked_at, freshness, *, status, reasons, segme
                       kind="access_log", adapter=ADAPTER)
     observations = []
     for (caller, callee, method, route), samples in sorted(pairs.items(), key=lambda kv: tuple(x or "" for x in kv[0])):
-        caller_ref = dict(service=caller, id=service_id(inst, env, caller))
-        callee_ref = dict(service=callee, id=service_id(inst, env, callee))
+        caller_ref = dict(service=caller, id=entity_id(service_entity(inst, env, caller)))
+        callee_ref = dict(service=callee, id=entity_id(service_entity(inst, env, callee)))
         operation = None
         if method and route:
             operation = dict(service=callee, method=method, route=route,
-                             id=operation_id(inst, env, callee, method, route))
+                             id=entity_id(operation_entity(inst, env, callee, method, route)))
         kind = "CALLS_OPERATION" if operation else "CALLS_SERVICE"
         target = operation["id"] if operation else callee_ref["id"]
         # The observed interval is the request window clipped to the callee's
@@ -385,22 +403,27 @@ def _result(source, start, end, checked_at, freshness, *, status, reasons, segme
         age = (checked_at - w_end).total_seconds()
         stale = age > max_age
         window = dict(start=iso(w_start), end=iso(w_end))
+        aggregates = _aggregates(samples)
+        reasons = ((["age_exceeded"] if stale else [])
+                   + (["window_gap"] if any(g["service"] == callee for g in gaps) else [])
+                   + (["sampled_source"] if aggregates.get("estimate") else []))
         observations.append(dict(
             id=digest([source_ref["uid"], kind, caller_ref["id"], target, window, digests]),
-            relationship_id=relationship_id(kind, caller_ref["id"], target),
+            # Contract kind "calls"; the target entity tells a service edge from an API call.
+            relationship_id=relationship_id("calls", caller_ref["id"], target),
             kind=kind, origin="runtime", installation_id=inst, environment=env,
             caller=caller_ref, callee=callee_ref, operation=operation,
-            method=method, route=route, window=window, aggregates=_aggregates(samples),
-            provenance=dict(source=source_ref, segments=digests),
-            sufficiency="OPERATION_OBSERVED" if operation else "SERVICE_EDGE_ONLY",
-            freshness=dict(status="STALE" if stale else "CURRENT", checked_at=iso(checked_at),
-                           valid_until=iso(w_end + timedelta(seconds=max_age)),
-                           reasons=(["window_age_exceeded"] if stale else [])
-                           + (["window_partially_covered"] if any(g["service"] == callee for g in gaps) else [])),
-            visibility=dict(runtime_source=source_ref["uid"])))
+            method=method, route=route, window=window, aggregates=aggregates,
+            provenance=dict(source=source_ref, segments=digests, source_version=digest(digests)),
+            # Sufficient for the edge it backs. A service edge backs no operation.
+            sufficiency="OBSERVED_WITHIN_WINDOW", semantic_level="operation" if operation else "service",
+            freshness=Freshness(status="STALE" if stale else "CURRENT", checked_at=iso(checked_at),
+                                reasons=reasons, valid_from=iso(w_start),
+                                valid_until=iso(w_end + timedelta(seconds=max_age))).model_dump(mode="json"),
+            visibility=[source.id]))
     return dict(
         schema=SCHEMA, adapter=ADAPTER, evidence_contract=EVIDENCE_CONTRACT,
-        installation_id=inst, environment=env, checked_at=iso(checked_at),
+        installation_id=inst, environment=env, checked_at=iso(checked_at), max_age_seconds=max_age,
         window=dict(start=iso(start), end=iso(end)),
         source=dict(**source_ref, status=status, reasons=reasons, segments=segments),
         coverage={s: [dict(start=iso(a), end=iso(b)) for a, b in spans] for s, spans in covered.items()},
@@ -414,15 +437,18 @@ def _result(source, start, end, checked_at, freshness, *, status, reasons, segme
 def assess(result, caller, callee, method=None, route=None):
     """Explain the runtime side of an expected edge. Never evidence of absence."""
     def answer(status, *reasons):
+        freshness_reason, unknown = ASSESSMENT_CODES[status]
         return dict(status=status, caller=caller, callee=callee, method=method, route=route,
-                    window=result["window"], proves_absence=False, reasons=list(reasons))
+                    window=result["window"], proves_absence=False, reasons=list(reasons),
+                    freshness_reason=freshness_reason, unknown=unknown)
     if result["source"]["status"] == "UNAVAILABLE":
         return answer("SOURCE_UNAVAILABLE", "source_unavailable")
     pair = [o for o in result["observations"] if o["caller"]["service"] == caller
             and o["callee"]["service"] == callee]
     wanted = method and route
     if wanted:
-        exact = [o for o in pair if o["operation"] and o["method"] == method.upper() and o["route"] == route]
+        exact = [o for o in pair if o["operation"] and o["method"] == method.upper()
+                 and o["route"] == normalize_route(route)]
         if exact:
             return answer("OBSERVED", *exact[0]["freshness"]["reasons"])
         if any(o["operation"] for o in pair):
@@ -444,26 +470,54 @@ def assess(result, caller, callee, method=None, route=None):
 
 
 def relationships(result):
-    """Runtime bases attached to relationship identities; storage is the next wave."""
-    edges = {}
+    """GraphRelationship records for the observed edges; storage is the next wave."""
+    inst, env = result["installation_id"], result["environment"]
+    edges = []
     for o in result["observations"]:
-        target = o["operation"]["id"] if o["operation"] else o["callee"]["id"]
-        edge = edges.setdefault(o["relationship_id"], dict(
-            id=o["relationship_id"], kind=o["kind"], from_id=o["caller"]["id"], to_id=target,
-            caller=o["caller"]["service"], callee=o["callee"]["service"], operation=o["operation"],
-            bases=[]))
-        edge["bases"].append(evidence(o))
-    return sorted(edges.values(), key=lambda e: (e["caller"], e["callee"], e["kind"], e["id"]))
+        target = (operation_entity(inst, env, o["callee"]["service"], o["method"], o["route"])
+                  if o["operation"] else service_entity(inst, env, o["callee"]["service"]))
+        edges.append(GraphRelationship(
+            id=o["relationship_id"], kind="calls", source=service_entity(inst, env, o["caller"]["service"]),
+            target=target, status="ACTIVE" if o["freshness"]["status"] == "CURRENT" else "STALE",
+            origins=["runtime"], evidence_refs=[o["id"]], freshness=Freshness(**o["freshness"]),
+            change_origin="runtime_sync", visibility=o["visibility"]).model_dump(mode="json"))
+    return sorted(edges, key=lambda e: (e["source"]["service"], e["target"]["service"], e["target"]["kind"], e["id"]))
 
 
 def evidence(observation):
-    """The only function to adapt once 2A's Evidence model lands."""
+    """One observation as output_contracts.RuntimeEvidence (validated, JSON form)."""
     o = observation
-    return dict(contract=EVIDENCE_CONTRACT, id=o["id"], origin="runtime",
-                source=o["provenance"]["source"],
-                service_identities=dict(caller=o["caller"], callee=o["callee"]),
-                window=o["window"], method=o["method"], route=o["route"],
-                aggregates=o["aggregates"], provenance=o["provenance"], sufficiency=o["sufficiency"],
-                freshness=o["freshness"]["status"], checked_at=o["freshness"]["checked_at"],
-                valid_interval=dict(start=o["window"]["start"], end=o["freshness"]["valid_until"]),
-                visibility=o["visibility"])
+    inst, env = o["installation_id"], o["environment"]
+    a = o["aggregates"]
+    return RuntimeEvidence(
+        id=o["id"], provenance="AUTHENTIC", sufficiency=o["sufficiency"],
+        freshness=Freshness(**o["freshness"]), visibility=o["visibility"],
+        source=o["provenance"]["source"]["id"], source_version=o["provenance"]["source_version"],
+        consumer=service_entity(inst, env, o["caller"]["service"]),
+        provider=service_entity(inst, env, o["callee"]["service"]),
+        window_start=o["window"]["start"], window_end=o["window"]["end"],
+        method=o["method"], route=o["route"],
+        # The 2.0 aggregates carry no estimate or latency; the observation keeps them.
+        aggregates=RuntimeAggregates(requests=a["request_count"], errors=a.get("error_count"),
+                                     sampled=bool(a.get("estimate")))).model_dump(mode="json")
+
+
+def evidence_records(result):
+    return [evidence(o) for o in result["observations"]]
+
+
+def source_freshness(result):
+    """Freshness of the runtime source itself, for AnalysisResult.source_freshness."""
+    source = result["source"]
+    if source["status"] == "UNAVAILABLE":
+        freshness = Freshness(status="UNKNOWN", checked_at=result["checked_at"], reasons=["source_unavailable"])
+    else:
+        age = (parse_time(result["checked_at"]) - parse_time(result["window"]["end"])).total_seconds()
+        reasons = ((["partial_coverage"] if source["status"] == "PARTIAL" else [])
+                   + (["window_gap"] if result["gaps"] else [])
+                   + (["sampled_source"] if any(s["sample_rate"] < 1 for s in source["segments"]) else [])
+                   + (["age_exceeded"] if age > result["max_age_seconds"] else []))
+        freshness = Freshness(status="STALE" if age > result["max_age_seconds"] else "CURRENT",
+                              checked_at=result["checked_at"], reasons=reasons)
+    return SourceFreshness(source_kind="runtime", source_id=source["id"],
+                           freshness=freshness).model_dump(mode="json")

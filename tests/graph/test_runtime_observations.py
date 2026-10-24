@@ -5,12 +5,15 @@ import json
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
+from typing import get_args
 import unittest
 
 from agent_graph.contracts import GraphError
 from agent_graph.discovery import operation_id as code_operation_id
+from agent_graph.output_contracts import SCHEMA_VERSION, FreshnessReason, UnknownCode, parse_document
 from agent_graph.runtime_observations import (
-    AccessLogSource, FreshnessPolicy, assess, read_access_logs, relationships)
+    ASSESSMENT_CODES, AccessLogSource, FreshnessPolicy, assess, evidence, evidence_records,
+    read_access_logs, relationships, source_freshness)
 
 ROOT = Path(__file__).resolve().parents[2]
 T0 = datetime(2026, 10, 24, 10, 0, tzinfo=timezone.utc)
@@ -56,7 +59,7 @@ class RuntimeObservationTests(unittest.TestCase):
                                 freshness=FreshnessPolicy(**policy))
 
     def edges(self, result):
-        return {(e["caller"], e["callee"], e["kind"]) for e in relationships(result)}
+        return {(e["source"]["service"], e["target"]["service"], e["target"]["kind"]) for e in relationships(result)}
 
     def test_zero_traffic_in_a_fully_covered_window_is_reported_but_proves_no_absence(self):
         self.segment("orders", "orders-7f9c", [request(1), request(2)])
@@ -72,26 +75,32 @@ class RuntimeObservationTests(unittest.TestCase):
         # The raw path names /orders, but only a matched route template may name an operation.
         self.segment("orders", "orders-7f9c", [request(1, route=None), request(2, route=None, method=None)])
         result = self.read()
-        self.assertEqual(self.edges(result), {("reporting", "orders", "CALLS_SERVICE")})
+        self.assertEqual(self.edges(result), {("reporting", "orders", "service")})
         (observation,) = result["observations"]
         self.assertIsNone(observation["operation"])
-        self.assertIsNone(observation["route"])
-        self.assertEqual(observation["sufficiency"], "SERVICE_EDGE_ONLY")
+        self.assertEqual(observation["semantic_level"], "service")
+        record = evidence(observation)
+        self.assertEqual((record["method"], record["route"]), (None, None))
+        self.assertEqual(record["provider"]["service"], "orders")
         self.assertEqual(assess(result, "reporting", "orders", "GET", "/orders")["status"], "ROUTE_NOT_RECORDED")
 
     def test_two_services_with_the_same_path_stay_two_operations(self):
-        self.segment("orders", "orders-7f9c", [request(1)])
-        self.segment("inventory", "inventory-2b1d", [request(2, client="Health", emitter="inventory-2b1d")])
+        self.segment("orders", "orders-7f9c", [request(1), request(3, route="/orders/")])
+        # A trailing slash is the same route under the contract's normalize_route.
+        self.segment("inventory", "inventory-2b1d", [request(2, client="Health", emitter="inventory-2b1d",
+                                                             route="/orders/")])
         result = self.read()
         self.assertEqual(self.edges(result), {
-            ("reporting", "orders", "CALLS_OPERATION"), ("reporting", "orders", "CALLS_SERVICE"),
-            ("health", "inventory", "CALLS_OPERATION"), ("health", "inventory", "CALLS_SERVICE")})
+            ("reporting", "orders", "operation"), ("reporting", "orders", "service"),
+            ("health", "inventory", "operation"), ("health", "inventory", "service")})
         operations = {o["callee"]["service"]: o["operation"]["id"] for o in result["observations"] if o["operation"]}
         scope = SimpleNamespace(installation_id="acme", environment="prod")
         # Runtime and code meet on the same node only for the same service.
         self.assertEqual(operations["orders"], code_operation_id(scope, "orders", "GET", "/orders"))
         self.assertEqual(operations["inventory"], code_operation_id(scope, "inventory", "GET", "/orders"))
         self.assertNotEqual(operations["orders"], operations["inventory"])
+        (orders_call,) = [o for o in result["observations"] if o["callee"]["service"] == "orders" and o["operation"]]
+        self.assertEqual((orders_call["route"], orders_call["aggregates"]["request_count"]), ("/orders", 2))
         self.assertEqual(assess(result, "reporting", "inventory", "GET", "/orders")["status"], "NO_TRAFFIC_OBSERVED")
 
     def test_uncovered_part_of_window_is_a_gap_not_zero_traffic(self):
@@ -104,6 +113,8 @@ class RuntimeObservationTests(unittest.TestCase):
         self.assertEqual((verdict["status"], verdict["reasons"]), ("WINDOW_GAP", ["not_covered"]))
         self.assertEqual(assess(result, "export", "inventory")["status"], "NO_TRAFFIC_OBSERVED")
         self.assertEqual(result["source"]["status"], "PARTIAL")
+        self.assertEqual(source_freshness(result)["freshness"]["reasons"], ["partial_coverage", "window_gap"])
+        self.assertEqual(result["observations"][0]["freshness"]["reasons"], ["window_gap"])
 
     def test_unavailable_source_gives_no_observations_and_says_so(self):
         result = self.read(root=self.logs / "missing")
@@ -113,6 +124,7 @@ class RuntimeObservationTests(unittest.TestCase):
         verdict = assess(result, "reporting", "orders", "GET", "/orders")
         self.assertEqual(verdict["status"], "SOURCE_UNAVAILABLE")
         self.assertFalse(verdict["proves_absence"])
+        self.assertEqual(source_freshness(result)["freshness"]["status"], "UNKNOWN")
 
     def test_corrupt_line_keeps_valid_records_and_blocks_the_no_traffic_claim(self):
         self.segment("orders", "orders-7f9c", [request(1), request(2)],
@@ -138,6 +150,7 @@ class RuntimeObservationTests(unittest.TestCase):
         result = self.read()
         aggregates = result["observations"][0]["aggregates"]
         self.assertEqual((aggregates["request_count"], aggregates["estimated_request_count"]), (1, 10.0))
+        self.assertTrue(evidence_records(result)[0]["aggregates"]["sampled"])
         self.assertEqual(assess(result, "export", "orders")["status"], "SAMPLED_NOT_OBSERVED")
 
     def test_untrusted_records_are_rejected_or_left_unattributed(self):
@@ -170,12 +183,36 @@ class RuntimeObservationTests(unittest.TestCase):
         self.assertEqual(stale["observations"][0]["freshness"]["status"], "STALE")
         self.assertEqual(stale["observations"][0]["id"], fresh["observations"][0]["id"])
 
+    def test_assessment_codes_exist_in_the_output_contract(self):
+        # A renamed or dropped contract code must fail here, not surface as an unknown code downstream.
+        for status, (reason, unknown) in ASSESSMENT_CODES.items():
+            self.assertIn(reason, (None, *get_args(FreshnessReason)), status)
+            self.assertIn(unknown, (None, *get_args(UnknownCode)), status)
+
     def test_naive_window_is_refused(self):
         source = AccessLogSource(id="access", installation_id="acme", environment="prod", root=str(self.logs),
                                  identities=[dict(i) for i in IDENTITIES], instrumented_services=["orders"])
         with self.assertRaises(GraphError) as raised:
             read_access_logs(source, "2026-10-24T10:00:00", "2026-10-24T11:00:00")
         self.assertEqual(raised.exception.code, "invalid_window")
+
+
+def analysis_result(result, claim_ref):
+    """Minimal agent-graph-output 2.0 result carrying the stand's runtime bases."""
+    now = result["checked_at"]
+    return dict(
+        schema="agent-graph-output", schema_version=SCHEMA_VERSION, kind="analysis_result",
+        profile="http-requests-4", code_version="runtime-stand", constitution_version="agent-service-v1",
+        installation_id=result["installation_id"], environment=result["environment"], request_id="req-1",
+        event_id="replay-1", resource_version="1", correlation_id="corr-1", trigger_kind="replay",
+        snapshots=[], graph_version="graph-1", status="USEFUL", reason_code="preliminary_impact_found",
+        summary="Reporting was observed calling GET /orders on Orders within the window.",
+        claims=[dict(id="claim-1", kind="fact", statement="Reporting calls GET /orders on Orders.",
+                     evidence_refs=[claim_ref], applicability="observed window only", uncertainty="LOW")],
+        evidence=evidence_records(result), relationships=relationships(result),
+        source_freshness=[source_freshness(result)], model=None,
+        costs=dict(model_calls=0, prompt_tokens=None, completion_tokens=None, reserved_micro=None, currency=None),
+        timings=dict(started_at=now, finished_at=now))
 
 
 class RuntimeStandTests(unittest.TestCase):
@@ -192,19 +229,23 @@ class RuntimeStandTests(unittest.TestCase):
             again = read_access_logs(source, stand["window"]["start"], stand["window"]["end"], checked_at=checked)
         self.assertEqual([c["status"] for c in stand["calls"]], [200, 200, 200, 404, 200, 200, 200])
         self.assertEqual(result["source"]["status"], "AVAILABLE")
-        edges = {(e["caller"], e["callee"], e["kind"], e["operation"] and e["operation"]["route"]):
-                 e["bases"][0]["aggregates"]["request_count"] for e in relationships(result)}
+        bases = {e["id"]: e for e in evidence_records(result)}
+        edges = {(e["source"]["service"], e["target"]["service"], e["target"].get("route")):
+                 bases[e["evidence_refs"][0]]["aggregates"]["requests"] for e in relationships(result)}
         self.assertEqual(edges, {
-            ("reporting", "orders", "CALLS_OPERATION", "/orders"): 3,
-            ("reporting", "orders", "CALLS_SERVICE", None): 4,
-            ("health", "inventory", "CALLS_OPERATION", "/orders"): 2,
-            ("health", "inventory", "CALLS_SERVICE", None): 2})
+            ("reporting", "orders", "/orders"): 3,
+            ("reporting", "orders", None): 4,
+            ("health", "inventory", "/orders"): 2,
+            ("health", "inventory", None): 2})
         self.assertEqual([u["request_count"] for u in result["unattributed"]], [1])
         self.assertEqual(assess(result, "export", "orders", "GET", "/orders")["status"], "NO_TRAFFIC_OBSERVED")
         scope = SimpleNamespace(installation_id="runtime-stand", environment="stand")
-        orders_op = next(e for e in relationships(result) if e["callee"] == "orders" and e["operation"])
-        self.assertEqual(orders_op["to_id"], code_operation_id(scope, "orders", "GET", "/orders"))
+        orders_op = next(o for o in result["observations"] if o["callee"]["service"] == "orders" and o["operation"])
+        self.assertEqual(orders_op["operation"]["id"], code_operation_id(scope, "orders", "GET", "/orders"))
         self.assertEqual([o["id"] for o in again["observations"]], [o["id"] for o in result["observations"]])
+        # The whole runtime side passes the 2A reader, including fact backing and references.
+        parsed = parse_document(analysis_result(result, orders_op["id"]))
+        self.assertEqual({e.origin for e in parsed.evidence}, {"runtime"})
 
 
 if __name__ == "__main__":
