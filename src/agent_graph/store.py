@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
-import fcntl
 import math
 import os
 from pathlib import Path
@@ -12,6 +11,7 @@ import time
 import uuid
 
 from .contracts import GraphError, canonical, digest, load_json
+from .portable import lock_nonblocking, open_lock_file, private_directory
 
 
 def proposal_identity(view, record):
@@ -24,7 +24,7 @@ class Store:
     def __init__(self, directory):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True, mode=0o700)
-        if directory.is_symlink() or directory.stat().st_mode & 0o077:
+        if not private_directory(directory):
             raise GraphError("private_state_directory_required")
         path = directory / "graph.sqlite3"
         if path.is_symlink():
@@ -120,9 +120,9 @@ class Store:
 
     def reserve(self, installation, run, tokens, config):
         lock = self.directory / ("inflight-" + digest(installation) + ".lock")
-        fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+        fd = open_lock_file(lock)
         try:
-            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            lock_nonblocking(fd)
         except OSError as exc:
             os.close(fd)
             if isinstance(exc, BlockingIOError):

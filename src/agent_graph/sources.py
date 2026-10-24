@@ -5,40 +5,22 @@ import fnmatch
 import hashlib
 import os
 from pathlib import Path
-import stat
 import time
 
 from . import PROFILE
 from .contracts import GraphError, Policy, digest
+from .portable import read_regular
 
 IGNORED_DIRS = {".git", ".venv", "node_modules", "__pycache__"}
 SENSITIVE = ("secret", "credential", "private_key", "id_rsa", "id_ed25519")
 
 
 def read_relative(root: Path, relative: str, limit: int) -> bytes:
-    """openat + O_NOFOLLOW for every component: traversal and symlink race safe."""
+    """openat + O_NOFOLLOW for every component on Linux: traversal and symlink race safe."""
     parts = Path(relative).parts
     if not parts or Path(relative).is_absolute() or any(p in ("..", ".") for p in parts):
         raise GraphError("invalid_source_path")
-    fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-    try:
-        for part in parts[:-1]:
-            nxt = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
-            os.close(fd)
-            fd = nxt
-        final = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=fd)
-        try:
-            if not stat.S_ISREG(os.fstat(final).st_mode):
-                raise GraphError("not_regular_source")
-            with os.fdopen(final, "rb", closefd=False) as stream:
-                raw = stream.read(limit + 1)
-            if len(raw) > limit:
-                raise GraphError("file_limit")
-            return raw
-        finally:
-            os.close(final)
-    finally:
-        os.close(fd)
+    return read_regular(Path(root), parts, limit, GraphError)
 
 
 def collect(policy: Policy):
