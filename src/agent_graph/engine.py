@@ -186,13 +186,21 @@ class Graph:
                 # The declaration changed but its default is outside the grammar on
                 # at least one side: unknown, never "no supported delta".
                 code = "PAGE_DEFAULT_UNRESOLVED"
+            elif (old.get("tracked_basis") is not None and new.get("tracked_basis") is not None
+                    and sorted(old["tracked_basis"]) != sorted(new["tracked_basis"])):
+                # The tracked declaration changed but no classifier knows how. Unknown,
+                # never "no change" and never a proven break. Helpers it calls are untracked.
+                code = "UNCLASSIFIED_OPERATION_CHANGE"
             if code is None:
                 continue
             def default(op):
                 return op.get("page_size_default") if op["default_known"] else "UNRESOLVED"
+            unclassified = code == "UNCLASSIFIED_OPERATION_CHANGE"
             delta = dict(operation_id=id, code=code,
-                         before=default(old) if code == "PAGE_DEFAULT_UNRESOLVED" else old.get("page_size_default"),
-                         after=default(new) if code == "PAGE_DEFAULT_UNRESOLVED"
+                         before="TRACKED_BASIS_CHANGED" if unclassified
+                         else default(old) if code == "PAGE_DEFAULT_UNRESOLVED" else old.get("page_size_default"),
+                         after="TRACKED_BASIS_CHANGED" if unclassified
+                         else default(new) if code == "PAGE_DEFAULT_UNRESOLVED"
                          else new.get("page_size_default") if new else None,
                          evidence=old["evidence"] + (new["evidence"] if new else []))
             deltas.append(delta)
@@ -211,12 +219,15 @@ class Graph:
                 rules = [r for r in current["graph"]["requirements"]
                          if r["operation_id"] == id and r["consumer"] == dep["consumer"]]
                 findings.append(dict(
-                    code="POSSIBLE_TRUNCATION" if risk and code != "OPERATION_REMOVED" else code if risk else "RECHECK_REQUIRED",
+                    code="UNCLASSIFIED_CHANGE_RECHECK" if unclassified
+                    else "POSSIBLE_TRUNCATION" if risk and code != "OPERATION_REMOVED" else code if risk
+                    else "RECHECK_REQUIRED",
                     dependency_id=dep["id"], consumer=dep["consumer"], usage=dep["usage"],
                     callsite=dict(repository=dep["repository"], path=dep["path"], line=dep["call_line"]),
                     dependency_freshness="CURRENT" if live else "STALE",
                     condition=(f"If helper obeys page_size, result set exceeds {after}, and consumer needs complete data"
-                               if limited else "If the changed declaration governs this call"),
+                               if limited else "The tracked declaration changed in a way no classifier covers"
+                               if unclassified else "If the changed declaration governs this call"),
                     evidence_stage="STATIC", evidence=delta["evidence"] + dep["evidence"] + dep["usage_evidence"],
                     requirement_ids=[r["id"] for r in rules],
                     check=(f"Run consumer with more than {after} records; compare full expected set, page traversal and explicit limits"
@@ -229,6 +240,9 @@ class Graph:
                       deltas=deltas, findings=findings, coverage=current["coverage"],
                       gaps=current["graph"]["gaps"], conflicts=current["graph"]["conflicts"],
                       freshness=self.freshness(current), release_decision=None,
-                      unknowns=[] if deltas else ["no_supported_behavior_delta; arbitrary semantic changes are not classified"],
+                      unknowns=([] if deltas else ["no_supported_behavior_delta; arbitrary semantic changes are not classified"])
+                      + (["unclassified_change; tracked declaration changed outside known classifiers, not a proven break; "
+                          "helpers outside the declaration are not tracked"]
+                         if any(d["code"] == "UNCLASSIFIED_OPERATION_CHANGE" for d in deltas) else []),
                       drafts=[dict(consumer=f["consumer"], text=f["check"], sent=False) for f in findings])
         return self.store.save(self.view, "analysis", result)

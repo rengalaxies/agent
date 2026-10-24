@@ -204,6 +204,16 @@ class ChangeTests(StandCase):
         self.assertEqual((bases["orders"], heads["orders"]),
                          (self.stand.head(), self.stand.head("orders", "pr-7")))
 
+    def test_tracked_operation_change_outside_known_deltas_is_unclassified(self):
+        r = self.analyze("unclassified")
+        self.assertEqual([d["code"] for d in r["deltas"]], ["UNCLASSIFIED_OPERATION_CHANGE"])
+        delta = r["deltas"][0]
+        self.assertEqual((delta["before"], delta["after"]), ("TRACKED_BASIS_CHANGED", "TRACKED_BASIS_CHANGED"))
+        findings = {f["consumer"]: f for f in r["findings"]}
+        self.assertEqual({f["code"] for f in findings.values()}, {"UNCLASSIFIED_CHANGE_RECHECK"})
+        self.assertEqual(set(findings), {"reporting", "archive"})
+        self.assertIn("unclassified_change", " ".join(r["unknowns"]))
+
     def test_readme_edit_has_no_delta_and_removal_is_reported(self):
         self.assertEqual(self.analyze("readme-only")["deltas"], [])
         removed = self.analyze("removed")

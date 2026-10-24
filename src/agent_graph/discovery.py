@@ -110,7 +110,9 @@ def providers(policy, sources):
                             continue
                         op = dict(id=operation_id(policy, source["service"], method, path),
                                   service=source["service"], method=method.upper(), path=path,
-                                  evidence=[evidence(source)], default_known=False)
+                                  evidence=[evidence(source)], default_known=False,
+                                  # Tracked basis: the operation object and path-level parameters.
+                                  tracked_basis=[digest([item.get("parameters"), operation])])
                         effective, referenced = {}, False
                         for level in (item, operation):
                             parameters = level.get("parameters", [])
@@ -169,9 +171,13 @@ def providers(policy, sources):
                         and isinstance(d.args[0].value, str)):
                     continue
                 path, method = d.args[0].value, d.func.attr.upper()
+                first = min([fn.lineno] + [x.lineno for x in fn.decorator_list])
+                lines = source["text"].splitlines()[first - 1:fn.end_lineno]
                 op = dict(id=operation_id(policy, source["service"], method, path),
                           service=source["service"], method=method, path=path,
-                          evidence=[evidence(source, fn)], default_known=False)
+                          evidence=[evidence(source, fn)], default_known=False,
+                          # Tracked basis: decorators, signature and body text, not position.
+                          tracked_basis=[digest(lines)])
                 args = fn.args.posonlyargs + fn.args.args
                 defaults = dict(zip([a.arg for a in args][-len(fn.args.defaults):], fn.args.defaults)) if fn.args.defaults else {}
                 defaults.update({a.arg: value for a, value in zip(fn.args.kwonlyargs, fn.args.kw_defaults) if value is not None})
@@ -194,6 +200,7 @@ def providers(policy, sources):
             continue
         old = grouped[op["id"]]
         old["evidence"].extend(op["evidence"])
+        old["tracked_basis"] = sorted(old["tracked_basis"] + op["tracked_basis"])
         if op.get("page_size_declared"):
             old["page_size_declared"] = True
             old["declarations"] = old.get("declarations", []) + op["declarations"]
