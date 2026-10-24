@@ -259,7 +259,10 @@ def main(argv=None):
             states = [s.get("state", s) for s in states]
         else:
             states = github_states(program, args.repository)
-        report = scorer.report(program, cases, program_mod.load_oracle(base), states)
+        # The committed manifest must match the checked-out code, so the report's protocol
+        # fingerprint is the one this code would load.
+        report = scorer.report(program, cases, program_mod.load_oracle(base), states,
+                               manifest=committed_manifest(args.program))
         save_safe(args.output / "report.json", report)
         (args.output / "report.md").write_bytes(scorer.markdown(report).encode("utf-8"))
         print("REPORT " + " ".join(f"{m}={v['verdict']}" for m, v in report["models"].items()))

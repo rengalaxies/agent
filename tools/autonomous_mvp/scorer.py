@@ -280,9 +280,19 @@ def verdict(program, cases, states, oracle):
                 expected_case_runs=expected, executed=len(runs), measurements=m)
 
 
-def report(program, cases, oracle, states):
+def report(program, cases, oracle, states, manifest=None):
+    """manifest: the committed manifest. Its digest, the provider and the protocol fingerprint go
+    into the report so a service can compare them with the configuration it actually loads, and
+    ledgers written under another manifest are left out of every verdict."""
     out = dict(schema="amvp-report-1", run_id=program["run_id"], label=program["thresholds"]["label"],
-               live_status="computed from ledgers; see each phase status", models={})
+               live_status="computed from ledgers; see each phase status", models={},
+               manifest_digest=manifest["manifest_digest"] if manifest else None,
+               provider=program["provider"], protocol=manifest["protocol"] if manifest else None,
+               ignored_ledgers=[])
+    if manifest:
+        out["ignored_ledgers"] = sorted(f"{s.get('model')}:{s.get('phase')}" for s in states
+                                        if s.get("manifest_digest") != manifest["manifest_digest"])
+        states = [s for s in states if s.get("manifest_digest") == manifest["manifest_digest"]]
     for model in program["models"]:
         mine = [s for s in states if s.get("model") == model["id"] and s.get("run_id") == program["run_id"]]
         phases = {}

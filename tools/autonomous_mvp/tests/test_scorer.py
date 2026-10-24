@@ -234,6 +234,23 @@ class Verdicts(unittest.TestCase):
         self.assertEqual(rep["models"]["Qwen/Qwen3-Coder-Next"]["verdict"], "DISABLED")
 
 
+class ReportBinding(unittest.TestCase):
+    """The service enables a model only if the report matches the configuration it loads."""
+
+    def test_report_carries_the_manifest_identity_and_drops_ledgers_of_another_manifest(self):
+        manifest = dict(manifest_digest="d" * 64, protocol=dict(protocol="actions-v3", constitution_version="v"))
+        current = [dict(ledger(p, [ideal_result(k) for k in EVAL]), manifest_digest="d" * 64)
+                   for p in scorer.EVALUATION_PHASES]
+        stale = dict(ledger("evaluation-1", [ideal_result(k) for k in EVAL], model="Qwen/Qwen3-Coder-Next"),
+                     manifest_digest="e" * 64)
+        rep = scorer.report(PROGRAM, CASES, ORACLE, current + [stale], manifest=manifest)
+        self.assertEqual((rep["manifest_digest"], rep["protocol"]), ("d" * 64, manifest["protocol"]))
+        self.assertEqual(rep["provider"]["chat_endpoint"], PROGRAM["provider"]["chat_endpoint"])
+        self.assertEqual(rep["models"]["openai/gpt-oss-120b"]["verdict"], "QUALIFIED")
+        self.assertEqual(rep["ignored_ledgers"], ["Qwen/Qwen3-Coder-Next:evaluation-1"])
+        self.assertEqual(rep["models"]["Qwen/Qwen3-Coder-Next"]["verdict"], "DISABLED")
+
+
 class HypothesisContract(unittest.TestCase):
     def test_candidate_maps_to_a_valid_hypothesis_evidence_and_a_sufficient_one_is_refused(self):
         from pydantic import ValidationError

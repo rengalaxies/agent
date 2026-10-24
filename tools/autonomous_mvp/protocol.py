@@ -305,6 +305,7 @@ def fingerprint():
     files = ("src/agent_graph/actions.py", "src/agent_graph/executor.py", "src/agent_graph/constitution.py",
              "src/agent_graph/evidence_refs.py", "src/agent_graph/engine.py", "src/agent_graph/sources.py",
              "src/agent_graph/git_sources.py", "src/agent_graph/discovery.py", "src/agent_graph/output_contracts.py",
+             "src/agent_graph/graph_query.py", "src/agent_graph/graph_store.py",
              "constitutions/agent-service-v1.yaml", "tools/autonomous_mvp/protocol.py")
     return dict(protocol=PROTOCOL_ID, executor="agent_graph.executor.run_investigation",
                 constitution_version=version,

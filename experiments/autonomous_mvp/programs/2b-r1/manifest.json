@@ -115,12 +115,12 @@
     "tools/autonomous_mvp/ledger.py": "23717da20f8ad52681d7169a79fe3770c8bac60e5c224c364c58904f98d2d8b3",
     "tools/autonomous_mvp/oracle_check.py": "be6aa7768463400643cf5be88683342a2af8a9b8240e647baf2a92ac0d7745e9",
     "tools/autonomous_mvp/program.py": "e609a74d9f5132cc2c366eb5043fab4ef3dc14976c5daca87681b17182f78306",
-    "tools/autonomous_mvp/protocol.py": "1859eda8534db2a41329aa8503b387ff21b6291f0a66e43bdcc35e9fe46a7134",
-    "tools/autonomous_mvp/runner.py": "381edcee640869995a16d1317637838933772eab79e7b62a0f494c1d60235a94",
-    "tools/autonomous_mvp/scorer.py": "9ac1704c57379156568078785348adea319c44dfb25559481054bd17239653e1",
+    "tools/autonomous_mvp/protocol.py": "2926083eaab60413c51ce22c1e2f139d28a88839857a136dd196458216e1e669",
+    "tools/autonomous_mvp/runner.py": "99c604c2d692cace441b09ec987abfa56ca568220628e99378da2ecd64798aad",
+    "tools/autonomous_mvp/scorer.py": "b437f64fbe02ceba1c3da652ac1b18a150e34526f5aab621c80f21abc7f77f58",
     "tools/autonomous_mvp/transport.py": "e90c228b44e4008e970375e37a5e2ac5957b754f01a5cae9e9f55bd57ae1f04f"
   },
-  "manifest_digest": "acace5ccc8e1e10f606e9f52b268ec3f81007ea4629831622ff4cb6d44644f65",
+  "manifest_digest": "b9b44fa525d2f4426e178ac9df3ad1360f3f462855aefded7998b97b62223192",
   "oracle_scope": "evaluator only; never passed to the protocol, the model or its configuration",
   "program": {
     "baseline": "None. No paid closed model is part of this program; a labelled comparison would be a separate revision.",
@@ -370,9 +370,11 @@
       "src/agent_graph/evidence_refs.py": "27908e35566cce20b56120e588edf3dcc5ac33e0d325b0ab04d21d930ebb9a8b",
       "src/agent_graph/executor.py": "6ed0c0f1e239c1d2e94c7e674f14de03f221d445f7aa6f7ae53ea31642d51ee8",
       "src/agent_graph/git_sources.py": "7fcf781865df303310a76523301bf244cd6952d10c02aaddc5abc10e27ff1e86",
+      "src/agent_graph/graph_query.py": "911dc8a80b1d6d4b2caf286f7f6e3974a44a03571187014e9c712005d77958e3",
+      "src/agent_graph/graph_store.py": "b316b1e2f341b57e56d5104d0e4b8f9cf427b9d783e5bb7ce060fcf991e5e1bb",
       "src/agent_graph/output_contracts.py": "d41b69c15844eb8d382faefe0430e3bb798437814ac6b594509975920371873c",
       "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
-      "tools/autonomous_mvp/protocol.py": "1859eda8534db2a41329aa8503b387ff21b6291f0a66e43bdcc35e9fe46a7134"
+      "tools/autonomous_mvp/protocol.py": "2926083eaab60413c51ce22c1e2f139d28a88839857a136dd196458216e1e669"
     },
     "constitution_version": "agent-service-v1.0:100bcad3db9c",
     "executor": "agent_graph.executor.run_investigation",
