@@ -273,6 +273,68 @@ def parameter_keys(call, method, constants, *, cursor_loop):
     return keys
 
 
+HTTP_LIBRARIES = {"httpx", "aiohttp", "urllib3", "http.client", "urllib.request"}
+CLIENT_FACTORIES = {"Session", "Client", "AsyncClient", "ClientSession", "PoolManager", "HTTPConnection",
+                    "HTTPSConnection"}
+CLIENT_NAME = re.compile(r"(?i)(client|session|http|api)")
+CONSUMER_GAPS = {"unknown_http_client", "dynamic_or_unsupported_call", "unsupported_url", "ambiguous_mapping",
+                 "unmapped_call", "dynamic_parameters"}
+
+
+def _url_like(node, constants):
+    value = constant(node, constants)
+    if isinstance(value, str):
+        return value.startswith(("http://", "https://", "/"))
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+        return _url_like(node.left, constants)
+    if isinstance(node, ast.JoinedStr) and node.values and isinstance(node.values[0], ast.Constant):
+        return str(node.values[0].value).startswith(("http://", "https://", "/"))
+    return False
+
+
+def http_clients(tree, modules):
+    """Imported HTTP libraries and names bound to their client objects (file-wide)."""
+    libraries = set(modules)
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Import):
+            libraries.update(a.asname or a.name for a in n.names if a.name in HTTP_LIBRARIES)
+        if isinstance(n, ast.ImportFrom) and n.module in HTTP_LIBRARIES | {"requests"}:
+            libraries.update(a.asname or a.name for a in n.names if a.name in CLIENT_FACTORIES)
+    clients = set()
+    for n in ast.walk(tree):
+        value = (n.context_expr if isinstance(n, ast.withitem)
+                 else n.value if isinstance(n, (ast.Assign, ast.AnnAssign)) else None)
+        if not isinstance(value, ast.Call):
+            continue
+        func = value.func
+        root = func.value if isinstance(func, ast.Attribute) else func
+        if isinstance(root, ast.Name) and root.id in libraries:
+            targets = n.targets if isinstance(n, ast.Assign) else [
+                n.target if isinstance(n, ast.AnnAssign) else n.optional_vars]
+            for target in targets:
+                if isinstance(target, ast.Name):
+                    clients.add(target.id)
+                elif isinstance(target, ast.Attribute):
+                    clients.add(target.attr)
+    return libraries, clients
+
+
+def possible_http_call(call, libraries, clients, constants):
+    """A real possible HTTP call outside the grammar, as opposed to dict.get or a decorator."""
+    chain, receiver = [], call.func.value
+    while isinstance(receiver, ast.Attribute):
+        chain.append(receiver.attr)
+        receiver = receiver.value
+    if isinstance(receiver, ast.Name):
+        chain.append(receiver.id)
+    if chain and chain[-1] in libraries or any(name in clients for name in chain):
+        return True
+    if any(CLIENT_NAME.search(name) for name in chain if name != "self"):
+        return True
+    url = call.args[0] if call.args else next((k.value for k in call.keywords if k.arg == "url"), None)
+    return url is not None and _url_like(url, constants)
+
+
 def consumers(policy: Policy, sources, operations):
     dependencies, gaps = [], []
     for source in sources.values():
@@ -290,7 +352,13 @@ def consumers(policy: Policy, sources, operations):
         if counts["*"]:
             rebound.update(modules | functions.keys())
         parents = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
+        libraries, clients = http_clients(tree, modules)
+        # Route/handler decorators are declarations; the provider pass handles them.
+        decorators = {id(d) for n in ast.walk(tree)
+                      if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for d in n.decorator_list}
         for call in [n for n in ast.walk(tree) if isinstance(n, ast.Call)]:
+            if id(call) in decorators:
+                continue
             name = None
             if (isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Name)
                     and call.func.value.id in modules):
@@ -302,9 +370,12 @@ def consumers(policy: Policy, sources, operations):
             if name is None:
                 # Detect common unsupported clients/wrappers without pretending
                 # to enumerate every possible Python call mechanism.
-                if isinstance(call.func, ast.Attribute) and call.func.attr in METHODS | {"request"}:
+                if (isinstance(call.func, ast.Attribute) and call.func.attr in METHODS | {"request"}
+                        and possible_http_call(call, libraries, clients, constants)):
                     gaps.append(dict(code="unknown_http_client", evidence=evidence(source, call)))
                 continue
+            if name not in METHODS | {"request", "unsupported"}:
+                continue  # requests.Session(), requests.exceptions...: not a request itself
             url_node = call.args[0] if call.args else next((k.value for k in call.keywords if k.arg == "url"), None)
             method = name.upper()
             if name == "request":
@@ -369,10 +440,39 @@ def extract(policy, collected):
         if source["path"].endswith(".py") and source["path"].split("/")[-1].startswith("test_"):
             candidates.append(dict(kind="TEST_SOURCE_OBSERVATION", evidence=[evidence(source)]))
     conflicts = []
+    file_coverage = coverage_by_file(collected["sources"], operations, deps, pgaps + cgaps)
     for rule in rules:
         for other in rules:
             if (rule["id"] < other["id"] and rule["operation_id"] == other["operation_id"]
                     and rule["consumer"] == other["consumer"] and rule["predicate"] != other["predicate"]):
                 conflicts.append([rule["id"], other["id"]])
     return dict(operations=operations, dependencies=deps, requirements=rules, candidates=candidates,
-                conflicts=conflicts, gaps=collected["gaps"] + pgaps + cgaps)
+                conflicts=conflicts, gaps=collected["gaps"] + pgaps + cgaps, file_coverage=file_coverage)
+
+
+def coverage_by_file(sources, operations, dependencies, gaps):
+    """Separate files with unsupported possible calls from files without dependency signals."""
+    gap_codes = {}
+    for gap in gaps:
+        source_id = gap.get("source_id") or gap.get("evidence", {}).get("source_id")
+        gap_codes.setdefault(source_id, set()).add(gap["code"])
+    providers = {e["source_id"] for o in operations for e in o["evidence"]}
+    consumers = {e["source_id"] for d in dependencies for e in d["evidence"]}
+    result = []
+    for source in sorted(sources.values(), key=lambda s: (s["repository"], s["path"])):
+        codes = gap_codes.get(source["id"], set())
+        if not source["path"].endswith((".py", ".json")):
+            status = "NOT_CODE"
+        elif "python_parse_error" in codes or "invalid_contract" in codes:
+            status = "UNPARSED"
+        elif codes & CONSUMER_GAPS:
+            status = "UNSUPPORTED_CALLS"
+        elif codes:
+            status = "PARTIAL_DECLARATIONS"
+        elif source["id"] in providers or source["id"] in consumers:
+            status = "EXTRACTED"
+        else:
+            status = "NO_DEPENDENCY_SIGNALS"
+        result.append(dict(source_id=source["id"], repository=source["repository"], path=source["path"],
+                           status=status))
+    return result
