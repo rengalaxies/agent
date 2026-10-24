@@ -42,9 +42,9 @@ def stamp(moment=None):
 class AccessLog:
     """One segment per emitter; the sidecar is written only on close (rotation)."""
 
-    def __init__(self, directory: Path, emitter: str, started: datetime):
+    def __init__(self, directory: Path, emitter: str, started: datetime, environment=ENVIRONMENT):
         self.path = directory / f"{emitter}-0001.jsonl"
-        self.emitter, self.started = emitter, started
+        self.emitter, self.started, self.environment = emitter, started, environment
         self.lock = threading.Lock()
         self.stream = self.path.open("ab")
 
@@ -60,11 +60,13 @@ class AccessLog:
         sidecar = self.path.with_name(self.path.name[:-len(".jsonl")] + ".coverage.json")
         sidecar.write_text(json.dumps(dict(
             schema="access-log-segment-1", file=self.path.name, emitter=self.emitter,
-            environment=ENVIRONMENT, start=stamp(self.started), end=stamp(ended), sample_rate=1.0,
+            environment=self.environment, start=stamp(self.started), end=stamp(ended), sample_rate=1.0,
             sha256=hashlib.sha256(self.path.read_bytes()).hexdigest()), indent=2))
 
 
 def server(emitter: str, log: AccessLog, routes):
+    environment = log.environment
+
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             received = datetime.now(timezone.utc)
@@ -73,7 +75,7 @@ def server(emitter: str, log: AccessLog, routes):
             route = path if ("GET", path) in routes else None
             body = json.dumps(routes[("GET", path)]() if route else {"error": "not_found"}).encode()
             status = 200 if route else 404
-            record = dict(ts=stamp(received), service=emitter, env=ENVIRONMENT,
+            record = dict(ts=stamp(received), service=emitter, env=environment,
                           method="GET", path=self.path, status=status,
                           duration_ms=round((time.perf_counter() - started) * 1000, 3))
             if route:
@@ -110,15 +112,18 @@ def call(base_url, path, client=None):
             return exc.code
 
 
-def run_stand(out: Path):
-    """Run all calls once; return the source configuration and the window."""
+def run_stand(out: Path, installation=INSTALLATION, environment=ENVIRONMENT):
+    """Run all calls once; return the source configuration and the window.
+
+    installation/environment let the logs join another stand's graph scope
+    (for example the Orders/Reporting Git stand, acme/prod)."""
     out = Path(out).resolve()
     logs = out / "access-logs"
     logs.mkdir(parents=True, exist_ok=False)
     # One shared coverage interval for every emitter, so the window has no seams.
     started = datetime.now(timezone.utc).replace(microsecond=0)
-    orders_log = AccessLog(logs, "orders-7f9c", started)
-    inventory_log = AccessLog(logs, "inventory-2b1d", started)
+    orders_log = AccessLog(logs, "orders-7f9c", started, environment)
+    inventory_log = AccessLog(logs, "inventory-2b1d", started, environment)
     orders = server("orders-7f9c", orders_log, {("GET", "/orders"): lambda: {"items": [1, 2], "next_cursor": None}})
     inventory = server("inventory-2b1d", inventory_log, {("GET", "/orders"): lambda: {"reorders": []}})
     orders_url = f"http://127.0.0.1:{orders.server_port}"
@@ -149,7 +154,7 @@ def run_stand(out: Path):
         orders_log.close(ended)
         inventory_log.close(ended)
     return dict(
-        source=dict(id=SOURCE_ID, installation_id=INSTALLATION, environment=ENVIRONMENT, root=str(logs),
+        source=dict(id=SOURCE_ID, installation_id=installation, environment=environment, root=str(logs),
                     identities=IDENTITIES, instrumented_services=["orders", "inventory"]),
         window=dict(start=stamp(started), end=stamp(ended)), calls=calls)
 
