@@ -231,6 +231,16 @@ Ledger резервирует худший случай перед первым 
 - `ledger.py` хранит JSON на ветке `experiment-state/autonomous-mvp/<run_id>/<модель>`, по файлу на
   фазу, с compare-and-swap на каждой записи. Две записи на case-run укладываются в лимит
   GITHUB_TOKEN. Перед каждой записью проверяется, что значения секретов не попали в состояние.
+- Отчёт (`report.json`, schema `amvp-report-1`) привязан к конфигурации, чтобы сервис пачки 4
+  включал модель, только сверив его с тем, что загрузил. Поля: `manifest_digest` закоммиченного
+  manifest; `provider` из `program.json`, стабильный идентификатор в нём `chat_endpoint`;
+  `protocol` из manifest без изменений (`protocol`, `executor`, `constitution_version`,
+  `system_sha256`, `schema_sha256`, `code_sha256` с LF-нормализованными хешами файлов). Вердикт
+  модели лежит в `models[<id>].verdict`. Ledger, записанный под другим manifest, в вердикт не
+  входит и перечислен в `ignored_ledgers`. Отдельного хеша инструментов нет: схема всех действий,
+  включая `graph_*`, входит в `schema_sha256`, их лимиты в хеш конституции, а код `graph_query.py`
+  и `graph_store.py` в `code_sha256`. Режим `report` перед расчётом проверяет, что закоммиченный
+  manifest совпадает с кодом в checkout.
 
 ## Dry-run всей программы
 
