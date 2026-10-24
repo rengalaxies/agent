@@ -150,6 +150,7 @@ class SafeReadTests(StandCase):
         self.addCleanup((repo / ".git/info/attributes").unlink)
         hook = repo / ".git/hooks/post-checkout"
         hook.write_text(f"#!/bin/sh\n{command}\n")
+        hook.chmod(0o755)  # executable, so a hook that ran would really leave the marker
         self.addCleanup(hook.unlink)
         c = self.graph().prepare_context(revisions=self.stand.revisions(orders="pr-7"))
         self.assertTrue(c["sources"])
