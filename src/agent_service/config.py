@@ -59,7 +59,9 @@ class CoreConfig(Strict):
 
     policy_path: Path  # agent_graph Policy (JSON or YAML): repositories as local Git mirrors, snapshot: git
     state_dir: Path
-    ownership_path: Path | None = None  # installation mapping {source, version, services}
+    ownership_path: Path | None = None  # installation mapping {source, version, services}, re-read on reconcile
+    runtime_sources: list[dict] = Field(default_factory=list)  # agent_graph AccessLogSource configurations
+    runtime_window_seconds: int = Field(default=3600, ge=60, le=86400)
     constitution_path: Path | None = None
     model_qualified: bool = False  # set only after batch 2B qualified this model configuration
 
@@ -142,7 +144,8 @@ def core_analyzer(core: CoreConfig, *, code_version: str):
     from .core_analyzer import CoreAnalyzer
 
     return CoreAnalyzer(_document(core.policy_path), core.state_dir,
-                        ownership=_document(core.ownership_path) if core.ownership_path else None,
+                        ownership_path=str(core.ownership_path) if core.ownership_path else None,
+                        runtime_sources=core.runtime_sources, runtime_window_seconds=core.runtime_window_seconds,
                         code_version=code_version,
                         constitution_path=str(core.constitution_path) if core.constitution_path else None,
                         model_qualified=core.model_qualified)

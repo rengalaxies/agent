@@ -137,9 +137,13 @@ class Service:
         try:
             prepared = connector.prepare(snapshot)
             revisions = prepared.repository_revisions
-            if not revisions and git is not None:
+            if git is not None and (not revisions or hasattr(self.analyzer, "reconcile_graph")):
                 failing = git.provider
-                revisions = git.pin_revisions(None)  # a Jira analysis reads the pinned branches
+                mainline = git.pin_revisions(None)  # default-branch tips: the graph's main-line memory
+                if not revisions:
+                    revisions = mainline  # a Jira analysis reads the pinned branches
+                else:
+                    prepared.attachments["mainline_revisions"] = mainline
         except AuthError as exc:
             self.store.note("connection_unauthorized", failing, f"{failing}:{exc.status}")
             self.store.requeue_job(job, exc.code, count_attempt=False)
@@ -223,7 +227,25 @@ class Service:
                         added += self._synthetic(provider, resource["resource_id"],
                                                  f"reconcile:{resource['resource_id']}:absent:{int(started)}")
             self.store.checkpoint(name, str(started))
-        return {"recovered": recovered, "revived": revived, "enqueued": added}
+        return {"recovered": recovered, "revived": revived, "enqueued": added, "graph": self.reconcile_graph()}
+
+    def reconcile_graph(self):
+        """Periodic graph reconciliation: code at the default branches, runtime windows, ownership."""
+        maintain = getattr(self.analyzer, "reconcile_graph", None)
+        git = self.connectors.get("github")
+        if maintain is None or git is None:
+            return None
+        try:
+            results = maintain(git.pin_revisions(None))
+        except ConnectorError as exc:
+            self.store.note("graph_reconcile_failed", "github", exc.code)
+            return None
+        failed = [r for r in results if r.get("error") or r.get("status") == "UNAVAILABLE"]
+        if failed:
+            self.store.note("graph_source_unavailable", None, ",".join(sorted(r["source"] for r in failed)))
+        else:
+            self.store.clear_notice("graph_source_unavailable", None)
+        return results
 
     def _synthetic(self, provider, rid, event_id) -> int:
         envelope = EventEnvelope(provider=provider, source="reconcile", event_id=event_id[:200],

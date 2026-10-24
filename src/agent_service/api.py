@@ -6,7 +6,7 @@ import hmac
 
 from fastapi import FastAPI, Request
 from fastapi.concurrency import run_in_threadpool
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from .connectors.base import MAX_WEBHOOK_BYTES
 
@@ -32,11 +32,27 @@ def create_app(service, *, status_token: str | None = None) -> FastAPI:
         # Liveness only: says nothing about Jira/Git permissions or the analysis.
         return {"live": True}
 
+    def authorized(request: Request) -> bool:
+        supplied = request.headers.get("authorization", "")
+        return bool(status_token) and hmac.compare_digest(supplied, f"Bearer {status_token}")
+
     @app.get("/status")
     async def status(request: Request):
-        supplied = request.headers.get("authorization", "")
-        if not status_token or not hmac.compare_digest(supplied, f"Bearer {status_token}"):
+        if not authorized(request):
             return JSONResponse({"error": "unauthorized"}, status_code=401)
         return await run_in_threadpool(service.store.status)
+
+    @app.get("/graph")
+    async def graph(request: Request):
+        """Read-only batch 3 view: impact paths, provenance and freshness, within the analysis grants."""
+        if not authorized(request):
+            return JSONResponse({"error": "unauthorized"}, status_code=401)
+        render = getattr(service.analyzer, "graph_html", None)
+        if render is None:
+            return JSONResponse({"error": "graph_not_configured"}, status_code=404)
+        body = await run_in_threadpool(render)
+        return HTMLResponse(body, headers={
+            "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Referrer-Policy": "no-referrer",
+            "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'"})
 
     return app

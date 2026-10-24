@@ -86,10 +86,22 @@ def post(url, body: bytes, headers: dict) -> tuple[int, dict]:
             return exc.code, json.loads(exc.read() or b"{}")
 
 
+def get(url, headers: dict) -> tuple[int, str]:
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return resp.status, resp.read().decode("utf-8")
+    except urllib.error.HTTPError as exc:
+        with exc:
+            return exc.code, ""
+
+
 class SmokeBench:
     """Stands, core and service wired together; also used by tests/service."""
 
-    def __init__(self, root: Path, *, policy_overrides: dict | None = None, ownership=True):
+    STATUS_TOKEN = "smoke-status-token"
+
+    def __init__(self, root: Path, *, policy_overrides: dict | None = None, ownership=True, runtime_sources=()):
         self.root = Path(root)
         stand_module = load_stand_module()
         self.stand = stand_module.build_stand(self.root / "stand")
@@ -104,12 +116,16 @@ class SmokeBench:
         fields = self.jira_issue["text_fields"]
         self.jira.add_issue(10012, self.jira_issue["key"], self.jira_issue["project"], fields["summary"],
                             fields["description"])
+        # build_stand writes the installation mapping; the graph reads it on every reconciliation.
+        self.ownership_path = self.stand.root / "ownership.json"
         self.analyzer = CoreAnalyzer(self.stand.policy(**(policy_overrides or {})), self.root / "core-state",
-                                     ownership=stand_module.OWNERSHIP if ownership else None,
-                                     code_version="agent-service-smoke")
+                                     ownership_path=str(self.ownership_path) if ownership else None,
+                                     runtime_sources=runtime_sources, code_version="agent-service-smoke")
         self.during = None  # callable(request) run before the core analysis
         self.service = self._service()
-        self.receiver = Receiver(self.service)
+        self.receiver = Receiver(self.service, status_token=self.STATUS_TOKEN)
+        # What the installer's "initial graph" step does: code at the default branches and owners.
+        self.service.reconcile_graph()
 
     def _service(self) -> Service:
         clock = time.time
@@ -129,8 +145,10 @@ class SmokeBench:
         bench = self
 
         class Hooked:
-            def request_settings(self):
-                return bench.analyzer.request_settings()
+            """The core analyzer with a test hook in front of each analysis."""
+
+            def __getattr__(self, name):
+                return getattr(bench.analyzer, name)
 
             def analyze(self, request, *, attachments, cancelled):
                 if bench.during:
@@ -204,6 +222,9 @@ def run_smoke(root: Path) -> dict:
         check("jira_names_reporting_and_archive", "reporting:" in affected and "archive:" in affected, affected)
         # billing declares its own GET /orders, audit calls billing: neither is an Orders consumer.
         check("jira_excludes_audit_and_billing", "audit" not in affected and "billing" not in affected, affected)
+        check("jira_owner_from_graph",
+              "reporting: команда team-reporting (источник: installation_mapping@ownership-1)" in affected, affected)
+        check("jira_graph_version", "graph_version: graph-" in jira)
         check("jira_says_preliminary", "jira_without_diff" in jira and "предварительный" in jira)
 
         status, _ = bench.deliver_pr("opened")
@@ -243,6 +264,11 @@ def run_smoke(root: Path) -> dict:
         jobs = bench.service.store.jobs("github:acme/orders#7")
         check("generations_superseded_then_done", [j["state"] for j in jobs][-2:] == ["SUPERSEDED", "DONE"],
               ",".join(j["state"] for j in jobs))
+        status, _ = get(bench.receiver.url + "/graph", {})
+        check("graph_view_requires_token", status == 401, f"status={status}")
+        status, page = get(bench.receiver.url + "/graph", {"Authorization": f"Bearer {bench.STATUS_TOKEN}"})
+        check("graph_view_shows_paths", status == 200 and "reporting" in page and "Граф зависимостей" in page,
+              f"status={status}")
     finally:
         bench.close()
     return {"ok": all(c["ok"] for c in checks), "seconds": round(time.monotonic() - started, 1), "checks": checks}
