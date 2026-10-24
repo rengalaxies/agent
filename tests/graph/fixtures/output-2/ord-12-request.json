@@ -1,0 +1,46 @@
+{
+  "access_scope": {
+    "repositories": [
+      "archive",
+      "audit",
+      "billing",
+      "orders",
+      "reporting"
+    ],
+    "runtime_sources": [],
+    "view_id": "bd45668d86005d8561d518f6518e16614c9ec05f21d8cbb29a34d0930d9fe730"
+  },
+  "constitution_version": "agent-service-v1.0:test",
+  "deadline": "2026-10-24T12:05:00Z",
+  "environment": "prod",
+  "graph_version": "graph-1",
+  "installation_id": "acme",
+  "jira": {
+    "key": "ORD-12",
+    "project": "ORD",
+    "revision": "1",
+    "text_fields": {
+      "summary": "Reduce the default Orders page size from 100 to 20"
+    },
+    "updated_at": "2026-10-24T12:00:00Z"
+  },
+  "kind": "analysis_request",
+  "model_configuration_id": null,
+  "pr": null,
+  "replay_of": null,
+  "repository_revisions": {
+    "archive": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+    "audit": "89e053921b37ec5c0ae5f6ffca5d2936b6e0e89b",
+    "billing": "46a72606b6f05cb92999cbaf529869611bb0c01f",
+    "orders": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549",
+    "reporting": "2cba012ba20430d7fde630b24c480a254e909971"
+  },
+  "request_id": "req-main",
+  "schema": "agent-graph-output",
+  "schema_version": "2.0",
+  "source_event": {
+    "event_id": "delivery-1",
+    "resource_version": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549"
+  },
+  "trigger_kind": "jira"
+}

@@ -298,3 +298,17 @@ class SchemaFileTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SharedExampleTests(unittest.TestCase):
+    """Orders/Reporting stand documents other batches build against (tests/graph/fixtures/output-2)."""
+
+    def test_shared_examples_parse_and_keep_their_status(self):
+        folder = ROOT / "tests/graph/fixtures/output-2"
+        expected = {"pr-7-result.json": ("USEFUL", "impact_found_within_profile"),
+                    "ord-12-result.json": ("USEFUL", "preliminary_impact_found")}
+        for name in ("pr-7-request.json", "ord-12-request.json", *expected):
+            with self.subTest(name=name):
+                parsed = parse_document(json.loads((folder / name).read_text(encoding="utf-8")))
+                if name in expected:
+                    self.assertEqual((parsed.status, parsed.reason_code), expected[name])
