@@ -38,7 +38,7 @@ REASONS: dict[str, frozenset[str]] = {
     "PARTIAL": frozenset({
         "coverage_gaps", "source_stale", "runtime_unavailable", "model_unavailable",
         "model_step_limit", "deadline_reached", "unclassified_change", "owner_unknown",
-        "budget_exhausted"}),
+        "budget_exhausted", "hypotheses_only"}),
     "ABSTAINED": frozenset({
         "insufficient_evidence", "no_supported_delta", "intent_unclear", "out_of_scope",
         "no_consumer_found_within_profile"}),
@@ -608,6 +608,36 @@ def display_verdict(document) -> dict:
         return dict(display="INCOMPATIBLE", green=False, reason_code="not_a_result", errors=[])
     return dict(display=parsed.status, green=parsed.status == "USEFUL",
                 reason_code=parsed.reason_code, errors=[])
+
+
+def _codes(literal) -> frozenset:
+    return frozenset(literal.__args__)
+
+
+CORE_CODE_FIELDS = (("findings", "code", _codes(FindingCode)), ("findings", "usage", _codes(UsageCode)),
+                    ("deltas", "code", _codes(DeltaCode)), ("gaps", "code", _codes(GapCode)),
+                    ("dependencies", "usage", _codes(UsageCode)))
+
+
+def check_core_codes(document: dict) -> None:
+    """Reader check for core (agent-graph-1) outputs consumed by the application.
+
+    Every finding/delta/gap/usage code must be one this release knows; otherwise
+    ContractError("unknown_code") with the field path, never a silent fallback.
+    """
+    if not isinstance(document, dict):
+        raise ContractError("invalid_document")
+    errors = []
+    for key, field, known in CORE_CODE_FIELDS:
+        items = document.get(key, [])
+        if not isinstance(items, list):
+            errors.append(dict(path=key, type="list_type"))
+            continue
+        for index, item in enumerate(items):
+            if isinstance(item, dict) and field in item and item[field] not in known:
+                errors.append(dict(path=f"{key}.{index}.{field}", type="literal_error"))
+    if errors:
+        raise ContractError("unknown_code", errors[:32])
 
 
 def json_schema() -> dict:

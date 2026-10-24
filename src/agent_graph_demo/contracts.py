@@ -9,9 +9,15 @@ from urllib.parse import urlsplit
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+import agent_graph
+
 VERSIONS = ("A", "B", "D", "E")
-CORE_SHA = "18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70"
-PROFILE = "http-requests-4"
+# The demo runs the core it ships (see graph_cli). CORE_SHA used to name an external
+# core checkout; it is now the digest of the bundled core files, kept under the old
+# name for tools/agent_graph_demo until packaging moves to batch 5A.
+CORE_IDENTITY = agent_graph.core_identity()
+CORE_SHA = CORE_IDENTITY["core_digest"]
+PROFILE = agent_graph.PROFILE
 
 
 def now():
@@ -87,7 +93,8 @@ class CorrectionRequest(ResetRequest):
 class DemoSettings(BaseModel):
     model_config = ConfigDict(extra="forbid")
     state_root: Path
-    core_root: Path
+    # None: the agent_graph package this application imports (the shipped core).
+    core_root: Path | None = None
     auth_config_path: Path
     runtime_registry_path: Path
     allowed_origins: list[str] = ["http://127.0.0.1:18081"]

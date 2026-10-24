@@ -53,9 +53,14 @@ class CLITests(DemoCase):
             len(self.store.get_artifact(self.sid, s["graph_ref"])["dependencies"]), 3
         )
         self.assertEqual(g["profile"], a["profile"])
-        # Core conservatively counts FastAPI decorators as unknown clients: do not hide this limitation.
-        self.assertEqual(g["coverage"], "PARTIAL")
-        self.assertTrue(any(gap["code"] == "unknown_http_client" for gap in g["gaps"]))
+        # The core used to count FastAPI route decorators as unknown clients (noise).
+        # The shipped core leaves declarations to the provider pass: no such gap remains,
+        # and every scenario file has an explicit coverage status instead.
+        self.assertEqual(g["coverage"], "COMPLETE_WITHIN_PROFILE")
+        self.assertFalse(any(gap["code"] == "unknown_http_client" for gap in g["gaps"]))
+        statuses = {(f["repository"], f["path"]): f["status"] for f in g["file_coverage"]}
+        self.assertEqual(statuses[("orders", "app.py")], "EXTRACTED")
+        self.assertEqual(statuses[("reporting", "requirement.md")], "NOT_CODE")
 
     def test_actual_evidence_and_human_correction_do_not_create_edges(self):
         base = self.prepare()
@@ -80,7 +85,7 @@ class CLITests(DemoCase):
         j = self.store.enqueue(self.sid, "operator", b)
         self.worker.run_once()
         j = self.store.job(j["id"])
-        self.assertEqual(j["status"], "PARTIAL")
+        self.assertEqual(j["status"], "SUCCEEDED")  # no decorator noise gap any more
         g = self.store.get_artifact(self.sid, self.store.session(self.sid)["graph_ref"])
         self.assertEqual(len(g["dependencies"]), 3)
         self.assertEqual(g["proposals"][0]["trust"], "HUMAN_CORRECTION")
