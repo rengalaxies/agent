@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import tempfile
@@ -11,6 +12,7 @@ from agent_graph.discovery import operation_id as code_operation_id
 from agent_graph.runtime_observations import (
     AccessLogSource, FreshnessPolicy, assess, read_access_logs, relationships)
 
+ROOT = Path(__file__).resolve().parents[2]
 T0 = datetime(2026, 10, 24, 10, 0, tzinfo=timezone.utc)
 T1 = T0 + timedelta(minutes=10)
 IDENTITIES = [dict(alias="orders-7f9c", service="orders"), dict(alias="inventory-2b1d", service="inventory"),
@@ -174,6 +176,35 @@ class RuntimeObservationTests(unittest.TestCase):
         with self.assertRaises(GraphError) as raised:
             read_access_logs(source, "2026-10-24T10:00:00", "2026-10-24T11:00:00")
         self.assertEqual(raised.exception.code, "invalid_window")
+
+
+class RuntimeStandTests(unittest.TestCase):
+    def test_real_http_calls_produce_the_expected_directed_edges(self):
+        spec = importlib.util.spec_from_file_location(
+            "runtime_stand", ROOT / "tools/agent_service/runtime_stand/stand.py")
+        stand_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(stand_module)
+        with tempfile.TemporaryDirectory() as tmp:
+            stand = stand_module.run_stand(Path(tmp) / "out")
+            source = AccessLogSource.model_validate(stand["source"])
+            checked = datetime.now(timezone.utc)
+            result = read_access_logs(source, stand["window"]["start"], stand["window"]["end"], checked_at=checked)
+            again = read_access_logs(source, stand["window"]["start"], stand["window"]["end"], checked_at=checked)
+        self.assertEqual([c["status"] for c in stand["calls"]], [200, 200, 200, 404, 200, 200, 200])
+        self.assertEqual(result["source"]["status"], "AVAILABLE")
+        edges = {(e["caller"], e["callee"], e["kind"], e["operation"] and e["operation"]["route"]):
+                 e["bases"][0]["aggregates"]["request_count"] for e in relationships(result)}
+        self.assertEqual(edges, {
+            ("reporting", "orders", "CALLS_OPERATION", "/orders"): 3,
+            ("reporting", "orders", "CALLS_SERVICE", None): 4,
+            ("health", "inventory", "CALLS_OPERATION", "/orders"): 2,
+            ("health", "inventory", "CALLS_SERVICE", None): 2})
+        self.assertEqual([u["request_count"] for u in result["unattributed"]], [1])
+        self.assertEqual(assess(result, "export", "orders", "GET", "/orders")["status"], "NO_TRAFFIC_OBSERVED")
+        scope = SimpleNamespace(installation_id="runtime-stand", environment="stand")
+        orders_op = next(e for e in relationships(result) if e["callee"] == "orders" and e["operation"])
+        self.assertEqual(orders_op["to_id"], code_operation_id(scope, "orders", "GET", "/orders"))
+        self.assertEqual([o["id"] for o in again["observations"]], [o["id"] for o in result["observations"]])
 
 
 if __name__ == "__main__":
