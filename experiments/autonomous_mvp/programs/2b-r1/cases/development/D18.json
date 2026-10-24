@@ -1,0 +1,56 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://orders.test",
+      "service": "orders"
+    }
+  ],
+  "case_id": "D18",
+  "family": "F12_intent_link",
+  "limits": {
+    "case_seconds": 240,
+    "max_model_steps": 10
+  },
+  "repositories": [
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# Orders\n",
+        "orders_api/__init__.py": "",
+        "orders_api/api.py": "from fastapi import FastAPI\n\nfrom .storage import read_orders\n\napp = FastAPI()\nDEFAULT_PAGE_SIZE = 100\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int = DEFAULT_PAGE_SIZE):\n    items, next_cursor = read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+        "orders_api/storage.py": "def read_orders(day, cursor, page_size):\n    \"\"\"Return one page of orders for a day and the cursor of the next page.\"\"\"\n    raise NotImplementedError(\"storage adapter is configured at deployment\")\n"
+      },
+      "id": "orders",
+      "service": "orders"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# board-pack\nProduces the monthly board pack for finance.\n",
+        "board_pack/__init__.py": "",
+        "board_pack/build.py": "from .orders_client import OrdersClient\n\nCLIENT = OrdersClient(\"https://orders.test\")\n\n\ndef build_document(day):\n    return CLIENT.orders_for_day(day)\n",
+        "board_pack/orders_client.py": "import requests\n\n\nclass OrdersClient:\n    \"\"\"Thin team-owned wrapper around a pooled HTTP session.\"\"\"\n\n    def __init__(self, base_url):\n        self.base_url = base_url\n        self.http = requests.Session()\n\n    def orders_for_day(self, day):\n        response = self.http.get(self.base_url + \"/orders\", params={\"day\": day}, timeout=10)\n        response.raise_for_status()\n        return response.json()[\"items\"]\n"
+      },
+      "id": "board-pack",
+      "service": "board-pack"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# dashboards\nLive order tiles.\n",
+        "dashboards/__init__.py": "",
+        "dashboards/tiles.py": "import requests\n\nORDERS_URL = \"https://orders.test\"\n\n\ndef refresh_tiles(day):\n    response = requests.get(ORDERS_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+      },
+      "id": "dashboards",
+      "service": "dashboards"
+    }
+  ],
+  "schema": "autonomous-mvp-case-1",
+  "split": "development",
+  "task": {
+    "description": "Finance reports that the monthly board pack shows only part of the orders. The Orders release changed the default page size of GET /orders from 100 to 20. Which service produces this document, does it depend on orders, and what is the evidence?",
+    "key": "ORD-218",
+    "kind": "jira",
+    "summary": "Missing orders in the monthly board pack after the Orders release"
+  }
+}

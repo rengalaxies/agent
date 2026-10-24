@@ -1,0 +1,60 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://orders.test",
+      "service": "orders"
+    },
+    {
+      "base_url": "https://read-replica.test",
+      "service": "replica"
+    }
+  ],
+  "case_id": "D04",
+  "family": "F02_same_name_operation",
+  "limits": {
+    "case_seconds": 240,
+    "max_model_steps": 10
+  },
+  "repositories": [
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# Orders\nSource of truth for orders.\n",
+        "orders_api/__init__.py": "",
+        "orders_api/api.py": "from fastapi import FastAPI\n\nfrom .storage import read_orders\n\napp = FastAPI()\nDEFAULT_PAGE_SIZE = 100\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int = DEFAULT_PAGE_SIZE):\n    items, next_cursor = read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+        "orders_api/storage.py": "def read_orders(day, cursor, page_size):\n    \"\"\"Return one page of orders for a day and the cursor of the next page.\"\"\"\n    raise NotImplementedError(\"storage adapter is configured at deployment\")\n"
+      },
+      "id": "orders",
+      "service": "orders"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# replica\nRead-only copy with the same API shape.\n",
+        "replica/__init__.py": "",
+        "replica/api.py": "from fastapi import FastAPI\n\nfrom .storage import read_orders\n\napp = FastAPI()\nDEFAULT_PAGE_SIZE = 100\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int = DEFAULT_PAGE_SIZE):\n    items, next_cursor = read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+        "replica/storage.py": "def read_orders(day, cursor, page_size):\n    \"\"\"Return one page of orders for a day and the cursor of the next page.\"\"\"\n    raise NotImplementedError(\"storage adapter is configured at deployment\")\n"
+      },
+      "id": "replica",
+      "service": "replica"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# search-index\nCopies yesterday's records into the archive index.\n",
+        "search_index/__init__.py": "",
+        "search_index/sync.py": "import requests\n\nORDERS_URL = \"https://read-replica.test\"\n\n\ndef pull_day(day):\n    response = requests.get(ORDERS_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+      },
+      "id": "search-index",
+      "service": "search-index"
+    }
+  ],
+  "schema": "autonomous-mvp-case-1",
+  "split": "development",
+  "task": {
+    "description": "We plan to change the default page size of GET /orders in the orders service from 100 to 20. Find the services that consume this operation and could be affected, with evidence from the listed repositories. State what remains unknown.",
+    "key": "ORD-204",
+    "kind": "jira",
+    "summary": "Orders: reduce the default page size of GET /orders from 100 to 20"
+  }
+}

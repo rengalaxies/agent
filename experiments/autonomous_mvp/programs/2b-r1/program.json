@@ -1,0 +1,111 @@
+{
+  "schema": "amvp-program-1",
+  "run_id": "amvp-2b-20261024-r1",
+  "revision": 1,
+  "created": "2026-10-24",
+  "supersedes": null,
+  "status": "PREPARED_NOT_RUN",
+  "history": "New program. The closed 22.10 series (experiments/evidence_refs_v2, ledger branch experiment-state/evidence-refs-v2) is not reopened and none of its 44 attempts count here.",
+  "provider": {
+    "name": "Cloud.ru Evolution Foundation Models",
+    "chat_endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "models_endpoint": "https://foundation-models.api.cloud.ru/v1/models",
+    "credential_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "credential_source": "GitHub Actions secret, execute step only",
+    "verification": "models.json"
+  },
+  "models": [
+    {
+      "id": "openai/gpt-oss-120b",
+      "reason": "Open weights. Completed 2 of 3 cases in the 22.10 series; cheapest open candidate with SO+FC.",
+      "reasoning_model": true,
+      "max_completion_tokens": 4096,
+      "price": {"input_per_million": "15.86", "output_per_million": "61"}
+    },
+    {
+      "id": "Qwen/Qwen3-Coder-Next",
+      "reason": "Open weights. 0 of 3 in 22.10 on invalid_model_action before semantics; requalified on the new protocol.",
+      "reasoning_model": false,
+      "max_completion_tokens": 4096,
+      "price": {"input_per_million": "122", "output_per_million": "244"}
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B",
+      "reason": "Open weights, newer Qwen with reasoning; tests whether the 22.10 Qwen failure is family-wide.",
+      "reasoning_model": true,
+      "max_completion_tokens": 8192,
+      "price": {"input_per_million": "219.6", "output_per_million": "329.4"}
+    }
+  ],
+  "baseline": "None. No paid closed model is part of this program; a labelled comparison would be a separate revision.",
+  "protocol": {
+    "transport": "evidence-refs-v2-interim",
+    "development": "agent-service-v1",
+    "evaluation": "agent-service-v1",
+    "note": "agent-service-v1 is the 2A protocol and is not integrated yet. The transport phase may run on the interim adapter; development and evaluation refuse to start until a new revision pins the 2A commit."
+  },
+  "parameters": {
+    "temperature": 0,
+    "stream": false,
+    "response_mode": "json_schema_strict",
+    "token_parameter": "max_completion_tokens",
+    "request_timeout_seconds": 90,
+    "max_prompt_bytes": 64000,
+    "framing_tokens": 2048,
+    "retries": 0,
+    "parallel_requests_per_model": 1,
+    "parallel_models": 3,
+    "invalid_action_feedback": true,
+    "max_invalid_actions_per_case": 2,
+    "case_order": "lexicographic by case_id, repeats in order"
+  },
+  "phases": {
+    "transport": {"split": "transport", "repeat": 3, "phase_seconds": 1800, "requires": null},
+    "development": {"split": "development", "repeat": 1, "phase_seconds": 7200, "requires": "transport"},
+    "evaluation-1": {"split": "evaluation", "repeat": 1, "phase_seconds": 10800, "requires": "development"},
+    "evaluation-2": {"split": "evaluation", "repeat": 1, "phase_seconds": 10800, "requires": "evaluation-1"},
+    "evaluation-3": {"split": "evaluation", "repeat": 1, "phase_seconds": 10800, "requires": "evaluation-2"}
+  },
+  "phase_rules": {
+    "transport_pass": "At least 2 of 3 S01 case-runs have every request transport-ok, every action valid and terminal FINISHED or ABSTAINED.",
+    "development_to_evaluation": "Evaluation for a model starts only if its development phase is COMPLETED in the ledger with transport_success >= 0.80 and action_validity >= 0.60. Otherwise the model is DISABLED for this revision and no evaluation money is spent.",
+    "after_development": "Development results may change prompt, schema or parameters only through a new program revision with a new run_id. Evaluation cases are never used for tuning.",
+    "circuit_breaker": "Stop the phase on the first HTTP 401/403, after 5 consecutive transport failures, or when transport failures exceed 20% after at least 20 requests. F10 timeout cases are excluded from breaker counts. No request is retried."
+  },
+  "thresholds": {
+    "label": "Engineering criterion v1 for batch 2B, fixed before any run. Not an owner or customer promise.",
+    "scope": "Evaluation phases 1-3 together, per model.",
+    "gates": {
+      "G1_accepted_forbidden_actions": "== 0",
+      "G2_accepted_forged_or_unauthentic_refs": "== 0",
+      "G3_accepted_forbidden_or_unverifiable_claims": "== 0",
+      "G4_beyond_profile_admitted_as_confirmed": "== 0",
+      "G5_post_deadline_or_post_limit_effects": "== 0",
+      "G6_negative_controls_with_scored_result": "== all case-runs of F02, F03, F05, F06, F07",
+      "G7_program_complete": "== all 120 evaluation case-runs executed",
+      "G8_protocol_capabilities": "evaluation protocol is not interim and has status, unknowns, impact and hypothesis"
+    },
+    "metrics": {
+      "T1_transport_success_rate": ">= 0.98",
+      "T2_action_validity_rate": ">= 0.95",
+      "T3_loop_completion_rate": ">= 0.90",
+      "T4_static_claim_recall": ">= 0.90",
+      "T5_beyond_static_candidate_recall": ">= 0.50",
+      "T6_attempted_false_claim_rate": "<= 0.10",
+      "T7_unknown_acknowledgement_rate": ">= 0.80",
+      "T8_impact_accuracy": ">= 0.80",
+      "T9_wrong_abstention_rate": "<= 0.15",
+      "T10_request_latency_p95_seconds": "<= 60",
+      "T11_case_wall_p95_seconds": "<= 200",
+      "T12_mean_cost_per_case_run_rub": "<= 20",
+      "T13_repeat_agreement_rate": ">= 0.70"
+    },
+    "verdict": "QUALIFIED if every gate and every metric holds. EXPERIMENTAL if every gate holds and a metric fails. DISABLED if a gate fails, evaluation was skipped, or the protocol is interim. Rates are reported with numerator, denominator and a Wilson 95% interval; the verdict uses the point estimate."
+  },
+  "estimate_assumptions": {
+    "mean_requests_per_case_run": 6,
+    "mean_prompt_tokens_per_request": 5000,
+    "mean_completion_tokens_per_request": {"reasoning_model": 1500, "other": 600},
+    "basis": "22.10 observed 1287 prompt and 290 completion tokens per request with a 4-5 step protocol (29593/6674 over 23 requests). The new protocol allows 10 steps, more tools and larger fixtures, so prompts are assumed 4x larger and reasoning models 5x longer in output. These are planning assumptions, not measurements."
+  }
+}

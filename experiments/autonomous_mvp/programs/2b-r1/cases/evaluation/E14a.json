@@ -1,0 +1,46 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://orders.test",
+      "service": "orders"
+    }
+  ],
+  "case_id": "E14a",
+  "family": "F14_paginating_consumer",
+  "limits": {
+    "case_seconds": 240,
+    "max_model_steps": 10
+  },
+  "repositories": [
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# Orders\n",
+        "orders_api/__init__.py": "",
+        "orders_api/api.py": "from fastapi import FastAPI\n\nfrom .storage import read_orders\n\napp = FastAPI()\nDEFAULT_PAGE_SIZE = 100\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int = DEFAULT_PAGE_SIZE):\n    items, next_cursor = read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+        "orders_api/storage.py": "def read_orders(day, cursor, page_size):\n    \"\"\"Return one page of orders for a day and the cursor of the next page.\"\"\"\n    raise NotImplementedError(\"storage adapter is configured at deployment\")\n"
+      },
+      "id": "orders",
+      "service": "orders"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# archive-writer\n",
+        "archive_writer/__init__.py": "",
+        "archive_writer/export.py": "import requests\n\nORDERS_URL = \"https://orders.test\"\n\n\ndef export_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(ORDERS_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n",
+        "tests/test_export.py": "import unittest\n\nfrom archive_writer.export import export_day\n\nORDERS_ON_FIXTURE_DAY = 50\n\n\nclass CompletenessContract(unittest.TestCase):\n    def test_export_day_returns_every_order_of_the_day(self):\n        self.assertEqual(len(export_day(\"2026-10-01\")), ORDERS_ON_FIXTURE_DAY)\n"
+      },
+      "id": "archive-writer",
+      "service": "archive-writer"
+    }
+  ],
+  "schema": "autonomous-mvp-case-1",
+  "split": "evaluation",
+  "task": {
+    "description": "We plan to change the default page size of GET /orders in the orders service from 100 to 20. Find the services that consume this operation and could be affected, with evidence from the listed repositories. State what remains unknown.",
+    "key": "SHOP-338",
+    "kind": "jira",
+    "summary": "Orders: reduce the default page size of GET /orders from 100 to 20"
+  }
+}

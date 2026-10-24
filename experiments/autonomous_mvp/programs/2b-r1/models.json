@@ -1,0 +1,48 @@
+{
+  "checked_date": "2026-10-24",
+  "checked_by": "documentation and published price list only; no API call was made, the key is not available locally",
+  "live_availability": "NOT_VERIFIED. The runner's preflight mode calls GET /v1/models with the Actions secret before any paid request.",
+  "sources": [
+    {
+      "url": "https://cloud.ru/docs/foundation-models/ug/topics/overview__available__models",
+      "used_for": "model IDs and the Functions column (Structure Output, Function Calling, Reasoning), max context"
+    },
+    {
+      "url": "https://cloud.ru/docs/api/specs/foundation-models/ug/_specs/openapi__foundation-models.yaml",
+      "sha256": "dbaa859e2889b7c1f3987b96d1caaeba8be332174c07897c89ccb89baa4bc8f3",
+      "used_for": "OpenAI-compatible POST /v1/chat/completions and GET /v1/models, request fields response_format.json_schema.strict, tools, tool_choice, parallel_tool_calls, max_completion_tokens, vLLM guided_json"
+    },
+    {
+      "url": "https://cloud.ru/docs/foundation-models/ug/topics/guides__llm-chat-request",
+      "used_for": "base_url https://foundation-models.api.cloud.ru/v1, max_completion_tokens in examples"
+    },
+    {
+      "url": "https://cloud.ru/products/evolution-ai-factory/catalog-foundation-models",
+      "used_for": "prices per million tokens in RUB"
+    },
+    {
+      "url": "https://cloud.ru/documents/tariffs/evolution/foundation-models",
+      "pdf": "https://cdn.cloud.ru/docs/legal/tariffs/evolution/current-version/foundation-models.pdf",
+      "pdf_sha256": "625767bdcbd7b9ff7648c48d6235eeca59830068bce75ac7125452f2712c854b",
+      "version": "261023, effective 2026-10-23",
+      "used_for": "cross-check: catalog prices equal the tariff price plus 22% VAT (for example 13.00 + 2.86 = 15.86, 50.00 + 11.00 = 61.00 for gpt-oss-120b)"
+    }
+  ],
+  "documentation_caveats": [
+    "The OpenAPI enum for response_format.type lists only text and json_object, while the same schema defines a json_schema object with strict. The 22.10 series sent type=json_schema, strict=true to Qwen/Qwen3-Coder-Next and openai/gpt-oss-120b and got 23 of 23 HTTP 200 responses that parsed as typed JSON. For Qwen/Qwen3.6-35B-A3B this is unverified; the transport phase measures it.",
+    "The models page marks Structure Output and Function Calling per model but does not say whether output is grammar-constrained or best effort. The runner never trusts the model output to match the schema.",
+    "No rate limits or request timeouts are documented on the pages above. The runner sends one request at a time per model and stops on HTTP 429 streaks.",
+    "Cloud.ru pages do not state model licenses. open_weights below comes from the vendors: gpt-oss-120b is published by OpenAI under Apache 2.0; Qwen3-Coder-Next and Qwen3.6-35B-A3B are published by Qwen on Hugging Face (Apache 2.0 for Qwen3.6-35B-A3B per secondary sources such as https://www.noze.it/en/insights/qwen-3-6/). The license files were not re-read in this session.",
+    "Prices may change without notice per the tariff document. Estimates use the prices below; billing access is not available, so actual billed cost stays NOT_MEASURED."
+  ],
+  "models": {
+    "openai/gpt-oss-120b": {"open_weights": true, "structured_output": true, "function_calling": true, "reasoning": true, "context": 131072, "input_per_million": "15.86", "output_per_million": "61"},
+    "Qwen/Qwen3-Coder-Next": {"open_weights": true, "structured_output": true, "function_calling": true, "reasoning": false, "context": 262144, "input_per_million": "122", "output_per_million": "244"},
+    "Qwen/Qwen3.6-35B-A3B": {"open_weights": true, "structured_output": true, "function_calling": true, "reasoning": true, "context": 262144, "input_per_million": "219.6", "output_per_million": "329.4"}
+  },
+  "not_selected": {
+    "Qwen/Qwen3.5-397B-A17B": "Open, SO+FC, but 915/1085.8 RUB per million: four times the cost of Qwen3.6 for a first qualification.",
+    "zai-org/GLM-4.7, zai-org/GLM-5.1, moonshotai/Kimi-K2.6, deepseek-ai/DeepSeek-V4-Flash, MiniMaxAI/MiniMax-M3": "Open-weight families with SO+FC. Candidates for a later revision if all three selected models fail; adding them now would turn qualification into model shopping.",
+    "Qwen/Qwen3-32B, Qwen/Qwen3-30B-A3B": "40960-token context is below the 66048 prompt bound plus output."
+  }
+}

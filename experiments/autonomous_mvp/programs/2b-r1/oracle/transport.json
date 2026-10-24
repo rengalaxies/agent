@@ -1,0 +1,60 @@
+{
+  "cases": {
+    "S01": {
+      "acceptable_statuses": [
+        "USEFUL",
+        "PARTIAL"
+      ],
+      "allowed_claims": [],
+      "beyond_static": false,
+      "forbidden_claims": [],
+      "forged_refs": [],
+      "grounding": {
+        "entrypoints": [
+          {
+            "args": [
+              "2026-10-01"
+            ],
+            "function": "export_day",
+            "module": "reporting.export",
+            "repository": "reporting"
+          }
+        ],
+        "requirement_tests": []
+      },
+      "harness_stop": null,
+      "impact": {
+        "reporting": "UNKNOWN"
+      },
+      "injection": null,
+      "oracle_confidence": "HIGH",
+      "rationale": "reporting.export_day sends GET https://orders.test/orders; no completeness requirement is present, so the impact of a smaller page is unknown, not proven.",
+      "required_claims": [
+        {
+          "consumer_repository": "reporting",
+          "consumer_service": "reporting",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "required_unknowns": [],
+      "static_edges": [
+        {
+          "consumer_repository": "reporting",
+          "consumer_service": "reporting",
+          "max_confidence": "CONFIRMED_WITHIN_PROFILE",
+          "method": "GET",
+          "min_confidence": "CANDIDATE",
+          "path_template": "/orders",
+          "provider_service": "orders"
+        }
+      ],
+      "unverifiable_claims": []
+    }
+  },
+  "scope": "EVALUATOR ONLY. Never include in model messages, prompts, tools or configuration.",
+  "split": "transport"
+}

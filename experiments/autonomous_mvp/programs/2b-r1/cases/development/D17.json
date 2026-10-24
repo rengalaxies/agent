@@ -1,0 +1,56 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://orders.test",
+      "service": "orders"
+    }
+  ],
+  "case_id": "D17",
+  "family": "F11_config_context",
+  "limits": {
+    "case_seconds": 240,
+    "max_model_steps": 10
+  },
+  "repositories": [
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# Orders\n",
+        "orders_api/__init__.py": "",
+        "orders_api/api.py": "from fastapi import FastAPI\n\nfrom .storage import read_orders\n\napp = FastAPI()\nDEFAULT_PAGE_SIZE = 100\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int = DEFAULT_PAGE_SIZE):\n    items, next_cursor = read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+        "orders_api/storage.py": "def read_orders(day, cursor, page_size):\n    \"\"\"Return one page of orders for a day and the cursor of the next page.\"\"\"\n    raise NotImplementedError(\"storage adapter is configured at deployment\")\n"
+      },
+      "id": "orders",
+      "service": "orders"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# refunds\nService URLs are read from config/services.json.\n",
+        "config/services.json": "{\n  \"orders_api_root\": \"https://orders.test\",\n  \"timezone\": \"UTC\"\n}\n",
+        "refunds/__init__.py": "",
+        "refunds/export.py": "import json\nfrom pathlib import Path\n\nimport requests\n\nSETTINGS = json.loads((Path(__file__).resolve().parent.parent / \"config\" / \"services.json\").read_text())\n\n\ndef export_day(day):\n    response = requests.get(SETTINGS[\"orders_api_root\"] + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+      },
+      "id": "refunds",
+      "service": "refunds"
+    },
+    {
+      "availability": "available",
+      "files": {
+        "README.md": "# notifier\n",
+        "notifier/__init__.py": "",
+        "notifier/main.py": "def render(template, values):\n    \"\"\"Fill a message template; no network calls.\"\"\"\n    return template.format(**values)\n"
+      },
+      "id": "notifier",
+      "service": "notifier"
+    }
+  ],
+  "schema": "autonomous-mvp-case-1",
+  "split": "development",
+  "task": {
+    "description": "We plan to change the default page size of GET /orders in the orders service from 100 to 20. Find the services that consume this operation and could be affected, with evidence from the listed repositories. State what remains unknown.",
+    "key": "ORD-217",
+    "kind": "jira",
+    "summary": "Orders: reduce the default page size of GET /orders from 100 to 20"
+  }
+}
