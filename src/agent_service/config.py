@@ -54,6 +54,12 @@ class JiraConfig(Strict):
     auth: JiraAuthConfig
 
 
+class QualificationRef(Strict):
+    report_path: Path  # report.json of the batch 2B run (schema amvp-report-1)
+    run_id: str = Field(min_length=1, max_length=200)
+    report_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class CoreConfig(Strict):
     """The batch 2A core used as the analysis (``CoreAnalyzer``)."""
 
@@ -63,7 +69,8 @@ class CoreConfig(Strict):
     runtime_sources: list[dict] = Field(default_factory=list)  # agent_graph AccessLogSource configurations
     runtime_window_seconds: int = Field(default=3600, ge=60, le=86400)
     constitution_path: Path | None = None
-    model_qualified: bool = False  # set only after batch 2B qualified this model configuration
+    # Batch 2B report that qualified the policy's model; checked against the loaded code on start.
+    model_qualification: QualificationRef | None = None
 
 
 class ServiceConfig(Strict):
@@ -148,4 +155,5 @@ def core_analyzer(core: CoreConfig, *, code_version: str):
                         runtime_sources=core.runtime_sources, runtime_window_seconds=core.runtime_window_seconds,
                         code_version=code_version,
                         constitution_path=str(core.constitution_path) if core.constitution_path else None,
-                        model_qualified=core.model_qualified)
+                        model_qualification=core.model_qualification.model_dump()
+                        if core.model_qualification else None)

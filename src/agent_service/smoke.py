@@ -101,7 +101,8 @@ class SmokeBench:
 
     STATUS_TOKEN = "smoke-status-token"
 
-    def __init__(self, root: Path, *, policy_overrides: dict | None = None, ownership=True, runtime_sources=()):
+    def __init__(self, root: Path, *, policy_overrides: dict | None = None, ownership=True, runtime_sources=(),
+                 model=None, model_qualification: dict | None = None):
         self.root = Path(root)
         stand_module = load_stand_module()
         self.stand = stand_module.build_stand(self.root / "stand")
@@ -120,7 +121,8 @@ class SmokeBench:
         self.ownership_path = self.stand.root / "ownership.json"
         self.analyzer = CoreAnalyzer(self.stand.policy(**(policy_overrides or {})), self.root / "core-state",
                                      ownership_path=str(self.ownership_path) if ownership else None,
-                                     runtime_sources=runtime_sources, code_version="agent-service-smoke")
+                                     runtime_sources=runtime_sources, code_version="agent-service-smoke",
+                                     model=model, model_qualification=model_qualification)
         self.during = None  # callable(request) run before the core analysis
         self.service = self._service()
         self.receiver = Receiver(self.service, status_token=self.STATUS_TOKEN)

@@ -1,4 +1,4 @@
-"""``python -m agent_service serve|reconcile|status --config service.yaml`` and ``python -m agent_service smoke``."""
+"""``python -m agent_service serve|reconcile|status|doctor --config service.yaml`` and ``python -m agent_service smoke``."""
 
 from __future__ import annotations
 
@@ -43,9 +43,20 @@ def worker_loop(service: Service, reconcile_seconds: float, stop: threading.Even
             stop.wait(0.5)
 
 
+def doctor(service: Service) -> int:
+    """Readable checks for a person; exit 1 when something configured does not work."""
+    status = getattr(service.analyzer, "model_status", None)
+    if status is None:
+        print("Анализ: настоящий анализатор не настроен (нет секции core).")
+        return 1
+    model = status()
+    print(model.message)
+    return 0 if model.ok or model.reason_code == "model_not_configured" else 1
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="agent_service")
-    parser.add_argument("command", choices=["serve", "reconcile", "status", "smoke"])
+    parser.add_argument("command", choices=["serve", "reconcile", "status", "doctor", "smoke"])
     parser.add_argument("--config", help="service configuration (all commands except smoke)")
     parser.add_argument("--analyzer", help="trusted module:factory returning an Analyzer")
     parser.add_argument("--host", default="127.0.0.1")
@@ -59,6 +70,8 @@ def main(argv=None) -> int:
     if not args.config:
         parser.error("--config is required")
     service, config = _service(args)
+    if args.command == "doctor":
+        return doctor(service)
     if args.command == "status":
         print(json.dumps(service.store.status(), ensure_ascii=False, indent=2))
         return 0

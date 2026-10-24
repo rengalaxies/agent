@@ -231,6 +231,13 @@ class Service:
 
     def reconcile_graph(self):
         """Periodic graph reconciliation: code at the default branches, runtime windows, ownership."""
+        status = getattr(self.analyzer, "model_status", None)
+        if status is not None:
+            model = status()
+            if model.ok or model.reason_code == "model_not_configured":
+                self.store.clear_notice("model_disabled", None)
+            else:
+                self.store.note("model_disabled", None, model.reason_code)
         maintain = getattr(self.analyzer, "reconcile_graph", None)
         git = self.connectors.get("github")
         if maintain is None or git is None:

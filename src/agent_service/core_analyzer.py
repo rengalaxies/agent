@@ -12,8 +12,9 @@ the periodic reconciliation sync it at the default-branch tips, never at an
 unmerged PR head.
 
 The model part runs only through ``agent_graph.executor.run_investigation`` and
-only when the configuration is marked qualified (batch 2B); otherwise no model
-is called and the result is the static one.
+only when ``qualification.check`` verified a batch 2B report against the loaded
+code. A configured model that fails the check is never called; its USEFUL
+results become PARTIAL ``model_unavailable`` with the check's reason code.
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ from agent_graph.output_contracts import dump_document, parse_document
 from .analysis import AnalysisUnavailable
 from .intent import match_operations
 from .jira_impact import jira_result
+from .qualification import check
 
 OWNERSHIP_SOURCES = ("installation_mapping", "codeowners", "service_catalog")
 
@@ -52,8 +54,8 @@ class GraphOperations:
 
 class CoreAnalyzer:
     def __init__(self, policy: dict, state_dir: Path, *, ownership_path: str | None = None, runtime_sources=(),
-                 code_version: str, constitution_path: str | None = None, model=None, model_qualified: bool = False,
-                 runtime_window_seconds: int = 3600):
+                 code_version: str, constitution_path: str | None = None, model=None,
+                 model_qualification: dict | None = None, runtime_window_seconds: int = 3600):
         from agent_graph.constitution import load
         from agent_graph.runtime_observations import AccessLogSource
 
@@ -65,9 +67,10 @@ class CoreAnalyzer:
         self.runtime_window_seconds = runtime_window_seconds
         self.code_version = code_version
         self.constitution_path = constitution_path or self.policy.constitution
-        self.model, self.model_qualified = model, model_qualified
+        self.model = model
         self._local = threading.local()  # the core store holds one SQLite connection per thread
         _, self.constitution_version = load(self.constitution_path)
+        self.qualification = check(model_qualification, self.policy, self.constitution_path)
 
     # -- per-thread core objects -----------------------------------------
 
@@ -114,7 +117,11 @@ class CoreAnalyzer:
                 "repositories": sorted(r.id for r in self.policy.repositories),
                 "runtime_sources": sorted(s.id for s in self.runtime_sources),
                 "model_configuration_id": self.policy.model.configuration_id
-                if self.policy.model and self.model_qualified else None}
+                if self.qualification.ok else None}
+
+    def model_status(self):
+        """For doctor and notices: whether the model path is on, and why not."""
+        return self.qualification
 
     def reconcile_graph(self, revisions: dict) -> list[dict]:
         """Periodic re-read of code (at the default branches), runtime windows and ownership."""
@@ -151,7 +158,7 @@ class CoreAnalyzer:
         return {"source": source, "version": version, "services": services} if services else None
 
     def _investigate(self, context_id, cancelled, deadline_epoch):
-        if not (self.model_qualified and self.policy.model):
+        if not self.qualification.ok:
             return None
         from agent_graph.executor import run_investigation
 
@@ -213,7 +220,17 @@ class CoreAnalyzer:
                 raise AnalysisUnavailable("source_unavailable") from None
             return dump_document(failed_result(req, "source_unavailable" if "commit" in str(exc)
                                                or "source" in str(exc) else "internal_error", **meta))
-        return dump_document(result)
+        return self._without_model(dump_document(result))
+
+    def _without_model(self, document: dict) -> dict:
+        """A configured model that failed its 2B check: the static result, explicitly marked partial."""
+        if self.policy.model is None or self.qualification.ok or document["status"] in ("FAILED", "SUPERSEDED"):
+            return document
+        document["unknowns"] = document["unknowns"] + [
+            {"code": "model_hypothesis_unverified", "subject": "qualification:" + self.qualification.reason_code}]
+        if document["status"] == "USEFUL":
+            document.update(status="PARTIAL", reason_code="model_unavailable")
+        return dump_document(parse_document(document))
 
 
 def _watch(cancel: threading.Event, cancelled):
