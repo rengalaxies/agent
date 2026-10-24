@@ -33,6 +33,8 @@ def main(argv=None):
     prep = sub.add_parser("prepare_context")
     prep.add_argument("--task", default="")
     prep.add_argument("--operation")
+    pin_help = "repository=commit for a git repository; repeatable. Never a branch or ref."
+    prep.add_argument("--revision", action="append", default=[], help=pin_help)
     for command in ("dependencies", "evidence", "propose", "report_check", "investigate", "analyze_change"):
         cmd = sub.add_parser(command)
         if command != "report_check":
@@ -41,6 +43,8 @@ def main(argv=None):
             cmd.add_argument("--input", required=True, help="JSON message file; never an executable")
         if command == "dependencies":
             cmd.add_argument("--operation")
+        if command == "analyze_change":
+            cmd.add_argument("--revision", action="append", default=[], help=pin_help)
     args = p.parse_args(argv)
     store = None
     try:
@@ -50,15 +54,21 @@ def main(argv=None):
             root = Path(repo.root)
             if not root.is_absolute():
                 repo.root = str((Path(args.policy).absolute().parent / root).absolute())
+        revisions = {}
+        for pin in getattr(args, "revision", []):
+            repo, sep, commit = pin.partition("=")
+            if not sep or repo in revisions:
+                raise GraphError("invalid_revision")
+            revisions[repo] = commit
         store = Store(args.state)
         graph = Graph(policy, store)
         if args.command == "prepare_context":
-            c = graph.prepare_context(args.task, args.operation)
+            c = graph.prepare_context(args.task, args.operation, revisions or None)
             result = graph.dependencies(c["id"], args.operation)
         elif args.command == "dependencies":
             result = graph.dependencies(args.context, args.operation)
         elif args.command == "analyze_change":
-            result = graph.analyze_change(args.context)
+            result = graph.analyze_change(args.context, revisions=revisions or None)
         elif args.command == "investigate":
             result = investigate(graph, args.context)
         else:

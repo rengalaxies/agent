@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import PurePosixPath
 from typing import Literal
 from urllib.parse import urlsplit
@@ -41,6 +42,9 @@ class GraphError(Exception):
         super().__init__(code)
 
 
+DEFAULT_REFS = ("refs/heads/*", "refs/tags/*", "refs/pull/*/head")
+
+
 class Repository(Strict):
     id: str = Field(pattern=r"^[a-zA-Z0-9_.-]{1,64}$")
     service: str = Field(pattern=r"^[a-zA-Z0-9_.-]{1,64}$")
@@ -48,12 +52,25 @@ class Repository(Strict):
     revision: str = Field(min_length=1, max_length=160)
     # Relative allowlist; no roots or dependencies are accepted from model output.
     include: list[str] = Field(default_factory=lambda: ["*.py", "*.json", "*.md"])
+    # git: read pinned commits from the repository at root, never its working tree.
+    # worktree: local development directory, explicitly not reproducible.
+    snapshot: Literal["worktree", "git"] = "worktree"
+    allowed_refs: list[str] = Field(default_factory=lambda: list(DEFAULT_REFS), min_length=1, max_length=16)
 
     @model_validator(mode="after")
     def patterns(self):
         if not self.include or any(p.startswith("/") or ".." in PurePosixPath(p).parts for p in self.include):
             raise ValueError("invalid_include")
+        if any(not re.fullmatch(r"refs/[A-Za-z0-9_.*/-]{1,200}", r) or ".." in r for r in self.allowed_refs):
+            raise ValueError("invalid_allowed_refs")
         return self
+
+    def identity(self):
+        """Configuration identity without the pin; new defaults keep old view ids."""
+        value = self.model_dump(exclude={"revision"})
+        if value["snapshot"] == "worktree" and value["allowed_refs"] == list(DEFAULT_REFS):
+            del value["snapshot"], value["allowed_refs"]
+        return value
 
 
 class ServiceAddress(Strict):
@@ -164,7 +181,7 @@ class Policy(Strict):
     def view_id(self):
         # Same read grants may share a context. Different grants cannot retrieve
         # even a cached summary or count. Not an OS-level multi-tenant boundary.
-        repos = [r.model_dump(exclude={"revision"}) for r in self.repositories]
+        repos = [r.identity() for r in self.repositories]
         return digest([self.installation_id, self.environment, repos, self.addresses_dump(),
                        [r.model_dump() for r in self.requirements]])
 

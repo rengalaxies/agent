@@ -8,7 +8,7 @@ import uuid
 from . import PROFILE, SCHEMA
 from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal
 from .discovery import extract
-from .sources import collect
+from .sources import collect, pinned_freshness, pinned_only
 from .store import Store
 
 
@@ -21,26 +21,30 @@ class Graph:
         self.policy, self.store = policy, store
         self.view = policy.view_id()
 
-    def prepare_context(self, task="", operation_id=None):
+    def prepare_context(self, task="", operation_id=None, revisions=None):
+        """revisions: commit per git repository; worktree repositories stay unpinned."""
         self.policy.require("maintain")
         self.policy.require("read_context")
         if not isinstance(task, str) or len(task) > 2000:
             raise GraphError("invalid_task")
         generation, previous = self.store.head(self.view)
         started = time.monotonic()
-        c = collect(self.policy)
+        c = collect(self.policy, revisions)
         graph = extract(self.policy, c)
-        checked = collect(self.policy)
+        # Pinned objects cannot change under the scan; a worktree can.
+        checked = c if pinned_only(self.policy) else collect(self.policy, revisions)
         if checked["basis"] != c["basis"]:
             raise GraphError("sources_changed_during_scan")
         context = dict(schema=SCHEMA, profile=PROFILE, run_id=uuid.uuid4().hex,
                        installation_id=self.policy.installation_id, environment=self.policy.environment,
                        task=task, operation_id=operation_id, created_at=now(), created_epoch=time.time(),
                        basis=c["basis"], previous_context_id=previous, sources=c["sources"],
-                       inventory=c["inventory"], graph=graph,
+                       inventory=c["inventory"], graph=graph, snapshots=c["snapshots"],
+                       revisions=c["revisions"],
                        coverage="PARTIAL" if graph["gaps"] else "COMPLETE_WITHIN_PROFILE",
                        scope="authorized offline corpus; static grammar only; no global absence claim",
-                       metrics=dict(bytes_read=c["bytes_read"] + checked["bytes_read"], scan_passes=2,
+                       metrics=dict(bytes_read=c["bytes_read"] + (0 if checked is c else checked["bytes_read"]),
+                                    scan_passes=1 if checked is c else 2,
                                     prepare_seconds=time.monotonic() - started))
         return self.store.save(self.view, "context", context, generation)
 
@@ -50,9 +54,11 @@ class Graph:
 
     def freshness(self, context):
         self.policy.require("read_context")
+        if pinned_only(self.policy) and context.get("snapshots"):
+            return pinned_freshness(self.policy, context)
         expired = time.time() - context["created_epoch"] > self.policy.limits.freshness_seconds
         try:
-            c = collect(self.policy)
+            c = collect(self.policy, context.get("revisions"))
         except GraphError:
             return dict(status="UNKNOWN", assessed_at=now(), comparison_basis="CURRENT_CORPUS",
                         reasons=["current_corpus_unavailable"])
@@ -146,12 +152,13 @@ class Graph:
             status="EXTERNAL_REPORTED", independently_verified=False,
             requirement_approval=False, grants_execution=False))
 
-    def analyze_change(self, base_context_id, task=""):
+    def analyze_change(self, base_context_id, task="", revisions=None):
+        """Compare a stored base context with a new head context (pinned by revisions)."""
         self.policy.require("maintain")
         base = self.context(base_context_id)
         if base.get("profile") != PROFILE:
             raise GraphError("base_profile_mismatch")
-        current = self.prepare_context(task or base["task"], base.get("operation_id"))
+        current = self.prepare_context(task or base["task"], base.get("operation_id"), revisions)
         old_ops = {o["id"]: o for o in base["graph"]["operations"]}
         new_ops = {o["id"]: o for o in current["graph"]["operations"]}
         findings, deltas = [], []
@@ -218,6 +225,7 @@ class Graph:
         result = dict(schema=SCHEMA, run_id=uuid.uuid4().hex, created_at=now(),
                       base_context_id=base_context_id, context_requested_id=base_context_id,
                       context_used_id=current["id"], base_basis=base["basis"], head_basis=current["basis"],
+                      base_snapshots=base.get("snapshots", []), head_snapshots=current["snapshots"],
                       deltas=deltas, findings=findings, coverage=current["coverage"],
                       gaps=current["graph"]["gaps"], conflicts=current["graph"]["conflicts"],
                       freshness=self.freshness(current), release_decision=None,
