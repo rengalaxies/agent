@@ -15,7 +15,7 @@ from agent_service.service import Service
 
 from tests.service.helpers import (BASE, CONSUMER, CONSUMER_SHA, GH_SECRET, HEAD1, REPO, Clock, ScriptedAnalyzer,
                                    ServiceCase)
-from tests.service.stands import GitHubStand, sign
+from agent_service.stands import GitHubStand, sign
 
 
 def _rsa_pem():

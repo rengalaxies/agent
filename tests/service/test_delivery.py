@@ -6,7 +6,7 @@ import unittest
 from agent_service.connectors.base import WebhookRejected, verify_hmac_sha256
 
 from tests.service.helpers import HEAD1, HEAD2, REPO, ServiceCase
-from tests.service.stands import GitHubStand
+from agent_service.stands import GitHubStand
 
 
 class SignatureTest(unittest.TestCase):

@@ -24,7 +24,7 @@ from agent_service.queue import Limits, ServiceStore
 from agent_service.service import Service
 
 from tests.service.clock import Clock
-from tests.service.stands import GitHubStand, JiraStand, sign
+from agent_service.stands import GitHubStand, JiraStand, sign
 
 GH_SECRET = b"github-webhook-secret"
 JIRA_SECRET = b"jira-webhook-secret"

@@ -3,7 +3,7 @@
 import unittest
 
 from tests.service.helpers import HEAD1, Crash, ServiceCase
-from tests.service.stands import Fault
+from agent_service.stands import Fault
 
 POST_COMMENT = r"/repos/acme/orders/issues/7/comments"
 

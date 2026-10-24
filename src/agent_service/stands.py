@@ -4,6 +4,8 @@ They answer real HTTP requests on 127.0.0.1 with the documented paths,
 headers and status codes. Faults are injected per request: a status with
 headers (429 + Retry-After, 5xx, 403) or a dropped connection before or
 after the write was applied. They are stands, not proof of the live APIs.
+They ship in the package because the offline smoke (``agent_service.smoke``)
+must run on an installed release, not only from a source checkout.
 """
 
 from __future__ import annotations
