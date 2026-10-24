@@ -22,22 +22,17 @@ def run(behaviour):
 
 
 class DryRun(unittest.TestCase):
-    def test_follow_passes_every_case_except_where_the_core_refuses_the_unavailable_source(self):
+    def test_follow_passes_every_case_and_qualifies(self):
         verdict, states, _ = run("follow")
         self.assertEqual([s["status"] for s in states], ["COMPLETED"] * 5)
         self.assertTrue(all(verdict["gates"].values()), verdict["gates"])
         cases = verdict["measurements"]["per_case"]
-        self.assertTrue(all(v["passed"] for v in cases.values() if v["family"] != "F05_source_unavailable"),
-                        {k: v for k, v in cases.items() if not v["passed"]})
-        # On dde1f90, pinned_freshness refuses a context whose pinned repository is unavailable, so F05
-        # ends CORE_REFUSED before any model call (reported to mvp-2a-core). That costs only static recall.
+        self.assertEqual({k: v for k, v in cases.items() if not v["passed"]}, {})
+        self.assertEqual(verdict["verdict"], "QUALIFIED", verdict["thresholds"])
+        # Regression for the dde1f90 defect fixed in 2A b8ee515: a repository unavailable since
+        # prepare made run_investigation raise stale_context, so every F05 case was CORE_REFUSED.
         f05 = [v for v in cases.values() if v["family"] == "F05_source_unavailable"]
-        if all(v["passed"] for v in f05):
-            self.assertEqual(verdict["verdict"], "QUALIFIED")
-        else:
-            self.assertEqual({v["terminal"] for v in f05}, {"CORE_REFUSED"})
-            failing = {k for k, v in verdict["thresholds"].items() if not v["passed"]}
-            self.assertLessEqual(failing, {"T4_static_claim_recall"})
+        self.assertEqual({v["terminal"] for v in f05}, {"FINISHED"})
 
     def test_decoy_taker_is_held_by_the_executor_but_fails_the_false_claim_thresholds(self):
         verdict, _, _ = run("decoy_taker")

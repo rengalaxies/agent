@@ -85,7 +85,7 @@
     "src/agent_graph/output_contracts.py": "63a6f134be95a989c7d8fb42d8c61fb18bd6ca4b10a2ef569b75ac72ff65a659",
     "src/agent_graph/portable.py": "915bc76cab886fee1be29086e9e2ceb4e3db7a69fae161ec733c498998633c9e",
     "src/agent_graph/results.py": "5e94155443c8f4038baeabe77f169f207c13353e28de7ced66b9abc05d337539",
-    "src/agent_graph/sources.py": "c7d1820ebe7bc8bdc669ee544e2d1d95a186be76e406b97a97c0385e199315eb",
+    "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
     "src/agent_graph/store.py": "42beae4767c9572b343b6d67c6ff110530cb2c7d7263bed148bc830a74d37165",
     "tools/autonomous_mvp/__init__.py": "72ef993c5ddaa5cbb16237d2992878261471bfc1b4bcc7c9a4475cd4124a4717",
     "tools/autonomous_mvp/dryrun.py": "3821f6137c2b9b21af23a19dc9f907b165f3a89519bb99f197cb2cdf2289adc8",
@@ -99,7 +99,7 @@
     "tools/autonomous_mvp/scorer.py": "e9db36adcd91ad2daa7fe03bc9a4b6314004b94287730862af9539f4d761fb97",
     "tools/autonomous_mvp/transport.py": "e90c228b44e4008e970375e37a5e2ac5957b754f01a5cae9e9f55bd57ae1f04f"
   },
-  "manifest_digest": "a0d9df814971e32ab9b37fa2edf10a8e034fa6769bc49c599546e24e93be62e3",
+  "manifest_digest": "3557d99bac5027e456e08111d068760186ce33e628065ed51057f6b59f7601c5",
   "oracle_scope": "evaluator only; never passed to the protocol, the model or its configuration",
   "program": {
     "baseline": "None. No paid closed model is part of this program; a labelled comparison would be a separate revision.",
@@ -331,7 +331,7 @@
       "src/agent_graph/executor.py": "6997171130e03eb4aff83e4d56255844f59290668a626abc0ea29cc75a52d243",
       "src/agent_graph/git_sources.py": "7fcf781865df303310a76523301bf244cd6952d10c02aaddc5abc10e27ff1e86",
       "src/agent_graph/output_contracts.py": "63a6f134be95a989c7d8fb42d8c61fb18bd6ca4b10a2ef569b75ac72ff65a659",
-      "src/agent_graph/sources.py": "c7d1820ebe7bc8bdc669ee544e2d1d95a186be76e406b97a97c0385e199315eb",
+      "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
       "tools/autonomous_mvp/protocol.py": "a0bb7fad7d652a08787186c3d0a88ab96a7754f1bf28c4954d418ef5fee85ceb"
     },
     "constitution_version": "agent-service-v1.0:1d33cc53a75f",
