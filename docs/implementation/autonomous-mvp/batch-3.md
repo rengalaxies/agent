@@ -1,12 +1,16 @@
 # Пачка 3: постоянный граф кода и наблюдаемых вызовов
 
 Задача: https://github.com/rengalaxies/agent/issues/51. Сессия `mvp-3-runtime`,
-ветка `claude/mvp-3-runtime-2a`. Основание: итог 2А `dde1f90`
-(`origin/claude/mvp-2a-core-205322`). PR идёт против `claude/mvp-2a-core-205322`.
+ветка `claude/mvp-3-runtime-2a`. Основание: итог 2А `47e5c5d`
+(`origin/claude/mvp-2a-core-205322`), влит merge-коммитами `d11fd72` (код до
+`62f551a`) и `d060b4f` (документы 2А). PR идёт против
+`claude/mvp-2a-core-205322`.
 
-Ветка подтянута к `dde1f90` слиянием, а не rebase: rebase требовал force-push
-опубликованной ветки, а его в этой среде запрещает классификатор. Дерево файлов
-совпадает с результатом rebase (проверено `git diff` между ними: пусто).
+Ветка подтягивается к 2А слиянием, а не rebase: rebase требует force-push
+опубликованной ветки, а его в этой среде запрещает классификатор. Первое
+слияние (`3a1a8b9`, к `dde1f90`) дало то же дерево файлов, что rebase
+(`git diff` между ними пуст); второе и третье (`d11fd72`, `d060b4f`) прошли
+без конфликтов.
 
 Первая волна дала модель данных и runtime-адаптер. Вторая волна реализует всю
 пачку: хранение, инвалидацию по основаниям, фильтрацию доступа, ownership,
@@ -22,6 +26,7 @@
 | Обновление по событию и периодическая сверка (`graph_store_sync.py`) | реализовано; расписание сверки задаёт сервис (пачка 4/5А) |
 | Просмотр для человека (`graph_view.py`, HTML и WSGI) | реализован, проверен офлайн; хостинг страницы в сервисе не подключён |
 | Миграция store v1 → v2 с резервной копией | реализована, проверена на файле v1 |
+| Инструменты `graph_*` в конституции и executor actions-v3 | реализованы, проверены офлайн со скриптованной моделью |
 | Контракт agent-graph-output 2.1 (`output_contracts.py`) | минорная версия, только добавления |
 | Адаптер `access-log-jsonl-1` и HTTP-стенд | реализованы, проверены локально |
 | Подключение к access logs или трассам клиента | не проверено: нет доступа ни к одному источнику клиента |
@@ -179,7 +184,8 @@
   обе версии.
 - Файл не читается: последние владельцы остаются, источник `STALE` с
   `source_unavailable`.
-- `codeowners` и `service_catalog` предусмотрены моделью, но не реализованы.
+- `codeowners` и `service_catalog` предусмотрены моделью, но отложены решением
+  координатора: для первого выпуска хватает одного настроенного источника.
 
 ## Хранение (store schema 2)
 
@@ -201,9 +207,21 @@
 ## Предложения и исправления
 
 `Graph.proposals(context)` больше не сравнивает `basis` корпуса. Предложение
-держится (`holds`), пока у каждого процитированного файла в этом контексте тот
-же sha256. Иначе `STALE` с `proposal_basis_differs`. Правка README не задевает
-исправление, которое на README не ссылается.
+держится (`holds`), пока выполнены оба условия:
+
+- у каждого процитированного файла в этом контексте тот же sha256;
+- совпадает digest конфигурации, от которой зависит достаточность: карта
+  адресов сервисов (по ней определяется провайдер) и утверждённые требования
+  из процитированных репозиториев (`engine.config_digest`).
+
+Иначе `STALE` с `proposal_basis_differs`. Правка README не задевает
+исправление, которое на README не ссылается. Переназначение адреса
+`orders.test` другому сервису делает кандидата reporting → orders `STALE`:
+это блокер, найденный mvp-2a-core при ревью `c6e5b53`, закрыт в `058f565`.
+Требования других репозиториев в digest не входят, поэтому добавление
+репозитория вместе с его требованием память не теряет. У строк v1 digest нет;
+для них должен совпасть их собственный view, который включает и адреса, и
+требования.
 
 Предложения хранятся по scope и видны любому view того же окружения, которому
 выданы все процитированные репозитории. Добавление репозитория память не
@@ -217,6 +235,11 @@
 `grants` это id репозиториев, runtime-источников и источников владения.
 
 - Основание видно, если все его `visibility` выданы.
+- Сервис становится видимым только через основания кода или runtime. Связь
+  владения из installation mapping показывается лишь для уже видимого сервиса:
+  иначе mapping раскрыл бы имя сервиса из отозванного репозитория. Эту утечку
+  поймал тест инструментов модели (`test_snapshot_is_the_callers_scope...`), до
+  исправления `graph_find("reporting")` при суженных правах находил reporting.
 - Связи, сущности, поиск, impact, счётчики `summary()`, история и просмотр
   строятся только из видимых оснований.
 - Старый ID связи или основания без прав даёт `not_found`.
@@ -280,6 +303,45 @@ dispatch(query, {"tool": "graph_find" | "graph_neighbors" | "graph_impact"
 `test_impact_feeds_a_valid_analysis_result` собирает из них документ и
 проверяет его `parse_document`.
 
+## Инструменты графа для модели
+
+Конституция `constitutions/agent-service-v1.yaml` разрешает пять инструментов,
+исполнитель `executor.py` их выполняет:
+
+| Действие | Поля | Лимиты в конституции |
+|---|---|---|
+| `graph_find` | `text`, `kind` (`service`, `operation` или null), `limit` | `max_results: 20`, `max_query_chars: 200` |
+| `graph_neighbors` | `entity_id` (64 hex), `direction`, `limit` | `max_results: 50` |
+| `graph_impact` | `entity_id`, `depth`, `limit` | `max_results: 50`, `max_depth: 3` |
+| `graph_relationship` | `relationship_id` | нет |
+| `graph_owner` | `service` | нет |
+
+Схема действий повторяет пределы `GraphQueryRequest` (limit до 100, depth до 3);
+конституция может их только понизить. Превышение даёт отказ слоя `tool`
+(`tool_limit` с путём поля), неразрешённый инструмент `tool_not_permitted`,
+неверная форма отказ слоя `schema`.
+
+Границы держит доверенный код:
+
+- `run_investigation(..., graph_store=..., runtime_sources=..., ownership_sources=...)`
+  сам строит `GraphQuery.for_policy` из `graph.policy`. Модель не задаёт ни
+  установку, ни окружение, ни права. Снимок берётся один раз в начале прогона;
+  синхронизация во время прогона в него не попадает.
+- Без `graph_store` инструменты отвечают отказом `graph_unavailable` (слой
+  `tool`).
+- Результат помечен `graph_ids_are_not_evidence_refs: true` и
+  `confirms_hypotheses: false`. ID графа не являются квитанциями
+  `EvidenceSession`: `propose_dependency` и `propose_hypothesis` с ними получают
+  отказ слоя `evidence`. Чтобы сослаться на файл, модель читает его
+  `read_source`. Гипотеза после ответа графа остаётся `UNAPPROVED_CANDIDATE`, а
+  прогон завершается `hypotheses_only`, а не `USEFUL`.
+- Модель видит компактную форму: ID, статус, свежесть, конфликты, где лежат
+  основания (репозиторий, путь, строка, функция; источник, маршрут, окно, число
+  запросов). Текста исходников в ответе нет.
+- В отчёт прогона добавлено поле `graph_version`.
+
+Старое действие `graph_query` (статический контекст ядра) осталось без изменений.
+
 ## Просмотр для человека
 
 `graph_view.render_html(query, environments=[...], source_links={repo: template})`
@@ -336,6 +398,14 @@ dispatch(query, {"tool": "graph_find" | "graph_neighbors" | "graph_impact"
 | `UnknownCode` | `runtime_not_instrumented`, `runtime_route_not_recorded`, `runtime_route_conflict` |
 | `GapCode` | `runtime_window_gap` |
 | `Claim.subject` | необязательная сущность. Факт с `subject` операции требует основания кода или runtime с тем же сервисом, методом и маршрутом; иначе `fact_without_operation_evidence` |
+
+Ограничение 2.1: проверка факта об операции работает, только если `subject`
+задан, а основание кода принимается без сверки, что оно относится именно к
+этой операции. Сборщик `results.py` (2А) начнёт задавать `subject` для фактов
+"X вызывает операцию", когда 2.1 окажется под ним в стеке.
+
+Версия 2.1 живёт в ветке пачки 3 и приходит в `main` с PR 3, поверх PR 2А
+(решение D9 в DECISIONS 2А). В ветку 2А она не переносится.
 
 `schemas/agent-graph-output-2.json` перегенерирован. В
 `tests/graph/test_output_contracts.py` пример "более новой минорной версии"
@@ -398,7 +468,7 @@ python tools/agent_service/runtime_stand/stand.py --out /tmp/runtime-stand
 | полный и частичный пересчёт совпадают на изменении, переименовании, удалении | `test_graph_store.RecomputeTests.test_full_and_incremental_builds_match_on_change_rename_and_deletion` |
 | сдвиг строк не меняет место вызова | `RecomputeTests.test_line_shift_above_a_call_keeps_the_callsite_and_its_basis` |
 | удалённый код снимается с историей, revert переоткрывает | `RecomputeTests.test_deleted_code_is_retracted_with_history_not_erased` |
-| несвязанная правка не теряет исправления, изменение основания делает статус явным | `KnowledgeTests.test_unrelated_edit_keeps_corrections_and_a_cited_change_makes_them_stale` |
+| несвязанная правка не теряет исправления, изменение основания делает статус явным | `KnowledgeTests.test_unrelated_edit_keeps_corrections_and_a_cited_change_makes_them_stale`, `...test_reassigned_address_or_changed_requirement_makes_knowledge_stale` |
 | добавление репозитория не теряет исправления | `KnowledgeTests.test_adding_an_allowed_repository_keeps_earlier_knowledge` |
 | отказ коннектора: последний снимок устаревает, сверка возобновляет и ловит пропущенное событие | `RecoveryTests.test_unavailable_repository_keeps_last_snapshot_stale_and_reconcile_resumes` |
 | после отзыва доступа недоступны cache, счётчики, история, старые ссылки; у оставшихся история цела | `AccessTests.test_revoked_repository_disappears_from_graph_cache_counters_history_and_old_ids`, `test_graph_query...test_runtime_source_without_grant_is_invisible`, `test_graph_view...test_revoked_repository_is_not_on_the_page` |
@@ -410,6 +480,7 @@ python tools/agent_service/runtime_stand/stand.py --out /tmp/runtime-stand
 | недоступный или старый runtime меняет только свежесть | `RuntimeNextToCodeTests.test_unavailable_or_old_runtime_changes_freshness_only` |
 | реальный HTTP-стенд → наблюдение → ребро в графе рядом с кодом | `test_graph_query.HttpStandTests.test_real_http_calls_become_a_directed_runtime_edge_next_to_code` |
 | ограниченный graph query | `QueryToolTests.test_tool_calls_are_validated_and_bounded`, `...test_impact_feeds_a_valid_analysis_result` |
+| инструменты графа у модели: scope, снимок, лимиты, без повышения гипотезы | `test_graph_tools` (5 тестов) |
 | человек видит путь, происхождение, свежесть без CLI | `test_graph_view.ViewTests` (4 теста) |
 
 Раздел 9 называет также `tests/service/`. Эта папка принадлежит mvp-4-service;
@@ -418,6 +489,22 @@ python tools/agent_service/runtime_stand/stand.py --out /tmp/runtime-stand
 ## Прогоны
 
 2026-10-24, Windows 11 Pro 10.0.26200, Python 3.14.0, venv в worktree.
+
+Последний прогон, на `d060b4f` (инструменты `graph_*`, digest конфигурации,
+слияние 2А `47e5c5d`), в отдельном чистом worktree:
+
+- `tests/graph`: 234 теста, failures=2, errors=28. На голове 2А `62f551a` тот же
+  набор падающих тестов (191 тест, 2 и 28); сравнение списков `FAIL:`/`ERROR:`
+  дословное, разницы нет.
+- `tests/graph_demo`: 38 тестов, errors=7, тот же набор, что на `62f551a`.
+- `tests/graph/test_graph_tools.py`: 5 тестов OK. Тест на суженный scope
+  поймал утечку имени сервиса через ownership mapping (исправлено в `928b167`).
+- Сценарий mvp-2a-core (фикстура `examples/agent_graph`, `EvidenceSession.propose`
+  reporting → orders, затем `orders.test` отдан inventory): кандидат `STALE`
+  с `proposal_basis_differs`; при той же политике `CURRENT`.
+- `ruff` по правилам CI: чисто.
+
+Прогоны волны 2 до инструментов:
 
 - `PYTHONPATH="src;." python -m unittest tests.graph.test_graph_store tests.graph.test_graph_query tests.graph.test_graph_view tests.graph.test_runtime_observations tests.graph.test_output_contracts`:
   все OK, в том числе с `-W error::ResourceWarning`.
@@ -446,13 +533,11 @@ python tools/agent_service/runtime_stand/stand.py --out /tmp/runtime-stand
 ## Что осталось
 
 - Linux-прогон и замеры времени и памяти синхронизации: CI на PR.
-- Источники владения `codeowners` и `service_catalog`.
+- Источники владения `codeowners` и `service_catalog`: отложены, для первого
+  выпуска хватает `installation_mapping`.
 - Purge по сроку хранения (физическое удаление с журналом).
 - Расписание сверки, хостинг просмотра и вызов graph query из сервиса:
   mvp-4-service и mvp-5a-box.
-- Подключение graph query к модельному executor (`actions-v3`): инструменты
-  `graph_*` есть в `dispatch`, но не добавлены в allowlist конституции; это
-  область 2А/2Б.
 - Частичное извлечение по изменённым файлам, если замеры покажут, что полный
   проход ядра дорог.
 - Живое подключение runtime-источника клиента: нужен доступ на чтение к его

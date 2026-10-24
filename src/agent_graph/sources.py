@@ -190,9 +190,13 @@ def pinned_freshness(policy: Policy, context):
                         reasons=["basis_changed"] + reasons)
         try:
             tree = GitReader(Path(repo.root), deadline=deadline).resolve(snap["commit"], repo.allowed_refs)
-        except GraphError:
-            return dict(status="UNKNOWN", assessed_at=assessed, comparison_basis="PINNED_COMMITS",
-                        reasons=["current_corpus_unavailable"])
+        except GraphError as exc:
+            if exc.code not in ("source_unavailable", "git_command_failed"):
+                return dict(status="UNKNOWN", assessed_at=assessed, comparison_basis="PINNED_COMMITS",
+                            reasons=["current_corpus_unavailable"])
+            # Same rule as collection: an unreadable repository is an unavailable commit.
+            # Unavailable at prepare and still unavailable is no change (tree None == None).
+            tree = None
         if tree != snap["tree"]:
             return dict(status="UNKNOWN" if tree is None else "STALE", assessed_at=assessed,
                         comparison_basis="PINNED_COMMITS",

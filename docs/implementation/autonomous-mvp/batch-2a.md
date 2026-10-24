@@ -31,6 +31,9 @@ https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 | `741daea` | тест hooks: исполняемый hook |
 | `47c22e4` | тест схемы сравнивает структуру, а не заголовки |
 | `2a982dd` | этот отчёт, STATUS, DECISIONS D3–D8 |
+| `c850731` | CI: PyYAML, демо без внешнего ядра, тесты 2Б в core-tests |
+| `8fbe2e3` | CI: Linux-замер задания с многими цитатами |
+| `b8ee515` | контекст остаётся текущим, если репозиторий был недоступен с момента prepare (баг от 2Б) |
 
 ## Контракты
 
@@ -190,23 +193,150 @@ Linux-прогон этих наборов не выполнен.
 - Модельный цикл `actions-v3` проверен только скриптовой моделью и локальным
   HTTP-стабом. Настоящая модель — 2Б.
 
-## Что нужно поменять вне путей этой сессии
+## CI после волны 2
 
-Эти файлы принадлежат другим строкам WAVES.md или общей инфраструктуре; без
-правок CI по PR покажет известные падения.
+Волна 2 передала этой сессии `core-tests.yml`, `graph-evidence-refs.yml` и
+`agent-graph-demo.yml`. Изменения: `c850731`, `8fbe2e3`. actionlint 1.7.7 без
+замечаний; на раннере не запускались, потому что PR ещё нет.
 
-1. `.github/workflows/graph-evidence-refs.yml`: ставит только pydantic, а
-   `agent_graph.constitution` импортирует PyYAML (зависимость пакета уже в
-   `pyproject.toml`). Нужно `pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7' ruff==0.17.1`.
-2. `.github/workflows/agent-graph-demo.yml`: убрать `git worktree add ...
-   18e8b71...` и `DEMO_CORE_ROOT`; шаг «Accepted core regression» запускать
-   на checkout PR. С внешним старым ядром `GraphCLI` теперь честно падает с
-   `core_pin_mismatch`.
-3. `infra/agent_graph_demo/` (Dockerfile, `core.lock.json`) и
-   `tools/agent_graph_demo/{accept,configure}.py`: перестать монтировать
-   отдельный checkout ядра; `--core-root` можно не передавать. Это упаковка 5А.
-4. Тесты `tests/graph_demo/test_runner.py` вызывают `os.geteuid` из
-   `tools/agent_graph_demo`; на Windows они падают, на Linux не затронуты.
+| Было | Стало |
+|---|---|
+| `graph-evidence-refs.yml` ставит только pydantic; `agent_graph.constitution` не импортируется | ставит PyYAML; срабатывает и на изменения конституции и стенда |
+| `agent-graph-demo.yml` выписывает ядро `18e8b71` рядом с PR и гоняет регрессию ядра на нём | регрессия ядра на checkout PR; workflow срабатывает и на `src/agent_graph/**`; `DEMO_CORE_ROOT` указывает на сам checkout, пока `accept.py` и compose требуют корень ядра |
+| тесты runner 2Б (`tools/autonomous_mvp/tests`) в PR CI не запускаются | `core-tests.yml` запускает их, если каталог есть на ветке |
+| Linux-время и память задания с многими цитатами не измерены | job `citation-measurement`: `tests/graph/bench_citations.py` на 200 файлах-потребителях, оба режима (один `evidence_batch` и процесс на цитату), время шагов и пиковая RSS каждого процесса через `os.wait4`, artifact `citation-measurement-<sha>` |
+
+Известное падение до правки 5А: Docker-шаг `agent-graph-demo.yml`. Образ
+`infra/agent_graph_demo/Dockerfile` не содержит `src/agent_graph`, а приложение
+теперь импортирует ядро, поэтому `check_packaging.py` внутри образа упадёт с
+`ModuleNotFoundError`. Dockerfile, compose, `core.lock.json` и
+`tools/agent_graph_demo` принадлежат mvp-5a-box; точная правка записана для
+неё в общей папке заметок сессий (`mvp-2a-core-to-mvp-5a-box.md`). Там же
+`os.geteuid` в `tools/agent_graph_demo`: на Windows из-за него падают 6 тестов
+`tests/graph_demo/test_runner.py`, на Linux они не затронуты.
+
+## Тексты PR для владельца
+
+Из сессий PR не открыть: нет `gh`, браузер не вошёл в GitHub. Стек на
+24.10.2026, поздний вечер:
+
+| PR | Ветка | База | Сливать |
+|---|---|---|---|
+| 2А | `claude/mvp-2a-core-205322` | `main` | первым |
+| 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А, когда закрыт блокер из STATUS |
+| 4 | `claude/mvp-4-service-2a` | `claude/mvp-3-runtime-2a` | после 3, когда ветка 4 вольёт ветку 3 |
+| 2Б | `claude/mvp-2b-prep-9d9655` | `claude/mvp-2a-core-205322` | после 2А; после слияния 3 пересобрать manifest 2Б |
+
+После слияния нижнего PR GitHub перенацелит верхний на новую базу
+автоматически, если ветка базы удалена, или его нужно перенацелить вручную.
+
+### PR 2А
+
+https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
+
+Заголовок: `feat(graph): batch 2A pinned Git core, output contracts and executable constitution`
+
+```markdown
+Часть [#50](https://github.com/rengalaxies/agent/issues/50): пачка 2А. #50 не закрывает: квалификация модели — пачка 2Б.
+
+Нижний PR стека: 3 и 2Б идут против этой ветки, 4 — против 3.
+
+## Что меняется
+
+- Контракты `agent-graph-output 2.0` (`src/agent_graph/output_contracts.py`, `schemas/agent-graph-output-2.json`): `AnalysisRequest`, `AnalysisResult`, Evidence, GraphRelationship, статусы `USEFUL|PARTIAL|ABSTAINED|FAILED|SUPERSEDED`, причины по статусам. Неизвестная major, более новая minor и неизвестный код дают несовместимость и никогда не показываются зелёным.
+- Анализ закреплённых Git-коммитов (`git_sources.py`): коммит должен быть достижим из разрешённых ref этого репозитория, каждый объект перехешируется, недоступный или чужой коммит — пробел, а не текущая ветка. Hooks, фильтры и fsmonitor репозитория не исполняются.
+- Воспроизводимый стенд Orders/Reporting (`examples/orders_reporting/`) с одинаковыми SHA на любой машине и отрицательными вариантами.
+- `UNCLASSIFIED_OPERATION_CHANGE` для изменения операции вне известных классификаторов; шум (декораторы маршрутов, `dict.get`) больше не пробел; статус покрытия у каждого файла.
+- Конституция `constitutions/agent-service-v1.yaml`, протокол `actions-v3`, диагностика `invalid_model_action` по слоям без текста ответа модели, ограниченные инструменты, гипотезы вне грамматики без автоматического повышения.
+- Демо исполняет поставляемое ядро и сверяет `core_identity`; цитаты проверяются одним процессом на задание вместо процесса на цитату.
+- `results.py` собирает валидный `AnalysisResult` из выдачи ядра для PR и для Jira до diff.
+- CI: PyYAML в `graph-evidence-refs.yml`, демо без внешнего ядра `18e8b71`, тесты runner 2Б в `core-tests.yml`, Linux-замер задания с многими цитатами (artifact `citation-measurement-<sha>`).
+
+## Проверки
+
+Офлайн на Windows: `tests/graph` 191 (2 падения среды), `tests/graph_demo` 38 (7 падений среды), полный `tests` 550 без новых падений против `9d7480d`. Подробно и с разделением «реализовано / проверено офлайн / не проверено»: `docs/implementation/autonomous-mvp/batch-2a.md`, сводка всех пачек: `STATUS.md`.
+
+Не проверено: Linux CI (первый прогон — этот PR), настоящая модель, браузерная приёмка демо. Docker-шаг `agent-graph-demo.yml` упадёт, пока пачка 5А не положит `src/agent_graph` в образ демо.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+### PR 3
+
+https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/mvp-3-runtime-2a
+
+Заголовок: `feat(graph): batch 3 persistent code and runtime graph`
+
+```markdown
+Часть [#51](https://github.com/rengalaxies/agent/issues/51). Стек: база — ветка 2А, сливать после PR 2А. PR 4 идёт против этой ветки.
+
+## Что меняется
+
+- Постоянный граф (`src/agent_graph/graph_store.py`, store schema 2): сущности, связи и основания по `(installation, environment)`, стабильный ID места вызова без номера строки, история и tombstone.
+- Предложения и исправления оцениваются по процитированным файлам, а не по basis всего корпуса: несвязанная правка их не обесценивает, изменение процитированного файла делает статус явным.
+- Фильтрация доступа (cache, счётчики, история, старые ID), свежесть по типам источников, конфликт кода и наблюдений, ownership из installation mapping, обновление по событию и периодическая сверка, ограниченный graph query, просмотр для человека (`graph_view.py`).
+- Миграция store v1 → v2 с резервной копией; старые контексты и исправления читаются.
+- Адаптер `access-log-jsonl-1` и стенд с настоящими HTTP-вызовами.
+- Контракт `agent-graph-output` 2.1: только добавления — runtime-коды и `Claim.subject`.
+
+## Проверки
+
+Офлайн на Windows: тесты `test_graph_store`, `test_graph_query`, `test_graph_view`, `test_runtime_observations`, `test_output_contracts` OK; полный `tests/graph` без новых падений против базы. Приёмка раздела 9 по тестам — в `docs/implementation/autonomous-mvp/batch-3.md`.
+
+Не проверено: Linux (первый прогон — этот PR), подключение к runtime-источнику клиента (нет доступа). До слияния: кандидат зависимости должен устаревать при смене карты адресов сервисов (см. STATUS.md, раздел 2А).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+### PR 4
+
+https://github.com/rengalaxies/agent/compare/claude/mvp-3-runtime-2a...claude/mvp-4-service-2a
+
+Заголовок: `feat(service): batch 4 Jira and PR service on the 2A core`
+
+```markdown
+Часть [#52](https://github.com/rengalaxies/agent/issues/52). Стек: база — ветка 3, сливать после PR 3.
+
+## Что меняется
+
+- `src/agent_service/`: `EventEnvelope`, `PublicationIntent`, SQLite-очередь одной установки с дедупликацией, lease, ограниченными повторами и восстановлением после рестарта.
+- Коннекторы GitHub и Jira Cloud: события, получение ресурса, один обновляемый комментарий приложения на ресурс, поиск уже созданного комментария перед повторным create, сверка пропущенных событий.
+- Анализ ядром 2А (`CoreAnalyzer`): PR — `analyze_change` на закреплённых base/head и `change_result`; Jira — `preliminary_result` до diff. Статусы задаёт сборщик 2А.
+- Модель вызывается через исполнитель конституции только при `core.model_qualified: true`; без квалификации вызовов нет.
+- Сквозной офлайн smoke: `python -m agent_service smoke`.
+
+## Проверки
+
+Офлайн на Windows: `tests/service` 65 тестов OK на локальных HTTP-стендах и Git-стенде Orders/Reporting; полный набор без новых падений против базы.
+
+Не проверено: живые GitHub App и Jira (нет приложения, тестового репозитория, проекта Jira и права публикации), Linux.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+### PR 2Б
+
+https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/mvp-2b-prep-9d9655
+
+Заголовок: `feat(experiment): batch 2B open-model qualification program on the 2A executor`
+
+```markdown
+Часть [#50](https://github.com/rengalaxies/agent/issues/50): пачка 2Б, офлайн-часть. Стек: база — ветка 2А, сливать после PR 2А. Серия 22.10 не тронута.
+
+## Что меняется
+
+- Программа `experiments/autonomous_mvp/programs/2b-r1`: корпус transport + 20 development + 40 evaluation случаев, эталон только для оценщика, manifest с объёмом и стоимостью, пороги до прогона.
+- `tools/autonomous_mvp/`: транспорт Cloud.ru, связка с исполнителем 2А (`actions-v3`, `run_investigation`), runner, ledger, scorer, dry-run всей программы.
+- Workflow `.github/workflows/autonomous-mvp-model.yml` для запуска с `main`.
+
+## Проверки
+
+Офлайн на Windows: 70 тестов OK без пропусков; dry-run всей программы через тот же код, что в live: 143 case-runs, QUALIFIED. Сценарий знает эталон, так что это проверка трубопровода и scorer, не качества модели.
+
+Не проверено: ни одного запроса к модели. Живой прогон — после слияния стека в `main`, в окружении с секретом `CLOUDRU_FOUNDATION_API_KEY`. Если перед этим слит PR 3, manifest нужно пересобрать: он хеширует файлы ядра и конституции.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
 
 ## Интерфейсы для следующих пачек
 
@@ -221,5 +351,6 @@ Linux-прогон этих наборов не выполнен.
 
 ## Следующий шаг
 
-Открыть PR из ветки, прогнать Linux CI с правками workflow из списка выше и
-снять Linux-время и память задания с многими цитатами на CI-раннере.
+Владелец открывает PR 2А по тексту выше. Первый прогон даёт Linux CI и
+artifact `citation-measurement`; цифры из него вносятся в этот отчёт. Затем
+запросы к контракту 2.1 из STATUS.md.

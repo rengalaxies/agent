@@ -48,7 +48,8 @@ GRAPH_DDL = (
     "CREATE TABLE IF NOT EXISTS graph_events(scope TEXT, version INTEGER, basis TEXT, relationship TEXT,"
     " event TEXT, reason TEXT, successor TEXT, at TEXT)",
     "CREATE INDEX IF NOT EXISTS graph_events_basis ON graph_events(scope, basis)",
-    "CREATE TABLE IF NOT EXISTS proposal_bases(id TEXT PRIMARY KEY, scope TEXT, visibility TEXT, bases TEXT)",
+    "CREATE TABLE IF NOT EXISTS proposal_bases(id TEXT PRIMARY KEY, scope TEXT, visibility TEXT, bases TEXT,"
+    " config TEXT)",
     "CREATE TABLE IF NOT EXISTS graph_sources(scope TEXT, source_kind TEXT, source_id TEXT, status TEXT,"
     " checked_at TEXT, last_success_at TEXT, source_version TEXT, reasons TEXT,"
     " PRIMARY KEY(scope, source_kind, source_id))",
@@ -119,6 +120,10 @@ class Store:
         with self.transaction():
             for statement in GRAPH_DDL:
                 self.db.execute(statement)
+            # proposal_bases is a schema 2 table; development files made before the
+            # config column existed get it here. v1 tables are never altered.
+            if "config" not in {r[1] for r in self.db.execute("PRAGMA table_info(proposal_bases)")}:
+                self.db.execute("ALTER TABLE proposal_bases ADD COLUMN config TEXT")
             self.db.execute("INSERT OR IGNORE INTO meta VALUES('store_schema', ?)", (str(STORE_SCHEMA),))
             self.db.execute("UPDATE meta SET value=? WHERE key='store_schema' AND CAST(value AS INTEGER) < ?",
                             (str(STORE_SCHEMA), STORE_SCHEMA))
@@ -129,8 +134,8 @@ class Store:
                 for id, view, data in self.db.execute(
                         "SELECT p.id,p.view,p.data FROM proposals p LEFT JOIN proposal_bases b ON p.id=b.id"
                         " WHERE b.id IS NULL").fetchall():
-                    self.db.execute("INSERT OR IGNORE INTO proposal_bases VALUES(?,?,?,?)",
-                                    (id, *self._derive_bases(view, load_json(data))))
+                    self.db.execute("INSERT OR IGNORE INTO proposal_bases VALUES(?,?,?,?,?)",
+                                    (id, *self._derive_bases(view, load_json(data)), None))
 
     def _derive_bases(self, view, record):
         """(scope, visibility, bases) of a proposal from the context it was made in."""
@@ -198,18 +203,21 @@ class Store:
         """
         grants = set(grants)
         result = []
-        for view, data, b_scope, visibility, bases in self.db.execute(
-                "SELECT p.view,p.data,b.scope,b.visibility,b.bases FROM proposals p"
+        for view, data, b_scope, visibility, bases, config in self.db.execute(
+                "SELECT p.view,p.data,b.scope,b.visibility,b.bases,b.config FROM proposals p"
                 " LEFT JOIN proposal_bases b ON p.id=b.id ORDER BY p.id"):
             record = load_json(data)
             if b_scope is None:  # appended by a v1 binary while this store is open
                 b_scope, visibility, bases = self._derive_bases(view, record)
             if b_scope == scope and set(load_json(visibility)) <= grants:
-                result.append({**record, "cited_bases": load_json(bases)})
+                # config: digest of the addresses and requirements the proposal was judged
+                # under; None for v1 rows, whose view (which includes both) stands in.
+                result.append({**record, "cited_bases": load_json(bases), "cited_config": config,
+                               "cited_view": view})
         return result
 
     def propose(self, view, proposal, expected_head, *, limit, admission_check=None, scope=None,
-                bases=None, grants=None, active=None):
+                bases=None, grants=None, active=None, config=None):
         """scope/bases/grants/active: per-basis knowledge (schema 2). Without them the
         v1 rule applies: the limit counts the active set at the corpus basis."""
         id = proposal_identity(view, proposal)
@@ -243,8 +251,9 @@ class Store:
                 raise GraphError("proposal_limit")
             self.db.execute("INSERT OR IGNORE INTO proposals VALUES(?,?,?)", (id, view, canonical(data)))
             if bases is not None:
-                self.db.execute("INSERT OR IGNORE INTO proposal_bases VALUES(?,?,?,?)",
-                                (id, scope, canonical(sorted({b["repository"] for b in bases})), canonical(bases)))
+                self.db.execute("INSERT OR IGNORE INTO proposal_bases VALUES(?,?,?,?,?)",
+                                (id, scope, canonical(sorted({b["repository"] for b in bases})), canonical(bases),
+                                 config))
             if admission_check:
                 admission_check()
         return data

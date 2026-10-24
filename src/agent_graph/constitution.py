@@ -17,6 +17,7 @@ from .contracts import GraphError, Strict, canonical
 from .output_contracts import REASONS
 
 ACTIONS = ("list_sources", "search", "list_symbols", "read_source", "graph_query",
+           "graph_find", "graph_neighbors", "graph_impact", "graph_relationship", "graph_owner",
            "propose_dependency", "propose_hypothesis", "finish")
 FORBIDDEN = frozenset({"shell", "network_fetch", "write_source", "publish", "grant_access",
                        "approve_requirement", "confirm_hypothesis", "change_constitution"})
@@ -32,6 +33,7 @@ class ActionLimits(Strict):
     max_lines: int | None = Field(default=None, ge=1, le=200)
     max_evidence_refs: int | None = Field(default=None, ge=1, le=16)
     max_statement_chars: int | None = Field(default=None, ge=1, le=2000)
+    max_depth: int | None = Field(default=None, ge=1, le=3)
 
 
 class Sources(Strict):

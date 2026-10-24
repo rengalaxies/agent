@@ -5,6 +5,8 @@ on:
     paths:
       - 'src/agent_graph/**'
       - 'tests/graph/**'
+      - 'constitutions/agent-service-v1.yaml'
+      - 'examples/orders_reporting/**'
       - 'tools/prepare_evidence_refs_experiment.py'
       - 'tools/*evidence_refs*.py'
       - 'experiments/evidence_refs_v2/**'
@@ -30,7 +32,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install offline test dependencies
-        run: python -m pip install 'pydantic>=2.10,<3' ruff==0.17.1
+        # PyYAML: agent_graph.constitution reads constitutions/agent-service-v1.yaml.
+        run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7' ruff==0.17.1
       - name: Check imports and offline graph regressions (HTTP stubs only)
         run: |
           python -m ruff check src/agent_graph tools/prepare_evidence_refs_experiment.py tests/graph/test_evidence_refs.py tests/graph/test_reference_experiment.py tools/evidence_refs_ledger.py tools/run_evidence_refs_experiment.py tests/graph/test_evidence_refs_review.py tests/graph/test_evidence_refs_runner.py --select F401,F811,F841
@@ -41,4 +44,28 @@ jobs:
         with:
           name: evidence-refs-v2-offline-manifest
           path: work/evidence-refs-v2-manifest.json
+          if-no-files-found: error
+
+  citation-measurement:
+    # Linux wall time and peak RSS of a job with many citations: one evidence_batch
+    # process versus one process per citation. Offline: no network, model or secret.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: '.:src'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install core dependencies
+        run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7'
+      - name: Measure 200 consumer files on the Linux runner
+        run: python tests/graph/bench_citations.py --output work/citation-measurement.json --repositories 8 --files 25
+      - uses: actions/upload-artifact@v4
+        with:
+          name: citation-measurement-${{ github.sha }}
+          path: work/citation-measurement.json
           if-no-files-found: error
