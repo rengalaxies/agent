@@ -223,7 +223,7 @@ Linux-прогон этих наборов не выполнен.
 | PR | Ветка | База | Сливать |
 |---|---|---|---|
 | 2А | `claude/mvp-2a-core-205322` | `main` | первым |
-| 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А, когда закрыт блокер из STATUS |
+| 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А |
 | 4 | `claude/mvp-4-service-2a` | `claude/mvp-3-runtime-2a` | после 3, когда ветка 4 вольёт ветку 3 |
 | 2Б | `claude/mvp-2b-prep-9d9655` | `claude/mvp-2a-core-205322` | после 2А; после слияния 3 пересобрать manifest 2Б |
 
@@ -278,12 +278,13 @@ https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/
 - Миграция store v1 → v2 с резервной копией; старые контексты и исправления читаются.
 - Адаптер `access-log-jsonl-1` и стенд с настоящими HTTP-вызовами.
 - Контракт `agent-graph-output` 2.1: только добавления — runtime-коды и `Claim.subject`.
+- Инструменты модели `graph_find`, `graph_neighbors`, `graph_impact`, `graph_relationship`, `graph_owner` в конституции `agent-service-v1` и исполнителе; результаты ограничены scope и правами политики.
 
 ## Проверки
 
 Офлайн на Windows: тесты `test_graph_store`, `test_graph_query`, `test_graph_view`, `test_runtime_observations`, `test_output_contracts` OK; полный `tests/graph` без новых падений против базы. Приёмка раздела 9 по тестам — в `docs/implementation/autonomous-mvp/batch-3.md`.
 
-Не проверено: Linux (первый прогон — этот PR), подключение к runtime-источнику клиента (нет доступа). До слияния: кандидат зависимости должен устаревать при смене карты адресов сервисов (см. STATUS.md, раздел 2А).
+Не проверено: Linux (первый прогон — этот PR), подключение к runtime-источнику клиента (нет доступа). Предложение устаревает и при смене процитированного файла, и при смене карты адресов или требований процитированных репозиториев.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
