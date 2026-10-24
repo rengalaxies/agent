@@ -28,6 +28,9 @@ https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 | `2e6db86` | демо запускается на Windows |
 | `1509163` | демо на поставляемом ядре, один процесс проверки цитат на задание |
 | `54e8ceb` | сборка `AnalysisResult` из выдачи ядра |
+| `741daea` | тест hooks: исполняемый hook |
+| `47c22e4` | тест схемы сравнивает структуру, а не заголовки |
+| `2a982dd` | этот отчёт, STATUS, DECISIONS D3–D8 |
 
 ## Контракты
 
