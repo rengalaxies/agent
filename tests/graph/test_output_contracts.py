@@ -285,8 +285,13 @@ class IdentityTests(unittest.TestCase):
 
 class SchemaFileTests(unittest.TestCase):
     def test_committed_json_schema_matches_models(self):
+        def shape(node):
+            # Titles and descriptions differ between pydantic releases; structure must not.
+            if isinstance(node, dict):
+                return {k: shape(v) for k, v in node.items() if k not in ("title", "description")}
+            return [shape(v) for v in node] if isinstance(node, list) else node
         committed = json.loads((ROOT / "schemas/agent-graph-output-2.json").read_text(encoding="utf-8"))
-        self.assertEqual(committed, json_schema(),
+        self.assertEqual(shape(committed), shape(json_schema()),
                          "regenerate: python -m agent_graph.output_contracts > schemas/agent-graph-output-2.json")
 
     def test_parse_does_not_mutate_input(self):
