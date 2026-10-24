@@ -12,6 +12,9 @@ from .sources import collect, pinned_freshness, pinned_only
 from .store import Store
 
 
+MAX_EVIDENCE_BATCH = 5000
+
+
 def now():
     return datetime.now(timezone.utc).isoformat()
 
@@ -89,7 +92,41 @@ class Graph:
         return result
 
     def get_evidence(self, context_id, citation):
-        context = self.context(context_id)
+        return self._evidence(self.context(context_id), citation)
+
+    def evidence_batch(self, items):
+        """Validate many citations in one call; each item tries its contexts in order.
+
+        Replaces one CLI process per citation. A context is loaded once per batch.
+        Only not_found moves on to the next context; any other error is that item's result.
+        """
+        self.policy.require("read_context")
+        if not isinstance(items, list) or len(items) > MAX_EVIDENCE_BATCH:
+            raise GraphError("evidence_batch_limit")
+        loaded, results = {}, []
+        for item in items:
+            contexts = item.get("contexts") if isinstance(item, dict) else None
+            if not isinstance(contexts, list) or not 1 <= len(contexts) <= 4 or not all(
+                    isinstance(c, str) for c in contexts):
+                raise GraphError("invalid_evidence_batch")
+            outcome = None
+            for index, context_id in enumerate(contexts):
+                try:
+                    if context_id not in loaded:
+                        loaded[context_id] = self.context(context_id)
+                    outcome = dict(context_id=context_id, evidence=self._evidence(loaded[context_id], item.get("citation")))
+                    break
+                except GraphError as exc:
+                    outcome = dict(error=exc.code)
+                    if exc.code != "not_found":
+                        break
+                except ValueError:  # pydantic ValidationError of a malformed citation
+                    outcome = dict(error="invalid_citation")
+                    break
+            results.append(outcome)
+        return dict(schema=SCHEMA, results=results)
+
+    def _evidence(self, context, citation):
         citation = Citation.model_validate(citation) if isinstance(citation, dict) else citation
         source = context["sources"].get(citation.source_id)
         if not source:

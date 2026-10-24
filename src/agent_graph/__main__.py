@@ -12,6 +12,7 @@ from .contracts import GraphError, Policy, load_json
 from .engine import Graph
 from .inference import investigate
 from .store import Store
+from . import core_identity
 
 
 def markdown(value):
@@ -26,8 +27,8 @@ def markdown(value):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--policy", required=True, help="Operator-owned configuration, outside analyzed sources")
-    p.add_argument("--state", required=True, help="Private directory (0700), one trusted OS user")
+    p.add_argument("--policy", help="Operator-owned configuration, outside analyzed sources (required)")
+    p.add_argument("--state", help="Private directory (0700), one trusted OS user (required)")
     p.add_argument("--format", choices=["json", "markdown"], default="json")
     sub = p.add_subparsers(dest="command", required=True)
     prep = sub.add_parser("prepare_context")
@@ -35,11 +36,13 @@ def main(argv=None):
     prep.add_argument("--operation")
     pin_help = "repository=commit for a git repository; repeatable. Never a branch or ref."
     prep.add_argument("--revision", action="append", default=[], help=pin_help)
-    for command in ("dependencies", "evidence", "propose", "report_check", "investigate", "analyze_change"):
+    sub.add_parser("core_identity", help="Profile, schema versions and digest of the loaded core files")
+    for command in ("dependencies", "evidence", "evidence_batch", "propose", "report_check", "investigate",
+                    "analyze_change"):
         cmd = sub.add_parser(command)
-        if command != "report_check":
+        if command not in ("report_check", "evidence_batch"):
             cmd.add_argument("--context", required=True)
-        if command in ("evidence", "propose", "report_check"):
+        if command in ("evidence", "evidence_batch", "propose", "report_check"):
             cmd.add_argument("--input", required=True, help="JSON message file; never an executable")
         if command == "dependencies":
             cmd.add_argument("--operation")
@@ -47,6 +50,11 @@ def main(argv=None):
             cmd.add_argument("--revision", action="append", default=[], help=pin_help)
     args = p.parse_args(argv)
     store = None
+    if args.command == "core_identity":
+        print(json.dumps(core_identity(), ensure_ascii=True, sort_keys=True))
+        return 0
+    if not args.policy or not args.state:
+        p.error("--policy and --state are required")
     try:
         policy = Policy.model_validate(load_json(Path(args.policy).read_text()))
         # Resolve operator-declared relative roots against the policy file, not cwd.
@@ -75,6 +83,8 @@ def main(argv=None):
             value = load_json(Path(args.input).read_text())
             if args.command == "evidence":
                 result = graph.get_evidence(args.context, value)
+            elif args.command == "evidence_batch":
+                result = graph.evidence_batch(value.get("items") if isinstance(value, dict) else None)
             elif args.command == "propose":
                 result = graph.propose(args.context, value)
             else:
