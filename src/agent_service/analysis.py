@@ -56,8 +56,10 @@ def build_request(*, installation_id: str, environment: str, request_id: str, tr
                   event_id: str, resource_version: str, subject: dict, repository_revisions: dict,
                   settings: dict, deadline: str) -> dict:
     """Validated AnalysisRequest. Raises ``ContractError`` with safe diagnostics."""
-    repositories = sorted(set(repository_revisions) | set(settings.get("repositories", [])))
+    # The analyzer's repository list is the scope; a pinned repository outside it fails validation.
+    repositories = sorted(settings.get("repositories") or repository_revisions)
     runtime_sources = sorted(settings.get("runtime_sources", []))
+    view_id = settings.get("view_id") or digest({"repositories": repositories, "runtime_sources": runtime_sources})
     request = {
         "schema": SCHEMA_ID, "schema_version": SCHEMA_VERSION, "kind": "analysis_request",
         "installation_id": installation_id, "environment": environment, "request_id": identifier(request_id),
@@ -68,8 +70,7 @@ def build_request(*, installation_id: str, environment: str, request_id: str, tr
         "constitution_version": settings.get("constitution_version", "agent-service-v1"),
         "model_configuration_id": settings.get("model_configuration_id"),
         "deadline": deadline,
-        "access_scope": {"view_id": digest({"repositories": repositories, "runtime_sources": runtime_sources}),
-                         "repositories": repositories, "runtime_sources": runtime_sources},
+        "access_scope": {"view_id": view_id, "repositories": repositories, "runtime_sources": runtime_sources},
     }
     if trigger_kind == "jira":
         text_fields = {name: value if isinstance(value, str) else ", ".join(map(str, value))
@@ -92,6 +93,8 @@ class ResultView:
     summary: str
     affected: list[dict] = field(default_factory=list)
     claims: list[dict] = field(default_factory=list)
+    deltas: list[str] = field(default_factory=list)
+    findings: list[str] = field(default_factory=list)
     paths: list[dict] = field(default_factory=list)
     checks: list[str] = field(default_factory=list)
     unknowns: list[str] = field(default_factory=list)
@@ -161,6 +164,12 @@ def view_from_result(document, request: dict) -> ResultView:
             rel = relationships[rel_id]
             refs.extend(_evidence_label(evidence[r]) for r in rel.evidence_refs)
         paths.append({"description": path.summary, "evidence": refs[:10]})
+    deltas = [f"{d.operation.service} {d.operation.method} {d.operation.route}: {d.code} {d.before} -> {d.after}"
+              for d in result.deltas]
+    findings = [f"{f.code} у {f.consumer.service}: вызов {f.callsite.repository}:{f.callsite.path}:{f.callsite.line}, "
+                f"использование {f.usage}, связь {f.dependency_freshness}"
+                + (f", требования {', '.join(f.requirement_ids)}" if f.requirement_ids else ", требование не задано")
+                for f in result.findings]
     checks = [f"{check.consumer.service}: {check.text}" for check in result.checks]
     unknowns = [f"{u.code}" + (f" ({u.subject})" if u.subject else "") for u in result.unknowns]
     unknowns += [f"пробел {g.code}" + (f" {g.repository}" if g.repository else "") + (f":{g.path}" if g.path else "")
@@ -174,5 +183,6 @@ def view_from_result(document, request: dict) -> ResultView:
     if result.model:
         versions["model"] = f"{result.model.configuration_id} {result.model.model}"
     return ResultView(status=result.status, reason_code=result.reason_code, summary=result.summary,
-                      affected=affected, claims=claim_views, paths=paths, checks=checks, unknowns=unknowns,
+                      affected=affected, claims=claim_views, deltas=deltas, findings=findings, paths=paths,
+                      checks=checks, unknowns=unknowns,
                       freshness=freshness, versions=versions)

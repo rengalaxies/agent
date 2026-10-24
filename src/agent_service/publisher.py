@@ -72,7 +72,8 @@ def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, 
         else:
             team = "команда не определена"
         affected.append(f"{item['service']}: {team}")
-    paths = [f"{CLAIM_LABELS[c['kind']]}: {c['statement']} Применимость: {c['applicability']}. "
+    paths = [f"Изменение {d}" for d in view.deltas] + [f"Находка {f}" for f in view.findings]
+    paths += [f"{CLAIM_LABELS[c['kind']]}: {c['statement']} Применимость: {c['applicability'].rstrip('.')}. "
              f"Неопределённость: {c['uncertainty']}. Основания: {_evidence(c['evidence'])}" for c in view.claims]
     paths += [f"Путь: {p['description']}. Основания: {_evidence(p['evidence'])}" for p in view.paths]
     unknowns = list(view.unknowns) + [f"Пробел входных данных: {g}" for g in gaps]

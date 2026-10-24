@@ -1,4 +1,4 @@
-"""``python -m agent_service serve|reconcile|status --config service.yaml``."""
+"""``python -m agent_service serve|reconcile|status --config service.yaml`` and ``python -m agent_service smoke``."""
 
 from __future__ import annotations
 
@@ -9,23 +9,25 @@ import os
 import threading
 
 from .analysis import NotWiredAnalyzer
-from .config import ServiceConfig, build
+from .config import ServiceConfig, build, core_analyzer
 from .service import Service
 
 
-def _analyzer(spec: str | None):
-    if not spec:
-        return NotWiredAnalyzer()
-    module, _, attr = spec.partition(":")
-    return getattr(importlib.import_module(module), attr)()
+def _analyzer(spec: str | None, config: ServiceConfig):
+    if spec:
+        module, _, attr = spec.partition(":")
+        return getattr(importlib.import_module(module), attr)()
+    if config.core:
+        return core_analyzer(config.core, code_version=config.analysis.get("code_version", "agent-service"))
+    return NotWiredAnalyzer()
 
 
 def _service(args) -> tuple[Service, ServiceConfig]:
     config = ServiceConfig.load(args.config)
     store, connectors, backends = build(config)
-    service = Service(store=store, connectors=connectors, backends=backends, analyzer=_analyzer(args.analyzer),
-                      installation_id=config.installation_id, environment=config.environment,
-                      analysis_settings=config.analysis)
+    service = Service(store=store, connectors=connectors, backends=backends,
+                      analyzer=_analyzer(args.analyzer, config), installation_id=config.installation_id,
+                      environment=config.environment, analysis_settings=config.analysis)
     return service, config
 
 
@@ -43,12 +45,19 @@ def worker_loop(service: Service, reconcile_seconds: float, stop: threading.Even
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="agent_service")
-    parser.add_argument("command", choices=["serve", "reconcile", "status"])
-    parser.add_argument("--config", required=True)
+    parser.add_argument("command", choices=["serve", "reconcile", "status", "smoke"])
+    parser.add_argument("--config", help="service configuration (all commands except smoke)")
     parser.add_argument("--analyzer", help="trusted module:factory returning an Analyzer")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8090)
+    parser.add_argument("--keep", help="smoke: keep the stand and state in this new directory")
     args = parser.parse_args(argv)
+    if args.command == "smoke":
+        from .smoke import main as smoke
+
+        return smoke(args.keep)
+    if not args.config:
+        parser.error("--config is required")
     service, config = _service(args)
     if args.command == "status":
         print(json.dumps(service.store.status(), ensure_ascii=False, indent=2))

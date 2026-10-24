@@ -54,6 +54,16 @@ class JiraConfig(Strict):
     auth: JiraAuthConfig
 
 
+class CoreConfig(Strict):
+    """The batch 2A core used as the analysis (``CoreAnalyzer``)."""
+
+    policy_path: Path  # agent_graph Policy (JSON or YAML): repositories as local Git mirrors, snapshot: git
+    state_dir: Path
+    ownership_path: Path | None = None  # installation mapping {source, version, services}
+    constitution_path: Path | None = None
+    model_qualified: bool = False  # set only after batch 2B qualified this model configuration
+
+
 class ServiceConfig(Strict):
     installation_id: str = Field(min_length=1, max_length=100)
     environment: str = Field(min_length=1, max_length=100)
@@ -63,6 +73,7 @@ class ServiceConfig(Strict):
     github: GitHubConfig | None = None
     jira: JiraConfig | None = None
     analysis: dict = Field(default_factory=dict)  # graph/constitution/model ids, access scope, analysis_seconds
+    core: CoreConfig | None = None
     limits: dict = Field(default_factory=dict)
     reconcile_seconds: float = Field(default=900, ge=60)
     allow_loopback_http: bool = False  # test stands only
@@ -116,3 +127,22 @@ def build(config: ServiceConfig, *, clock=time.time, env_secret=_secret):
         root = config.dry_run_dir or config.state_path.parent / "dry-run-comments"
         backends = {name: DirectorySink(root / name) for name in connectors}
     return store, connectors, backends
+
+
+def _document(path: Path):
+    text = Path(path).read_text(encoding="utf-8")
+    if str(path).endswith((".yaml", ".yml")):
+        import yaml
+
+        return yaml.safe_load(text)
+    return json.loads(text)
+
+
+def core_analyzer(core: CoreConfig, *, code_version: str):
+    from .core_analyzer import CoreAnalyzer
+
+    return CoreAnalyzer(_document(core.policy_path), core.state_dir,
+                        ownership=_document(core.ownership_path) if core.ownership_path else None,
+                        code_version=code_version,
+                        constitution_path=str(core.constitution_path) if core.constitution_path else None,
+                        model_qualified=core.model_qualified)

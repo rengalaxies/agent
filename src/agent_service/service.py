@@ -149,6 +149,9 @@ class Service:
         except ConnectorError as exc:
             return self._give_up_or_retry(job, exc.code)
         settings = dict(self.analysis_settings)
+        describe = getattr(self.analyzer, "request_settings", None)
+        if describe is not None:
+            settings.update(describe())  # view, graph and constitution versions of the real analysis
         if git is not None:
             settings.setdefault("repositories", git.readable_repository_ids())
         deadline = min(job["deadline"], self.store.clock() + settings.get("analysis_seconds", 600))
