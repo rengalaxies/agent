@@ -111,7 +111,7 @@ def providers(policy, sources):
                         op = dict(id=operation_id(policy, source["service"], method, path),
                                   service=source["service"], method=method.upper(), path=path,
                                   evidence=[evidence(source)], default_known=False)
-                        effective = {}
+                        effective, referenced = {}, False
                         for level in (item, operation):
                             parameters = level.get("parameters", [])
                             if not isinstance(parameters, list):
@@ -120,16 +120,23 @@ def providers(policy, sources):
                                 if not isinstance(p, dict):
                                     raise ValueError("invalid_parameter")
                                 if "$ref" in p:
+                                    # A referenced parameter may be page_size or override it.
+                                    referenced = True
                                     gaps.append(dict(code="openapi_ref_unsupported", source_id=source["id"]))
                                 else:
                                     effective[(p.get("name"), p.get("in"))] = p
-                        for p in effective.values():
-                            if p.get("name") == "page_size" and p.get("in") == "query":
-                                op["page_size_declared"] = True
-                            if p.get("name") == "page_size" and p.get("in") == "query" and isinstance(p.get("schema"), dict):
-                                value = p["schema"].get("default", UNRESOLVED)
-                                if value is None or type(value) is int:
-                                    op.update(default_known=True, page_size_default=value)
+                        page = effective.get(("page_size", "query"))
+                        if page is not None or referenced:
+                            # The evidence quote of a contract is its first line, so the whole
+                            # document stands for the declaration: any edit is a possible change.
+                            op.update(page_size_declared=True, declarations=[source["sha256"]])
+                            value = page["schema"].get("default", UNRESOLVED) if (
+                                page is not None and isinstance(page.get("schema"), dict)) else UNRESOLVED
+                            if not referenced and (value is None or type(value) is int):
+                                op.update(default_known=True, page_size_default=value)
+                            else:
+                                gaps.append(dict(code="page_size_default_unresolved", operation_id=op["id"],
+                                                 source_id=source["id"]))
                         operations.append(op)
             except (ValueError, TypeError, AttributeError):
                 gaps.append(dict(code="invalid_contract", source_id=source["id"]))
@@ -169,7 +176,7 @@ def providers(policy, sources):
                 defaults = dict(zip([a.arg for a in args][-len(fn.args.defaults):], fn.args.defaults)) if fn.args.defaults else {}
                 defaults.update({a.arg: value for a, value in zip(fn.args.kwonlyargs, fn.args.kw_defaults) if value is not None})
                 if any(a.arg == "page_size" for a in args + fn.args.kwonlyargs):
-                    op["page_size_declared"] = True
+                    op.update(page_size_declared=True, declarations=[op["evidence"][0]["quote"]])
                 if "page_size" in defaults:
                     value = constant(defaults["page_size"], constants)
                     if value is None or type(value) is int:
@@ -189,6 +196,7 @@ def providers(policy, sources):
         old["evidence"].extend(op["evidence"])
         if op.get("page_size_declared"):
             old["page_size_declared"] = True
+            old["declarations"] = old.get("declarations", []) + op["declarations"]
         if old["default_known"] and op["default_known"] and old["page_size_default"] != op["page_size_default"]:
             old["default_conflict"] = True
             gaps.append(dict(code="provider_declaration_conflict", operation_id=op["id"]))

@@ -2,7 +2,7 @@
 
 Это приложение пачки 2, отдельное от исторического `ui/` и модельных экспериментов. Согласованная спецификация: [PR29, 778b766](https://github.com/rengalaxies/agent/pull/29). Начальное основание работы: `08a52704269c75d8d78a8fcf4ed8b9f10cf45722`.
 
-Ядро в `main`: внешний read-only checkout **5d7ee0f6b0bd9c4a8d91c26f24ad5f21e6471dab**, профиль `http-requests-3`. До аудита 22 октября 2026 демо было закреплено на a9385c5 (`http-requests-2`); на ВМ установлено именно оно, см. [аудит интеграции](../audits/pr-integration/README.md). Новый профиль делает прежние контексты STALE, а analyze_change от них возвращает base_profile_mismatch: после обновления установки показ начинается с нового обследования A. Проверяются SHA-256 всех Python-файлов пакета по [core.lock.json](../../infra/agent_graph_demo/core.lock.json). Копии ядра в diff и Docker-образе приложения нет. Ветки пачки 1 не изменяются; PR35 и его реальные модельные результаты не участвуют в этом показе.
+Ядро в `main`: внешний read-only checkout **18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70**, профиль `http-requests-4`. До аудита интеграции 22 октября 2026 демо было закреплено на a9385c5 (`http-requests-2`), затем на 5d7ee0f (`http-requests-3`); на ВМ установлено a9385c5, см. [аудит интеграции](../audits/pr-integration/README.md). Профиль `http-requests-4` добавлен архитектурным аудитом: `$ref` у `page_size` в OpenAPI больше не скрывает изменение default. Новый профиль делает прежние контексты STALE, а analyze_change от них возвращает base_profile_mismatch: после обновления установки показ начинается с нового обследования A. Проверяются SHA-256 всех Python-файлов пакета по [core.lock.json](../../infra/agent_graph_demo/core.lock.json). Копии ядра в diff и Docker-образе приложения нет. Ветки пачки 1 не изменяются; PR35 и его реальные модельные результаты не участвуют в этом показе.
 
 ## Проверка в рабочей среде / CI
 
@@ -11,7 +11,7 @@ Python 3.12, Docker Engine + Compose, Chromium. Это команды для и�
 ```bash
 # Рядом с checkout приложения: отдельная зависимость, не внутри его diff.
 git clone --no-checkout https://github.com/rengalaxies/agent.git ../agent-graph-core
-git -C ../agent-graph-core checkout --detach 5d7ee0f6b0bd9c4a8d91c26f24ad5f21e6471dab
+git -C ../agent-graph-core checkout --detach 18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70
 export DEMO_CORE_ROOT="$(realpath ../agent-graph-core)"
 export PYTHONPATH=src:.
 python -m pip install -r infra/agent_graph_demo/requirements.lock
