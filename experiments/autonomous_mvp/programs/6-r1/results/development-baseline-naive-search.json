@@ -1,0 +1,3678 @@
+{
+ "configuration": "baseline-naive-search",
+ "finished_at": "2026-10-25T16:54:55.225169+00:00",
+ "manifest_current": true,
+ "manifest_digest": "6140e378686837750109e0ac79b1287287a5775d7c9db21d4573d62e62dc50f7",
+ "program": "6-r1",
+ "protocol": {
+  "protocol": "baseline-search-1",
+  "sha256": "c6458b4a190786e42ae4196ea26f6cc6cd0faf1356fff9add8ec50af17e81cba"
+ },
+ "python": "3.14.5",
+ "records": [
+  {
+   "change_id": "D01",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F01_truncation",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/orders"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/orders"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/orders"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.314,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1285,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 287,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.347,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1285,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 287,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.806
+  },
+  {
+   "change_id": "D02",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F02_operation_removed",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.541,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1891,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 332,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.34,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1798,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 332,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 3.303
+  },
+  {
+   "change_id": "D03",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 2
+   },
+   "error": null,
+   "family": "F03_no_impact_noop",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.0,
+    "requests": 1,
+    "steps": [
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.0,
+    "requests": 1,
+    "steps": [
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.52
+  },
+  {
+   "change_id": "D04",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F04_no_consumer_operation",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.252,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 158,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 264,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.262,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 158,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 264,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.318
+  },
+  {
+   "change_id": "D05",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F05_runtime_only",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.149,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 664,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 210,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.147,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 664,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 210,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.491
+  },
+  {
+   "change_id": "D06",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F06_code_only",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.208,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1081,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 245,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.193,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1081,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 245,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.848
+  },
+  {
+   "change_id": "D07",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F07_stale_runtime",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.145,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 666,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 210,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.139,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 666,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 210,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.488
+  },
+  {
+   "change_id": "D08",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F08_revoked_source",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-exporter"
+        ]
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.172,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 783,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 241,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-exporter"
+        ]
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.139,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 783,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 241,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.758
+  },
+  {
+   "change_id": "D09",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F09_ownership_conflict",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "UNKNOWN",
+        "teams": []
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "CONFLICT",
+        "teams": [
+         "team-platform",
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.291,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1603,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 289,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "UNKNOWN",
+        "teams": []
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "CONFLICT",
+        "teams": [
+         "team-platform",
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "invoices",
+        "route": "/invoices"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.295,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1603,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 289,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.55
+  },
+  {
+   "change_id": "D10",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F10_ambiguous_jira",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.285,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1290,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 291,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.285,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1290,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 291,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.638
+  },
+  {
+   "change_id": "D11",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 4
+   },
+   "error": null,
+   "family": "F11_vague_jira",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.0,
+    "requests": 1,
+    "steps": [
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-ledger"
+        ]
+       },
+       "path": {
+        "callsite": "ledger:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "ledger",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.247,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1301,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 258,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.069
+  },
+  {
+   "change_id": "D12",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F12_unclassified_change",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.157,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 793,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 214,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.14,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 793,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 214,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.443
+  },
+  {
+   "change_id": "D13",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F01_truncation",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-exporter"
+        ]
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.47,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 2143,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 378,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-exporter"
+        ]
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-mailer"
+        ]
+       },
+       "path": {
+        "callsite": "mailer:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "mailer",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.44,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 2143,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 378,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 3.947
+  },
+  {
+   "change_id": "D14",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F02_operation_removed",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.17,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 773,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 212,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-reporting"
+        ]
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.154,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 684,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 212,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.509
+  },
+  {
+   "change_id": "D15",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 2
+   },
+   "error": null,
+   "family": "F03_no_impact_noop",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.0,
+    "requests": 1,
+    "steps": [
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [],
+     "outcome": "abstain"
+    },
+    "latency_seconds": 0.0,
+    "requests": 1,
+    "steps": [
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 1.486
+  },
+  {
+   "change_id": "D16",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F05_runtime_only",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.292,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1219,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 268,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-audit"
+        ]
+       },
+       "path": {
+        "callsite": "audit:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "audit",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.248,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1219,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 268,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.376
+  },
+  {
+   "change_id": "D17",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F07_stale_runtime",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-ledger"
+        ]
+       },
+       "path": {
+        "callsite": "ledger:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "ledger",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.275,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1188,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 266,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-ledger"
+        ]
+       },
+       "path": {
+        "callsite": "ledger:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "ledger",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "orders",
+        "route": "/orders"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.272,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1188,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 266,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.566
+  },
+  {
+   "change_id": "D18",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F08_revoked_source",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-exporter"
+        ]
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.195,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1069,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 276,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-dashboard"
+        ]
+       },
+       "path": {
+        "callsite": "dashboard:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "dashboard",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-exporter"
+        ]
+       },
+       "path": {
+        "callsite": "exporter:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "exporter",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.209,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1069,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 276,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.377
+  },
+  {
+   "change_id": "D19",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F09_ownership_conflict",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "CONFLICT",
+        "teams": [
+         "team-platform",
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "UNKNOWN",
+        "teams": []
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.244,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1353,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 262,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-archive"
+        ]
+       },
+       "path": {
+        "callsite": "archive:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "archive",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "CONFLICT",
+        "teams": [
+         "team-platform",
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "UNKNOWN",
+        "teams": []
+       },
+       "path": {
+        "callsite": "reporting:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "reporting",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.254,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1353,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 262,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.265
+  },
+  {
+   "change_id": "D20",
+   "costs": {
+    "completion_tokens": null,
+    "model_calls": 0,
+    "prompt_tokens": null,
+    "rub": 0.0,
+    "transport_requests": 6
+   },
+   "error": null,
+   "family": "F10_ambiguous_jira",
+   "human": {
+    "active_minutes": null,
+    "interventions": 0,
+    "status": "NOT_RECORDED"
+   },
+   "jira": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-ledger"
+        ]
+       },
+       "path": {
+        "callsite": "ledger:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "ledger",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "billing",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.288,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1328,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 299,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "pr": {
+    "answer": {
+     "impacted": [
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-analytics"
+        ]
+       },
+       "path": {
+        "callsite": "analytics:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "analytics",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-forecast"
+        ]
+       },
+       "path": {
+        "callsite": "forecast:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "forecast",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-ledger"
+        ]
+       },
+       "path": {
+        "callsite": "ledger:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "ledger",
+       "severity": "breaking"
+      },
+      {
+       "freshness": "CURRENT",
+       "owner": {
+        "status": "KNOWN",
+        "teams": [
+         "team-registry"
+        ]
+       },
+       "path": {
+        "callsite": "registry:client.py",
+        "method": "GET",
+        "provider": "shipments",
+        "route": "/shipments"
+       },
+       "service": "registry",
+       "severity": "breaking"
+      }
+     ],
+     "outcome": "answer"
+    },
+    "latency_seconds": 0.301,
+    "requests": 3,
+    "steps": [
+     {
+      "action": "search",
+      "bytes": 1328,
+      "code": "ok",
+      "step": 0,
+      "valid": true
+     },
+     {
+      "action": "read_ownership",
+      "bytes": 299,
+      "code": "ok",
+      "step": 1,
+      "valid": true
+     },
+     {
+      "action": "finish",
+      "code": "ok",
+      "step": 2,
+      "valid": true
+     }
+    ],
+    "terminal": "finished",
+    "usage_known": false
+   },
+   "split": "development",
+   "wall_seconds": 2.544
+  }
+ ],
+ "schema": "readiness-ledger-1",
+ "source_sha": "2213ff9e297cb362ab72b62d09263c120f878a8c",
+ "split": "development",
+ "started_at": "2026-10-25T16:54:09.117587+00:00",
+ "transport_kind": "scripted"
+}
