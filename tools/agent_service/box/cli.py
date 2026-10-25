@@ -787,6 +787,10 @@ def _user_exists() -> bool:
 
 def _port_free(host: str, port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        if os.name != "nt":
+            # The service binds with SO_REUSEADDR too: TIME_WAIT left by a stopped service is not "taken".
+            # (On Windows the option would let the probe bind over a live listener.)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             s.bind((host if host not in ("0.0.0.0",) else "0.0.0.0", port))
             return True
