@@ -44,7 +44,41 @@ API читается без токена, но ограничен 60 запро�
   (`fcntl` в `store.py`, `O_NOFOLLOW`/`dir_fd` в `sources.py`). Отчёт серии
   22.10 уже отмечал это для `Store`.
 
-## Сводка на 25.10.2026
+## Сводка на 25.10.2026, вечер
+
+Стек #56–#60 слит в `main` (`0f0dc02`, реестр в [PR-REGISTER.md](PR-REGISTER.md)).
+Итоговая оценка готовности: [READINESS.md](READINESS.md).
+
+Окружение исполнителя этой части: аккаунт GitHub `swan-Dive`, право `write` (не admin),
+токен со scopes `repo, workflow`; входит в required reviewers окружения
+`autonomous-mvp-live`, `prevent_self_review` выключен, окружение пускает только `main`.
+Локально Windows 11, Python 3.14.5, `gh` нет: GitHub API через токен Git credential manager.
+
+### Исправительная пачка, PR #61
+
+Ветка `claude/mvp-recovery-fixes` от `main` `0f0dc02`. Закрывает P1, P1 и P2 ревью #60,
+неполный допуск модели и SC2024 ([issue #8](https://github.com/rengalaxies/agent/issues/8)).
+Решения D10–D12 в [DECISIONS.md](DECISIONS.md).
+
+| Проверка | Где | Код | Результат |
+|---|---|---|---|
+| Новые сценарии приёмки на исходной `main` | Windows, `process` | `0f0dc02` | `first_schema_update_then_rollback` FAIL (копия pre-update со схемой 2), `failed_start_rolls_back` FAIL (работает D вместо A), `update_other_constitution_then_rollback` FAIL (загруженная идентичность не та) |
+| Новые unit-тесты restore на исходном `state.py` | Windows | `0f0dc02` | 5 из 5 FAIL |
+| Приёмка установленной коробки, 11 сценариев | Windows, `process` | `0d02c17` | 11 из 11 PASS |
+| `tools/agent_service/box/tests`, `tests/service`, `tools/autonomous_mvp/tests` | Windows | `e4eb7f3` | 46, 98, 80 тестов OK |
+| Корпус, эталон, manifest 2b-r1 | Windows | `e4eb7f3` | CHECKED 80; 77 случаев, 0 ошибок; MANIFEST_CURRENT `8d1c1afc…` |
+| Linux-приёмка с systemd | [run 40214855779](https://github.com/rengalaxies/agent/actions/runs/40214855779), job 121233664757 | `5f71999` | 11 из 11 PASS, systemd 255 |
+| Workflow lint с ShellCheck на PR | [run 40214855713](https://github.com/rengalaxies/agent/actions/runs/40214855713) | `5f71999` | success; SC2024 больше нет |
+| Core research regression, P1 regression | runs 40214855723, 40214855791 | `5f71999` | success |
+
+Первый Linux-прогон ([40214160008](https://github.com/rengalaxies/agent/actions/runs/40214160008), `e4eb7f3`) упал на
+двух сценариях: проверка порта в `validate` считала занятым порт в TIME_WAIT после
+остановленного сервиса. Это прежний дефект, новый сценарий убитого restore его вскрыл.
+Исправлено в `5f71999` (SO_REUSEADDR на POSIX).
+
+Граница доказательства: раннер GitHub, а не ВМ заказчика; стенды GitHub/Jira локальные.
+
+## Сводка на 25.10.2026, до слияния стека
 
 Весь стек открыт как PR и зелёный в Linux CI (GitHub Actions, ubuntu). Порядок
 слияния: #56 → #57 → #58 → #60; #59 после #57. Live-проверки (модель, Jira,
