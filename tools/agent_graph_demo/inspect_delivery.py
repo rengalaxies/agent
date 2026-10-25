@@ -29,8 +29,8 @@ def main():
     allowed_env = {"PATH", "LANG", "GPG_KEY", "PYTHON_VERSION", "PYTHON_SHA256",
                    "PYTHONPATH", "PYTHONDONTWRITEBYTECODE"}
     assert all(e.split("=", 1)[0] in allowed_env for e in config["Env"])
-    paths = ["src/agent_graph_demo", "examples/agent_graph_demo", "tools/agent_graph_demo",
-             "infra/agent_graph_demo/core.lock.json", "infra/agent_graph_demo/requirements.lock"]
+    paths = ["src/agent_graph", "src/agent_graph_demo", "examples/agent_graph_demo", "tools/agent_graph_demo",
+             "constitutions/agent-service-v1.yaml", "infra/agent_graph_demo/requirements.lock"]
     files = command("git", "ls-tree", "-r", "--name-only", a.source_sha, "--", *paths).decode().splitlines()
     expected = {"app/" + f: hashlib.sha256(command("git", "show", a.source_sha + ":" + f)).hexdigest()
                 for f in files}

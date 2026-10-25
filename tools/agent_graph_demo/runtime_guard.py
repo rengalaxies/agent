@@ -12,7 +12,7 @@ import uuid
 from agent_graph_demo.contracts import DemoError, now
 from agent_graph_demo.locks import locked
 from agent_graph_demo.snapshots import atomic_json
-from tools.agent_graph_demo.state_access import APP_UID, APP_GID
+from tools.agent_graph_demo.state_access import APP_UID, APP_GID, effective_uid
 
 DOCKER = ["docker", "--host=unix:///var/run/docker.sock"]
 
@@ -25,7 +25,7 @@ class RuntimeGuard:
         if not re.fullmatch(r"(?:[a-zA-Z0-9./:_-]+@)?sha256:[a-f0-9]{64}", image):
             raise DemoError("immutable_image_required")
         self.root.mkdir(parents=True, exist_ok=True, mode=0o750)
-        if os.geteuid() == 0:
+        if effective_uid() == 0:
             self.state_root.mkdir(parents=True, exist_ok=True, mode=0o700)
             if self.state_root.stat().st_uid != APP_UID:
                 raise DemoError("state_root_must_belong_to_app_uid")
@@ -98,7 +98,7 @@ class RuntimeGuard:
         }
         atomic_json(self.registry, r)
         self.registry.chmod(0o640)
-        if os.geteuid() == 0:
+        if effective_uid() == 0:
             os.chown(self.registry, 0, APP_GID)
         return r
 

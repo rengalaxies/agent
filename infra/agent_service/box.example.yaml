@@ -1,0 +1,54 @@
+# Единственный файл, который заполняет владелец: /etc/agent-service/box.yaml.
+# Значения секретов сюда не пишутся. Здесь только имена переменных; сами значения
+# лежат в /etc/agent-service/secrets.env (root, права 600), см. README рядом.
+# Всё остальное (service.json, policy.json, unit systemd) box генерирует сам.
+
+installation_id: acme            # имя установки, латиница
+environment: prod                # окружение, которое видит граф
+
+listen:                          # куда сервис принимает webhook; снаружи публикуйте через TLS-прокси
+  host: 127.0.0.1
+  port: 8090
+
+github:
+  bot_login: acme-agent[bot]     # логин GitHub App: только её комментарии с маркером считаются своими
+  auth:
+    kind: app                    # app (рекомендуется) или token
+    app_id: "123456"
+    installation_id: 7890123
+    # private_key_path_env: GITHUB_APP_PRIVATE_KEY_PATH   (по умолчанию)
+  # webhook_secret_env: GITHUB_WEBHOOK_SECRET              (по умолчанию)
+  repositories:                  # все репозитории, которые читает граф, включая потребителей
+    - name: acme/orders
+      service: orders            # имя сервиса в графе
+      watch_prs: true            # анализировать PR этого репозитория
+    - name: acme/reporting
+      service: reporting
+    # branch: main               (по умолчанию)
+
+jira:                            # уберите секцию, если Jira не подключается
+  base_url: https://acme.atlassian.net
+  project_keys: [ORD]
+  bot_account_id: 5b10a2844c20165700ede21g   # accountId учётной записи, от которой пишет сервис
+  # auth: {kind: basic}          (по умолчанию: JIRA_EMAIL + JIRA_API_TOKEN)
+
+service_addresses:               # базовые URL, по которым клиенты вызывают сервисы
+  orders: https://orders.internal.acme
+
+ownership_file: /etc/agent-service/ownership.json   # {source, version, services: {service: team}}
+
+# model:                         # без секции модель выключена; сервис работает без неё
+#   endpoint: https://foundation-models.api.cloud.ru/v1
+#   model: <id модели из квалификации 2Б>
+#   configuration_id: <configuration_id из отчёта 2Б>
+#   qualification: {report_path: /etc/agent-service/qualification.json, run_id: ..., report_sha256: ...}
+
+publication: dry_run             # dry_run: комментарии пишутся в каталог; live: в Jira/GitHub
+
+freshness:
+  reconcile_seconds: 900         # сверка с Jira/GitHub на случай пропущенных webhook
+  mirror_sync_seconds: 120       # git fetch всех репозиториев
+
+storage:
+  keep_backups: 7                # сколько резервных копий хранить (точка отката не удаляется)
+  daily_backup: true

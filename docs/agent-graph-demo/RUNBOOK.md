@@ -2,17 +2,13 @@
 
 Это приложение пачки 2, отдельное от исторического `ui/` и модельных экспериментов. Согласованная спецификация: [PR29, 778b766](https://github.com/rengalaxies/agent/pull/29). Начальное основание работы: `08a52704269c75d8d78a8fcf4ed8b9f10cf45722`.
 
-Ядро в `main`: внешний read-only checkout **18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70**, профиль `http-requests-4`. До аудита интеграции 22 октября 2026 демо было закреплено на a9385c5 (`http-requests-2`), затем на 5d7ee0f (`http-requests-3`); на ВМ установлено a9385c5, см. [аудит интеграции](../audits/pr-integration/README.md). Профиль `http-requests-4` добавлен архитектурным аудитом: `$ref` у `page_size` в OpenAPI больше не скрывает изменение default. Новый профиль делает прежние контексты STALE, а analyze_change от них возвращает base_profile_mismatch: после обновления установки показ начинается с нового обследования A. Проверяются SHA-256 всех Python-файлов пакета по [core.lock.json](../../infra/agent_graph_demo/core.lock.json). Копии ядра в diff и Docker-образе приложения нет. Ветки пачки 1 не изменяются; PR35 и его реальные модельные результаты не участвуют в этом показе.
+Ядро: пакет `src/agent_graph` того же коммита, что и демо; с пачки 5А он лежит и в Docker-образе вместе с `constitutions/agent-service-v1.yaml`. Перед первой командой GraphCLI сравнивает `agent_graph.core_identity()` подпроцесса с ядром приложения и при расхождении отвечает `core_pin_mismatch`. Отдельного checkout ядра, `core.lock.json` и монтирования `/core` больше нет. До пачки 2А демо использовало внешний read-only checkout **18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70**, профиль `http-requests-4`. До аудита интеграции 22 октября 2026 демо было закреплено на a9385c5 (`http-requests-2`), затем на 5d7ee0f (`http-requests-3`); на ВМ установлено a9385c5, см. [аудит интеграции](../audits/pr-integration/README.md). Профиль `http-requests-4` добавлен архитектурным аудитом: `$ref` у `page_size` в OpenAPI больше не скрывает изменение default. Новый профиль делает прежние контексты STALE, а analyze_change от них возвращает base_profile_mismatch: после обновления установки показ начинается с нового обследования A. Ветки пачки 1 не изменяются; PR35 и его реальные модельные результаты не участвуют в этом показе.
 
 ## Проверка в рабочей среде / CI
 
 Python 3.12, Docker Engine + Compose, Chromium. Это команды для изолированной среды приёмки, не инструкция менять общую ВМ. Модельных ключей, cloud credentials и SSH не требуется.
 
 ```bash
-# Рядом с checkout приложения: отдельная зависимость, не внутри его diff.
-git clone --no-checkout https://github.com/rengalaxies/agent.git ../agent-graph-core
-git -C ../agent-graph-core checkout --detach 18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70
-export DEMO_CORE_ROOT="$(realpath ../agent-graph-core)"
 export PYTHONPATH=src:.
 python -m pip install -r infra/agent_graph_demo/requirements.lock
 python -m pip install httpx==0.28.1 playwright==1.62.0
@@ -27,11 +23,11 @@ docker build --network=none -f infra/agent_graph_demo/Dockerfile \
   --build-arg PRODUCT_SHA="$(git rev-parse HEAD)" -t agent-graph-demo:accept .
 # Docker должен быть выбран локальный; в managed Codex runner сам закрепляет unix socket.
 DEMO_IMAGE_ID="$(docker image inspect agent-graph-demo:accept --format '{{.Id}}')"
-python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROOT" \
+python tools/agent_graph_demo/accept.py --mode local \
   --image "$DEMO_IMAGE_ID" --product-sha "$(git rev-parse HEAD)" --output work/acceptance
 ```
 
-На GitHub предусмотрен отдельный `agent-graph-demo.yml`: pull_request, без model/cloud secrets, без `pull_request_target`, без платного inference. CI отдельно получает точный core pin. Публикуются только ACCEPTANCE.json, безопасные журналы проверок и реальные screenshots, **не** auth/config/SQLite/state.
+На GitHub предусмотрен отдельный `agent-graph-demo.yml`: pull_request, без model/cloud secrets, без `pull_request_target`, без платного inference. CI проверяет ядро того же коммита, отдельного core pin нет. Публикуются только ACCEPTANCE.json, безопасные журналы проверок и реальные screenshots, **не** auth/config/SQLite/state.
 
 `work/acceptance/ACCEPTANCE.json` фиксирует реальное выполнение. Ожидаемый FAIL версии B — предметный результат, а не провал инфраструктуры. `PARTIAL` статического анализа остаётся видимым. Повторная приёмка сохраняет историю; незавершённый UNKNOWN не восстанавливается автоматически. Для него требуется явный `reconcile` того же registry. Не удаляйте state ради «зелёного» повтора.
 
@@ -40,7 +36,7 @@ python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROO
 ```bash
 export PYTHONPATH=src:.
 python tools/agent_graph_demo/configure.py --directory work/local-demo \
-  --core-root "$DEMO_CORE_ROOT" --product-sha "$(git rev-parse HEAD)"
+  --product-sha "$(git rev-parse HEAD)"
 python -m agent_graph_demo --config work/local-demo/web.json
 ```
 
@@ -99,7 +95,9 @@ python tools/agent_graph_demo/run_scenario.py --config /etc/agent-graph-demo/ope
 
 ## Исходный handoff развёртыванию (выполнен 22 октября 2026)
 
-Этот раздел описывает исходный handoff приложения. Последующая закрытая установка
+Этот раздел описывает исходный handoff приложения. Пункты про отдельный checkout ядра,
+DEMO_CORE_ROOT и монтирование `/core` относятся к той установке; с пачки 5А ядро в образе,
+а в `web.json` путь `core_root` не задаётся. Последующая закрытая установка
 на существующую dm-p1-ui выполнена 22 октября 2026:
 [точные SHA/digest, целевая приёмка, SSH tunnel, показ и откат](deployments/2026-10-22/README.md).
 
@@ -113,7 +111,7 @@ python tools/agent_graph_demo/run_scenario.py --config /etc/agent-graph-demo/ope
 6. Подтвердить stop/reconcile/observe, пять показов, сохранность SQLite/истории после рестарта backend и Docker, работу независимого контрольного проекта. Измерить реальные peak RAM/CPU, cold/warm durations, OOM, disk/log growth на целевой ВМ. Запланировать retention после экспорта, не удалять историю автоматически.
 7. Самостоятельный внешний доступ: **NOT_CONFIGURED**. Нужны утверждённые hostname/DNS/TLS и allowed_origins https; до этого только локальный операторский просмотр. Nginx fragment не является готовым публичным HTTP vhost. Viewer задаётся только server auth config, с конкретными allowed_session_ids.
 
-Точные локальные результаты и оставшиеся проверки — в [ACCEPTANCE.md](ACCEPTANCE.md). При изменении ядра обновить lock отдельным совместимостным изменением, выполнить CLI/API/browser suites; не принимать несовпадающий hash автоматически.
+Точные локальные результаты и оставшиеся проверки — в [ACCEPTANCE.md](ACCEPTANCE.md). При изменении ядра выполнить CLI/API/browser suites: ядро меняется вместе с демо в одном коммите, а несовпадающий `core_identity` не принимается автоматически.
 
 ## Закрытая поставка immutable image
 
@@ -125,7 +123,7 @@ python tools/agent_graph_demo/run_scenario.py --config /etc/agent-graph-demo/ope
 Это статическая проверка упаковки, не общая сертификация безопасности base image.
 
 Artifact `graph-demo-delivery-<SHA>` хранится **1 день**: image archive, разрешённые
-source/core archives, hash-locked wheels, image-audit.json и SHA256SUMS. Сначала
+source archive (с ядром), hash-locked wheels, image-audit.json и SHA256SUMS. Сначала
 проверить SHA256SUMS и audit PASS, затем передать файлы существующим SSH/SCP.
 На ВМ только load image и установка готовых wheels, без Docker build. Digest,
 checksum, резервная копия конфигураций, фактические проверки ВМ и rollback должны
