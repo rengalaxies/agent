@@ -316,11 +316,17 @@ class Driver:
         return json.loads((Path(release) / "manifest.json").read_text(encoding="utf-8"))
 
     def jira_change(self, text: str) -> dict:
-        """Change ORD-12 and wait until the running release republished the Jira comment; returns its body."""
+        """Change ORD-12 and wait until the running release published a complete result for it.
+
+        An update can first carry the short "new version received" text without versions; only a complete
+        result names code_version and the constitution.
+        """
         before = self.comments()
         self.control("/jira/summary", {"summary": text})
         self.control("/deliver/jira", {"event": "updated"})
-        c = self.wait(f"Jira comment update after '{text}'", lambda c: c["updates"]["jira"] > before["updates"]["jira"])
+        c = self.wait(f"complete Jira result after '{text}'",
+                      lambda c: c["updates"]["jira"] > before["updates"]["jira"]
+                      and "code_version: " in c["jira"][0]["text"], timeout=180)
         return c
 
     def versions_in_comment(self, c: dict, release: str) -> dict:
