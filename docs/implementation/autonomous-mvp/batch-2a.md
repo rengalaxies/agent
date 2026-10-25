@@ -34,6 +34,11 @@ https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 | `c850731` | CI: PyYAML, демо без внешнего ядра, тесты 2Б в core-tests |
 | `8fbe2e3` | CI: Linux-замер задания с многими цитатами |
 | `b8ee515` | контекст остаётся текущим, если репозиторий был недоступен с момента prepare (баг от 2Б) |
+| `d155048` | тест подмены объекта читаем на Linux |
+| `336b92f`, `4f0f9f1`, `5bc270e` | CI: упавшие тесты и код отказа приёмки как annotations |
+| `bcb502a` | CI: итог замера как notice |
+| `8ac841d` | образ демо содержит ядро и конституцию |
+| `4d10897` | браузерная приёмка ждёт полное покрытие сценария A |
 
 ## Контракты
 
@@ -215,6 +220,66 @@ Linux-прогон этих наборов не выполнен.
 `os.geteuid` в `tools/agent_graph_demo`: на Windows из-за него падают 6 тестов
 `tests/graph_demo/test_runner.py`, на Linux они не затронуты.
 
+## Linux CI на PR #56
+
+PR [#56](https://github.com/rengalaxies/agent/pull/56) открыт владельцем 25.10.2026.
+Первый прогон (голова `4185450`) упал в трёх заданиях, все на прогоне
+`tests/graph`. Логи без входа недоступны, поэтому сначала добавлен вывод
+упавших тестов в публичные annotations (`tests/graph/ci_unittest.py`, `336b92f`).
+
+| Прогон | Core research regression | Graph evidence references | HTTP graph demo | P1 |
+|---|---|---|---|---|
+| `4185450` | упал | упал | упал на регрессии ядра | прошёл |
+| `336b92f`…`5bc270e` | прошёл | прошёл | регрессия ядра прошла; Docker-приёмка упала | прошёл |
+| `4d10897` | прошёл ([40176067532](https://github.com/rengalaxies/agent/actions/runs/40176067532)) | прошёл ([40176067529](https://github.com/rengalaxies/agent/actions/runs/40176067529)) | прошёл, включая Docker и браузерную приёмку ([40176067595](https://github.com/rengalaxies/agent/actions/runs/40176067595)) | прошёл ([40176067534](https://github.com/rengalaxies/agent/actions/runs/40176067534)) |
+
+Причина первых падений — один тест во всех трёх заданиях (по логам
+координатора: core 654 теста, failures=1; offline 191 тест, failures=1):
+`test_git_sources.SafeReadTests.test_object_whose_content_does_not_match_its_id_is_rejected`,
+`AssertionError: GraphError not raised`. Тест портил свою подмену:
+`os.chmod(path, stat.S_IWRITE)` на Windows снимает только флаг «только чтение»,
+а на Linux ставит режим `0o200`. Git не мог открыть файл объекта, сообщал его
+как отсутствующий, и ядро записывало пробел `object_unavailable` вместо отказа.
+Проверка хеша в `git_sources` при этом не обходилась: она просто не
+вызывалась для объекта, который git не отдал. С режимом `0o644` подмена
+читается, и тест получает `object_hash_mismatch` (`d155048`, задание offline
+зелёное с `336b92f`). Остальные падения, которые на Windows списаны на среду
+(symlink, SQLite в temp, `os.geteuid`, shebang), на Linux не воспроизвелись.
+Числа «2 failures и 28 errors» в сообщениях — это Windows-прогон пачки 3 с
+CRLF-выпиской, не 2А.
+
+Демо-приёмка («Real Docker and browser»):
+
+1. `5bc270e`: `{"status": "FAIL", "code": "docker_operation_failed"}`. Образ
+   `infra/agent_graph_demo/Dockerfile` не содержал `src/agent_graph`, а
+   приложение демо с 2А импортирует ядро; `check_packaging.py` внутри образа
+   падал на импорте. Ленивый импорт не применён намеренно: приёмка позеленела
+   бы, а веб-приложение в поставляемом образе не запустилось бы. По
+   разрешению координатора `8ac841d` кладёт в образ `src/agent_graph` и
+   `constitutions/agent-service-v1.yaml` и допускает их в `.dockerignore`
+   (без этого COPY не находит файлы). `core.lock.json` и монтирование `/core`
+   остаются до 5А.
+2. `8ac841d`: Docker-шаг прошёл, приёмка дала `acceptance_failed`. Браузерная
+   проверка `tests/graph_demo/browser_acceptance.py` ждала текст покрытия
+   «Неполные данные»; он появлялся только из-за шумового пробела на
+   декораторах маршрутов. Сценарий A теперь полон в рамках профиля, проверка
+   ждёт «Обследован разрешённый корпус» и оговорку о недоказанной семантике
+   (`4d10897`).
+
+Linux-замер задания с многими цитатами (прогон
+[40174700283](https://github.com/rengalaxies/agent/actions/runs/40174700283),
+job `citation-measurement`, коммит `bcb502a`, публичная annotation): Linux 6.17 (Azure), Python 3.12.15, 4 CPU; 200 файлов-
+потребителей, 402 уникальные цитаты.
+
+| Режим | Процессы ядра | Время | Пиковая RSS процесса |
+|---|---:|---:|---:|
+| один `evidence_batch` (prepare, analyze, dependencies, batch) | 4 | 0,88 с | 37–39 МиБ |
+| процесс на цитату (3 + 402) | 405 | 54,5 с | до 37 МиБ на процесс |
+
+Шаги пакетного режима: prepare_context 0,36 с, analyze_change 0,24 с,
+dependencies 0,14 с, evidence_batch 0,14 с. Это один прогон на одном раннере,
+без повторов; разброс не измерен.
+
 ## Тексты PR для владельца
 
 Из сессий PR не открыть: нет `gh`, браузер не вошёл в GitHub. Стек на
@@ -223,7 +288,7 @@ Linux-прогон этих наборов не выполнен.
 | PR | Ветка | База | Сливать |
 |---|---|---|---|
 | 2А | `claude/mvp-2a-core-205322` | `main` | первым |
-| 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А, когда закрыт блокер из STATUS |
+| 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А |
 | 4 | `claude/mvp-4-service-2a` | `claude/mvp-3-runtime-2a` | после 3, когда ветка 4 вольёт ветку 3 |
 | 2Б | `claude/mvp-2b-prep-9d9655` | `claude/mvp-2a-core-205322` | после 2А; после слияния 3 пересобрать manifest 2Б |
 
@@ -278,12 +343,13 @@ https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/
 - Миграция store v1 → v2 с резервной копией; старые контексты и исправления читаются.
 - Адаптер `access-log-jsonl-1` и стенд с настоящими HTTP-вызовами.
 - Контракт `agent-graph-output` 2.1: только добавления — runtime-коды и `Claim.subject`.
+- Инструменты модели `graph_find`, `graph_neighbors`, `graph_impact`, `graph_relationship`, `graph_owner` в конституции `agent-service-v1` и исполнителе; результаты ограничены scope и правами политики.
 
 ## Проверки
 
 Офлайн на Windows: тесты `test_graph_store`, `test_graph_query`, `test_graph_view`, `test_runtime_observations`, `test_output_contracts` OK; полный `tests/graph` без новых падений против базы. Приёмка раздела 9 по тестам — в `docs/implementation/autonomous-mvp/batch-3.md`.
 
-Не проверено: Linux (первый прогон — этот PR), подключение к runtime-источнику клиента (нет доступа). До слияния: кандидат зависимости должен устаревать при смене карты адресов сервисов (см. STATUS.md, раздел 2А).
+Не проверено: Linux (первый прогон — этот PR), подключение к runtime-источнику клиента (нет доступа). Предложение устаревает и при смене процитированного файла, и при смене карты адресов или требований процитированных репозиториев.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```

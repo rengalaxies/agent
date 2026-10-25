@@ -47,11 +47,12 @@ jobs:
       - name: API, queue, recovery and real CLI tests
         run: |
           mkdir -p work
-          python -m unittest discover -s tests/graph_demo -t . -v > work/app-tests.log 2>&1
+          python tests/graph/ci_unittest.py discover -s tests/graph_demo -t . -v > work/app-tests.log 2>&1             || { grep '^::error' work/app-tests.log; exit 1; }
           python -m ruff check src/agent_graph_demo examples/agent_graph_demo tools/agent_graph_demo tests/graph_demo --select F401,F811,F841
           node --check src/agent_graph_demo/web/app.js
       - name: Core regression on this checkout
-        run: PYTHONPATH=src:. python -m unittest discover -s tests/graph -t . -v > work/core-tests.log 2>&1
+        run: |
+          PYTHONPATH=src:. python tests/graph/ci_unittest.py discover -s tests/graph -t . -v > work/core-tests.log 2>&1             || { grep '^::error' work/core-tests.log; exit 1; }
       - name: Prepare wheelhouse and build off-VM
         id: image
         run: |
@@ -59,7 +60,11 @@ jobs:
           docker build --network=none -f infra/agent_graph_demo/Dockerfile --build-arg PRODUCT_SHA="$GITHUB_SHA" -t agent-graph-demo:accept .
           echo "image_id=$(docker image inspect agent-graph-demo:accept --format '{{.Id}}')" >> "$GITHUB_OUTPUT"
       - name: Real Docker and browser A-B-D-E, lifecycle and five shows
-        run: python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROOT" --image '${{ steps.image.outputs.image_id }}' --product-sha "$GITHUB_SHA" --output work/acceptance
+        # On failure only exception lines become annotations (logs need sign-in);
+        # other output may hold the throwaway acceptance password and stays in the log.
+        run: |
+          set -o pipefail
+          python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROOT" --image '${{ steps.image.outputs.image_id }}' --product-sha "$GITHUB_SHA" --output work/acceptance 2>&1 | tee work/accept.log             || { grep -E '^\{"status": "FAIL"|^[A-Za-z_.]*(Error|Exception)|^  File "' work/accept.log | tail -n 8 | sed 's/^/::error title=demo acceptance::/'; exit 1; }
       - name: Safe acceptance artifacts only
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
