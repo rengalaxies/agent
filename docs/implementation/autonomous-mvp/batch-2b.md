@@ -321,10 +321,14 @@ ruff check tools/autonomous_mvp --select F401,F811,F841      # 0.17.1, All check
 поддельные refs, достаточная гипотеза или кандидат сверх профиля как факт дают DISABLED;
 пропущенная фаза evaluation не уменьшает знаменатель.
 
+На Linux офлайн-тесты 2Б прошли в PR CI:
+[rengalaxies/agent#59](https://github.com/rengalaxies/agent/pull/59), head `95decda`, проверки verify,
+core и configuration зелёные. В core входит шаг `core-tests.yml` "Batch 2B runner tests (when the
+branch has them)", то есть `tools/autonomous_mvp/tests` на Linux с POSIX-хранилищем ядра. Результат
+проверок сообщил координатор, читавший логи CI; сам я логи не открывал, `gh` и токена на машине нет.
+
 Чего офлайн-проверка не доказывает: работу настоящего HTTPS к Cloud.ru, поддержку json_schema у
-Qwen3.6, качество моделей, реальные latency и стоимость. На Linux тесты 2Б пройдут в PR CI:
-`core-tests.yml` с `c850731` запускает `tools/autonomous_mvp/tests`; локально проверен только
-Windows.
+Qwen3.6, качество моделей, реальные latency и стоимость.
 
 ## Живой прогон: точная последовательность
 
@@ -426,8 +430,8 @@ gh workflow run autonomous-mvp-model.yml --repo rengalaxies/agent --ref main -f 
 
 ## Ограничения и открытые вопросы
 
-- **Тесты 2Б на Linux ещё не запускались.** `core-tests.yml` их уже подключает (`c850731`), но CI
-  на этой ветке не смотрел: без `gh` и токена результат проверок здесь не виден.
+- **Живой прогон не проверен.** Он ждёт merge стека в `main`, проверку секрета
+  `CLOUDRU_FOUNDATION_API_KEY` режимом `preflight` и окружение `autonomous-mvp-live` с reviewer.
 - DNS-разрешение в `http.client` не прерывается сроком. Поздний ответ исполнитель всё равно
   отбрасывает, но сам запрос может длиться дольше срока.
 - Корпус синтетический. Он квалифицирует цикл модели на контролируемых случаях, а не пользу на
