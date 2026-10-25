@@ -1,0 +1,193 @@
+name: Autonomous MVP model qualification (manual, accepted main only)
+
+# Batch 2B. Dispatch only: no push/pull_request trigger, so PR CI never calls the
+# paid model and fork code never receives the secret. Every job checks out main
+# at the exact SHA given by the owner and refuses Actions reruns.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        required: true
+        description: offline has no secret; preflight lists models (0 tokens); phases spend tokens once per model
+        options: [offline, preflight, transport, development, evaluation-1, evaluation-2, evaluation-3, report]
+      expected_main_sha:
+        type: string
+        required: true
+        description: Exact accepted main SHA (40 hex)
+      program:
+        type: choice
+        options: ['2b-r1']
+        default: '2b-r1'
+      model:
+        type: choice
+        options: [all, openai/gpt-oss-120b, Qwen/Qwen3-Coder-Next, Qwen/Qwen3.6-35B-A3B]
+        default: all
+
+permissions:
+  contents: read
+
+concurrency:
+  group: autonomous-mvp-${{ inputs.program }}-${{ inputs.mode }}
+  cancel-in-progress: false
+
+env:
+  PYTHONPATH: '.:src'
+  EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+  PROGRAM: ${{ inputs.program }}
+
+jobs:
+  offline:
+    if: github.repository == 'rengalaxies/agent' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      models: ${{ steps.models.outputs.models }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_MAIN_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runner dependencies
+        run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7'
+      - name: Offline runner, scorer, ledger and adapter tests (fake transport only)
+        run: python -m unittest discover -s tools/autonomous_mvp/tests -t . -v
+      - name: Corpus, executed oracle and manifest are current
+        run: |
+          python tools/autonomous_mvp/generate_cases.py --check
+          python -m tools.autonomous_mvp.oracle_check --program "experiments/autonomous_mvp/programs/$PROGRAM" --output work/autonomous-mvp/oracle-check.json
+          python -m tools.autonomous_mvp.program --program "$PROGRAM" --check
+      - name: Select models of the program
+        id: models
+        env:
+          MODEL_INPUT: ${{ inputs.model }}
+        run: |
+          python - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json, os
+          ids = [m["id"] for m in json.load(open(f"experiments/autonomous_mvp/programs/{os.environ['PROGRAM']}/program.json"))["models"]]
+          wanted = ids if os.environ["MODEL_INPUT"] == "all" else [os.environ["MODEL_INPUT"]]
+          assert set(wanted) <= set(ids), "model not in program"
+          print("models=" + json.dumps(wanted))
+          EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: autonomous-mvp-offline
+          path: work/autonomous-mvp/oracle-check.json
+          if-no-files-found: error
+
+  preflight:
+    needs: offline
+    if: inputs.mode == 'preflight'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Owner can add a required reviewer and a main-only branch rule to this environment;
+    # then no job that receives the model secret starts without that approval.
+    environment: autonomous-mvp-live
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7'
+      - name: List models with the Foundation Models key (no tokens spent)
+        env:
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+        run: python -m tools.autonomous_mvp.runner preflight --program "$PROGRAM" --output work/autonomous-mvp
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autonomous-mvp-preflight
+          path: work/autonomous-mvp/preflight.json
+          if-no-files-found: warn
+
+  phase:
+    needs: offline
+    if: contains(fromJSON('["transport","development","evaluation-1","evaluation-2","evaluation-3"]'), inputs.mode)
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    environment: autonomous-mvp-live
+    permissions:
+      contents: write # accounting branch experiment-state/autonomous-mvp/<run_id>/<model> only
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        model: ${{ fromJSON(needs.offline.outputs.models) }}
+    concurrency:
+      group: autonomous-mvp-${{ inputs.program }}-${{ matrix.model }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7'
+      - name: Execute the phase once for this model
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+          PHASE: ${{ inputs.mode }}
+          MODEL: ${{ matrix.model }}
+        run: >-
+          python -m tools.autonomous_mvp.runner execute --program "$PROGRAM" --phase "$PHASE" --model "$MODEL"
+          --source-sha "$EXPECTED_MAIN_SHA" --output work/autonomous-mvp
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autonomous-mvp-ledger-${{ inputs.mode }}-${{ strategy.job-index }}
+          path: work/autonomous-mvp/ledgers
+          if-no-files-found: warn
+
+  report:
+    needs: [offline, phase]
+    if: always() && needs.offline.result == 'success' && (inputs.mode == 'report' || needs.phase.result != 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7'
+      - name: Score all ledgers of the program from the accounting branches (no model secret)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m tools.autonomous_mvp.runner report --program "$PROGRAM" --output work/autonomous-mvp/report
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f work/autonomous-mvp/report/report.md ]; then cat work/autonomous-mvp/report/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autonomous-mvp-report
+          path: work/autonomous-mvp/report
+          if-no-files-found: warn
