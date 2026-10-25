@@ -37,6 +37,8 @@ https://github.com/rengalaxies/agent/compare/main...claude/mvp-2a-core-205322
 | `d155048` | тест подмены объекта читаем на Linux |
 | `336b92f`, `4f0f9f1`, `5bc270e` | CI: упавшие тесты и код отказа приёмки как annotations |
 | `bcb502a` | CI: итог замера как notice |
+| `8ac841d` | образ демо содержит ядро и конституцию |
+| `4d10897` | браузерная приёмка ждёт полное покрытие сценария A |
 
 ## Контракты
 
@@ -228,22 +230,45 @@ PR [#56](https://github.com/rengalaxies/agent/pull/56) открыт владел
 | Прогон | Core research regression | Graph evidence references | HTTP graph demo | P1 |
 |---|---|---|---|---|
 | `4185450` | упал | упал | упал на регрессии ядра | прошёл |
-| `336b92f` и позже | прошёл | прошёл | регрессия ядра прошла; Docker-приёмка упала | прошёл |
+| `336b92f`…`5bc270e` | прошёл | прошёл | регрессия ядра прошла; Docker-приёмка упала | прошёл |
+| `4d10897` | прошёл ([40176067532](https://github.com/rengalaxies/agent/actions/runs/40176067532)) | прошёл ([40176067529](https://github.com/rengalaxies/agent/actions/runs/40176067529)) | прошёл, включая Docker и браузерную приёмку ([40176067595](https://github.com/rengalaxies/agent/actions/runs/40176067595)) | прошёл ([40176067534](https://github.com/rengalaxies/agent/actions/runs/40176067534)) |
 
-Причина первых падений — тест подмены Git-объекта: `os.chmod(path, stat.S_IWRITE)`
-на Windows снимает только флаг «только чтение», а на Linux ставит режим `0o200`,
-git не мог прочитать объект, и тест получал другую ошибку (`d155048`).
+Причина первых падений — один тест во всех трёх заданиях (по логам
+координатора: core 654 теста, failures=1; offline 191 тест, failures=1):
+`test_git_sources.SafeReadTests.test_object_whose_content_does_not_match_its_id_is_rejected`,
+`AssertionError: GraphError not raised`. Тест портил свою подмену:
+`os.chmod(path, stat.S_IWRITE)` на Windows снимает только флаг «только чтение»,
+а на Linux ставит режим `0o200`. Git не мог открыть файл объекта, сообщал его
+как отсутствующий, и ядро записывало пробел `object_unavailable` вместо отказа.
+Проверка хеша в `git_sources` при этом не обходилась: она просто не
+вызывалась для объекта, который git не отдал. С режимом `0o644` подмена
+читается, и тест получает `object_hash_mismatch` (`d155048`, задание offline
+зелёное с `336b92f`). Остальные падения, которые на Windows списаны на среду
+(symlink, SQLite в temp, `os.geteuid`, shebang), на Linux не воспроизвелись.
+Числа «2 failures и 28 errors» в сообщениях — это Windows-прогон пачки 3 с
+CRLF-выпиской, не 2А.
 
-Остаток: шаг «Real Docker and browser» демо даёт
-`{"status": "FAIL", "code": "docker_operation_failed"}` (annotation, `5bc270e`).
-Образ `infra/agent_graph_demo/Dockerfile` не содержит `src/agent_graph`, а
-приложение демо с 2А импортирует ядро; `check_packaging.py` внутри образа падает
-на импорте. Ленивый импорт не применён намеренно: приёмка позеленела бы, а
-веб-приложение в поставляемом образе всё равно не запустилось бы. Нужная
-правка Dockerfile записана для mvp-5a-box (общая папка заметок сессий).
+Демо-приёмка («Real Docker and browser»):
 
-Linux-замер задания с многими цитатами (job `citation-measurement`, `bcb502a`,
-публичная annotation): Linux 6.17 (Azure), Python 3.12.15, 4 CPU; 200 файлов-
+1. `5bc270e`: `{"status": "FAIL", "code": "docker_operation_failed"}`. Образ
+   `infra/agent_graph_demo/Dockerfile` не содержал `src/agent_graph`, а
+   приложение демо с 2А импортирует ядро; `check_packaging.py` внутри образа
+   падал на импорте. Ленивый импорт не применён намеренно: приёмка позеленела
+   бы, а веб-приложение в поставляемом образе не запустилось бы. По
+   разрешению координатора `8ac841d` кладёт в образ `src/agent_graph` и
+   `constitutions/agent-service-v1.yaml` и допускает их в `.dockerignore`
+   (без этого COPY не находит файлы). `core.lock.json` и монтирование `/core`
+   остаются до 5А.
+2. `8ac841d`: Docker-шаг прошёл, приёмка дала `acceptance_failed`. Браузерная
+   проверка `tests/graph_demo/browser_acceptance.py` ждала текст покрытия
+   «Неполные данные»; он появлялся только из-за шумового пробела на
+   декораторах маршрутов. Сценарий A теперь полон в рамках профиля, проверка
+   ждёт «Обследован разрешённый корпус» и оговорку о недоказанной семантике
+   (`4d10897`).
+
+Linux-замер задания с многими цитатами (прогон
+[40174700283](https://github.com/rengalaxies/agent/actions/runs/40174700283),
+job `citation-measurement`, коммит `bcb502a`, публичная annotation): Linux 6.17 (Azure), Python 3.12.15, 4 CPU; 200 файлов-
 потребителей, 402 уникальные цитаты.
 
 | Режим | Процессы ядра | Время | Пиковая RSS процесса |
