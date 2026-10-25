@@ -103,14 +103,20 @@ class ChatModel:
     def __init__(self, config):
         self.config = config
 
-    def complete(self, messages, *, cancel=None, on_finished=None, deadline_epoch=None, metadata=None):
+    def complete_raw(self, messages, schema, *, cancel=None, on_finished=None, deadline_epoch=None, metadata=None):
+        """actions-v3: return (content, usage) unparsed; the caller's layers parse it."""
+        return self.complete(messages, cancel=cancel, on_finished=on_finished, deadline_epoch=deadline_epoch,
+                             metadata=metadata, _schema=schema)
+
+    def complete(self, messages, *, cancel=None, on_finished=None, deadline_epoch=None, metadata=None,
+                 _schema=None):
         # Only the request worker owns its finalizer. A timed-out DNS call may
         # still unwind, retaining the installation lock until it actually ends.
         flight = _Flight(cancel or threading.Event(), self.config.timeout_seconds, deadline_epoch, metadata)
 
         def request():
             try:
-                flight.result = self._request(messages, flight)
+                flight.result = self._request(messages, flight, _schema)
                 flight.check()
             except Exception as exc:
                 try:
@@ -150,14 +156,15 @@ class ChatModel:
             raise flight.error
         return flight.result
 
-    def _request(self, messages, flight):
+    def _request(self, messages, flight, raw_schema=None):
         flight.check()
         config = self.config
+        schema = raw_schema if raw_schema is not None else model_action_schema(
+            ReferenceReply if config.protocol == "evidence-refs-v2" else ModelReply)
         payload = canonical(dict(model=config.model, messages=messages, stream=False,
                                  **{config.token_parameter: config.max_output_tokens}, temperature=0,
                                  response_format=dict(type="json_schema", json_schema=dict(
-                                     name="graph_action", strict=True, schema=model_action_schema(
-                                         ReferenceReply if config.protocol == "evidence-refs-v2" else ModelReply))))).encode()
+                                     name="graph_action", strict=True, schema=schema)))).encode()
         if len(payload) > config.max_prompt_bytes:
             raise GraphError("model_input_limit")
         u = urlsplit(config.endpoint)
@@ -245,8 +252,11 @@ class ChatModel:
             if (not isinstance(msg, dict) or not isinstance(msg.get("content"), str)
                     or msg.get("refusal") or msg.get("tool_calls")):
                 raise GraphError("model_incomplete_or_refused")
-            reply_type = ReferenceReply if config.protocol == "evidence-refs-v2" else ModelReply
-            reply = reply_type.model_validate(load_json(msg["content"]))
+            if raw_schema is None:
+                reply_type = ReferenceReply if config.protocol == "evidence-refs-v2" else ModelReply
+                reply = reply_type.model_validate(load_json(msg["content"]))
+            else:
+                reply = msg["content"]  # parsed by the json/schema layers, not here
             usage = data.get("usage", {})
             if (not isinstance(usage, dict)
                     or type(usage.get("prompt_tokens")) is not int or usage["prompt_tokens"] < 0
@@ -276,6 +286,9 @@ def investigate(graph, context_id, *, model=None, cancel=None, deadline_epoch=No
     config = graph.policy.model
     if config is None:
         raise GraphError("model_not_configured")
+    if config.protocol == "actions-v3":
+        from .executor import run_investigation
+        return run_investigation(graph, context_id, model=model, cancel=cancel, deadline_epoch=deadline_epoch)
     context = graph.context(context_id)
     graph._current(context)
     cancel = cancel or threading.Event()

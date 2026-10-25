@@ -1,0 +1,593 @@
+{
+  "affected": [
+    {
+      "owner": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "source": "installation_mapping",
+        "source_version": "ownership-1",
+        "status": "KNOWN",
+        "teams": [
+          {
+            "installation_id": "acme",
+            "kind": "team",
+            "team": "team-data"
+          }
+        ]
+      },
+      "relationship_refs": [
+        "rel:54e2c0a11bcb7c853960efcb929a170646b1819d"
+      ],
+      "service": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "archive"
+      }
+    },
+    {
+      "owner": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "source": "installation_mapping",
+        "source_version": "ownership-1",
+        "status": "KNOWN",
+        "teams": [
+          {
+            "installation_id": "acme",
+            "kind": "team",
+            "team": "team-reporting"
+          }
+        ]
+      },
+      "relationship_refs": [
+        "rel:a4779013fb20dd675c2bfd246f01e43df267258e"
+      ],
+      "service": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "reporting"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "claim_refs": [
+        "claim:e87f309ac398700b03485ed7ab2c81045540614d",
+        "claim:2effebddec0083ac7a8ebdce53a97d1517f1631a"
+      ],
+      "consumer": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "reporting"
+      },
+      "text": "Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits"
+    },
+    {
+      "claim_refs": [
+        "claim:57df9b39e3bae40e110fc7bec63743e61fd655d7",
+        "claim:e61a8072a3ffef1808a4aae4366c4b3c82772aa3"
+      ],
+      "consumer": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "archive"
+      },
+      "text": "Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits"
+    }
+  ],
+  "claims": [
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-4.",
+      "evidence_refs": [
+        "ev:b3b1307f8a8bae5bf9ca02038e9d354917f68b23",
+        "ev:c365ef43f3d2de0f545c3f7649cc35789e86671e",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "id": "claim:2effebddec0083ac7a8ebdce53a97d1517f1631a",
+      "kind": "fact",
+      "statement": "reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED.",
+      "uncertainty": "LOW",
+      "unknowns": []
+    },
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-4.",
+      "evidence_refs": [
+        "ev:4c379be5c18ce771bcaf6c8fef728822ace09a54",
+        "ev:b3b1307f8a8bae5bf9ca02038e9d354917f68b23",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "id": "claim:e87f309ac398700b03485ed7ab2c81045540614d",
+      "kind": "hypothesis",
+      "statement": "POSSIBLE_TRUNCATION: If helper obeys page_size, result set exceeds 20, and consumer needs complete data.",
+      "uncertainty": "MEDIUM",
+      "unknowns": [
+        "helper_semantics_unknown",
+        "result_set_size_unknown"
+      ]
+    },
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-4.",
+      "evidence_refs": [
+        "ev:96328f06b162eaf110c7862c58fac80452a862be",
+        "ev:a6c330d7ccaefec297650a771053722c9875e83e",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "id": "claim:e61a8072a3ffef1808a4aae4366c4b3c82772aa3",
+      "kind": "fact",
+      "statement": "archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED.",
+      "uncertainty": "LOW",
+      "unknowns": []
+    },
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-4.",
+      "evidence_refs": [
+        "ev:4c379be5c18ce771bcaf6c8fef728822ace09a54",
+        "ev:a6c330d7ccaefec297650a771053722c9875e83e",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "id": "claim:57df9b39e3bae40e110fc7bec63743e61fd655d7",
+      "kind": "hypothesis",
+      "statement": "RECHECK_REQUIRED: If helper obeys page_size, result set exceeds 20, and consumer needs complete data.",
+      "uncertainty": "HIGH",
+      "unknowns": [
+        "helper_semantics_unknown",
+        "requirement_unknown"
+      ]
+    }
+  ],
+  "code_version": "test",
+  "constitution_version": "agent-service-v1.0:test",
+  "correlation_id": "corr-1",
+  "costs": {
+    "completion_tokens": 0,
+    "currency": null,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "reserved_micro": null
+  },
+  "deltas": [
+    {
+      "after": 20,
+      "before": 100,
+      "code": "PAGE_DEFAULT_CHANGED",
+      "evidence_refs": [
+        "ev:4c379be5c18ce771bcaf6c8fef728822ace09a54",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "operation": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      }
+    }
+  ],
+  "environment": "prod",
+  "event_id": "delivery-1",
+  "evidence": [
+    {
+      "blob": "0b7f7c10d31df4ea6a36aae3dea0ff9f78e8207a",
+      "commit": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549",
+      "content_sha256": "41f0da6cf09500f70d17cda0da9e4d668a65554709ce7933f802104234adb895",
+      "end_line": 9,
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:4c379be5c18ce771bcaf6c8fef728822ace09a54",
+      "origin": "code",
+      "path": "api.py",
+      "provenance": "AUTHENTIC",
+      "repository": "orders",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 7,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "orders"
+      ]
+    },
+    {
+      "blob": "aafb6a76d1a277810e5b1de228bb4e7a86f34c35",
+      "commit": "98675b17099a9485c4d26a0ec5bb47de1a10c7ef",
+      "content_sha256": "fb733703d80ccf51843ffd79f83c58960f68c5bf0cb37d2b0d3308c36ca103f3",
+      "end_line": 9,
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:d2d042865eec34393fbeb1298ed26fa40e968ada",
+      "origin": "code",
+      "path": "api.py",
+      "provenance": "AUTHENTIC",
+      "repository": "orders",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 7,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "orders"
+      ]
+    },
+    {
+      "blob": "f399a9a0cbbb2ec5a29a358c703caf6d923abe0e",
+      "commit": "2cba012ba20430d7fde630b24c480a254e909971",
+      "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
+      "end_line": 7,
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:b3b1307f8a8bae5bf9ca02038e9d354917f68b23",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "reporting",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 7,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "reporting"
+      ]
+    },
+    {
+      "blob": "f399a9a0cbbb2ec5a29a358c703caf6d923abe0e",
+      "commit": "2cba012ba20430d7fde630b24c480a254e909971",
+      "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
+      "end_line": 9,
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:c365ef43f3d2de0f545c3f7649cc35789e86671e",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "reporting",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 6,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "reporting"
+      ]
+    },
+    {
+      "blob": "41353c78be9a41f12bcd537c8e8b131d121f0703",
+      "commit": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+      "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
+      "end_line": 9,
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:a6c330d7ccaefec297650a771053722c9875e83e",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "archive",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 9,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "archive"
+      ]
+    },
+    {
+      "blob": "41353c78be9a41f12bcd537c8e8b131d121f0703",
+      "commit": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+      "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
+      "end_line": 15,
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:96328f06b162eaf110c7862c58fac80452a862be",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "archive",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 6,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "archive"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "callsite": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "callsite",
+        "line": 7,
+        "path": "client.py",
+        "repository": "reporting",
+        "service": "reporting"
+      },
+      "code": "POSSIBLE_TRUNCATION",
+      "compatibility_confirmed": false,
+      "consumer": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "reporting"
+      },
+      "dependency_freshness": "CURRENT",
+      "evidence_refs": [
+        "ev:b3b1307f8a8bae5bf9ca02038e9d354917f68b23"
+      ],
+      "requirement_ids": [
+        "reporting-complete"
+      ],
+      "test_executed": false,
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "callsite": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "callsite",
+        "line": 9,
+        "path": "client.py",
+        "repository": "archive",
+        "service": "archive"
+      },
+      "code": "RECHECK_REQUIRED",
+      "compatibility_confirmed": false,
+      "consumer": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "archive"
+      },
+      "dependency_freshness": "CURRENT",
+      "evidence_refs": [
+        "ev:a6c330d7ccaefec297650a771053722c9875e83e"
+      ],
+      "requirement_ids": [],
+      "test_executed": false,
+      "usage": "CURSOR_LOOP_OBSERVED"
+    }
+  ],
+  "gaps": [],
+  "graph_version": "graph-1",
+  "impact_paths": [
+    {
+      "relationship_refs": [
+        "rel:a4779013fb20dd675c2bfd246f01e43df267258e"
+      ],
+      "summary": "reporting -> orders GET /orders"
+    },
+    {
+      "relationship_refs": [
+        "rel:54e2c0a11bcb7c853960efcb929a170646b1819d"
+      ],
+      "summary": "archive -> orders GET /orders"
+    }
+  ],
+  "installation_id": "acme",
+  "kind": "analysis_result",
+  "model": null,
+  "profile": "http-requests-4",
+  "reason_code": "impact_found_within_profile",
+  "relationships": [
+    {
+      "change_origin": "code_scan",
+      "evidence_refs": [
+        "ev:b3b1307f8a8bae5bf9ca02038e9d354917f68b23",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "rel:a4779013fb20dd675c2bfd246f01e43df267258e",
+      "kind": "calls",
+      "origins": [
+        "code"
+      ],
+      "source": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "reporting"
+      },
+      "status": "ACTIVE",
+      "target": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "visibility": [
+        "orders",
+        "reporting"
+      ]
+    },
+    {
+      "change_origin": "code_scan",
+      "evidence_refs": [
+        "ev:a6c330d7ccaefec297650a771053722c9875e83e",
+        "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
+      ],
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "rel:54e2c0a11bcb7c853960efcb929a170646b1819d",
+      "kind": "calls",
+      "origins": [
+        "code"
+      ],
+      "source": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "service",
+        "service": "archive"
+      },
+      "status": "ACTIVE",
+      "target": {
+        "environment": "prod",
+        "installation_id": "acme",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "visibility": [
+        "archive",
+        "orders"
+      ]
+    }
+  ],
+  "request_id": "req-pr-7",
+  "resource_version": "98675b17099a9485c4d26a0ec5bb47de1a10c7ef",
+  "schema": "agent-graph-output",
+  "schema_version": "2.0",
+  "snapshots": [
+    {
+      "commit": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549",
+      "mode": "GIT_COMMIT",
+      "repository": "orders",
+      "role": "base",
+      "tree": "7f009a27f955f0b172f350fc5e9ba254b3077b2c"
+    },
+    {
+      "commit": "98675b17099a9485c4d26a0ec5bb47de1a10c7ef",
+      "mode": "GIT_COMMIT",
+      "repository": "orders",
+      "role": "head",
+      "tree": "f442f09a88fd83db36827d9265e636ccdcd77713"
+    },
+    {
+      "commit": "2cba012ba20430d7fde630b24c480a254e909971",
+      "mode": "GIT_COMMIT",
+      "repository": "reporting",
+      "role": "consumer",
+      "tree": "efbfea36608b9ca90ace50ffb31397bec6b51fe9"
+    },
+    {
+      "commit": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+      "mode": "GIT_COMMIT",
+      "repository": "archive",
+      "role": "consumer",
+      "tree": "9f7908f7849316bacecefc83e3ca2d538cc62a57"
+    },
+    {
+      "commit": "46a72606b6f05cb92999cbaf529869611bb0c01f",
+      "mode": "GIT_COMMIT",
+      "repository": "billing",
+      "role": "consumer",
+      "tree": "4e9ea6f94b429d135c3b8f72bdd81201957d47e6"
+    },
+    {
+      "commit": "89e053921b37ec5c0ae5f6ffca5d2936b6e0e89b",
+      "mode": "GIT_COMMIT",
+      "repository": "audit",
+      "role": "consumer",
+      "tree": "58525dc2cc9ce9ea2672ce7d203b975ff347a466"
+    }
+  ],
+  "source_freshness": [
+    {
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "orders",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "reporting",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "archive",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "billing",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-10-24T17:06:53.082692Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "audit",
+      "source_kind": "git"
+    }
+  ],
+  "status": "USEFUL",
+  "summary": "2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
+  "superseded_by": null,
+  "timings": {
+    "finished_at": "2026-10-24T12:00:01Z",
+    "seconds": {},
+    "started_at": "2026-10-24T12:00:00Z"
+  },
+  "trigger_kind": "pr",
+  "unknowns": [
+    {
+      "code": "requirement_unknown",
+      "subject": "archive"
+    }
+  ],
+  "usefulness_confirmed": false
+}

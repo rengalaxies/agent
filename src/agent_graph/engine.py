@@ -8,8 +8,11 @@ import uuid
 from . import PROFILE, SCHEMA
 from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal
 from .discovery import extract
-from .sources import collect
+from .sources import collect, pinned_freshness, pinned_only
 from .store import Store
+
+
+MAX_EVIDENCE_BATCH = 5000
 
 
 def now():
@@ -21,26 +24,30 @@ class Graph:
         self.policy, self.store = policy, store
         self.view = policy.view_id()
 
-    def prepare_context(self, task="", operation_id=None):
+    def prepare_context(self, task="", operation_id=None, revisions=None):
+        """revisions: commit per git repository; worktree repositories stay unpinned."""
         self.policy.require("maintain")
         self.policy.require("read_context")
         if not isinstance(task, str) or len(task) > 2000:
             raise GraphError("invalid_task")
         generation, previous = self.store.head(self.view)
         started = time.monotonic()
-        c = collect(self.policy)
+        c = collect(self.policy, revisions)
         graph = extract(self.policy, c)
-        checked = collect(self.policy)
+        # Pinned objects cannot change under the scan; a worktree can.
+        checked = c if pinned_only(self.policy) else collect(self.policy, revisions)
         if checked["basis"] != c["basis"]:
             raise GraphError("sources_changed_during_scan")
         context = dict(schema=SCHEMA, profile=PROFILE, run_id=uuid.uuid4().hex,
                        installation_id=self.policy.installation_id, environment=self.policy.environment,
                        task=task, operation_id=operation_id, created_at=now(), created_epoch=time.time(),
                        basis=c["basis"], previous_context_id=previous, sources=c["sources"],
-                       inventory=c["inventory"], graph=graph,
+                       inventory=c["inventory"], graph=graph, snapshots=c["snapshots"],
+                       revisions=c["revisions"],
                        coverage="PARTIAL" if graph["gaps"] else "COMPLETE_WITHIN_PROFILE",
                        scope="authorized offline corpus; static grammar only; no global absence claim",
-                       metrics=dict(bytes_read=c["bytes_read"] + checked["bytes_read"], scan_passes=2,
+                       metrics=dict(bytes_read=c["bytes_read"] + (0 if checked is c else checked["bytes_read"]),
+                                    scan_passes=1 if checked is c else 2,
                                     prepare_seconds=time.monotonic() - started))
         return self.store.save(self.view, "context", context, generation)
 
@@ -50,9 +57,11 @@ class Graph:
 
     def freshness(self, context):
         self.policy.require("read_context")
+        if pinned_only(self.policy) and context.get("snapshots"):
+            return pinned_freshness(self.policy, context)
         expired = time.time() - context["created_epoch"] > self.policy.limits.freshness_seconds
         try:
-            c = collect(self.policy)
+            c = collect(self.policy, context.get("revisions"))
         except GraphError:
             return dict(status="UNKNOWN", assessed_at=now(), comparison_basis="CURRENT_CORPUS",
                         reasons=["current_corpus_unavailable"])
@@ -79,11 +88,46 @@ class Graph:
                       dependencies=[d for d in graph["dependencies"] if operation_id is None or d["operation_id"] == operation_id],
                       requirements=[r for r in graph["requirements"] if operation_id is None or r["operation_id"] == operation_id],
                       candidates=graph["candidates"], conflicts=graph["conflicts"], gaps=graph["gaps"],
+                      file_coverage=graph.get("file_coverage", []),
                       proposals=self.proposals(c, assessment=assessment), scope=c["scope"])
         return result
 
     def get_evidence(self, context_id, citation):
-        context = self.context(context_id)
+        return self._evidence(self.context(context_id), citation)
+
+    def evidence_batch(self, items):
+        """Validate many citations in one call; each item tries its contexts in order.
+
+        Replaces one CLI process per citation. A context is loaded once per batch.
+        Only not_found moves on to the next context; any other error is that item's result.
+        """
+        self.policy.require("read_context")
+        if not isinstance(items, list) or len(items) > MAX_EVIDENCE_BATCH:
+            raise GraphError("evidence_batch_limit")
+        loaded, results = {}, []
+        for item in items:
+            contexts = item.get("contexts") if isinstance(item, dict) else None
+            if not isinstance(contexts, list) or not 1 <= len(contexts) <= 4 or not all(
+                    isinstance(c, str) for c in contexts):
+                raise GraphError("invalid_evidence_batch")
+            outcome = None
+            for index, context_id in enumerate(contexts):
+                try:
+                    if context_id not in loaded:
+                        loaded[context_id] = self.context(context_id)
+                    outcome = dict(context_id=context_id, evidence=self._evidence(loaded[context_id], item.get("citation")))
+                    break
+                except GraphError as exc:
+                    outcome = dict(error=exc.code)
+                    if exc.code != "not_found":
+                        break
+                except ValueError:  # pydantic ValidationError of a malformed citation
+                    outcome = dict(error="invalid_citation")
+                    break
+            results.append(outcome)
+        return dict(schema=SCHEMA, results=results)
+
+    def _evidence(self, context, citation):
         citation = Citation.model_validate(citation) if isinstance(citation, dict) else citation
         source = context["sources"].get(citation.source_id)
         if not source:
@@ -146,12 +190,13 @@ class Graph:
             status="EXTERNAL_REPORTED", independently_verified=False,
             requirement_approval=False, grants_execution=False))
 
-    def analyze_change(self, base_context_id, task=""):
+    def analyze_change(self, base_context_id, task="", revisions=None):
+        """Compare a stored base context with a new head context (pinned by revisions)."""
         self.policy.require("maintain")
         base = self.context(base_context_id)
         if base.get("profile") != PROFILE:
             raise GraphError("base_profile_mismatch")
-        current = self.prepare_context(task or base["task"], base.get("operation_id"))
+        current = self.prepare_context(task or base["task"], base.get("operation_id"), revisions)
         old_ops = {o["id"]: o for o in base["graph"]["operations"]}
         new_ops = {o["id"]: o for o in current["graph"]["operations"]}
         findings, deltas = [], []
@@ -179,13 +224,21 @@ class Graph:
                 # The declaration changed but its default is outside the grammar on
                 # at least one side: unknown, never "no supported delta".
                 code = "PAGE_DEFAULT_UNRESOLVED"
+            elif (old.get("tracked_basis") is not None and new.get("tracked_basis") is not None
+                    and sorted(old["tracked_basis"]) != sorted(new["tracked_basis"])):
+                # The tracked declaration changed but no classifier knows how. Unknown,
+                # never "no change" and never a proven break. Helpers it calls are untracked.
+                code = "UNCLASSIFIED_OPERATION_CHANGE"
             if code is None:
                 continue
             def default(op):
                 return op.get("page_size_default") if op["default_known"] else "UNRESOLVED"
+            unclassified = code == "UNCLASSIFIED_OPERATION_CHANGE"
             delta = dict(operation_id=id, code=code,
-                         before=default(old) if code == "PAGE_DEFAULT_UNRESOLVED" else old.get("page_size_default"),
-                         after=default(new) if code == "PAGE_DEFAULT_UNRESOLVED"
+                         before="TRACKED_BASIS_CHANGED" if unclassified
+                         else default(old) if code == "PAGE_DEFAULT_UNRESOLVED" else old.get("page_size_default"),
+                         after="TRACKED_BASIS_CHANGED" if unclassified
+                         else default(new) if code == "PAGE_DEFAULT_UNRESOLVED"
                          else new.get("page_size_default") if new else None,
                          evidence=old["evidence"] + (new["evidence"] if new else []))
             deltas.append(delta)
@@ -204,12 +257,15 @@ class Graph:
                 rules = [r for r in current["graph"]["requirements"]
                          if r["operation_id"] == id and r["consumer"] == dep["consumer"]]
                 findings.append(dict(
-                    code="POSSIBLE_TRUNCATION" if risk and code != "OPERATION_REMOVED" else code if risk else "RECHECK_REQUIRED",
+                    code="UNCLASSIFIED_CHANGE_RECHECK" if unclassified
+                    else "POSSIBLE_TRUNCATION" if risk and code != "OPERATION_REMOVED" else code if risk
+                    else "RECHECK_REQUIRED",
                     dependency_id=dep["id"], consumer=dep["consumer"], usage=dep["usage"],
                     callsite=dict(repository=dep["repository"], path=dep["path"], line=dep["call_line"]),
                     dependency_freshness="CURRENT" if live else "STALE",
                     condition=(f"If helper obeys page_size, result set exceeds {after}, and consumer needs complete data"
-                               if limited else "If the changed declaration governs this call"),
+                               if limited else "The tracked declaration changed in a way no classifier covers"
+                               if unclassified else "If the changed declaration governs this call"),
                     evidence_stage="STATIC", evidence=delta["evidence"] + dep["evidence"] + dep["usage_evidence"],
                     requirement_ids=[r["id"] for r in rules],
                     check=(f"Run consumer with more than {after} records; compare full expected set, page traversal and explicit limits"
@@ -218,9 +274,13 @@ class Graph:
         result = dict(schema=SCHEMA, run_id=uuid.uuid4().hex, created_at=now(),
                       base_context_id=base_context_id, context_requested_id=base_context_id,
                       context_used_id=current["id"], base_basis=base["basis"], head_basis=current["basis"],
+                      base_snapshots=base.get("snapshots", []), head_snapshots=current["snapshots"],
                       deltas=deltas, findings=findings, coverage=current["coverage"],
                       gaps=current["graph"]["gaps"], conflicts=current["graph"]["conflicts"],
                       freshness=self.freshness(current), release_decision=None,
-                      unknowns=[] if deltas else ["no_supported_behavior_delta; arbitrary semantic changes are not classified"],
+                      unknowns=([] if deltas else ["no_supported_behavior_delta; arbitrary semantic changes are not classified"])
+                      + (["unclassified_change; tracked declaration changed outside known classifiers, not a proven break; "
+                          "helpers outside the declaration are not tracked"]
+                         if any(d["code"] == "UNCLASSIFIED_OPERATION_CHANGE" for d in deltas) else []),
                       drafts=[dict(consumer=f["consumer"], text=f["check"], sent=False) for f in findings])
         return self.store.save(self.view, "analysis", result)
