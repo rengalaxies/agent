@@ -1,0 +1,10 @@
+[Unit]
+Description=agent-service box: start provisioning when the owner writes box.yaml or secrets.env
+
+[Path]
+PathChanged=/etc/agent-service/secrets.env
+PathChanged=/etc/agent-service/box.yaml
+Unit=agent-service-box-provision.service
+
+[Install]
+WantedBy=paths.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=agent-service box: fetch pinned release, box install, box doctor
+Wants=network-online.target
+After=network-online.target cloud-final.service
+ConditionPathExists=/etc/agent-service-box-provision/release.env
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/agent-service-box-provision
+StandardOutput=append:/var/log/agent-service-box-provision.log
+StandardError=inherit
+TimeoutStartSec=1800
