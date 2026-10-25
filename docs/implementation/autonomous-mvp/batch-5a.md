@@ -1,12 +1,12 @@
 # Пачка 5А: коробка на Linux-ВМ
 
 Задача [#53](https://github.com/rengalaxies/agent/issues/53), первая часть. #53 не
-закрывается: Linux-приёмка ещё не прошла, 5Б не начата.
+закрывается: 5Б не начата, живые GitHub/Jira и реальная ВМ не проверены.
 
 Ветка `claude/objective-feistel-a46433`. Проверки этой сессии выполнены на Windows 11,
-Python 3.14.5, Git 2.55. Linux здесь нет: нет Docker, WSL и ВМ. Linux-приёмку делает
-workflow `.github/workflows/agent-service-box.yml`, он запустится, когда владелец
-откроет PR. До этого ни одна строка ниже не означает «проверено на Linux».
+Python 3.14.5, Git 2.55: Linux здесь нет. Linux-приёмку сделал workflow
+`.github/workflows/agent-service-box.yml` на [PR #60](https://github.com/rengalaxies/agent/pull/60):
+9 из 9 сценариев на установленном релизе с systemd, см. раздел «Linux».
 
 ## Состояние
 
@@ -14,8 +14,8 @@ workflow `.github/workflows/agent-service-box.yml`, он запустится, �
 |---|---|
 | Реализовано | закреплённый релиз с manifest, единый установщик `box` (plan, install, update, status, doctor, backup, backups, restore, rollback, sync-mirrors), три уровня готовности, Git-зеркала с таймером, ежедневная копия, откат с проверкой схемы, приёмка установленной коробки, Linux-workflow, правки демо-поставки |
 | Проверено офлайн (Windows) | 41 unit-тест коробки; 9 из 9 сценариев приёмки на установленном релизе с супервизором `process`; воспроизводимость архива (две сборки дают один sha256); 79 тестов `tests/service` без изменений |
-| Проверено на Linux | ничего. Workflow написан, но ещё не запускался |
-| Не проверено | systemd-путь целиком (unit, hardening, `Restart=on-failure`, таймеры, пользователь `agent-service`); живые GitHub/Jira; модель; реальная ВМ и её размер; TLS-прокси для webhook; активные минуты человека (есть только оценка) |
+| Проверено на Linux | ubuntu-24.04, systemd 255, раннер GitHub, job [121143981931](https://github.com/rengalaxies/agent/actions/runs/40185056031/job/121143981931) на `2fe2f41`: 9 из 9 сценариев на установленном релизе, unit-тесты коробки, две сборки дали один архив, `box plan` хостовым `python3` |
+| Не проверено | живые GitHub/Jira; модель; реальная ВМ компании и её размер; TLS-прокси для webhook; ежедневный таймер backup (за прогон не срабатывал); автооткат при релизе, который не стартует; активные минуты человека (есть только оценка) |
 
 ## База и порядок PR
 
@@ -292,7 +292,32 @@ unit-тесты коробки, две сборки A с `cmp` архивов, �
 `box plan`, затем тот же драйвер приёмки от root через systemd. В summary попадает
 таблица сценариев, время установки и RSS сервиса. Артефакт: отчёты установок,
 manifest, `acceptance.json`, журнал unit (токен статуса вычищается) и архив релиза A.
-Секретов, внешних публикаций и облачных ресурсов нет. Результата пока нет: PR не открыт.
+Секретов, внешних публикаций и облачных ресурсов нет.
+
+Результат: [PR #60](https://github.com/rengalaxies/agent/pull/60), head `2fe2f41`, run
+[40185056031](https://github.com/rengalaxies/agent/actions/runs/40185056031), job
+`121143981931`, ubuntu-24.04, systemd 255, 2026-10-25 10:30–10:32 UTC. Job занял 2 мин 7 с,
+из них шаг приёмки 102 с. Супервизор `systemd`, пользователь `agent-service`, unit с
+hardening, `Restart=on-failure` (сценарий `service_killed_comes_back` убивает процесс
+через `systemctl kill -s KILL`, перезапускает systemd).
+
+| Сценарий | Результат | Секунды |
+|---|---|---|
+| fresh_install | PASS | 8.2 |
+| end_to_end_on_installed_release | PASS | 1.0 |
+| reinstall_is_idempotent | PASS | 7.7 |
+| interrupted_install_is_finished_by_rerun | PASS | 40.9 |
+| service_killed_comes_back | PASS | 8.1 |
+| doctor_wrong_credentials | PASS | 4.4 |
+| backup_restore | PASS | 4.6 |
+| update_same_schema_then_rollback | PASS | 13.6 |
+| update_schema_change_then_rollback | PASS | 13.5 |
+
+Секунды сценария включают проверки драйвера. Чистое время установки и RSS сервиса есть в
+summary прогона; они видны только после входа в GitHub и в этот отчёт ещё не перенесены.
+
+Прогон после следующих merge ветки 4 (`23087ff`) перепроверяет то же самое; релизный код
+в этих merge не менялся.
 
 ## Время
 
@@ -310,7 +335,8 @@ manifest, `acceptance.json`, журнал unit (токен статуса выч
 Больше половины времени установки занимает offline smoke (9 с). Стенд маленький: пять
 репозиториев по несколько файлов. Время графа на репозиториях компании не измерено.
 
-На Linux цифры будут в summary workflow. Экстраполировать Windows на Linux не надо.
+На Linux (раннер GitHub, systemd) сценарий fresh_install вместе с проверками драйвера занял
+8.2 с, обновление с откатом 13.5–13.6 с. Это раннер GitHub, а не ВМ компании.
 
 ### Активные минуты человека (оценка, не замер)
 
@@ -363,7 +389,7 @@ Jira. После установки регулярных действий нет
 
 ## Ограничения
 
-- Linux, systemd и hardening не проверены (см. выше).
+- Linux проверен на раннере GitHub (ubuntu-24.04, systemd 255), а не на ВМ компании.
 - Один хост GitHub, одна Jira, одна установка на ВМ. Несколько установок на одной ВМ
   box не поддерживает.
 - Webhook снаружи требует TLS-прокси компании; box его не ставит.
@@ -371,7 +397,7 @@ Jira. После установки регулярных действий нет
   релизом, который не стартует, в приёмке нет.
 - Публикация в живые GitHub/Jira, модель и квалификация 2Б в коробке не проверялись:
   ключей и тестового контура нет.
-- Размер ВМ (2 vCPU, 2 ГБ) ориентир; RSS сервиса будет в Linux-summary.
+- Размер ВМ (2 vCPU, 2 ГБ) ориентир, замеров на ВМ нет.
 
 ## Как воспроизвести
 
@@ -392,6 +418,5 @@ python tools/agent_service/box/release.py build --commit HEAD --platform linux-x
 
 ## Следующий шаг
 
-Владелец открывает PR против `claude/mvp-4-service-2a`. Workflow `agent-service-box` даёт первую Linux-приёмку;
-результаты таблицы сценариев переносятся сюда. После этого 5Б вызывает тот же `box`
-на ВМ Cloud.ru.
+PR #60 ждёт слияния стека 2А → 3 → 4. 5Б вызывает тот же `box` на ВМ Cloud.ru; там же
+нужны первые замеры на настоящей ВМ и живой smoke в тестовых Jira/GitHub.
