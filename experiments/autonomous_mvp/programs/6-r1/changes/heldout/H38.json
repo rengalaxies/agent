@@ -1,0 +1,157 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tickets.test",
+      "service": "tickets"
+    },
+    {
+      "base_url": "https://treasury.test",
+      "service": "treasury"
+    }
+  ],
+  "change_id": "H38",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис tickets больше не отдаёт GET /tickets; эндпоинт удаляется.",
+    "issue_id": 10537,
+    "key": "TKT-537",
+    "project": "TKT",
+    "summary": "Удалить устаревший список tickets"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "insights": "team-insights",
+      "inspector": "team-inspector",
+      "metrics": "team-metrics",
+      "planner": "team-planner",
+      "scheduler": "team-scheduler",
+      "tickets": "team-tickets",
+      "treasury": "team-treasury",
+      "vault": "team-vault"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 537,
+    "repository": "tickets",
+    "title": "TKT-537 Удалить устаревший список tickets"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "insights": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# insights\n\nService insights of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "insights"
+    },
+    "inspector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# inspector\n\nService inspector of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://treasury.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "inspector"
+    },
+    "metrics": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# metrics\n\nService metrics of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "metrics"
+    },
+    "planner": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# planner\n\nService planner of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "planner"
+    },
+    "scheduler": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# scheduler\n\nService scheduler of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "scheduler"
+    },
+    "tickets": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tickets"
+    },
+    "treasury": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# treasury\n\nService treasury of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_treasury(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_treasury(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "treasury"
+    },
+    "vault": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vault\n\nService vault of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vault"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

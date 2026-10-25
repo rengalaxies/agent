@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://parcels.test",
+      "service": "parcels"
+    },
+    {
+      "base_url": "https://treasury.test",
+      "service": "treasury"
+    }
+  ],
+  "change_id": "H58",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /parcels: default page_size 200 -> 25.",
+    "issue_id": 10557,
+    "key": "PCL-557",
+    "project": "PCL",
+    "summary": "Уменьшить стандартный размер страницы с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "catalog": "team-catalog",
+      "extractor": "team-extractor",
+      "metrics": "team-metrics",
+      "parcels": "team-parcels",
+      "scheduler": "team-scheduler",
+      "statements": "team-statements",
+      "treasury": "team-treasury"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 557,
+    "repository": "parcels",
+    "title": "PCL-557 Уменьшить стандартный размер страницы с 200 до 25"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "catalog": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# catalog\n\nService catalog of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "catalog"
+    },
+    "extractor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# extractor\n\nService extractor of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "extractor"
+    },
+    "metrics": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# metrics\n\nService metrics of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://treasury.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "metrics"
+    },
+    "parcels": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "parcels"
+    },
+    "scheduler": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# scheduler\n\nService scheduler of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "scheduler"
+    },
+    "statements": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# statements\n\nService statements of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "statements"
+    },
+    "treasury": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# treasury\n\nService treasury of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_treasury(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_treasury(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "treasury"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

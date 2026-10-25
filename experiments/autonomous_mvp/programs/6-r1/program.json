@@ -1,0 +1,117 @@
+{
+  "schema": "readiness-program-1",
+  "id": "6-r1",
+  "title": "Batch 6: technical readiness and usefulness of the autonomous Jira/PR impact service on synthetic stands",
+  "written_at": "2026-10-25",
+  "frozen_before": "any held-out run of any configuration; development worlds were probed while the generator was written",
+  "unit": {
+    "change": "one Jira issue and the PR that implements it, on its own Git stand and its own fresh service installation; the Jira issue and the PR are one unit, not two",
+    "stage": "the Jira comment or the PR comment of one change",
+    "consumer_pair": "(change, consumer service) with an oracle severity; pairs of one change are correlated, their intervals are optimistic",
+    "negative_pair": "(change, service) that the oracle marks as not affected: decoy provider, decoy callers, bystanders of an unchanged operation, consumers of an unchanged route",
+    "resource": "one Jira issue or one PR, for publication integrity"
+  },
+  "splits": {
+    "development": {"changes": 20, "use": "allowed for tuning prompts, parameters and the service; rerunnable"},
+    "heldout": {"changes": 60, "use": "never for tuning; run once per configuration after the manifest commit; the runner refuses a stale manifest and an existing held-out ledger"}
+  },
+  "sample_size": {
+    "decision": "keep 20 development and 60 held-out independent changes",
+    "wilson95_half_width_at_n60": {"p0.50": 0.123, "p0.70": 0.113, "p0.80": 0.100, "p0.90": 0.077, "p0.95": 0.060},
+    "zero_event_upper95": {"n20": 0.161, "n60": 0.060, "n100": 0.037},
+    "reasoning": [
+      "The gate rates (useful autonomous output, failure, wrong confident answer) are change-level and independent; at n=60 the 95% interval is within +-0.11 for rates near 0.7 and +-0.06 near 0.95, enough to tell a usable service (>=0.7) from a coin flip (0.5): their intervals do not overlap.",
+      "Zero-tolerance counters (lost, duplicate, stale publications, revoked leaks) over 120 resources bound the per-resource rate below 0.031 when zero is observed (rule of three: 3/120 = 0.025); over 60 changes below 0.060.",
+      "Per-family results (5 changes each) are descriptive only; no claim is made per family.",
+      "A service-versus-baseline difference is paired on the same 60 changes; an unpaired worst case needs about 0.18 to be distinguishable, so the comparison gate asks for at least 0.10 and is reported with both intervals, not as a significance claim.",
+      "More changes would narrow intervals but the stands are synthetic: precision beyond +-0.1 on synthetic worlds says nothing more about company data. The next evidence step is company history, not a larger synthetic set."
+    ]
+  },
+  "families": {
+    "F01_truncation": "default page size decreases; single-request consumers break, cursor and explicit-page-size consumers need a recheck; a same-named decoy provider and its caller are present",
+    "F02_operation_removed": "the operation is removed; every consumer breaks",
+    "F03_no_impact_noop": "README or docs-only change; Jira names the provider service or nothing; nobody is affected",
+    "F04_no_consumer_operation": "the changed operation has no consumers; consumers of another operation of the same provider are not affected",
+    "F05_runtime_only": "a consumer takes its URL from deployment configuration that no readable repository holds; only fresh access logs show the call",
+    "F06_code_only": "a runtime source is configured but does not show one of the code consumers",
+    "F07_stale_runtime": "as F05, but the only access-log window is two days old (older than the 24 h runtime freshness limit)",
+    "F08_revoked_source": "one consumer repository was readable earlier and is revoked now; it is affected but must never be shown",
+    "F09_ownership_conflict": "one affected consumer has two owner teams, one has none in the mapping",
+    "F10_ambiguous_jira": "two providers declare the same route and the Jira text names neither: abstaining is correct at Jira; the PR identifies the provider",
+    "F11_vague_jira": "the Jira text names no route and no service: abstaining is correct at Jira",
+    "F12_unclassified_change": "the declaration body changes in a way no classifier covers; consumers need a recheck, a partial answer is correct"
+  },
+  "every_world": "a provider with the changed operation and an unchanged count operation; 1-2 bystanders of the count operation; ownership mapping for every service; names, task keys and repository bytes of the two splits are disjoint",
+  "oracle": {
+    "source": "execution: every consumer's load_day runs against a recording fake of requests with the providers as on main and as on the PR branch (oracle.py); the service, the static extractor, the baseline and any model take no part",
+    "severity": {"breaking": "calls the changed operation and its result differs after the change (fewer records or an HTTP error)", "recheck": "calls the changed operation and its result is the same", "none": "does not call the changed operation"},
+    "owner_status": "from the ownership mapping: one team KNOWN, several CONFLICT, none UNKNOWN",
+    "basis": "code for clients whose URL is a constant; runtime or stale_runtime for clients whose URL comes from deployment configuration, by the age of the newest access-log window that shows them",
+    "outcome_rules": {
+      "jira": "abstain when the text does not identify the operation (ambiguous route or no mention); no_impact when no consumer is affected; partial when some affected consumer has only a runtime basis; otherwise answer",
+      "pr": "no_impact when no consumer is affected; partial for an unclassified change or when some affected consumer has only a runtime basis; otherwise answer"
+    },
+    "acceptable_statuses": {"answer": ["USEFUL"], "partial": ["PARTIAL", "USEFUL"], "abstain": ["ABSTAINED"], "no_impact": ["ABSTAINED"]},
+    "isolation": "the oracle files are read only by scorer.py and the corpus tests; the runner and the baseline receive change files and stands only, and run with the oracle directory absent (tested)"
+  },
+  "scoring": {
+    "stage_correct": "status acceptable, no missed expected consumer, no false positive, no revoked service in the result or comment text, every expected consumer with the right provider operation (and on the PR stage the right call site for code consumers), owner status as in the mapping, a stale-only consumer never shown with only CURRENT freshness, on the PR stage severity exactly as the oracle",
+    "useful_autonomous": "per change: Jira stage correct, PR stage correct, publication intact (one comment per resource, current body digest, delivered, no write after redelivery), no crash",
+    "outcome_classes": "answer (USEFUL), partial (PARTIAL), abstain (ABSTAINED), failure (FAILED, no result or crash), counted separately per stage",
+    "latency": "seconds from the webhook delivery to the last accepted comment write of that stage, local stands; worker polling is synchronous in the runner",
+    "graph_freshness": "after the merge (provider default branch moves to the PR head) one periodic reconciliation: the provider's git source version equals the head and the active declared operations equal the head's",
+    "publication": "lost: no comment or the newest result intent not DELIVERED; duplicate: more than one service comment or create; stale: comment digest differs from the newest generation's body or the published generation is behind; plus writes caused by a redelivered webhook",
+    "cost": "model calls and tokens from AnalysisResult.costs; roubles only when every call has a price; no-model configuration has none",
+    "human_minutes": "recorded inputs only; the runner has no human step (interventions 0); active minutes of a person reading or acting on comments are NOT_RECORDED unless an operator records them"
+  },
+  "configurations": {
+    "service-no-model": {"status": "runnable offline", "analyzer": "CoreAnalyzer model=None, model_qualification=None", "runtime_window_seconds": 259200, "code_version": "readiness-6-r1", "freshness": "graph query defaults: runtime 86400 s, ownership 604800 s"},
+    "service-model": {"status": "not run: needs a 2B QUALIFIED report and the live model endpoint", "analyzer": "CoreAnalyzer with the qualified model; same stands and runner"},
+    "baseline-live": {"status": "not run: live model calls are out of scope of this batch", "protocol": "baseline-search-1 over CloudRuTransport, same model and endpoint as service-model"},
+    "baseline-naive-search": {"status": "runnable offline; harness check and floor, not a model", "protocol": "baseline-search-1 over NaiveSearchTransport"}
+  },
+  "thresholds": [
+    {"id": "T01", "gate": "technical", "metric": "error_count", "op": "==", "value": 0, "why": "a crash is a lost change"},
+    {"id": "T02", "gate": "technical", "metric": "publication.lost", "op": "==", "value": 0, "why": "every resource gets its comment"},
+    {"id": "T03", "gate": "technical", "metric": "publication.duplicate", "op": "==", "value": 0, "why": "one updatable comment per resource"},
+    {"id": "T04", "gate": "technical", "metric": "publication.stale", "op": "==", "value": 0, "why": "the comment shows the newest generation"},
+    {"id": "T05", "gate": "technical", "metric": "publication.writes_after_redelivery", "op": "==", "value": 0, "why": "a redelivered webhook writes nothing"},
+    {"id": "T06", "gate": "technical", "metric": "stages.jira.revoked_leaks", "op": "==", "value": 0, "why": "a revoked source is never shown"},
+    {"id": "T07", "gate": "technical", "metric": "stages.pr.revoked_leaks", "op": "==", "value": 0, "why": "a revoked source is never shown"},
+    {"id": "T08", "gate": "technical", "metric": "stages.jira.stale_as_current.count", "op": "==", "value": 0, "why": "stale evidence is never shown as current"},
+    {"id": "T09", "gate": "technical", "metric": "stages.pr.stale_as_current.count", "op": "==", "value": 0, "why": "stale evidence is never shown as current"},
+    {"id": "T10", "gate": "technical", "metric": "stages.jira.failure.value", "op": "<=", "value": 0.02, "why": "technical failures are rare"},
+    {"id": "T11", "gate": "technical", "metric": "stages.pr.failure.value", "op": "<=", "value": 0.02, "why": "technical failures are rare"},
+    {"id": "T12", "gate": "technical", "metric": "latency.jira.p95", "op": "<=", "value": 60, "why": "a Jira insight within a minute on local stands"},
+    {"id": "T13", "gate": "technical", "metric": "latency.pr.p95", "op": "<=", "value": 60, "why": "a PR insight within a minute on local stands"},
+    {"id": "T14", "gate": "technical", "metric": "graph_freshness.reflected_after_one_reconcile.value", "op": ">=", "value": 1.0, "why": "a merged change is in the graph after one reconciliation"},
+    {"id": "T15", "gate": "technical", "metric": "graph_freshness.seconds_p95", "op": "<=", "value": 30, "why": "reconciliation of a small installation is fast"},
+    {"id": "T16", "gate": "quality", "metric": "useful_autonomous.value", "op": ">=", "value": 0.70, "why": "most changes need no human correction of the comments"},
+    {"id": "T17", "gate": "quality", "metric": "useful_autonomous_lower95", "op": ">=", "value": 0.55, "why": "the interval excludes a coin flip"},
+    {"id": "T18", "gate": "quality", "metric": "severity.breaking.reported_breaking.value", "op": ">=", "value": 0.90, "why": "a breaking consumer is reported as breaking in the PR"},
+    {"id": "T19", "gate": "quality", "metric": "stages.jira.consumer_recall.value", "op": ">=", "value": 0.85, "why": "the preliminary insight names who may be affected"},
+    {"id": "T20", "gate": "quality", "metric": "stages.pr.path_correct.value", "op": ">=", "value": 0.90, "why": "the path names the right operation and call site"},
+    {"id": "T21", "gate": "quality", "metric": "severity.negatives.pr_fp.value", "op": "<=", "value": 0.05, "why": "PR comments rarely name unaffected services"},
+    {"id": "T22", "gate": "quality", "metric": "severity.negatives.jira_fp.value", "op": "<=", "value": 0.10, "why": "the preliminary insight may be wider, but not much"},
+    {"id": "T23", "gate": "quality", "metric": "stages.jira.wrong_confident.value", "op": "<=", "value": 0.05, "why": "no confident answer where abstaining or no impact is correct"},
+    {"id": "T24", "gate": "quality", "metric": "stages.pr.wrong_confident.value", "op": "<=", "value": 0.05, "why": "no confident answer where no impact is correct"},
+    {"id": "T25", "gate": "quality", "metric": "stages.jira.owner_accuracy.value", "op": ">=", "value": 0.98, "why": "owners are not guessed"},
+    {"id": "T26", "gate": "quality", "metric": "stages.pr.owner_accuracy.value", "op": ">=", "value": 0.98, "why": "owners are not guessed"},
+    {"id": "T27", "gate": "cost", "metric": "cost.rub_per_change", "op": "<=", "value": 15.0, "why": "a model configuration stays cheap per change (2B prices incl. VAT)"},
+    {"id": "T28", "gate": "comparison", "needs": "baseline", "metric": "useful_autonomous.value", "op": ">=", "value": 0.10, "why": "the service beats an ordinary agent with search by at least 0.10 on the same changes; evaluated only against a live baseline ledger"},
+    {"id": "T29", "gate": "human", "metric": "human.active_minutes_median", "op": "<=", "value": 2.0, "why": "a person spends little active time per change; NOT_MEASURED until minutes are recorded"}
+  ],
+  "verdict_rules": {
+    "technical_readiness": "gate technical PASS on the held-out ledger of the configuration",
+    "usefulness_on_synthetic_stands": "gate quality PASS on the held-out ledger; this is not business usefulness",
+    "business_usefulness": "UNVERIFIED in this program: it needs company history (real changes, real consumers, real incidents) and recorded human minutes; no synthetic result can establish it",
+    "gate_states": "PASS when every threshold passes, FAIL when any fails, INCOMPLETE when any is NOT_MEASURED or NOT_EVALUATED"
+  },
+  "evidence_levels": [
+    "L1 synthetic Git stand: generated repositories, execution-grounded oracle (this program)",
+    "L2 local HTTP stand: the real service, webhook receiver, queue and connectors against local GitHub/Jira emulations on 127.0.0.1 (this program)",
+    "L3 real integration: GitHub App, Jira Cloud test project, VM installation (not in this program)",
+    "L4 company data: real repositories, history, consumers and people (not in this program)"
+  ],
+  "pre_run_changes": []
+}

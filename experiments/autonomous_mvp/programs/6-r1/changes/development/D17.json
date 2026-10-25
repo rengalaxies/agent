@@ -1,0 +1,146 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://orders.test",
+      "service": "orders"
+    }
+  ],
+  "change_id": "D17",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /orders: default page_size 50 -> 10.",
+    "issue_id": 10116,
+    "key": "ORD-116",
+    "project": "ORD",
+    "summary": "Уменьшить стандартный размер страницы orders с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "analytics": "team-analytics",
+      "forecast": "team-forecast",
+      "ledger": "team-ledger",
+      "orders": "team-orders",
+      "registry": "team-registry"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 116,
+    "repository": "orders",
+    "title": "ORD-116 Уменьшить стандартный размер страницы orders с 50 до 10"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "analytics": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# analytics\n\nService analytics of the 6-r1 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"ORDERS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "analytics"
+    },
+    "forecast": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# forecast\n\nService forecast of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://orders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "forecast"
+    },
+    "ledger": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# ledger\n\nService ledger of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://orders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "ledger"
+    },
+    "orders": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# orders\n\nService orders of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/orders/count\")\ndef count_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# orders\n\nService orders of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/orders/count\")\ndef count_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orders"
+    },
+    "registry": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registry\n\nService registry of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://orders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registry"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "orders"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "analytics",
+            "method": "GET",
+            "route": "/orders",
+            "status": 200
+          },
+          {
+            "client": "analytics",
+            "method": "GET",
+            "route": "/orders",
+            "status": 200
+          },
+          {
+            "client": "analytics",
+            "method": "GET",
+            "route": "/orders",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "development"
+}

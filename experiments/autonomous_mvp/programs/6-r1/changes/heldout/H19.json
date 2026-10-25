@@ -1,0 +1,133 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tickets.test",
+      "service": "tickets"
+    }
+  ],
+  "change_id": "H19",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tickets: default page_size 200 -> 10.",
+    "issue_id": 10518,
+    "key": "TKT-518",
+    "project": "TKT",
+    "summary": "Уменьшить стандартный размер страницы tickets с 200 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cockpit": "team-cockpit",
+      "courier": "team-courier",
+      "monitor": "team-monitor",
+      "tickets": "team-tickets"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 518,
+    "repository": "tickets",
+    "title": "TKT-518 Уменьшить стандартный размер страницы tickets с 200 до 10"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "cockpit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cockpit\n\nService cockpit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cockpit"
+    },
+    "courier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# courier\n\nService courier of the 6-r1 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"TICKETS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "courier"
+    },
+    "monitor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# monitor\n\nService monitor of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "monitor"
+    },
+    "tickets": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tickets"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "tickets"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "courier",
+            "method": "GET",
+            "route": "/tickets",
+            "status": 200
+          },
+          {
+            "client": "courier",
+            "method": "GET",
+            "route": "/tickets",
+            "status": 200
+          },
+          {
+            "client": "courier",
+            "method": "GET",
+            "route": "/tickets",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tickets.test",
+      "service": "tickets"
+    }
+  ],
+  "change_id": "H21",
+  "environment": "prod",
+  "family": "F09_ownership_conflict",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tickets: default page_size 50 -> 25.",
+    "issue_id": 10520,
+    "key": "TKT-520",
+    "project": "TKT",
+    "summary": "Уменьшить стандартный размер страницы tickets с 50 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "statements": [
+        "team-platform",
+        "team-statements"
+      ],
+      "tickets": "team-tickets",
+      "tracker": "team-tracker",
+      "vault": "team-vault"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 520,
+    "repository": "tickets",
+    "title": "TKT-520 Уменьшить стандартный размер страницы tickets с 50 до 25"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "cockpit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cockpit\n\nService cockpit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cockpit"
+    },
+    "statements": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# statements\n\nService statements of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "statements"
+    },
+    "tickets": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tickets"
+    },
+    "tracker": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tracker\n\nService tracker of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tracker"
+    },
+    "vault": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vault\n\nService vault of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vault"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tickets.test",
+      "service": "tickets"
+    }
+  ],
+  "change_id": "H57",
+  "environment": "prod",
+  "family": "F09_ownership_conflict",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tickets: default page_size 200 -> 20.",
+    "issue_id": 10556,
+    "key": "TKT-556",
+    "project": "TKT",
+    "summary": "Уменьшить стандартный размер страницы tickets с 200 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cockpit": "team-cockpit",
+      "insights": [
+        "team-insights",
+        "team-platform"
+      ],
+      "scheduler": "team-scheduler",
+      "tickets": "team-tickets"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 556,
+    "repository": "tickets",
+    "title": "TKT-556 Уменьшить стандартный размер страницы tickets с 200 до 20"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "cockpit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cockpit\n\nService cockpit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cockpit"
+    },
+    "extractor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# extractor\n\nService extractor of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "extractor"
+    },
+    "insights": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# insights\n\nService insights of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "insights"
+    },
+    "scheduler": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# scheduler\n\nService scheduler of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tickets.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tickets/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "scheduler"
+    },
+    "tickets": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tickets\n\nService tickets of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tickets\")\ndef list_tickets(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tickets/count\")\ndef count_tickets(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tickets(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tickets"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

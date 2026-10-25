@@ -1,0 +1,88 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://parcels.test",
+      "service": "parcels"
+    }
+  ],
+  "change_id": "H51",
+  "environment": "prod",
+  "family": "F03_no_impact_noop",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Описать локальный запуск и ссылку на runbook. Поведение API не меняется.",
+    "issue_id": 10550,
+    "key": "PCL-550",
+    "project": "PCL",
+    "summary": "Обновить документацию по запуску"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cockpit": "team-cockpit",
+      "monitor": "team-monitor",
+      "parcels": "team-parcels"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 550,
+    "repository": "parcels",
+    "title": "PCL-550 Обновить документацию по запуску"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "cockpit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cockpit\n\nService cockpit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cockpit"
+    },
+    "monitor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# monitor\n\nService monitor of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "monitor"
+    },
+    "parcels": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n\nLocal run: see docs/runbook.md.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "parcels"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

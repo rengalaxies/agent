@@ -1,0 +1,3946 @@
+{
+  "changes": {
+    "D01": {
+      "change_id": "D01",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F01_truncation",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "audit",
+          "forecast"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "analytics",
+        "billing",
+        "mailer"
+      ],
+      "paths": {
+        "audit": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "audit"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        },
+        "forecast": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "forecast"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "audit": "breaking",
+          "forecast": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "analytics": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              78
+            ],
+            "before": [
+              "ok",
+              78
+            ],
+            "calls": [
+              [
+                "billing",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              78
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "billing": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              78
+            ],
+            "before": [
+              "ok",
+              78
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              78
+            ],
+            "before": [
+              "ok",
+              78
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D01",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "analytics": "decoy",
+          "audit": "single",
+          "forecast": "cursor",
+          "mailer": "bystander"
+        },
+        "consumer_targets": {
+          "analytics": "billing",
+          "audit": "orders",
+          "forecast": "orders",
+          "mailer": "orders"
+        },
+        "decoy": "billing",
+        "decoy_defaults": {
+          "/orders": 100
+        },
+        "defaults": {
+          "change": {
+            "/orders": 25,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 100,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F01_truncation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 78,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D02": {
+      "change_id": "D02",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/invoices",
+        "service": "invoices"
+      },
+      "family": "F02_operation_removed",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "dashboard",
+          "forecast",
+          "mailer",
+          "registry"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "analytics",
+        "reporting"
+      ],
+      "paths": {
+        "dashboard": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "dashboard"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        },
+        "forecast": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "forecast"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        },
+        "mailer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "mailer"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        },
+        "registry": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "registry"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "dashboard": "breaking",
+          "forecast": "breaking",
+          "mailer": "breaking",
+          "registry": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "invoices",
+      "revoked": [],
+      "services": {
+        "analytics": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              22
+            ],
+            "before": [
+              "ok",
+              22
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              22
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              22
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "invoices": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              22
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              22
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              22
+            ],
+            "before": [
+              "ok",
+              22
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D02",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "consumer_kinds": {
+          "analytics": "bystander",
+          "dashboard": "explicit",
+          "forecast": "cursor",
+          "mailer": "single",
+          "registry": "single",
+          "reporting": "bystander"
+        },
+        "consumer_targets": {
+          "analytics": "invoices",
+          "dashboard": "invoices",
+          "forecast": "invoices",
+          "mailer": "invoices",
+          "registry": "invoices",
+          "reporting": "invoices"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/invoices/count": 100
+          },
+          "main": {
+            "/invoices": 100,
+            "/invoices/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F02_operation_removed",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 22,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "provider": "invoices",
+        "unclassified": false
+      }
+    },
+    "D03": {
+      "change_id": "D03",
+      "changed_operation": null,
+      "family": "F03_no_impact_noop",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "audit",
+        "mailer",
+        "registry"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              83
+            ],
+            "before": [
+              "ok",
+              83
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              83
+            ],
+            "before": [
+              "ok",
+              83
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              83
+            ],
+            "before": [
+              "ok",
+              83
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D03",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "audit": "bystander",
+          "mailer": "single",
+          "registry": "bystander"
+        },
+        "consumer_targets": {
+          "audit": "orders",
+          "mailer": "orders",
+          "registry": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders": 100,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 100,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F03_no_impact_noop",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 83,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D04": {
+      "change_id": "D04",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders/export",
+        "service": "orders"
+      },
+      "family": "F04_no_consumer_operation",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "no_impact"
+      },
+      "negatives": [
+        "analytics",
+        "archive",
+        "forecast",
+        "mailer"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "analytics": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              87
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "archive": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              87
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              87
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              87
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D04",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders/export",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "analytics": "single",
+          "archive": "single",
+          "forecast": "cursor",
+          "mailer": "bystander"
+        },
+        "consumer_targets": {
+          "analytics": "orders",
+          "archive": "orders",
+          "forecast": "orders",
+          "mailer": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders": 100,
+            "/orders/count": 100,
+            "/orders/export": 100
+          },
+          "main": {
+            "/orders": 100,
+            "/orders/count": 100,
+            "/orders/export": 500
+          }
+        },
+        "deployment_env": {},
+        "family": "F04_no_consumer_operation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 87,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D05": {
+      "change_id": "D05",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F05_runtime_only",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "reporting"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "archive"
+      ],
+      "paths": {
+        "reporting": {
+          "basis": "runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "reporting": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "archive": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              35
+            ],
+            "before": [
+              "ok",
+              35
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "runtime",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              35
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D05",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "archive": "bystander",
+          "reporting": "runtime_env"
+        },
+        "consumer_targets": {
+          "archive": "orders",
+          "reporting": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders": 25,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 100,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {
+          "reporting": {
+            "ORDERS_URL": "https://orders.test"
+          }
+        },
+        "family": "F05_runtime_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 35,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D06": {
+      "change_id": "D06",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F06_code_only",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "dashboard",
+          "reporting"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "mailer"
+      ],
+      "paths": {
+        "dashboard": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "dashboard"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "reporting": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reporting"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "dashboard": "breaking",
+          "reporting": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "shipments",
+      "revoked": [],
+      "services": {
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              99
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              99
+            ],
+            "before": [
+              "ok",
+              99
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              99
+            ],
+            "before": [
+              "ok",
+              99
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D06",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "dashboard": "single",
+          "mailer": "bystander",
+          "reporting": "cursor"
+        },
+        "consumer_targets": {
+          "dashboard": "shipments",
+          "mailer": "shipments",
+          "reporting": "shipments"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/shipments": 20,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 100,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F06_code_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 99,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": false
+      }
+    },
+    "D07": {
+      "change_id": "D07",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F07_stale_runtime",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "archive"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "dashboard"
+      ],
+      "paths": {
+        "archive": {
+          "basis": "stale_runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "archive": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "archive": {
+          "basis": "stale_runtime",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              21
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              21
+            ],
+            "before": [
+              "ok",
+              21
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D07",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "archive": "runtime_env",
+          "dashboard": "bystander"
+        },
+        "consumer_targets": {
+          "archive": "orders",
+          "dashboard": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders": 10,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 100,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {
+          "archive": {
+            "ORDERS_URL": "https://orders.test"
+          }
+        },
+        "family": "F07_stale_runtime",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 21,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D08": {
+      "change_id": "D08",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/invoices",
+        "service": "invoices"
+      },
+      "family": "F08_revoked_source",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "mailer"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "exporter"
+      ],
+      "paths": {
+        "mailer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "mailer"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "mailer": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "invoices",
+      "revoked": [
+        "dashboard"
+      ],
+      "services": {
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              41
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "revoked"
+        },
+        "exporter": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              41
+            ],
+            "before": [
+              "ok",
+              41
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "invoices": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              41
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D08",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "consumer_kinds": {
+          "dashboard": "single",
+          "exporter": "bystander",
+          "mailer": "single"
+        },
+        "consumer_targets": {
+          "dashboard": "invoices",
+          "exporter": "invoices",
+          "mailer": "invoices"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/invoices": 20,
+            "/invoices/count": 100
+          },
+          "main": {
+            "/invoices": 50,
+            "/invoices/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F08_revoked_source",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 41,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "provider": "invoices",
+        "unclassified": false
+      }
+    },
+    "D09": {
+      "change_id": "D09",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/invoices",
+        "service": "invoices"
+      },
+      "family": "F09_ownership_conflict",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "exporter",
+          "registry",
+          "reporting"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "audit",
+        "dashboard"
+      ],
+      "paths": {
+        "exporter": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "exporter"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        },
+        "registry": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "registry"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        },
+        "reporting": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reporting"
+          },
+          "method": "GET",
+          "provider": "invoices",
+          "route": "/invoices"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "exporter": "recheck",
+          "registry": "breaking",
+          "reporting": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "invoices",
+      "revoked": [],
+      "services": {
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              37
+            ],
+            "before": [
+              "ok",
+              37
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              37
+            ],
+            "before": [
+              "ok",
+              37
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "exporter": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              37
+            ],
+            "before": [
+              "ok",
+              37
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "UNKNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "invoices": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              37
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "CONFLICT",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              37
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D09",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "consumer_kinds": {
+          "audit": "bystander",
+          "dashboard": "bystander",
+          "exporter": "cursor",
+          "registry": "single",
+          "reporting": "single"
+        },
+        "consumer_targets": {
+          "audit": "invoices",
+          "dashboard": "invoices",
+          "exporter": "invoices",
+          "registry": "invoices",
+          "reporting": "invoices"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/invoices": 25,
+            "/invoices/count": 100
+          },
+          "main": {
+            "/invoices": 50,
+            "/invoices/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F09_ownership_conflict",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 37,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "provider": "invoices",
+        "unclassified": false
+      }
+    },
+    "D10": {
+      "change_id": "D10",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F10_ambiguous_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "audit",
+        "mailer",
+        "warehouse"
+      ],
+      "paths": {
+        "forecast": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "forecast"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        },
+        "reporting": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reporting"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "forecast": "recheck",
+          "reporting": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              91
+            ],
+            "before": [
+              "ok",
+              91
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              91
+            ],
+            "before": [
+              "ok",
+              91
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              91
+            ],
+            "before": [
+              "ok",
+              91
+            ],
+            "calls": [
+              [
+                "warehouse",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              91
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "warehouse": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D10",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "audit": "bystander",
+          "forecast": "cursor",
+          "mailer": "decoy",
+          "reporting": "single"
+        },
+        "consumer_targets": {
+          "audit": "orders",
+          "forecast": "orders",
+          "mailer": "warehouse",
+          "reporting": "orders"
+        },
+        "decoy": "warehouse",
+        "decoy_defaults": {
+          "/orders": 100
+        },
+        "defaults": {
+          "change": {
+            "/orders": 25,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 200,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F10_ambiguous_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 91,
+        "jira_intent": "ambiguous",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D11": {
+      "change_id": "D11",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F11_vague_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "dashboard"
+      ],
+      "paths": {
+        "archive": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "archive"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        },
+        "audit": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "audit"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        },
+        "ledger": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "ledger"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "archive": "breaking",
+          "audit": "recheck",
+          "ledger": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "archive": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ledger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D11",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "archive": "single",
+          "audit": "cursor",
+          "dashboard": "bystander",
+          "ledger": "single"
+        },
+        "consumer_targets": {
+          "archive": "orders",
+          "audit": "orders",
+          "dashboard": "orders",
+          "ledger": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders": 20,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 50,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F11_vague_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 30,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D12": {
+      "change_id": "D12",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F12_unclassified_change",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "reporting"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "mailer"
+      ],
+      "paths": {
+        "reporting": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reporting"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "reporting": "recheck"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "shipments",
+      "revoked": [],
+      "services": {
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              111
+            ],
+            "before": [
+              "ok",
+              111
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D12",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "mailer": "bystander",
+          "reporting": "single"
+        },
+        "consumer_targets": {
+          "mailer": "shipments",
+          "reporting": "shipments"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/shipments": 200,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 200,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F12_unclassified_change",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 111,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": true
+      }
+    },
+    "D13": {
+      "change_id": "D13",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F01_truncation",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "audit",
+          "exporter",
+          "mailer",
+          "registry"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "archive",
+        "billing",
+        "dashboard",
+        "forecast"
+      ],
+      "paths": {
+        "audit": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "audit"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "exporter": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "exporter"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "mailer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "mailer"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "registry": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "registry"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "audit": "recheck",
+          "exporter": "breaking",
+          "mailer": "recheck",
+          "registry": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "shipments",
+      "revoked": [],
+      "services": {
+        "archive": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "billing": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "billing",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "exporter": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "mailer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D13",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "archive": "bystander",
+          "audit": "explicit",
+          "dashboard": "decoy",
+          "exporter": "single",
+          "forecast": "bystander",
+          "mailer": "cursor",
+          "registry": "single"
+        },
+        "consumer_targets": {
+          "archive": "shipments",
+          "audit": "shipments",
+          "dashboard": "billing",
+          "exporter": "shipments",
+          "forecast": "shipments",
+          "mailer": "shipments",
+          "registry": "shipments"
+        },
+        "decoy": "billing",
+        "decoy_defaults": {
+          "/shipments": 100
+        },
+        "defaults": {
+          "change": {
+            "/shipments": 10,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 50,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F01_truncation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 31,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": false
+      }
+    },
+    "D14": {
+      "change_id": "D14",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F02_operation_removed",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "forecast"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "reporting"
+      ],
+      "paths": {
+        "forecast": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "forecast"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "forecast": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              69
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              69
+            ],
+            "before": [
+              "ok",
+              69
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D14",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "forecast": "single",
+          "reporting": "bystander"
+        },
+        "consumer_targets": {
+          "forecast": "orders",
+          "reporting": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 100,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F02_operation_removed",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 69,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D15": {
+      "change_id": "D15",
+      "changed_operation": null,
+      "family": "F03_no_impact_noop",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "analytics",
+        "audit",
+        "forecast"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "invoices",
+      "revoked": [],
+      "services": {
+        "analytics": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "invoices",
+                "GET",
+                "/invoices/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "invoices": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D15",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "analytics": "single",
+          "audit": "cursor",
+          "forecast": "bystander"
+        },
+        "consumer_targets": {
+          "analytics": "invoices",
+          "audit": "invoices",
+          "forecast": "invoices"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/invoices": 100,
+            "/invoices/count": 100
+          },
+          "main": {
+            "/invoices": 100,
+            "/invoices/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F03_no_impact_noop",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 33,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/invoices",
+          "service": "invoices"
+        },
+        "provider": "invoices",
+        "unclassified": false
+      }
+    },
+    "D16": {
+      "change_id": "D16",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F05_runtime_only",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "archive",
+          "dashboard"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "audit",
+        "forecast"
+      ],
+      "paths": {
+        "archive": {
+          "basis": "runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "dashboard": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "dashboard"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "archive": "breaking",
+          "dashboard": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "shipments",
+      "revoked": [],
+      "services": {
+        "archive": {
+          "basis": "runtime",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "audit": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D16",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "archive": "runtime_env",
+          "audit": "bystander",
+          "dashboard": "single",
+          "forecast": "bystander"
+        },
+        "consumer_targets": {
+          "archive": "shipments",
+          "audit": "shipments",
+          "dashboard": "shipments",
+          "forecast": "shipments"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/shipments": 10,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 100,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {
+          "archive": {
+            "SHIPMENTS_URL": "https://shipments.test"
+          }
+        },
+        "family": "F05_runtime_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 42,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": false
+      }
+    },
+    "D17": {
+      "change_id": "D17",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/orders",
+        "service": "orders"
+      },
+      "family": "F07_stale_runtime",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "analytics",
+          "registry"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "forecast",
+        "ledger"
+      ],
+      "paths": {
+        "analytics": {
+          "basis": "stale_runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        },
+        "registry": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "registry"
+          },
+          "method": "GET",
+          "provider": "orders",
+          "route": "/orders"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "analytics": "breaking",
+          "registry": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "orders",
+      "revoked": [],
+      "services": {
+        "analytics": {
+          "basis": "stale_runtime",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              40
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ledger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              40
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "orders": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "orders",
+                "GET",
+                "/orders"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D17",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "consumer_kinds": {
+          "analytics": "runtime_env",
+          "forecast": "bystander",
+          "ledger": "bystander",
+          "registry": "single"
+        },
+        "consumer_targets": {
+          "analytics": "orders",
+          "forecast": "orders",
+          "ledger": "orders",
+          "registry": "orders"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/orders": 10,
+            "/orders/count": 100
+          },
+          "main": {
+            "/orders": 50,
+            "/orders/count": 100
+          }
+        },
+        "deployment_env": {
+          "analytics": {
+            "ORDERS_URL": "https://orders.test"
+          }
+        },
+        "family": "F07_stale_runtime",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 40,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/orders",
+          "service": "orders"
+        },
+        "provider": "orders",
+        "unclassified": false
+      }
+    },
+    "D18": {
+      "change_id": "D18",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F08_revoked_source",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "dashboard"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "exporter",
+        "registry"
+      ],
+      "paths": {
+        "dashboard": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "dashboard"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "dashboard": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "shipments",
+      "revoked": [
+        "forecast"
+      ],
+      "services": {
+        "dashboard": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "exporter": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              96
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "revoked"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              96
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D18",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "dashboard": "single",
+          "exporter": "bystander",
+          "forecast": "single",
+          "registry": "bystander"
+        },
+        "consumer_targets": {
+          "dashboard": "shipments",
+          "exporter": "shipments",
+          "forecast": "shipments",
+          "registry": "shipments"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/shipments": 10,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 100,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F08_revoked_source",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 96,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": false
+      }
+    },
+    "D19": {
+      "change_id": "D19",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F09_ownership_conflict",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "registry",
+          "reporting"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "archive",
+        "forecast"
+      ],
+      "paths": {
+        "registry": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "registry"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "reporting": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reporting"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "registry": "breaking",
+          "reporting": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "shipments",
+      "revoked": [],
+      "services": {
+        "archive": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              171
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "CONFLICT",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "reporting": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              171
+            ],
+            "before": [
+              "ok",
+              171
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "UNKNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D19",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "archive": "bystander",
+          "forecast": "bystander",
+          "registry": "single",
+          "reporting": "cursor"
+        },
+        "consumer_targets": {
+          "archive": "shipments",
+          "forecast": "shipments",
+          "registry": "shipments",
+          "reporting": "shipments"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/shipments": 10,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 200,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F09_ownership_conflict",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 171,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": false
+      }
+    },
+    "D20": {
+      "change_id": "D20",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/shipments",
+        "service": "shipments"
+      },
+      "family": "F10_ambiguous_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "billing",
+        "forecast",
+        "registry"
+      ],
+      "paths": {
+        "analytics": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "analytics"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        },
+        "ledger": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "ledger"
+          },
+          "method": "GET",
+          "provider": "shipments",
+          "route": "/shipments"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "analytics": "breaking",
+          "ledger": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "shipments",
+      "revoked": [],
+      "services": {
+        "analytics": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "billing": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "forecast": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ledger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "shipments",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "registry": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "billing",
+                "GET",
+                "/shipments"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "shipments": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D20",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "consumer_kinds": {
+          "analytics": "single",
+          "forecast": "bystander",
+          "ledger": "cursor",
+          "registry": "decoy"
+        },
+        "consumer_targets": {
+          "analytics": "shipments",
+          "forecast": "shipments",
+          "ledger": "shipments",
+          "registry": "billing"
+        },
+        "decoy": "billing",
+        "decoy_defaults": {
+          "/shipments": 100
+        },
+        "defaults": {
+          "change": {
+            "/shipments": 25,
+            "/shipments/count": 100
+          },
+          "main": {
+            "/shipments": 50,
+            "/shipments/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F10_ambiguous_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 42,
+        "jira_intent": "ambiguous",
+        "operation": {
+          "method": "GET",
+          "route": "/shipments",
+          "service": "shipments"
+        },
+        "provider": "shipments",
+        "unclassified": false
+      }
+    }
+  },
+  "program": "6-r1",
+  "schema": "readiness-oracle-1",
+  "scope": "evaluator only; never passed to the service, the baseline, a model or its configuration",
+  "split": "development"
+}

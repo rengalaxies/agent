@@ -1,0 +1,114 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://payments.test",
+      "service": "payments"
+    }
+  ],
+  "change_id": "H16",
+  "environment": "prod",
+  "family": "F04_no_consumer_operation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /payments/export: default page_size 500 -> 100.",
+    "issue_id": 10515,
+    "key": "PAY-515",
+    "project": "PAY",
+    "summary": "Уменьшить размер страницы выгрузки payments с 500 до 100"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "catalog": "team-catalog",
+      "cockpit": "team-cockpit",
+      "insights": "team-insights",
+      "payments": "team-payments",
+      "statements": "team-statements"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 515,
+    "repository": "payments",
+    "title": "PAY-515 Уменьшить размер страницы выгрузки payments с 500 до 100"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "catalog": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# catalog\n\nService catalog of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/payments\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "catalog"
+    },
+    "cockpit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cockpit\n\nService cockpit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cockpit"
+    },
+    "insights": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# insights\n\nService insights of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "insights"
+    },
+    "payments": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# payments\n\nService payments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/payments\")\ndef list_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/payments/export\")\ndef export_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/payments/count\")\ndef count_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# payments\n\nService payments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/payments\")\ndef list_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/payments/export\")\ndef export_payments(day: str, cursor: str | None = None, page_size: int | None = 500):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/payments/count\")\ndef count_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "payments"
+    },
+    "statements": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# statements\n\nService statements of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "statements"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}
