@@ -105,6 +105,8 @@ jobs:
               print(f"| {s['scenario']} | {s['result']} | {s['seconds']} |")
           first = next((s for s in r["scenarios"] if s["scenario"] == "fresh_install"), {}).get("detail", {})
           print(f"\nFresh install wall time: {first.get('install_wall_seconds')} s; service RSS: {first.get('service_rss_kib')} KiB")
+          phases = ", ".join(f"{k} {v}" for k, v in (first.get("phase_seconds") or {}).items())
+          print(f"\nInstaller phases: {first.get('machine_seconds')} s ({phases})")
           EOF
       - name: Collect safe diagnostics
         if: always()

@@ -181,13 +181,15 @@ class Driver:
     def fresh_install(self):
         A = self.args.release
         t = time.monotonic()
-        self.box(A, "install", "--config", self.stand["box_config"])
+        run = self.box_json(A, "install", "--config", self.stand["box_config"])
         seconds = round(time.monotonic() - t, 1)
         s = self.ready(A)
         # The worker reconciles on start: open PR #7 and ORD-12 get their first comments without a webhook.
         c = self.wait("first comments from reconciliation", lambda c: len(c["pr"]) == 1 and len(c["jira"]) == 1)
         self.one_comment_each(c)
-        return {"install_wall_seconds": seconds, "release": s["release"], "loaded": s["process"]["loaded"],
+        return {"install_wall_seconds": seconds, "machine_seconds": run.get("machine_seconds"),
+                "phase_seconds": {p["phase"]: p["seconds"] for p in run.get("phases", [])},
+                "release": s["release"], "loaded": s["process"]["loaded"],
                 "graph": s["scenario"]["graph"], "service_rss_kib": _rss_kib(s["process"]["loaded"]["pid"])}
 
     def end_to_end(self):
