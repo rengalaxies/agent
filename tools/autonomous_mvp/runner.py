@@ -27,6 +27,7 @@ from tools.autonomous_mvp import fixtures, ledger as ledger_mod, program as prog
 from tools.autonomous_mvp.transport import CloudRuTransport
 
 ROOT = program_mod.ROOT
+RUNNER = "tools.autonomous_mvp.runner"
 SAFE_TERMINALS = {"FINISHED", "ABSTAINED", "STEP_LIMIT", "DEADLINE", "TRANSPORT_FAILED", "ACTION_REJECTED_LIMIT",
                   "BUDGET", "CANCELLED", "CORE_REFUSED", "HARNESS_ERROR"}
 
@@ -76,13 +77,14 @@ def run_case(case, repeat, *, transport, model, program, phase_deadline_epoch, w
     deadline_epoch = min(phase_deadline_epoch, time.time() + case["limits"]["case_seconds"])
     attempts = [] if attempts is None else attempts
     repos = fixtures.materialize(case, work / "repos")
-    versions, steps, claims, final, invalid, graph = {}, [], [], None, 0, None
+    versions, steps, claims, final, invalid, graph, profile = {}, [], [], None, 0, None, None
     try:
         # Unavailable repositories stay in the policy; the core reports them as commit_unavailable.
         report, accounted, versions = protocol_mod.run(
             case, repos, model=model, parameters=call_parameters(program), transport=transport, work=work,
             deadline_epoch=deadline_epoch, run_id=program["run_id"], attempts=attempts, breaker=breaker)
         terminal, steps, claims, final, graph = protocol_mod.case_result(report, accounted)
+        profile = accounted.profile
         reason, invalid = report["reason_code"], report["invalid_actions"]
     except (RunnerError, fixtures.FixtureError):
         raise
@@ -99,7 +101,7 @@ def run_case(case, repeat, *, transport, model, program, phase_deadline_epoch, w
                   invalid_actions=invalid, requests=len(attempts), wall_seconds=round(time.monotonic() - started, 3),
                   deadline_seconds=case["limits"]["case_seconds"], max_model_steps=case["limits"]["max_model_steps"],
                   commits={k: v["commit"] for k, v in repos.items() if v["available"]},
-                  protocol_id=protocol_mod.PROTOCOL_ID, **versions)
+                  protocol_id=protocol_mod.PROTOCOL_ID, model_profile=profile, **versions)
     if terminal not in SAFE_TERMINALS:
         raise RunnerError("invalid_terminal")
     return attempts, result
@@ -204,6 +206,22 @@ def source_identity(expected):
     return expected
 
 
+def provenance(env=os.environ):
+    """Who produced a report: this runner in one GitHub Actions run, at a clean checkout.
+
+    Outside Actions the run fields stay None and the service refuses the report."""
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+
+    head = git("rev-parse", "HEAD").strip()
+    clean = not git("status", "--porcelain", "--untracked-files=no")
+    attempt = env.get("GITHUB_RUN_ATTEMPT", "")
+    return dict(runner=RUNNER, repository=env.get("GITHUB_REPOSITORY"), workflow_ref=env.get("GITHUB_WORKFLOW_REF"),
+                workflow_run_id=env.get("GITHUB_RUN_ID"),
+                workflow_run_attempt=int(attempt) if attempt.isdigit() else None,
+                source_sha=head if clean else None)
+
+
 def committed_manifest(name):
     current = program_mod.manifest(name)
     path = program_mod.PROGRAMS / name / "manifest.json"
@@ -262,7 +280,8 @@ def main(argv=None):
         # The committed manifest must match the checked-out code, so the report's protocol
         # fingerprint is the one this code would load.
         report = scorer.report(program, cases, program_mod.load_oracle(base), states,
-                               manifest=committed_manifest(args.program))
+                               manifest=committed_manifest(args.program), program_id=args.program,
+                               provenance=provenance())
         save_safe(args.output / "report.json", report)
         (args.output / "report.md").write_bytes(scorer.markdown(report).encode("utf-8"))
         print("REPORT " + " ".join(f"{m}={v['verdict']}" for m, v in report["models"].items()))

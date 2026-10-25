@@ -231,7 +231,7 @@ Ledger резервирует худший случай перед первым 
 - `ledger.py` хранит JSON на ветке `experiment-state/autonomous-mvp/<run_id>/<модель>`, по файлу на
   фазу, с compare-and-swap на каждой записи. Две записи на case-run укладываются в лимит
   GITHUB_TOKEN. Перед каждой записью проверяется, что значения секретов не попали в состояние.
-- Отчёт (`report.json`, schema `amvp-report-1`) привязан к конфигурации, чтобы сервис пачки 4
+- Отчёт (`report.json`, schema `amvp-report-2` с 25.10.2026, до этого `amvp-report-1`) привязан к конфигурации, чтобы сервис пачки 4
   включал модель, только сверив его с тем, что загрузил. Поля: `manifest_digest` закоммиченного
   manifest; `provider` из `program.json`, стабильный идентификатор в нём `chat_endpoint`;
   `protocol` из manifest без изменений (`protocol`, `executor`, `constitution_version`,
@@ -241,6 +241,15 @@ Ledger резервирует худший случай перед первым 
   включая `graph_*`, входит в `schema_sha256`, их лимиты в хеш конституции, а код `graph_query.py`
   и `graph_store.py` в `code_sha256`. Режим `report` перед расчётом проверяет, что закоммиченный
   manifest совпадает с кодом в checkout.
+- В `amvp-report-2` добавлены поля, без которых сервис отчёт не принимает: `program` (id, фазы,
+  гейты и метрики из `program.json`); `provenance` (runner, репозиторий, `workflow_ref`, номер и
+  попытка запуска из `GITHUB_*`, `source_sha` только при чистом HEAD; вне Actions поля пустые);
+  у каждой фазы `source_sha` и `actions_run`; `models[<id>].profile` — профиль реально собранного
+  запроса (endpoint, модель, протокол, имя и значение лимита ответа, контекст, лимит запроса,
+  окно чтения, stream, response_format, параметры сэмплирования). Профиль один на все evaluation
+  case-runs модели, при расхождении `null`. Запрос 2Б строится из `ModelConfig` политики случая
+  так же, как `ChatModel` сервиса, и называет схему ответа `graph_action`; изменение записано в
+  `pre_run_changes` до первого платного запроса.
 
 ## Dry-run всей программы
 

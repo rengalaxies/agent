@@ -84,12 +84,15 @@ def task_graph(args) -> dict:
 
 
 def task_probes(args) -> dict:
-    """Read-only calls with the configured credentials; publication rights are checked on first publish."""
-    from agent_service.config import ServiceConfig, build
+    """Read-only calls with the configured credentials; publication rights are checked on first publish.
+
+    Runs before the pre-update backup, so it must not open (and possibly migrate) the service state.
+    """
+    from agent_service.config import ServiceConfig, build_connectors
 
     config = ServiceConfig.load(args.config)
     try:
-        _, connectors, _ = build(config)
+        connectors, _ = build_connectors(config)
     except Exception as exc:
         return {"ok": False, "checks": [{"source": "configuration", "ok": False, **_safe(exc)}]}
     checks = []
@@ -122,6 +125,8 @@ def task_readiness(args) -> dict:
 
     config = ServiceConfig.load(args.config)
     out = {}
+    if not Path(config.state_path).is_file():  # never create an empty queue just to report on it
+        return {"queue_error": {"code": "state_missing"}, "graph_error": {"code": "state_missing"}}
     try:
         out["queue"] = ServiceStore(config.state_path).status()
     except Exception as exc:

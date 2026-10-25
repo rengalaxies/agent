@@ -109,18 +109,18 @@
     "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
     "src/agent_graph/store.py": "8e1c88646e5662d474aefa89ea4387ed50ef0bae3537fe648cf85820905f9a15",
     "tools/autonomous_mvp/__init__.py": "72ef993c5ddaa5cbb16237d2992878261471bfc1b4bcc7c9a4475cd4124a4717",
-    "tools/autonomous_mvp/dryrun.py": "db3bf19e05cb406eeac6f83108e6ffc9344f78057d03ef8315cf233753701bd1",
+    "tools/autonomous_mvp/dryrun.py": "47bb8341f8600d903afa4f785de04df999b4f141d311cd5744571adf9280cafb",
     "tools/autonomous_mvp/fixtures.py": "1d46212802a7d17d48cb0dac90ed9c57b15620d930c2330e0c6a4c85b8523f0c",
     "tools/autonomous_mvp/generate_cases.py": "4485762325ad0ab47124e2ee89961831aa58a93559e189442aa5d0287620c704",
     "tools/autonomous_mvp/ledger.py": "23717da20f8ad52681d7169a79fe3770c8bac60e5c224c364c58904f98d2d8b3",
     "tools/autonomous_mvp/oracle_check.py": "be6aa7768463400643cf5be88683342a2af8a9b8240e647baf2a92ac0d7745e9",
     "tools/autonomous_mvp/program.py": "e609a74d9f5132cc2c366eb5043fab4ef3dc14976c5daca87681b17182f78306",
-    "tools/autonomous_mvp/protocol.py": "2926083eaab60413c51ce22c1e2f139d28a88839857a136dd196458216e1e669",
-    "tools/autonomous_mvp/runner.py": "99c604c2d692cace441b09ec987abfa56ca568220628e99378da2ecd64798aad",
-    "tools/autonomous_mvp/scorer.py": "b437f64fbe02ceba1c3da652ac1b18a150e34526f5aab621c80f21abc7f77f58",
+    "tools/autonomous_mvp/protocol.py": "989c6efe60849a5e4f34095d1cb9f36c48c8a5c878e8bbf6f8196031aa42bde3",
+    "tools/autonomous_mvp/runner.py": "81727b79d5cdb2516800cf88f56d6dcd27207a6473073a658db997d7520ebd26",
+    "tools/autonomous_mvp/scorer.py": "881e1b83aadeba464a7f154b4ebd4c264ebb5171bbc1a05ccb54f3d6e128e6d1",
     "tools/autonomous_mvp/transport.py": "e90c228b44e4008e970375e37a5e2ac5957b754f01a5cae9e9f55bd57ae1f04f"
   },
-  "manifest_digest": "b9b44fa525d2f4426e178ac9df3ad1360f3f462855aefded7998b97b62223192",
+  "manifest_digest": "8d1c1afcb2a1247d5bba64a39e03772e99c30aec2a5d7eeaa6db0cae3f299222",
   "oracle_scope": "evaluator only; never passed to the protocol, the model or its configuration",
   "program": {
     "baseline": "None. No paid closed model is part of this program; a labelled comparison would be a separate revision.",
@@ -222,7 +222,8 @@
     },
     "pre_run_changes": [
       "2026-10-24, before any request: bound to the 2A executor (actions-v3, constitution agent-service-v1) instead of an interim adapter; case limits set to the constitution (12 steps, 120 s, 2 invalid actions); request timeout 60 s (core ModelConfig maximum); max_completion_tokens 4096 for every model (core maximum); impact and unknown-acknowledgement metrics removed because actions-v3 gives the model no impact action and gaps are produced by the core; outcome accuracy added. No result existed when these were decided.",
-      "2026-10-24, before any request: the constitution gained graph_find, graph_neighbors, graph_impact, graph_relationship and graph_owner (batch 3, 9a2ac69). Every case now runs with a persistent graph built by trusted code (code of granted and revoked repositories, operator ownership mapping). Families F15-F18 added (4 development, 12 evaluation cases), F16 and F17 are negative controls, gate G9 (revoked-scope leaks) and metric T14 (owner status) added, graph ids cited as evidence count under G2. The evaluation set was not frozen: no request had been sent, so the revision stays r1."
+      "2026-10-24, before any request: the constitution gained graph_find, graph_neighbors, graph_impact, graph_relationship and graph_owner (batch 3, 9a2ac69). Every case now runs with a persistent graph built by trusted code (code of granted and revoked repositories, operator ownership mapping). Families F15-F18 added (4 development, 12 evaluation cases), F16 and F17 are negative controls, gate G9 (revoked-scope leaks) and metric T14 (owner status) added, graph ids cited as evidence count under G2. The evaluation set was not frozen: no request had been sent, so the revision stays r1.",
+      "2026-10-25, before any chat request (only a 0-token preflight of GET /v1/models had run, run 40207723410): the report became amvp-report-2 with provenance, program phases/gates/metrics and the model profile each case-run sent, so the service can check the result instead of a self-declared verdict; the 2B request now names its json_schema graph_action, as the service ChatModel does, so the qualified request equals the production one. No result existed when this was decided."
     ],
     "protocol": {
       "constitution": "constitutions/agent-service-v1.yaml",
@@ -358,7 +359,7 @@
     "oracle/development.json": "003a41be656a66b03042f06fe827241792833ef9961ab5d2620d647a031cbd74",
     "oracle/evaluation.json": "45f54460d80bd42fd9538be1aad460d0f56376fb59eca7a0eaca8f1736ec7e75",
     "oracle/transport.json": "3d95fe02b926548f292fd2996f36979dc97576393cfad68a7682aa99541e8493",
-    "program.json": "0d2f73b0be8d91caf93391fed11c9cbf9f968d0f429f7bc6701d985ae98d6d24"
+    "program.json": "d787bef3b0e2dbe94502a300498d12cbf3db2dbc817797ce6d5dc7a95434ba47"
   },
   "protocol": {
     "code_sha256": {
@@ -374,7 +375,7 @@
       "src/agent_graph/graph_store.py": "b316b1e2f341b57e56d5104d0e4b8f9cf427b9d783e5bb7ce060fcf991e5e1bb",
       "src/agent_graph/output_contracts.py": "d41b69c15844eb8d382faefe0430e3bb798437814ac6b594509975920371873c",
       "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
-      "tools/autonomous_mvp/protocol.py": "2926083eaab60413c51ce22c1e2f139d28a88839857a136dd196458216e1e669"
+      "tools/autonomous_mvp/protocol.py": "989c6efe60849a5e4f34095d1cb9f36c48c8a5c878e8bbf6f8196031aa42bde3"
     },
     "constitution_version": "agent-service-v1.0:100bcad3db9c",
     "executor": "agent_graph.executor.run_investigation",

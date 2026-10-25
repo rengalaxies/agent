@@ -41,6 +41,29 @@ class FullCycle(Harness):
         self.assertLess(row["settled_micro"], row["reserved_micro"])
         self.assertTrue(runner.requirement_met("development", stored(self.dir, "transport")))
 
+    def test_each_case_run_records_the_model_profile_of_the_requests_it_sent(self):
+        transport, sent = agent(), []
+        complete = transport.complete
+        transport.complete = lambda payload, *, deadline: (sent.append(payload), complete(payload, deadline=deadline))[1]
+        state = run_phase(self.dir, "transport", transport)
+        [profile] = {json.dumps(r["result"]["model_profile"], sort_keys=True) for r in state["case_runs"]}
+        profile = json.loads(profile)
+        program = one_model_program()
+        p = program["parameters"]
+        # The record is what went over the wire...
+        self.assertTrue(sent)
+        for payload in sent:
+            self.assertEqual({k: v for k, v in payload.items() if k not in ("messages", "response_format")},
+                             dict(model=MODEL, stream=False, **profile["sampling"],
+                                  **{profile["token_parameter"]: profile["max_output_tokens"]}))
+            self.assertEqual(payload["response_format"]["json_schema"]["name"], profile["response_format"]["name"])
+        # ...and what the program fixed for this model.
+        self.assertEqual((profile["endpoint"], profile["token_parameter"], profile["max_output_tokens"],
+                          profile["context_tokens"], profile["max_prompt_bytes"], profile["sampling"]),
+                         (program["provider"]["chat_endpoint"], p["token_parameter"],
+                          program["models"][0]["max_completion_tokens"], p["context_tokens"], p["max_prompt_bytes"],
+                          {"temperature": p["temperature"]}))
+
     def test_hypothesis_beyond_the_grammar_is_admitted_only_as_a_candidate(self):
         _, row = self.single("D07", agent())
         self.assertEqual(row["result"]["final"]["outcome"], "hypotheses_only")
