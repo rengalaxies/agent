@@ -1,8 +1,13 @@
 name: Workflow security and syntax check
+# Runs on every PR that touches a workflow, so a ShellCheck finding (issue #8) fails the PR
+# instead of appearing only after merge. The tracking issue is updated from main only.
 on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/**'
+  pull_request:
     paths:
       - '.github/workflows/**'
 permissions:
@@ -15,7 +20,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install actionlint
         run: |
-          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash) 1.7.7
+          ./actionlint -version
+      - name: Require ShellCheck
+        # actionlint skips run: scripts silently when shellcheck is not on PATH.
+        run: shellcheck --version
       - name: Static validate all workflows
         id: lint
         continue-on-error: true
@@ -23,9 +32,10 @@ jobs:
           set +e
           ./actionlint -color=false > /tmp/actionlint.txt 2>&1
           echo "rc=$?" >> "$GITHUB_OUTPUT"
+          cat /tmp/actionlint.txt
           exit 0
       - name: Publish diagnostics
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}

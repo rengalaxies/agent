@@ -55,7 +55,7 @@ class JiraConfig(Strict):
 
 
 class QualificationRef(Strict):
-    report_path: Path  # report.json of the batch 2B run (schema amvp-report-1)
+    report_path: Path  # report.json of the batch 2B run (schema amvp-report-2)
     run_id: str = Field(min_length=1, max_length=200)
     report_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -107,6 +107,11 @@ def _secret(name: str | None) -> str:
 def build(config: ServiceConfig, *, clock=time.time, env_secret=_secret):
     """Return (store, connectors, backends) for the configuration."""
     store = ServiceStore(config.state_path, clock=clock, limits=Limits(**config.limits))
+    return (store, *build_connectors(config, clock=clock, env_secret=env_secret))
+
+
+def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secret):
+    """Return (connectors, backends) without opening the state: source probes of a release not yet started."""
     connectors = {}
     if config.github:
         gh = config.github
@@ -135,7 +140,7 @@ def build(config: ServiceConfig, *, clock=time.time, env_secret=_secret):
     else:
         root = config.dry_run_dir or config.state_path.parent / "dry-run-comments"
         backends = {name: DirectorySink(root / name) for name in connectors}
-    return store, connectors, backends
+    return connectors, backends
 
 
 def _document(path: Path):

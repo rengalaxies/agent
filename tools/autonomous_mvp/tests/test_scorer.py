@@ -250,6 +250,20 @@ class ReportBinding(unittest.TestCase):
         self.assertEqual(rep["ignored_ledgers"], ["Qwen/Qwen3-Coder-Next:evaluation-1"])
         self.assertEqual(rep["models"]["Qwen/Qwen3-Coder-Next"]["verdict"], "DISABLED")
 
+    def test_report_states_the_profile_evaluation_case_runs_used_and_none_when_they_differ(self):
+        profile = dict(model="openai/gpt-oss-120b", token_parameter="max_completion_tokens", max_output_tokens=4096)
+        states = [ledger(p, [dict(ideal_result(k), model_profile=profile) for k in EVAL])
+                  for p in scorer.EVALUATION_PHASES]
+        rep = scorer.report(PROGRAM, CASES, ORACLE, copy.deepcopy(states), program_id="2b-r1")
+        self.assertEqual((rep["schema"], rep["program"]["id"]), ("amvp-report-2", "2b-r1"))
+        self.assertEqual(rep["program"]["phases"], list(PROGRAM["phases"]))
+        self.assertIn("G7_program_complete", rep["program"]["gates"])
+        self.assertEqual(rep["models"]["openai/gpt-oss-120b"]["profile"], profile)
+        # One case-run of the last phase went out with another output limit: no single profile was qualified.
+        states[2]["case_runs"][0]["result"]["model_profile"] = dict(profile, max_output_tokens=64)
+        rep = scorer.report(PROGRAM, CASES, ORACLE, copy.deepcopy(states), program_id="2b-r1")
+        self.assertIsNone(rep["models"]["openai/gpt-oss-120b"]["profile"])
+
 
 class HypothesisContract(unittest.TestCase):
     def test_candidate_maps_to_a_valid_hypothesis_evidence_and_a_sufficient_one_is_refused(self):

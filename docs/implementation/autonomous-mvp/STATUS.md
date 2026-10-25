@@ -44,7 +44,41 @@ API читается без токена, но ограничен 60 запро�
   (`fcntl` в `store.py`, `O_NOFOLLOW`/`dir_fd` в `sources.py`). Отчёт серии
   22.10 уже отмечал это для `Store`.
 
-## Сводка на 25.10.2026
+## Сводка на 25.10.2026, вечер
+
+Стек #56–#60 слит в `main` (`0f0dc02`, реестр в [PR-REGISTER.md](PR-REGISTER.md)).
+Итоговая оценка готовности: [READINESS.md](READINESS.md).
+
+Окружение исполнителя этой части: аккаунт GitHub `swan-Dive`, право `write` (не admin),
+токен со scopes `repo, workflow`; входит в required reviewers окружения
+`autonomous-mvp-live`, `prevent_self_review` выключен, окружение пускает только `main`.
+Локально Windows 11, Python 3.14.5, `gh` нет: GitHub API через токен Git credential manager.
+
+### Исправительная пачка, PR #61
+
+Ветка `claude/mvp-recovery-fixes` от `main` `0f0dc02`. Закрывает P1, P1 и P2 ревью #60,
+неполный допуск модели и SC2024 ([issue #8](https://github.com/rengalaxies/agent/issues/8)).
+Решения D10–D12 в [DECISIONS.md](DECISIONS.md).
+
+| Проверка | Где | Код | Результат |
+|---|---|---|---|
+| Новые сценарии приёмки на исходной `main` | Windows, `process` | `0f0dc02` | `first_schema_update_then_rollback` FAIL (копия pre-update со схемой 2), `failed_start_rolls_back` FAIL (работает D вместо A), `update_other_constitution_then_rollback` FAIL (загруженная идентичность не та) |
+| Новые unit-тесты restore на исходном `state.py` | Windows | `0f0dc02` | 5 из 5 FAIL |
+| Приёмка установленной коробки, 11 сценариев | Windows, `process` | `0d02c17` | 11 из 11 PASS |
+| `tools/agent_service/box/tests`, `tests/service`, `tools/autonomous_mvp/tests` | Windows | `e4eb7f3` | 46, 98, 80 тестов OK |
+| Корпус, эталон, manifest 2b-r1 | Windows | `e4eb7f3` | CHECKED 80; 77 случаев, 0 ошибок; MANIFEST_CURRENT `8d1c1afc…` |
+| Linux-приёмка с systemd | [run 40214855779](https://github.com/rengalaxies/agent/actions/runs/40214855779), job 121233664757 | `5f71999` | 11 из 11 PASS, systemd 255 |
+| Workflow lint с ShellCheck на PR | [run 40214855713](https://github.com/rengalaxies/agent/actions/runs/40214855713) | `5f71999` | success; SC2024 больше нет |
+| Core research regression, P1 regression | runs 40214855723, 40214855791 | `5f71999` | success |
+
+Первый Linux-прогон ([40214160008](https://github.com/rengalaxies/agent/actions/runs/40214160008), `e4eb7f3`) упал на
+двух сценариях: проверка порта в `validate` считала занятым порт в TIME_WAIT после
+остановленного сервиса. Это прежний дефект, новый сценарий убитого restore его вскрыл.
+Исправлено в `5f71999` (SO_REUSEADDR на POSIX).
+
+Граница доказательства: раннер GitHub, а не ВМ заказчика; стенды GitHub/Jira локальные.
+
+## Сводка на 25.10.2026, до слияния стека
 
 Весь стек открыт как PR и зелёный в Linux CI (GitHub Actions, ubuntu). Порядок
 слияния: #56 → #57 → #58 → #60; #59 после #57. Live-проверки (модель, Jira,
@@ -57,8 +91,7 @@ GitHub App, ВМ) не выполнялись ни для одной пачки.
 | 4 | [#58](https://github.com/rengalaxies/agent/pull/58) | [`claude/mvp-4-service-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-4-service-2a) `339b6d0` | 3 | проверено (Windows) | core: 776 тестов OK, из них 79 `tests/service` (job 121143824127) | не проверено: нет GitHub App, Jira и права публикации |
 | 2Б | [#59](https://github.com/rengalaxies/agent/pull/59) | [`claude/mvp-2b-prep-9d9655`](https://github.com/rengalaxies/agent/tree/claude/mvp-2b-prep-9d9655) `95decda` | 3 | проверено (Windows) | verify, core, configuration зелёные | не проверено: ни одного запроса к модели |
 | 5А | [#60](https://github.com/rengalaxies/agent/pull/60) | [`claude/objective-feistel-a46433`](https://github.com/rengalaxies/agent/tree/claude/objective-feistel-a46433) `2fe2f41` | 4 | проверено (Windows, супервизор `process`) | установленная коробка с systemd: 9 из 9 сценариев (job 121143981931); accept, verify, configuration, core зелёные | не проверено: нет Linux-ВМ заказчика |
-| 5Б | — | — | — | не начата | — | — |
-| 6, офлайн-часть | нет | [`claude/mvp-6-readiness`](https://github.com/rengalaxies/agent/tree/claude/mvp-6-readiness), не отправлена | `main` | проверено (Windows): программа 6-r1 заморожена, held-out прогнан один раз без модели | не запускался | не проверено: нет модели, живого baseline и данных компании |
+| 5Б, 6 | — | — | — | не начаты | — | — |
 
 Результаты Linux CI для #57–#60 записаны по сообщению координирующей сессии,
 которая читала логи прогонов; сессия 2А сама их не открывала. Linux CI — это
@@ -231,20 +264,32 @@ Cloud с учётной записью и токеном, публичный HTT
 
 ## Пачка 5Б. Cloud.ru provisioning
 
-Не начата. Нужны инфраструктурные права в проекте
-`20853297-65b7-42a8-af40-25c8d2df4e11` и одобрение deployment gate.
-
-## Пачка 6. Решение о готовности
-
-Офлайн-часть: [batch-6.md](batch-6.md), ветка `claude/mvp-6-readiness`.
+PR [#62](https://github.com/rengalaxies/agent/pull/62), ветка `claude/mvp-5b-cloudru`
+`61662a1` от `main` `0f0dc02`. Отчёт: `batch-5b.md` в ветке.
 
 | Что | Состояние |
 |---|---|
-| Программа 6-r1: 20 + 60 независимых изменений, эталон по исполнению, пороги | реализовано, заморожено manifest `6140e378` |
-| Runner сервиса, scorer, baseline-протокол с офлайн-транспортами | реализовано, проверено офлайн |
-| Held-out, конфигурация без модели | прогнан один раз; числа в batch-6.md |
-| Сервис с моделью, живой baseline, минуты человека | не проверено |
-| Полезность для бизнеса | НЕ ПРОВЕРЕНА: нужна история компании |
+| Топология одной ВМ (`gen-2-4`, SSD 20 GiB, публичный IPv4, SG с SSH только с `/32` владельца), первый запуск тем же `box install` и `box doctor` | реализовано, проверено офлайн: 41 тест, мутационная проверка |
+| Inventory, отсутствие дубликатов, adopt, digest плана, TTL, cleanup только своих ресурсов, lock-test | реализовано, проверено на фикстурах; против облака не запускалось |
+| Защищённый apply-workflow и офлайн-проверки на PR | `cloudru-box-validate.yml` зелёный на PR (run 40216022168) |
+| Смета 30 дней | 2619,68 ₽, с резервом 3274,60 ₽; ставки тарифа из репозитория, SSD и egress не перепроверены |
+| Plan против облака, apply, установка на ВМ, сквозное событие | не проверено: нет одобрения плана и подтверждённых прав создания |
 
-Следующий шаг: живой прогон модели 2Б, затем конфигурации `service-model` и `baseline-live` на
-новой ревизии программы.
+Ресурсы не создавались, cleanup не требуется. Ресурсы прежней P1 в проекте живы и
+тарифицируются (около 3,7 тыс. ₽ в месяц по оценке 5Б); коробка их не трогает.
+
+## Пачка 6. Решение о готовности
+
+PR [#63](https://github.com/rengalaxies/agent/pull/63), ветка `claude/mvp-6-readiness`
+`30da6d4` от `main` `0f0dc02`. Программа `6-r1`, manifest
+`6140e378686837750109e0ac79b1287287a5775d7c9db21d4573d62e62dc50f7`, отчёт `batch-6.md` в ветке.
+
+Held-out (60 изменений) прогнан один раз после заморозки, сервис без модели, код
+`0f0dc02`, уровни доказательства L1 и L2 (синтетика, локальные HTTP-стенды):
+полезный автономный вывод 47/60 = 0,783 [0,664; 0,869]; ворота technical PASS,
+quality FAIL (breaking назван как breaking 52/62, верный путь на PR 85/95, уверенный
+ответ в Jira вместо отказа 3/20); потерянных, дублирующих и устаревших публикаций 0 из 120;
+FP на PR 0/128, на Jira 10/128. Найдены два дефекта продукта: PR не использует runtime-рёбра
+изменённой операции, Jira с одним названием сервиса даёт уверенный ответ. Их исправление
+требует ревизии `6-r2`. Конфигурация с моделью, живой baseline, минуты человека, L3 и L4
+не оценены.

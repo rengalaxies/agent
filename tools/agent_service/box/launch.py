@@ -6,7 +6,9 @@ Before serving it verifies every app file of its own release against the
 manifest, imports the core and compares ``agent_graph.core_identity()`` with
 the manifest. The result goes to ``<run>/loaded.json`` with this PID, so
 ``box status`` can show the version the running process actually loaded,
-not the version a file on disk claims.
+not the version a file on disk claims: release, core, the configuration file
+it read, the ``code_version`` its AnalysisResults carry and the constitution
+it loaded. It does not start while a restore of the state is unfinished.
 """
 
 from __future__ import annotations
@@ -48,12 +50,18 @@ def main(argv=None) -> int:
     loaded = identity()
     service_config = json.loads(Path(args.config).read_text(encoding="utf-8"))
     from agent_graph.constitution import load
+    from tools.agent_service.box.state import restore_unfinished
+
+    if restore_unfinished(Path(service_config["state_path"]).parents[1]):
+        raise SystemExit("restore_unfinished: run box restore or box install to finish it")
 
     # On Windows a venv's python.exe is a launcher that starts the interpreter as its child.
     loaded.update(pid=os.getpid(), launcher_pid=os.getppid() if os.name == "nt" else None,
                   started_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
                   constitution=load(service_config["core"]["constitution_path"])[1],
-                  listen=f"{args.host}:{args.port}")
+                  constitution_path=service_config["core"]["constitution_path"],
+                  code_version=(service_config.get("analysis") or {}).get("code_version"),
+                  config=str(Path(args.config).resolve()), listen=f"{args.host}:{args.port}")
     args.run.mkdir(parents=True, exist_ok=True)
     tmp = args.run / f".loaded.{os.getpid()}.tmp"
     tmp.write_text(json.dumps(loaded, indent=2, sort_keys=True) + "\n")

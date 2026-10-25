@@ -57,22 +57,25 @@ jobs:
           (cd dist/A && sha256sum -c ./*.sha256)
           cmp dist/A/*.tar.gz dist/A2/*.tar.gz
           cp dist/A/*.manifest.json dist/A/*.sha256 "$OUT/"
-      - name: Build update variants C (version only) and B (state schema bump)
+      - name: Build update variants C (other constitution), B (state schema bump), D (B that never starts)
         run: |
-          for v in C B; do
+          for v in C B D; do
             git worktree add --detach "/tmp/variant-$v" HEAD
-            if [ "$v" = C ]; then
-              python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.1.1
-            else
-              python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.2.0
-              python tools/agent_service/box/variants.py schema-bump "/tmp/variant-$v"
-            fi
+            case "$v" in
+              C) python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.1.1
+                 python tools/agent_service/box/variants.py constitution-change "/tmp/variant-$v" ;;
+              B) python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.2.0
+                 python tools/agent_service/box/variants.py schema-bump "/tmp/variant-$v" ;;
+              D) python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.3.0
+                 python tools/agent_service/box/variants.py schema-bump "/tmp/variant-$v"
+                 python tools/agent_service/box/variants.py broken-start "/tmp/variant-$v" ;;
+            esac
             git -C "/tmp/variant-$v" -c user.name=box-ci -c user.email=box-ci@example.invalid commit -qam "test variant $v"
             python tools/agent_service/box/release.py build --repo "/tmp/variant-$v" --commit HEAD --output "dist/$v"
           done
       - name: Extract releases as an owner would
         run: |
-          for v in A B C; do
+          for v in A B C D; do
             (cd "dist/$v" && sha256sum -c ./*.sha256)
             mkdir -p "/tmp/rel/$v" && tar -xzf "dist/$v"/*.tar.gz -C "/tmp/rel/$v"
             echo "REL_$v=$(ls -d "/tmp/rel/$v"/agent-service-*)" >> "$GITHUB_ENV"
@@ -91,7 +94,8 @@ jobs:
       - name: Acceptance on the installed releases (systemd)
         run: |
           sudo /usr/bin/python3 "$REL_A/app/tools/agent_service/box/acceptance.py" --stand "$STAND/stand.json" \
-            --release "$REL_A" --update "$REL_C" --schema-update "$REL_B" --output "$OUT/acceptance.json"
+            --release "$REL_A" --update "$REL_C" --schema-update "$REL_B" --broken-update "$REL_D" \
+            --output "$OUT/acceptance.json"
       - name: Summary
         if: always()
         run: |
@@ -111,9 +115,15 @@ jobs:
       - name: Collect safe diagnostics
         if: always()
         run: |
-          sudo cp -r /var/lib/agent-service-box/reports "$OUT/install-reports" 2>/dev/null || true
-          sudo journalctl -u agent-service -u agent-service-sync --no-pager -n 300 > "$OUT/journal.txt" 2>&1 || true
-          sudo systemctl cat agent-service.service > "$OUT/agent-service.service.txt" 2>&1 || true
+          # Every file is written by a privileged tee; a part that cannot be collected is a visible warning.
+          if [ -d /var/lib/agent-service-box/reports ]; then
+            sudo cp -r /var/lib/agent-service-box/reports "$OUT/install-reports" \
+              || echo "::warning::install reports were not collected"
+          fi
+          sudo journalctl -u agent-service -u agent-service-sync --no-pager -n 300 2>&1 \
+            | sudo tee "$OUT/journal.txt" > /dev/null || echo "::warning::service journal was not collected"
+          sudo systemctl cat agent-service.service 2>&1 \
+            | sudo tee "$OUT/agent-service.service.txt" > /dev/null || echo "::warning::unit file was not collected"
           sudo chown -R "$(id -u):$(id -g)" "$OUT"
           # Test-stand values only; drop the generated status token from anything collected.
           grep -rl AGENT_SERVICE_STATUS_TOKEN "$OUT" | xargs -r sed -i 's/AGENT_SERVICE_STATUS_TOKEN=.*/AGENT_SERVICE_STATUS_TOKEN=<removed>/'
