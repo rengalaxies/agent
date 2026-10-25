@@ -48,7 +48,11 @@ def journey(base_url, username, password, operator, output, store):
                 "() => document.querySelector('#edges').children.length===3 && !document.querySelector('#prepare').disabled",
                 timeout=180000,
             )
-            assert page.locator("#coverage").inner_text().startswith("Неполные данные")
+            # Scenario A has no real gap: the old "Неполные данные" came from FastAPI route
+            # decorators counted as unknown clients, which batch 2A removed as noise.
+            coverage = page.locator("#coverage").inner_text()
+            assert coverage.startswith("Обследован разрешённый корпус"), coverage
+            assert "Семантическая корректность не доказана" in coverage
 
             def actual(version):
                 generation = guard.read()["generation"]

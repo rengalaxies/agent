@@ -4,6 +4,8 @@
 !src/agent_graph/**
 !src/agent_graph_demo/
 !src/agent_graph_demo/**
+!constitutions/
+!constitutions/agent-service-v1.yaml
 !examples/
 !examples/agent_graph_demo/
 !examples/agent_graph_demo/**
@@ -12,8 +14,6 @@
 !tools/agent_graph_demo/**
 !infra/
 !infra/agent_graph_demo/
-!constitutions/
-!constitutions/agent-service-v1.yaml
 !infra/agent_graph_demo/requirements.lock
 !work/
 !work/wheels/
