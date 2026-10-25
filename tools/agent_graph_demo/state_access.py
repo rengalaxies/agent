@@ -13,6 +13,11 @@ from agent_graph_demo.store import Store
 APP_UID = APP_GID = 10001
 
 
+def effective_uid():
+    """None where the OS has no POSIX UIDs (Windows development); never treated as root."""
+    return os.geteuid() if hasattr(os, "geteuid") else None
+
+
 class StateAccess:
     def __init__(self, root):
         self.root = Path(root).resolve()
@@ -21,7 +26,7 @@ class StateAccess:
         sid = str(uuid.UUID(sid))
         if operation not in ("session", "receipt", "external_report"):
             raise DemoError("state_operation_forbidden")
-        if os.geteuid() == 0:
+        if effective_uid() == 0:
             release = Path(__file__).resolve().parents[2]
             env = {
                 "PATH": os.defpath,
@@ -69,7 +74,7 @@ class StateAccess:
 
 if __name__ == "__main__":
     try:
-        if os.geteuid() == 0:
+        if effective_uid() == 0:
             raise DemoError("helper_must_run_as_app_user")
         print(
             canonical(

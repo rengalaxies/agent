@@ -8,11 +8,11 @@ import uuid
 
 from agent_graph_demo.contracts import canonical
 from tools.agent_graph_demo.runtime_guard import RuntimeGuard
-from tools.agent_graph_demo.state_access import APP_GID, APP_UID, StateAccess
+from tools.agent_graph_demo.state_access import APP_GID, APP_UID, StateAccess, effective_uid
 
 
 def main():
-    if os.geteuid() != 0:
+    if effective_uid() != 0:
         raise RuntimeError(
             "Run only as simulated operator inside disposable acceptance container"
         )
