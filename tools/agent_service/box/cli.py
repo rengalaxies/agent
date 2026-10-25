@@ -2,7 +2,9 @@
 
     box plan     [--config box.yaml]   check the configuration, secrets and host; show what install will change
     box install  [--config box.yaml]   validate → release → configure → mirrors → probes → graph → start → smoke → report
-    box update   [--config box.yaml]   install of a newer release: backup first, automatic rollback if it does not start
+    box update   [--config box.yaml]   install of a newer release: the old service stops and its state and configuration
+                                       are backed up before any code of the new release opens them; automatic
+                                       rollback if a later phase fails
     box status                         release and core the running process loaded; liveness / process / scenario
     box doctor                         status plus live credential and source checks with what to do
     box backup [--label L] | backups | restore NAME
@@ -39,8 +41,8 @@ from .layout import SERVICE_USER, Layout, is_root, venv_python
 from .messages import explain
 from .supervisor import box_command, choose
 
-# "backup" runs only when the install replaces another active release.
-PHASES = ("validate", "release", "configure", "mirrors", "probes", "backup", "graph", "start", "smoke", "report")
+# "backup" runs only when the install replaces another active release, before anything of the new one runs.
+PHASES = ("validate", "release", "backup", "configure", "mirrors", "probes", "graph", "start", "smoke", "report")
 EXIT_READY, EXIT_FAILED, EXIT_NOT_READY = 0, 1, 2
 
 
@@ -61,6 +63,7 @@ class Box:
         self.layout = layout
         self.release = Path(release_dir).resolve()
         self.manifest, self.manifest_sha = rel.load_manifest(self.release)
+        self.bindings = layout.bindings(self.manifest["name"])
         self.supervisor = choose(layout, supervisor)
         self.out = out
 
@@ -93,6 +96,9 @@ class Box:
                     raise Failed(["Другая операция box уже выполняется на этой машине. Дождитесь её завершения."])                         from None
                 time.sleep(1)
         try:
+            recovered = box_state.recover(self.layout)  # a restore killed half way: the old databases go back
+            if recovered:
+                self.out(f"Незавершённое восстановление из {recovered['backup']} разобрано: {recovered['outcome']}.")
             yield
         finally:
             os.close(fd)
@@ -209,10 +215,11 @@ class Box:
         plan.append(f"релиз {name} (commit {self.manifest['code']['commit'][:12]}) "
                     + ("уже активен" if active == name else f"заменит {active}" if active else "будет установлен"))
         if active and active != name:
-            plan.append("перед заменой: остановка сервиса и резервная копия состояния (pre-update)")
+            plan.append("до запуска кода нового релиза: остановка сервиса и копия состояния и конфигурации (pre-update)")
         if self.layout.system:
             plan.append(f"пользователь {SERVICE_USER}: " + ("есть" if _user_exists() else "будет создан"))
-        plan.append(f"конфигурация: {config_path} → {self.layout.config}; сгенерированные service.json, policy.json")
+        plan.append(f"конфигурация: {config_path} → {self.layout.config}; сгенерированные service.json, policy.json "
+                    f"этого релиза в {self.bindings}")
         mirrors = [r.graph_id for r in cfg.github.repositories]
         existing = [m for m in mirrors if (self.layout.mirrors / f"{m}.git").exists()]
         plan.append(f"Git-зеркала: обновить {len(existing)}, клонировать {len(mirrors) - len(existing)}")
@@ -233,8 +240,9 @@ class Box:
                             "--shell", "/usr/sbin/nologin", SERVICE_USER], check=True)
             changed.append("user")
         L.etc.mkdir(parents=True, exist_ok=True)
-        L.generated.mkdir(parents=True, exist_ok=True)
-        self.chown(L.generated, 0o750, group_only=True)
+        for d in (L.generated, self.bindings):
+            d.mkdir(parents=True, exist_ok=True)
+            self.chown(d, 0o750, group_only=True)
         for d, mode in ((L.state, 0o750), (L.state / "service", 0o700), (L.state / "core", 0o700),
                         (L.mirrors, 0o700), (L.run, 0o700), (L.run / "home", 0o700), (L.state / "tmp", 0o700),
                         (L.state / "dry-run", 0o700)):
@@ -260,36 +268,41 @@ class Box:
             if key.is_file():
                 self.chown(key, 0o640, group_only=True)
         constitution = cfg.constitution_file or self.release / "app" / self.manifest["contracts"]["constitution"]["path"]
-        service = cfg.service(state=L.state, policy_path=L.generated / "policy.json", constitution=Path(constitution),
-                              release_id=self.manifest["release_id"])
-        if box_config.write_json(L.generated / "service.json", service):
+        # Written by this release's code into its own directory: the bindings of the active release stay as they
+        # are until the supervisor switches to this release, and a rollback switches back to them unchanged.
+        service = cfg.service(state=L.state, policy_path=self.bindings / "policy.json",
+                              constitution=Path(constitution), release_id=self.manifest["release_id"])
+        if box_config.write_json(self.bindings / "service.json", service):
             changed.append("service.json")
-        self.chown(L.generated / "service.json", 0o640, group_only=True)
+        self.chown(self.bindings / "service.json", 0o640, group_only=True)
         return {"changed": changed}
 
     def mirrors(self, cfg: box_config.BoxConfig) -> dict:
         L = self.layout
         result = self.task("mirrors", "--box-config", str(L.config), "--mirrors", str(L.mirrors))
         previous = {}
-        try:
-            previous = {r["id"]: r["revision"] for r in json.loads((L.generated / "policy.json").read_text(encoding="utf-8"))
-                        ["repositories"]}
-        except (OSError, ValueError, KeyError):
-            pass
+        active = self.journal().get("active", {}).get("name")
+        for source in [self.bindings] + ([L.bindings(active)] if active else []):
+            try:
+                previous = {r["id"]: r["revision"]
+                            for r in json.loads((source / "policy.json").read_text(encoding="utf-8"))["repositories"]}
+                break
+            except (OSError, ValueError, KeyError):
+                pass
         tips = {}
         for r in result.get("repositories", []):
             tips[r["id"]] = r.get("tip") or previous.get(r["id"]) or "0" * 40
         for r in cfg.github.repositories:
             tips.setdefault(r.graph_id, previous.get(r.graph_id, "0" * 40))
         constitution = cfg.constitution_file or self.release / "app" / self.manifest["contracts"]["constitution"]["path"]
-        changed = box_config.write_json(L.generated / "policy.json",
+        changed = box_config.write_json(self.bindings / "policy.json",
                                         cfg.policy(mirrors=L.mirrors, tips=tips, constitution=Path(constitution)))
-        self.chown(L.generated / "policy.json", 0o640, group_only=True)
+        self.chown(self.bindings / "policy.json", 0o640, group_only=True)
         result["policy_changed"] = changed
         return result
 
-    def config_digest(self) -> str:
-        parts = [(self.layout.generated / n).read_bytes() for n in ("service.json",)]
+    def config_digest(self, name: str) -> str:
+        parts = [(self.layout.bindings(name) / n).read_bytes() for n in ("service.json",)]
         parts.append(self.layout.secrets.read_bytes() if self.layout.secrets.is_file() else b"")
         return rel.sha256_bytes(b"\0".join(parts))
 
@@ -306,7 +319,7 @@ class Box:
                                                   sync_seconds=cfg.freshness.mirror_sync_seconds,
                                                   daily_backup=cfg.storage.daily_backup)
         journal = self.journal()
-        digest = self.config_digest()
+        digest = self.config_digest(manifest["name"])
         loaded = self.loaded()
         pid = self.supervisor.pid()
         running_right = (pid is not None and loaded is not None and pid in (loaded.get("pid"), loaded.get("launcher_pid"))
@@ -378,11 +391,40 @@ class Box:
                 problems.append("running_release_differs_from_active")
             if manifest and loaded.get("core") != manifest["contracts"]["core"]:
                 problems.append("running_core_differs_from_manifest")
+            if manifest:
+                problems += self.binding_problems(loaded, manifest)
         code, queue = self.http(listen, "/status", self.secrets().get(box_config.STATUS_TOKEN_ENV))
         if code != 200:
             problems.append("status_endpoint_unavailable" if code != 401 else "status_token_rejected")
         return {"live": live, "process_ready": live and not problems, "problems": problems, "pid": pid,
                 "loaded": loaded, "queue": queue if code == 200 else None}
+
+    def binding_problems(self, loaded: dict, manifest: dict) -> list[str]:
+        """The configuration, code_version and constitution the process loaded must be those of its release."""
+        problems = []
+        expected = (self.layout.bindings(manifest["name"]) / "service.json").resolve()
+        if not loaded.get("config") or Path(loaded["config"]).resolve() != expected:
+            problems.append("running_config_of_other_release")
+        if loaded.get("code_version") != manifest["release_id"]:
+            problems.append("running_code_version_differs_from_release")
+        if loaded.get("constitution") != self.expected_constitution(manifest):
+            problems.append("running_constitution_differs_from_release")
+        return problems
+
+    def expected_constitution(self, manifest: dict) -> str | None:
+        """The release's own constitution, or the owner's constitution_file from box.yaml."""
+        try:
+            own = box_config.load(self.layout.config).constitution_file
+        except box_config.ConfigProblem:
+            own = None
+        if own is None:
+            return manifest["contracts"]["constitution"]["version_id"]
+        from agent_graph.constitution import load
+
+        try:
+            return load(own)[1]
+        except Exception:
+            return None
 
     def wait_ready(self, cfg: box_config.BoxConfig, manifest: dict, timeout: float) -> dict:
         listen = {"host": cfg.listen.host, "port": cfg.listen.port}
@@ -392,6 +434,11 @@ class Box:
             if level["process_ready"] or time.time() > deadline:
                 return level
             time.sleep(1)
+
+    def active_release(self) -> Path:
+        """The release whose code and bindings serve now (this one before the first install)."""
+        name = self.journal().get("active", {}).get("name")
+        return self.layout.release(name) if name and self.layout.release(name).is_dir() else self.release
 
     def active_manifest(self) -> dict | None:
         name = self.journal().get("active", {}).get("name")
@@ -451,6 +498,11 @@ class Box:
             phase("release", lambda: {"name": self.manifest["name"], "release_id": self.manifest["release_id"],
                                       "commit": self.manifest["code"]["commit"],
                                       "manifest_sha256": rel.verify_tree(self.release)[1]})
+            previous = self.journal().get("active")
+            if previous and previous["name"] != self.manifest["name"]:
+                # The old service stops and its state, box.yaml and bindings are copied before any code of this
+                # release opens the state (graph, start) or writes configuration (configure).
+                phase("backup", lambda: self.pre_update_backup(previous))
             phase("configure", lambda: self.configure(cfg, config_path))
 
             def do_mirrors():
@@ -460,16 +512,13 @@ class Box:
             phase("mirrors", do_mirrors)
 
             def do_probes():
-                r = self.task("probes", "--config", str(L.generated / "service.json"))
+                r = self.task("probes", "--config", str(self.bindings / "service.json"))
                 return {**r, "_state": "DONE" if r.get("ok") else "DEGRADED"}
 
             phase("probes", do_probes)
-            previous = self.journal().get("active")
-            if previous and previous["name"] != self.manifest["name"]:
-                phase("backup", lambda: self.pre_update_backup(previous))
 
             def do_graph():
-                r = self.task("graph", "--config", str(L.generated / "service.json"))
+                r = self.task("graph", "--config", str(self.bindings / "service.json"))
                 return {**r, "_state": "DONE" if r.get("ok") else "DEGRADED"}
 
             phase("graph", do_graph)
@@ -477,10 +526,7 @@ class Box:
             def do_start():
                 r = self.activate(cfg, self.release, self.manifest)
                 if not r["process_ready"]:
-                    rolled = self.auto_rollback(cfg, previous) if previous and previous["name"] != self.manifest["name"] \
-                        else None
-                    raise Failed(["Сервис не перешёл в состояние готовности процесса: " + ", ".join(r["problems"])]
-                                 + ([f"Автоматический откат на {previous['name']}: {rolled}"] if rolled else []))
+                    raise Failed(["Сервис не перешёл в состояние готовности процесса: " + ", ".join(r["problems"])])
                 if self.update_state().get("state") == "IN_PROGRESS":
                     j = self.journal()
                     j["update"]["state"] = "DONE"
@@ -505,13 +551,24 @@ class Box:
 
             phase("report", do_report)
         except Failed as exc:
-            run.update(state="FAILED", problems=exc.problems, finished_at=now(),
+            problems = list(exc.problems)
+            upd = self.update_state()
+            rolled_back = upd.get("state") == "IN_PROGRESS" and upd.get("to") == self.manifest["name"]
+            if rolled_back:  # an update that stopped the old service never leaves the machine without it
+                try:
+                    outcome_ = self.auto_rollback(cfg or self.current_config(), upd["from"])
+                except Failed as again:
+                    outcome_ = "не удался: " + "; ".join(again.problems)
+                problems.append(f"Автоматический откат на {upd['from']}: {outcome_}")
+            run.update(state="FAILED", problems=problems, finished_at=now(),
                        machine_seconds=round(time.monotonic() - started, 1))
             self.finish(run)
             self.out("Установка не завершена:")
-            for p in exc.problems:
+            for p in problems:
                 self.out(f"  - {p}")
-            self.out("Исправьте и запустите ту же команду ещё раз: сделанные шаги не повторяются.")
+            self.out("Исправьте и запустите ту же команду ещё раз" + (": обновление начнётся заново с новой копией."
+                                                                     if rolled_back else
+                                                                     ": сделанные шаги не повторяются."))
             return EXIT_FAILED
         run.update(state="DONE", finished_at=now(), machine_seconds=round(time.monotonic() - started, 1),
                    readiness=outcome)
@@ -542,18 +599,31 @@ class Box:
         if upd.get("state") == "IN_PROGRESS" and upd.get("to") == self.manifest["name"] and upd.get("backup"):
             return {"backup": upd["backup"], "reused": True}  # an interrupted update keeps its first backup
         self.supervisor.stop()
-        meta = box_state.create(self.layout, label="pre-update", release=previous)
+        try:
+            meta = box_state.create(self.layout, label="pre-update", release=previous)
+        except (OSError, box_state.BackupError) as exc:
+            self.supervisor.start()  # nothing of the new release ran yet: the old service goes on as it was
+            raise Failed([f"Копия перед обновлением не создана ({getattr(exc, 'code', None) or type(exc).__name__}"
+                          f"{': ' + exc.strerror if getattr(exc, 'strerror', None) else ''}). Обновление не начато, "
+                          f"работает {previous['name']}."]) from None
         j = self.journal()
         j["update"] = {"from": previous["name"], "to": self.manifest["name"], "backup": meta["name"],
                        "state": "IN_PROGRESS", "started_at": now()}
         self.save(j)
         return {"backup": meta["name"], "schemas": meta["schemas"], "counts": meta["counts"]}
 
-    def auto_rollback(self, cfg, previous: dict) -> str:
+    def current_config(self) -> box_config.BoxConfig:
         try:
-            return self.rollback(cfg, previous["name"])["mode"]
+            return box_config.load(self.layout.config)
+        except box_config.ConfigProblem as exc:
+            raise Failed([f"box.yaml: {p}" for p in exc.problems]) from None
+
+    def auto_rollback(self, cfg, name: str) -> str:
+        try:
+            r = self.rollback(cfg, name)
         except Failed as exc:
             return "не удался: " + "; ".join(exc.problems)
+        return r["mode"] + ("" if r["process_ready"] else ", но процесс не готов: " + ", ".join(r["problems"]))
 
     def rollback(self, cfg: box_config.BoxConfig, target_name: str | None) -> dict:
         L = self.layout
@@ -569,6 +639,9 @@ class Box:
             manifest, _ = rel.verify_tree(target)
         except (OSError, rel.ReleaseError) as exc:
             raise Failed([f"Релиз {target_name} не найден или повреждён ({getattr(exc, 'code', exc)})."]) from None
+        if not (L.bindings(target_name) / "service.json").is_file():
+            raise Failed([f"Нет конфигурации, которую релиз {target_name} сгенерировал для себя "
+                          f"({L.bindings(target_name)}). Установите его заново: box install."])
         disk = box_state.schemas(L.state)
         ok, why = box_state.compatible(manifest["contracts"]["state"], disk)
         result = {"from": active, "to": target_name, "schemas_on_disk": disk}
@@ -587,8 +660,13 @@ class Box:
                 raise Failed([f"Состояние несовместимо с {target_name} ({'; '.join(why)}), а резервной копии, "
                               "сделанной этим релизом, нет. Откат не выполнен, сервис оставлен как был."])
             backup = candidates[-1]["name"]
-            safety = box_state.create(L, label="pre-rollback", release=journal.get("active"))
-            meta = box_state.restore(L, backup, chown=lambda p: self.chown(p, 0o600))
+            try:
+                safety = box_state.create(L, label="pre-rollback", release=journal.get("active"))
+                meta = box_state.restore(L, backup, chown=lambda p: self.chown(p, 0o600))
+            except (OSError, box_state.BackupError) as exc:
+                self.supervisor.start()  # restore put the current databases back; the active release goes on
+                raise Failed([f"Восстановление копии {backup} не удалось ({getattr(exc, 'code', None) or exc}). "
+                              "Текущее состояние возвращено, откат не выполнен."]) from None
             result.update(mode="restored_backup", backup=backup, backup_created_at=meta["created_at"],
                           safety_backup=safety["name"],
                           note="события после копии сервис забирает сверкой с Jira/GitHub при старте; "
@@ -607,7 +685,9 @@ class Box:
 
     def readiness(self, listen: dict, run: dict | None = None, probes: dict | None = None) -> dict:
         process = self.process_level(listen)
-        view = self.task("readiness", "--config", str(self.layout.generated / "service.json"), timeout=300)
+        active = self.active_release()
+        view = self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
+                         release=active, timeout=300)
         reasons = []
         sources = view.get("sources", [])
         if "graph_error" in view:
@@ -672,7 +752,9 @@ class Box:
             problems += [p for p in vproblems if "занят" not in p]
         except Failed as exc:
             problems += exc.problems
-        probes = self.task("probes", "--config", str(self.layout.generated / "service.json"))
+        active = self.active_release()
+        probes = self.task("probes", "--config", str(self.layout.bindings(active.name) / "service.json"),
+                           release=active)
         listen = self.journal().get("listen") or {"host": cfg.listen.host, "port": cfg.listen.port}
         r = self.readiness(listen, probes=probes)
         backups = box_state.listing(self.layout)
@@ -826,8 +908,15 @@ def main(argv=None, *, release_dir: Path) -> int:
                     raise Failed([f"Копия {args.name} несовместима с активным релизом ({'; '.join(why)}): "
                                   "используйте box rollback к релизу, который её сделал."])
                 box.supervisor.stop()
-                safety = box_state.create(layout, label="pre-restore", release=box.journal().get("active"))
-                meta = box_state.restore(layout, args.name, chown=lambda p: box.chown(p, 0o600))
+                try:
+                    safety = box_state.create(layout, label="pre-restore", release=box.journal().get("active"))
+                    meta = box_state.restore(layout, args.name, chown=lambda p: box.chown(p, 0o600),
+                                             fault=lambda point: box.fault("restore", point, cfg))
+                except (OSError, box_state.BackupError) as exc:
+                    box.supervisor.start()  # the current databases are back in place: the service goes on with them
+                    raise Failed([f"Восстановление из {args.name} не выполнено "
+                                  f"({getattr(exc, 'code', None) or type(exc).__name__}). Текущее состояние "
+                                  "сохранено, сервис запущен с ним."]) from None
                 level = box.activate(cfg, layout.release(manifest["name"]), manifest)
                 result = {"restored": meta["name"], "counts": meta["counts"], "safety_backup": safety["name"],
                           "process_ready": level["process_ready"], "problems": level["problems"]}

@@ -5,7 +5,7 @@ Release files and durable state are kept apart:
     /opt/agent-service/releases/<name>/   immutable verified releases, each with its own venv
     /etc/agent-service/box.yaml           the owner's single configuration file
     /etc/agent-service/secrets.env        secret values (root, 0600), read by systemd
-    /etc/agent-service/generated/         service.json, policy.json (derived, never hand-edited)
+    /etc/agent-service/generated/<name>/  service.json, policy.json of each release (derived, never hand-edited)
     /var/lib/agent-service/               service state: queue, graph, Git mirrors (service user)
     /var/lib/agent-service-box/           installer journal, reports, lock (root)
     /var/backups/agent-service/           verified state backups (root)
@@ -103,6 +103,10 @@ class Layout:
 
     def release(self, name: str) -> Path:
         return self.releases / name
+
+    def bindings(self, name: str) -> Path:
+        """Configuration a release generated for itself: its code, constitution and release identity together."""
+        return self.generated / name
 
 
 def venv_python(venv: Path) -> Path:

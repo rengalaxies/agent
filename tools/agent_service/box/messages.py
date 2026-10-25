@@ -9,6 +9,15 @@ TEXT = {
     "loaded_identity_from_other_process": "Файл загруженной версии оставлен другим процессом: сервис перезапускается.",
     "running_release_differs_from_active": "Работает не тот релиз, который активен в журнале box. Выполните box install.",
     "running_core_differs_from_manifest": "Загруженное ядро не совпадает с manifest релиза: релиз изменён на диске.",
+    "running_config_of_other_release": "Процесс прочитал конфигурацию другого релиза, а не сгенерированную активным "
+                                       "релизом. Выполните box install активного релиза.",
+    "running_code_version_differs_from_release": "code_version в результатах анализа не совпадает с активным "
+                                                 "релизом. Выполните box install активного релиза.",
+    "running_constitution_differs_from_release": "Загруженная конституция не совпадает с конституцией активного "
+                                                 "релиза (или constitution_file из box.yaml).",
+    "state_missing": "Файла очереди нет: сервис ещё не запускался или состояние удалено. box не создаёт пустую "
+                     "очередь сам; восстановите копию (box restore) или запустите box install.",
+    "restore_copy_differs": "Копия базы при восстановлении не совпала с резервной копией: текущее состояние оставлено.",
     "status_endpoint_unavailable": "Не отвечает /status сервиса.",
     "status_token_rejected": "/status отклонил токен AGENT_SERVICE_STATUS_TOKEN из secrets.env.",
     "graph_empty": "Граф пуст: начальное построение не нашло ни одной связи. Проверьте зеркала и service_addresses.",
