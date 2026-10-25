@@ -348,18 +348,17 @@ Jira. После установки регулярных действий нет
 
 ## Что нужно поменять вне путей этой сессии
 
-1. `.github/workflows/agent-graph-demo.yml` (mvp-2a-core): `DEMO_CORE_ROOT` и
-   `--core-root "$DEMO_CORE_ROOT"` больше не нужны; без них acceptance работает на
-   ядре образа.
-2. `docs/agent-graph-demo/RUNBOOK.md`: строки про внешний checkout `18e8b71`,
-   `core.lock.json` и монтирование `/core` устарели.
-3. `.github/workflows/agent-graph-demo-delivery.yml` всё ещё архивирует `core.tar.gz` из
-   `18e8b71`; после этой правки он не нужен.
-4. mvp-4-service: событие PR с новым head может прийти раньше, чем таймер зеркал сделает
+1. Сделано в этой ветке по согласованию с mvp-2a-core: `agent-graph-demo.yml` больше не
+   задаёт `DEMO_CORE_ROOT` и не передаёт `--core-root`; `agent-graph-demo-delivery.yml` не
+   архивирует ядро `18e8b71`, а кладёт `src/agent_graph` и конституцию в архив исходников;
+   `docs/agent-graph-demo/RUNBOOK.md` описывает ядро в образе. В ветке 2А `accept.py` ещё
+   требует `--core-root`, поэтому там workflow остаётся прежним до слияния 5А; конфликт при
+   обратном merge mvp-2a-core разрешит в пользу 5А.
+2. mvp-4-service: событие PR с новым head может прийти раньше, чем таймер зеркал сделает
    fetch (до 120 с). Сейчас это закрывают повторы задания с backoff. Fetch нужного
    репозитория перед анализом сократил бы задержку; коробка для этого готова отдать
    функцию `mirrors.sync`.
-5. mvp-4-service: `/status` мог бы сам отдавать `loaded.json`. Сейчас box читает файл с
+3. mvp-4-service: `/status` мог бы сам отдавать `loaded.json`. Сейчас box читает файл с
    диска и сверяет PID.
 
 ## Ограничения
