@@ -57,7 +57,8 @@ GitHub App, ВМ) не выполнялись ни для одной пачки.
 | 4 | [#58](https://github.com/rengalaxies/agent/pull/58) | [`claude/mvp-4-service-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-4-service-2a) `339b6d0` | 3 | проверено (Windows) | core: 776 тестов OK, из них 79 `tests/service` (job 121143824127) | не проверено: нет GitHub App, Jira и права публикации |
 | 2Б | [#59](https://github.com/rengalaxies/agent/pull/59) | [`claude/mvp-2b-prep-9d9655`](https://github.com/rengalaxies/agent/tree/claude/mvp-2b-prep-9d9655) `95decda` | 3 | проверено (Windows) | verify, core, configuration зелёные | не проверено: ни одного запроса к модели |
 | 5А | [#60](https://github.com/rengalaxies/agent/pull/60) | [`claude/objective-feistel-a46433`](https://github.com/rengalaxies/agent/tree/claude/objective-feistel-a46433) `2fe2f41` | 4 | проверено (Windows, супервизор `process`) | установленная коробка с systemd: 9 из 9 сценариев (job 121143981931); accept, verify, configuration, core зелёные | не проверено: нет Linux-ВМ заказчика |
-| 5Б, 6 | — | — | — | не начаты | — | — |
+| 5Б | — | — | — | не начата | — | — |
+| 6, офлайн-часть | нет | [`claude/mvp-6-readiness`](https://github.com/rengalaxies/agent/tree/claude/mvp-6-readiness), не отправлена | `main` | проверено (Windows): программа 6-r1 заморожена, held-out прогнан один раз без модели | не запускался | не проверено: нет модели, живого baseline и данных компании |
 
 Результаты Linux CI для #57–#60 записаны по сообщению координирующей сессии,
 которая читала логи прогонов; сессия 2А сама их не открывала. Linux CI — это
@@ -235,4 +236,15 @@ Cloud с учётной записью и токеном, публичный HTT
 
 ## Пачка 6. Решение о готовности
 
-Не начата. Требует результатов 2–5.
+Офлайн-часть: [batch-6.md](batch-6.md), ветка `claude/mvp-6-readiness`.
+
+| Что | Состояние |
+|---|---|
+| Программа 6-r1: 20 + 60 независимых изменений, эталон по исполнению, пороги | реализовано, заморожено manifest `6140e378` |
+| Runner сервиса, scorer, baseline-протокол с офлайн-транспортами | реализовано, проверено офлайн |
+| Held-out, конфигурация без модели | прогнан один раз; числа в batch-6.md |
+| Сервис с моделью, живой baseline, минуты человека | не проверено |
+| Полезность для бизнеса | НЕ ПРОВЕРЕНА: нужна история компании |
+
+Следующий шаг: живой прогон модели 2Б, затем конфигурации `service-model` и `baseline-live` на
+новой ревизии программы.
