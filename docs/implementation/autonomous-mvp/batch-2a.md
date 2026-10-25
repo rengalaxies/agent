@@ -419,7 +419,7 @@ https://github.com/rengalaxies/agent/compare/claude/mvp-4-service-2a...claude/ob
 - Воспроизводимый релиз: архив из blob-ов коммита, hash-lock колёс, manifest с commit, `core_identity`, конституцией и версиями схем.
 - Единый установщик `./box`: plan, install, update, status, doctor, backup, restore, rollback, sync-mirrors; идемпотентные фазы и три уровня готовности (процесс, сервис, полезный сценарий).
 - Git-зеркала по таймеру; откат через схему восстанавливает копию, снятую перед update.
-- Демо-образ с ядром внутри, без `core.lock.json` и монтирования `/core`.
+- Демо-образ с ядром внутри, без `core.lock.json` и монтирования `/core`; `agent-graph-demo.yml` без `DEMO_CORE_ROOT` и `--core-root`, `agent-graph-demo-delivery.yml` без отдельного `core.tar.gz` из `18e8b71`; RUNBOOK демо обновлён.
 - Workflow `.github/workflows/agent-service-box.yml` (ubuntu-24.04, systemd, локальные стенды, без секретов) ставит собранный архив и проходит 9 сценариев на установленном артефакте.
 
 ## Проверки

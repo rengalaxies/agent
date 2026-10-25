@@ -57,7 +57,7 @@ Linux CI зелёный на `4d10897`. PR 3, 4 и 2Б ещё не открыт�
 | 3 | [`claude/mvp-3-runtime-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-3-runtime-2a) `4454347` | 2А `924cb10` слиянием | вся пачка проверена (Windows) | не проверено: нет runtime-источника клиента |
 | 4 | [`claude/mvp-4-service-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-4-service-2a) `266f4dd` | 3 `f8781ae` и 2А `924cb10` слияниями | анализ ядром 2А и сквозной smoke проверены (Windows) | не проверено: нет GitHub App, Jira и права публикации |
 | 2Б | [`claude/mvp-2b-prep-9d9655`](https://github.com/rengalaxies/agent/tree/claude/mvp-2b-prep-9d9655) `95decda` | 3 `4454347` слиянием | программа и dry-run через исполнитель 2А проверены (Windows) | не проверено: ни одного запроса к модели |
-| 5А | [`claude/objective-feistel-a46433`](https://github.com/rengalaxies/agent/tree/claude/objective-feistel-a46433) `7d036b5` | 4 слиянием | релиз, установщик и 9 сценариев приёмки проверены (Windows, супервизор `process`) | Linux и systemd не проверены: workflow `agent-service-box.yml` запустится на PR |
+| 5А | [`claude/objective-feistel-a46433`](https://github.com/rengalaxies/agent/tree/claude/objective-feistel-a46433) `2fe2f41` | 4 слиянием | релиз, установщик и 9 сценариев приёмки проверены (Windows, супервизор `process`) | Linux и systemd не проверены: workflow `agent-service-box.yml` запустится на PR |
 | 5Б, 6 | — | — | не начаты | — |
 
 Устаревшие ветки: `claude/mvp-3-runtime-1b13b3` и `claude/mvp-4-service-814d77`.
@@ -210,7 +210,7 @@ Cloud с учётной записью и токеном, публичный HTT
 ## Пачка 5А. Коробка на Linux-ВМ
 
 Отчёт: [batch-5a.md в ветке](https://github.com/rengalaxies/agent/blob/claude/objective-feistel-a46433/docs/implementation/autonomous-mvp/batch-5a.md),
-голова `7d036b5`, база PR — ветка 4.
+голова `2fe2f41`, база PR — ветка 4.
 
 | Что | Состояние |
 |---|---|
@@ -223,11 +223,12 @@ Cloud с учётной записью и токеном, публичный HTT
 
 Недостающий доступ: открыть PR 5А (владелец); для живой установки — Linux-ВМ.
 
-Следующий шаг после слияния 5А: убрать `DEMO_CORE_ROOT` и `--core-root` из
-`agent-graph-demo.yml` (файл 2А). Сейчас этого делать нельзя: в ветке 2А
-`accept.py` ещё требует `--core-root`; флаг стал необязательным только в 5А.
-Устаревшие строки RUNBOOK демо про `18e8b71`, `core.lock.json` и `/core`
-правит 5А.
+Демо-поставка без отдельного ядра сделана в ветке 5А: `d644405` убирает
+`DEMO_CORE_ROOT` и `--core-root` из `agent-graph-demo.yml`, а
+`agent-graph-demo-delivery.yml` больше не собирает `core.tar.gz` из `18e8b71`
+(ядро и конституция лежат в `release.tar.gz`); `2fe2f41` обновляет RUNBOOK. В
+ветке 2А эти workflow остаются как есть: там `accept.py` ещё требует
+`--core-root`. При обратном merge конфликт разрешается в пользу 5А.
 
 ## Пачка 5Б. Cloud.ru provisioning
 
