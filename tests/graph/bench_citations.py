@@ -134,12 +134,30 @@ def measure(repositories, files):
                                                s["seconds"] for k, s in steps.items() if k != "evidence_batch"), 3)))
 
 
+def summary(report) -> str:
+    """One ::notice line with the numbers, readable from public check-run annotations."""
+    r = report["result"]
+    steps = ", ".join(f"{k} {v['seconds']}s/{v['max_rss_kb']}KiB" for k, v in r["steps"].items())
+    text = (f"{report['platform']}, Python {report['python']}, {report['cpus']} CPU: {r['consumer_files']} consumer files, "
+            f"{r['unique_citations']} citations. Batch: {r['batch_mode']['core_processes']} processes, "
+            f"{r['batch_mode']['seconds']}s. Per citation: {r['per_citation_mode']['core_processes']} processes, "
+            f"{r['per_citation_mode']['seconds']}s, evidence peak {r['per_citation_mode']['evidence_max_rss_kb']}KiB. "
+            f"Steps: {steps}.")
+    return "::notice title=citation measurement::" + text.replace("%", "%25").replace("\n", "%0A")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--output", type=Path)
+    p.add_argument("--summarize", type=Path, help="print the ::notice line of a saved report and exit")
     p.add_argument("--repositories", type=int, default=8)
     p.add_argument("--files", type=int, default=25)
     a = p.parse_args(argv)
+    if a.summarize:
+        print(summary(json.loads(a.summarize.read_text())))
+        return
+    if a.output is None:
+        p.error("--output is required")
     report = dict(schema="citation-measurement-1", measured_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   platform=platform.platform(), python=platform.python_version(), cpus=os.cpu_count(),
                   memory_source="os.wait4 ru_maxrss (KiB)" if hasattr(os, "wait4") else "unavailable on this OS",
