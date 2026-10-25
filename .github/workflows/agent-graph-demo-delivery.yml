@@ -43,11 +43,10 @@ jobs:
       - name: Inspect image, package allowlisted sources, record checksums
         run: |
           python tools/agent_graph_demo/inspect_delivery.py --image agent-graph-demo:delivery --source-sha "$EXPECTED_MAIN_SHA" --archive work/delivery/image.tar.gz --output work/delivery/image-audit.json
-          git archive --format=tar.gz -o work/delivery/release.tar.gz "$EXPECTED_MAIN_SHA" src/agent_graph_demo examples/agent_graph_demo tools/agent_graph_demo infra/agent_graph_demo docs/agent-graph-demo/RUNBOOK.md
-          git archive --format=tar.gz -o work/delivery/core.tar.gz 18e8b71b39eb6d2368d40ffb3892b9a5cdf2cd70 src/agent_graph
+          git archive --format=tar.gz -o work/delivery/release.tar.gz "$EXPECTED_MAIN_SHA" src/agent_graph src/agent_graph_demo constitutions/agent-service-v1.yaml examples/agent_graph_demo tools/agent_graph_demo infra/agent_graph_demo docs/agent-graph-demo/RUNBOOK.md
           tar -czf work/delivery/wheels.tar.gz -C work wheels
           cd work/delivery
-          sha256sum image.tar.gz release.tar.gz core.tar.gz wheels.tar.gz image-audit.json > SHA256SUMS
+          sha256sum image.tar.gz release.tar.gz wheels.tar.gz image-audit.json > SHA256SUMS
       - name: Publish only inspected delivery, minimum retention
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -58,7 +57,6 @@ jobs:
           path: |
             work/delivery/image.tar.gz
             work/delivery/release.tar.gz
-            work/delivery/core.tar.gz
             work/delivery/wheels.tar.gz
             work/delivery/image-audit.json
             work/delivery/SHA256SUMS
