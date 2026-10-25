@@ -104,7 +104,7 @@ class ReproducibilityTests(StandCase):
         pins = {k: v for k, v in self.stand.revisions().items() if k in ("orders", "reporting")}
         c = g.prepare_context(revisions=pins)
         self.assertEqual(g.freshness(c)["status"], "CURRENT")
-        shutil.rmtree(copy, onexc=lambda f, path, _: (os.chmod(path, stat.S_IWRITE), f(path)))
+        shutil.rmtree(copy, onexc=lambda f, path, _: (os.chmod(path, stat.S_IREAD | stat.S_IWRITE), f(path)))
         self.assertEqual(g.freshness(c)["status"], "UNKNOWN")
 
 
@@ -186,7 +186,7 @@ class SafeReadTests(StandCase):
         shutil.copytree(self.stand.repo("reporting"), copy)
         oid = self.git("reporting", "rev-parse", self.stand.head("reporting") + ":client.py")
         loose = copy / ".git/objects" / oid[:2] / oid[2:]
-        os.chmod(loose, stat.S_IWRITE)
+        os.chmod(loose, stat.S_IREAD | stat.S_IWRITE)
         loose.unlink()
         policy = self.stand.policy(repositories=["orders", "reporting"])
         policy["repositories"][1]["root"] = str(copy)
@@ -200,7 +200,7 @@ class SafeReadTests(StandCase):
         oid = self.git("reporting", "rev-parse", self.stand.head("reporting") + ":client.py")
         loose = copy / ".git/objects" / oid[:2] / oid[2:]
         body = b"import requests\nrequests.get('https://orders.test/orders', params={'page_size': 1000})\n"
-        os.chmod(loose, stat.S_IWRITE)
+        os.chmod(loose, stat.S_IREAD | stat.S_IWRITE)
         loose.write_bytes(zlib.compress(b"blob %d\0" % len(body) + body))
         policy = self.stand.policy(repositories=["orders", "reporting"])
         policy["repositories"][1]["root"] = str(copy)
