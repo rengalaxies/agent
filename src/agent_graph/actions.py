@@ -66,6 +66,47 @@ class GraphQuery(Strict):
     route: str | None = Field(max_length=500)
 
 
+Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
+
+
+# Persistent graph tools (batch 3). They read the grant-scoped graph snapshot the
+# executor built for this run; their results are not evidence receipts and cannot
+# be cited by a proposal. Limits mirror graph_query.GraphQueryRequest; the
+# constitution may lower them.
+class GraphFind(Strict):
+    name: Literal["graph_find"]
+    text: str = Field(min_length=1, max_length=200)
+    kind: Literal["service", "operation"] | None
+    limit: int = Field(ge=1, le=100)
+
+
+class GraphNeighbors(Strict):
+    name: Literal["graph_neighbors"]
+    entity_id: Digest
+    direction: Literal["in", "out", "both"]
+    limit: int = Field(ge=1, le=100)
+
+
+class GraphImpact(Strict):
+    name: Literal["graph_impact"]
+    entity_id: Digest
+    depth: int = Field(ge=1, le=3)
+    limit: int = Field(ge=1, le=100)
+
+
+class GraphRelationship(Strict):
+    name: Literal["graph_relationship"]
+    relationship_id: Digest
+
+
+class GraphOwner(Strict):
+    name: Literal["graph_owner"]
+    service: str = Field(pattern=r"^[a-zA-Z0-9_.-]{1,64}$")
+
+
+GRAPH_TOOLS = ("graph_find", "graph_neighbors", "graph_impact", "graph_relationship", "graph_owner")
+
+
 class ProposeDependency(Strict):
     name: Literal["propose_dependency"]
     claim: DependencyClaim
@@ -101,10 +142,11 @@ class Finish(Strict):
     reason: Literal["done", "insufficient_evidence", "out_of_scope", "intent_unclear"]
 
 
-Action = Annotated[Union[ListSources, Search, ListSymbols, ReadSource, GraphQuery, ProposeDependency,
-                         ProposeHypothesis, Finish], Field(discriminator="name")]
-ACTION_MODELS = (ListSources, Search, ListSymbols, ReadSource, GraphQuery, ProposeDependency,
-                 ProposeHypothesis, Finish)
+Action = Annotated[Union[ListSources, Search, ListSymbols, ReadSource, GraphQuery, GraphFind, GraphNeighbors,
+                         GraphImpact, GraphRelationship, GraphOwner, ProposeDependency, ProposeHypothesis, Finish],
+                   Field(discriminator="name")]
+ACTION_MODELS = (ListSources, Search, ListSymbols, ReadSource, GraphQuery, GraphFind, GraphNeighbors, GraphImpact,
+                 GraphRelationship, GraphOwner, ProposeDependency, ProposeHypothesis, Finish)
 ACTION_NAMES = tuple(m.model_fields["name"].annotation.__args__[0] for m in ACTION_MODELS)
 
 
@@ -152,7 +194,8 @@ def action_schema(*, portable=True):
 
 _SAFE = {"action", "name", "repository", "query", "source_id", "start_line", "end_line", "service", "method",
          "route", "claim", "evidence_refs", "unknowns", "outcome", "reason", "consumer_repository",
-         "consumer_service", "provider_service", "path_template", "statement"} | set(ACTION_NAMES)
+         "consumer_service", "provider_service", "path_template", "statement", "text", "kind", "entity_id",
+         "relationship_id", "direction", "depth", "limit"} | set(ACTION_NAMES)
 _EXPECTED = {"int_type": "integer", "int_parsing": "integer", "string_type": "string", "bool_type": "boolean",
              "list_type": "array", "dict_type": "object", "model_type": "object", "model_attributes_type": "object",
              "none_required": "null", "literal_error": "enum", "missing": "present", "extra_forbidden": "absent",
@@ -227,6 +270,13 @@ def check_permitted(action, constitution, *, reads, proposals):
             raise Rejection("tool", "tool_limit", path="action.end_line", action=name)
         if reads >= constitution.limits.max_reads:
             raise Rejection("tool", "read_budget_exhausted", action=name)
+    if name in GRAPH_TOOLS:
+        if name == "graph_find" and len(action.text) > limit(name, "max_query_chars", 200):
+            raise Rejection("tool", "tool_limit", path="action.text", action=name)
+        if hasattr(action, "limit") and action.limit > limit(name, "max_results", 100):
+            raise Rejection("tool", "tool_limit", path="action.limit", action=name)
+        if name == "graph_impact" and action.depth > limit(name, "max_depth", 3):
+            raise Rejection("tool", "tool_limit", path="action.depth", action=name)
     if name in ("propose_dependency", "propose_hypothesis"):
         if len(action.evidence_refs) > limit(name, "max_evidence_refs", 8):
             raise Rejection("tool", "tool_limit", path="action.evidence_refs", action=name)
@@ -240,8 +290,13 @@ EVIDENCE_CODES = {"not_found", "invalid_evidence_range", "evidence_range_limit",
                   "invalid_evidence_reference", "evidence_scope_changed", "evidence_snapshot_changed"}
 
 
+GRAPH_TOOL_CODES = {"invalid_query", "invalid_query_limit", "graph_unavailable"}
+
+
 def evidence_rejection(error: GraphError, action):
     """Map an executor error to its layer; anything else is an internal failure."""
+    if error.code in GRAPH_TOOL_CODES:
+        return Rejection("tool", error.code, action=action.name)
     if error.code in EVIDENCE_CODES:
         return Rejection("evidence", error.code, action=action.name)
     if error.code == "proposal_limit":
@@ -255,6 +310,11 @@ EXAMPLES = (
     dict(name="list_symbols", source_id="<source_id>"),
     dict(name="read_source", source_id="<source_id>", start_line=1, end_line=20),
     dict(name="graph_query", query="dependencies", service="orders", method="GET", route="/orders"),
+    dict(name="graph_find", text="orders GET /orders", kind="operation", limit=10),
+    dict(name="graph_neighbors", entity_id="1" * 64, direction="in", limit=20),
+    dict(name="graph_impact", entity_id="1" * 64, depth=2, limit=20),
+    dict(name="graph_relationship", relationship_id="2" * 64),
+    dict(name="graph_owner", service="reporting"),
     dict(name="propose_dependency", claim=dict(consumer_repository="reporting", consumer_service="reporting",
                                                provider_service="orders", method="GET", path_template="/orders"),
          evidence_refs=["<evidence_ref of the callsite>", "<evidence_ref of the provider route>"]),
@@ -282,6 +342,10 @@ def system_prompt(constitution) -> str:
         "lines per read. Cite only evidence_refs issued in this session.",
         "propose_dependency is checked against the static profile: cite BOTH the callsite and the provider "
         "route declaration. Provider identity comes from service addresses, not from matching paths or file names.",
+        "graph_* tools read the persistent dependency graph of this installation and environment, limited to "
+        "your access. Example ids 111... and 222... stand for ids returned by graph_find and graph_impact. "
+        "Graph ids are not evidence_refs: to cite a file, read_source it. A graph result "
+        "never confirms a hypothesis; an unknown owner stays unknown.",
         "If a dependency cannot be proven within the profile, use propose_hypothesis with explicit unknowns. "
         "A hypothesis stays unverified; you cannot confirm it.",
         "You cannot run commands, fetch URLs, choose files outside listed sources, publish, approve or grant access.",

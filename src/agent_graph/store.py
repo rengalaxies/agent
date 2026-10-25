@@ -1,4 +1,11 @@
-"""Local immutable snapshots, optimistic publication and durable budget reservations."""
+"""Local immutable snapshots, optimistic publication and durable budget reservations.
+
+Schema 2 adds the persistent graph tables (used by graph_store) and gives each
+proposal its own cited bases, scope and visibility (side table proposal_bases),
+so knowledge no longer hangs on one corpus-wide basis or one view. Version 1 data
+is migrated in place after a file backup; no table, column or row is dropped or
+altered, so a rolled-back v1 binary can still read and append proposals.
+"""
 from __future__ import annotations
 
 from contextlib import contextmanager
@@ -14,10 +21,51 @@ from .contracts import GraphError, canonical, digest, load_json
 from .portable import lock_nonblocking, open_lock_file, private_directory
 
 
+STORE_SCHEMA = 2
+
+
+def scope_id(installation_id, environment):
+    return digest([installation_id, environment])
+
+
 def proposal_identity(view, record):
     # Keep the original publication/citations immutable; subsequent contexts
     # with the same basis reuse its identity, including records from v1 stores.
     return digest([view, {k: v for k, v in record.items() if k not in ("context_id", "id")}])
+
+
+GRAPH_DDL = (
+    "CREATE TABLE IF NOT EXISTS graph_entities(id TEXT PRIMARY KEY, scope TEXT, kind TEXT, data TEXT)",
+    "CREATE TABLE IF NOT EXISTS graph_relationships(id TEXT PRIMARY KEY, scope TEXT, kind TEXT, source TEXT,"
+    " target TEXT)",
+    "CREATE TABLE IF NOT EXISTS graph_bases(id TEXT PRIMARY KEY, scope TEXT, relationship TEXT, origin TEXT,"
+    " source_kind TEXT, source_id TEXT, visibility TEXT, data TEXT, opened_version INTEGER,"
+    " closed_version INTEGER, closed_reason TEXT, successor TEXT, checked_at TEXT)",
+    "CREATE INDEX IF NOT EXISTS graph_bases_relationship ON graph_bases(scope, relationship)",
+    "CREATE INDEX IF NOT EXISTS graph_bases_source ON graph_bases(scope, source_kind, source_id)",
+    "CREATE TABLE IF NOT EXISTS graph_versions(version INTEGER PRIMARY KEY AUTOINCREMENT, scope TEXT,"
+    " created_at TEXT, trigger TEXT, source_kind TEXT, source_id TEXT, summary TEXT)",
+    "CREATE TABLE IF NOT EXISTS graph_events(scope TEXT, version INTEGER, basis TEXT, relationship TEXT,"
+    " event TEXT, reason TEXT, successor TEXT, at TEXT)",
+    "CREATE INDEX IF NOT EXISTS graph_events_basis ON graph_events(scope, basis)",
+    "CREATE TABLE IF NOT EXISTS proposal_bases(id TEXT PRIMARY KEY, scope TEXT, visibility TEXT, bases TEXT,"
+    " config TEXT)",
+    "CREATE TABLE IF NOT EXISTS graph_sources(scope TEXT, source_kind TEXT, source_id TEXT, status TEXT,"
+    " checked_at TEXT, last_success_at TEXT, source_version TEXT, reasons TEXT,"
+    " PRIMARY KEY(scope, source_kind, source_id))",
+)
+
+
+def cited_bases(context, citations):
+    """What a proposal depends on: each cited file's repository, path and content digest."""
+    result = []
+    for citation in citations:
+        source = context["sources"].get(citation["source_id"])
+        if source is None:
+            raise GraphError("not_found")
+        result.append(dict(source_id=source["id"], repository=source["repository"], path=source["path"],
+                           sha256=source["sha256"]))
+    return sorted(result, key=lambda b: (b["repository"], b["path"], b["source_id"]))
 
 
 class Store:
@@ -39,7 +87,70 @@ class Store:
             CREATE TABLE IF NOT EXISTS proposals(id TEXT PRIMARY KEY, view TEXT, data TEXT);
             CREATE TABLE IF NOT EXISTS reservations(id TEXT PRIMARY KEY, installation TEXT,
                 run TEXT, tokens INTEGER, micro INTEGER, currency TEXT, until REAL, active INTEGER);
+            CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY, value TEXT);
         """)
+        try:
+            self._migrate()
+        except BaseException:
+            self.db.close()
+            raise
+
+    def schema_version(self):
+        row = self.db.execute("SELECT value FROM meta WHERE key='store_schema'").fetchone()
+        return int(row[0]) if row else 1
+
+    def _migrate(self):
+        """v1 -> v2: file backup of the v1 state, then additive tables; rerunning is a no-op.
+
+        Tables are only added, never altered, so a v1 binary still works on this file.
+        """
+        if self.schema_version() > STORE_SCHEMA:
+            raise GraphError("store_schema_newer")
+        if self.schema_version() < STORE_SCHEMA and (
+                self.db.execute("SELECT count(*) FROM artifacts").fetchone()[0]
+                or self.db.execute("SELECT count(*) FROM proposals").fetchone()[0]):
+            backup = self.directory / "graph.v1-backup.sqlite3"
+            if not backup.exists():
+                target = sqlite3.connect(backup)
+                try:
+                    self.db.backup(target)
+                finally:
+                    target.close()
+                os.chmod(backup, 0o600)
+        with self.transaction():
+            for statement in GRAPH_DDL:
+                self.db.execute(statement)
+            # proposal_bases is a schema 2 table; development files made before the
+            # config column existed get it here. v1 tables are never altered.
+            if "config" not in {r[1] for r in self.db.execute("PRAGMA table_info(proposal_bases)")}:
+                self.db.execute("ALTER TABLE proposal_bases ADD COLUMN config TEXT")
+            self.db.execute("INSERT OR IGNORE INTO meta VALUES('store_schema', ?)", (str(STORE_SCHEMA),))
+            self.db.execute("UPDATE meta SET value=? WHERE key='store_schema' AND CAST(value AS INTEGER) < ?",
+                            (str(STORE_SCHEMA), STORE_SCHEMA))
+        # Rows written by a v1 binary after the migration get their bases here too.
+        if self.db.execute("SELECT 1 FROM proposals p LEFT JOIN proposal_bases b ON p.id=b.id"
+                           " WHERE b.id IS NULL LIMIT 1").fetchone():
+            with self.transaction():
+                for id, view, data in self.db.execute(
+                        "SELECT p.id,p.view,p.data FROM proposals p LEFT JOIN proposal_bases b ON p.id=b.id"
+                        " WHERE b.id IS NULL").fetchall():
+                    self.db.execute("INSERT OR IGNORE INTO proposal_bases VALUES(?,?,?,?,?)",
+                                    (id, *self._derive_bases(view, load_json(data)), None))
+
+    def _derive_bases(self, view, record):
+        """(scope, visibility, bases) of a proposal from the context it was made in."""
+        row = self.db.execute("SELECT data FROM artifacts WHERE id=? AND view=? AND kind='context'",
+                              (record.get("context_id"), view)).fetchone()
+        context = load_json(row[0]) if row else None
+        try:
+            bases = cited_bases(context, record["proposal"]["citations"]) if context else None
+        except GraphError:
+            bases = None
+        if bases is None:
+            # Unknown origin: kept for history, never CURRENT and visible to nobody.
+            return "unknown", canonical(["?"]), canonical([])
+        return (scope_id(context["installation_id"], context["environment"]),
+                canonical(sorted({b["repository"] for b in bases})), canonical(bases))
 
     def close(self):
         # Abrupt owner teardown keeps the durable charge/lease. The OS releases
@@ -84,7 +195,31 @@ class Store:
     def proposals(self, view):
         return [load_json(r[0]) for r in self.db.execute("SELECT data FROM proposals WHERE view=? ORDER BY id", (view,))]
 
-    def propose(self, view, proposal, expected_head, *, limit, admission_check=None):
+    def scoped_proposals(self, scope, grants):
+        """Proposals of one installation/environment whose cited repositories are all granted.
+
+        Another view of the same scope sees them too (adding a repository keeps memory);
+        a narrower grant never sees a proposal that cites a revoked repository.
+        """
+        grants = set(grants)
+        result = []
+        for view, data, b_scope, visibility, bases, config in self.db.execute(
+                "SELECT p.view,p.data,b.scope,b.visibility,b.bases,b.config FROM proposals p"
+                " LEFT JOIN proposal_bases b ON p.id=b.id ORDER BY p.id"):
+            record = load_json(data)
+            if b_scope is None:  # appended by a v1 binary while this store is open
+                b_scope, visibility, bases = self._derive_bases(view, record)
+            if b_scope == scope and set(load_json(visibility)) <= grants:
+                # config: digest of the addresses and requirements the proposal was judged
+                # under; None for v1 rows, whose view (which includes both) stands in.
+                result.append({**record, "cited_bases": load_json(bases), "cited_config": config,
+                               "cited_view": view})
+        return result
+
+    def propose(self, view, proposal, expected_head, *, limit, admission_check=None, scope=None,
+                bases=None, grants=None, active=None, config=None):
+        """scope/bases/grants/active: per-basis knowledge (schema 2). Without them the
+        v1 rule applies: the limit counts the active set at the corpus basis."""
         id = proposal_identity(view, proposal)
         data = {**proposal, "id": id}
         with self.transaction():
@@ -92,8 +227,8 @@ class Store:
                 admission_check()
             if self.head(view)[1] != expected_head:
                 raise GraphError("concurrent_update")
-            rows = self.proposals(view)
-            duplicate = next((r for r in rows if proposal_identity(view, r) == id), None)
+            rows = self.scoped_proposals(scope, grants) if scope is not None else self.proposals(view)
+            duplicate = next((r for r in self.proposals(view) if proposal_identity(view, r) == id), None)
             if duplicate:
                 return duplicate
             superseded = {r["proposal"]["supersedes"] for r in rows if r["proposal"]["supersedes"]}
@@ -105,15 +240,20 @@ class Store:
                     raise GraphError("invalid_supersession")
                 if target in superseded:
                     raise GraphError("concurrent_update")
-            # The limit is the active set at this basis, not lifetime history.
-            # Replacement frees its target's slot atomically with insertion.
-            active = {proposal_identity(view, r) for r in rows
-                      if r["basis"] == proposal["basis"] and r["id"] not in superseded}
-            if old and old["basis"] == proposal["basis"]:
-                active.discard(proposal_identity(view, old))
-            if len(active) >= limit:
+            # The limit is the active set, not lifetime history. Replacement frees
+            # its target's slot atomically with insertion.
+            def live(row):
+                return active(row) if active is not None else row["basis"] == proposal["basis"]
+            counted = {r["id"] for r in rows if r["id"] not in superseded and live(r)}
+            if old:
+                counted.discard(old["id"])
+            if len(counted) >= limit:
                 raise GraphError("proposal_limit")
             self.db.execute("INSERT OR IGNORE INTO proposals VALUES(?,?,?)", (id, view, canonical(data)))
+            if bases is not None:
+                self.db.execute("INSERT OR IGNORE INTO proposal_bases VALUES(?,?,?,?,?)",
+                                (id, scope, canonical(sorted({b["repository"] for b in bases})), canonical(bases),
+                                 config))
             if admission_check:
                 admission_check()
         return data
