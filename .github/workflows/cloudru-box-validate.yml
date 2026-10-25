@@ -1,0 +1,45 @@
+name: Cloud.ru service box offline checks
+# No secrets, no backend, no cloud API calls: unit tests, provisioning script tests,
+# terraform fmt and validate with the provider from the Cloud.ru mirror.
+on:
+  pull_request:
+    paths:
+      - 'infra/cloudru/box/**'
+      - '.github/workflows/cloudru-box.yml'
+      - '.github/workflows/cloudru-box-validate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+          terraform_wrapper: false
+      - name: Unit tests (ownership, plan guard, digest, cleanup, lock probe, provision.sh)
+        run: python3 -m unittest discover -s infra/cloudru/box -p 'test_*.py' -v
+      - name: Shell syntax
+        run: bash -n infra/cloudru/box/provision.sh
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive infra/cloudru/box
+      - name: Terraform validate both roots without backend
+        run: |
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          export TF_CLI_CONFIG_FILE="$RUNNER_TEMP/terraform.tfrc"
+          for dir in infra/cloudru/box infra/cloudru/box/inventory; do
+            terraform -chdir="$dir" init -backend=false -input=false -no-color
+            terraform -chdir="$dir" validate -no-color
+          done
