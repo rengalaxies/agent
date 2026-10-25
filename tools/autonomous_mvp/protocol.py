@@ -17,6 +17,8 @@ the outcome. This module only supplies:
   agent-graph-output 2.0 terms (fact/hypothesis, provenance, sufficiency and
   ContractError-shaped diagnostics). The claim of each proposal is recovered with the
   executor's own `actions.parse` on the reply; no reply text is stored.
+* `model_profile`, the model parameters of the request actually built, kept with each
+  case-run so the report can state what was qualified and the service can compare it.
 """
 from __future__ import annotations
 
@@ -38,6 +40,27 @@ TRANSPORT_CODES = {"timeout": "model_timeout", "deadline_before_send": "model_ti
                    "http_server_error": "model_http_error", "http_error": "model_http_error"}
 
 
+REQUEST_FIELDS = ("model", "messages", "stream", "response_format", "max_tokens", "max_completion_tokens")
+
+
+def model_profile(policy, payload):
+    """The model parameters a case-run used: the ModelConfig and read window of the case policy plus
+    the fields of the request actually built. Messages and the action schema are not here: the
+    protocol fingerprint pins them. Every other request field (temperature, top_p, seed, ...) lands
+    in `sampling`. The service builds the same dict from what it loads and compares the two."""
+    config = policy.model
+    tokens = [k for k in ("max_tokens", "max_completion_tokens") if k in payload]
+    fmt = payload["response_format"]
+    return dict(endpoint=config.endpoint, model=payload["model"], protocol=config.protocol,
+                token_parameter=tokens[0] if len(tokens) == 1 else None,
+                max_output_tokens=payload[tokens[0]] if len(tokens) == 1 else None,
+                context_tokens=config.context_tokens, max_prompt_bytes=config.max_prompt_bytes,
+                timeout_seconds=config.timeout_seconds, max_tool_lines=policy.limits.max_tool_lines,
+                stream=payload["stream"], response_format=dict(type=fmt["type"], name=fmt["json_schema"]["name"],
+                                                               strict=fmt["json_schema"]["strict"]),
+                sampling={k: v for k, v in sorted(payload.items()) if k not in REQUEST_FIELDS})
+
+
 def ref_digest(value):
     return hashlib.sha256(str(value).encode()).hexdigest()
 
@@ -49,10 +72,13 @@ def text_sha256(path):
 class AccountedModel:
     """The model object handed to run_investigation. One call is one booked attempt."""
 
-    def __init__(self, transport, model, parameters, *, attempts, breaker=None, family=None, revoked=()):
-        self.transport, self.model, self.parameters = transport, model, parameters
+    def __init__(self, transport, policy, parameters, *, attempts, breaker=None, family=None, revoked=()):
+        """policy: the case policy the executor runs with; requests take their model fields from
+        its ModelConfig, as agent_graph.inference.ChatModel does in the service."""
+        self.transport, self.policy, self.parameters = transport, policy, parameters
         self.attempts, self.breaker, self.family = attempts, breaker, family
         self.parsed = []  # per attempt: typed proposal of the reply, or None
+        self.profile = None  # model_profile of the first request built in this case-run
         self.revoked = tuple(revoked)
         self.graph = dict(calls={}, revoked_leaks=0, owners={})
         self.graph_ids = set()  # digests of every id a graph result showed the model
@@ -97,14 +123,18 @@ class AccountedModel:
     def complete_raw(self, messages, schema, *, cancel=None, deadline_epoch=None):
         from agent_graph.contracts import GraphError
         self._observe(messages)
-        payload = dict(model=self.model["id"], messages=messages, stream=False,
+        config = self.policy.model
+        # Same request shape as ChatModel._request; only the temperature comes from the program.
+        payload = dict(model=config.model, messages=messages, stream=False,
                        temperature=self.parameters["temperature"],
-                       **{self.parameters["token_parameter"]: self.model["max_completion_tokens"]},
+                       **{config.token_parameter: config.max_output_tokens},
                        response_format=dict(type="json_schema", json_schema=dict(
-                           name="agent_action", strict=True, schema=schema)))
-        if len(json.dumps(payload, ensure_ascii=False).encode()) > self.parameters["max_prompt_bytes"]:
+                           name="graph_action", strict=True, schema=schema)))
+        if self.profile is None:
+            self.profile = model_profile(self.policy, payload)
+        if len(json.dumps(payload, ensure_ascii=False).encode()) > config.max_prompt_bytes:
             raise GraphError("model_input_limit")  # nothing was sent, so no attempt is booked
-        timeout = self.parameters["request_timeout_seconds"]
+        timeout = config.timeout_seconds
         if deadline_epoch is not None:
             timeout = min(timeout, deadline_epoch - time.time())
         result = self.transport.complete(payload, deadline=time.monotonic() + timeout)
@@ -118,7 +148,7 @@ class AccountedModel:
             raise GraphError(TRANSPORT_CODES.get(result.code, "model_unavailable_or_invalid"))
         if result.finish_reason != "stop" or result.has_tool_calls:
             raise GraphError("model_incomplete_or_refused")  # same rule as agent_graph ChatModel
-        if result.usage is None or result.usage["completion_tokens"] > self.model["max_completion_tokens"]:
+        if result.usage is None or result.usage["completion_tokens"] > config.max_output_tokens:
             raise GraphError("invalid_model_usage")
         return result.content, dict(result.usage)
 
@@ -215,7 +245,7 @@ def run(case, repos, *, model, parameters, transport, work, deadline_epoch, run_
         context = graph.prepare_context(task, revisions={r: v["commit"] for r, v in repos.items() if r not in revoked})
         if not revoked:
             gs.sync_code(context)
-        accounted = AccountedModel(transport, model, parameters, attempts=attempts, breaker=breaker,
+        accounted = AccountedModel(transport, policy, parameters, attempts=attempts, breaker=breaker,
                                    family=case["family"], revoked=revoked)
         report = run_investigation(graph, context["id"], model=accounted, deadline_epoch=deadline_epoch,
                                    request_id=case["case_id"], graph_store=gs)

@@ -11,6 +11,9 @@ from tools.autonomous_mvp import dryrun, ledger, program as program_mod, runner
 BASE, PROGRAM, CASES = program_mod.load()
 ORACLE = program_mod.load_oracle(BASE)
 MODEL = PROGRAM["models"][0]["id"]
+# S01, one development case and one evaluation case of every family: the quick end-to-end corpus.
+SMALL = {k: CASES[k] for k in ["S01", "D01"] + sorted(
+    {c["family"]: k for k, c in sorted(CASES.items(), reverse=True) if c["split"] == "evaluation"}.values())}
 
 
 def one_model_program(**phase_overrides):

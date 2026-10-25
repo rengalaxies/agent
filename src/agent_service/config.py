@@ -55,7 +55,7 @@ class JiraConfig(Strict):
 
 
 class QualificationRef(Strict):
-    report_path: Path  # report.json of the batch 2B run (schema amvp-report-1)
+    report_path: Path  # report.json of the batch 2B run (schema amvp-report-2)
     run_id: str = Field(min_length=1, max_length=200)
     report_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 

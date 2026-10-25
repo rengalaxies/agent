@@ -149,8 +149,10 @@ class ScriptedAgentTransport:
         return "0" * 64 if what == "find" else ["0" * 64]
 
 
-def dry_run(program, cases, oracle, *, model_id, behaviour, work, phases=None):
-    """Run the phases in order for one model with file ledgers; return the scorer report."""
+def dry_run(program, cases, oracle, *, model_id, behaviour, work, phases=None, manifest=None, provenance=None):
+    """Run the phases in order for one model with file ledgers; return the scorer report.
+
+    manifest and provenance go to the scorer as the live `report` mode passes them."""
     transport = ScriptedAgentTransport(cases, oracle, models=[model_id], behaviour=behaviour)
     ledgers = Path(work) / "ledgers"
 
@@ -161,14 +163,16 @@ def dry_run(program, cases, oracle, *, model_id, behaviour, work, phases=None):
     for phase in phases or program["phases"]:
         try:
             states.append(runner.execute_phase(
-                phase, model_id, program=program, cases=cases, manifest_digest="dry-run", source_sha="0" * 40,
+                phase, model_id, program=program, cases=cases,
+                manifest_digest=manifest["manifest_digest"] if manifest else "dry-run", source_sha="0" * 40,
                 transport=transport, backend_for=backend_for, work=Path(work) / phase))
         except runner.RunnerError as exc:
             if not exc.code.startswith("phase_requirement_not_met"):
                 raise
             break  # the program rule stops here, as it would live
     single = dict(program, models=[m for m in program["models"] if m["id"] == model_id])
-    return scorer.report(single, cases, oracle, states), states, transport.sent
+    return scorer.report(single, cases, oracle, states, manifest, program_id="dry-run",
+                         provenance=provenance), states, transport.sent
 
 
 def main(argv=None):
