@@ -21,11 +21,12 @@ merge и следующий шаг. SHA коммита, который доба�
 
 | PR | Назначение | База / голова | Push | CI головы | Merge | Следующий шаг |
 |---|---|---|---|---|---|---|
-| [#61](https://github.com/rengalaxies/agent/pull/61) | исправления восстановления коробки (P1, P1, P2), типизированный допуск модели, manifest 2b-r1, SC2024 и lint на PR | `main` `0f0dc02` / `claude/mvp-recovery-fixes` | опубликован, удалённый SHA сверен | код `5f71999`: box 11/11 (systemd), lint, core, P1 зелёные | нет | merge, затем живая 2Б на принятой `main` |
+| [#61](https://github.com/rengalaxies/agent/pull/61) | исправления восстановления коробки (P1, P1, P2), типизированный допуск модели, manifest 2b-r1, SC2024 и lint на PR | `main` `0f0dc02` / `claude/mvp-recovery-fixes` | опубликован, удалённый SHA сверен | код `5f71999`: box 11/11 (systemd), lint, core, P1 зелёные | нет | merge за владельцем: автоматический merge этим аккаунтом заблокирован политикой исполнителя; после merge живая 2Б на принятой `main` |
+| [#62](https://github.com/rengalaxies/agent/pull/62) | 5Б: одна ВМ Cloud.ru, установка той же коробкой, inventory, digest плана, cleanup | `main` `0f0dc02` / `claude/mvp-5b-cloudru` | опубликован, `61662a1` сверен | Cloud.ru box offline checks и P1 regression зелёные; workflow lint на PR появится после #61 | нет | после #61: rebase, lint; apply только по одобрению плана |
+| [#63](https://github.com/rengalaxies/agent/pull/63) | 6: программа 6-r1, эталон, baseline, scorer, held-out без модели | `main` `0f0dc02` / `claude/mvp-6-readiness` | опубликован, `30da6d4` сверен | core regression зелёный | нет | после #61: конфликт `STATUS.md`; ревизия 6-r2 под исправления продукта |
 
 ## Подготовленные ветки без PR
 
 | Ветка | Пачка | Состояние |
 |---|---|---|
-| `claude/mvp-5b-cloudru` | 5Б: Cloud.ru provisioning той же коробкой | офлайн-часть готова локально; PR после #61 |
-| `claude/mvp-6-readiness` | 6: программа оценки технической готовности | в работе |
+| — | — | все подготовленные ветки опубликованы как PR |
