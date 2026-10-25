@@ -7,11 +7,7 @@ import tempfile
 import unittest
 
 from tools.autonomous_mvp import dryrun
-from tools.autonomous_mvp.tests.helpers import CASES, MODEL, ORACLE, one_model_program
-
-# S01, one development case and one evaluation case of every family.
-SMALL = {k: CASES[k] for k in ["S01", "D01"] + sorted(
-    {c["family"]: k for k, c in sorted(CASES.items(), reverse=True) if c["split"] == "evaluation"}.values())}
+from tools.autonomous_mvp.tests.helpers import MODEL, ORACLE, SMALL, one_model_program
 
 
 def run(behaviour):

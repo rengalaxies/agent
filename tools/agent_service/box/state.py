@@ -9,6 +9,14 @@ API, so a running service yields a consistent copy of each database.
 
 Not backed up: Git mirrors (re-cloned from the source), secrets.env (keep it
 in the company's secret store), the release itself (immutable, re-stageable).
+
+A restore never deletes the current databases before the replacement is in
+place: it copies and checks the backup next to them, records the swap in
+``<state>/.restore.json``, renames the current files aside, renames the
+copies in, checks the row counts and only then drops the old files. Any
+failure, or a box run after a killed restore, puts the old set back
+(``recover``). The service refuses to start while the marker exists, so it
+never opens a half-restored state or creates an empty queue in its place.
 """
 
 from __future__ import annotations
@@ -25,7 +33,9 @@ import sqlite3
 from .layout import Layout
 
 DATABASES = {"service": Path("service") / "service.sqlite", "graph": Path("core") / "graph.sqlite3"}
+SIDECARS = ("", "-wal", "-shm", "-journal")  # a WAL file can hold committed rows: it moves with its database
 FORMAT = "agent-service-backup-1"
+MARKER = ".restore.json"
 
 
 class BackupError(Exception):
@@ -130,15 +140,25 @@ def create(layout: Layout, *, label: str, release: dict | None) -> dict:
     tmp = layout.backups / f".{name}.tmp"
     shutil.rmtree(tmp, ignore_errors=True)
     tmp.mkdir(mode=0o700)
+    try:
+        return _create(layout, tmp, name, label, release)
+    except BaseException:
+        shutil.rmtree(tmp, ignore_errors=True)  # a full disk must not also keep a half-written copy
+        raise
+
+
+def _create(layout: Layout, tmp: Path, name: str, label: str, release: dict | None) -> dict:
     files = {}
     for key, rel in DATABASES.items():
         src = layout.state / rel
         if src.is_file():
             _copy_db(src, tmp / "state" / rel)
             files[f"state/{rel.as_posix()}"] = None
-    for src, rel in ((layout.config, "config/box.yaml"), (layout.generated / "service.json", "config/service.json"),
-                     (layout.generated / "policy.json", "config/policy.json")):
-        if src.is_file():
+    bindings = layout.bindings(release["name"]) if release else None
+    for src, rel in ((layout.config, "config/box.yaml"),
+                     (bindings and bindings / "service.json", "config/service.json"),
+                     (bindings and bindings / "policy.json", "config/policy.json")):
+        if src and src.is_file():
             (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, tmp / rel)
             files[rel] = None
@@ -183,27 +203,116 @@ def verify(layout: Layout, name: str) -> dict:
     return meta
 
 
-def restore(layout: Layout, name: str, *, chown=None) -> dict:
-    """Replace the databases with the backup's (service must be stopped). Config files are not touched."""
+def restore_unfinished(state: Path) -> bool:
+    return (state / MARKER).is_file()
+
+
+def _fsync(path: Path):
+    with open(path, "r+b") as f:  # Windows refuses fsync on a read-only handle
+        os.fsync(f.fileno())
+
+
+def _write_marker(state: Path, value: dict):
+    tmp = state / f"{MARKER}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(json.dumps(value, indent=2, sort_keys=True) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, state / MARKER)
+
+
+def _entries(state: Path) -> list[dict]:
+    """Every database file and sidecar the restore replaces, with where it goes aside and where its copy waits."""
+    out = []
+    for rel in DATABASES.values():
+        target = state / rel
+        for suffix in SIDECARS:
+            out.append({"path": f"{rel.as_posix()}{suffix}",
+                        "aside": f"{rel.parent.as_posix()}/.{target.name}{suffix}.pre-restore",
+                        "staged": f"{rel.parent.as_posix()}/.{target.name}.restore" if suffix == "" else None})
+    return out
+
+
+def recover(layout: Layout) -> dict | None:
+    """Finish what a killed or failed restore left: the old set back, or the verified new one kept."""
+    state = layout.state
+    try:
+        marker = json.loads((state / MARKER).read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return None
+    except ValueError:
+        marker = {"phase": "swapping", "existed": [e["path"] for e in _entries(state)]}
+    entries = _entries(state)
+    if marker.get("phase") == "committing":  # the new set was in place and counted: only cleanup was left
+        for e in entries:
+            (state / e["aside"]).unlink(missing_ok=True)
+        outcome = "kept_restored_state"
+    else:
+        existed = set(marker.get("existed", []))
+        for e in entries:
+            target, aside = state / e["path"], state / e["aside"]
+            if aside.exists():
+                os.replace(aside, target)
+            elif e["path"] not in existed:
+                target.unlink(missing_ok=True)  # a copy moved in where nothing was before
+        outcome = "returned_previous_state"
+    for e in entries:
+        if e["staged"]:
+            (state / e["staged"]).unlink(missing_ok=True)
+    (state / MARKER).unlink()
+    return {"backup": marker.get("backup"), "outcome": outcome}
+
+
+def restore(layout: Layout, name: str, *, chown=None, fault=None) -> dict:
+    """Replace the databases with the backup's (service must be stopped). Config files are not touched.
+
+    ``fault(point)`` is a test hook called at "staged", "aside" and "swapped".
+    """
+    fault = fault or (lambda point: None)
     meta = verify(layout, name)
     root = layout.backups / name
-    for key, rel in DATABASES.items():
-        target = layout.state / rel
-        for suffix in ("", "-wal", "-shm", "-journal"):
-            Path(f"{target}{suffix}").unlink(missing_ok=True)
-        source = root / "state" / rel
-        if source.is_file():
-            target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-            tmp = target.with_name(f".{target.name}.restore")
-            shutil.copyfile(source, tmp)
-            os.chmod(tmp, 0o600)
-            tmp.replace(target)
-            if chown:
-                chown(target)
-    restored = counts(layout.state)
-    expected = {k: v for k, v in meta["counts"].items()}
-    if restored != expected:
-        raise BackupError("restore_counts_differ")
+    state = layout.state
+    recover(layout)
+    entries = _entries(state)
+    staged = []
+    try:  # 1. copies next to the targets; the current databases are not touched yet
+        for rel in DATABASES.values():
+            source = root / "state" / rel
+            if source.is_file():
+                target = state / rel
+                target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+                tmp = target.with_name(f".{target.name}.restore")
+                staged.append(tmp)
+                shutil.copyfile(source, tmp)
+                os.chmod(tmp, 0o600)
+                _fsync(tmp)
+                if _sha(tmp) != meta["files"][f"state/{rel.as_posix()}"] or not _integrity(tmp):
+                    raise BackupError("restore_copy_differs", rel.as_posix())
+        fault("staged")
+        _write_marker(state, {"backup": name, "phase": "swapping",
+                              "existed": [e["path"] for e in entries if (state / e["path"]).exists()]})
+    except BaseException:
+        for tmp in staged:
+            tmp.unlink(missing_ok=True)
+        raise
+    try:  # 2. renames only: no data is copied, so a full disk cannot stop it half way
+        for e in entries:
+            if (state / e["path"]).exists():
+                os.replace(state / e["path"], state / e["aside"])
+        fault("aside")
+        for e in entries:
+            if e["staged"] and (state / e["staged"]).exists():
+                os.replace(state / e["staged"], state / e["path"])
+                if chown:
+                    chown(state / e["path"])
+        fault("swapped")
+        if counts(state) != meta["counts"]:
+            raise BackupError("restore_counts_differ")
+        _write_marker(state, {"backup": name, "phase": "committing"})
+    except BaseException:
+        recover(layout)
+        raise
+    recover(layout)  # 3. drop the old files
     return meta
 
 

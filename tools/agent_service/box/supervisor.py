@@ -36,7 +36,7 @@ UMask=0077"""
 
 def service_command(layout: Layout, release: Path, host: str, port: int) -> list[str]:
     return [str(venv_python(release / "venv")), "-I", "-B", str(release / "app/tools/agent_service/box/launch.py"),
-            "--config", str(layout.generated / "service.json"), "--run", str(layout.run),
+            "--config", str(layout.bindings(release.name) / "service.json"), "--run", str(layout.run),
             "--host", host, "--port", str(port)]
 
 

@@ -79,8 +79,13 @@ Jira до diff (`src/agent_service/jira_impact.py`):
   и `core.model_qualification` указывает на отчёт квалификации 2Б, который прошёл сверку
   (`src/agent_service/qualification.py`). Булевого флага больше нет: его мог поставить кто угодно.
   Сверка при старте:
-  1. SHA-256 файла отчёта равен `report_sha256` из конфигурации, `schema` = `amvp-report-1`, `run_id`
-     совпадает.
+  1. SHA-256 файла отчёта равен `report_sha256` из конфигурации, `schema` = `amvp-report-2`, `run_id`
+     совпадает. С 25.10.2026 дополнительно: `provenance` от `tools.autonomous_mvp.runner` в запуске
+     `autonomous-mvp-model.yml` на чистом коммите, `manifest_digest` серии, все фазы программы
+     `COMPLETED` без открытых резерваций, `G7_program_complete` и executed = expected, все гейты и
+     метрики программы выполнены (`qualification_provenance_missing`, `qualification_manifest_missing`,
+     `qualification_phase_incomplete`, `qualification_program_incomplete`, `qualification_gate_failed`,
+     `qualification_threshold_failed`).
   2. В `models` есть ID модели из политики ядра (provider model ID), и его `verdict` = `QUALIFIED`.
   3. `provider.chat_endpoint` отчёта равен endpoint модели в политике ядра. Имя переменной с ключом
      не сравнивается: у runner'а 2Б и у установки оно может отличаться.
@@ -91,6 +96,11 @@ Jira до diff (`src/agent_service/jira_impact.py`):
      `constitutions/agent-service-v1.yaml`, `src/agent_graph/actions.py`, `src/agent_graph/executor.py`
      и всех остальных файлов `src/agent_graph/` и `constitutions/`, перечисленных в отчёте. Харнесс 2Б
      (`tools/autonomous_mvp/`) сервис не загружает и не сравнивает.
+  5. Профиль `models[<id>].profile` равен профилю, который отправляет этот процесс: endpoint, модель,
+     протокол, имя параметра лимита ответа и его значение, `context_tokens`, `max_prompt_bytes`,
+     `limits.max_tool_lines`, stream, response_format, сэмплирование
+     (`qualification_profile_<поле>_mismatch`, `qualification_profile_missing`). Не сравниваются
+     timeout запроса, имена переменных ключей, `configuration_id`, лимиты расходов и цены.
   При любом расхождении модель не вызывается. `USEFUL` становится `PARTIAL model_unavailable`, в
   `unknowns` добавляется `model_hypothesis_unverified` с subject `qualification:<код причины>`,
   в `/status` появляется notice `model_disabled`, а `python -m agent_service doctor --config ...`

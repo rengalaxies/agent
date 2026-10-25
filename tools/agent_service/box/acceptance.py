@@ -5,8 +5,9 @@
 
 Host Python, standard library only: it drives the box exactly as an owner
 would (``<release>/box ...``) and observes the stand's GitHub/Jira comments.
-Releases: A = the release under test, C = A with only a newer version
-(same state schema), B = A with a service store schema bump.
+Releases: A = the release under test, C = A with a newer version and another
+constitution (same state schema), B = A with a service store schema bump,
+D = B whose service process never starts (the update must return to A).
 
 Every scenario records pass/fail, the box exit codes and wall-clock seconds.
 The report says which supervisor ran: ``process`` results are not a Linux
@@ -112,8 +113,8 @@ class Driver:
 
     def box_json(self, release: str, *args: str, expect=0) -> dict:
         _, text = self.box(release, *args, "--json", expect=expect)
-        start = text.find("{")
-        return json.loads(text[start:]) if start >= 0 else {}
+        starts = [i for i in (text.find("{"), text.find("[")) if i >= 0]
+        return json.loads(text[min(starts):]) if starts else {}
 
     def control(self, path: str, body: dict | None = None) -> dict:
         req = urllib.request.Request(self.stand["control"] + path, method="POST" if body is not None else "GET",
@@ -311,43 +312,130 @@ class Driver:
         return {"backup": meta["name"], "backup_counts": meta["counts"], "restored": restored["restored"],
                 "safety_backup": restored["safety_backup"], "queue_after": s["scenario"]["queue"]}
 
+    def manifest(self, release: str) -> dict:
+        return json.loads((Path(release) / "manifest.json").read_text(encoding="utf-8"))
+
+    def jira_change(self, text: str) -> dict:
+        """Change ORD-12 and wait until the running release published a complete result for it.
+
+        An update can first carry the short "new version received" text without versions; only a complete
+        result names code_version and the constitution.
+        """
+        before = self.comments()
+        self.control("/jira/summary", {"summary": text})
+        self.control("/deliver/jira", {"event": "updated"})
+        c = self.wait(f"complete Jira result after '{text}'",
+                      lambda c: c["updates"]["jira"] > before["updates"]["jira"]
+                      and "code_version: " in c["jira"][0]["text"], timeout=180)
+        return c
+
+    def versions_in_comment(self, c: dict, release: str) -> dict:
+        """The AnalysisResult the running process published must carry this release's code and constitution."""
+        manifest = self.manifest(release)
+        body = c["jira"][0]["text"]
+        expected = {"code_version": manifest["release_id"],
+                    "constitution_version": manifest["contracts"]["constitution"]["version_id"]}
+        for key, value in expected.items():
+            if f"{key}: {value}" not in body:
+                raise Check(f"published result lacks {key}: {value} of {manifest['name']}:\n{body[-1500:]}")
+        return expected
+
+    def loaded_is(self, status: dict, release: str):
+        manifest = self.manifest(release)
+        loaded = status["process"]["loaded"]
+        want = {"release": manifest["name"], "code_version": manifest["release_id"],
+                "constitution": manifest["contracts"]["constitution"]["version_id"]}
+        got = {k: loaded.get(k) for k in want}
+        if got != want:
+            raise Check(f"running process loaded {got}, expected {want}")
+
     def update_and_rollback(self, new: str, expect_mode: str):
         A = self.args.release
         out = self.box_json(new, "install", "--config", self.stand["box_config"])
         phases = {p["phase"]: p for p in out["phases"]}
         if "backup" not in phases:
             raise Check("update did not take a pre-update backup")
-        self.ready(new)
-        before = self.comments()
-        self.control("/jira/summary", {"summary": f"ORD-12 changed while {Path(new).name} runs"})
-        self.control("/deliver/jira", {"event": "updated"})
-        self.wait("event processed by the updated release", lambda c: c["updates"]["jira"] > before["updates"]["jira"])
+        backup = phases["backup"]["detail"]
+        if backup["schemas"]["service_store"] != self.manifest(A)["contracts"]["state"]["service_store"]["version"]:
+            raise Check(f"pre-update backup holds schema {backup['schemas']} written by the new release")
+        self.loaded_is(self.ready(new), new)
+        under_new = self.versions_in_comment(self.jira_change(f"ORD-12 changed while {Path(new).name} runs"), new)
         rollback = self.box_json(new, "rollback")
         if rollback["mode"] != expect_mode:
             raise Check(f"rollback mode {rollback['mode']}, expected {expect_mode}")
-        self.ready(A)
-        if expect_mode == "restored_backup":
-            self.wait("reconciliation after restoring the pre-update backup",
-                      lambda c: c["updates"]["jira"] > before["updates"]["jira"] + 1, timeout=180)
+        if expect_mode == "restored_backup" and rollback["backup"] != backup["backup"]:
+            raise Check(f"rollback restored {rollback['backup']}, not the backup this update took ({backup['backup']})")
+        self.loaded_is(self.ready(A), A)
+        after = self.versions_in_comment(self.jira_change(f"ORD-12 changed after rollback from {Path(new).name}"), A)
         self.one_comment_each()
-        return {"update_machine_seconds": out.get("machine_seconds"), "backup": phases["backup"]["detail"],
-                "rollback": rollback}
+        return {"update_machine_seconds": out.get("machine_seconds"), "backup": backup, "rollback": rollback,
+                "published_under_new": under_new, "published_after_rollback": after}
+
+    def first_schema_update(self):
+        existing = self.box_json(self.args.release, "backups")
+        if existing:
+            raise Check(f"scenario needs an installation without backups, found {len(existing)}")
+        return self.update_and_rollback(self.args.schema_update, "restored_backup")
+
+    def failed_start(self):
+        """Release D migrates the queue and then never starts: the update must return to A with A's queue."""
+        A, D = self.args.release, self.args.broken_update
+        before = self.status(A)["scenario"]["queue"]
+        code, text = self.box(D, "install", "--config", self.stand["box_config"], "--json", expect=1)
+        run = json.loads(text[text.find("{"):])
+        backup = next(p for p in run["phases"] if p["phase"] == "backup")["detail"]
+        s = self.ready(A)
+        self.loaded_is(s, A)
+        if not any(p.startswith("Автоматический откат") and "restored_backup" in p for p in run.get("problems", [])):
+            raise Check(f"update did not report an automatic rollback with the restored backup: {run.get('problems')}")
+        if backup["schemas"]["service_store"] != self.manifest(A)["contracts"]["state"]["service_store"]["version"]:
+            raise Check(f"pre-update backup holds schema {backup['schemas']}")
+        after = s["scenario"]["queue"]
+        if after.get("events", {}).get("DONE", 0) < before.get("events", {}).get("DONE", 0):
+            raise Check(f"processed events lost by the rollback: before {before}, after {after}")
+        self.versions_in_comment(self.jira_change("ORD-12 changed after the failed update"), A)
+        self.one_comment_each()
+        return {"update_exit": code, "backup": backup, "problems": run.get("problems"), "queue_before": before,
+                "queue_after": after}
+
+    def restore_interrupted(self):
+        """A restore killed after the current databases were moved aside: the next box run puts them back."""
+        A = self.args.release
+        meta = self.box_json(A, "backup", "--label", "restore-kill")
+        self.jira_change("ORD-12 changed after the restore-kill backup")
+        before = self.status(A)["scenario"]["queue"]
+        code, _ = self.box(A, "restore", meta["name"], env={"AGENT_SERVICE_BOX_KILL_AT": "restore:aside"}, expect=None)
+        if code == 0:
+            raise Check("fault hook did not interrupt the restore")
+        run_dir = Path(self.args.prefix or "/") / "var/lib/agent-service"
+        if not (run_dir / ".restore.json").is_file():
+            raise Check("killed restore left no marker: the service could start on a half-restored state")
+        self.box(A, "install", "--config", self.stand["box_config"])
+        s = self.ready(A)
+        after = s["scenario"]["queue"]
+        if after.get("events") != before.get("events"):
+            raise Check(f"queue after recovery {after} differs from the state before the restore {before}")
+        self.one_comment_each()
+        return {"killed_exit": code, "queue": after}
 
     def run(self) -> int:
         self.report["started_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         plan = [("fresh_install", self.fresh_install),
-                ("end_to_end_on_installed_release", self.end_to_end),
-                ("reinstall_is_idempotent", self.reinstall),
-                ("interrupted_install_is_finished_by_rerun", self.interrupted),
-                ("service_killed_comes_back", self.service_crash),
-                ("doctor_wrong_credentials", self.doctor_bad_credentials),
-                ("backup_restore", self.backup_restore)]
-        if self.args.update:
-            plan.append(("update_same_schema_then_rollback",
-                         lambda: self.update_and_rollback(self.args.update, "release_only")))
+                ("end_to_end_on_installed_release", self.end_to_end)]
+        # Runs before anything else takes a backup: the update's own backup is the only way back.
         if self.args.schema_update:
-            plan.append(("update_schema_change_then_rollback",
-                         lambda: self.update_and_rollback(self.args.schema_update, "restored_backup")))
+            plan.append(("first_schema_update_then_rollback", self.first_schema_update))
+        if self.args.broken_update:
+            plan.append(("failed_start_rolls_back", self.failed_start))
+        plan += [("reinstall_is_idempotent", self.reinstall),
+                 ("interrupted_install_is_finished_by_rerun", self.interrupted),
+                 ("service_killed_comes_back", self.service_crash),
+                 ("doctor_wrong_credentials", self.doctor_bad_credentials),
+                 ("backup_restore", self.backup_restore),
+                 ("restore_interrupted_is_recovered", self.restore_interrupted)]
+        if self.args.update:
+            plan.append(("update_other_constitution_then_rollback",
+                         lambda: self.update_and_rollback(self.args.update, "release_only")))
         only = set(self.args.only.split(",")) if self.args.only else None
         for name, fn in plan:
             if only is None or name in only:
@@ -367,8 +455,9 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--stand", required=True)
     parser.add_argument("--release", required=True, help="extracted release A")
-    parser.add_argument("--update", help="extracted release C (same schema)")
+    parser.add_argument("--update", help="extracted release C (same schema, other constitution)")
     parser.add_argument("--schema-update", help="extracted release B (schema bump)")
+    parser.add_argument("--broken-update", help="extracted release D (schema bump, service never starts)")
     parser.add_argument("--prefix")
     parser.add_argument("--supervisor", choices=["systemd", "process"])
     parser.add_argument("--output", required=True)

@@ -11,7 +11,7 @@ from __future__ import annotations
 import hashlib
 import math
 
-from tools.autonomous_mvp.program import rub
+from tools.autonomous_mvp.program import canonical, rub
 from tools.autonomous_mvp.protocol import contract_violations
 
 ORDER = ("NOT_ADMITTED", "CANDIDATE", "CONFIRMED_WITHIN_PROFILE")
@@ -280,13 +280,28 @@ def verdict(program, cases, states, oracle):
                 expected_case_runs=expected, executed=len(runs), measurements=m)
 
 
-def report(program, cases, oracle, states, manifest=None):
-    """manifest: the committed manifest. Its digest, the provider and the protocol fingerprint go
-    into the report so a service can compare them with the configuration it actually loads, and
-    ledgers written under another manifest are left out of every verdict."""
-    out = dict(schema="amvp-report-1", run_id=program["run_id"], label=program["thresholds"]["label"],
+def used_profile(states):
+    """The one model profile every evaluation case-run recorded, or None if they differ or none did."""
+    found = {canonical(r["result"]["model_profile"]): r["result"]["model_profile"]
+             for s in states if s["phase"] in EVALUATION_PHASES for r in s["case_runs"]
+             if r["status"] == "FINISHED" and r["result"] and r["result"].get("model_profile")}
+    return next(iter(found.values())) if len(found) == 1 else None
+
+
+def report(program, cases, oracle, states, manifest=None, *, program_id=None, provenance=None):
+    """manifest: the committed manifest; provenance: runner.provenance() of the run that scores.
+
+    The report is the qualification artifact (schema amvp-report-2) the service checks before it
+    calls a model. Manifest digest, provenance, the program's phases, gates and metrics, the
+    provider, the protocol fingerprint and, per model, the profile its evaluation case-runs used
+    let the service compare all of it with the configuration it actually loads. Ledgers written
+    under another manifest are left out of every verdict."""
+    out = dict(schema="amvp-report-2", run_id=program["run_id"], label=program["thresholds"]["label"],
                live_status="computed from ledgers; see each phase status", models={},
-               manifest_digest=manifest["manifest_digest"] if manifest else None,
+               program=dict(id=program_id, run_id=program["run_id"], revision=program["revision"],
+                            phases=list(program["phases"]), gates=sorted(program["thresholds"]["gates"]),
+                            metrics=sorted(program["thresholds"]["metrics"])),
+               manifest_digest=manifest["manifest_digest"] if manifest else None, provenance=provenance,
                provider=program["provider"], protocol=manifest["protocol"] if manifest else None,
                ignored_ledgers=[])
     if manifest:
@@ -304,8 +319,10 @@ def report(program, cases, oracle, states, manifest=None):
                 measured.pop("_sem")
             phases[s["phase"]] = dict(status=s["status"], case_runs=len(s["case_runs"]),
                                       reserved_open=sum(1 for r in s["case_runs"] if r["status"] == "RESERVED"),
+                                      source_sha=s.get("source_sha"), actions_run=s.get("actions_run"),
                                       measurements=measured)
-        out["models"][model["id"]] = dict(verdict(program, cases, mine, oracle), phases=phases)
+        out["models"][model["id"]] = dict(verdict(program, cases, mine, oracle), phases=phases,
+                                          profile=used_profile(mine))
     return out
 
 
@@ -318,9 +335,12 @@ def _fmt(r):
 
 
 def markdown(rep):
-    lines = [f"# Batch 2B report {rep['run_id']}", "", rep["label"], ""]
+    p = rep.get("provenance") or {}
+    lines = [f"# Batch 2B report {rep['run_id']}", "", rep["label"], "",
+             f"Manifest {rep.get('manifest_digest')}; scored by {p.get('runner')} in {p.get('repository')} "
+             f"run {p.get('workflow_run_id')} attempt {p.get('workflow_run_attempt')} at {p.get('source_sha')}.", ""]
     for model, data in rep["models"].items():
-        lines += [f"## {model}: {data['verdict']}", ""]
+        lines += [f"## {model}: {data['verdict']}", "", f"Profile: `{canonical(data.get('profile'))}`", ""]
         if "gates" not in data:
             lines += [f"Evaluation not run ({data.get('reason')}).", ""]
         else:
