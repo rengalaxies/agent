@@ -14,7 +14,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 import base64
 
-from agent_graph_demo.contracts import CORE_SHA, PROFILE, DemoError, now
+import agent_graph
+from agent_graph_demo.contracts import PROFILE, DemoError, now
 from agent_graph_demo.snapshots import Snapshots, atomic_json
 from examples.agent_graph_demo.oracle import DATASET_SHA256
 from agent_graph_demo.store import Store
@@ -25,6 +26,7 @@ from tools.agent_graph_demo.run_scenario import run
 
 
 def acceptance(core_root, image, output, product_sha="WORKTREE"):
+    """core_root=None runs the core shipped with the demo (the image and this checkout)."""
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     state = output / "state"
@@ -63,11 +65,11 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
         web,
         dict(
             state_root=str(state),
-            core_root=str(Path(core_root).resolve()),
             auth_config_path=str(auth),
             runtime_registry_path=str(guard.registry),
             product_sha=product_sha,
             allowed_origins=["http://127.0.0.1:18081"],
+            **({"core_root": str(Path(core_root).resolve())} if core_root else {}),
         ),
     )
     log = (output / "backend.log").open("w")
@@ -82,8 +84,9 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
     report = {
         "status": "UNRUN",
         "product_sha": product_sha,
-        "core_sha": CORE_SHA,
-        "core_accepted_main": True,
+        # What the backend imports, not a SHA string: profile, schema versions and file digest.
+        "core_identity": agent_graph.core_identity(),
+        "core_source": "external checkout" if core_root else "bundled with this release",
         "profile": PROFILE,
         "runtime_image": image,
         "dataset_sha256": DATASET_SHA256,
@@ -231,7 +234,7 @@ def acceptance(core_root, image, output, product_sha="WORKTREE"):
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--mode", choices=["local"], default="local")
-    p.add_argument("--core-root", type=Path, required=True)
+    p.add_argument("--core-root", type=Path, help="legacy: a separate core checkout; default is the bundled core")
     p.add_argument("--image", required=True)
     p.add_argument("--product-sha", default="WORKTREE")
     p.add_argument("--output", type=Path, required=True)

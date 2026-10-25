@@ -14,7 +14,6 @@ services:
       - /var/lib/agent-graph-demo/state:/var/lib/agent-graph-demo/state
       - /var/lib/agent-graph-demo/runtime:/var/lib/agent-graph-demo/runtime:ro
       - /etc/agent-graph-demo:/etc/demo:ro
-      - ${DEMO_CORE_ROOT:?separate pinned core checkout required}:/core:ro
     tmpfs: [/tmp:size=32m]
     restart: unless-stopped
     logging:
