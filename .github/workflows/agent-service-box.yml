@@ -1,0 +1,126 @@
+name: agent-service box (Linux install acceptance)
+# Batch 5A: build the pinned release, install it from scratch with systemd on this
+# Ubuntu runner (the VM equivalent), then reinstall, interrupt between phases, kill
+# the service, doctor with wrong credentials, backup/restore and update/rollback.
+# Everything talks to local stands on 127.0.0.1: no secrets, no external publication,
+# no cloud resources.
+on:
+  pull_request:
+    paths:
+      - 'src/agent_graph/**'
+      - 'src/agent_service/**'
+      - 'constitutions/agent-service-v1.yaml'
+      - 'schemas/agent-graph-output-2.json'
+      - 'examples/orders_reporting/**'
+      - 'tools/agent_service/box/**'
+      - 'infra/agent_service/**'
+      - '.github/workflows/agent-service-box.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: agent-service-box-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  box:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      STAND: /srv/box-stand
+      OUT: ${{ github.workspace }}/work/box
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Host facts (what the target VM provides)
+        run: |
+          mkdir -p "$OUT"
+          {
+            echo "os=$(. /etc/os-release && echo "$PRETTY_NAME")"
+            echo "host_python=$(/usr/bin/python3 --version)"
+            echo "git=$(git --version)"
+            echo "systemd=$(systemctl --version | head -1)"
+            echo "cpus=$(nproc) mem_kib=$(awk '/MemTotal/ {print $2}' /proc/meminfo)"
+          } | tee "$OUT/host.txt"
+      - name: Build environment from the release lock (build host only)
+        run: python -m pip install --disable-pip-version-check --require-hashes -r infra/agent_service/requirements.lock
+      - name: Box unit tests
+        run: PYTHONPATH=src:. python -m unittest discover -s tools/agent_service/box/tests -t . -v
+      - name: Build release A twice and require identical archives
+        run: |
+          python tools/agent_service/box/release.py build --commit HEAD --output dist/A | tee "$OUT/build-A.json"
+          python tools/agent_service/box/release.py build --commit HEAD --output dist/A2 > /dev/null
+          (cd dist/A && sha256sum -c ./*.sha256)
+          cmp dist/A/*.tar.gz dist/A2/*.tar.gz
+          cp dist/A/*.manifest.json dist/A/*.sha256 "$OUT/"
+      - name: Build update variants C (version only) and B (state schema bump)
+        run: |
+          for v in C B; do
+            git worktree add --detach "/tmp/variant-$v" HEAD
+            if [ "$v" = C ]; then
+              python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.1.1
+            else
+              python tools/agent_service/box/variants.py patch-version "/tmp/variant-$v" 0.2.0
+              python tools/agent_service/box/variants.py schema-bump "/tmp/variant-$v"
+            fi
+            git -C "/tmp/variant-$v" -c user.name=box-ci -c user.email=box-ci@example.invalid commit -qam "test variant $v"
+            python tools/agent_service/box/release.py build --repo "/tmp/variant-$v" --commit HEAD --output "dist/$v"
+          done
+      - name: Extract releases as an owner would
+        run: |
+          for v in A B C; do
+            (cd "dist/$v" && sha256sum -c ./*.sha256)
+            mkdir -p "/tmp/rel/$v" && tar -xzf "dist/$v"/*.tar.gz -C "/tmp/rel/$v"
+            echo "REL_$v=$(ls -d "/tmp/rel/$v"/agent-service-*)" >> "$GITHUB_ENV"
+          done
+      - name: Start the Orders/Reporting stand (Git repos, GitHub and Jira HTTP stands)
+        run: |
+          sudo install -d -o "$(id -u)" -g "$(id -g)" -m 0755 "$STAND"
+          # The stand runs the code shipped in release A, with the host Python and the build environment.
+          nohup python "$REL_A/app/tools/agent_service/box/teststand.py" serve --dir "$STAND" --service-port 8090 \
+            > "$OUT/stand.log" 2>&1 &
+          for _ in $(seq 1 60); do [ -f "$STAND/stand.json" ] && break; sleep 1; done
+          cat "$STAND/stand.json"
+          sudo install -D -m 0600 -o root -g root "$STAND/secrets.env" /etc/agent-service/secrets.env
+      - name: Plan (no changes) with the host Python
+        run: sudo /usr/bin/python3 "$REL_A/box" plan --config "$STAND/box.yaml"
+      - name: Acceptance on the installed releases (systemd)
+        run: |
+          sudo /usr/bin/python3 "$REL_A/app/tools/agent_service/box/acceptance.py" --stand "$STAND/stand.json" \
+            --release "$REL_A" --update "$REL_C" --schema-update "$REL_B" --output "$OUT/acceptance.json"
+      - name: Summary
+        if: always()
+        run: |
+          [ -f "$OUT/acceptance.json" ] || exit 0
+          python - "$OUT/acceptance.json" >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          import json, sys
+          r = json.load(open(sys.argv[1], encoding="utf-8"))
+          print(f"### agent-service box acceptance: {'PASS' if r['passed'] else 'FAIL'} (supervisor {r['supervisor']})")
+          print("| scenario | result | seconds |\n|---|---|---|")
+          for s in r["scenarios"]:
+              print(f"| {s['scenario']} | {s['result']} | {s['seconds']} |")
+          first = next((s for s in r["scenarios"] if s["scenario"] == "fresh_install"), {}).get("detail", {})
+          print(f"\nFresh install wall time: {first.get('install_wall_seconds')} s; service RSS: {first.get('service_rss_kib')} KiB")
+          EOF
+      - name: Collect safe diagnostics
+        if: always()
+        run: |
+          sudo cp -r /var/lib/agent-service-box/reports "$OUT/install-reports" 2>/dev/null || true
+          sudo journalctl -u agent-service -u agent-service-sync --no-pager -n 300 > "$OUT/journal.txt" 2>&1 || true
+          sudo systemctl cat agent-service.service > "$OUT/agent-service.service.txt" 2>&1 || true
+          sudo chown -R "$(id -u):$(id -g)" "$OUT"
+          # Test-stand values only; drop the generated status token from anything collected.
+          grep -rl AGENT_SERVICE_STATUS_TOKEN "$OUT" | xargs -r sed -i 's/AGENT_SERVICE_STATUS_TOKEN=.*/AGENT_SERVICE_STATUS_TOKEN=<removed>/'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-service-box-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            work/box
+            dist/A/*.tar.gz
