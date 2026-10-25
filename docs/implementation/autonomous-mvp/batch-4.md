@@ -17,7 +17,7 @@
 | Jira до diff: постоянный граф пачки 3 (`GraphQuery.impact`, владельцы из `GraphQuery.owner`) | реализовано, проверено офлайн |
 | Обслуживание графа: событие и периодическая сверка (`GraphMaintainer`), страница `/graph` | реализовано, проверено офлайн |
 | Сквозной smoke одной командой (`python -m agent_service smoke`) | реализовано, проходит |
-| Модельная часть через исполнитель конституции | подключена за флагом `model_qualified`; не проверена, квалифицированной модели нет |
+| Модельная часть через исполнитель конституции | включается только по сверенному отчёту 2Б; проверено офлайн-скриптом, квалифицированной модели нет |
 | Живой GitHub App, живая Jira, клиентский runtime-источник | не проверено: нет доступа |
 | Замеры времени и памяти на Linux | не проверено: на машине только Windows |
 
@@ -75,8 +75,30 @@ Jira до diff (`src/agent_service/jira_impact.py`):
 
 Остальное:
 - Модель: `agent_graph.executor.run_investigation` вызывается, только если в политике ядра есть модель
-  и в конфигурации сервиса стоит `core.model_qualified: true` (ставится по итогам 2Б). Тест проверяет,
-  что настроенная, но неквалифицированная модель не получает ни одного вызова.
+  и `core.model_qualification` указывает на отчёт квалификации 2Б, который прошёл сверку
+  (`src/agent_service/qualification.py`). Булевого флага больше нет: его мог поставить кто угодно.
+  Сверка при старте:
+  1. SHA-256 файла отчёта равен `report_sha256` из конфигурации, `schema` = `amvp-report-1`, `run_id`
+     совпадает.
+  2. В `models` есть ID модели из политики ядра (provider model ID), и его `verdict` = `QUALIFIED`.
+  3. `provider.chat_endpoint` отчёта равен endpoint модели в политике ядра. Имя переменной с ключом
+     не сравнивается: у runner'а 2Б и у установки оно может отличаться.
+  4. Поле `protocol` отчёта (отпечаток 2Б `protocol.fingerprint()`) совпадает с вычисленным из
+     загруженного кода: протокол, исполнитель, версия конституции, хеш системного prompt и хеш схемы
+     действий. Отдельного хеша инструментов нет: схема описывает все действия, включая `graph_*`, а
+     лимиты инструментов лежат в конституции. Хеши текста с нормализацией CRLF сверяются для
+     `constitutions/agent-service-v1.yaml`, `src/agent_graph/actions.py`, `src/agent_graph/executor.py`
+     и всех остальных файлов `src/agent_graph/` и `constitutions/`, перечисленных в отчёте. Харнесс 2Б
+     (`tools/autonomous_mvp/`) сервис не загружает и не сравнивает.
+  При любом расхождении модель не вызывается. `USEFUL` становится `PARTIAL model_unavailable`, в
+  `unknowns` добавляется `model_hypothesis_unverified` с subject `qualification:<код причины>`,
+  в `/status` появляется notice `model_disabled`, а `python -m agent_service doctor --config ...`
+  печатает читаемую причину и возвращает 1. Без модели в политике ядра сервис работает статически,
+  как раньше, и ответы не понижаются.
+  Поля `protocol`, `manifest_digest` и `provider` добавлены в отчёт по договорённости с mvp-2b-prep
+  (ветка `claude/mvp-2b-prep-9d9655`, коммит `9d70f8d`). Отчёт без них даёт
+  `qualification_report_incomplete`. Реального отчёта QUALIFIED пока нет: живая квалификация 2Б не
+  проводилась, поэтому на любой установке сейчас модель выключена.
 - Модельный прогон получает `graph_store`, runtime-источники и источники владения сервиса, поэтому
   инструменты `graph_*` конституции видят тот же постоянный граф в тех же правах, что и запрос
   сервиса. ID графа не являются квитанциями оснований: гипотеза по ним остаётся кандидатом. В
@@ -346,7 +368,8 @@ core:
   state_dir: /var/lib/agent-service/core
   ownership_path: /etc/agent-service/ownership.json  # {source, version, services}
   runtime_sources: []                                # AccessLogSource пачки 3, если есть
-  model_qualified: false
+  # model_qualification: {report_path: /etc/agent-service/2b-report.json, run_id: amvp-2b-20261024-r1,
+  #                       report_sha256: <sha256 файла отчёта>}
 ```
 
 ```bash
@@ -365,15 +388,15 @@ TLS терминируется перед сервисом (обратный п�
 
 | Команда | Результат |
 |---|---|
-| `PYTHONPATH=".;src" python -m unittest discover -s tests/service -t .` | 71 тест, OK, около 100 с |
+| `PYTHONPATH=".;src" python -m unittest discover -s tests/service -t .` | 79 тестов, OK, около 2 мин |
 | `python -m agent_service smoke` | 20 из 20 проверок, exit 0, около 8 с |
 | `PYTHONPATH=".;src" python -m unittest tests.graph.test_results tests.graph.test_output_contracts` | OK |
 | `python -m ruff check src/agent_service tests/service --select F` | без замечаний |
 | `PYTHONPATH=".;src;tests;tools" python -m unittest discover -s tests` | см. ниже |
 
-Полный набор на Windows: на ветке 666 тестов, failures=35, errors=120. На основе пачки 3 `f8781ae`
+Полный набор на Windows: на ветке 674 теста, failures=35, errors=120. На основе пачки 3 `f8781ae`
 тем же venv: 595 тестов, failures=35, errors=120, и список упавших тестов совпадает построчно.
-Разница в 71 тест, это `tests/service`, все проходят. Падения основы на Windows связаны по заметкам соседних
+Разница в 79 тестов, это `tests/service`, все проходят. Падения основы на Windows связаны по заметкам соседних
 сессий с `fcntl`, `O_DIRECTORY`, symlink и CRLF в фикстурах. Решающим остаётся Linux CI.
 
 Тесты `tests/service` работают с настоящими HTTP-запросами: стенды GitHub и Jira на 127.0.0.1
@@ -389,9 +412,14 @@ smoke работает настоящее ядро 2A на Git-стенде. Ч�
 - Ядро на стенде (`test_core`): smoke целиком; Jira без требования полноты пишет
   `requirement_unknown (reporting)` и не заявляет поломку; задача с одним `GET /orders` без имени
   сервиса даёт `intent_unclear`, а не потребителей billing; head, которого нет в зеркале, даёт видимый
-  `commit_unavailable`; настроенная неквалифицированная модель не получает вызовов; правила выбора
-  операций по тексту; квалифицированная скриптовая модель на событии Jira вызывает `graph_impact` и
-  получает пути из постоянного графа, а статус ответа держится на статических фактах.
+  `commit_unavailable`; правила выбора операций по тексту.
+- Квалификация (`test_qualification`): сверенный отчёт QUALIFIED включает модель, скриптовая модель на
+  событии Jira вызывает `graph_impact` и получает пути из постоянного графа, статус держится на
+  статических фактах; отчёт для другой конституции, вердикт EXPERIMENTAL и отсутствие ссылки на отчёт
+  оставляют модель без единого вызова, ответ `PARTIAL model_unavailable`, doctor возвращает 1 с
+  причиной; изменённый после ссылки файл отчёта, отчёт без отпечатка, отчёт другой модели, запуска
+  или endpoint, другой хеш схемы действий и другой хеш загружаемого файла ядра отвергаются, а хеш
+  харнесса 2Б не влияет.
 
 - Jira без PR даёт предварительный комментарий; PR уточняет его и показывает base/head, diff и
   ссылку на ключ Jira (`test_flow`).
