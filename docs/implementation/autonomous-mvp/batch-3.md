@@ -30,7 +30,7 @@
 | Контракт agent-graph-output 2.1 (`output_contracts.py`) | минорная версия, только добавления |
 | Адаптер `access-log-jsonl-1` и HTTP-стенд | реализованы, проверены локально |
 | Подключение к access logs или трассам клиента | не проверено: нет доступа ни к одному источнику клиента |
-| Linux-прогон | не выполнялся здесь; его даст CI на PR |
+| Linux-прогон | пройден: PR [#57](https://github.com/rengalaxies/agent/pull/57), head `4454347`, все проверки зелёные |
 
 ## Что было до пачки 3
 
@@ -488,6 +488,13 @@ python tools/agent_service/runtime_stand/stand.py --out /tmp/runtime-stand
 
 ## Прогоны
 
+Linux, 2026-10-25: PR [#57](https://github.com/rengalaxies/agent/pull/57)
+(база `claude/mvp-2a-core-205322`, head `4454347`) зелёный в GitHub Actions:
+задания accept, citation-measurement, offline и core прошли. Логи читал
+координатор; я их без входа не вижу. Здесь же проходят тесты, которые на
+Windows падали из-за прав на symlink, блокировки файлов, CRLF и POSIX-only кода,
+и проверка прав каталога состояния (0700) и резервной копии (0600).
+
 2026-10-24, Windows 11 Pro 10.0.26200, Python 3.14.0, venv в worktree.
 
 Последний прогон, на `d060b4f` (инструменты `graph_*`, digest конфигурации,
@@ -532,7 +539,8 @@ python tools/agent_service/runtime_stand/stand.py --out /tmp/runtime-stand
 
 ## Что осталось
 
-- Linux-прогон и замеры времени и памяти синхронизации: CI на PR.
+- Замеры времени и памяти синхронизации графа на Linux: CI PR #57 проверяет
+  корректность, но отдельного замера синхронизации нет.
 - Источники владения `codeowners` и `service_catalog`: отложены, для первого
   выпуска хватает `installation_mapping`.
 - Purge по сроку хранения (физическое удаление с журналом).
