@@ -60,7 +60,11 @@ jobs:
           docker build --network=none -f infra/agent_graph_demo/Dockerfile --build-arg PRODUCT_SHA="$GITHUB_SHA" -t agent-graph-demo:accept .
           echo "image_id=$(docker image inspect agent-graph-demo:accept --format '{{.Id}}')" >> "$GITHUB_OUTPUT"
       - name: Real Docker and browser A-B-D-E, lifecycle and five shows
-        run: python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROOT" --image '${{ steps.image.outputs.image_id }}' --product-sha "$GITHUB_SHA" --output work/acceptance
+        # On failure only exception lines become annotations (logs need sign-in);
+        # other output may hold the throwaway acceptance password and stays in the log.
+        run: |
+          set -o pipefail
+          python tools/agent_graph_demo/accept.py --mode local --core-root "$DEMO_CORE_ROOT" --image '${{ steps.image.outputs.image_id }}' --product-sha "$GITHUB_SHA" --output work/acceptance 2>&1 | tee work/accept.log             || { grep -E '^[A-Za-z_.]*(Error|Exception)|^AssertionError|^ModuleNotFoundError|^  File "' work/accept.log | tail -n 8 | sed 's/^/::error title=demo acceptance::/'; exit 1; }
       - name: Safe acceptance artifacts only
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
