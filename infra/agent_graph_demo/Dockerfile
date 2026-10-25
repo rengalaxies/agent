@@ -7,6 +7,10 @@ COPY work/wheels /wheels
 COPY infra/agent_graph_demo/requirements.lock /app/infra/agent_graph_demo/requirements.lock
 RUN pip install --no-cache-dir --no-index --find-links=/wheels -r infra/agent_graph_demo/requirements.lock && rm -rf /wheels
 COPY src/agent_graph_demo /app/src/agent_graph_demo
+# The demo imports the agent_graph core it ships (batch 2A). Batch 5A rebuilds this
+# Dockerfile and removes core.lock.json and the separate /core mount.
+COPY src/agent_graph /app/src/agent_graph
+COPY constitutions/agent-service-v1.yaml /app/constitutions/agent-service-v1.yaml
 COPY examples/agent_graph_demo /app/examples/agent_graph_demo
 COPY tools/agent_graph_demo /app/tools/agent_graph_demo
 COPY infra/agent_graph_demo/core.lock.json /app/infra/agent_graph_demo/core.lock.json
