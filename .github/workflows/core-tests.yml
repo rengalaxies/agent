@@ -45,11 +45,12 @@ jobs:
           python -m pip install ruff==0.17.1
           python -m ruff check src services tools stand lab/app lab/product lab/runtime --select F401,F811,F841
       - name: Test current implementation without running evaluation E3
-        run: python -m unittest discover -s tests -v
+        # ci_unittest.py prints failed tests as ::error annotations (readable without sign-in).
+        run: python tests/graph/ci_unittest.py discover -s tests -v
       - name: Batch 2B runner tests (when the branch has them)
         run: |
           if [ -d tools/autonomous_mvp/tests ]; then
-            python -m unittest discover -s tools/autonomous_mvp/tests -t . -v
+            python tests/graph/ci_unittest.py discover -s tools/autonomous_mvp/tests -t . -v
           else
             echo "tools/autonomous_mvp/tests not present on this ref"
           fi

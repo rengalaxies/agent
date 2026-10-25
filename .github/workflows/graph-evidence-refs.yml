@@ -37,7 +37,7 @@ jobs:
       - name: Check imports and offline graph regressions (HTTP stubs only)
         run: |
           python -m ruff check src/agent_graph tools/prepare_evidence_refs_experiment.py tests/graph/test_evidence_refs.py tests/graph/test_reference_experiment.py tools/evidence_refs_ledger.py tools/run_evidence_refs_experiment.py tests/graph/test_evidence_refs_review.py tests/graph/test_evidence_refs_runner.py --select F401,F811,F841
-          python -m unittest discover -s tests/graph -v
+          python tests/graph/ci_unittest.py discover -s tests/graph -v
       - name: Prepare fixed next-experiment manifest, never execute it
         run: python tools/prepare_evidence_refs_experiment.py --output work/evidence-refs-v2-manifest.json
       - uses: actions/upload-artifact@v4
