@@ -24,6 +24,19 @@ actions:
     max_lines: 60
   graph_query:
     max_results: 50
+  # Persistent graph (agent_graph.graph_query), built by trusted code for the
+  # request's installation, environment and current grants. Results are not
+  # evidence receipts and never promote a hypothesis.
+  graph_find:
+    max_results: 20
+    max_query_chars: 200
+  graph_neighbors:
+    max_results: 50
+  graph_impact:
+    max_results: 50
+    max_depth: 3
+  graph_relationship: {}
+  graph_owner: {}
   propose_dependency:
     max_evidence_refs: 8
   propose_hypothesis:

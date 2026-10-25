@@ -171,7 +171,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0",
+          "default": "2.1",
           "pattern": "^(0|[1-9][0-9]{0,3})\\.(0|[1-9][0-9]{0,3})$",
           "title": "Schema Version",
           "type": "string"
@@ -420,7 +420,7 @@
           "type": "string"
         },
         "schema_version": {
-          "default": "2.0",
+          "default": "2.1",
           "pattern": "^(0|[1-9][0-9]{0,3})\\.(0|[1-9][0-9]{0,3})$",
           "title": "Schema Version",
           "type": "string"
@@ -611,6 +611,40 @@
           "title": "Statement",
           "type": "string"
         },
+        "subject": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "callsite": "#/$defs/CallsiteEntity",
+                  "operation": "#/$defs/OperationEntity",
+                  "service": "#/$defs/ServiceEntity",
+                  "team": "#/$defs/TeamEntity"
+                },
+                "propertyName": "kind"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ServiceEntity"
+                },
+                {
+                  "$ref": "#/$defs/OperationEntity"
+                },
+                {
+                  "$ref": "#/$defs/CallsiteEntity"
+                },
+                {
+                  "$ref": "#/$defs/TeamEntity"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subject"
+        },
         "uncertainty": {
           "enum": [
             "LOW",
@@ -633,7 +667,10 @@
               "runtime_not_observed",
               "runtime_window_gap",
               "result_set_size_unknown",
-              "model_hypothesis_unverified"
+              "model_hypothesis_unverified",
+              "runtime_not_instrumented",
+              "runtime_route_not_recorded",
+              "runtime_route_conflict"
             ],
             "type": "string"
           },
@@ -1156,7 +1193,10 @@
               "no_traffic_in_window",
               "sampled_source",
               "window_gap",
-              "worktree_not_reproducible"
+              "worktree_not_reproducible",
+              "not_instrumented",
+              "route_not_recorded",
+              "route_conflict"
             ],
             "type": "string"
           },
@@ -1240,7 +1280,8 @@
             "dynamic_parameters",
             "requirement_basis_stale",
             "runtime_source_unavailable",
-            "ownership_source_unavailable"
+            "ownership_source_unavailable",
+            "runtime_window_gap"
           ],
           "title": "Code",
           "type": "string"
@@ -1497,7 +1538,10 @@
               "runtime_not_observed",
               "runtime_window_gap",
               "result_set_size_unknown",
-              "model_hypothesis_unverified"
+              "model_hypothesis_unverified",
+              "runtime_not_instrumented",
+              "runtime_route_not_recorded",
+              "runtime_route_conflict"
             ],
             "type": "string"
           },
@@ -2235,7 +2279,10 @@
             "runtime_not_observed",
             "runtime_window_gap",
             "result_set_size_unknown",
-            "model_hypothesis_unverified"
+            "model_hypothesis_unverified",
+            "runtime_not_instrumented",
+            "runtime_route_not_recorded",
+            "runtime_route_conflict"
           ],
           "title": "Code",
           "type": "string"
@@ -2279,5 +2326,5 @@
       "$ref": "#/$defs/AnalysisResult"
     }
   ],
-  "title": "agent-graph-output 2.0"
+  "title": "agent-graph-output 2.1"
 }
