@@ -19,17 +19,21 @@ workflow `.github/workflows/agent-service-box.yml`, он запустится, �
 
 ## База и порядок PR
 
-Бриф задавал базу 2А и PR против `claude/mvp-2a-core-205322`. Коробка ставит
-`agent_service`, а он есть только в ветке 4. Поэтому в эту ветку обычным merge влита
-`origin/claude/mvp-4-service-2a` (`dd64229`, она уже содержит 2А и 3). Без неё
-CI на PR против 2А было бы нечего устанавливать, кроме старого демо. Вопрос о базе
-отправлен координирующей сессии; ответа к моменту отчёта нет.
-
-Предлагаемый стек: 2А → 3 → 4 → 5А, PR этой ветки против `claude/mvp-4-service-2a`:
+Бриф задавал базу 2А. Коробка ставит `agent_service`, а он есть только в ветке 4,
+поэтому ветка 4 влита обычным merge. Координатор подтвердил стек 2А → 3 → 4 → 5А:
+PR этой ветки идёт против `claude/mvp-4-service-2a`.
 https://github.com/rengalaxies/agent/compare/claude/mvp-4-service-2a...claude/objective-feistel-a46433
 
-Если координатор оставит PR против 2А, его diff покажет и коммиты 3 и 4. Мои коммиты
-трогают только пути строки `mvp-5a-box` и переносятся cherry-pick без конфликтов.
+Второй merge (`c0a5b68`) подтянул ветку 4 на `266f4dd` вместе с 2А `924cb10`: Linux-фикс
+`test_git_sources` (`d155048`) и правку демо-образа `8ac841d`. Конфликт в
+`infra/agent_graph_demo/Dockerfile` решён в пользу версии 5А: ядро
+(`src/agent_graph`) и конституция копируются в образ, `core.lock.json` и `/core` нет.
+Дубли исключений в `Dockerfile.dockerignore` убраны; он по-прежнему пропускает
+`src/agent_graph/**` и `constitutions/agent-service-v1.yaml`. Содержимое релиза merge не
+изменил: `git diff c8df16b HEAD` по путям релиза пуст.
+
+Если Linux CI упадёт в `tests/graph/test_git_sources.py` на проверке подмены Git-объекта,
+это известная проблема 2А, а не коробки. В текущей базе она уже исправлена в `d155048`.
 
 ## Коммиты
 
@@ -44,6 +48,8 @@ https://github.com/rengalaxies/agent/compare/claude/mvp-4-service-2a...claude/ob
 | `1ff0071` | Linux-workflow |
 | `c77262e` | демо: ядро внутри образа, без отдельного checkout |
 | `c8df16b` | демо: инструменты без `os.geteuid` на Windows |
+| `57c5c3d` | этот отчёт |
+| `c0a5b68` | merge ветки 4 (`266f4dd`, с 2А `924cb10`), Dockerfile демо по версии 5А |
 
 ## Релиз
 
@@ -274,7 +280,14 @@ HTTP-стенды GitHub/Jira из `agent_service.stands` и пишет box.yaml
 
 ### Linux
 
-`agent-service-box.yml` на `pull_request` (ubuntu-24.04, systemd, `/usr/bin/python3` 3.12):
+Приёмка 5А идёт только на установленном артефакте: драйвер ставит собранный архив
+через `./box` в `/opt/agent-service/releases`, и сервис запускается из его venv.
+Checkout исходников для приёмки не используется, а `status` сверяет загруженное ядро с
+manifest. Из checkout берётся только сборка релиза. Прогоны тестов на checkout
+(`tests/service`, unit-тесты коробки) приёмкой коробки не считаются.
+
+Из-за стека workflow срабатывает на PR против `claude/mvp-4-service-2a`: только в нём
+есть `agent_service`. `agent-service-box.yml` на `pull_request` (ubuntu-24.04, systemd, `/usr/bin/python3` 3.12):
 unit-тесты коробки, две сборки A с `cmp` архивов, сборка C и B, `sha256sum -c`,
 `box plan`, затем тот же драйвер приёмки от root через systemd. В summary попадает
 таблица сценариев, время установки и RSS сервиса. Артефакт: отчёты установок,
@@ -380,7 +393,6 @@ python tools/agent_service/box/release.py build --commit HEAD --platform linux-x
 
 ## Следующий шаг
 
-Владелец открывает PR (база по решению координатора, предложено
-`claude/mvp-4-service-2a`). Workflow `agent-service-box` даёт первую Linux-приёмку;
+Владелец открывает PR против `claude/mvp-4-service-2a`. Workflow `agent-service-box` даёт первую Linux-приёмку;
 результаты таблицы сценариев переносятся сюда. После этого 5Б вызывает тот же `box`
 на ВМ Cloud.ru.
