@@ -49,23 +49,23 @@ Linux CI зелёный на `4d10897`. PR 3, 4 и 2Б ещё не открыт�
 Тексты PR для владельца — в разделе «Тексты PR для владельца» файла
 [batch-2a.md](batch-2a.md).
 
-Стек и порядок слияния: 2А против `main`; 3 против 2А; 4 против 3; 2Б против 2А.
+Стек и порядок слияния: 2А против `main`; 3 против 2А; 4 против 3; 5А против 4; 2Б против 3.
 
 | Пачка | Ветка, голова | Основа | Офлайн | Live |
 |---|---|---|---|---|
 | 2А | [`claude/mvp-2a-core-205322`](https://github.com/rengalaxies/agent/tree/claude/mvp-2a-core-205322), коммиты в batch-2a.md | `main` `9d7480d` | проверено (Windows) | для приёмки 2А не требуется |
-| 3 | [`claude/mvp-3-runtime-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-3-runtime-2a) `f8781ae` | 2А `47e5c5d` слиянием `d060b4f` | вся пачка проверена (Windows) | не проверено: нет runtime-источника клиента |
-| 4 | [`claude/mvp-4-service-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-4-service-2a) `372894f` | 2А `dde1f90`; слияние ветки 3 в работе | анализ ядром 2А и сквозной smoke проверены (Windows) | не проверено: нет GitHub App, Jira и права публикации |
-| 2Б | [`claude/mvp-2b-prep-9d9655`](https://github.com/rengalaxies/agent/tree/claude/mvp-2b-prep-9d9655) `7494f3f` | 2А `b8ee515` | программа и dry-run через исполнитель 2А проверены (Windows) | не проверено: ни одного запроса к модели |
-| 5А | ветки нет | — | не начата | нужна Linux-ВМ или Docker |
+| 3 | [`claude/mvp-3-runtime-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-3-runtime-2a) `4454347` | 2А `924cb10` слиянием | вся пачка проверена (Windows) | не проверено: нет runtime-источника клиента |
+| 4 | [`claude/mvp-4-service-2a`](https://github.com/rengalaxies/agent/tree/claude/mvp-4-service-2a) `266f4dd` | 3 `f8781ae` и 2А `924cb10` слияниями | анализ ядром 2А и сквозной smoke проверены (Windows) | не проверено: нет GitHub App, Jira и права публикации |
+| 2Б | [`claude/mvp-2b-prep-9d9655`](https://github.com/rengalaxies/agent/tree/claude/mvp-2b-prep-9d9655) `95decda` | 3 `4454347` слиянием | программа и dry-run через исполнитель 2А проверены (Windows) | не проверено: ни одного запроса к модели |
+| 5А | [`claude/objective-feistel-a46433`](https://github.com/rengalaxies/agent/tree/claude/objective-feistel-a46433) `7d036b5` | 4 слиянием | релиз, установщик и 9 сценариев приёмки проверены (Windows, супервизор `process`) | Linux и systemd не проверены: workflow `agent-service-box.yml` запустится на PR |
 | 5Б, 6 | — | — | не начаты | — |
 
 Устаревшие ветки: `claude/mvp-3-runtime-1b13b3` и `claude/mvp-4-service-814d77`.
 
-На 24.10.2026 ветка 4 ещё не содержит ветку 3 (`git merge-base --is-ancestor`
-даёт «нет»); PR 4 против 3 сливать после того, как 4 вольёт 3. Ветка 3 содержит голову 2А `47e5c5d`. Ветка 4 стоит на `dde1f90` и не
-содержит поздних коммитов 2А (CI-правки, исправление `pinned_freshness`
-`b8ee515`); они придут к ней вместе с веткой 3.
+25.10.2026 все ветки стека содержат зелёную голову 2А (`4d10897`, документы
+`924cb10`). Ветка 4 содержит ветку 3 на `f8781ae`; позже ветка 3 получила
+только merge 2А (`4454347`), так что PR 4 против 3 показывает собственные
+коммиты 4. Ветки 5А и 2Б подтягивают свои базы merge-ем.
 
 ## Пачка 2А. Воспроизводимое ядро и исполняемая конституция
 
@@ -209,10 +209,25 @@ Cloud с учётной записью и токеном, публичный HTT
 
 ## Пачка 5А. Коробка на Linux-ВМ
 
-Назначена сессии `mvp-5a-box` в волне 2; ветки на 24.10.2026 ещё нет. План:
-Linux smoke в GitHub Actions на PR, потому что на машине нет Linux-ВМ и Docker.
-Первая правка от 2А: ядро в образе демо вместо монтирования `/core`
-(записка в общей папке сессий).
+Отчёт: [batch-5a.md в ветке](https://github.com/rengalaxies/agent/blob/claude/objective-feistel-a46433/docs/implementation/autonomous-mvp/batch-5a.md),
+голова `7d036b5`, база PR — ветка 4.
+
+| Что | Состояние |
+|---|---|
+| Закреплённый релиз: архив из blob-ов коммита, hash-lock колёс, manifest с commit, `core_identity`, конституцией и версиями схем | реализовано, проверено офлайн: две сборки дают один sha256 |
+| Установщик `./box` (plan, install, update, status, doctor, backup, restore, rollback, sync-mirrors), три уровня готовности | реализовано, 41 unit-тест и 9 из 9 сценариев на установленном релизе (Windows, супервизор `process`) |
+| Git-зеркала по таймеру, откат через восстановление копии перед update | реализовано, проверено офлайн |
+| Демо-образ с ядром внутри, без `core.lock.json` и `/core` | реализовано; заменяет промежуточную правку 2А `8ac841d` |
+| Linux, systemd-путь целиком | не проверено: workflow `agent-service-box.yml` запустится на PR |
+| Реальная ВМ, TLS-прокси для webhook, активные минуты человека | не проверено |
+
+Недостающий доступ: открыть PR 5А (владелец); для живой установки — Linux-ВМ.
+
+Следующий шаг после слияния 5А: убрать `DEMO_CORE_ROOT` и `--core-root` из
+`agent-graph-demo.yml` (файл 2А). Сейчас этого делать нельзя: в ветке 2А
+`accept.py` ещё требует `--core-root`; флаг стал необязательным только в 5А.
+Устаревшие строки RUNBOOK демо про `18e8b71`, `core.lock.json` и `/core`
+правит 5А.
 
 ## Пачка 5Б. Cloud.ru provisioning
 

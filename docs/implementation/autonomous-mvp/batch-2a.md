@@ -283,14 +283,15 @@ dependencies 0,14 с, evidence_batch 0,14 с. Это один прогон на 
 ## Тексты PR для владельца
 
 Из сессий PR не открыть: нет `gh`, браузер не вошёл в GitHub. Стек на
-24.10.2026, поздний вечер:
+25.10.2026 (PR 2А открыт как #56, остальные ещё нет):
 
 | PR | Ветка | База | Сливать |
 |---|---|---|---|
 | 2А | `claude/mvp-2a-core-205322` | `main` | первым |
 | 3 | `claude/mvp-3-runtime-2a` | `claude/mvp-2a-core-205322` | после 2А |
-| 4 | `claude/mvp-4-service-2a` | `claude/mvp-3-runtime-2a` | после 3, когда ветка 4 вольёт ветку 3 |
-| 2Б | `claude/mvp-2b-prep-9d9655` | `claude/mvp-2a-core-205322` | после 2А; после слияния 3 пересобрать manifest 2Б |
+| 4 | `claude/mvp-4-service-2a` | `claude/mvp-3-runtime-2a` | после 3 |
+| 5А | `claude/objective-feistel-a46433` | `claude/mvp-4-service-2a` | после 4 |
+| 2Б | `claude/mvp-2b-prep-9d9655` | `claude/mvp-3-runtime-2a` | после 3: инструменты `graph_*`, на которых квалифицируется модель, лежат в ветке 3 |
 
 После слияния нижнего PR GitHub перенацелит верхний на новую базу
 автоматически, если ветка базы удалена, или его нужно перенацелить вручную.
@@ -382,12 +383,12 @@ https://github.com/rengalaxies/agent/compare/claude/mvp-3-runtime-2a...claude/mv
 
 ### PR 2Б
 
-https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/mvp-2b-prep-9d9655
+https://github.com/rengalaxies/agent/compare/claude/mvp-3-runtime-2a...claude/mvp-2b-prep-9d9655
 
 Заголовок: `feat(experiment): batch 2B open-model qualification program on the 2A executor`
 
 ```markdown
-Часть [#50](https://github.com/rengalaxies/agent/issues/50): пачка 2Б, офлайн-часть. Стек: база — ветка 2А, сливать после PR 2А. Серия 22.10 не тронута.
+Часть [#50](https://github.com/rengalaxies/agent/issues/50): пачка 2Б, офлайн-часть. Стек: база — ветка 3, сливать после PR 3 (квалификация идёт с инструментами `graph_*` из пачки 3). Серия 22.10 не тронута.
 
 ## Что меняется
 
@@ -400,6 +401,32 @@ https://github.com/rengalaxies/agent/compare/claude/mvp-2a-core-205322...claude/
 Офлайн на Windows: 70 тестов OK без пропусков; dry-run всей программы через тот же код, что в live: 143 case-runs, QUALIFIED. Сценарий знает эталон, так что это проверка трубопровода и scorer, не качества модели.
 
 Не проверено: ни одного запроса к модели. Живой прогон — после слияния стека в `main`, в окружении с секретом `CLOUDRU_FOUNDATION_API_KEY`. Если перед этим слит PR 3, manifest нужно пересобрать: он хеширует файлы ядра и конституции.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+### PR 5А
+
+https://github.com/rengalaxies/agent/compare/claude/mvp-4-service-2a...claude/objective-feistel-a46433
+
+Заголовок: `feat(box): pinned agent-service release and single Linux installer (batch 5A)`
+
+```markdown
+Часть [#53](https://github.com/rengalaxies/agent/issues/53): пачка 5А. #53 не закрывает: Linux-приёмка ещё не проходила, 5Б не начата. Стек: база — ветка 4, сливать после PR 4.
+
+## Что меняется
+
+- Воспроизводимый релиз: архив из blob-ов коммита, hash-lock колёс, manifest с commit, `core_identity`, конституцией и версиями схем.
+- Единый установщик `./box`: plan, install, update, status, doctor, backup, restore, rollback, sync-mirrors; идемпотентные фазы и три уровня готовности (процесс, сервис, полезный сценарий).
+- Git-зеркала по таймеру; откат через схему восстанавливает копию, снятую перед update.
+- Демо-образ с ядром внутри, без `core.lock.json` и монтирования `/core`.
+- Workflow `.github/workflows/agent-service-box.yml` (ubuntu-24.04, systemd, локальные стенды, без секретов) ставит собранный архив и проходит 9 сценариев на установленном артефакте.
+
+## Проверки
+
+Офлайн на Windows (супервизор `process`): 9 из 9 сценариев приёмки на установленном релизе, 41 unit-тест коробки, `tests/service` 79 OK, две сборки архива дают один sha256. Подробно: `docs/implementation/autonomous-mvp/batch-5a.md`.
+
+Не проверено: Linux и systemd-путь целиком (первый прогон — этот PR), живые GitHub и Jira, модель, реальная ВМ, TLS-прокси для webhook, активные минуты человека (есть только оценка).
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
