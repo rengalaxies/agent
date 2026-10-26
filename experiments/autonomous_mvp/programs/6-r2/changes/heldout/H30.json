@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://rentals.test",
+      "service": "rentals"
+    }
+  ],
+  "change_id": "H30",
+  "environment": "prod",
+  "family": "F04_no_consumer_operation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /rentals/export: default page_size 500 -> 100.",
+    "issue_id": 10729,
+    "key": "RNT-729",
+    "project": "RNT",
+    "summary": "Уменьшить размер страницы выгрузки rentals с 500 до 100"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "quartz": "team-quartz",
+      "rentals": "team-rentals",
+      "summit": "team-summit",
+      "vector": "team-vector"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 729,
+    "repository": "rentals",
+    "title": "RNT-729 Уменьшить размер страницы выгрузки rentals с 500 до 100"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "quartz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# quartz\n\nService quartz of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quartz"
+    },
+    "rentals": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/export\")\ndef export_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/export\")\ndef export_rentals(day: str, cursor: str | None = None, page_size: int | None = 500):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "rentals"
+    },
+    "summit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# summit\n\nService summit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "summit"
+    },
+    "vector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vector\n\nService vector of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vector"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

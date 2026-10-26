@@ -1,0 +1,118 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://returns.test",
+      "service": "returns"
+    },
+    {
+      "base_url": "https://fleet.test",
+      "service": "fleet"
+    }
+  ],
+  "change_id": "D15",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис returns больше не отдаёт GET /returns; эндпоинт удаляется.",
+    "issue_id": 10314,
+    "key": "RTN-314",
+    "project": "RTN",
+    "summary": "Удалить устаревший список returns"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "balancer": "team-balancer",
+      "feeder": "team-feeder",
+      "fleet": "team-fleet",
+      "pipeline": "team-pipeline",
+      "returns": "team-returns"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 314,
+    "repository": "returns",
+    "title": "RTN-314 Удалить устаревший список returns"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "balancer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# balancer\n\nService balancer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "balancer"
+    },
+    "feeder": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# feeder\n\nService feeder of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://fleet.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "feeder"
+    },
+    "fleet": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# fleet\n\nService fleet of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_fleet(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_fleet(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "fleet"
+    },
+    "pipeline": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pipeline\n\nService pipeline of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pipeline"
+    },
+    "returns": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# returns\n\nService returns of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns/count\")\ndef count_returns(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# returns\n\nService returns of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_returns(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/returns/count\")\ndef count_returns(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "returns"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

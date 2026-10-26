@@ -1,4 +1,4 @@
-"""Run the service end to end on each 6-r1 change and record a ledger.
+"""Run the service end to end on each change of the current readiness revision and record a ledger.
 
 Per change, on a fresh stand and a fresh service installation (no state shared
 between changes, so changes stay independent):
@@ -209,7 +209,7 @@ def run_split(split, *, out: Path | None = None, only=None, keep=None, base=None
     path = Path(out) if out else ledger_path(split, base=base)
     guard(split, path, manifest_current=current)
     changes = [c for c in load_changes(split, base) if not only or c["change_id"] in only]
-    ledger = dict(schema="readiness-ledger-1", program=world.PROGRAM, split=split, configuration=CONFIGURATION,
+    ledger = dict(schema="readiness-ledger-1", program=world.CURRENT, split=split, configuration=CONFIGURATION,
                   manifest_digest=digest, manifest_current=current, source_sha=source_sha(),
                   python=sys.version.split()[0], platform=platform.platform(),
                   started_at=datetime.now(timezone.utc).isoformat(), records=[])

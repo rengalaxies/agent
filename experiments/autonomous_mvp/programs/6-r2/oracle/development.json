@@ -1,0 +1,4179 @@
+{
+  "changes": {
+    "D01": {
+      "change_id": "D01",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F01_truncation",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "balancer",
+          "console"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "auditor",
+        "notifier",
+        "pricing"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "console": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "console"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "recheck",
+          "console": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              64
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "pricing",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              64
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "console": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              64
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "pricing": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D01",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "auditor": "decoy",
+          "balancer": "explicit",
+          "console": "single",
+          "notifier": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "pricing",
+          "balancer": "quotes",
+          "console": "quotes",
+          "notifier": "quotes"
+        },
+        "decoy": "pricing",
+        "decoy_defaults": {
+          "/quotes": 100
+        },
+        "defaults": {
+          "change": {
+            "/quotes": 20,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 100,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F01_truncation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 64,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D02": {
+      "change_id": "D02",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/leases",
+        "service": "leases"
+      },
+      "family": "F02_operation_removed",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "importer",
+          "notifier"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "auditor"
+      ],
+      "paths": {
+        "importer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "importer"
+          },
+          "method": "GET",
+          "provider": "leases",
+          "route": "/leases"
+        },
+        "notifier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "notifier"
+          },
+          "method": "GET",
+          "provider": "leases",
+          "route": "/leases"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "importer": "breaking",
+          "notifier": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "leases",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              59
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "importer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "leases": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D02",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "importer": "single",
+          "notifier": "single"
+        },
+        "consumer_targets": {
+          "auditor": "leases",
+          "importer": "leases",
+          "notifier": "leases"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/leases/count": 100
+          },
+          "main": {
+            "/leases": 100,
+            "/leases/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F02_operation_removed",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 59,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "provider": "leases",
+        "unclassified": false
+      }
+    },
+    "D03": {
+      "change_id": "D03",
+      "changed_operation": null,
+      "family": "F03_no_impact_noop",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "no_impact"
+      },
+      "negatives": [
+        "auditor",
+        "balancer",
+        "reviewer"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "leases",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              103
+            ],
+            "before": [
+              "ok",
+              103
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "leases": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D03",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "auditor": "single",
+          "balancer": "bystander",
+          "reviewer": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "leases",
+          "balancer": "leases",
+          "reviewer": "leases"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/leases": 200,
+            "/leases/count": 100
+          },
+          "main": {
+            "/leases": 200,
+            "/leases/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F03_no_impact_noop",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 103,
+        "jira_intent": "service_only",
+        "operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "provider": "leases",
+        "unclassified": false
+      }
+    },
+    "D04": {
+      "change_id": "D04",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/leases/export",
+        "service": "leases"
+      },
+      "family": "F04_no_consumer_operation",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "no_impact"
+      },
+      "negatives": [
+        "balancer",
+        "gateway",
+        "notifier"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "leases",
+      "revoked": [],
+      "services": {
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              53
+            ],
+            "before": [
+              "ok",
+              53
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              53
+            ],
+            "before": [
+              "ok",
+              53
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "leases": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              53
+            ],
+            "before": [
+              "ok",
+              53
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D04",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/leases/export",
+          "service": "leases"
+        },
+        "consumer_kinds": {
+          "balancer": "single",
+          "gateway": "bystander",
+          "notifier": "bystander"
+        },
+        "consumer_targets": {
+          "balancer": "leases",
+          "gateway": "leases",
+          "notifier": "leases"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/leases": 200,
+            "/leases/count": 100,
+            "/leases/export": 100
+          },
+          "main": {
+            "/leases": 200,
+            "/leases/count": 100,
+            "/leases/export": 500
+          }
+        },
+        "deployment_env": {},
+        "family": "F04_no_consumer_operation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 53,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "provider": "leases",
+        "unclassified": false
+      }
+    },
+    "D05": {
+      "change_id": "D05",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/returns",
+        "service": "returns"
+      },
+      "family": "F05_runtime_only",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "gateway",
+          "importer"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "auditor",
+        "reviewer"
+      ],
+      "paths": {
+        "gateway": {
+          "basis": "runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        },
+        "importer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "importer"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "gateway": "breaking",
+          "importer": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "returns",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              74
+            ],
+            "before": [
+              "ok",
+              74
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "runtime",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              74
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "importer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              74
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "returns": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              74
+            ],
+            "before": [
+              "ok",
+              74
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D05",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "gateway": "runtime_env",
+          "importer": "single",
+          "reviewer": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "returns",
+          "gateway": "returns",
+          "importer": "returns",
+          "reviewer": "returns"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/returns": 25,
+            "/returns/count": 100
+          },
+          "main": {
+            "/returns": 100,
+            "/returns/count": 100
+          }
+        },
+        "deployment_env": {
+          "gateway": {
+            "RETURNS_URL": "https://returns.test"
+          }
+        },
+        "family": "F05_runtime_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 74,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "provider": "returns",
+        "unclassified": false
+      }
+    },
+    "D06": {
+      "change_id": "D06",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F06_code_only",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "console",
+          "feeder"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "notifier",
+        "pipeline"
+      ],
+      "paths": {
+        "console": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "console"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "feeder": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "feeder"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "console": "breaking",
+          "feeder": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "console": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              59
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              59
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "pipeline": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              59
+            ],
+            "before": [
+              "ok",
+              59
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D06",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "console": "single",
+          "feeder": "cursor",
+          "notifier": "bystander",
+          "pipeline": "bystander"
+        },
+        "consumer_targets": {
+          "console": "quotes",
+          "feeder": "quotes",
+          "notifier": "quotes",
+          "pipeline": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 25,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 200,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F06_code_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 59,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D07": {
+      "change_id": "D07",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/leases",
+        "service": "leases"
+      },
+      "family": "F07_stale_runtime",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "console"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "gateway"
+      ],
+      "paths": {
+        "console": {
+          "basis": "stale_runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "leases",
+          "route": "/leases"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "console": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "leases",
+      "revoked": [],
+      "services": {
+        "console": {
+          "basis": "stale_runtime",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              49
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              49
+            ],
+            "before": [
+              "ok",
+              49
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "leases": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D07",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "consumer_kinds": {
+          "console": "runtime_env",
+          "gateway": "bystander"
+        },
+        "consumer_targets": {
+          "console": "leases",
+          "gateway": "leases"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/leases": 10,
+            "/leases/count": 100
+          },
+          "main": {
+            "/leases": 100,
+            "/leases/count": 100
+          }
+        },
+        "deployment_env": {
+          "console": {
+            "LEASES_URL": "https://leases.test"
+          }
+        },
+        "family": "F07_stale_runtime",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 49,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "provider": "leases",
+        "unclassified": false
+      }
+    },
+    "D08": {
+      "change_id": "D08",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F08_revoked_source",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "console",
+          "feeder"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "gateway"
+      ],
+      "paths": {
+        "console": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "console"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "feeder": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "feeder"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "console": "recheck",
+          "feeder": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [
+        "auditor"
+      ],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "revoked"
+        },
+        "console": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              42
+            ],
+            "before": [
+              "ok",
+              42
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D08",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "auditor": "single",
+          "console": "cursor",
+          "feeder": "single",
+          "gateway": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "quotes",
+          "console": "quotes",
+          "feeder": "quotes",
+          "gateway": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 10,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 50,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F08_revoked_source",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 42,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D09": {
+      "change_id": "D09",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F09_ownership_conflict",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "balancer",
+          "feeder",
+          "importer"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "pipeline"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "feeder": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "feeder"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "importer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "importer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "breaking",
+          "feeder": "recheck",
+          "importer": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              141
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "CONFLICT",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              141
+            ],
+            "before": [
+              "ok",
+              141
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "UNKNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "importer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              141
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "pipeline": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D09",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "balancer": "single",
+          "feeder": "cursor",
+          "importer": "single",
+          "pipeline": "bystander"
+        },
+        "consumer_targets": {
+          "balancer": "quotes",
+          "feeder": "quotes",
+          "importer": "quotes",
+          "pipeline": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 20,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 200,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F09_ownership_conflict",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 141,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D10": {
+      "change_id": "D10",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/returns",
+        "service": "returns"
+      },
+      "family": "F10_ambiguous_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "auditor",
+        "balancer",
+        "feeder",
+        "pricing"
+      ],
+      "paths": {
+        "console": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "console"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "console": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "returns",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              40
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              40
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "console": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              40
+            ],
+            "before": [
+              "ok",
+              40
+            ],
+            "calls": [
+              [
+                "pricing",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "pricing": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "returns": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D10",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "balancer": "bystander",
+          "console": "single",
+          "feeder": "decoy"
+        },
+        "consumer_targets": {
+          "auditor": "returns",
+          "balancer": "returns",
+          "console": "returns",
+          "feeder": "pricing"
+        },
+        "decoy": "pricing",
+        "decoy_defaults": {
+          "/returns": 100
+        },
+        "defaults": {
+          "change": {
+            "/returns": 10,
+            "/returns/count": 100
+          },
+          "main": {
+            "/returns": 100,
+            "/returns/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F10_ambiguous_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 40,
+        "jira_intent": "ambiguous",
+        "operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "provider": "returns",
+        "unclassified": false
+      }
+    },
+    "D11": {
+      "change_id": "D11",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/leases",
+        "service": "leases"
+      },
+      "family": "F11_vague_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "console",
+        "importer"
+      ],
+      "paths": {
+        "auditor": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "auditor"
+          },
+          "method": "GET",
+          "provider": "leases",
+          "route": "/leases"
+        },
+        "notifier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "notifier"
+          },
+          "method": "GET",
+          "provider": "leases",
+          "route": "/leases"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "auditor": "recheck",
+          "notifier": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "leases",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              38
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "console": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              38
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "importer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              38
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "leases": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "leases",
+                "GET",
+                "/leases"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D11",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "consumer_kinds": {
+          "auditor": "cursor",
+          "console": "bystander",
+          "importer": "bystander",
+          "notifier": "single"
+        },
+        "consumer_targets": {
+          "auditor": "leases",
+          "console": "leases",
+          "importer": "leases",
+          "notifier": "leases"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/leases": 10,
+            "/leases/count": 100
+          },
+          "main": {
+            "/leases": 50,
+            "/leases/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F11_vague_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 38,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/leases",
+          "service": "leases"
+        },
+        "provider": "leases",
+        "unclassified": false
+      }
+    },
+    "D12": {
+      "change_id": "D12",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F12_unclassified_change",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "balancer",
+          "reviewer"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "notifier"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "reviewer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reviewer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "recheck",
+          "reviewer": "recheck"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              24
+            ],
+            "before": [
+              "ok",
+              24
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              24
+            ],
+            "before": [
+              "ok",
+              24
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              24
+            ],
+            "before": [
+              "ok",
+              24
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D12",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "balancer": "single",
+          "notifier": "bystander",
+          "reviewer": "cursor"
+        },
+        "consumer_targets": {
+          "balancer": "quotes",
+          "notifier": "quotes",
+          "reviewer": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 50,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 50,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F12_unclassified_change",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 24,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": true
+      }
+    },
+    "D13": {
+      "change_id": "D13",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F13_service_contract_unspecified",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "candidate"
+      },
+      "negatives": [
+        "notifier",
+        "syncer"
+      ],
+      "paths": {
+        "auditor": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "auditor"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "feeder": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "feeder"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "auditor": "breaking",
+          "feeder": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              79
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              79
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              79
+            ],
+            "before": [
+              "ok",
+              79
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "syncer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              79
+            ],
+            "before": [
+              "ok",
+              79
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D13",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "auditor": "single",
+          "feeder": "single",
+          "notifier": "bystander",
+          "syncer": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "quotes",
+          "feeder": "quotes",
+          "notifier": "quotes",
+          "syncer": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 10,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 100,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F13_service_contract_unspecified",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 79,
+        "jira_intent": "candidate",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D14": {
+      "change_id": "D14",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F01_truncation",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "balancer",
+          "feeder",
+          "gateway"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "auditor",
+        "pricing",
+        "reviewer",
+        "syncer"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "feeder": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "feeder"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "gateway": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "gateway"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "breaking",
+          "feeder": "recheck",
+          "gateway": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              151
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              151
+            ],
+            "before": [
+              "ok",
+              151
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              151
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "pricing": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "syncer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "pricing",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D14",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "balancer": "single",
+          "feeder": "explicit",
+          "gateway": "single",
+          "reviewer": "bystander",
+          "syncer": "decoy"
+        },
+        "consumer_targets": {
+          "auditor": "quotes",
+          "balancer": "quotes",
+          "feeder": "quotes",
+          "gateway": "quotes",
+          "reviewer": "quotes",
+          "syncer": "pricing"
+        },
+        "decoy": "pricing",
+        "decoy_defaults": {
+          "/quotes": 100
+        },
+        "defaults": {
+          "change": {
+            "/quotes": 10,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 200,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F01_truncation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 151,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D15": {
+      "change_id": "D15",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/returns",
+        "service": "returns"
+      },
+      "family": "F02_operation_removed",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "balancer"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "feeder",
+        "fleet",
+        "pipeline"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "returns",
+      "revoked": [],
+      "services": {
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              56
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              56
+            ],
+            "before": [
+              "ok",
+              56
+            ],
+            "calls": [
+              [
+                "fleet",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "fleet": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "pipeline": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              56
+            ],
+            "before": [
+              "ok",
+              56
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "returns": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D15",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "consumer_kinds": {
+          "balancer": "single",
+          "feeder": "decoy",
+          "pipeline": "bystander"
+        },
+        "consumer_targets": {
+          "balancer": "returns",
+          "feeder": "fleet",
+          "pipeline": "returns"
+        },
+        "decoy": "fleet",
+        "decoy_defaults": {
+          "/returns": 100
+        },
+        "defaults": {
+          "change": {
+            "/returns/count": 100
+          },
+          "main": {
+            "/returns": 200,
+            "/returns/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F02_operation_removed",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 56,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "provider": "returns",
+        "unclassified": false
+      }
+    },
+    "D16": {
+      "change_id": "D16",
+      "changed_operation": null,
+      "family": "F03_no_impact_noop",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "no_impact"
+      },
+      "negatives": [
+        "auditor",
+        "notifier",
+        "pipeline",
+        "reviewer"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "pipeline": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              112
+            ],
+            "before": [
+              "ok",
+              112
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              112
+            ],
+            "before": [
+              "ok",
+              112
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D16",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "notifier": "bystander",
+          "pipeline": "cursor",
+          "reviewer": "single"
+        },
+        "consumer_targets": {
+          "auditor": "quotes",
+          "notifier": "quotes",
+          "pipeline": "quotes",
+          "reviewer": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 200,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 200,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F03_no_impact_noop",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 112,
+        "jira_intent": "service_only",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D17": {
+      "change_id": "D17",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F05_runtime_only",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "reviewer",
+          "syncer"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "gateway",
+        "notifier"
+      ],
+      "paths": {
+        "reviewer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "reviewer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "syncer": {
+          "basis": "runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "reviewer": "breaking",
+          "syncer": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              38
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              38
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "syncer": {
+          "basis": "runtime",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              38
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D17",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "gateway": "bystander",
+          "notifier": "bystander",
+          "reviewer": "single",
+          "syncer": "runtime_env"
+        },
+        "consumer_targets": {
+          "gateway": "quotes",
+          "notifier": "quotes",
+          "reviewer": "quotes",
+          "syncer": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 25,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 50,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {
+          "syncer": {
+            "QUOTES_URL": "https://quotes.test"
+          }
+        },
+        "family": "F05_runtime_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 38,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D18": {
+      "change_id": "D18",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F07_stale_runtime",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "feeder",
+          "gateway"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "balancer"
+      ],
+      "paths": {
+        "feeder": {
+          "basis": "stale_runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "gateway": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "gateway"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "feeder": "breaking",
+          "gateway": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "quotes",
+      "revoked": [],
+      "services": {
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              87
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "stale_runtime",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              87
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D18",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "balancer": "bystander",
+          "feeder": "runtime_env",
+          "gateway": "single"
+        },
+        "consumer_targets": {
+          "balancer": "quotes",
+          "feeder": "quotes",
+          "gateway": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 10,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 100,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {
+          "feeder": {
+            "QUOTES_URL": "https://quotes.test"
+          }
+        },
+        "family": "F07_stale_runtime",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 87,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D19": {
+      "change_id": "D19",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/quotes",
+        "service": "quotes"
+      },
+      "family": "F08_revoked_source",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "balancer",
+          "console"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "auditor",
+        "reviewer"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        },
+        "console": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "console"
+          },
+          "method": "GET",
+          "provider": "quotes",
+          "route": "/quotes"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "recheck",
+          "console": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "quotes",
+      "revoked": [
+        "feeder"
+      ],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "console": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "revoked"
+        },
+        "quotes": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "reviewer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              31
+            ],
+            "before": [
+              "ok",
+              31
+            ],
+            "calls": [
+              [
+                "quotes",
+                "GET",
+                "/quotes/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D19",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "balancer": "cursor",
+          "console": "single",
+          "feeder": "single",
+          "reviewer": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "quotes",
+          "balancer": "quotes",
+          "console": "quotes",
+          "feeder": "quotes",
+          "reviewer": "quotes"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/quotes": 25,
+            "/quotes/count": 100
+          },
+          "main": {
+            "/quotes": 50,
+            "/quotes/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F08_revoked_source",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 31,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/quotes",
+          "service": "quotes"
+        },
+        "provider": "quotes",
+        "unclassified": false
+      }
+    },
+    "D20": {
+      "change_id": "D20",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/returns",
+        "service": "returns"
+      },
+      "family": "F09_ownership_conflict",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "auditor",
+          "gateway"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "importer"
+      ],
+      "paths": {
+        "auditor": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "auditor"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        },
+        "gateway": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "gateway"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "auditor": "recheck",
+          "gateway": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "returns",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "UNKNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "gateway": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "CONFLICT",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "importer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "returns": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D20",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "consumer_kinds": {
+          "auditor": "cursor",
+          "gateway": "single",
+          "importer": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "returns",
+          "gateway": "returns",
+          "importer": "returns"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/returns": 25,
+            "/returns/count": 100
+          },
+          "main": {
+            "/returns": 200,
+            "/returns/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F09_ownership_conflict",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 30,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "provider": "returns",
+        "unclassified": false
+      }
+    },
+    "D21": {
+      "change_id": "D21",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/returns",
+        "service": "returns"
+      },
+      "family": "F10_ambiguous_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "auditor",
+        "fleet",
+        "notifier",
+        "syncer"
+      ],
+      "paths": {
+        "balancer": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "balancer"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        },
+        "feeder": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "feeder"
+          },
+          "method": "GET",
+          "provider": "returns",
+          "route": "/returns"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "balancer": "recheck",
+          "feeder": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "returns",
+      "revoked": [],
+      "services": {
+        "auditor": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "balancer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              111
+            ],
+            "before": [
+              "ok",
+              111
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "feeder": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              111
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "fleet": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "notifier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "fleet",
+                "GET",
+                "/returns"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "returns": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        },
+        "syncer": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "returns",
+                "GET",
+                "/returns/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D21",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "consumer_kinds": {
+          "auditor": "bystander",
+          "balancer": "cursor",
+          "feeder": "single",
+          "notifier": "decoy",
+          "syncer": "bystander"
+        },
+        "consumer_targets": {
+          "auditor": "returns",
+          "balancer": "returns",
+          "feeder": "returns",
+          "notifier": "fleet",
+          "syncer": "returns"
+        },
+        "decoy": "fleet",
+        "decoy_defaults": {
+          "/returns": 100
+        },
+        "defaults": {
+          "change": {
+            "/returns": 20,
+            "/returns/count": 100
+          },
+          "main": {
+            "/returns": 200,
+            "/returns/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F10_ambiguous_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 111,
+        "jira_intent": "ambiguous",
+        "operation": {
+          "method": "GET",
+          "route": "/returns",
+          "service": "returns"
+        },
+        "provider": "returns",
+        "unclassified": false
+      }
+    }
+  },
+  "program": "6-r2",
+  "schema": "readiness-oracle-1",
+  "scope": "evaluator only; never passed to the service, the baseline, a model or its configuration",
+  "split": "development"
+}

@@ -1,4 +1,4 @@
-"""Batch 6: technical readiness and usefulness evaluation harness (program 6-r1).
+"""Batch 6: technical readiness and usefulness evaluation harness (programs 6-r1, 6-r2).
 
 Deterministic multi-service Git stands, one independent change (a Jira issue and
 its PR) each; an execution-grounded oracle that only the scorer reads; a runner

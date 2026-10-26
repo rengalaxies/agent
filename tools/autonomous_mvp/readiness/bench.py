@@ -1,6 +1,6 @@
 """One change on its own stand: Git repositories, local GitHub/Jira HTTP stands and the real service.
 
-The wiring is ``agent_service.smoke.SmokeBench`` generalised to any 6-r1
+The wiring is ``agent_service.smoke.SmokeBench`` generalised to any readiness
 change: the batch 2A core and batch 3 graph behind ``CoreAnalyzer``, the
 SQLite queue and worker, the FastAPI webhook receiver on 127.0.0.1, and the
 ``agent_service.stands`` HTTP stands. Git commits are written with the
@@ -31,9 +31,10 @@ from agent_service.queue import Limits, ServiceStore
 from agent_service.service import Service
 from agent_service.smoke import Receiver, load_stand_module, post
 from agent_service.stands import GitHubStand, JiraStand, sign
+from tools.autonomous_mvp.readiness import world
 
 RUNTIME_WINDOW_SECONDS = 3 * 86400  # long enough to read a two-day-old window, so staleness is visible
-CODE_VERSION = "readiness-6-r1"
+CODE_VERSION = f"readiness-{world.CURRENT}"
 
 
 # ---------------------------------------------------------------------------- Git

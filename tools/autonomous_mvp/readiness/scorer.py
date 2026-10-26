@@ -1,4 +1,4 @@
-"""Score 6-r1 ledgers against the evaluator-only oracle and the frozen thresholds.
+"""Score readiness ledgers against the evaluator-only oracle and the frozen thresholds of their revision.
 
 Units and denominators:
 
@@ -15,6 +15,19 @@ Units and denominators:
 
 A change that crashed or never published counts as a failure in every rate,
 never as a skipped item.
+
+A ledger is scored with the program, oracle and rules of the revision it names
+(``ledger["program"]``), so a 6-r1 ledger scores exactly as it did when 6-r1 was
+frozen. Rules a revision adds are read from its ``program.json`` ``scoring``:
+
+- ``pr_runtime_basis: candidate`` (6-r2): on the PR stage a consumer whose only
+  basis is runtime must be named with the changed operation and honest
+  freshness; its severity is not required, because no call site shows how it
+  reads the response. Such pairs leave the breaking-as-breaking denominator and
+  get their own rate (``severity.runtime_basis``);
+- an expected Jira outcome ``candidate`` (6-r2 F13): PARTIAL candidates or an
+  abstention are correct; USEFUL is a wrong confident answer; named bystanders
+  count in the Jira FP rate but do not make the stage wrong.
 """
 from __future__ import annotations
 
@@ -94,7 +107,8 @@ def observe_baseline(stage, provider):
 # ---------------------------------------------------------------------------- per stage
 
 
-def score_stage(observed, oracle, stage):
+def score_stage(observed, oracle, stage, rules=None):
+    runtime_candidates = stage == "pr" and (rules or {}).get("pr_runtime_basis") == "candidate"
     spec = oracle[stage]
     severities = oracle["pr"]["expected_consumers"]
     expected = {n: severities[n] for n in spec["expected_consumers"]} if stage == "jira" else dict(severities)
@@ -105,16 +119,20 @@ def score_stage(observed, oracle, stage):
                expected=len(expected), named=len(named), tp=0, fn=0, fp=0,
                fp_breaking=0, fp_recheck=0, missed_breaking=0, missed_recheck=0, under_severity=0, over_severity=0,
                path_correct=0, owner_checked=0, owner_correct=0, stale_named=0, stale_as_current=0,
-               leaks=0, wrong_confident=0, problems=[])
+               leaks=0, wrong_confident=0, runtime_pairs=0, runtime_named=0, problems=[])
     for consumer, severity in expected.items():
         seen = named.get(consumer)
+        runtime_only = runtime_candidates and oracle["paths"][consumer]["basis"] in ("runtime", "stale_runtime")
+        if runtime_only:
+            out["runtime_pairs"] += 1
+            out["runtime_named"] += seen is not None
         if seen is None:
             out["fn"] += 1
             out["missed_breaking" if severity == "breaking" else "missed_recheck"] += 1
             out["problems"].append(f"missed:{consumer}")
             continue
         out["tp"] += 1
-        if stage == "pr":
+        if stage == "pr" and not runtime_only:
             if severity == "breaking" and seen["severity"] != "breaking":
                 out["under_severity"] += 1
                 out["problems"].append(f"under_severity:{consumer}")
@@ -143,13 +161,14 @@ def score_stage(observed, oracle, stage):
         if service in negatives:
             out["fp"] += 1
             out["fp_breaking" if seen["severity"] == "breaking" else "fp_recheck"] += 1
-            out["problems"].append(f"false_positive:{service}")
+            if spec["expected_outcome"] != "candidate":
+                out["problems"].append(f"false_positive:{service}")
     for service in oracle["revoked"]:
         if service in named or re.search(rf"(?<![A-Za-z0-9_-]){re.escape(service)}(?![A-Za-z0-9_-])",
                                          observed["text"]):
             out["leaks"] += 1
             out["problems"].append(f"revoked_leak:{service}")
-    if observed["status"] == "USEFUL" and spec["expected_outcome"] in ("abstain", "no_impact"):
+    if observed["status"] == "USEFUL" and spec["expected_outcome"] in ("abstain", "no_impact", "candidate"):
         out["wrong_confident"] = 1
     if not out["outcome_ok"]:
         out["problems"].append(f"outcome:{observed['status']}!={spec['expected_outcome']}")
@@ -177,7 +196,7 @@ def stage_summary(stages):
         observed_outcomes=classes, expected_outcomes=dict(sorted(expected_classes.items())),
         failure=rate(classes["failure"], len(stages)),
         wrong_confident=rate(_sum(stages, "wrong_confident"),
-                             sum(s["expected_outcome"] in ("abstain", "no_impact") for s in stages)),
+                             sum(s["expected_outcome"] in ("abstain", "no_impact", "candidate") for s in stages)),
         consumer_recall=rate(_sum(stages, "tp"), _sum(stages, "expected")),
         path_correct=rate(_sum(stages, "path_correct"), _sum(stages, "expected")),
         false_positives=dict(count=_sum(stages, "fp"), breaking=_sum(stages, "fp_breaking"),
@@ -187,7 +206,7 @@ def stage_summary(stages):
         revoked_leaks=_sum(stages, "leaks"))
 
 
-def score(ledger, oracle, *, kind="service"):
+def score(ledger, oracle, *, kind="service", rules=None):
     observe = observe_service if kind == "service" else observe_baseline
     records = {r["change_id"]: r for r in ledger["records"]}
     missing = sorted(set(oracle) - set(records))
@@ -198,7 +217,7 @@ def score(ledger, oracle, *, kind="service"):
         record = records.get(cid) or {}
         row = dict(change_id=cid, family=o["family"], error=record.get("error") if record else "not_run")
         for stage in STAGES:
-            s = score_stage(observe(record.get(stage), o["provider"]), o, stage)
+            s = score_stage(observe(record.get(stage), o["provider"]), o, stage, rules)
             row[stage] = s
             stages[stage].append(s)
         pubs = [((record.get(stage) or {}).get("publication") or {}) for stage in STAGES] if kind == "service" else []
@@ -217,7 +236,13 @@ def score(ledger, oracle, *, kind="service"):
     out["error_count"] = len(out["errors"])
     out["useful_autonomous_lower95"] = (out["useful_autonomous"]["wilson95"] or [None])[0]
     pr = stages["pr"]
-    expected_pairs = {sev: sum(1 for o in oracle.values() for v in o["pr"]["expected_consumers"].values() if v == sev)
+    runtime_rule = (rules or {}).get("pr_runtime_basis") == "candidate"
+
+    def counted(o, name):
+        return not (runtime_rule and o["paths"][name]["basis"] in ("runtime", "stale_runtime"))
+
+    expected_pairs = {sev: sum(1 for o in oracle.values() for n, v in o["pr"]["expected_consumers"].items()
+                               if v == sev and counted(o, n))
                       for sev in ("breaking", "recheck")}
     out["severity"] = dict(
         breaking=dict(pairs=expected_pairs["breaking"],
@@ -227,6 +252,8 @@ def score(ledger, oracle, *, kind="service"):
         recheck=dict(pairs=expected_pairs["recheck"],
                      named=rate(expected_pairs["recheck"] - _sum(pr, "missed_recheck"), expected_pairs["recheck"]),
                      missed=_sum(pr, "missed_recheck"), over_severity=_sum(pr, "over_severity")),
+        runtime_basis=dict(pairs=_sum(pr, "runtime_pairs"),
+                           named=rate(_sum(pr, "runtime_named"), _sum(pr, "runtime_pairs"))) if runtime_rule else None,
         negatives=dict(pairs=negatives_total,
                        jira_fp=rate(_sum(stages["jira"], "fp"), negatives_total),
                        pr_fp=rate(_sum(pr, "fp"), negatives_total),
@@ -392,14 +419,18 @@ def main():
     ledger = json.loads(Path(args.ledger).read_text(encoding="utf-8"))
     if args.human_minutes:
         apply_human_minutes(ledger, json.loads(Path(args.human_minutes).read_text(encoding="utf-8")))
-    oracle = program_mod.load_oracle(ledger["split"])
-    _, program, _ = program_mod.load()
+    revision_dir = program_mod.program_dir(ledger["program"])
+    oracle = program_mod.load_oracle(ledger["split"], revision_dir)
+    _, program, _ = program_mod.load(revision_dir)
+    rules = program.get("scoring") or {}
     kind = "baseline" if ledger.get("configuration", "").startswith("baseline") else "service"
-    report = score(ledger, oracle, kind=kind)
+    report = score(ledger, oracle, kind=kind, rules=rules)
     base = None
     if args.baseline:
         bl = json.loads(Path(args.baseline).read_text(encoding="utf-8"))
-        base = score(bl, oracle, kind="baseline")
+        if bl.get("program") != ledger["program"] or bl.get("split") != ledger["split"]:
+            raise SystemExit("REFUSED baseline of another revision or split")
+        base = score(bl, oracle, kind="baseline", rules=rules)
         base["configuration_kind"] = bl.get("transport_kind")
     report["verdict"] = verdict(report, program["thresholds"], baseline=base) if kind == "service" else None
     if not args.full:

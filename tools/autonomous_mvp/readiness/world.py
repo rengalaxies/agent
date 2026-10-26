@@ -1,11 +1,11 @@
-"""Deterministic scenario worlds for program 6-r1: one independent change per world.
+"""Deterministic scenario worlds for the readiness programs: one independent change per world.
 
 A change is one Jira issue and the PR that implements it, on its own
 multi-service Git stand in the Orders/Reporting pattern (provider repository
 with a FastAPI declaration, consumer repositories with HTTP clients, a
 same-named decoy provider where the family needs one). Every world is drawn
-from ``random.Random("6-r1:<split>:<index>")``, so the same split and index
-always give the same bytes.
+from ``random.Random("<revision>:<split>:<index>")``, so the same revision,
+split and index always give the same bytes.
 
 Two outputs per change:
 
@@ -17,24 +17,25 @@ Two outputs per change:
   number of records on the fixture day, defaults per branch, the changed
   operation and how the Jira text names it.
 
-Development and held-out splits draw provider, consumer and Jira names from
-disjoint pools, so no repository content, task key or service name of the
-held-out split appears in the development split.
+Within a revision, development and held-out splits draw provider, consumer and
+Jira names from disjoint pools. Revision 6-r2 also uses names that appear in
+neither split of 6-r1, so its held-out set is new to everything tuned on 6-r1.
+6-r1 is historical: its configuration here regenerates its committed files
+byte for byte, and nothing about it changes.
 """
 from __future__ import annotations
 
 import random
 
-PROGRAM = "6-r1"
-SPLITS = ("development", "heldout")
-SIZES = {"development": 20, "heldout": 60}
 FIXTURE_DAY = "2026-10-01"
 ORG = "acme"
 INSTALLATION = "acme"
 ENVIRONMENT = "prod"
 RUNTIME_SOURCE = "access"
+SPLITS = ("development", "heldout")
+CURRENT = "6-r2"
 
-FAMILIES = (
+FAMILIES_6R1 = (
     "F01_truncation",
     "F02_operation_removed",
     "F03_no_impact_noop",
@@ -52,22 +53,70 @@ FAMILIES = (
 DEVELOPMENT_EXTRA = ("F01_truncation", "F02_operation_removed", "F03_no_impact_noop", "F05_runtime_only",
                      "F07_stale_runtime", "F08_revoked_source", "F09_ownership_conflict", "F10_ambiguous_jira")
 
-POOLS = {
-    "development": dict(
-        providers=[("orders", "/orders", "list_orders", "ORD"), ("invoices", "/invoices", "list_invoices", "INV"),
-                   ("shipments", "/shipments", "list_shipments", "SHP")],
-        decoys=["billing", "warehouse"],
-        consumers=["reporting", "archive", "ledger", "dashboard", "exporter", "analytics", "forecast", "audit",
-                   "mailer", "registry"],
-        first_issue=100),
-    "heldout": dict(
-        providers=[("tickets", "/tickets", "list_tickets", "TKT"), ("payments", "/payments", "list_payments", "PAY"),
-                   ("bookings", "/bookings", "list_bookings", "BKG"), ("parcels", "/parcels", "list_parcels", "PCL")],
-        decoys=["accounting", "depot", "treasury"],
-        consumers=["insights", "vault", "statements", "cockpit", "extractor", "metrics", "planner", "inspector",
-                   "courier", "catalog", "digest", "monitor", "tracker", "scheduler"],
-        first_issue=500),
+REVISIONS = {
+    "6-r1": dict(
+        families=FAMILIES_6R1, sizes={"development": 20, "heldout": 60}, development_extra=DEVELOPMENT_EXTRA,
+        jira_variants=False,
+        pools={
+            "development": dict(
+                providers=[("orders", "/orders", "list_orders", "ORD"),
+                           ("invoices", "/invoices", "list_invoices", "INV"),
+                           ("shipments", "/shipments", "list_shipments", "SHP")],
+                decoys=["billing", "warehouse"],
+                consumers=["reporting", "archive", "ledger", "dashboard", "exporter", "analytics", "forecast",
+                           "audit", "mailer", "registry"],
+                first_issue=100),
+            "heldout": dict(
+                providers=[("tickets", "/tickets", "list_tickets", "TKT"),
+                           ("payments", "/payments", "list_payments", "PAY"),
+                           ("bookings", "/bookings", "list_bookings", "BKG"),
+                           ("parcels", "/parcels", "list_parcels", "PCL")],
+                decoys=["accounting", "depot", "treasury"],
+                consumers=["insights", "vault", "statements", "cockpit", "extractor", "metrics", "planner",
+                           "inspector", "courier", "catalog", "digest", "monitor", "tracker", "scheduler"],
+                first_issue=500)}),
+    # 6-r2: the 6-r1 families plus F13 (a contract change of a named service without the operation),
+    # varied Jira wording for F03 and F13, and names disjoint from both 6-r1 splits.
+    "6-r2": dict(
+        families=FAMILIES_6R1 + ("F13_service_contract_unspecified",), sizes={"development": 21, "heldout": 65},
+        development_extra=DEVELOPMENT_EXTRA, jira_variants=True,
+        pools={
+            "development": dict(
+                providers=[("quotes", "/quotes", "list_quotes", "QTE"),
+                           ("returns", "/returns", "list_returns", "RTN"),
+                           ("leases", "/leases", "list_leases", "LSE")],
+                decoys=["fleet", "pricing"],
+                consumers=["gateway", "notifier", "syncer", "console", "feeder", "auditor", "reviewer", "pipeline",
+                           "importer", "balancer"],
+                first_issue=300),
+            "heldout": dict(
+                providers=[("claims", "/claims", "list_claims", "CLM"),
+                           ("rentals", "/rentals", "list_rentals", "RNT"),
+                           ("permits", "/permits", "list_permits", "PMT"),
+                           ("voyages", "/voyages", "list_voyages", "VOY")],
+                decoys=["registrar", "clearing", "harbor"],
+                consumers=["atlas", "beacon", "compass", "harvest", "lantern", "mosaic", "nimbus", "orbit", "prism",
+                           "quartz", "relay", "summit", "tundra", "vector"],
+                first_issue=700)}),
 }
+# The current revision, for callers that only ever mean it.
+PROGRAM = CURRENT
+FAMILIES = REVISIONS[CURRENT]["families"]
+SIZES = REVISIONS[CURRENT]["sizes"]
+POOLS = REVISIONS[CURRENT]["pools"]
+
+# 6-r2 Jira wording, (summary, description); {p} provider, {o}/{n} old/new page size. Written after
+# the intent fix by the same executor: they check these phrasings, not language coverage.
+NOOP_SERVICE_TEXTS = (
+    ("Обновить README сервиса {p}", "Описать локальный запуск и ссылку на runbook. Поведение API не меняется."),
+    ("{p}: дописать runbook", "Только документация, контракт и ответы остаются прежними."),
+    ("Исправить опечатки в документации {p}", "Код сервиса не трогаем."),
+)
+CANDIDATE_TEXTS = (
+    ("{p}: уменьшить размер страницы по умолчанию", "Отдавать по {n} записей вместо {o}."),
+    ("Сократить ответ {p} для дневной выгрузки", "Стандартный лимит {o} -> {n}."),
+    ("{p}: отдавать данные меньшими порциями", "Вместо {o} записей за раз отдавать {n}."),
+)
 
 PROVIDER_OP = '''
 
@@ -138,40 +187,43 @@ def base_url(service):
     return f"https://{service}.test"
 
 
-def readme(service, extra=""):
-    return f"# {service}\n\nService {service} of the 6-r1 stand.\n{extra}"
+def readme(service, extra="", revision=CURRENT):
+    return f"# {service}\n\nService {service} of the {revision} stand.\n{extra}"
 
 
-def provider_files(service, ops, *, readme_extra="", extra_files=None):
+def provider_files(service, ops, *, readme_extra="", extra_files=None, revision=CURRENT):
     """ops: [(route, function, default, extra)]; an empty list declares nothing."""
     text = PROVIDER_HEAD + "".join(
         PROVIDER_OP.format(route=route, function=function, default=default, reader="read_" + function.split("_", 1)[1],
                            extra=extra) for route, function, default, extra in ops)
-    files = {"api.py": text, "README.md": readme(service, readme_extra)}
+    files = {"api.py": text, "README.md": readme(service, readme_extra, revision)}
     files.update(extra_files or {})
     return files
 
 
-def consumer_files(service, kind, *, provider, route, env=None):
+def consumer_files(service, kind, *, provider, route, env=None, revision=CURRENT):
     code = TEMPLATES[kind].format(base=base_url(provider), route=route, env=env)
-    return {"client.py": code, "README.md": readme(service)}
+    return {"client.py": code, "README.md": readme(service, revision=revision)}
 
 
-def _family(split, index):
+def _family(split, index, revision=CURRENT):
+    config = REVISIONS[revision]
+    families = config["families"]
     if split == "heldout":
-        return FAMILIES[index % len(FAMILIES)]
-    return FAMILIES[index] if index < len(FAMILIES) else DEVELOPMENT_EXTRA[index - len(FAMILIES)]
+        return families[index % len(families)]
+    return families[index] if index < len(families) else config["development_extra"][index - len(families)]
 
 
 def change_id(split, index):
     return f"{'D' if split == 'development' else 'H'}{index + 1:02d}"
 
 
-def build(split, index):
-    """Return (change, facts) for one world. Deterministic in (split, index)."""
-    rng = random.Random(f"{PROGRAM}:{split}:{index}")
-    pool = POOLS[split]
-    family = _family(split, index)
+def build(split, index, revision=CURRENT):
+    """Return (change, facts) for one world. Deterministic in (revision, split, index)."""
+    config = REVISIONS[revision]
+    rng = random.Random(f"{revision}:{split}:{index}")
+    pool = config["pools"][split]
+    family = _family(split, index, revision)
     provider, route, function, project = rng.choice(pool["providers"])
     decoy = rng.choice(pool["decoys"])
     names = list(pool["consumers"])
@@ -232,6 +284,9 @@ def build(split, index):
             intent = "service_only"
             jira_summary = f"Обновить README сервиса {provider}"
             jira_description = "Описать локальный запуск и ссылку на runbook. Поведение API не меняется."
+            if config["jira_variants"]:
+                summary, description = rng.choice(NOOP_SERVICE_TEXTS)
+                jira_summary, jira_description = summary.format(p=provider), description
         else:
             intent = "vague"
             jira_summary = "Обновить документацию по запуску"
@@ -290,7 +345,15 @@ def build(split, index):
         provider_ops_change = [(route, function, old, ', status="active"')]
         jira_summary = f"Показывать в списке {provider} только активные записи"
         jira_description = f"{method} {route}: передавать фильтр status=active в хранилище."
-    else:  # pragma: no cover - FAMILIES is closed
+    elif family == "F13_service_contract_unspecified":
+        # As F01, but the Jira text names the provider and a contract change, not the operation.
+        take("single", rng.randint(1, 2))
+        take("cursor", rng.randint(0, 1))
+        intent = "candidate"
+        summary, description = rng.choice(CANDIDATE_TEXTS)
+        jira_summary = summary.format(p=provider, o=old, n=new)
+        jira_description = description.format(p=provider, o=old, n=new)
+    else:  # pragma: no cover - the families of a revision are closed
         raise ValueError(family)
     take("bystander", rng.randint(1, 2))
     provider_ops_main = provider_ops_main + [count_op]
@@ -298,19 +361,20 @@ def build(split, index):
 
     deployment_env = {}
     repositories = {provider: dict(service=provider, branches={
-        "main": dict(parent=None, files=provider_files(provider, provider_ops_main)),
+        "main": dict(parent=None, files=provider_files(provider, provider_ops_main, revision=revision)),
         "change": dict(parent="main", files=provider_files(provider, provider_ops_change,
                                                          readme_extra=readme_extra_change,
-                                                         extra_files=provider_extra_change))})}
+                                                         extra_files=provider_extra_change, revision=revision))})}
     if decoy_present:
         repositories[decoy] = dict(service=decoy, branches={"main": dict(parent=None, files=provider_files(
-            decoy, [(route, "list_" + decoy, 100, "")]))})
+            decoy, [(route, "list_" + decoy, 100, "")], revision=revision))})
     for service, kind, target in consumers:
         env = f"{target.upper()}_URL" if kind == "runtime_env" else None
         if env:
             deployment_env[service] = {env: base_url(target)}
         repositories[service] = dict(service=service, branches={"main": dict(parent=None, files=consumer_files(
-            service, kind, provider=target, route=count_op[0] if kind == "bystander" else route, env=env))})
+            service, kind, provider=target, route=count_op[0] if kind == "bystander" else route, env=env,
+            revision=revision))})
 
     services = sorted(repositories)
     owners = {s: f"team-{s}" for s in services}
@@ -324,7 +388,7 @@ def build(split, index):
 
     cid = change_id(split, index)
     change = dict(
-        schema="readiness-change-1", program=PROGRAM, change_id=cid, split=split, family=family,
+        schema="readiness-change-1", program=revision, change_id=cid, split=split, family=family,
         installation_id=INSTALLATION, environment=ENVIRONMENT, org=ORG,
         jira=dict(project=project, key=key, issue_id=10000 + issue_number, summary=jira_summary,
                   description=jira_description),
@@ -351,5 +415,5 @@ def build(split, index):
     return change, facts
 
 
-def changes(split):
-    return [build(split, i) for i in range(SIZES[split])]
+def changes(split, revision=CURRENT):
+    return [build(split, i, revision) for i in range(REVISIONS[revision]["sizes"][split])]

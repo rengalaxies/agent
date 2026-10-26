@@ -1,0 +1,131 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://permits.test",
+      "service": "permits"
+    },
+    {
+      "base_url": "https://registrar.test",
+      "service": "registrar"
+    }
+  ],
+  "change_id": "H28",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис permits больше не отдаёт GET /permits; эндпоинт удаляется.",
+    "issue_id": 10727,
+    "key": "PMT-727",
+    "project": "PMT",
+    "summary": "Удалить устаревший список permits"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "beacon": "team-beacon",
+      "compass": "team-compass",
+      "permits": "team-permits",
+      "prism": "team-prism",
+      "registrar": "team-registrar",
+      "relay": "team-relay"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 727,
+    "repository": "permits",
+    "title": "PMT-727 Удалить устаревший список permits"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "beacon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# beacon\n\nService beacon of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://registrar.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "beacon"
+    },
+    "compass": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# compass\n\nService compass of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/permits\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "compass"
+    },
+    "permits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "permits"
+    },
+    "prism": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# prism\n\nService prism of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "prism"
+    },
+    "registrar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registrar\n\nService registrar of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_registrar(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_registrar(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registrar"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

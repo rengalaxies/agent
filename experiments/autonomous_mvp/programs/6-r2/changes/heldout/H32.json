@@ -1,0 +1,133 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://permits.test",
+      "service": "permits"
+    }
+  ],
+  "change_id": "H32",
+  "environment": "prod",
+  "family": "F06_code_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /permits: default page_size 200 -> 25.",
+    "issue_id": 10731,
+    "key": "PMT-731",
+    "project": "PMT",
+    "summary": "Уменьшить стандартный размер страницы permits с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "harvest": "team-harvest",
+      "mosaic": "team-mosaic",
+      "permits": "team-permits",
+      "relay": "team-relay"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 731,
+    "repository": "permits",
+    "title": "PMT-731 Уменьшить стандартный размер страницы permits с 200 до 25"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "harvest": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harvest\n\nService harvest of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/permits\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harvest"
+    },
+    "mosaic": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mosaic\n\nService mosaic of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mosaic"
+    },
+    "permits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "permits"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "permits"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "harvest",
+            "method": "GET",
+            "route": "/permits",
+            "status": 200
+          },
+          {
+            "client": "harvest",
+            "method": "GET",
+            "route": "/permits",
+            "status": 200
+          },
+          {
+            "client": "harvest",
+            "method": "GET",
+            "route": "/permits",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

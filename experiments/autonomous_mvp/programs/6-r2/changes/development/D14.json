@@ -1,0 +1,157 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://quotes.test",
+      "service": "quotes"
+    },
+    {
+      "base_url": "https://pricing.test",
+      "service": "pricing"
+    }
+  ],
+  "change_id": "D14",
+  "environment": "prod",
+  "family": "F01_truncation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /quotes: default page_size 200 -> 10.",
+    "issue_id": 10313,
+    "key": "QTE-313",
+    "project": "QTE",
+    "summary": "Уменьшить стандартный размер страницы quotes с 200 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "auditor": "team-auditor",
+      "balancer": "team-balancer",
+      "feeder": "team-feeder",
+      "gateway": "team-gateway",
+      "pricing": "team-pricing",
+      "quotes": "team-quotes",
+      "reviewer": "team-reviewer",
+      "syncer": "team-syncer"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 313,
+    "repository": "quotes",
+    "title": "QTE-313 Уменьшить стандартный размер страницы quotes с 200 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "auditor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# auditor\n\nService auditor of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "auditor"
+    },
+    "balancer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# balancer\n\nService balancer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "balancer"
+    },
+    "feeder": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# feeder\n\nService feeder of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day, \"page_size\": 500}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "feeder"
+    },
+    "gateway": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# gateway\n\nService gateway of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "gateway"
+    },
+    "pricing": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pricing\n\nService pricing of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_pricing(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_pricing(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pricing"
+    },
+    "quotes": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quotes"
+    },
+    "reviewer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# reviewer\n\nService reviewer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "reviewer"
+    },
+    "syncer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# syncer\n\nService syncer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://pricing.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "syncer"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

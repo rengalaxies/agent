@@ -1,4 +1,7 @@
-"""Program 6-r1 corpus and oracle: reproducible, disjoint splits, grounded by execution."""
+"""Readiness corpus and oracle of the current revision: reproducible, disjoint, grounded by execution.
+
+6-r1 is historical: its files must stay byte-equal to what its manifest pinned.
+"""
 import copy
 import json
 import unittest
@@ -28,7 +31,7 @@ class CorpusShape(unittest.TestCase):
         self.assertTrue(current, f"manifest stale, recomputed {value}: run the program tool and commit")
 
     def test_sizes_and_every_family_in_both_splits(self):
-        self.assertEqual((len(split("development")), len(split("heldout"))), (20, 60))
+        self.assertEqual((len(split("development")), len(split("heldout"))), (21, 65))
         for name in world.SPLITS:
             self.assertEqual({c["family"] for c in split(name)}, set(world.FAMILIES), name)
         per_family = {f: sum(c["family"] == f for c in split("heldout")) for f in world.FAMILIES}
@@ -57,12 +60,12 @@ class CorpusShape(unittest.TestCase):
                 self.assertNotIn(word, text, path.name)
 
     def test_sample_size_numbers_in_program_are_the_wilson_half_widths(self):
-        stated = PROGRAM["sample_size"]["wilson95_half_width_at_n60"]
+        stated = PROGRAM["sample_size"]["wilson95_half_width_at_n65"]
         for key, value in stated.items():
             p = float(key[1:])
-            low, high = rate(round(p * 60), 60)["wilson95"]
-            self.assertAlmostEqual(value, (high - low) / 2, delta=0.0011, msg=key)
-        self.assertAlmostEqual(PROGRAM["sample_size"]["zero_event_upper95"]["n60"], rate(0, 60)["wilson95"][1],
+            low, high = rate(round(p * 65), 65)["wilson95"]
+            self.assertAlmostEqual(value, (high - low) / 2, delta=0.0031, msg=key)
+        self.assertAlmostEqual(PROGRAM["sample_size"]["zero_event_upper95"]["n65"], rate(0, 65)["wilson95"][1],
                                delta=0.0011)
 
 
@@ -129,7 +132,8 @@ class OracleGrounding(unittest.TestCase):
                  ("F03_no_impact_noop", "service_only", [], [], {}, ("no_impact", "no_impact")),
                  ("F05_runtime_only", "explicit", ["a", "b"], ["a", "b"], {"a": "code", "b": "runtime"},
                   ("partial", "partial")),
-                 ("F12_unclassified_change", "explicit", ["a"], ["a"], {"a": "code"}, ("answer", "partial"))]
+                 ("F12_unclassified_change", "explicit", ["a"], ["a"], {"a": "code"}, ("answer", "partial")),
+                 ("F13_service_contract_unspecified", "candidate", [], ["a"], {"a": "code"}, ("candidate", "answer"))]
         for family, intent, jira, pr, bases, expected in cases:
             self.assertEqual(oracle_mod.expected_outcomes(family, intent, jira, pr, bases), expected, family)
 
@@ -138,10 +142,61 @@ class WorldDeterminism(unittest.TestCase):
     def test_same_index_same_world_and_different_index_different_world(self):
         a, _ = world.build("heldout", 7)
         b, _ = world.build("heldout", 7)
-        c, _ = world.build("heldout", 19)  # same family, other draw
+        c, _ = world.build("heldout", 7 + len(world.FAMILIES))  # same family, other draw
         self.assertEqual(json.dumps(a, sort_keys=True), json.dumps(b, sort_keys=True))
         self.assertEqual(a["family"], c["family"])
         self.assertNotEqual(json.dumps(a, sort_keys=True), json.dumps(c, sort_keys=True))
+
+
+class HistoricalRevision(unittest.TestCase):
+    """6-r1 keeps its corpus, manifest, ledgers and FAIL; 6-r2 shares nothing a tuner could have seen."""
+
+    def test_6r1_files_and_ledgers_are_what_its_manifest_pinned(self):
+        report = program.historical("6-r1")
+        self.assertEqual(report["problems"], [])
+        self.assertEqual(report["manifest_digest"],
+                         "6140e378686837750109e0ac79b1287287a5775d7c9db21d4573d62e62dc50f7")
+        self.assertEqual(len(report["ledgers"]), 3)
+
+    def test_6r1_still_regenerates_byte_for_byte(self):
+        base = program.program_dir("6-r1")
+        for relative, text in generate.outputs("6-r1").items():
+            self.assertEqual((base / relative).read_bytes().replace(b"\r\n", b"\n"), text.encode("utf-8"), relative)
+
+    def test_6r2_shares_no_name_key_or_file_with_any_6r1_change(self):
+        _, _, old = program.load(program.program_dir("6-r1"))
+
+        def names(cases):
+            return {n for c in cases for n in c["repositories"]}
+
+        def blobs(cases):
+            return {text for c in cases for r in c["repositories"].values() for b in r["branches"].values()
+                    for text in b["files"].values()}
+
+        new = list(CHANGES.values())
+        self.assertFalse(names(new) & names(old.values()))
+        self.assertFalse({c["jira"]["key"] for c in new} & {c["jira"]["key"] for c in old.values()})
+        self.assertFalse(blobs(new) & blobs(old.values()))
+
+    def test_a_tampered_6r1_ledger_breaks_the_historical_check(self):
+        import shutil
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "6-r1"
+            shutil.copytree(program.program_dir("6-r1"), root)
+            path = root / "results" / "heldout-service-no-model.json"
+            ledger = json.loads(path.read_text(encoding="utf-8"))
+            ledger["manifest_digest"] = "0" * 64
+            path.write_text(json.dumps(ledger), encoding="utf-8")
+            original = program.program_dir
+            program.program_dir = lambda revision=None: root
+            try:
+                self.assertIn("ledger_not_bound_to_manifest:heldout-service-no-model.json",
+                              program.historical("6-r1")["problems"])
+            finally:
+                program.program_dir = original
 
 
 if __name__ == "__main__":

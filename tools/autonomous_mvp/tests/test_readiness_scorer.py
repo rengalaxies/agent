@@ -1,4 +1,4 @@
-"""6-r1 scorer: each kind of wrong output is counted on its own denominator, and nothing wrong is useful.
+"""Readiness scorer (current revision rules): each kind of wrong output is counted on its own denominator, and nothing wrong is useful.
 
 The ledgers here are built by hand in the runner's record shape: one that says
 exactly what the oracle says, then one deliberate error at a time.
@@ -10,6 +10,7 @@ from tools.autonomous_mvp.readiness import program, scorer
 
 ORACLE = program.load_oracle("development")
 _, PROGRAM, _ = program.load()
+RULES = PROGRAM["scoring"]
 
 
 def relationship(rid, consumer, o, freshness="CURRENT"):
@@ -21,15 +22,16 @@ def relationship(rid, consumer, o, freshness="CURRENT"):
 
 def ideal_stage(o, stage):
     expected = o["jira"]["expected_consumers"] if stage == "jira" else list(o["pr"]["expected_consumers"])
-    status = {"answer": "USEFUL", "partial": "PARTIAL", "abstain": "ABSTAINED", "no_impact": "ABSTAINED"}[
-        o[stage]["expected_outcome"]]
+    status = {"answer": "USEFUL", "partial": "PARTIAL", "abstain": "ABSTAINED", "no_impact": "ABSTAINED",
+              "candidate": "PARTIAL"}[o[stage]["expected_outcome"]]
     rels, affected, findings = [], [], []
     for i, consumer in enumerate(expected):
         fresh = "STALE" if o["paths"][consumer]["basis"] == "stale_runtime" else "CURRENT"
         rels.append(relationship(f"rel:{i}", consumer, o, fresh))
         affected.append(dict(service=consumer, owner_status=o["services"][consumer]["owner_status"], owner_teams=[],
                              relationship_refs=[f"rel:{i}"]))
-        if stage == "pr":
+        if stage == "pr" and o["paths"][consumer]["basis"] == "code":
+            # A runtime-only consumer has no call site: the service names it without a finding.
             severity = o["pr"]["expected_consumers"][consumer]
             callsite = dict(o["paths"][consumer]["callsite"] or dict(repository=consumer, path="client.py"))
             findings.append(dict(code="POSSIBLE_TRUNCATION" if severity == "breaking" else "RECHECK_REQUIRED",
@@ -55,14 +57,14 @@ def ledger(records):
                 records=records)
 
 
-def score(records):
-    return scorer.score(ledger(records), ORACLE)
+def score(records, rules=RULES):
+    return scorer.score(ledger(records), ORACLE, rules=rules)
 
 
 class IdealOutput(unittest.TestCase):
     def test_output_equal_to_the_oracle_is_useful_for_every_change(self):
         report = score([ideal_record(o) for o in ORACLE.values()])
-        self.assertEqual(report["useful_autonomous"]["numerator"], 20)
+        self.assertEqual(report["useful_autonomous"]["numerator"], len(ORACLE))
         self.assertEqual(report["severity"]["breaking"]["reported_breaking"]["value"], 1.0)
         self.assertEqual(report["severity"]["negatives"]["pr_fp"]["numerator"], 0)
         self.assertEqual(report["graph_freshness"]["reflected_after_one_reconcile"]["value"], 1.0)
@@ -90,7 +92,7 @@ class OneErrorAtATime(unittest.TestCase):
         stage["findings"] = [f for f in stage["findings"] if f["consumer"] != gone]
         report = self.rescore()
         self.assertEqual(report["severity"]["breaking"]["missed"], 1)
-        self.assertEqual(report["useful_autonomous"]["numerator"], 19)
+        self.assertEqual(report["useful_autonomous"]["numerator"], len(ORACLE) - 1)
 
     def test_a_breaking_consumer_reported_as_recheck_is_under_severity_not_a_miss(self):
         cid = self.pr_change("F01_truncation")
@@ -155,14 +157,14 @@ class OneErrorAtATime(unittest.TestCase):
         self.records[cid]["pr"]["publication"]["duplicate"] = True
         report = self.rescore()
         self.assertEqual(report["publication"]["duplicate"], 1)
-        self.assertEqual(report["useful_autonomous"]["numerator"], 19)
+        self.assertEqual(report["useful_autonomous"]["numerator"], len(ORACLE) - 1)
         self.assertEqual(scorer.verdict(report, PROGRAM["thresholds"])["gates"]["technical"], "FAIL")
 
     def test_a_change_that_never_ran_is_a_failure_in_every_rate(self):
         del self.records["D05"]
         report = self.rescore()
         self.assertEqual(report["not_run"], ["D05"])
-        self.assertEqual(report["useful_autonomous"]["denominator"], 20)
+        self.assertEqual(report["useful_autonomous"]["denominator"], len(ORACLE))
         self.assertEqual(report["stages"]["pr"]["observed_outcomes"]["failure"], 1)
         self.assertEqual(report["publication"]["lost"], 2)
 
@@ -171,7 +173,7 @@ class OneErrorAtATime(unittest.TestCase):
         merge = self.records[cid]["merge"]
         merge["active_operations"] = sorted(ORACLE[cid]["world"]["defaults"]["main"])
         report = self.rescore()
-        self.assertEqual(report["graph_freshness"]["reflected_after_one_reconcile"]["numerator"], 19)
+        self.assertEqual(report["graph_freshness"]["reflected_after_one_reconcile"]["numerator"], len(ORACLE) - 1)
 
 
 class HumanMinutes(unittest.TestCase):
@@ -182,7 +184,7 @@ class HumanMinutes(unittest.TestCase):
         data = scorer.apply_human_minutes(ledger(records), dict(recorded_by="operator", minutes={"D01": 3, "D02": 4}))
         report = scorer.score(data, ORACLE)
         self.assertEqual(report["human"]["active_minutes_recorded"], 2)
-        self.assertEqual(report["human"]["active_minutes_coverage"]["denominator"], 20)
+        self.assertEqual(report["human"]["active_minutes_coverage"]["denominator"], len(ORACLE))
         self.assertEqual(scorer.verdict(report, PROGRAM["thresholds"])["gates"]["human"], "FAIL")  # median 3 > 2
 
     def test_minutes_for_an_unknown_change_or_without_a_recorder_are_refused(self):
@@ -225,6 +227,57 @@ class Baseline(unittest.TestCase):
         live["useful_autonomous"]["value"] = 0.95
         rows = scorer.verdict(report, PROGRAM["thresholds"], baseline=live)["thresholds"]
         self.assertEqual(next(r for r in rows if r["gate"] == "comparison")["result"], "FAIL")
+
+
+class RevisionRules(unittest.TestCase):
+    """6-r2 rules for runtime-only PR consumers and candidate Jira stages; 6-r1 ledgers keep 6-r1 rules."""
+
+    def runtime_change(self):
+        return next(o for o in ORACLE.values() if any(p["basis"] == "runtime" for p in o["paths"].values()))
+
+    def score_with(self, record, rules=RULES):
+        records = [record if o["change_id"] == record["change_id"] else ideal_record(o) for o in ORACLE.values()]
+        return score(records, rules)
+
+    def test_runtime_only_consumer_named_without_a_finding_is_correct_under_6r2_rules(self):
+        o = self.runtime_change()
+        report = self.score_with(ideal_record(o))
+        row = next(r for r in report["per_change"] if r["change_id"] == o["change_id"])
+        self.assertEqual(row["pr"]["problems"], [])
+        self.assertEqual(report["severity"]["runtime_basis"]["named"]["value"], 1.0)
+
+    def test_the_same_output_is_under_severity_under_6r1_rules(self):
+        o = self.runtime_change()
+        report = self.score_with(ideal_record(o), rules={})
+        row = next(r for r in report["per_change"] if r["change_id"] == o["change_id"])
+        self.assertTrue(any(p.startswith("under_severity:") for p in row["pr"]["problems"]))
+        self.assertIsNone(report["severity"]["runtime_basis"])
+
+    def test_a_missed_runtime_only_consumer_fails_the_runtime_rate(self):
+        o = self.runtime_change()
+        record = ideal_record(o)
+        name = next(n for n, p in o["paths"].items() if p["basis"] == "runtime")
+        record["pr"]["result"]["affected"] = [a for a in record["pr"]["result"]["affected"] if a["service"] != name]
+        report = self.score_with(record)
+        self.assertLess(report["severity"]["runtime_basis"]["named"]["value"], 1.0)
+
+    def test_candidate_stage_answered_with_confidence_is_wrong_confident(self):
+        o = next(o for o in ORACLE.values() if o["jira"]["expected_outcome"] == "candidate")
+        record = ideal_record(o)
+        record["jira"]["result"]["status"] = "USEFUL"
+        report = self.score_with(record)
+        self.assertEqual(report["stages"]["jira"]["wrong_confident"]["numerator"], 1)
+
+    def test_candidate_stage_naming_a_bystander_counts_fp_but_stays_correct(self):
+        o = next(o for o in ORACLE.values() if o["jira"]["expected_outcome"] == "candidate")
+        record = ideal_record(o)
+        bystander = o["negatives"][0]
+        record["jira"]["result"]["affected"].append(dict(service=bystander, owner_status="KNOWN", owner_teams=[],
+                                                         relationship_refs=[]))
+        report = self.score_with(record)
+        row = next(r for r in report["per_change"] if r["change_id"] == o["change_id"])
+        self.assertEqual(row["jira"]["problems"], [])
+        self.assertEqual(report["severity"]["negatives"]["jira_fp"]["numerator"], 1)
 
 
 if __name__ == "__main__":

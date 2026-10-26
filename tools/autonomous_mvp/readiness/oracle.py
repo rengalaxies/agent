@@ -1,4 +1,4 @@
-"""Execution-grounded oracle for program 6-r1. Read by the scorer only.
+"""Execution-grounded oracle for the readiness programs. Read by the scorer only.
 
 Severity is not decided by the service, the static extractor or a model. Each
 consumer's ``load_day`` is executed twice against a recording fake of the
@@ -16,7 +16,9 @@ Consumers that read their base URL from deployment configuration run with that
 configuration (world facts), which no readable repository holds.
 
 Expected outcomes follow fixed rules (``expected_outcomes``), written down
-before any run and recorded in ``program.json``.
+before any run and recorded in ``program.json``. 6-r2 adds one rule: a Jira text
+that names the provider and a contract change but not the operation
+(``candidate``) may be answered only with candidates or an abstention.
 """
 from __future__ import annotations
 
@@ -30,7 +32,7 @@ from urllib.parse import urlsplit
 
 _LOCK = threading.Lock()
 ACCEPTABLE = {"answer": ["USEFUL"], "partial": ["PARTIAL", "USEFUL"], "abstain": ["ABSTAINED"],
-              "no_impact": ["ABSTAINED"]}
+              "no_impact": ["ABSTAINED"], "candidate": ["PARTIAL", "ABSTAINED"]}
 STALE_AFTER_MINUTES = 24 * 60  # FreshnessConfig.runtime_max_age_seconds of the graph query
 
 
@@ -114,6 +116,8 @@ def expected_outcomes(family, jira_intent, jira_consumers, pr_consumers, bases):
 
     if jira_intent in ("ambiguous", "vague"):
         jira = "abstain"  # the text does not identify the operation: naming consumers would be a guess
+    elif jira_intent == "candidate":
+        jira = "candidate"  # the provider and a contract change are named, the operation is not
     elif not jira_consumers:
         jira = "no_impact"
     elif weak(jira_consumers):
@@ -154,7 +158,7 @@ def build_oracle(change, facts):
         services[name] = entry
     expected = {n: s["severity"] for n, s in services.items()
                 if s["role"] == "consumer" and s["visibility"] == "granted" and s["severity"] != "none"}
-    jira_consumers = sorted(expected) if facts["jira_intent"] not in ("ambiguous", "vague") else []
+    jira_consumers = sorted(expected) if facts["jira_intent"] not in ("ambiguous", "vague", "candidate") else []
     # The Jira text names the changed operation (or only its service). Who may be affected is the
     # set of consumers that the change affects; a service-only mention of a no-op change affects nobody.
     jira_outcome, pr_outcome = expected_outcomes(facts["family"], facts["jira_intent"], jira_consumers,

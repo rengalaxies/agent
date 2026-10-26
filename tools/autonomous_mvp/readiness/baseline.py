@@ -1,4 +1,4 @@
-"""Baseline for 6-r1: an ordinary agent with search, same sources and rights as the service.
+"""Readiness baseline: an ordinary agent with search, same sources and rights as the service.
 
 Same sources: the Jira text, the PR title, changed files and diff, the same
 Git snapshots (every granted repository at its default branch, the provider at
@@ -311,7 +311,7 @@ def run_split(split, transport_name, *, out=None, base=None):
     current, digest = program_mod.status(base)
     path = Path(out) if out else runner.ledger_path(split, configuration, base=base)
     runner.guard(split, path, manifest_current=current)
-    ledger = dict(schema="readiness-ledger-1", program=world.PROGRAM, split=split, configuration=configuration,
+    ledger = dict(schema="readiness-ledger-1", program=world.CURRENT, split=split, configuration=configuration,
                   transport_kind=getattr(transport, "kind", "live"), protocol=fingerprint(),
                   manifest_digest=digest, manifest_current=current, source_sha=runner.source_sha(),
                   python=sys.version.split()[0], started_at=datetime.now(timezone.utc).isoformat(), records=[])

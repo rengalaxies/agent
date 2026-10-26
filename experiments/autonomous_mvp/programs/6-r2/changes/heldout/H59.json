@@ -1,0 +1,151 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://rentals.test",
+      "service": "rentals"
+    }
+  ],
+  "change_id": "H59",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /rentals: default page_size 50 -> 20.",
+    "issue_id": 10758,
+    "key": "RNT-758",
+    "project": "RNT",
+    "summary": "Уменьшить стандартный размер страницы rentals с 50 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "beacon": "team-beacon",
+      "orbit": "team-orbit",
+      "rentals": "team-rentals",
+      "tundra": "team-tundra"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 758,
+    "repository": "rentals",
+    "title": "RNT-758 Уменьшить стандартный размер страницы rentals с 50 до 20"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "beacon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# beacon\n\nService beacon of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "beacon"
+    },
+    "orbit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# orbit\n\nService orbit of the 6-r2 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"RENTALS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orbit"
+    },
+    "rentals": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "rentals"
+    },
+    "tundra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tundra\n\nService tundra of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tundra"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "rentals"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "beacon",
+            "method": "GET",
+            "route": "/rentals",
+            "status": 200
+          },
+          {
+            "client": "beacon",
+            "method": "GET",
+            "route": "/rentals",
+            "status": 200
+          },
+          {
+            "client": "beacon",
+            "method": "GET",
+            "route": "/rentals",
+            "status": 200
+          },
+          {
+            "client": "orbit",
+            "method": "GET",
+            "route": "/rentals",
+            "status": 200
+          },
+          {
+            "client": "orbit",
+            "method": "GET",
+            "route": "/rentals",
+            "status": 200
+          },
+          {
+            "client": "orbit",
+            "method": "GET",
+            "route": "/rentals",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}
