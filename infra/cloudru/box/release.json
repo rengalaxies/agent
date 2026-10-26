@@ -1,5 +1,5 @@
 {
-  "comment": "Release the box VM installs. Change only in a reviewed PR, after the archive is published as a GitHub release asset. The workflow downloads the URL and checks sha256 before any plan. The values below are the 5A local build of c8df16b; that archive is NOT published yet, so the check fails until the owner publishes a CI-built archive and updates all three fields.",
+  "comment": "Release the box VM installs. Changed only by a reviewed PR after .github/workflows/agent-service-release.yml published the archive of an accepted main commit and verified the downloaded asset; copy name, sha256 and url from that run's summary. The workflow downloads the URL and checks sha256 before any plan. The values below are the 5A local build of c8df16b, which was never published: plan fails here until the pin is replaced.",
   "name": "agent-service-0.1.0-gc8df16bd1112-linux-x86_64-cp312",
   "sha256": "c0273146f3622c0c8d1b77c95f9605ff68686921b24dbbfae359cb113dc8c411",
   "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-gc8df16bd1112/agent-service-0.1.0-gc8df16bd1112-linux-x86_64-cp312.tar.gz"
