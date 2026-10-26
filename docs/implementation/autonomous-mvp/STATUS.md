@@ -44,6 +44,33 @@ API читается без токена, но ограничен 60 запро�
   (`fcntl` в `store.py`, `O_NOFOLLOW`/`dir_fd` в `sources.py`). Отчёт серии
   22.10 уже отмечал это для `Store`.
 
+## Сводка на 26.10.2026
+
+PR #61 слит владельческим разрешением: merge `c64c949e2c3558cbfea0c62922d141355d6684c9`, его
+дерево равно проверенной голове `2bfcb78`, на `main` после merge прошёл workflow lint; core,
+box и configuration запускаются только на pull request и были зелёными на этой голове.
+Реестр: [PR-REGISTER.md](PR-REGISTER.md).
+
+Доступ исполнителя: аккаунт `swan-Dive`, право `write`, `gh` с scopes `repo, workflow`.
+`main` без branch protection и rulesets. Среды `cloudru-box-production` и `cloudru-box-review`
+созданы владельцем: required reviewers `rengalaxies` и `swan-Dive`, только `main`,
+`prevent_self_review` выключен, `can_admins_bypass` включён. Исполнитель не одобряет
+развёртывания, которые запустил сам; самоодобрение для `autonomous-mvp-live` к тому же
+заблокировано политикой исполнителя.
+
+| Что | Где | Состояние |
+|---|---|---|
+| Два дефекта продукта из 6-r1 | [#64](https://github.com/rengalaxies/agent/pull/64) | исправлены в `src/agent_service`, регрессии и negative controls; `tests/service` 118 OK (Windows); CI box и core зелёные на `2b096ad`; fingerprint 2Б не изменился (`8d1c1afc`) |
+| Ревизия 6-r2 | [#63](https://github.com/rengalaxies/agent/pull/63) | заморожена `cbf0e71`, manifest `45f49527`; held-out 65/65, technical и quality PASS без модели; 6-r1 сохранена с FAIL (`batch-6.md`) |
+| 5Б: plan без записи state, публикация релиза | [#62](https://github.com/rengalaxies/agent/pull/62) | recovery только в одобренном apply, `agent-service-release.yml`, сверка квот, инвентаризации и тарифов 261014 (`batch-5b.md`) |
+| Серия 2Б | `autonomous-mvp-model.yml` | не выполнена. Transport на `c64c949` (run 40220149802) ждал одобрения среды и отменён до старта: серия требует неподвижной `main`, а #62–#64 ещё сливаются. Учётных веток нет. Серия пойдёт на итоговой `main` |
+| Облако | Cloud.ru | ничего не создано; read-only discovery 40266720846: место под 1 IP и 2 vCPU есть |
+
+Порядок дальше: слить #64, затем #63 (содержит #64), затем #62 → итоговая `main` →
+серия 2Б transport → development → evaluation-1/2/3 → report с одобрением каждой фазы
+владельцем → при QUALIFIED конфигурация `service-model` 6-r2 → публикация релиза и pin →
+`lock-test` → `plan` → одобрение конкретного apply.
+
 ## Сводка на 25.10.2026, вечер
 
 Стек #56–#60 слит в `main` (`0f0dc02`, реестр в [PR-REGISTER.md](PR-REGISTER.md)).
