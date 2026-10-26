@@ -105,14 +105,17 @@ class RecoveryCopyWithTerraform(unittest.TestCase):
             config.mkdir()
             (config / "main.tf").write_text(self.CONFIG, encoding="utf-8")
             (tmp / "recovery.txt").write_text("terraform_data.nic\n", encoding="utf-8")
-            untaint = own.untaint_candidates
-            own.untaint_candidates = lambda state, box_id, project=None: ["terraform_data.nic"]
+            # The box guards (resource types, names, project) have their own tests; here only the
+            # Terraform mechanics of the copy are under test, on a builtin resource.
+            saved = own.state_records, own.untaint_candidates
+            own.state_records = lambda state: []
+            own.untaint_candidates = lambda records, box_id, project=None: ["terraform_data.nic"]
             try:
                 code = boxctl.main(["recovery-copy", "--box-id", "pilot1", "--dir", str(config),
                                     "--state", str(seed / "terraform.tfstate"),
                                     "--recovery", str(tmp / "recovery.txt"), "--out", str(tmp / "copy")])
             finally:
-                own.untaint_candidates = untaint
+                own.state_records, own.untaint_candidates = saved
             self.assertEqual(code, 0)
             plan = subprocess.run(["terraform", "plan", "-input=false", "-lock=false", "-detailed-exitcode"],
                                   cwd=tmp / "copy", capture_output=True, text=True)
