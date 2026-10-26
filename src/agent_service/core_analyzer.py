@@ -29,7 +29,7 @@ from agent_graph.contracts import GraphError, Policy
 from agent_graph.output_contracts import dump_document, parse_document
 
 from .analysis import AnalysisUnavailable
-from .intent import match_operations
+from .intent import match_intent
 from .jira_impact import jira_result
 from .qualification import check
 from .runtime_impact import add_runtime_candidates
@@ -212,10 +212,10 @@ class CoreAnalyzer:
                                                        superseded_by="newer-generation", **meta))
                 query = self.query()
                 texts = list(req.jira.text_fields.values())
-                operation_ids, reason = match_operations(GraphOperations(query).operations(), texts)
-                impacts = [query.impact(op, depth=2, limit=50) for op in operation_ids]
+                intent = match_intent(GraphOperations(query).operations(), texts)
+                impacts = [query.impact(op, depth=2, limit=50) for op in intent.operation_ids]
                 investigation = self._investigate(context["id"], cancelled, deadline_epoch)
-                result = jira_result(req, query, impacts, context=context, intent_reason=reason,
+                result = jira_result(req, query, impacts, context=context, intent=intent,
                                      investigation=investigation,
                                      code_version=self.code_version, constitution_version=self.constitution_version,
                                      started_at=started, seconds=time.monotonic() - clock)

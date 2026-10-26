@@ -22,9 +22,10 @@ class IntentTest(unittest.TestCase):
         # "/orders" must not count as naming the service orders.
         self.assertEqual(match_operations([ORDERS, BILLING], ["Change GET /orders/ paging"])[1], "ambiguous_route")
 
-    def test_service_name_without_route_selects_its_operations(self):
+    def test_service_name_without_contract_wording_selects_no_operation(self):
+        # Until 6-r1 a bare service name selected all its operations (batch-6.md, defect 2); see test_intent.
         self.assertEqual(match_operations([ORDERS, BILLING, INVOICES], ["Billing totals are wrong"]),
-                         (["op-billing", "op-invoices"], "service"))
+                         ([], "service_only"))
 
     def test_no_mention_is_unclear_intent(self):
         self.assertEqual(match_operations([ORDERS], ["Speed up the dashboard"]), ([], "no_mention"))

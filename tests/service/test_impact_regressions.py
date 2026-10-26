@@ -1,8 +1,10 @@
-"""Regressions for the service defects the 6-r1 held-out run found (batch-6.md).
+"""Regressions for the two service defects the 6-r1 held-out run found (batch-6.md).
 
 1. A PR result was built from the static diff only: a consumer of the changed operation
    that only fresh access logs show (6-r1 F05/F07) disappeared from the PR, and with no
    code consumer the PR even said ABSTAINED no_consumer_found_within_profile.
+2. A Jira task that names only a service was answered USEFUL with every consumer of every
+   operation of that service (6-r1 F03 with the service named).
 
 Each runs the real core, graph and Git stand of Orders/Reporting through the service.
 """
@@ -158,6 +160,38 @@ class ForeignEnvironmentSourceTest(Bench):
 
     def test_records_of_another_environment_add_no_consumer(self):
         self.assertNotIn("ledger", named(self.pr_result()))
+
+
+class ServiceOnlyJiraTest(Bench):
+    records = []
+
+    def test_service_named_and_api_stated_unchanged_abstains_and_names_no_consumer(self):
+        result = self.jira_result("Обновить README сервиса orders",
+                                  "Описать локальный запуск и ссылку на runbook. Поведение API не меняется.")
+        self.assertEqual((result["status"], result["reason_code"]), ("ABSTAINED", "out_of_scope"))
+        self.assertEqual(result["affected"], [])
+        self.assertIn("orders", result["summary"])
+        [text] = self.bench.jira_texts()
+        self.assertNotIn("reporting", _section(text, "Что может затронуть", "Почему"))
+
+    def test_contract_change_named_without_an_operation_is_partial_with_hypotheses_only(self):
+        # billing declares GET /orders too; naming orders keeps billing's consumers out.
+        result = self.jira_result("orders: поменять формат ответа", "Новый формат дат в ответе.")
+        self.assertEqual(result["status"], "PARTIAL")
+        self.assertEqual(named(result), {"reporting", "archive"})
+        self.assertNotIn("audit", named(result))
+        self.assertEqual(result["reason_code"], "hypotheses_only")
+
+    def test_route_named_task_keeps_its_preliminary_answer(self):
+        result = self.jira_result("Уменьшить стандартный размер страницы Orders со 100 до 20",
+                                  "GET /orders: default page_size 100 -> 20.")
+        self.assertEqual((result["status"], result["reason_code"]), ("USEFUL", "preliminary_impact_found"))
+        self.assertEqual(named(result), {"reporting", "archive"})
+
+    def test_service_wide_contract_change_is_an_answer_for_every_operation(self):
+        result = self.jira_result("orders: перевести все эндпоинты на курсорную пагинацию", "")
+        self.assertEqual(result["status"], "USEFUL")
+        self.assertEqual(named(result), {"reporting", "archive"})
 
 
 if __name__ == "__main__":
