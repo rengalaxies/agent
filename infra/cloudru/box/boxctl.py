@@ -185,6 +185,50 @@ def cmd_recover(a) -> int:
     return 0
 
 
+RECOVERY_OVERRIDE = """terraform {
+  backend "local" {
+    path = "recovery.tfstate"
+  }
+}
+"""
+
+
+def read_addresses(path: str | None) -> list[str]:
+    if not path or not Path(path).exists():
+        return []
+    return [line.strip() for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def cmd_recovery_copy(a) -> int:
+    """A local copy of the configuration and the pulled state with the proposed recovery applied.
+
+    The review plan runs here, so a plan never writes the real state: the untaint of the
+    proposed addresses touches only ``recovery.tfstate`` in ``--out``. The backend is
+    replaced by an override file in the copy; the original directory is not changed.
+    """
+    if not a.out:
+        raise own.ScopeError("--out is required")
+    src, out = Path(a.dir).resolve(), Path(a.out).resolve()
+    if out == src or src in out.parents:
+        raise own.ScopeError("recovery copy must be outside the configuration directory")
+    allowed = set(own.untaint_candidates(own.state_records(read_json(a.state, missing_ok=True)), a.box_id))
+    addresses = read_addresses(a.recovery)
+    if not set(addresses) <= allowed:
+        raise own.ScopeError("recovery address is not an untaint candidate of this box")
+    shutil.rmtree(out, ignore_errors=True)
+    shutil.copytree(src, out, ignore=shutil.ignore_patterns("terraform.tfstate", "*.tfplan", "recovery.tfstate"))
+    (out / "recovery_override.tf").write_text(RECOVERY_OVERRIDE, encoding="utf-8", newline="\n")
+    state = Path(a.state) if a.state else None
+    if state and state.exists() and state.stat().st_size:
+        shutil.copyfile(state, out / "recovery.tfstate")
+    terraform(["init", "-reconfigure", "-input=false", "-no-color"], out)
+    for address in addresses:
+        terraform(["untaint", "-lock=false", address], out)
+    print(f"recovery copy: {len(addresses)} address(es) untainted in {out.name}/recovery.tfstate; "
+          "the remote state is not written")
+    return 0
+
+
 def cmd_adopt(a) -> int:
     live, _ = own.live_inventory(read_json(a.inventory))
     report = own.classify(live, own.state_records(read_json(a.state, missing_ok=True)), a.box_id)
@@ -204,7 +248,8 @@ def cmd_guard(a) -> int:
     problems = own.guard_plan(plan, a.mode, a.box_id, state, adopt_ids=adopt_ids)
     if a.mode == "apply":
         problems += own.check_ttl(a.expires_on, dt.date.fromisoformat(a.today) if a.today else dt.date.today())
-    projection = own.plan_projection(plan, key=digest_key(), commit=a.commit, box_id=a.box_id, mode=a.mode)
+    projection = own.plan_projection(plan, key=digest_key(), commit=a.commit, box_id=a.box_id, mode=a.mode,
+                                     recovery=read_addresses(a.recovery))
     value = own.digest(projection)
     write_json(a.projection, projection)
     counts: dict[str, int] = {}
@@ -387,15 +432,16 @@ def main(argv=None) -> int:
         p.add_argument("--box-id", required=True)
         for arg in args:
             p.add_argument("--" + arg, required=arg not in ("state", "out", "expect-digest", "adopt", "today",
-                                                             "ledger", "expires-on"))
+                                                             "ledger", "expires-on", "recovery"))
         return p
 
     command("init", cmd_init, "dir")
     command("classify", cmd_classify, "inventory", "state", "subnet", "adopt", "out")
     command("recover", cmd_recover, "state")
+    command("recovery-copy", cmd_recovery_copy, "dir", "state", "recovery", "out")
     command("adopt", cmd_adopt, "inventory", "state", "adopt", "out")
     g = command("guard", cmd_guard, "plan", "state", "commit", "projection", "expect-digest", "adopt",
-                "expires-on", "today")
+                "expires-on", "today", "recovery")
     g.add_argument("--mode", choices=["apply", "destroy"], required=True)
     command("status", cmd_status, "inventory", "state", "today", "out")
     command("cleanup-check", cmd_cleanup_check, "plan", "state", "ledger", "inventory", "out")

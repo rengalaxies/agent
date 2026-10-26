@@ -1,7 +1,8 @@
 name: Cloud.ru service box (protected)
 # Batch 5B. One VM for the agent-service box in project 20853297-65b7-42a8-af40-25c8d2df4e11.
 # Manual dispatch only: no push, schedule or automatic destroy.
-#   plan / destroy-plan  read inventory and state, print the redacted plan and its digest
+#   plan / destroy-plan  read inventory and state, print the redacted plan and its digest; never write
+#                        state: a proposed recovery (untaint) is planned on a local copy and reviewed
 #   apply / destroy      environment cloudru-box-production (required reviewer); re-plan from
 #                        the same main commit and apply only if the digest equals the reviewed one
 #   status               owned resources, drift, orphans, TTL
@@ -218,15 +219,16 @@ jobs:
           python3 boxctl.py status --box-id "$BOX_ID" --inventory "$RUNNER_TEMP/inventory.json" --state "$RUNNER_TEMP/state.json" --out "$RUNNER_TEMP/status.json" || STATUS_RC=$?
           { echo "## Box status"; echo '```json'; cat "$RUNNER_TEMP/status.json"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           exit "${STATUS_RC:-0}"
-      - name: Recover an interrupted provisioning and adopt orphans
+      - name: Propose state recovery and adoption (reads state, writes nothing to it)
         if: inputs.operation == 'plan' || inputs.operation == 'apply'
         working-directory: ${{ env.BOX_DIR }}
         run: |
-          for address in $(python3 boxctl.py recover --box-id "$BOX_ID" --state "$RUNNER_TEMP/state.json"); do
-            echo "untaint $address (created, marked tainted by the provider)"
-            terraform untaint -lock-timeout=60s "$address"
-          done
-          terraform state pull > "$RUNNER_TEMP/state.json"
+          # Interfaces the provider marked tainted although they were created. Plan only proposes
+          # untainting them; the approved apply writes it to state (see the apply-only step below).
+          python3 boxctl.py recover --box-id "$BOX_ID" --state "$RUNNER_TEMP/state.json" > "$RUNNER_TEMP/recovery.txt"
+          if [ -s "$RUNNER_TEMP/recovery.txt" ]; then
+            { echo "## Proposed state recovery (written only by an approved apply)"; sed 's/^/- untaint /' "$RUNNER_TEMP/recovery.txt"; } >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -n "$ADOPT" ]; then
             python3 boxctl.py adopt --box-id "$BOX_ID" --inventory "$RUNNER_TEMP/inventory.json" --state "$RUNNER_TEMP/state.json" \
               --adopt "$ADOPT" --out imports_adopted.tf
@@ -243,27 +245,38 @@ jobs:
           DIGEST: ${{ inputs.reviewed_plan_digest }}
         run: |
           export TF_VAR_box_id="$BOX_ID" TF_VAR_commit="$GITHUB_SHA"
-          MODE=apply; DESTROY=""
-          case "$OPERATION" in destroy-plan|destroy) MODE=destroy; DESTROY="-destroy";; esac
+          MODE=apply
+          PLAN_ARGS=(-input=false -no-color)
+          case "$OPERATION" in destroy-plan|destroy) MODE=destroy; PLAN_ARGS+=(-destroy);; esac
           if [ "$MODE" = destroy ]; then
             # Destroy evaluates the same variables; take TTL and release from the state record.
             EXPIRES=$(jq -r '.outputs.ownership.value.expires_on // "2099-01-01"' "$RUNNER_TEMP/state.json")
             export TF_VAR_expires_on="$EXPIRES"
             export TF_VAR_release_url="https://github.com/rengalaxies/agent/releases/download/destroy/none.tar.gz"
-            export TF_VAR_release_sha256="$(printf '0%.0s' $(seq 64))" TF_VAR_release_name="agent-service-0-g000000000000-linux-x86_64-cp312"
+            TF_VAR_release_sha256=$(printf '0%.0s' {1..64})
+            export TF_VAR_release_sha256 TF_VAR_release_name="agent-service-0-g000000000000-linux-x86_64-cp312"
             export TF_VAR_ssh_public_key="${TF_VAR_ssh_public_key:-ssh-ed25519 destroy-only}"
+            # A destroy plan writes nothing; it reads the real state under its lock.
+            PLAN_DIR=.; PLAN_ARGS+=(-lock-timeout=60s); RECOVERY=""
+            cp "$RUNNER_TEMP/state.json" "$RUNNER_TEMP/plan-state.json"
           else
             export TF_VAR_expires_on="$INPUT_EXPIRES"
+            # The reviewed plan runs on a local copy of the state with the proposed recovery applied,
+            # so plan never writes the real state and the digest covers the recovery too.
+            python3 boxctl.py recovery-copy --box-id "$BOX_ID" --dir . --state "$RUNNER_TEMP/state.json" \
+              --recovery "$RUNNER_TEMP/recovery.txt" --out "$RUNNER_TEMP/recovered"
+            PLAN_DIR="$RUNNER_TEMP/recovered"; PLAN_ARGS+=(-lock=false); RECOVERY="$RUNNER_TEMP/recovery.txt"
+            terraform -chdir="$PLAN_DIR" state pull > "$RUNNER_TEMP/plan-state.json"
           fi
-          terraform validate -no-color
-          terraform plan $DESTROY -input=false -no-color -lock-timeout=60s -out="$RUNNER_TEMP/box.tfplan" > "$RUNNER_TEMP/plan.log" \
+          terraform -chdir="$PLAN_DIR" validate -no-color
+          terraform -chdir="$PLAN_DIR" plan "${PLAN_ARGS[@]}" -out="$RUNNER_TEMP/box.tfplan" > "$RUNNER_TEMP/plan.log" \
             || { grep -E '^(Error|│ Error)' "$RUNNER_TEMP/plan.log" | head -20; exit 1; }
-          terraform show -json "$RUNNER_TEMP/box.tfplan" | jq 'del(.variables, .configuration, .prior_state)' > "$RUNNER_TEMP/plan.json"
+          terraform -chdir="$PLAN_DIR" show -json "$RUNNER_TEMP/box.tfplan" | jq 'del(.variables, .configuration, .prior_state)' > "$RUNNER_TEMP/plan.json"
           EXPECT=""
           if [ "$OPERATION" = apply ] || [ "$OPERATION" = destroy ]; then EXPECT="$DIGEST"; fi
-          python3 boxctl.py guard --box-id "$BOX_ID" --mode "$MODE" --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/state.json" \
+          python3 boxctl.py guard --box-id "$BOX_ID" --mode "$MODE" --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/plan-state.json" \
             --commit "$GITHUB_SHA" --projection "$RUNNER_TEMP/projection.json" --expect-digest "$EXPECT" --adopt "$ADOPT" \
-            --expires-on "$TF_VAR_expires_on" | tee "$RUNNER_TEMP/guard.txt"
+            --expires-on "$TF_VAR_expires_on" --recovery "$RECOVERY" | tee "$RUNNER_TEMP/guard.txt"
           if [ "$MODE" = destroy ]; then
             python3 boxctl.py ledger-get --box-id "$BOX_ID" --out "$RUNNER_TEMP/ledger.json"
             python3 boxctl.py cleanup-check --box-id "$BOX_ID" --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/state.json" \
@@ -271,10 +284,37 @@ jobs:
           fi
           {
             echo "## Box $OPERATION on $GITHUB_SHA"
-            echo "$(cat "$RUNNER_TEMP/guard.txt")"
-            echo "Review the redacted changes below. To apply, dispatch the matching apply/destroy on main with this digest."
-            echo '```json'; jq '.changes' "$RUNNER_TEMP/projection.json"; echo '```'
+            cat "$RUNNER_TEMP/guard.txt"
+            echo "Review the redacted changes and the recovery list below. To apply, dispatch the matching apply/destroy on main with this digest."
+            echo '```json'; jq '{recovery, changes}' "$RUNNER_TEMP/projection.json"; echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+          rm -f "$RUNNER_TEMP/plan.json"
+      - name: Write the reviewed recovery to state and re-plan against it (approved apply only)
+        if: inputs.operation == 'apply'
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+          TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr }}
+          INPUT_EXPIRES: ${{ inputs.expires_on }}
+          DIGEST: ${{ inputs.reviewed_plan_digest }}
+        run: |
+          # The previous step already proved that the digest of the recovered copy equals the reviewed one.
+          export TF_VAR_box_id="$BOX_ID" TF_VAR_commit="$GITHUB_SHA" TF_VAR_expires_on="$INPUT_EXPIRES"
+          while read -r address; do
+            [ -n "$address" ] || continue
+            echo "untaint $address (in reviewed digest $DIGEST)"
+            terraform untaint -lock-timeout=60s "$address"
+          done < "$RUNNER_TEMP/recovery.txt"
+          terraform state pull > "$RUNNER_TEMP/state.json"
+          # The plan that is applied must use the real backend; it must equal the reviewed one again.
+          terraform plan -input=false -no-color -lock-timeout=60s -out="$RUNNER_TEMP/box.tfplan" > "$RUNNER_TEMP/plan.log" \
+            || { grep -E '^(Error|│ Error)' "$RUNNER_TEMP/plan.log" | head -20; exit 1; }
+          terraform show -json "$RUNNER_TEMP/box.tfplan" | jq 'del(.variables, .configuration, .prior_state)' > "$RUNNER_TEMP/plan.json"
+          python3 boxctl.py guard --box-id "$BOX_ID" --mode apply --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/state.json" \
+            --commit "$GITHUB_SHA" --projection "$RUNNER_TEMP/projection.json" --expect-digest "$DIGEST" --adopt "$ADOPT" \
+            --expires-on "$TF_VAR_expires_on" --recovery "$RUNNER_TEMP/recovery.txt"
           rm -f "$RUNNER_TEMP/plan.json"
       - name: Upload redacted plan projection
         if: contains(fromJSON('["plan","destroy-plan"]'), inputs.operation)

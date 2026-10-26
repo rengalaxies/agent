@@ -305,8 +305,12 @@ def _redact(value, sensitive, unknown, key: bytes, field: str | None = None):
     return value
 
 
-def plan_projection(plan: dict, *, key: bytes, commit: str, box_id: str, mode: str) -> dict:
+def plan_projection(plan: dict, *, key: bytes, commit: str, box_id: str, mode: str, recovery=()) -> dict:
     """What the reviewer approves: every change with secrets and addresses replaced by keyed tags.
+
+    ``recovery`` lists the state addresses the approved apply untaints before planning
+    (``untaint_candidates``). The review plan is computed on a local copy with that recovery
+    already applied, so the digest covers both the state repair and the resulting changes.
 
     The tags are HMAC-SHA256 with a key only the workflow has, so a published projection
     does not let anyone brute-force the owner's /32, while a different CIDR, image or secret
@@ -325,8 +329,8 @@ def plan_projection(plan: dict, *, key: bytes, commit: str, box_id: str, mode: s
             item["before"] = _redact(change.get("before"), change.get("before_sensitive"), None, key)
             item["after"] = _redact(change.get("after"), change.get("after_sensitive"), change.get("after_unknown"), key)
         changes.append(item)
-    return {"format": "amvp-box-plan-1", "commit": commit, "box_id": check_box_id(box_id), "mode": mode,
-            "changes": changes}
+    return {"format": "amvp-box-plan-2", "commit": commit, "box_id": check_box_id(box_id), "mode": mode,
+            "recovery": sorted(recovery), "changes": changes}
 
 
 def digest(projection: dict) -> str:
