@@ -260,6 +260,15 @@ class RevisionRules(unittest.TestCase):
         record["pr"]["result"]["affected"] = [a for a in record["pr"]["result"]["affected"] if a["service"] != name]
         report = self.score_with(record)
         self.assertLess(report["severity"]["runtime_basis"]["named"]["value"], 1.0)
+        # The pair left the breaking denominator, so its miss does not lower the breaking rate.
+        self.assertEqual(report["severity"]["breaking"]["reported_breaking"]["value"], 1.0)
+
+    def test_a_ledger_where_no_change_ran_scores_every_change_as_a_failure(self):
+        # A stopped live series (27.10.2026) has changes without records; the runtime-only misses drove the
+        # breaking numerator below zero and the scorer crashed instead of reporting failures.
+        report = score([])
+        self.assertEqual((report["useful_autonomous"]["numerator"], report["error_count"]), (0, len(ORACLE)))
+        self.assertEqual(report["severity"]["breaking"]["reported_breaking"]["numerator"], 0)
 
     def test_candidate_stage_answered_with_confidence_is_wrong_confident(self):
         o = next(o for o in ORACLE.values() if o["jira"]["expected_outcome"] == "candidate")

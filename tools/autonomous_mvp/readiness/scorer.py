@@ -128,7 +128,10 @@ def score_stage(observed, oracle, stage, rules=None):
             out["runtime_named"] += seen is not None
         if seen is None:
             out["fn"] += 1
-            out["missed_breaking" if severity == "breaking" else "missed_recheck"] += 1
+            # A runtime-only pair left the breaking and recheck denominators (6-r2 rule); its miss is
+            # counted by runtime_named. Counting it here too drove those rates below zero.
+            if not runtime_only:
+                out["missed_breaking" if severity == "breaking" else "missed_recheck"] += 1
             out["problems"].append(f"missed:{consumer}")
             continue
         out["tp"] += 1
