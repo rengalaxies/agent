@@ -5,6 +5,8 @@
    code consumer the PR even said ABSTAINED no_consumer_found_within_profile.
 2. A Jira task that names only a service was answered USEFUL with every consumer of every
    operation of that service (6-r1 F03 with the service named).
+3. A Jira task that names a route only to say it does not change was answered USEFUL with
+   the consumers of that route (review of PR #64, 26.10.2026).
 
 Each runs the real core, graph and Git stand of Orders/Reporting through the service.
 """
@@ -173,6 +175,15 @@ class ServiceOnlyJiraTest(Bench):
         self.assertIn("orders", result["summary"])
         [text] = self.bench.jira_texts()
         self.assertNotIn("reporting", _section(text, "Что может затронуть", "Почему"))
+
+    def test_route_named_only_as_unchanged_abstains_and_names_no_consumer(self):
+        result = self.jira_result("orders: обновить README", "GET /orders не меняется. Описать локальный запуск.")
+        self.assertEqual((result["status"], result["reason_code"]), ("ABSTAINED", "out_of_scope"))
+        self.assertEqual((result["affected"], result["claims"]), ([], []))
+        [text] = self.bench.jira_texts()
+        section = _section(text, "Что может затронуть", "Почему")
+        self.assertNotIn("archive", section)
+        self.assertNotIn("reporting", section)
 
     def test_contract_change_named_without_an_operation_is_partial_with_hypotheses_only(self):
         # billing declares GET /orders too; naming orders keeps billing's consumers out.

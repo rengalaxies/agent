@@ -13,6 +13,9 @@ page size, removal and so on):
 
 - a route, or a named service with a service-wide contract change ("all
   endpoints"): ``explicit``, the preliminary answer;
+- a route named only in clauses that say it does not change: no target; the
+  rest of the text is read as if the route were not there, and with nothing
+  else stated the intent is ``none`` (``routes_stated_unchanged``);
 - a named service with a contract change but no operation: ``candidate``, its
   operations are possible targets only;
 - a named service without contract wording, or with the contract stated as
@@ -81,10 +84,10 @@ def contract_wording(texts: list[str]) -> str:
     return "changed" if changed else "unchanged" if unchanged else "absent"
 
 
-def changed_routes(texts: list[str]) -> set[tuple[str, str]]:
-    """Routes the text names, except those named only in clauses that say they do not change.
+def route_mentions(texts: list[str]) -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:
+    """(changed, unchanged): routes named in a clause without negation, and routes named only as unchanged.
 
-    If every mention is negated, the routes stay: the task still points at them.
+    A route stated unchanged in one clause and named again without negation is changed.
     """
     named, negated = set(), set()
     for text in texts:
@@ -99,7 +102,12 @@ def changed_routes(texts: list[str]) -> set[tuple[str, str]]:
         for clause in CLAUSE_SPLIT.split(masked):
             for i in re.findall(r"@@(\d+)@@", clause):
                 (negated if UNCHANGED.search(clause) else named).add(found[int(i)])
-    return named or negated
+    return named, negated - named
+
+
+def changed_routes(texts: list[str]) -> set[tuple[str, str]]:
+    """Routes the text names, except those named only in clauses that say they do not change."""
+    return route_mentions(texts)[0]
 
 
 def match_intent(operations: list[dict], texts: list[str]) -> Intent:
@@ -107,7 +115,7 @@ def match_intent(operations: list[dict], texts: list[str]) -> Intent:
     # A route path ("/orders") must not count as naming the service "orders".
     prose = [ROUTE_RE.sub(" ", t) for t in texts]
     services = named_services(prose, {o["service"] for o in operations})
-    routes = changed_routes(texts)
+    routes, unchanged = route_mentions(texts)
     if routes:
         matched = [o for o in operations if (o["method"], _route(o["path"])) in routes]
         if services:
@@ -116,10 +124,15 @@ def match_intent(operations: list[dict], texts: list[str]) -> Intent:
             return Intent([], "ambiguous_route", "none", sorted({o["service"] for o in matched}))
         return Intent(sorted(o["id"] for o in matched), "route" if matched else "route_not_in_graph",
                       "explicit" if matched else "none", sorted({o["service"] for o in matched}))
+    stated_unchanged = Intent([], "routes_stated_unchanged", "none", sorted(
+        services or {o["service"] for o in operations if (o["method"], _route(o["path"])) in unchanged}))
     if not services:
-        return Intent([], "no_mention", "none")
-    of_services = sorted(o["id"] for o in operations if o["service"] in services)
+        return stated_unchanged if unchanged else Intent([], "no_mention", "none")
+    of_services = sorted(o["id"] for o in operations if o["service"] in services
+                         and (o["method"], _route(o["path"])) not in unchanged)
     wording = contract_wording(prose)
+    if unchanged and (wording != "changed" or not of_services):
+        return stated_unchanged
     if wording == "unchanged":
         return Intent([], "contract_unchanged_stated", "none", sorted(services))
     if wording == "absent":

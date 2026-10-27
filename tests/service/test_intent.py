@@ -4,6 +4,9 @@ Regression for the 6-r1 held-out failure (batch-6.md, "Что это значи�
 that names only a service ("Обновить README сервиса ...", API explicitly unchanged) was
 taken as a change of every operation of that service and answered USEFUL with every
 consumer.
+
+Regression for the review of PR #64 (26.10.2026): a task that names a route only to say it
+does not change ("GET /orders не меняется") still made that route an explicit target.
 """
 
 import unittest
@@ -62,6 +65,34 @@ class IntentTest(unittest.TestCase):
         intent = match_intent(OPS, ["ledger: API не меняется для старых клиентов, но удалить поле total из ответа",
                                     ""])
         self.assertEqual(intent.confidence, "candidate")
+
+    def test_route_named_only_as_unchanged_is_not_a_target(self):
+        intent = match_intent(OPS, ["ledger: обновить README", "GET /ledger/entries/count не меняется. Описать запуск."])
+        self.assertEqual((intent.operation_ids, intent.confidence, intent.reason),
+                         ([], "none", "routes_stated_unchanged"))
+        self.assertEqual(intent.services, ["ledger"])
+
+    def test_english_route_named_only_as_unchanged_is_not_a_target_and_no_provider_is_guessed(self):
+        # GET /ledger/entries has two providers; neither is picked, nothing is claimed.
+        intent = match_intent(OPS, ["Update the README", "GET /ledger/entries does not change."])
+        self.assertEqual((intent.operation_ids, intent.confidence, intent.reason),
+                         ([], "none", "routes_stated_unchanged"))
+
+    def test_english_unchanged_route_and_changed_route_select_only_the_changed_one(self):
+        intent = match_intent(OPS, ["ledger: GET /ledger/entries/count is unchanged; "
+                                    "GET /ledger/entries drops the total field", ""])
+        self.assertEqual((intent.operation_ids, intent.confidence, intent.reason), (["op-list"], "explicit", "route"))
+
+    def test_route_first_stated_unchanged_then_changed_keeps_the_change(self):
+        intent = match_intent(OPS, ["ledger: GET /ledger/entries не меняется для старых клиентов.",
+                                    "Для новых клиентов GET /ledger/entries: удалить поле total."])
+        self.assertEqual((intent.operation_ids, intent.confidence), (["op-list"], "explicit"))
+
+    def test_unchanged_route_with_a_contract_change_of_its_service_leaves_the_other_operations_as_candidates(self):
+        intent = match_intent(OPS, ["ledger: GET /ledger/entries/count не меняется. Удалить поле total из ответа.",
+                                    ""])
+        self.assertEqual((intent.operation_ids, intent.confidence, intent.reason),
+                         (["op-list"], "candidate", "service_contract_unspecified"))
 
     def test_match_operations_keeps_its_two_value_shape(self):
         self.assertEqual(match_operations(OPS, ["Обновить README сервиса ledger. Поведение API не меняется."]),

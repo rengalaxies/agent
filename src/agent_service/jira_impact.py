@@ -124,6 +124,11 @@ def jira_result(request, query, impacts: list[dict], *, context: dict, intent, c
         status, reason = "ABSTAINED", "out_of_scope"
         summary = (f"The task names {named} and states that its API does not change; no consumer impact is "
                    "claimed. The PR diff is analyzed when it exists.")
+    elif not impacts and intent.reason == "routes_stated_unchanged":
+        status, reason = "ABSTAINED", "out_of_scope"
+        summary = ("The task names its operations only to state that they do not change"
+                   + (f" ({named})" if named else "") + "; no consumer impact is claimed. The PR diff is "
+                   "analyzed when it exists.")
     elif not impacts and intent.reason == "service_only":
         status, reason = "ABSTAINED", "intent_unclear"
         summary = (f"The task names {named} but no change of its API or operations; no consumer impact is "
