@@ -22,9 +22,12 @@ merge и следующий шаг. SHA коммита, который доба�
 
 | PR | Назначение | База / голова | Push | CI головы | Merge | Следующий шаг |
 |---|---|---|---|---|---|---|
-| [#62](https://github.com/rengalaxies/agent/pull/62) | 5Б: одна ВМ Cloud.ru, установка той же коробкой, inventory, digest плана, cleanup; plan без записи state; публикация релиза | `main` `c64c949` / `claude/mvp-5b-cloudru` | опубликован | см. checks PR; offline, actionlint, verify, configuration | нет | merge владельцем; затем релиз, pin, `lock-test`, `plan`, одобрение apply |
-| [#63](https://github.com/rengalaxies/agent/pull/63) | 6: 6-r1 исторически с FAIL, ревизия 6-r2, held-out 65/65 без модели; содержит #64 | `main` `c64c949` / `claude/mvp-6-readiness` | опубликован | см. checks PR; box, core | нет | merge после #64 |
-| [#64](https://github.com/rengalaxies/agent/pull/64) | исправления продукта: runtime-only потребители на PR, намерение Jira по имени сервиса | `main` `c64c949` / `claude/mvp-service-impact-fixes` | опубликован, `2b096ad` | box и core зелёные на `2b096ad` | нет | merge первым |
+| [#62](https://github.com/rengalaxies/agent/pull/62) | 5Б: одна ВМ Cloud.ru, установка той же коробкой, inventory, digest плана, cleanup; plan без записи state; строки квот (D14); публикация релиза и установка опубликованного архива | `main` `c64c949` / `claude/mvp-5b-cloudru` | опубликован, `2309fc0` | offline, verify, actionlint, configuration зелёные на `7a5d47e`; для `2309fc0` см. checks PR | нет | merge владельцем; затем релиз, pin, `lock-test`, `plan`, одобрение apply |
+| [#63](https://github.com/rengalaxies/agent/pull/63) | 6: 6-r1 и 6-r2 исторические, ревизия 6-r3 (F14, правило полноты human, живые конфигурации), held-out 70/70 без модели; содержит #64 | `main` `c64c949` / `claude/mvp-6-readiness` | опубликован; голова этой записи см. PR | см. checks PR; box, core, verify, actionlint, configuration | нет | merge после #64 |
+| [#64](https://github.com/rengalaxies/agent/pull/64) | исправления продукта: runtime-only потребители на PR, намерение Jira по имени сервиса, маршрут только как неизменный (D13) | `main` `c64c949` / `claude/mvp-service-impact-fixes` | опубликован, `18e360b` | box и core зелёные на `18e360b` | нет | merge первым |
+
+Порядок merge: #64, затем #63 (уже содержит `18e360b`), затем #62. #62 и #63 не пересекаются по
+файлам; пробное слияние `origin/main` + #63 + #62 проходит без конфликтов (27.10).
 
 ## Подготовленные ветки без PR
 

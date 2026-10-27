@@ -44,6 +44,40 @@ API читается без токена, но ограничен 60 запро�
   (`fcntl` в `store.py`, `O_NOFOLLOW`/`dir_fd` в `sources.py`). Отчёт серии
   22.10 уже отмечал это для `Store`.
 
+## Сводка на 27.10.2026
+
+Задание от 26.10.2026: три пробела ревью, живые пути readiness, интеграция, релиз, 2Б, Cloud.ru.
+`main` по-прежнему `c64c949`: ни один PR этого дня не слит, разрешения на merge #62–#64 нет.
+Реестр голов и CI: [PR-REGISTER.md](PR-REGISTER.md). Решения D13–D16: [DECISIONS.md](DECISIONS.md).
+
+| Что | Где | Состояние |
+|---|---|---|
+| Маршрут, названный только как неизменный, в Jira | [#64](https://github.com/rengalaxies/agent/pull/64) `18e360b` | исправлено (D13); 4 новых теста красные на `2b096ad`; `tests/service` 124 OK (Windows); CI core и box зелёные; влито в #63 |
+| Строковые квоты Cloud.ru | [#62](https://github.com/rengalaxies/agent/pull/62) `7a5d47e` | исправлено (D14); 11 из 13 новых тестов красные на `f426fad`; box 53 OK, 1 пропуск без Terraform; CI offline, verify, actionlint, configuration зелёные |
+| Релиз: установка опубликованного архива | #62 `2309fc0` | новый job `install-published` в `agent-service-release.yml`: скачать asset по URL, sha256, чистая установка с systemd, `fresh_install` и `end_to_end_on_installed_release`; не запускался (workflow только с `main`) |
+| Полнота человеческих минут | [#63](https://github.com/rengalaxies/agent/pull/63) | правило ревизии 6-r3 (D15); воспроизведение 1/65 → PASS на старом scorer, INCOMPLETE на новом; 6-r1 и 6-r2 со своими правилами |
+| Падение scorer на пропущенных runtime-парах | #63 `cfbe73d` | исправлено; ledger 6-r1 и 6-r2 оцениваются побайтно как раньше |
+| Живые конфигурации readiness | #63 `f89353a` | `service-model`, `baseline-live`, `autonomous-mvp-readiness.yml` (D16); 11 офлайн-тестов на фейковой модели и транспорте; ни одного вызова модели |
+| Offline job 2Б после слияния #63 | #63 `009b0bf` | нашлось до merge: с одними pydantic и PyYAML 6 тестов readiness падали на `uvicorn`, серия 2Б остановилась бы на offline. Теперь они пропускаются с причиной; с тем же окружением 21 тест, OK, 6 пропусков |
+| Ревизия 6-r3 | #63 `bb10a62`, manifest `e1c04f17` | held-out без модели один раз на `009b0bf`: 70/70, technical и quality PASS, comparison и human INCOMPLETE (`batch-6.md`) |
+| Пробная интеграция | локально | `origin/main` + #63 + #62 сливаются без конфликтов (файлы не пересекаются) |
+| Серия 2Б | `autonomous-mvp-model.yml` | не запускалась. Причина отмены run 40220149802 установлена: три phase job ждали одобрения среды `autonomous-mvp-live` с 18:14 25.10 и были отменены 04:02 26.10, потому что `main` ещё должна была сдвинуться. Отказа модели или ключа там нет. Manifest 2Б `8d1c1afc` не изменился ни в одной ветке |
+| Облако | Cloud.ru | ничего не создано. Среды `cloudru-box-production` и `cloudru-box-review` проверены через API 27.10: required reviewers `rengalaxies`, `swan-Dive`, только `main`, `prevent_self_review: false`. Секреты репозитория `CLOUDRU_KEY_ID`, `CLOUDRU_SECRET`, `CLOUDRU_STATE_SSE_CUSTOMER_KEY`, переменная `CLOUDRU_STATE_BUCKET` есть (видны только имена). Релизов в репозитории 0 |
+
+Что заблокировано и чем:
+
+1. Merge #64, #63, #62: нужно разрешение владельца. Без него `main` не итоговая, и всё ниже
+   ждёт.
+2. Релиз и pin: `agent-service-release.yml` есть только в #62 и запускается только с `main`.
+   После merge исполнитель запускает его сам и открывает один PR с pin.
+3. Серия 2Б: на итоговой `main` исполнитель запускает `transport`, затем `development`,
+   `evaluation-1..3`, `report`. Каждую фазу одобряет владелец в среде `autonomous-mvp-live`:
+   исполнитель свои запуски не одобряет.
+4. Readiness с моделью: только после QUALIFIED в 2Б, тем же порядком одобрения.
+5. Cloud.ru: `lock-test` (одобрение в `cloudru-box-production`), свежая инвентаризация с
+   исправленной проверкой квот, `plan` (одобрение в `cloudru-box-review`, публичный IPv4 `/32`
+   владельца для SSH), затем отдельное одобрение конкретного apply: digest, `expires_on`, потолок.
+
 ## Сводка на 26.10.2026
 
 PR #61 слит по разрешению владельца: merge `c64c949e2c3558cbfea0c62922d141355d6684c9`, его
