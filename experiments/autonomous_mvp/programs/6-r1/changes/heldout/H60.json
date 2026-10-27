@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://parcels.test",
+      "service": "parcels"
+    }
+  ],
+  "change_id": "H60",
+  "environment": "prod",
+  "family": "F12_unclassified_change",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /parcels: передавать фильтр status=active в хранилище.",
+    "issue_id": 10559,
+    "key": "PCL-559",
+    "project": "PCL",
+    "summary": "Показывать в списке parcels только активные записи"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "insights": "team-insights",
+      "monitor": "team-monitor",
+      "parcels": "team-parcels",
+      "scheduler": "team-scheduler"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 559,
+    "repository": "parcels",
+    "title": "PCL-559 Показывать в списке parcels только активные записи"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "insights": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# insights\n\nService insights of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "insights"
+    },
+    "monitor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# monitor\n\nService monitor of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "monitor"
+    },
+    "parcels": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_parcels(day, cursor, page_size, status=\"active\")\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "parcels"
+    },
+    "scheduler": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# scheduler\n\nService scheduler of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "scheduler"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

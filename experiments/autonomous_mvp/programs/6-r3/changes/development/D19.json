@@ -1,0 +1,120 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tariffs.test",
+      "service": "tariffs"
+    }
+  ],
+  "change_id": "D19",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tariffs: default page_size 200 -> 25.",
+    "issue_id": 10918,
+    "key": "TRF-918",
+    "project": "TRF",
+    "summary": "Уменьшить стандартный размер страницы tariffs с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cipher": "team-cipher",
+      "iris": "team-iris",
+      "tariffs": "team-tariffs"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 918,
+    "repository": "tariffs",
+    "title": "TRF-918 Уменьшить стандартный размер страницы tariffs с 200 до 25"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "cipher": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cipher\n\nService cipher of the 6-r3 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"TARIFFS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cipher"
+    },
+    "iris": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# iris\n\nService iris of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "iris"
+    },
+    "tariffs": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tariffs\n\nService tariffs of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tariffs\")\ndef list_tariffs(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tariffs/count\")\ndef count_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tariffs\n\nService tariffs of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tariffs\")\ndef list_tariffs(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tariffs/count\")\ndef count_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tariffs"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "tariffs"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "cipher",
+            "method": "GET",
+            "route": "/tariffs",
+            "status": 200
+          },
+          {
+            "client": "cipher",
+            "method": "GET",
+            "route": "/tariffs",
+            "status": 200
+          },
+          {
+            "client": "cipher",
+            "method": "GET",
+            "route": "/tariffs",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "development"
+}

@@ -1,0 +1,151 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://parcels.test",
+      "service": "parcels"
+    }
+  ],
+  "change_id": "H41",
+  "environment": "prod",
+  "family": "F05_runtime_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /parcels: default page_size 50 -> 10.",
+    "issue_id": 10540,
+    "key": "PCL-540",
+    "project": "PCL",
+    "summary": "Уменьшить стандартный размер страницы parcels с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "courier": "team-courier",
+      "insights": "team-insights",
+      "metrics": "team-metrics",
+      "parcels": "team-parcels"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 540,
+    "repository": "parcels",
+    "title": "PCL-540 Уменьшить стандартный размер страницы parcels с 50 до 10"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "courier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# courier\n\nService courier of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "courier"
+    },
+    "insights": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# insights\n\nService insights of the 6-r1 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"PARCELS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "insights"
+    },
+    "metrics": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# metrics\n\nService metrics of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "metrics"
+    },
+    "parcels": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "parcels"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "parcels"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "insights",
+            "method": "GET",
+            "route": "/parcels",
+            "status": 200
+          },
+          {
+            "client": "insights",
+            "method": "GET",
+            "route": "/parcels",
+            "status": 200
+          },
+          {
+            "client": "insights",
+            "method": "GET",
+            "route": "/parcels",
+            "status": 200
+          },
+          {
+            "client": "metrics",
+            "method": "GET",
+            "route": "/parcels",
+            "status": 200
+          },
+          {
+            "client": "metrics",
+            "method": "GET",
+            "route": "/parcels",
+            "status": 200
+          },
+          {
+            "client": "metrics",
+            "method": "GET",
+            "route": "/parcels",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

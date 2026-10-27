@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://voyages.test",
+      "service": "voyages"
+    },
+    {
+      "base_url": "https://registrar.test",
+      "service": "registrar"
+    }
+  ],
+  "change_id": "H23",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /voyages: default page_size 200 -> 10.",
+    "issue_id": 10722,
+    "key": "VOY-722",
+    "project": "VOY",
+    "summary": "Уменьшить стандартный размер страницы с 200 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "compass": "team-compass",
+      "lantern": "team-lantern",
+      "prism": "team-prism",
+      "quartz": "team-quartz",
+      "registrar": "team-registrar",
+      "summit": "team-summit",
+      "voyages": "team-voyages"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 722,
+    "repository": "voyages",
+    "title": "VOY-722 Уменьшить стандартный размер страницы с 200 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "compass": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# compass\n\nService compass of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://registrar.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "compass"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "prism": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# prism\n\nService prism of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "prism"
+    },
+    "quartz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# quartz\n\nService quartz of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quartz"
+    },
+    "registrar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registrar\n\nService registrar of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_registrar(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_registrar(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registrar"
+    },
+    "summit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# summit\n\nService summit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "summit"
+    },
+    "voyages": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "voyages"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

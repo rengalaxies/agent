@@ -1,0 +1,133 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://claims.test",
+      "service": "claims"
+    }
+  ],
+  "change_id": "H57",
+  "environment": "prod",
+  "family": "F05_runtime_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /claims: default page_size 200 -> 25.",
+    "issue_id": 10756,
+    "key": "CLM-756",
+    "project": "CLM",
+    "summary": "Уменьшить стандартный размер страницы claims с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "claims": "team-claims",
+      "harvest": "team-harvest",
+      "mosaic": "team-mosaic",
+      "tundra": "team-tundra"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 756,
+    "repository": "claims",
+    "title": "CLM-756 Уменьшить стандартный размер страницы claims с 200 до 25"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "claims": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# claims\n\nService claims of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_claims(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/claims/count\")\ndef count_claims(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# claims\n\nService claims of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_claims(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/claims/count\")\ndef count_claims(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "claims"
+    },
+    "harvest": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harvest\n\nService harvest of the 6-r2 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"CLAIMS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harvest"
+    },
+    "mosaic": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mosaic\n\nService mosaic of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mosaic"
+    },
+    "tundra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tundra\n\nService tundra of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tundra"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "claims"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "harvest",
+            "method": "GET",
+            "route": "/claims",
+            "status": 200
+          },
+          {
+            "client": "harvest",
+            "method": "GET",
+            "route": "/claims",
+            "status": 200
+          },
+          {
+            "client": "harvest",
+            "method": "GET",
+            "route": "/claims",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

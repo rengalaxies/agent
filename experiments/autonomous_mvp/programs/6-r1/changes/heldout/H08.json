@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://payments.test",
+      "service": "payments"
+    }
+  ],
+  "change_id": "H08",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "vault"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /payments: default page_size 200 -> 10.",
+    "issue_id": 10507,
+    "key": "PAY-507",
+    "project": "PAY",
+    "summary": "Уменьшить стандартный размер страницы payments с 200 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "courier": "team-courier",
+      "metrics": "team-metrics",
+      "payments": "team-payments",
+      "planner": "team-planner",
+      "vault": "team-vault"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 507,
+    "repository": "payments",
+    "title": "PAY-507 Уменьшить стандартный размер страницы payments с 200 до 10"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "courier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# courier\n\nService courier of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "courier"
+    },
+    "metrics": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# metrics\n\nService metrics of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "metrics"
+    },
+    "payments": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# payments\n\nService payments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/payments\")\ndef list_payments(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/payments/count\")\ndef count_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# payments\n\nService payments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/payments\")\ndef list_payments(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/payments/count\")\ndef count_payments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_payments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "payments"
+    },
+    "planner": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# planner\n\nService planner of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "planner"
+    },
+    "vault": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vault\n\nService vault of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://payments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/payments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vault"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

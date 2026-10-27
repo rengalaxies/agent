@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://rentals.test",
+      "service": "rentals"
+    }
+  ],
+  "change_id": "H22",
+  "environment": "prod",
+  "family": "F09_ownership_conflict",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /rentals: default page_size 200 -> 10.",
+    "issue_id": 10721,
+    "key": "RNT-721",
+    "project": "RNT",
+    "summary": "Уменьшить стандартный размер страницы rentals с 200 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "atlas": "team-atlas",
+      "mosaic": "team-mosaic",
+      "orbit": [
+        "team-orbit",
+        "team-platform"
+      ],
+      "rentals": "team-rentals"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 721,
+    "repository": "rentals",
+    "title": "RNT-721 Уменьшить стандартный размер страницы rentals с 200 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "atlas": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# atlas\n\nService atlas of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "atlas"
+    },
+    "mosaic": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mosaic\n\nService mosaic of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mosaic"
+    },
+    "orbit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# orbit\n\nService orbit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orbit"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    },
+    "rentals": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "rentals"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://licenses.test",
+      "service": "licenses"
+    }
+  ],
+  "change_id": "H26",
+  "environment": "prod",
+  "family": "F12_unclassified_change",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /licenses: передавать фильтр status=active в хранилище.",
+    "issue_id": 11125,
+    "key": "LIC-1125",
+    "project": "LIC",
+    "summary": "Показывать в списке licenses только активные записи"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "licenses": "team-licenses",
+      "lotus": "team-lotus",
+      "meridian": "team-meridian",
+      "pulsar": "team-pulsar"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1125,
+    "repository": "licenses",
+    "title": "LIC-1125 Показывать в списке licenses только активные записи"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "licenses": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_licenses(day, cursor, page_size, status=\"active\")\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "licenses"
+    },
+    "lotus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lotus\n\nService lotus of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lotus"
+    },
+    "meridian": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# meridian\n\nService meridian of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "meridian"
+    },
+    "pulsar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pulsar\n\nService pulsar of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pulsar"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

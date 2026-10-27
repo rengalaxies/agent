@@ -1,0 +1,157 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://visits.test",
+      "service": "visits"
+    },
+    {
+      "base_url": "https://postal.test",
+      "service": "postal"
+    }
+  ],
+  "change_id": "D15",
+  "environment": "prod",
+  "family": "F01_truncation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /visits: default page_size 100 -> 10. GET /visits/count is unchanged.",
+    "issue_id": 10914,
+    "key": "VIS-914",
+    "project": "VIS",
+    "summary": "visits: page size 100 -> 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "abacus": "team-abacus",
+      "bridge": "team-bridge",
+      "cipher": "team-cipher",
+      "falcon": "team-falcon",
+      "glacier": "team-glacier",
+      "harbinger": "team-harbinger",
+      "postal": "team-postal",
+      "visits": "team-visits"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 914,
+    "repository": "visits",
+    "title": "VIS-914 visits: page size 100 -> 10"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "abacus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# abacus\n\nService abacus of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://postal.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "abacus"
+    },
+    "bridge": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# bridge\n\nService bridge of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/visits\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "bridge"
+    },
+    "cipher": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cipher\n\nService cipher of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day, \"page_size\": 500}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cipher"
+    },
+    "falcon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# falcon\n\nService falcon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "falcon"
+    },
+    "glacier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# glacier\n\nService glacier of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "glacier"
+    },
+    "harbinger": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harbinger\n\nService harbinger of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harbinger"
+    },
+    "postal": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# postal\n\nService postal of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_postal(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_postal(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "postal"
+    },
+    "visits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# visits\n\nService visits of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_visits(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/visits/count\")\ndef count_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# visits\n\nService visits of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/visits/count\")\ndef count_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "visits"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

@@ -1,0 +1,131 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://licenses.test",
+      "service": "licenses"
+    },
+    {
+      "base_url": "https://mint.test",
+      "service": "mint"
+    }
+  ],
+  "change_id": "H52",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /licenses: default page_size 200 -> 25.",
+    "issue_id": 11151,
+    "key": "LIC-1151",
+    "project": "LIC",
+    "summary": "Уменьшить стандартный размер страницы с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "licenses": "team-licenses",
+      "mint": "team-mint",
+      "pulsar": "team-pulsar",
+      "sierra": "team-sierra",
+      "topaz": "team-topaz",
+      "umbra": "team-umbra"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1151,
+    "repository": "licenses",
+    "title": "LIC-1151 Уменьшить стандартный размер страницы с 200 до 25"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "licenses": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "licenses"
+    },
+    "mint": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mint\n\nService mint of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_mint(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_mint(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mint"
+    },
+    "pulsar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pulsar\n\nService pulsar of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pulsar"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://mint.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    },
+    "topaz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# topaz\n\nService topaz of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "topaz"
+    },
+    "umbra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# umbra\n\nService umbra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "umbra"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

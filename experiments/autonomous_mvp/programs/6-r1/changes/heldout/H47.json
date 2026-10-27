@@ -1,0 +1,114 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://bookings.test",
+      "service": "bookings"
+    }
+  ],
+  "change_id": "H47",
+  "environment": "prod",
+  "family": "F11_vague_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Отвечать меньшими страницами: 25 записей вместо 50 по умолчанию.",
+    "issue_id": 10546,
+    "key": "BKG-546",
+    "project": "BKG",
+    "summary": "Ускорить выдачу списка за день"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "bookings": "team-bookings",
+      "catalog": "team-catalog",
+      "digest": "team-digest",
+      "inspector": "team-inspector",
+      "vault": "team-vault"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 546,
+    "repository": "bookings",
+    "title": "BKG-546 Ускорить выдачу списка за день"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "bookings": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# bookings\n\nService bookings of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/bookings\")\ndef list_bookings(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/bookings/count\")\ndef count_bookings(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# bookings\n\nService bookings of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/bookings\")\ndef list_bookings(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/bookings/count\")\ndef count_bookings(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "bookings"
+    },
+    "catalog": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# catalog\n\nService catalog of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/bookings/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "catalog"
+    },
+    "digest": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# digest\n\nService digest of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/bookings\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "digest"
+    },
+    "inspector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# inspector\n\nService inspector of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/bookings/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "inspector"
+    },
+    "vault": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vault\n\nService vault of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/bookings\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vault"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

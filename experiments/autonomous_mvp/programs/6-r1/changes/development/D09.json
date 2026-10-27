@@ -1,0 +1,129 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://invoices.test",
+      "service": "invoices"
+    }
+  ],
+  "change_id": "D09",
+  "environment": "prod",
+  "family": "F09_ownership_conflict",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /invoices: default page_size 50 -> 25.",
+    "issue_id": 10108,
+    "key": "INV-108",
+    "project": "INV",
+    "summary": "Уменьшить стандартный размер страницы invoices с 50 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "audit": "team-audit",
+      "dashboard": "team-dashboard",
+      "invoices": "team-invoices",
+      "registry": [
+        "team-platform",
+        "team-registry"
+      ],
+      "reporting": "team-reporting"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 108,
+    "repository": "invoices",
+    "title": "INV-108 Уменьшить стандартный размер страницы invoices с 50 до 25"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "audit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# audit\n\nService audit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "audit"
+    },
+    "dashboard": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# dashboard\n\nService dashboard of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "dashboard"
+    },
+    "exporter": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# exporter\n\nService exporter of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/invoices\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "exporter"
+    },
+    "invoices": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# invoices\n\nService invoices of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/invoices\")\ndef list_invoices(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/invoices/count\")\ndef count_invoices(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# invoices\n\nService invoices of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/invoices\")\ndef list_invoices(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/invoices/count\")\ndef count_invoices(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "invoices"
+    },
+    "registry": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registry\n\nService registry of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registry"
+    },
+    "reporting": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# reporting\n\nService reporting of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "reporting"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

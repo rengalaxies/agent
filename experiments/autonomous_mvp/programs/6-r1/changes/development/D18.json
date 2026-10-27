@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://shipments.test",
+      "service": "shipments"
+    }
+  ],
+  "change_id": "D18",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "forecast"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /shipments: default page_size 100 -> 10.",
+    "issue_id": 10117,
+    "key": "SHP-117",
+    "project": "SHP",
+    "summary": "Уменьшить стандартный размер страницы shipments с 100 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "dashboard": "team-dashboard",
+      "exporter": "team-exporter",
+      "forecast": "team-forecast",
+      "registry": "team-registry",
+      "shipments": "team-shipments"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 117,
+    "repository": "shipments",
+    "title": "SHP-117 Уменьшить стандартный размер страницы shipments с 100 до 10"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "dashboard": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# dashboard\n\nService dashboard of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "dashboard"
+    },
+    "exporter": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# exporter\n\nService exporter of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "exporter"
+    },
+    "forecast": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# forecast\n\nService forecast of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "forecast"
+    },
+    "registry": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registry\n\nService registry of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registry"
+    },
+    "shipments": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# shipments\n\nService shipments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/shipments\")\ndef list_shipments(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/shipments/count\")\ndef count_shipments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# shipments\n\nService shipments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/shipments\")\ndef list_shipments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/shipments/count\")\ndef count_shipments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "shipments"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

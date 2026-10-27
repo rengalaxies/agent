@@ -1,0 +1,157 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://voyages.test",
+      "service": "voyages"
+    },
+    {
+      "base_url": "https://registrar.test",
+      "service": "registrar"
+    }
+  ],
+  "change_id": "H02",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис voyages больше не отдаёт GET /voyages; эндпоинт удаляется.",
+    "issue_id": 10701,
+    "key": "VOY-701",
+    "project": "VOY",
+    "summary": "Удалить устаревший список voyages"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "atlas": "team-atlas",
+      "beacon": "team-beacon",
+      "lantern": "team-lantern",
+      "orbit": "team-orbit",
+      "prism": "team-prism",
+      "registrar": "team-registrar",
+      "tundra": "team-tundra",
+      "voyages": "team-voyages"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 701,
+    "repository": "voyages",
+    "title": "VOY-701 Удалить устаревший список voyages"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "atlas": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# atlas\n\nService atlas of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "atlas"
+    },
+    "beacon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# beacon\n\nService beacon of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "beacon"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://registrar.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "orbit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# orbit\n\nService orbit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orbit"
+    },
+    "prism": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# prism\n\nService prism of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "prism"
+    },
+    "registrar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registrar\n\nService registrar of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_registrar(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_registrar(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registrar"
+    },
+    "tundra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tundra\n\nService tundra of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day, \"page_size\": 500}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tundra"
+    },
+    "voyages": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "voyages"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,102 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tariffs.test",
+      "service": "tariffs"
+    }
+  ],
+  "change_id": "D14",
+  "environment": "prod",
+  "family": "F14_route_stated_unchanged",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tariffs не меняется. Описать локальный запуск.",
+    "issue_id": 10913,
+    "key": "TRF-913",
+    "project": "TRF",
+    "summary": "tariffs: обновить README"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "abacus": "team-abacus",
+      "falcon": "team-falcon",
+      "iris": "team-iris",
+      "tariffs": "team-tariffs"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 913,
+    "repository": "tariffs",
+    "title": "TRF-913 tariffs: обновить README"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "abacus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# abacus\n\nService abacus of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "abacus"
+    },
+    "falcon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# falcon\n\nService falcon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "falcon"
+    },
+    "iris": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# iris\n\nService iris of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "iris"
+    },
+    "tariffs": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tariffs\n\nService tariffs of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tariffs\")\ndef list_tariffs(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tariffs/count\")\ndef count_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+            "docs/runbook.md": "# Runbook\n\nRestart tariffs with the deploy tool.\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tariffs\n\nService tariffs of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tariffs\")\ndef list_tariffs(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tariffs/count\")\ndef count_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tariffs"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

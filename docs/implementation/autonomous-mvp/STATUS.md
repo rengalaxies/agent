@@ -44,6 +44,69 @@ API читается без токена, но ограничен 60 запро�
   (`fcntl` в `store.py`, `O_NOFOLLOW`/`dir_fd` в `sources.py`). Отчёт серии
   22.10 уже отмечал это для `Store`.
 
+## Сводка на 27.10.2026
+
+Задание от 26.10.2026: три пробела ревью, живые пути readiness, интеграция, релиз, 2Б, Cloud.ru.
+`main` по-прежнему `c64c949`: ни один PR этого дня не слит, разрешения на merge #62–#64 нет.
+Реестр голов и CI: [PR-REGISTER.md](PR-REGISTER.md). Решения D13–D16: [DECISIONS.md](DECISIONS.md).
+
+| Что | Где | Состояние |
+|---|---|---|
+| Маршрут, названный только как неизменный, в Jira | [#64](https://github.com/rengalaxies/agent/pull/64) `18e360b` | исправлено (D13); 4 новых теста красные на `2b096ad`; `tests/service` 124 OK (Windows); CI core и box зелёные; влито в #63 |
+| Строковые квоты Cloud.ru | [#62](https://github.com/rengalaxies/agent/pull/62) `7a5d47e` | исправлено (D14); 11 из 13 новых тестов красные на `f426fad`; box 53 OK, 1 пропуск без Terraform; CI offline, verify, actionlint, configuration зелёные |
+| Релиз: установка опубликованного архива | #62 `2309fc0` | новый job `install-published` в `agent-service-release.yml`: скачать asset по URL, sha256, чистая установка с systemd, `fresh_install` и `end_to_end_on_installed_release`; не запускался (workflow только с `main`) |
+| Полнота человеческих минут | [#63](https://github.com/rengalaxies/agent/pull/63) | правило ревизии 6-r3 (D15); воспроизведение 1/65 → PASS на старом scorer, INCOMPLETE на новом; 6-r1 и 6-r2 со своими правилами |
+| Падение scorer на пропущенных runtime-парах | #63 `cfbe73d` | исправлено; ledger 6-r1 и 6-r2 оцениваются побайтно как раньше |
+| Живые конфигурации readiness | #63 `f89353a` | `service-model`, `baseline-live`, `autonomous-mvp-readiness.yml` (D16); 11 офлайн-тестов на фейковой модели и транспорте; ни одного вызова модели |
+| Offline job 2Б после слияния #63 | #63 `009b0bf` | нашлось до merge: с одними pydantic и PyYAML 6 тестов readiness падали на `uvicorn`, серия 2Б остановилась бы на offline. Теперь они пропускаются с причиной; с тем же окружением 21 тест, OK, 6 пропусков |
+| Ревизия 6-r3 | #63 `bb10a62`, manifest `e1c04f17` | held-out без модели один раз на `009b0bf`: 70/70, technical и quality PASS, comparison и human INCOMPLETE (`batch-6.md`) |
+| Пробная интеграция | локально, Windows, Python 3.14.5 | `origin/main` + #63 `6fa5562` + #62 `2309fc0` сливаются без конфликтов. На слиянии: manifest 2Б `8d1c1afc` и 6-r3 `e1c04f17` CURRENT, 6-r1 и 6-r2 INTACT, корпус CURRENT; `infra/cloudru/box` 58 OK (1 пропуск), `tests/service` 124 OK, `tools/autonomous_mvp/tests` 150 OK, `tools/agent_service/box/tests` 46 OK (1 пропуск). Настоящая `main` после merge проверяется заново |
+| Серия 2Б | `autonomous-mvp-model.yml` | не запускалась. Причина отмены run 40220149802 установлена: три phase job ждали одобрения среды `autonomous-mvp-live` с 18:14 25.10 и были отменены 04:02 26.10, потому что `main` ещё должна была сдвинуться. Отказа модели или ключа там нет. Manifest 2Б `8d1c1afc` не изменился ни в одной ветке |
+| Свежая инвентаризация | [run 40544033583](https://github.com/rengalaxies/agent/actions/runs/40544033583), `cloudru-discovery.yml` на `c64c949`, только data sources | как 26.10: проект IP 2 из 3, vCPU 4 из 16, RAM без лимита; организация IP 3 из 5, vCPU 7 из 16, RAM 18 из 68; P1: 2 ВМ, 2 диска, 2 IP, 1 подсеть, 1 NAT; `amvp-box-*` нет. Исправленная `quota_problems` на этих строках пропускает первый apply (1 IP, 2 vCPU). Перед `plan` проверка повторяется в самом workflow |
+| Linux-приёмка коробки | [run 40543895275](https://github.com/rengalaxies/agent/actions/runs/40543895275) на `6fa5562` | 11 из 11 PASS с systemd, включая первое обновление со сменой схемы, неудачный старт, убитый restore и откат между конституциями |
+| Облако | Cloud.ru | ничего не создано. Среды `cloudru-box-production` и `cloudru-box-review` проверены через API 27.10: required reviewers `rengalaxies`, `swan-Dive`, только `main`, `prevent_self_review: false`. Секреты репозитория `CLOUDRU_KEY_ID`, `CLOUDRU_SECRET`, `CLOUDRU_STATE_SSE_CUSTOMER_KEY`, переменная `CLOUDRU_STATE_BUCKET` есть (видны только имена). Релизов в репозитории 0 |
+
+Что заблокировано и чем:
+
+1. Merge #64, #63, #62: нужно разрешение владельца. Без него `main` не итоговая, и всё ниже
+   ждёт.
+2. Релиз и pin: `agent-service-release.yml` есть только в #62 и запускается только с `main`.
+   После merge исполнитель запускает его сам и открывает один PR с pin.
+3. Серия 2Б: на итоговой `main` исполнитель запускает `transport`, затем `development`,
+   `evaluation-1..3`, `report`. Каждую фазу одобряет владелец в среде `autonomous-mvp-live`:
+   исполнитель свои запуски не одобряет.
+4. Readiness с моделью: только после QUALIFIED в 2Б, тем же порядком одобрения.
+5. Cloud.ru: `lock-test` (одобрение в `cloudru-box-production`), свежая инвентаризация с
+   исправленной проверкой квот, `plan` (одобрение в `cloudru-box-review`, публичный IPv4 `/32`
+   владельца для SSH), затем отдельное одобрение конкретного apply: digest, `expires_on`, потолок.
+
+## Сводка на 26.10.2026
+
+PR #61 слит по разрешению владельца: merge `c64c949e2c3558cbfea0c62922d141355d6684c9`, его
+дерево равно проверенной голове `2bfcb78`, на `main` после merge прошёл workflow lint; core,
+box и configuration запускаются только на pull request и были зелёными на этой голове.
+Реестр: [PR-REGISTER.md](PR-REGISTER.md).
+
+Доступ исполнителя: аккаунт `swan-Dive`, право `write`, `gh` с scopes `repo, workflow`.
+`main` без branch protection и rulesets. Среды `cloudru-box-production` и `cloudru-box-review`
+созданы владельцем: required reviewers `rengalaxies` и `swan-Dive`, только `main`,
+`prevent_self_review` выключен, `can_admins_bypass` включён. Исполнитель не одобряет
+развёртывания, которые запустил сам; самоодобрение для `autonomous-mvp-live` к тому же
+заблокировано политикой исполнителя.
+
+| Что | Где | Состояние |
+|---|---|---|
+| Два дефекта продукта из 6-r1 | [#64](https://github.com/rengalaxies/agent/pull/64) | исправлены в `src/agent_service`, регрессии и negative controls; `tests/service` 118 OK (Windows); CI box и core зелёные на `2b096ad`; fingerprint 2Б не изменился (`8d1c1afc`) |
+| Ревизия 6-r2 | [#63](https://github.com/rengalaxies/agent/pull/63) | заморожена `cbf0e71`, manifest `45f49527`; held-out 65/65, technical и quality PASS без модели; 6-r1 сохранена с FAIL (`batch-6.md`) |
+| 5Б: plan без записи state, публикация релиза | [#62](https://github.com/rengalaxies/agent/pull/62) | recovery только в одобренном apply, `agent-service-release.yml`, сверка квот, инвентаризации и тарифов 261014 (`batch-5b.md`) |
+| Серия 2Б | `autonomous-mvp-model.yml` | не выполнена. Transport на `c64c949` (run 40220149802) ждал одобрения среды и отменён до старта: серия требует неподвижной `main`, а #62–#64 ещё сливаются. Учётных веток нет. Серия пойдёт на итоговой `main` |
+| Облако | Cloud.ru | ничего не создано; read-only discovery 40266720846: место под 1 IP и 2 vCPU есть |
+
+Порядок дальше: слить #64, затем #63 (содержит #64), затем #62 → итоговая `main` →
+серия 2Б transport → development → evaluation-1/2/3 → report с одобрением каждой фазы
+владельцем → при QUALIFIED конфигурация `service-model` 6-r2 → публикация релиза и pin →
+`lock-test` → `plan` → одобрение конкретного apply.
+
 ## Сводка на 25.10.2026, вечер
 
 Стек #56–#60 слит в `main` (`0f0dc02`, реестр в [PR-REGISTER.md](PR-REGISTER.md)).

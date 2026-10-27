@@ -1,0 +1,131 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tenders.test",
+      "service": "tenders"
+    },
+    {
+      "base_url": "https://exchange.test",
+      "service": "exchange"
+    }
+  ],
+  "change_id": "H15",
+  "environment": "prod",
+  "family": "F01_truncation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tenders: default page_size 200 -> 25. GET /tenders/count is unchanged.",
+    "issue_id": 11114,
+    "key": "TND-1114",
+    "project": "TND",
+    "summary": "tenders: page size 200 -> 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "exchange": "team-exchange",
+      "kestrel": "team-kestrel",
+      "sierra": "team-sierra",
+      "tenders": "team-tenders",
+      "xenon": "team-xenon",
+      "zephyr": "team-zephyr"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1114,
+    "repository": "tenders",
+    "title": "TND-1114 tenders: page size 200 -> 25"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "exchange": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# exchange\n\nService exchange of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_exchange(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_exchange(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "exchange"
+    },
+    "kestrel": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# kestrel\n\nService kestrel of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "kestrel"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://exchange.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    },
+    "tenders": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tenders"
+    },
+    "xenon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# xenon\n\nService xenon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "xenon"
+    },
+    "zephyr": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# zephyr\n\nService zephyr of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "zephyr"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,151 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://voyages.test",
+      "service": "voyages"
+    }
+  ],
+  "change_id": "H46",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /voyages: default page_size 50 -> 10.",
+    "issue_id": 10745,
+    "key": "VOY-745",
+    "project": "VOY",
+    "summary": "Уменьшить стандартный размер страницы voyages с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "beacon": "team-beacon",
+      "harvest": "team-harvest",
+      "prism": "team-prism",
+      "voyages": "team-voyages"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 745,
+    "repository": "voyages",
+    "title": "VOY-745 Уменьшить стандартный размер страницы voyages с 50 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "beacon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# beacon\n\nService beacon of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "beacon"
+    },
+    "harvest": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harvest\n\nService harvest of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harvest"
+    },
+    "prism": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# prism\n\nService prism of the 6-r2 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"VOYAGES_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "prism"
+    },
+    "voyages": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "voyages"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "voyages"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "beacon",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "beacon",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "beacon",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "prism",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "prism",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "prism",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

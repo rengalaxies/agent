@@ -1,0 +1,115 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://rentals.test",
+      "service": "rentals"
+    }
+  ],
+  "change_id": "H16",
+  "environment": "prod",
+  "family": "F03_no_impact_noop",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Описать локальный запуск и ссылку на runbook. Поведение API не меняется.",
+    "issue_id": 10715,
+    "key": "RNT-715",
+    "project": "RNT",
+    "summary": "Обновить документацию по запуску"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "harvest": "team-harvest",
+      "lantern": "team-lantern",
+      "orbit": "team-orbit",
+      "rentals": "team-rentals",
+      "tundra": "team-tundra"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 715,
+    "repository": "rentals",
+    "title": "RNT-715 Обновить документацию по запуску"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "harvest": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harvest\n\nService harvest of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harvest"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "orbit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# orbit\n\nService orbit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orbit"
+    },
+    "rentals": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+            "docs/runbook.md": "# Runbook\n\nRestart rentals with the deploy tool.\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# rentals\n\nService rentals of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/rentals\")\ndef list_rentals(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/rentals/count\")\ndef count_rentals(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_rentals(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "rentals"
+    },
+    "tundra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tundra\n\nService tundra of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://rentals.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/rentals/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tundra"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

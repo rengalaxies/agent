@@ -1,0 +1,4480 @@
+{
+  "changes": {
+    "D01": {
+      "change_id": "D01",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F01_truncation",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "abacus",
+          "glacier",
+          "juniper"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "bridge",
+        "cipher",
+        "customs"
+      ],
+      "paths": {
+        "abacus": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "abacus"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "glacier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "glacier"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "juniper": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "juniper"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "abacus": "breaking",
+          "glacier": "recheck",
+          "juniper": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              96
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              96
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "customs",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "customs": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              96
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              96
+            ],
+            "before": [
+              "ok",
+              96
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D01",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "abacus": "single",
+          "bridge": "bystander",
+          "cipher": "decoy",
+          "glacier": "cursor",
+          "juniper": "explicit"
+        },
+        "consumer_targets": {
+          "abacus": "refunds",
+          "bridge": "refunds",
+          "cipher": "customs",
+          "glacier": "refunds",
+          "juniper": "refunds"
+        },
+        "decoy": "customs",
+        "decoy_defaults": {
+          "/refunds": 100
+        },
+        "defaults": {
+          "change": {
+            "/refunds": 25,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 100,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F01_truncation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 96,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D02": {
+      "change_id": "D02",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F02_operation_removed",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "delta",
+          "falcon",
+          "iris"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "abacus",
+        "cipher"
+      ],
+      "paths": {
+        "delta": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "delta"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "falcon": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "falcon"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "iris": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "iris"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "delta": "breaking",
+          "falcon": "breaking",
+          "iris": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              144
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              144
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              144
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D02",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "abacus": "bystander",
+          "cipher": "bystander",
+          "delta": "cursor",
+          "falcon": "single",
+          "iris": "explicit"
+        },
+        "consumer_targets": {
+          "abacus": "refunds",
+          "cipher": "refunds",
+          "delta": "refunds",
+          "falcon": "refunds",
+          "iris": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 200,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F02_operation_removed",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 144,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D03": {
+      "change_id": "D03",
+      "changed_operation": null,
+      "family": "F03_no_impact_noop",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "abacus",
+        "cipher",
+        "delta"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "tariffs",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              64
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              64
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              64
+            ],
+            "before": [
+              "ok",
+              64
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "tariffs": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D03",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "abacus": "bystander",
+          "cipher": "single",
+          "delta": "cursor"
+        },
+        "consumer_targets": {
+          "abacus": "tariffs",
+          "cipher": "tariffs",
+          "delta": "tariffs"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/tariffs": 100,
+            "/tariffs/count": 100
+          },
+          "main": {
+            "/tariffs": 100,
+            "/tariffs/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F03_no_impact_noop",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 64,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "provider": "tariffs",
+        "unclassified": false
+      }
+    },
+    "D04": {
+      "change_id": "D04",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds/export",
+        "service": "refunds"
+      },
+      "family": "F04_no_consumer_operation",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "no_impact"
+      },
+      "negatives": [
+        "bridge",
+        "cipher",
+        "falcon",
+        "iris",
+        "juniper"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              89
+            ],
+            "before": [
+              "ok",
+              89
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              89
+            ],
+            "before": [
+              "ok",
+              89
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              89
+            ],
+            "before": [
+              "ok",
+              89
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              89
+            ],
+            "before": [
+              "ok",
+              89
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              89
+            ],
+            "before": [
+              "ok",
+              89
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D04",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds/export",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "bridge": "bystander",
+          "cipher": "cursor",
+          "falcon": "bystander",
+          "iris": "single",
+          "juniper": "single"
+        },
+        "consumer_targets": {
+          "bridge": "refunds",
+          "cipher": "refunds",
+          "falcon": "refunds",
+          "iris": "refunds",
+          "juniper": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 200,
+            "/refunds/count": 100,
+            "/refunds/export": 100
+          },
+          "main": {
+            "/refunds": 200,
+            "/refunds/count": 100,
+            "/refunds/export": 500
+          }
+        },
+        "deployment_env": {},
+        "family": "F04_no_consumer_operation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 89,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D05": {
+      "change_id": "D05",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F05_runtime_only",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "abacus"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "bridge",
+        "cipher"
+      ],
+      "paths": {
+        "abacus": {
+          "basis": "runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "abacus": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "runtime",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              73
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              73
+            ],
+            "before": [
+              "ok",
+              73
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              73
+            ],
+            "before": [
+              "ok",
+              73
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D05",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "abacus": "runtime_env",
+          "bridge": "bystander",
+          "cipher": "bystander"
+        },
+        "consumer_targets": {
+          "abacus": "refunds",
+          "bridge": "refunds",
+          "cipher": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 25,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 100,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {
+          "abacus": {
+            "REFUNDS_URL": "https://refunds.test"
+          }
+        },
+        "family": "F05_runtime_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 73,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D06": {
+      "change_id": "D06",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/tariffs",
+        "service": "tariffs"
+      },
+      "family": "F06_code_only",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "cipher",
+          "delta"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "abacus",
+        "harbinger"
+      ],
+      "paths": {
+        "cipher": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "cipher"
+          },
+          "method": "GET",
+          "provider": "tariffs",
+          "route": "/tariffs"
+        },
+        "delta": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "delta"
+          },
+          "method": "GET",
+          "provider": "tariffs",
+          "route": "/tariffs"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "cipher": "breaking",
+          "delta": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "tariffs",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              125
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              125
+            ],
+            "before": [
+              "ok",
+              125
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "harbinger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "tariffs": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D06",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "consumer_kinds": {
+          "abacus": "bystander",
+          "cipher": "single",
+          "delta": "cursor",
+          "harbinger": "bystander"
+        },
+        "consumer_targets": {
+          "abacus": "tariffs",
+          "cipher": "tariffs",
+          "delta": "tariffs",
+          "harbinger": "tariffs"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/tariffs": 20,
+            "/tariffs/count": 100
+          },
+          "main": {
+            "/tariffs": 200,
+            "/tariffs/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F06_code_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 125,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "provider": "tariffs",
+        "unclassified": false
+      }
+    },
+    "D07": {
+      "change_id": "D07",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/visits",
+        "service": "visits"
+      },
+      "family": "F07_stale_runtime",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "abacus",
+          "glacier"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "ember"
+      ],
+      "paths": {
+        "abacus": {
+          "basis": "stale_runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "glacier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "glacier"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "abacus": "breaking",
+          "glacier": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "visits",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "stale_runtime",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              17
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              17
+            ],
+            "before": [
+              "ok",
+              17
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              17
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "visits": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D07",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "consumer_kinds": {
+          "abacus": "runtime_env",
+          "ember": "bystander",
+          "glacier": "single"
+        },
+        "consumer_targets": {
+          "abacus": "visits",
+          "ember": "visits",
+          "glacier": "visits"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/visits": 10,
+            "/visits/count": 100
+          },
+          "main": {
+            "/visits": 50,
+            "/visits/count": 100
+          }
+        },
+        "deployment_env": {
+          "abacus": {
+            "VISITS_URL": "https://visits.test"
+          }
+        },
+        "family": "F07_stale_runtime",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 17,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "provider": "visits",
+        "unclassified": false
+      }
+    },
+    "D08": {
+      "change_id": "D08",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/visits",
+        "service": "visits"
+      },
+      "family": "F08_revoked_source",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "iris",
+          "juniper"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "abacus"
+      ],
+      "paths": {
+        "iris": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "iris"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "juniper": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "juniper"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "iris": "recheck",
+          "juniper": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "visits",
+      "revoked": [
+        "delta"
+      ],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              32
+            ],
+            "before": [
+              "ok",
+              32
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              32
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "revoked"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              32
+            ],
+            "before": [
+              "ok",
+              32
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              32
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "visits": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D08",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "consumer_kinds": {
+          "abacus": "bystander",
+          "delta": "single",
+          "iris": "cursor",
+          "juniper": "single"
+        },
+        "consumer_targets": {
+          "abacus": "visits",
+          "delta": "visits",
+          "iris": "visits",
+          "juniper": "visits"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/visits": 20,
+            "/visits/count": 100
+          },
+          "main": {
+            "/visits": 50,
+            "/visits/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F08_revoked_source",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 32,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "provider": "visits",
+        "unclassified": false
+      }
+    },
+    "D09": {
+      "change_id": "D09",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/tariffs",
+        "service": "tariffs"
+      },
+      "family": "F09_ownership_conflict",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "cipher",
+          "glacier",
+          "iris"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "ember",
+        "juniper"
+      ],
+      "paths": {
+        "cipher": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "cipher"
+          },
+          "method": "GET",
+          "provider": "tariffs",
+          "route": "/tariffs"
+        },
+        "glacier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "glacier"
+          },
+          "method": "GET",
+          "provider": "tariffs",
+          "route": "/tariffs"
+        },
+        "iris": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "iris"
+          },
+          "method": "GET",
+          "provider": "tariffs",
+          "route": "/tariffs"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "cipher": "breaking",
+          "glacier": "recheck",
+          "iris": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "tariffs",
+      "revoked": [],
+      "services": {
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              46
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              46
+            ],
+            "before": [
+              "ok",
+              46
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              46
+            ],
+            "before": [
+              "ok",
+              46
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "UNKNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              46
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "CONFLICT",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              46
+            ],
+            "before": [
+              "ok",
+              46
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "tariffs": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D09",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "consumer_kinds": {
+          "cipher": "single",
+          "ember": "bystander",
+          "glacier": "cursor",
+          "iris": "single",
+          "juniper": "bystander"
+        },
+        "consumer_targets": {
+          "cipher": "tariffs",
+          "ember": "tariffs",
+          "glacier": "tariffs",
+          "iris": "tariffs",
+          "juniper": "tariffs"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/tariffs": 25,
+            "/tariffs/count": 100
+          },
+          "main": {
+            "/tariffs": 50,
+            "/tariffs/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F09_ownership_conflict",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 46,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "provider": "tariffs",
+        "unclassified": false
+      }
+    },
+    "D10": {
+      "change_id": "D10",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F10_ambiguous_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "customs",
+        "delta",
+        "juniper"
+      ],
+      "paths": {
+        "harbinger": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "harbinger"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "iris": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "iris"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "harbinger": "breaking",
+          "iris": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "customs": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              27
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "customs",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "harbinger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              27
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              27
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D10",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "delta": "decoy",
+          "harbinger": "single",
+          "iris": "cursor",
+          "juniper": "bystander"
+        },
+        "consumer_targets": {
+          "delta": "customs",
+          "harbinger": "refunds",
+          "iris": "refunds",
+          "juniper": "refunds"
+        },
+        "decoy": "customs",
+        "decoy_defaults": {
+          "/refunds": 100
+        },
+        "defaults": {
+          "change": {
+            "/refunds": 25,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 50,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F10_ambiguous_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 27,
+        "jira_intent": "ambiguous",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D11": {
+      "change_id": "D11",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F11_vague_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "bridge",
+        "ember"
+      ],
+      "paths": {
+        "falcon": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "falcon"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "falcon": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              27
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              27
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              27
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D11",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "bridge": "bystander",
+          "ember": "bystander",
+          "falcon": "single"
+        },
+        "consumer_targets": {
+          "bridge": "refunds",
+          "ember": "refunds",
+          "falcon": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 20,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 50,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F11_vague_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 27,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D12": {
+      "change_id": "D12",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F12_unclassified_change",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "glacier"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "abacus",
+        "ember"
+      ],
+      "paths": {
+        "glacier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "glacier"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "glacier": "recheck"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              35
+            ],
+            "before": [
+              "ok",
+              35
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              35
+            ],
+            "before": [
+              "ok",
+              35
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              35
+            ],
+            "before": [
+              "ok",
+              35
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D12",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "abacus": "bystander",
+          "ember": "bystander",
+          "glacier": "single"
+        },
+        "consumer_targets": {
+          "abacus": "refunds",
+          "ember": "refunds",
+          "glacier": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 200,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 200,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F12_unclassified_change",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 35,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": true
+      }
+    },
+    "D13": {
+      "change_id": "D13",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F13_service_contract_unspecified",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "candidate"
+      },
+      "negatives": [
+        "glacier"
+      ],
+      "paths": {
+        "abacus": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "abacus"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "ember": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "ember"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "abacus": "breaking",
+          "ember": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              82
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              82
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              82
+            ],
+            "before": [
+              "ok",
+              82
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D13",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "abacus": "single",
+          "ember": "single",
+          "glacier": "bystander"
+        },
+        "consumer_targets": {
+          "abacus": "refunds",
+          "ember": "refunds",
+          "glacier": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 25,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 100,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F13_service_contract_unspecified",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 82,
+        "jira_intent": "candidate",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D14": {
+      "change_id": "D14",
+      "changed_operation": null,
+      "family": "F14_route_stated_unchanged",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "no_impact"
+      },
+      "negatives": [
+        "abacus",
+        "falcon",
+        "iris"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "tariffs",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              143
+            ],
+            "before": [
+              "ok",
+              143
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "tariffs": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D14",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "abacus": "single",
+          "falcon": "bystander",
+          "iris": "bystander"
+        },
+        "consumer_targets": {
+          "abacus": "tariffs",
+          "falcon": "tariffs",
+          "iris": "tariffs"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/tariffs": 200,
+            "/tariffs/count": 100
+          },
+          "main": {
+            "/tariffs": 200,
+            "/tariffs/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F14_route_stated_unchanged",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 143,
+        "jira_intent": "route_unchanged",
+        "operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "provider": "tariffs",
+        "unclassified": false
+      }
+    },
+    "D15": {
+      "change_id": "D15",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/visits",
+        "service": "visits"
+      },
+      "family": "F01_truncation",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "bridge",
+          "cipher",
+          "falcon",
+          "harbinger"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "abacus",
+        "glacier",
+        "postal"
+      ],
+      "paths": {
+        "bridge": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "bridge"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "cipher": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "cipher"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "falcon": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "falcon"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "harbinger": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "harbinger"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "bridge": "recheck",
+          "cipher": "recheck",
+          "falcon": "breaking",
+          "harbinger": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "visits",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "postal",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "explicit",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              30
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "harbinger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              10
+            ],
+            "before": [
+              "ok",
+              30
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "postal": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "visits": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D15",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "consumer_kinds": {
+          "abacus": "decoy",
+          "bridge": "cursor",
+          "cipher": "explicit",
+          "falcon": "single",
+          "glacier": "bystander",
+          "harbinger": "single"
+        },
+        "consumer_targets": {
+          "abacus": "postal",
+          "bridge": "visits",
+          "cipher": "visits",
+          "falcon": "visits",
+          "glacier": "visits",
+          "harbinger": "visits"
+        },
+        "decoy": "postal",
+        "decoy_defaults": {
+          "/visits": 100
+        },
+        "defaults": {
+          "change": {
+            "/visits": 10,
+            "/visits/count": 100
+          },
+          "main": {
+            "/visits": 100,
+            "/visits/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F01_truncation",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 30,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "provider": "visits",
+        "unclassified": false
+      }
+    },
+    "D16": {
+      "change_id": "D16",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F02_operation_removed",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "delta"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "falcon",
+        "iris"
+      ],
+      "paths": {
+        "delta": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "delta"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "delta": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "error",
+              404
+            ],
+            "before": [
+              "ok",
+              36
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              36
+            ],
+            "before": [
+              "ok",
+              36
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              36
+            ],
+            "before": [
+              "ok",
+              36
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D16",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "delta": "single",
+          "falcon": "bystander",
+          "iris": "bystander"
+        },
+        "consumer_targets": {
+          "delta": "refunds",
+          "falcon": "refunds",
+          "iris": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 50,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F02_operation_removed",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 36,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D17": {
+      "change_id": "D17",
+      "changed_operation": null,
+      "family": "F03_no_impact_noop",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "abacus",
+        "delta",
+        "ember",
+        "falcon"
+      ],
+      "paths": {},
+      "pr": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": {},
+        "expected_outcome": "no_impact"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              169
+            ],
+            "before": [
+              "ok",
+              169
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "falcon": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              169
+            ],
+            "before": [
+              "ok",
+              169
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D17",
+        "changed_operation": null,
+        "consumer_kinds": {
+          "abacus": "single",
+          "delta": "bystander",
+          "ember": "bystander",
+          "falcon": "cursor"
+        },
+        "consumer_targets": {
+          "abacus": "refunds",
+          "delta": "refunds",
+          "ember": "refunds",
+          "falcon": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 200,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 200,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F03_no_impact_noop",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 169,
+        "jira_intent": "vague",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D18": {
+      "change_id": "D18",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/visits",
+        "service": "visits"
+      },
+      "family": "F05_runtime_only",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "bridge",
+          "glacier"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "harbinger",
+        "juniper"
+      ],
+      "paths": {
+        "bridge": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "bridge"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "glacier": {
+          "basis": "runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "bridge": "breaking",
+          "glacier": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "visits",
+      "revoked": [],
+      "services": {
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              115
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "runtime",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              115
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "harbinger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "visits": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D18",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "consumer_kinds": {
+          "bridge": "single",
+          "glacier": "runtime_env",
+          "harbinger": "bystander",
+          "juniper": "bystander"
+        },
+        "consumer_targets": {
+          "bridge": "visits",
+          "glacier": "visits",
+          "harbinger": "visits",
+          "juniper": "visits"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/visits": 25,
+            "/visits/count": 100
+          },
+          "main": {
+            "/visits": 200,
+            "/visits/count": 100
+          }
+        },
+        "deployment_env": {
+          "glacier": {
+            "VISITS_URL": "https://visits.test"
+          }
+        },
+        "family": "F05_runtime_only",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 115,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "provider": "visits",
+        "unclassified": false
+      }
+    },
+    "D19": {
+      "change_id": "D19",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/tariffs",
+        "service": "tariffs"
+      },
+      "family": "F07_stale_runtime",
+      "jira": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "cipher"
+        ],
+        "expected_outcome": "partial"
+      },
+      "negatives": [
+        "iris"
+      ],
+      "paths": {
+        "cipher": {
+          "basis": "stale_runtime",
+          "callsite": null,
+          "method": "GET",
+          "provider": "tariffs",
+          "route": "/tariffs"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "PARTIAL",
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "cipher": "breaking"
+        },
+        "expected_outcome": "partial"
+      },
+      "provider": "tariffs",
+      "revoked": [],
+      "services": {
+        "cipher": {
+          "basis": "stale_runtime",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              154
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs"
+              ]
+            ]
+          },
+          "kind": "runtime_env",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              100
+            ],
+            "before": [
+              "ok",
+              100
+            ],
+            "calls": [
+              [
+                "tariffs",
+                "GET",
+                "/tariffs/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "tariffs": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D19",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "consumer_kinds": {
+          "cipher": "runtime_env",
+          "iris": "bystander"
+        },
+        "consumer_targets": {
+          "cipher": "tariffs",
+          "iris": "tariffs"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/tariffs": 25,
+            "/tariffs/count": 100
+          },
+          "main": {
+            "/tariffs": 200,
+            "/tariffs/count": 100
+          }
+        },
+        "deployment_env": {
+          "cipher": {
+            "TARIFFS_URL": "https://tariffs.test"
+          }
+        },
+        "family": "F07_stale_runtime",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 154,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/tariffs",
+          "service": "tariffs"
+        },
+        "provider": "tariffs",
+        "unclassified": false
+      }
+    },
+    "D20": {
+      "change_id": "D20",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F08_revoked_source",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "ember",
+          "iris"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "delta",
+        "juniper"
+      ],
+      "paths": {
+        "ember": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "ember"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "iris": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "iris"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "ember": "breaking",
+          "iris": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [
+        "cipher"
+      ],
+      "services": {
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              50
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "revoked"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              50
+            ],
+            "before": [
+              "ok",
+              50
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "ember": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              50
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              50
+            ],
+            "before": [
+              "ok",
+              50
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              50
+            ],
+            "before": [
+              "ok",
+              50
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D20",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "cipher": "single",
+          "delta": "bystander",
+          "ember": "single",
+          "iris": "cursor",
+          "juniper": "bystander"
+        },
+        "consumer_targets": {
+          "cipher": "refunds",
+          "delta": "refunds",
+          "ember": "refunds",
+          "iris": "refunds",
+          "juniper": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 20,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 50,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F08_revoked_source",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 50,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D21": {
+      "change_id": "D21",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/refunds",
+        "service": "refunds"
+      },
+      "family": "F09_ownership_conflict",
+      "jira": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": [
+          "bridge",
+          "glacier",
+          "juniper"
+        ],
+        "expected_outcome": "answer"
+      },
+      "negatives": [
+        "delta",
+        "harbinger"
+      ],
+      "paths": {
+        "bridge": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "bridge"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "glacier": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "glacier"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        },
+        "juniper": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "juniper"
+          },
+          "method": "GET",
+          "provider": "refunds",
+          "route": "/refunds"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "bridge": "recheck",
+          "glacier": "breaking",
+          "juniper": "breaking"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "refunds",
+      "revoked": [],
+      "services": {
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              55
+            ],
+            "before": [
+              "ok",
+              55
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "UNKNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              55
+            ],
+            "before": [
+              "ok",
+              55
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "glacier": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              55
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "harbinger": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              55
+            ],
+            "before": [
+              "ok",
+              55
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "juniper": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              20
+            ],
+            "before": [
+              "ok",
+              55
+            ],
+            "calls": [
+              [
+                "refunds",
+                "GET",
+                "/refunds"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "CONFLICT",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "refunds": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D21",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "consumer_kinds": {
+          "bridge": "cursor",
+          "delta": "bystander",
+          "glacier": "single",
+          "harbinger": "bystander",
+          "juniper": "single"
+        },
+        "consumer_targets": {
+          "bridge": "refunds",
+          "delta": "refunds",
+          "glacier": "refunds",
+          "harbinger": "refunds",
+          "juniper": "refunds"
+        },
+        "decoy": null,
+        "decoy_defaults": {},
+        "defaults": {
+          "change": {
+            "/refunds": 20,
+            "/refunds/count": 100
+          },
+          "main": {
+            "/refunds": 100,
+            "/refunds/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F09_ownership_conflict",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 55,
+        "jira_intent": "explicit",
+        "operation": {
+          "method": "GET",
+          "route": "/refunds",
+          "service": "refunds"
+        },
+        "provider": "refunds",
+        "unclassified": false
+      }
+    },
+    "D22": {
+      "change_id": "D22",
+      "changed_operation": {
+        "method": "GET",
+        "route": "/visits",
+        "service": "visits"
+      },
+      "family": "F10_ambiguous_jira",
+      "jira": {
+        "acceptable_statuses": [
+          "ABSTAINED"
+        ],
+        "expected_consumers": [],
+        "expected_outcome": "abstain"
+      },
+      "negatives": [
+        "bridge",
+        "customs",
+        "delta",
+        "iris"
+      ],
+      "paths": {
+        "abacus": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "abacus"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        },
+        "cipher": {
+          "basis": "code",
+          "callsite": {
+            "path": "client.py",
+            "repository": "cipher"
+          },
+          "method": "GET",
+          "provider": "visits",
+          "route": "/visits"
+        }
+      },
+      "pr": {
+        "acceptable_statuses": [
+          "USEFUL"
+        ],
+        "expected_consumers": {
+          "abacus": "breaking",
+          "cipher": "recheck"
+        },
+        "expected_outcome": "answer"
+      },
+      "provider": "visits",
+      "revoked": [],
+      "services": {
+        "abacus": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              25
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "single",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "breaking",
+          "visibility": "granted"
+        },
+        "bridge": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "cipher": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "cursor",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "recheck",
+          "visibility": "granted"
+        },
+        "customs": {
+          "owner_status": "KNOWN",
+          "role": "decoy_provider",
+          "visibility": "granted"
+        },
+        "delta": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "customs",
+                "GET",
+                "/visits"
+              ]
+            ]
+          },
+          "kind": "decoy",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "iris": {
+          "basis": "code",
+          "execution": {
+            "after": [
+              "ok",
+              33
+            ],
+            "before": [
+              "ok",
+              33
+            ],
+            "calls": [
+              [
+                "visits",
+                "GET",
+                "/visits/count"
+              ]
+            ]
+          },
+          "kind": "bystander",
+          "owner_status": "KNOWN",
+          "role": "consumer",
+          "severity": "none",
+          "visibility": "granted"
+        },
+        "visits": {
+          "owner_status": "KNOWN",
+          "role": "provider",
+          "visibility": "granted"
+        }
+      },
+      "world": {
+        "change_id": "D22",
+        "changed_operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "consumer_kinds": {
+          "abacus": "single",
+          "bridge": "bystander",
+          "cipher": "cursor",
+          "delta": "decoy",
+          "iris": "bystander"
+        },
+        "consumer_targets": {
+          "abacus": "visits",
+          "bridge": "visits",
+          "cipher": "visits",
+          "delta": "customs",
+          "iris": "visits"
+        },
+        "decoy": "customs",
+        "decoy_defaults": {
+          "/visits": 100
+        },
+        "defaults": {
+          "change": {
+            "/visits": 25,
+            "/visits/count": 100
+          },
+          "main": {
+            "/visits": 50,
+            "/visits/count": 100
+          }
+        },
+        "deployment_env": {},
+        "family": "F10_ambiguous_jira",
+        "fixture_day": "2026-10-01",
+        "items_on_fixture_day": 33,
+        "jira_intent": "ambiguous",
+        "operation": {
+          "method": "GET",
+          "route": "/visits",
+          "service": "visits"
+        },
+        "provider": "visits",
+        "unclassified": false
+      }
+    }
+  },
+  "program": "6-r3",
+  "schema": "readiness-oracle-1",
+  "scope": "evaluator only; never passed to the service, the baseline, a model or its configuration",
+  "split": "development"
+}

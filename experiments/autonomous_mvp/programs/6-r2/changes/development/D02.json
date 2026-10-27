@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://leases.test",
+      "service": "leases"
+    }
+  ],
+  "change_id": "D02",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис leases больше не отдаёт GET /leases; эндпоинт удаляется.",
+    "issue_id": 10301,
+    "key": "LSE-301",
+    "project": "LSE",
+    "summary": "Удалить устаревший список leases"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "auditor": "team-auditor",
+      "importer": "team-importer",
+      "leases": "team-leases",
+      "notifier": "team-notifier"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 301,
+    "repository": "leases",
+    "title": "LSE-301 Удалить устаревший список leases"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "auditor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# auditor\n\nService auditor of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://leases.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/leases/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "auditor"
+    },
+    "importer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# importer\n\nService importer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://leases.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/leases\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "importer"
+    },
+    "leases": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# leases\n\nService leases of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/leases/count\")\ndef count_leases(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_leases(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# leases\n\nService leases of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/leases\")\ndef list_leases(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_leases(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/leases/count\")\ndef count_leases(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_leases(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "leases"
+    },
+    "notifier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# notifier\n\nService notifier of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://leases.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/leases\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "notifier"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

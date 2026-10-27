@@ -1,0 +1,170 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://voyages.test",
+      "service": "voyages"
+    },
+    {
+      "base_url": "https://clearing.test",
+      "service": "clearing"
+    }
+  ],
+  "change_id": "H40",
+  "environment": "prod",
+  "family": "F01_truncation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /voyages: default page_size 50 -> 20.",
+    "issue_id": 10739,
+    "key": "VOY-739",
+    "project": "VOY",
+    "summary": "Уменьшить стандартный размер страницы voyages с 50 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "atlas": "team-atlas",
+      "beacon": "team-beacon",
+      "clearing": "team-clearing",
+      "lantern": "team-lantern",
+      "nimbus": "team-nimbus",
+      "relay": "team-relay",
+      "tundra": "team-tundra",
+      "vector": "team-vector",
+      "voyages": "team-voyages"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 739,
+    "repository": "voyages",
+    "title": "VOY-739 Уменьшить стандартный размер страницы voyages с 50 до 20"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "atlas": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# atlas\n\nService atlas of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day, \"page_size\": 500}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "atlas"
+    },
+    "beacon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# beacon\n\nService beacon of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://clearing.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "beacon"
+    },
+    "clearing": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# clearing\n\nService clearing of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_clearing(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_clearing(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "clearing"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "nimbus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nimbus\n\nService nimbus of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nimbus"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    },
+    "tundra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tundra\n\nService tundra of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tundra"
+    },
+    "vector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vector\n\nService vector of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vector"
+    },
+    "voyages": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "voyages"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

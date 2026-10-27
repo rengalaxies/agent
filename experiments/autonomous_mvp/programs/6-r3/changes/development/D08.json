@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://visits.test",
+      "service": "visits"
+    }
+  ],
+  "change_id": "D08",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "delta"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /visits: default page_size 50 -> 20.",
+    "issue_id": 10907,
+    "key": "VIS-907",
+    "project": "VIS",
+    "summary": "Уменьшить стандартный размер страницы visits с 50 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "abacus": "team-abacus",
+      "delta": "team-delta",
+      "iris": "team-iris",
+      "juniper": "team-juniper",
+      "visits": "team-visits"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 907,
+    "repository": "visits",
+    "title": "VIS-907 Уменьшить стандартный размер страницы visits с 50 до 20"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "abacus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# abacus\n\nService abacus of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "abacus"
+    },
+    "delta": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# delta\n\nService delta of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "delta"
+    },
+    "iris": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# iris\n\nService iris of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/visits\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "iris"
+    },
+    "juniper": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# juniper\n\nService juniper of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "juniper"
+    },
+    "visits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# visits\n\nService visits of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_visits(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/visits/count\")\ndef count_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# visits\n\nService visits of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_visits(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/visits/count\")\ndef count_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "visits"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

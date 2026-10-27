@@ -1,0 +1,133 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://voyages.test",
+      "service": "voyages"
+    }
+  ],
+  "change_id": "H18",
+  "environment": "prod",
+  "family": "F05_runtime_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /voyages: default page_size 100 -> 20.",
+    "issue_id": 10717,
+    "key": "VOY-717",
+    "project": "VOY",
+    "summary": "Уменьшить стандартный размер страницы voyages с 100 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "lantern": "team-lantern",
+      "nimbus": "team-nimbus",
+      "vector": "team-vector",
+      "voyages": "team-voyages"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 717,
+    "repository": "voyages",
+    "title": "VOY-717 Уменьшить стандартный размер страницы voyages с 100 до 20"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "nimbus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nimbus\n\nService nimbus of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://voyages.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nimbus"
+    },
+    "vector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vector\n\nService vector of the 6-r2 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"VOYAGES_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/voyages\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vector"
+    },
+    "voyages": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# voyages\n\nService voyages of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/voyages\")\ndef list_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/voyages/count\")\ndef count_voyages(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_voyages(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "voyages"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "voyages"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "vector",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "vector",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          },
+          {
+            "client": "vector",
+            "method": "GET",
+            "route": "/voyages",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

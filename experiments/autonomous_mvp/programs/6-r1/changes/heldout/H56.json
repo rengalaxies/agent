@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://bookings.test",
+      "service": "bookings"
+    }
+  ],
+  "change_id": "H56",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "inspector"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /bookings: default page_size 100 -> 25.",
+    "issue_id": 10555,
+    "key": "BKG-555",
+    "project": "BKG",
+    "summary": "Уменьшить стандартный размер страницы bookings с 100 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "bookings": "team-bookings",
+      "cockpit": "team-cockpit",
+      "insights": "team-insights",
+      "inspector": "team-inspector",
+      "statements": "team-statements"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 555,
+    "repository": "bookings",
+    "title": "BKG-555 Уменьшить стандартный размер страницы bookings с 100 до 25"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "bookings": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# bookings\n\nService bookings of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/bookings\")\ndef list_bookings(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/bookings/count\")\ndef count_bookings(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# bookings\n\nService bookings of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/bookings\")\ndef list_bookings(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/bookings/count\")\ndef count_bookings(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_bookings(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "bookings"
+    },
+    "cockpit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cockpit\n\nService cockpit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/bookings/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cockpit"
+    },
+    "insights": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# insights\n\nService insights of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/bookings\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "insights"
+    },
+    "inspector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# inspector\n\nService inspector of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/bookings\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "inspector"
+    },
+    "statements": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# statements\n\nService statements of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://bookings.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/bookings\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "statements"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

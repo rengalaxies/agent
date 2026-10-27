@@ -1,0 +1,114 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://cargo.test",
+      "service": "cargo"
+    }
+  ],
+  "change_id": "H41",
+  "environment": "prod",
+  "family": "F13_service_contract_unspecified",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Вместо 200 записей за раз отдавать 20.",
+    "issue_id": 11140,
+    "key": "CRG-1140",
+    "project": "CRG",
+    "summary": "cargo: отдавать данные меньшими порциями"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cargo": "team-cargo",
+      "meridian": "team-meridian",
+      "sierra": "team-sierra",
+      "willow": "team-willow",
+      "zephyr": "team-zephyr"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1140,
+    "repository": "cargo",
+    "title": "CRG-1140 cargo: отдавать данные меньшими порциями"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "cargo": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# cargo\n\nService cargo of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/cargo\")\ndef list_cargo(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/cargo/count\")\ndef count_cargo(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# cargo\n\nService cargo of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/cargo\")\ndef list_cargo(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/cargo/count\")\ndef count_cargo(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cargo"
+    },
+    "meridian": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# meridian\n\nService meridian of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "meridian"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    },
+    "willow": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# willow\n\nService willow of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/cargo\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "willow"
+    },
+    "zephyr": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# zephyr\n\nService zephyr of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "zephyr"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

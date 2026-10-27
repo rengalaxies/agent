@@ -1,0 +1,103 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://invoices.test",
+      "service": "invoices"
+    }
+  ],
+  "change_id": "D08",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "dashboard"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /invoices: default page_size 50 -> 20.",
+    "issue_id": 10107,
+    "key": "INV-107",
+    "project": "INV",
+    "summary": "Уменьшить стандартный размер страницы invoices с 50 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "dashboard": "team-dashboard",
+      "exporter": "team-exporter",
+      "invoices": "team-invoices",
+      "mailer": "team-mailer"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 107,
+    "repository": "invoices",
+    "title": "INV-107 Уменьшить стандартный размер страницы invoices с 50 до 20"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "dashboard": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# dashboard\n\nService dashboard of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "dashboard"
+    },
+    "exporter": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# exporter\n\nService exporter of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "exporter"
+    },
+    "invoices": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# invoices\n\nService invoices of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/invoices\")\ndef list_invoices(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/invoices/count\")\ndef count_invoices(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# invoices\n\nService invoices of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/invoices\")\ndef list_invoices(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/invoices/count\")\ndef count_invoices(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_invoices(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "invoices"
+    },
+    "mailer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mailer\n\nService mailer of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://invoices.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/invoices\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mailer"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

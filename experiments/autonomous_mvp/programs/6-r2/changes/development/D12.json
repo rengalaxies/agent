@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://quotes.test",
+      "service": "quotes"
+    }
+  ],
+  "change_id": "D12",
+  "environment": "prod",
+  "family": "F12_unclassified_change",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /quotes: передавать фильтр status=active в хранилище.",
+    "issue_id": 10311,
+    "key": "QTE-311",
+    "project": "QTE",
+    "summary": "Показывать в списке quotes только активные записи"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "balancer": "team-balancer",
+      "notifier": "team-notifier",
+      "quotes": "team-quotes",
+      "reviewer": "team-reviewer"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 311,
+    "repository": "quotes",
+    "title": "QTE-311 Показывать в списке quotes только активные записи"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "balancer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# balancer\n\nService balancer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "balancer"
+    },
+    "notifier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# notifier\n\nService notifier of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "notifier"
+    },
+    "quotes": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_quotes(day, cursor, page_size, status=\"active\")\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quotes"
+    },
+    "reviewer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# reviewer\n\nService reviewer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "reviewer"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

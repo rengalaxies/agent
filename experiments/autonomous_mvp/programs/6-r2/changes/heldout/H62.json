@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://permits.test",
+      "service": "permits"
+    },
+    {
+      "base_url": "https://harbor.test",
+      "service": "harbor"
+    }
+  ],
+  "change_id": "H62",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /permits: default page_size 100 -> 25.",
+    "issue_id": 10761,
+    "key": "PMT-761",
+    "project": "PMT",
+    "summary": "Уменьшить стандартный размер страницы с 100 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "atlas": "team-atlas",
+      "harbor": "team-harbor",
+      "lantern": "team-lantern",
+      "orbit": "team-orbit",
+      "permits": "team-permits",
+      "relay": "team-relay",
+      "summit": "team-summit"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 761,
+    "repository": "permits",
+    "title": "PMT-761 Уменьшить стандартный размер страницы с 100 до 25"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "atlas": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# atlas\n\nService atlas of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "atlas"
+    },
+    "harbor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harbor\n\nService harbor of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_harbor(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_harbor(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harbor"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/permits\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "orbit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# orbit\n\nService orbit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orbit"
+    },
+    "permits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "permits"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    },
+    "summit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# summit\n\nService summit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://harbor.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "summit"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

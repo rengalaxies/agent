@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://parcels.test",
+      "service": "parcels"
+    }
+  ],
+  "change_id": "H32",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "inspector"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /parcels: default page_size 100 -> 20.",
+    "issue_id": 10531,
+    "key": "PCL-531",
+    "project": "PCL",
+    "summary": "Уменьшить стандартный размер страницы parcels с 100 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "inspector": "team-inspector",
+      "parcels": "team-parcels",
+      "planner": "team-planner",
+      "statements": "team-statements",
+      "vault": "team-vault"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 531,
+    "repository": "parcels",
+    "title": "PCL-531 Уменьшить стандартный размер страницы parcels с 100 до 20"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "inspector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# inspector\n\nService inspector of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "inspector"
+    },
+    "parcels": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# parcels\n\nService parcels of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/parcels\")\ndef list_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/parcels/count\")\ndef count_parcels(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_parcels(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "parcels"
+    },
+    "planner": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# planner\n\nService planner of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "planner"
+    },
+    "statements": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# statements\n\nService statements of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "statements"
+    },
+    "vault": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vault\n\nService vault of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://parcels.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/parcels\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vault"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

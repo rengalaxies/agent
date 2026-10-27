@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://loans.test",
+      "service": "loans"
+    }
+  ],
+  "change_id": "H12",
+  "environment": "prod",
+  "family": "F12_unclassified_change",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /loans: передавать фильтр status=active в хранилище.",
+    "issue_id": 11111,
+    "key": "LON-1111",
+    "project": "LON",
+    "summary": "Показывать в списке loans только активные записи"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "loans": "team-loans",
+      "meridian": "team-meridian",
+      "sierra": "team-sierra",
+      "willow": "team-willow"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1111,
+    "repository": "loans",
+    "title": "LON-1111 Показывать в списке loans только активные записи"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "loans": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# loans\n\nService loans of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans\")\ndef list_loans(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_loans(day, cursor, page_size, status=\"active\")\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/loans/count\")\ndef count_loans(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# loans\n\nService loans of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans\")\ndef list_loans(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/loans/count\")\ndef count_loans(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "loans"
+    },
+    "meridian": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# meridian\n\nService meridian of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "meridian"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    },
+    "willow": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# willow\n\nService willow of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "willow"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,153 @@
+name: Autonomous MVP readiness with a model (manual, accepted main only)
+
+# Batch 6 live configurations: service-model (the service with a 2B-qualified model) and
+# baseline-live (the baseline search agent on the same model). Dispatch only, so PR CI never
+# calls the paid model and fork code never receives the secret. The job checks out main at
+# the exact SHA given by the owner, refuses Actions reruns and needs the autonomous-mvp-live
+# environment approval. A held-out run happens once per configuration and model: the job
+# creates the branch experiment-state/readiness/<revision>/heldout-<configuration>-<model>
+# before the first request and refuses when it exists; the ledger is stored there afterwards.
+
+on:
+  workflow_dispatch:
+    inputs:
+      split:
+        type: choice
+        required: true
+        options: [development, heldout]
+      configuration:
+        type: choice
+        required: true
+        options: [service-model, baseline-live]
+      model:
+        type: choice
+        required: true
+        options: [openai/gpt-oss-120b, Qwen/Qwen3-Coder-Next, Qwen/Qwen3.6-35B-A3B]
+      expected_main_sha:
+        type: string
+        required: true
+        description: Exact accepted main SHA (40 hex)
+      qualification_run:
+        type: string
+        required: false
+        default: ''
+        description: service-model only. Actions run id of the 2B report job whose report.json qualified the model
+
+permissions:
+  contents: read
+
+concurrency:
+  group: autonomous-mvp-readiness-${{ inputs.configuration }}-${{ inputs.model }}
+  cancel-in-progress: false
+
+env:
+  PYTHONPATH: '.:src'
+  EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+  SPLIT: ${{ inputs.split }}
+  CONFIGURATION: ${{ inputs.configuration }}
+  MODEL: ${{ inputs.model }}
+  QUALIFICATION_RUN: ${{ inputs.qualification_run }}
+
+jobs:
+  run:
+    if: github.repository == 'rengalaxies/agent' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 380
+    environment: autonomous-mvp-live
+    permissions:
+      contents: write # experiment-state/readiness/<revision>/heldout-<configuration>-<model> only
+      actions: read # the report artifact of the 2B run
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_MAIN_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the service
+        run: python -m pip install -e '.[api,test-api]'
+      - name: The current readiness manifest is the committed one
+        id: revision
+        run: |
+          python -m tools.autonomous_mvp.readiness.program --check
+          python -c 'from tools.autonomous_mvp.readiness import world; print("name=" + world.CURRENT)' >> "$GITHUB_OUTPUT"
+          python -c 'import os; from tools.autonomous_mvp.readiness.live import slug; print("slug=" + slug(os.environ["MODEL"]))' >> "$GITHUB_OUTPUT"
+      - name: Qualification report of the 2B run
+        if: inputs.configuration == 'service-model'
+        id: qualification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          [[ "$QUALIFICATION_RUN" =~ ^[0-9]+$ ]] || { echo "service-model needs qualification_run"; exit 1; }
+          run=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$QUALIFICATION_RUN" --jq '[.path, .head_branch, .conclusion] | join(" ")')
+          test "$run" = ".github/workflows/autonomous-mvp-model.yml main success" || { echo "not a successful 2B run on main: $run"; exit 1; }
+          gh run download "$QUALIFICATION_RUN" --repo "$GITHUB_REPOSITORY" --name autonomous-mvp-report --dir "$RUNNER_TEMP/qualification"
+          report="$RUNNER_TEMP/qualification/report.json"
+          {
+            echo "report=$report"
+            echo "run_id=$(jq -r .run_id "$report")"
+            echo "sha256=$(sha256sum "$report" | cut -d' ' -f1)"
+          } >> "$GITHUB_OUTPUT"
+      - name: Held-out runs once per configuration and model
+        if: inputs.split == 'heldout'
+        id: lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ steps.revision.outputs.name }}
+          SLUG: ${{ steps.revision.outputs.slug }}
+        run: |
+          set -euo pipefail
+          branch="experiment-state/readiness/$REVISION/heldout-$CONFIGURATION-$SLUG"
+          # Creating the ref is the lock: it fails when the branch exists, before any model request.
+          gh api -X POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/heads/$branch" -f sha="$EXPECTED_MAIN_SHA" > /dev/null \
+            || { echo "held-out already started for this configuration: $branch"; exit 1; }
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+      - name: Run the configuration
+        env:
+          CLOUDRU_FOUNDATION_API_KEY: ${{ secrets.CLOUDRU_FOUNDATION_API_KEY }}
+          REPORT: ${{ steps.qualification.outputs.report }}
+          RUN_ID: ${{ steps.qualification.outputs.run_id }}
+          REPORT_SHA256: ${{ steps.qualification.outputs.sha256 }}
+          REVISION: ${{ steps.revision.outputs.name }}
+          SLUG: ${{ steps.revision.outputs.slug }}
+        run: |
+          set -euo pipefail
+          mkdir -p work/readiness
+          if [ "$CONFIGURATION" = service-model ]; then
+            python -m tools.autonomous_mvp.readiness.runner --split "$SPLIT" --configuration service-model --model "$MODEL" \
+              --qualification-report "$REPORT" --qualification-run-id "$RUN_ID" --qualification-sha256 "$REPORT_SHA256" \
+              --series-minutes 340 | tee work/readiness/run.log
+          else
+            python -m tools.autonomous_mvp.readiness.baseline --split "$SPLIT" --transport live --model "$MODEL" \
+              --series-minutes 340 | tee work/readiness/run.log
+          fi
+          # Only this configuration's ledger; the revision's other ledgers are in the repository already.
+          cp "experiments/autonomous_mvp/programs/$REVISION/results/$SPLIT-$CONFIGURATION-$SLUG.json" work/readiness/
+      - name: Store the held-out ledger on its branch
+        if: always() && inputs.split == 'heldout' && steps.lock.outputs.branch != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.lock.outputs.branch }}
+          SLUG: ${{ steps.revision.outputs.slug }}
+        run: |
+          set -euo pipefail
+          ledger="work/readiness/heldout-$CONFIGURATION-$SLUG.json"
+          [ -f "$ledger" ] || { echo "no ledger written; the branch stays as the record that the run started"; exit 1; }
+          gzip -9 -c "$ledger" > "$ledger.gz"
+          gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/$(basename "$ledger").gz" -f branch="$BRANCH" \
+            -f message="readiness: held-out ledger $(basename "$ledger") at $EXPECTED_MAIN_SHA" \
+            -f content="$(base64 -w0 "$ledger.gz")" > /dev/null
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: readiness-${{ inputs.split }}-${{ inputs.configuration }}
+          path: work/readiness
+          if-no-files-found: warn

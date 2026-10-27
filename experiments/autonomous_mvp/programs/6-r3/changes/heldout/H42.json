@@ -1,0 +1,89 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://cargo.test",
+      "service": "cargo"
+    }
+  ],
+  "change_id": "H42",
+  "environment": "prod",
+  "family": "F14_route_stated_unchanged",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /cargo does not change; only the docs are updated.",
+    "issue_id": 11141,
+    "key": "CRG-1141",
+    "project": "CRG",
+    "summary": "cargo: refresh the runbook"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cargo": "team-cargo",
+      "nebula": "team-nebula",
+      "zephyr": "team-zephyr"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1141,
+    "repository": "cargo",
+    "title": "CRG-1141 cargo: refresh the runbook"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "cargo": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# cargo\n\nService cargo of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/cargo\")\ndef list_cargo(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/cargo/count\")\ndef count_cargo(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+            "docs/runbook.md": "# Runbook\n\nRestart cargo with the deploy tool.\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# cargo\n\nService cargo of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/cargo\")\ndef list_cargo(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/cargo/count\")\ndef count_cargo(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cargo"
+    },
+    "nebula": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nebula\n\nService nebula of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nebula"
+    },
+    "zephyr": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# zephyr\n\nService zephyr of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "zephyr"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

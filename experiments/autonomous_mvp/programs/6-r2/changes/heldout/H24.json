@@ -1,0 +1,88 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://claims.test",
+      "service": "claims"
+    }
+  ],
+  "change_id": "H24",
+  "environment": "prod",
+  "family": "F11_vague_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Отвечать меньшими страницами: 25 записей вместо 50 по умолчанию.",
+    "issue_id": 10723,
+    "key": "CLM-723",
+    "project": "CLM",
+    "summary": "Ускорить выдачу списка за день"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "claims": "team-claims",
+      "relay": "team-relay",
+      "tundra": "team-tundra"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 723,
+    "repository": "claims",
+    "title": "CLM-723 Ускорить выдачу списка за день"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "claims": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# claims\n\nService claims of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_claims(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/claims/count\")\ndef count_claims(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# claims\n\nService claims of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_claims(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/claims/count\")\ndef count_claims(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "claims"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    },
+    "tundra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# tundra\n\nService tundra of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tundra"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

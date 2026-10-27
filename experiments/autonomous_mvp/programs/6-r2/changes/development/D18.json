@@ -1,0 +1,133 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://quotes.test",
+      "service": "quotes"
+    }
+  ],
+  "change_id": "D18",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /quotes: default page_size 100 -> 10.",
+    "issue_id": 10317,
+    "key": "QTE-317",
+    "project": "QTE",
+    "summary": "Уменьшить стандартный размер страницы quotes с 100 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "balancer": "team-balancer",
+      "feeder": "team-feeder",
+      "gateway": "team-gateway",
+      "quotes": "team-quotes"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 317,
+    "repository": "quotes",
+    "title": "QTE-317 Уменьшить стандартный размер страницы quotes с 100 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "balancer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# balancer\n\nService balancer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "balancer"
+    },
+    "feeder": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# feeder\n\nService feeder of the 6-r2 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"QUOTES_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "feeder"
+    },
+    "gateway": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# gateway\n\nService gateway of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "gateway"
+    },
+    "quotes": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quotes"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "quotes"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "feeder",
+            "method": "GET",
+            "route": "/quotes",
+            "status": 200
+          },
+          {
+            "client": "feeder",
+            "method": "GET",
+            "route": "/quotes",
+            "status": 200
+          },
+          {
+            "client": "feeder",
+            "method": "GET",
+            "route": "/quotes",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "development"
+}

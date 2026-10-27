@@ -1,0 +1,114 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://quotes.test",
+      "service": "quotes"
+    }
+  ],
+  "change_id": "D13",
+  "environment": "prod",
+  "family": "F13_service_contract_unspecified",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Стандартный лимит 100 -> 10.",
+    "issue_id": 10312,
+    "key": "QTE-312",
+    "project": "QTE",
+    "summary": "Сократить ответ quotes для дневной выгрузки"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "auditor": "team-auditor",
+      "feeder": "team-feeder",
+      "notifier": "team-notifier",
+      "quotes": "team-quotes",
+      "syncer": "team-syncer"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 312,
+    "repository": "quotes",
+    "title": "QTE-312 Сократить ответ quotes для дневной выгрузки"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "auditor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# auditor\n\nService auditor of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "auditor"
+    },
+    "feeder": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# feeder\n\nService feeder of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "feeder"
+    },
+    "notifier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# notifier\n\nService notifier of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "notifier"
+    },
+    "quotes": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# quotes\n\nService quotes of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/quotes\")\ndef list_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/quotes/count\")\ndef count_quotes(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_quotes(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quotes"
+    },
+    "syncer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# syncer\n\nService syncer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://quotes.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/quotes/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "syncer"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

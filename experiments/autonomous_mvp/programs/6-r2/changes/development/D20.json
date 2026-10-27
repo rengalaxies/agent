@@ -1,0 +1,103 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://returns.test",
+      "service": "returns"
+    }
+  ],
+  "change_id": "D20",
+  "environment": "prod",
+  "family": "F09_ownership_conflict",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /returns: default page_size 200 -> 25.",
+    "issue_id": 10319,
+    "key": "RTN-319",
+    "project": "RTN",
+    "summary": "Уменьшить стандартный размер страницы returns с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "gateway": [
+        "team-gateway",
+        "team-platform"
+      ],
+      "importer": "team-importer",
+      "returns": "team-returns"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 319,
+    "repository": "returns",
+    "title": "RTN-319 Уменьшить стандартный размер страницы returns с 200 до 25"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "auditor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# auditor\n\nService auditor of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/returns\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "auditor"
+    },
+    "gateway": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# gateway\n\nService gateway of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "gateway"
+    },
+    "importer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# importer\n\nService importer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "importer"
+    },
+    "returns": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# returns\n\nService returns of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_returns(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/returns/count\")\ndef count_returns(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# returns\n\nService returns of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_returns(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/returns/count\")\ndef count_returns(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "returns"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

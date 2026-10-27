@@ -1,0 +1,131 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://orders.test",
+      "service": "orders"
+    },
+    {
+      "base_url": "https://warehouse.test",
+      "service": "warehouse"
+    }
+  ],
+  "change_id": "D10",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /orders: default page_size 200 -> 25.",
+    "issue_id": 10109,
+    "key": "ORD-109",
+    "project": "ORD",
+    "summary": "Уменьшить стандартный размер страницы с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "audit": "team-audit",
+      "forecast": "team-forecast",
+      "mailer": "team-mailer",
+      "orders": "team-orders",
+      "reporting": "team-reporting",
+      "warehouse": "team-warehouse"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 109,
+    "repository": "orders",
+    "title": "ORD-109 Уменьшить стандартный размер страницы с 200 до 25"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "audit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# audit\n\nService audit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://orders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "audit"
+    },
+    "forecast": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# forecast\n\nService forecast of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://orders.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "forecast"
+    },
+    "mailer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mailer\n\nService mailer of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://warehouse.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mailer"
+    },
+    "orders": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# orders\n\nService orders of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/orders/count\")\ndef count_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# orders\n\nService orders of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/orders\")\ndef list_orders(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/orders/count\")\ndef count_orders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_orders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orders"
+    },
+    "reporting": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# reporting\n\nService reporting of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://orders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "reporting"
+    },
+    "warehouse": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# warehouse\n\nService warehouse of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/orders\")\ndef list_warehouse(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_warehouse(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "warehouse"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

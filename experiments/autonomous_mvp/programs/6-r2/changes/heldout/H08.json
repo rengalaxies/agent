@@ -1,0 +1,103 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://permits.test",
+      "service": "permits"
+    }
+  ],
+  "change_id": "H08",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "quartz"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /permits: default page_size 50 -> 10.",
+    "issue_id": 10707,
+    "key": "PMT-707",
+    "project": "PMT",
+    "summary": "Уменьшить стандартный размер страницы permits с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "permits": "team-permits",
+      "prism": "team-prism",
+      "quartz": "team-quartz",
+      "relay": "team-relay"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 707,
+    "repository": "permits",
+    "title": "PMT-707 Уменьшить стандартный размер страницы permits с 50 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "permits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "permits"
+    },
+    "prism": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# prism\n\nService prism of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "prism"
+    },
+    "quartz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# quartz\n\nService quartz of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quartz"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

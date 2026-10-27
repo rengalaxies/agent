@@ -1,0 +1,131 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://permits.test",
+      "service": "permits"
+    },
+    {
+      "base_url": "https://registrar.test",
+      "service": "registrar"
+    }
+  ],
+  "change_id": "H36",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /permits: default page_size 100 -> 10.",
+    "issue_id": 10735,
+    "key": "PMT-735",
+    "project": "PMT",
+    "summary": "Уменьшить стандартный размер страницы с 100 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "atlas": "team-atlas",
+      "lantern": "team-lantern",
+      "mosaic": "team-mosaic",
+      "permits": "team-permits",
+      "registrar": "team-registrar",
+      "summit": "team-summit"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 735,
+    "repository": "permits",
+    "title": "PMT-735 Уменьшить стандартный размер страницы с 100 до 10"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "atlas": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# atlas\n\nService atlas of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "atlas"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "mosaic": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mosaic\n\nService mosaic of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://registrar.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mosaic"
+    },
+    "permits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# permits\n\nService permits of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/permits/count\")\ndef count_permits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_permits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "permits"
+    },
+    "registrar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registrar\n\nService registrar of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/permits\")\ndef list_registrar(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_registrar(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registrar"
+    },
+    "summit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# summit\n\nService summit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://permits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/permits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "summit"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://claims.test",
+      "service": "claims"
+    },
+    {
+      "base_url": "https://registrar.test",
+      "service": "registrar"
+    }
+  ],
+  "change_id": "H14",
+  "environment": "prod",
+  "family": "F01_truncation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /claims: default page_size 200 -> 25.",
+    "issue_id": 10713,
+    "key": "CLM-713",
+    "project": "CLM",
+    "summary": "Уменьшить стандартный размер страницы claims с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "claims": "team-claims",
+      "lantern": "team-lantern",
+      "orbit": "team-orbit",
+      "quartz": "team-quartz",
+      "registrar": "team-registrar",
+      "relay": "team-relay",
+      "vector": "team-vector"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 713,
+    "repository": "claims",
+    "title": "CLM-713 Уменьшить стандартный размер страницы claims с 200 до 25"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "claims": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# claims\n\nService claims of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_claims(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/claims/count\")\ndef count_claims(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# claims\n\nService claims of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_claims(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/claims/count\")\ndef count_claims(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_claims(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "claims"
+    },
+    "lantern": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lantern\n\nService lantern of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lantern"
+    },
+    "orbit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# orbit\n\nService orbit of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "orbit"
+    },
+    "quartz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# quartz\n\nService quartz of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://registrar.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quartz"
+    },
+    "registrar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registrar\n\nService registrar of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/claims\")\ndef list_registrar(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_registrar(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registrar"
+    },
+    "relay": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# relay\n\nService relay of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "relay"
+    },
+    "vector": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# vector\n\nService vector of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://claims.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/claims\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "vector"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

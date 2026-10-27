@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tenders.test",
+      "service": "tenders"
+    }
+  ],
+  "change_id": "H54",
+  "environment": "prod",
+  "family": "F12_unclassified_change",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tenders: передавать фильтр status=active в хранилище.",
+    "issue_id": 11153,
+    "key": "TND-1153",
+    "project": "TND",
+    "summary": "Показывать в списке tenders только активные записи"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "kestrel": "team-kestrel",
+      "raven": "team-raven",
+      "tenders": "team-tenders",
+      "willow": "team-willow"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1153,
+    "repository": "tenders",
+    "title": "TND-1153 Показывать в списке tenders только активные записи"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "kestrel": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# kestrel\n\nService kestrel of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "kestrel"
+    },
+    "raven": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# raven\n\nService raven of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "raven"
+    },
+    "tenders": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_tenders(day, cursor, page_size, status=\"active\")\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tenders"
+    },
+    "willow": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# willow\n\nService willow of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "willow"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

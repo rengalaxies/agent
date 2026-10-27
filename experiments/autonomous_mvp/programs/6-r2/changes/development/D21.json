@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://returns.test",
+      "service": "returns"
+    },
+    {
+      "base_url": "https://fleet.test",
+      "service": "fleet"
+    }
+  ],
+  "change_id": "D21",
+  "environment": "prod",
+  "family": "F10_ambiguous_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /returns: default page_size 200 -> 20.",
+    "issue_id": 10320,
+    "key": "RTN-320",
+    "project": "RTN",
+    "summary": "Уменьшить стандартный размер страницы с 200 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "auditor": "team-auditor",
+      "balancer": "team-balancer",
+      "feeder": "team-feeder",
+      "fleet": "team-fleet",
+      "notifier": "team-notifier",
+      "returns": "team-returns",
+      "syncer": "team-syncer"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 320,
+    "repository": "returns",
+    "title": "RTN-320 Уменьшить стандартный размер страницы с 200 до 20"
+  },
+  "program": "6-r2",
+  "repositories": {
+    "auditor": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# auditor\n\nService auditor of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "auditor"
+    },
+    "balancer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# balancer\n\nService balancer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/returns\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "balancer"
+    },
+    "feeder": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# feeder\n\nService feeder of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "feeder"
+    },
+    "fleet": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# fleet\n\nService fleet of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_fleet(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_fleet(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "fleet"
+    },
+    "notifier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# notifier\n\nService notifier of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://fleet.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "notifier"
+    },
+    "returns": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# returns\n\nService returns of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_returns(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/returns/count\")\ndef count_returns(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# returns\n\nService returns of the 6-r2 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/returns\")\ndef list_returns(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/returns/count\")\ndef count_returns(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_returns(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "returns"
+    },
+    "syncer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# syncer\n\nService syncer of the 6-r2 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://returns.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/returns/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "syncer"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

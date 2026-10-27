@@ -1,0 +1,170 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://shipments.test",
+      "service": "shipments"
+    },
+    {
+      "base_url": "https://billing.test",
+      "service": "billing"
+    }
+  ],
+  "change_id": "D13",
+  "environment": "prod",
+  "family": "F01_truncation",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /shipments: default page_size 50 -> 10.",
+    "issue_id": 10112,
+    "key": "SHP-112",
+    "project": "SHP",
+    "summary": "Уменьшить стандартный размер страницы shipments с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "archive": "team-archive",
+      "audit": "team-audit",
+      "billing": "team-billing",
+      "dashboard": "team-dashboard",
+      "exporter": "team-exporter",
+      "forecast": "team-forecast",
+      "mailer": "team-mailer",
+      "registry": "team-registry",
+      "shipments": "team-shipments"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 112,
+    "repository": "shipments",
+    "title": "SHP-112 Уменьшить стандартный размер страницы shipments с 50 до 10"
+  },
+  "program": "6-r1",
+  "repositories": {
+    "archive": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# archive\n\nService archive of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "archive"
+    },
+    "audit": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# audit\n\nService audit of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day, \"page_size\": 500}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "audit"
+    },
+    "billing": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# billing\n\nService billing of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/shipments\")\ndef list_billing(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_billing(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "billing"
+    },
+    "dashboard": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# dashboard\n\nService dashboard of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://billing.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "dashboard"
+    },
+    "exporter": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# exporter\n\nService exporter of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "exporter"
+    },
+    "forecast": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# forecast\n\nService forecast of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "forecast"
+    },
+    "mailer": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# mailer\n\nService mailer of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "mailer"
+    },
+    "registry": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# registry\n\nService registry of the 6-r1 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://shipments.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/shipments\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "registry"
+    },
+    "shipments": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# shipments\n\nService shipments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/shipments\")\ndef list_shipments(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/shipments/count\")\ndef count_shipments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# shipments\n\nService shipments of the 6-r1 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/shipments\")\ndef list_shipments(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/shipments/count\")\ndef count_shipments(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_shipments(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "shipments"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}
