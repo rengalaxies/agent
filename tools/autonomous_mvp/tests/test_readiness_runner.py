@@ -4,10 +4,15 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from importlib.util import find_spec
 
 from tools.autonomous_mvp.readiness import baseline, program, runner, scorer
 from tools.autonomous_mvp.readiness.bench import ChangeBench, materialize
 from tools.autonomous_mvp.transport import ScriptedTransport, TransportResult
+
+# The 2B offline job installs pydantic and PyYAML only; core-tests installs the service stack and runs these.
+NEEDS_SERVICE = unittest.skipUnless(find_spec("fastapi") and find_spec("uvicorn"),
+                                    "service stack (fastapi, uvicorn) not installed")
 
 _, _, CHANGES = program.load()
 ORACLE = program.load_oracle("development")
@@ -21,6 +26,7 @@ def without_oracle(directory):
     return base
 
 
+@NEEDS_SERVICE
 class ServiceEndToEnd(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -61,6 +67,7 @@ class ServiceEndToEnd(unittest.TestCase):
         self.assertEqual(report["stages"]["jira"]["revoked_leaks"] + report["stages"]["pr"]["revoked_leaks"], 0)
 
 
+@NEEDS_SERVICE
 class PublicationCounters(unittest.TestCase):
     def test_a_second_service_comment_on_the_stand_is_reported_as_a_duplicate(self):
         with tempfile.TemporaryDirectory() as tmp:

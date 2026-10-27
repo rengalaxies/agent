@@ -9,12 +9,17 @@ from pathlib import Path
 import tempfile
 from types import SimpleNamespace
 import unittest
+from importlib.util import find_spec
 
 from agent_graph.contracts import GraphError, Limits, ModelConfig
 from agent_service.qualification import loaded_profile
 from tests.service.test_qualification import report_document, save
 from tools.autonomous_mvp.readiness import baseline, live, program, runner, scorer
 from tools.autonomous_mvp.transport import ScriptedTransport, TransportResult, reply
+
+# The 2B offline job installs pydantic and PyYAML only; core-tests installs the service stack and runs these.
+NEEDS_SERVICE = unittest.skipUnless(find_spec("fastapi") and find_spec("uvicorn"),
+                                    "service stack (fastapi, uvicorn) not installed")
 
 MODEL_ID = "openai/gpt-oss-120b"
 CHANGES = runner.load_changes("development")
@@ -80,6 +85,7 @@ class ServiceModelQualification(unittest.TestCase):
         self.assertIn("qualification_report_digest_mismatch", self.refused(reference))
 
 
+@NEEDS_SERVICE
 class ServiceModelRun(unittest.TestCase):
     def run_series(self, only, *, fail=False, seconds=3600):
         tmp = tempfile.TemporaryDirectory()
