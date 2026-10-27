@@ -210,7 +210,7 @@ jobs:
           { echo "## Inventory and state"; echo '```json'; jq '{owned, orphans, duplicates, missing_outside_terraform, foreign_counts, problems}' "$RUNNER_TEMP/classify.json"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           # Orphans, duplicates and quota block creating; destroy and status still run and leave orphans alone.
           if [ "${CLASSIFY_RC:-0}" != 0 ] && { [ "$OPERATION" = plan ] || [ "$OPERATION" = apply ]; }; then
-            echo "Inventory blocks planning: adopt or remove orphans, resolve duplicates or quota first"; exit 1
+            echo "Inventory blocks planning: adopt or remove orphans, resolve duplicates, a full quota or a quota that cannot be read first"; exit 1
           fi
       - name: Status
         if: inputs.operation == 'status'

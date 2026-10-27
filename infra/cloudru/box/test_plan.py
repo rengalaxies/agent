@@ -1,12 +1,18 @@
 """Plan guard, reviewed-plan digest, TTL and cleanup selection."""
 
+import contextlib
 import copy
 import datetime as dt
+import io
 import json
+from pathlib import Path
+import tempfile
 import unittest
 
+import boxctl
 import ownership as own
 from fixtures import P1_LIVE, box_state, destroy_plan, fresh_plan, inventory, rc, uid
+from test_ownership import DISCOVERED, quota_row
 
 KEY = bytes(range(32))
 SHA = "a" * 40
@@ -168,6 +174,56 @@ class TtlAndCleanup(unittest.TestCase):
         live, _ = own.live_inventory(inventory())
         self.assertIn("ledger_differs_from_state", own.cleanup_selection(destroy_plan(st), rs, ledger, live, "pilot1")["problems"])
         self.assertIn("ledger_missing", own.cleanup_selection(destroy_plan(st), rs, None, live, "pilot1")["problems"])
+
+
+class ClassifyQuota(unittest.TestCase):
+    """``boxctl classify`` runs before plan and apply; a non-zero exit stops the workflow there."""
+
+    SUBNET = "d58e80ef-fff1-43eb-b601-96fb358224b7"
+    FULL_IP = {"project": [quota_row("network.ip.quantity", "3", "3", "3"), quota_row("compute.vcpu", "16", "4", "4")]}
+
+    def classify(self, quotas, *, state=None, adopt="", **live):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            (tmp / "inventory.json").write_text(json.dumps(inventory(**{**P1_LIVE, **live}, quotas=quotas)))
+            args = ["classify", "--box-id", "pilot1", "--inventory", str(tmp / "inventory.json"),
+                    "--state", str(tmp / "state.json"), "--subnet", self.SUBNET, "--out", str(tmp / "out.json")]
+            if state is not None:
+                (tmp / "state.json").write_text(json.dumps(state))
+            if adopt:
+                args += ["--adopt", adopt]
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                code = boxctl.main(args)
+            return code, json.loads((tmp / "out.json").read_text())["problems"], err.getvalue()
+
+    def test_first_apply_is_blocked_by_a_full_ip_quota_reported_as_strings(self):
+        code, problems, err = self.classify(self.FULL_IP)
+        self.assertEqual((code, problems), (1, ["quota:project:network.ip.quantity:3+1>3"]))
+        self.assertIn("problem: quota:project:network.ip.quantity:3+1>3", err)
+
+    def test_first_apply_is_blocked_when_a_required_quota_cannot_be_read(self):
+        code, problems, _ = self.classify({"project": [quota_row("compute.vcpu", "16", "4", "4")]})
+        self.assertEqual((code, problems), (1, ["quota_unknown:network.ip.quantity:no_row"]))
+
+    def test_first_apply_with_room_in_the_discovered_quotas_passes(self):
+        self.assertEqual(self.classify(DISCOVERED)[:2], (0, []))
+
+    def test_adopting_an_orphan_ip_needs_no_new_ip(self):
+        orphan = (uid(4), "amvp-box-pilot1-ip")
+        code, problems, _ = self.classify(self.FULL_IP, adopt=f"external_ip={uid(4)}",
+                                          ips=P1_LIVE["ips"] + [orphan])
+        self.assertEqual((code, problems), (0, []))
+
+    def test_a_box_already_in_state_needs_no_new_quota(self):
+        live = box_state()
+        names = {r["type"]: r["instances"][0]["attributes"] for r in live["resources"]}
+        code, problems, _ = self.classify(
+            self.FULL_IP, state=live,
+            vms=P1_LIVE["vms"] + [(names["cloudru_evolution_compute_vm"]["id"], "amvp-box-pilot1-vm")],
+            disks=P1_LIVE["disks"] + [(names["cloudru_evolution_compute_disk"]["id"], "amvp-box-pilot1-boot")],
+            ips=P1_LIVE["ips"] + [(names["cloudru_evolution_compute_external_ip"]["id"], "amvp-box-pilot1-ip")])
+        self.assertEqual((code, problems), (0, []))
 
 
 if __name__ == "__main__":

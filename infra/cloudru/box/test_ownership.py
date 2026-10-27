@@ -102,13 +102,76 @@ class Recovery(unittest.TestCase):
             own.adopt_block(r, "disk", uid(2))
 
 
+def quota_row(code, limit, individual, aggregated):
+    return {"resource_type_code": code, "individual_limit": limit, "individual_usage": individual,
+            "aggregated_usage": aggregated}
+
+
+# Rows as discovery run 40266720846 (26.10.2026) printed them: every number is a string, -1 is unlimited.
+DISCOVERED = {"organization": [quota_row("network.ip.quantity", "5", "0", "3"), quota_row("compute.vcpu", "16", "0", "7"),
+                               quota_row("compute.ram", "68", "0", "18")],
+              "project": [quota_row("compute.ram", "-1", "12", "12"), quota_row("network.ip.quantity", "3", "2", "2"),
+                          quota_row("compute.vcpu", "16", "4", "4")]}
+FIRST_APPLY = {"network.ip.quantity": 1, "compute.vcpu": 2}
+
+
 class Quota(unittest.TestCase):
     def test_public_ip_quota_without_room_blocks_a_first_apply(self):
-        quotas = {"organization": [{"resource_type_code": "network.ip.quantity", "individual_limit": 1,
-                                    "individual_usage": 1, "aggregated_usage": 1}],
-                  "project": [{"resource_type_code": "compute.vcpu", "individual_limit": None, "individual_usage": 4}]}
-        self.assertEqual(own.quota_problems(quotas, {"network.ip.quantity": 1, "compute.vcpu": 2}),
-                         ["quota:organization:network.ip.quantity:1+1>1"])
+        quotas = {"organization": [quota_row("network.ip.quantity", 1, 1, 1)],
+                  "project": [quota_row("compute.vcpu", 16, 4, 4)]}
+        self.assertEqual(own.quota_problems(quotas, FIRST_APPLY), ["quota:organization:network.ip.quantity:1+1>1"])
+
+    def test_saturated_quota_given_as_strings_blocks_like_the_same_numbers(self):
+        # Before the fix string rows were never compared and a full IP quota passed.
+        row = quota_row("network.ip.quantity", "3", "3", "3")
+        self.assertEqual(own.quota_problems({"project": [row]}, {"network.ip.quantity": 1}),
+                         ["quota:project:network.ip.quantity:3+1>3"])
+        mixed = quota_row("network.ip.quantity", 3, "3", 2)
+        self.assertEqual(own.quota_problems({"project": [mixed]}, {"network.ip.quantity": 1}),
+                         ["quota:project:network.ip.quantity:3+1>3"])
+
+    def test_usage_is_the_numeric_maximum_of_the_two_usage_fields(self):
+        # As strings "9" > "12"; the larger number is 12.
+        row = quota_row("compute.vcpu", "13", "9", "12")
+        self.assertEqual(own.quota_problems({"organization": [row]}, {"compute.vcpu": 2}),
+                         ["quota:organization:compute.vcpu:12+2>13"])
+
+    def test_discovered_rows_with_room_and_an_exactly_sufficient_quota_pass(self):
+        self.assertEqual(own.quota_problems(DISCOVERED, FIRST_APPLY), [])
+        exact = {"project": [quota_row("network.ip.quantity", "3", "2", "2"), quota_row("compute.vcpu", 6.0, "4", "4")]}
+        self.assertEqual(own.quota_problems(exact, FIRST_APPLY), [])
+
+    def test_unlimited_quota_is_not_a_blocker_but_another_negative_limit_is_unknown(self):
+        self.assertEqual(own.quota_problems({"project": [quota_row("compute.ram", "-1", "500", "500")]},
+                                            {"compute.ram": 4}), [])
+        self.assertEqual(own.quota_problems({"project": [quota_row("compute.ram", "-2", "0", "0")]},
+                                            {"compute.ram": 4}), ["quota_unknown:project:compute.ram:individual_limit"])
+
+    def test_every_scope_is_checked_and_each_full_scope_is_reported(self):
+        quotas = {"organization": [quota_row("network.ip.quantity", "5", "0", "5")],
+                  "project": [quota_row("network.ip.quantity", "3", "3", "3")]}
+        self.assertEqual(own.quota_problems(quotas, {"network.ip.quantity": 1}),
+                         ["quota:organization:network.ip.quantity:5+1>5", "quota:project:network.ip.quantity:3+1>3"])
+
+    def test_unreadable_values_make_the_quota_unknown_instead_of_sufficient(self):
+        for field, value in (("individual_limit", None), ("individual_limit", True), ("individual_limit", "NaN"),
+                             ("individual_limit", float("inf")), ("individual_limit", "много"),
+                             ("individual_usage", None), ("aggregated_usage", "Infinity"),
+                             ("aggregated_usage", False), ("individual_usage", "")):
+            row = quota_row("network.ip.quantity", "3", "0", "0")
+            row[field] = value
+            with self.subTest(field=field, value=value):
+                self.assertEqual(own.quota_problems({"project": [row]}, {"network.ip.quantity": 1}),
+                                 [f"quota_unknown:project:network.ip.quantity:{field}"])
+        row = quota_row("network.ip.quantity", "3", "0", "0")
+        del row["aggregated_usage"]
+        self.assertEqual(own.quota_problems({"project": [row]}, {"network.ip.quantity": 1}),
+                         ["quota_unknown:project:network.ip.quantity:aggregated_usage"])
+
+    def test_required_quota_without_any_row_is_unknown(self):
+        self.assertEqual(own.quota_problems({"project": [quota_row("compute.vcpu", "16", "4", "4")]}, FIRST_APPLY),
+                         ["quota_unknown:network.ip.quantity:no_row"])
+        self.assertEqual(own.quota_problems({}, {}), [])  # nothing needed, nothing to check
 
 
 if __name__ == "__main__":

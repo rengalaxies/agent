@@ -22,6 +22,7 @@ import datetime as dt
 import hashlib
 import hmac
 import json
+import math
 import re
 from dataclasses import dataclass
 
@@ -388,17 +389,59 @@ def cleanup_selection(plan: dict, state: list[Recorded], ledger: dict | None, li
             "problems": problems}
 
 
+UNLIMITED = -1
+
+
+def quota_number(value) -> int | float | None:
+    """A quota field as a number: int, finite float or a numeric string; None when it cannot be read.
+
+    Discovery returns every field as a string ("3", "-1"). A bool, NaN, Infinity, empty or other
+    text is not a number, so it can never compare as "enough room".
+    """
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, str):
+        text = value.strip()
+        try:
+            value = int(text)
+        except ValueError:
+            try:
+                value = float(text)
+            except ValueError:
+                return None
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            return None
+        return int(value) if value.is_integer() else value
+    return value if isinstance(value, int) else None
+
+
 def quota_problems(quotas: dict, need: dict) -> list[str]:
-    """``need`` like {"network.ip.quantity": 1, "compute.vcpu": 2}; unknown limits are not blockers."""
+    """``need`` like {"network.ip.quantity": 1, "compute.vcpu": 2}; every needed code must be readable.
+
+    Each organization and project row of a needed code is checked: ``quota:...`` when usage plus the
+    need exceeds the limit, ``quota_unknown:<scope>:<code>:<field>`` when a field cannot be read and
+    ``quota_unknown:<code>:no_row`` when no scope reports the code. A limit of -1 is unlimited; any
+    other negative limit is unknown. Usage is the larger of the individual and aggregated usage.
+    """
     problems = []
     rows = {}
     for scope in ("organization", "project"):
         for row in quotas.get(scope) or []:
-            rows.setdefault(row.get("resource_type_code", "").lower(), []).append((scope, row))
+            rows.setdefault(str(row.get("resource_type_code") or "").lower(), []).append((scope, row))
     for code, amount in need.items():
+        if not rows.get(code):
+            problems.append(f"quota_unknown:{code}:no_row")
         for scope, row in rows.get(code, []):
-            limit = row.get("individual_limit")
-            used = max(row.get("individual_usage") or 0, row.get("aggregated_usage") or 0)
-            if isinstance(limit, (int, float)) and limit >= 0 and used + amount > limit:
+            values = {f: quota_number(row.get(f)) for f in ("individual_limit", "individual_usage", "aggregated_usage")}
+            limit = values["individual_limit"]
+            if limit is not None and limit < 0 and limit != UNLIMITED:
+                values["individual_limit"] = None
+            bad = [f for f, v in values.items() if v is None or (f != "individual_limit" and v < 0)]
+            if bad:
+                problems.append(f"quota_unknown:{scope}:{code}:{bad[0]}")
+                continue
+            used = max(values["individual_usage"], values["aggregated_usage"])
+            if limit != UNLIMITED and used + amount > limit:
                 problems.append(f"quota:{scope}:{code}:{used}+{amount}>{limit}")
     return problems
