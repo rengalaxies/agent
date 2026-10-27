@@ -1,0 +1,355 @@
+name: Cloud.ru service box (protected)
+# Batch 5B. One VM for the agent-service box in project 20853297-65b7-42a8-af40-25c8d2df4e11.
+# Manual dispatch only: no push, schedule or automatic destroy.
+#   plan / destroy-plan  read inventory and state, print the redacted plan and its digest; never write
+#                        state: a proposed recovery (untaint) is planned on a local copy and reviewed
+#   apply / destroy      environment cloudru-box-production (required reviewer); re-plan from
+#                        the same main commit and apply only if the digest equals the reviewed one
+#   status               owned resources, drift, orphans, TTL
+#   lock-test            prove S3 lockfile, SSE-C and stale-lock recovery on terraform/box/lock-probe-*
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "plan, apply, status, destroy-plan, destroy or lock-test"
+        required: true
+        type: choice
+        options: [plan, apply, status, destroy-plan, destroy, lock-test]
+      project_id_confirmation:
+        description: "Type the exact approved Cloud.ru project UUID"
+        required: true
+        type: string
+      box_id:
+        description: "Box id (3-16 lowercase letters/digits); resources are amvp-box-<id>-*"
+        required: true
+        default: pilot1
+        type: string
+      expires_on:
+        description: "TTL date YYYY-MM-DD (plan/apply), at most 120 days ahead"
+        required: false
+        default: ""
+        type: string
+      ssh_admin_cidr:
+        description: "Owner IPv4 /32 for SSH; empty means no inbound rule"
+        required: false
+        default: ""
+        type: string
+      reviewed_plan_digest:
+        description: "apply/destroy: digest printed by the reviewed plan/destroy-plan run on the same commit"
+        required: false
+        default: ""
+        type: string
+      approve_monthly_rub:
+        description: "apply: approved monthly RUB ceiling for the box (at least 3300)"
+        required: false
+        default: ""
+        type: string
+      approval_phrase:
+        description: "apply: AUTHORIZE-BOX-APPLY; destroy: AUTHORIZE-BOX-DESTROY"
+        required: false
+        default: ""
+        type: string
+      adopt:
+        description: "Orphans to import instead of recreating, e.g. vm=<uuid>,disk=<uuid>"
+        required: false
+        default: ""
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: cloudru-box-20853297-65b7-42a8-af40-25c8d2df4e11
+  cancel-in-progress: false
+jobs:
+  box:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    environment:
+      name: ${{ contains(fromJSON('["apply","destroy","lock-test"]'), inputs.operation) && 'cloudru-box-production' || 'cloudru-box-review' }}
+    env:
+      OPERATION: ${{ inputs.operation }}
+      BOX_ID: ${{ inputs.box_id }}
+      ADOPT: ${{ inputs.adopt }}
+      BOX_DIR: infra/cloudru/box
+      TF_IN_AUTOMATION: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+          terraform_wrapper: false
+      - name: Gate inputs and owner approval
+        env:
+          PROJECT: ${{ inputs.project_id_confirmation }}
+          EXPIRES_ON: ${{ inputs.expires_on }}
+          ADMIN_CIDR: ${{ inputs.ssh_admin_cidr }}
+          DIGEST: ${{ inputs.reviewed_plan_digest }}
+          CEILING: ${{ inputs.approve_monthly_rub }}
+          PHRASE: ${{ inputs.approval_phrase }}
+        run: |
+          python3 - <<'PY'
+          import datetime, ipaddress, os, re, sys
+          e = os.environ
+          op = e["OPERATION"]
+          def stop(msg):
+              print("STOP: " + msg); sys.exit(1)
+          if e["PROJECT"] != "20853297-65b7-42a8-af40-25c8d2df4e11": stop("project id confirmation")
+          if not re.fullmatch(r"[a-z][a-z0-9]{2,15}", e["BOX_ID"]): stop("box_id")
+          if op in ("apply", "destroy", "lock-test") and e["GITHUB_REF"] != "refs/heads/main": stop(op + " runs only on main")
+          if op in ("plan", "apply"):
+              try: end = datetime.date.fromisoformat(e["EXPIRES_ON"])
+              except ValueError: stop("expires_on must be YYYY-MM-DD")
+              days = (end - datetime.date.today()).days
+              if not 0 < days <= 120: stop("expires_on must be 1..120 days ahead")
+          if op in ("apply", "destroy") and not re.fullmatch(r"[0-9a-f]{64}", e["DIGEST"]): stop("reviewed_plan_digest required")
+          if op == "apply":
+              if e["PHRASE"] != "AUTHORIZE-BOX-APPLY": stop("approval phrase")
+              if not e["CEILING"].isdigit() or int(e["CEILING"]) < 3300: stop("monthly ceiling below the 3300 RUB estimate")
+          if op == "destroy" and e["PHRASE"] != "AUTHORIZE-BOX-DESTROY": stop("approval phrase")
+          cidr = e["ADMIN_CIDR"]
+          if cidr:
+              net = ipaddress.ip_network(cidr, strict=True)
+              if net.version != 4 or net.prefixlen != 32 or not net.network_address.is_global: stop("ssh_admin_cidr must be one public IPv4 /32")
+              print("::add-mask::" + cidr); print("::add-mask::" + str(net.network_address))
+          print("inputs accepted for " + op)
+          PY
+      - name: Select scoped state credentials without printing them
+        env:
+          RAW_STATE_SSE: ${{ secrets.CLOUDRU_STATE_SSE_CUSTOMER_KEY }}
+          TENANT: ${{ vars.CLOUDRU_TENANT_ID }}
+          BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          STATE_ACCESS: ${{ secrets.CLOUDRU_STATE_ACCESS_KEY_ID }}
+          STATE_SECRET: ${{ secrets.CLOUDRU_STATE_SECRET_ACCESS_KEY }}
+          KEY_ID: ${{ secrets.CLOUDRU_KEY_ID }}
+          SECRET: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import base64, os
+          access, secret = os.getenv("STATE_ACCESS"), os.getenv("STATE_SECRET")
+          if not access and not secret:
+              # Same fallback as cloudru-apply-protected.yml: the project key on the known bucket only.
+              assert os.environ["TENANT"] == "fc91c42d-c2ea-4d6d-a236-103fd1f37f00", "unexpected tenant"
+              assert os.environ["BUCKET"] == "test-bucket-ds", "fallback key only for the known bucket"
+              access, secret = os.environ["TENANT"] + ":" + os.environ["KEY_ID"], os.environ["SECRET"]
+          assert access and secret and "\n" not in access + secret, "incomplete S3 credentials"
+          sse = os.environ["RAW_STATE_SSE"].strip()
+          assert len(base64.b64decode(sse, validate=True)) == 32, "invalid state encryption key"
+          for value in (access, secret, sse):
+              print("::add-mask::" + value)
+          with open(os.environ["GITHUB_ENV"], "a") as fh:
+              fh.write(f"AWS_ACCESS_KEY_ID={access}\nAWS_SECRET_ACCESS_KEY={secret}\nAWS_SSE_CUSTOMER_KEY={sse}\n")
+          PY
+          python3 -m pip install --quiet 'boto3>=1.34,<2'
+      - name: Verify state bucket privacy before touching state
+        env:
+          CLOUDRU_STATE_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+          CLOUDRU_STATE_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          CLOUDRU_STATE_REPORT: ${{ runner.temp }}/bucket.json
+        run: |
+          python3 infra/cloudru/deploy/check_state_bucket.py
+          python3 -c "import json,sys; r=json.load(open(sys.argv[1])); assert r.get('tag_scope_verified') and r.get('private') and r.get('versioning')=='Enabled', r.get('diagnostic')" "$CLOUDRU_STATE_REPORT"
+      - name: Lock test on the real bucket (probe objects only)
+        if: inputs.operation == 'lock-test'
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+        run: |
+          python3 boxctl.py lock-test --box-id "$BOX_ID" --out "$RUNNER_TEMP/lock-test.json"
+          { echo "## Box state lock test"; echo '```json'; cat "$RUNNER_TEMP/lock-test.json"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Pin the release archive (download and sha256)
+        if: inputs.operation == 'plan' || inputs.operation == 'apply'
+        working-directory: ${{ env.BOX_DIR }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          r = json.load(open("release.json"))
+          with open(os.environ["GITHUB_ENV"], "a") as fh:
+              fh.write(f"TF_VAR_release_url={r['url']}\nTF_VAR_release_sha256={r['sha256']}\nTF_VAR_release_name={r['name']}\n")
+          PY
+          URL=$(python3 -c "import json; print(json.load(open('release.json'))['url'])")
+          SHA=$(python3 -c "import json; print(json.load(open('release.json'))['sha256'])")
+          curl --fail --silent --show-error --location --proto '=https' --max-time 300 -o "$RUNNER_TEMP/release.tar.gz" "$URL"
+          echo "$SHA  $RUNNER_TEMP/release.tar.gz" | sha256sum -c -
+      - name: Configure Cloud.ru provider mirror
+        if: inputs.operation != 'lock-test'
+        run: |
+          cat > "$RUNNER_TEMP/terraform.tfrc" <<'EOF'
+          provider_installation {
+            network_mirror {
+              url = "https://evo-tf-provider-generic.ar.cloud.ru/"
+              include = ["cloudru/*"]
+            }
+            direct { exclude = ["cloudru/*"] }
+          }
+          EOF
+          echo "TF_CLI_CONFIG_FILE=$RUNNER_TEMP/terraform.tfrc" >> "$GITHUB_ENV"
+      - name: Read-only inventory of the approved project
+        if: inputs.operation != 'lock-test'
+        working-directory: ${{ env.BOX_DIR }}/inventory
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          terraform init -input=false -no-color > "$RUNNER_TEMP/inventory-init.log"
+          terraform plan -input=false -no-color -lock=false -out="$RUNNER_TEMP/inventory.tfplan" > "$RUNNER_TEMP/inventory-plan.log"
+          # Keep planned outputs only: the plan JSON also holds variable values.
+          terraform show -json "$RUNNER_TEMP/inventory.tfplan" | jq '{planned_values: .planned_values}' > "$RUNNER_TEMP/inventory.json"
+          rm -f "$RUNNER_TEMP/inventory.tfplan"
+      - name: Initialize encrypted remote state with lockfile
+        if: inputs.operation != 'lock-test'
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+        run: |
+          python3 boxctl.py init --box-id "$BOX_ID" --dir .
+          terraform state pull > "$RUNNER_TEMP/state.json" || { echo "state read failed"; exit 1; }
+          python3 boxctl.py classify --box-id "$BOX_ID" --inventory "$RUNNER_TEMP/inventory.json" --state "$RUNNER_TEMP/state.json" \
+            --subnet d58e80ef-fff1-43eb-b601-96fb358224b7 --adopt "$ADOPT" --out "$RUNNER_TEMP/classify.json" || CLASSIFY_RC=$?
+          { echo "## Inventory and state"; echo '```json'; jq '{owned, orphans, duplicates, missing_outside_terraform, foreign_counts, problems}' "$RUNNER_TEMP/classify.json"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          # Orphans, duplicates and quota block creating; destroy and status still run and leave orphans alone.
+          if [ "${CLASSIFY_RC:-0}" != 0 ] && { [ "$OPERATION" = plan ] || [ "$OPERATION" = apply ]; }; then
+            echo "Inventory blocks planning: adopt or remove orphans, resolve duplicates, a full quota or a quota that cannot be read first"; exit 1
+          fi
+      - name: Status
+        if: inputs.operation == 'status'
+        working-directory: ${{ env.BOX_DIR }}
+        run: |
+          python3 boxctl.py status --box-id "$BOX_ID" --inventory "$RUNNER_TEMP/inventory.json" --state "$RUNNER_TEMP/state.json" --out "$RUNNER_TEMP/status.json" || STATUS_RC=$?
+          { echo "## Box status"; echo '```json'; cat "$RUNNER_TEMP/status.json"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit "${STATUS_RC:-0}"
+      - name: Propose state recovery and adoption (reads state, writes nothing to it)
+        if: inputs.operation == 'plan' || inputs.operation == 'apply'
+        working-directory: ${{ env.BOX_DIR }}
+        run: |
+          # Interfaces the provider marked tainted although they were created. Plan only proposes
+          # untainting them; the approved apply writes it to state (see the apply-only step below).
+          python3 boxctl.py recover --box-id "$BOX_ID" --state "$RUNNER_TEMP/state.json" > "$RUNNER_TEMP/recovery.txt"
+          if [ -s "$RUNNER_TEMP/recovery.txt" ]; then
+            { echo "## Proposed state recovery (written only by an approved apply)"; sed 's/^/- untaint /' "$RUNNER_TEMP/recovery.txt"; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -n "$ADOPT" ]; then
+            python3 boxctl.py adopt --box-id "$BOX_ID" --inventory "$RUNNER_TEMP/inventory.json" --state "$RUNNER_TEMP/state.json" \
+              --adopt "$ADOPT" --out imports_adopted.tf
+          fi
+      - name: Plan and check it stays inside the box
+        if: contains(fromJSON('["plan","apply","destroy-plan","destroy"]'), inputs.operation)
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+          TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr }}
+          INPUT_EXPIRES: ${{ inputs.expires_on }}
+          DIGEST: ${{ inputs.reviewed_plan_digest }}
+        run: |
+          export TF_VAR_box_id="$BOX_ID" TF_VAR_commit="$GITHUB_SHA"
+          MODE=apply
+          PLAN_ARGS=(-input=false -no-color)
+          case "$OPERATION" in destroy-plan|destroy) MODE=destroy; PLAN_ARGS+=(-destroy);; esac
+          if [ "$MODE" = destroy ]; then
+            # Destroy evaluates the same variables; take TTL and release from the state record.
+            EXPIRES=$(jq -r '.outputs.ownership.value.expires_on // "2099-01-01"' "$RUNNER_TEMP/state.json")
+            export TF_VAR_expires_on="$EXPIRES"
+            export TF_VAR_release_url="https://github.com/rengalaxies/agent/releases/download/destroy/none.tar.gz"
+            TF_VAR_release_sha256=$(printf '0%.0s' {1..64})
+            export TF_VAR_release_sha256 TF_VAR_release_name="agent-service-0-g000000000000-linux-x86_64-cp312"
+            export TF_VAR_ssh_public_key="${TF_VAR_ssh_public_key:-ssh-ed25519 destroy-only}"
+            # A destroy plan writes nothing; it reads the real state under its lock.
+            PLAN_DIR=.; PLAN_ARGS+=(-lock-timeout=60s); RECOVERY=""
+            cp "$RUNNER_TEMP/state.json" "$RUNNER_TEMP/plan-state.json"
+          else
+            export TF_VAR_expires_on="$INPUT_EXPIRES"
+            # The reviewed plan runs on a local copy of the state with the proposed recovery applied,
+            # so plan never writes the real state and the digest covers the recovery too.
+            python3 boxctl.py recovery-copy --box-id "$BOX_ID" --dir . --state "$RUNNER_TEMP/state.json" \
+              --recovery "$RUNNER_TEMP/recovery.txt" --out "$RUNNER_TEMP/recovered"
+            PLAN_DIR="$RUNNER_TEMP/recovered"; PLAN_ARGS+=(-lock=false); RECOVERY="$RUNNER_TEMP/recovery.txt"
+            terraform -chdir="$PLAN_DIR" state pull > "$RUNNER_TEMP/plan-state.json"
+          fi
+          terraform -chdir="$PLAN_DIR" validate -no-color
+          terraform -chdir="$PLAN_DIR" plan "${PLAN_ARGS[@]}" -out="$RUNNER_TEMP/box.tfplan" > "$RUNNER_TEMP/plan.log" \
+            || { grep -E '^(Error|│ Error)' "$RUNNER_TEMP/plan.log" | head -20; exit 1; }
+          terraform -chdir="$PLAN_DIR" show -json "$RUNNER_TEMP/box.tfplan" | jq 'del(.variables, .configuration, .prior_state)' > "$RUNNER_TEMP/plan.json"
+          EXPECT=""
+          if [ "$OPERATION" = apply ] || [ "$OPERATION" = destroy ]; then EXPECT="$DIGEST"; fi
+          python3 boxctl.py guard --box-id "$BOX_ID" --mode "$MODE" --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/plan-state.json" \
+            --commit "$GITHUB_SHA" --projection "$RUNNER_TEMP/projection.json" --expect-digest "$EXPECT" --adopt "$ADOPT" \
+            --expires-on "$TF_VAR_expires_on" --recovery "$RECOVERY" | tee "$RUNNER_TEMP/guard.txt"
+          if [ "$MODE" = destroy ]; then
+            python3 boxctl.py ledger-get --box-id "$BOX_ID" --out "$RUNNER_TEMP/ledger.json"
+            python3 boxctl.py cleanup-check --box-id "$BOX_ID" --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/state.json" \
+              --ledger "$RUNNER_TEMP/ledger.json" --inventory "$RUNNER_TEMP/inventory.json" --out "$RUNNER_TEMP/cleanup.json"
+          fi
+          {
+            echo "## Box $OPERATION on $GITHUB_SHA"
+            cat "$RUNNER_TEMP/guard.txt"
+            echo "Review the redacted changes and the recovery list below. To apply, dispatch the matching apply/destroy on main with this digest."
+            echo '```json'; jq '{recovery, changes}' "$RUNNER_TEMP/projection.json"; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          rm -f "$RUNNER_TEMP/plan.json"
+      - name: Write the reviewed recovery to state and re-plan against it (approved apply only)
+        if: inputs.operation == 'apply'
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+          TF_VAR_ssh_public_key: ${{ secrets.CLOUDRU_SSH_PUBLIC_KEY }}
+          TF_VAR_admin_cidr: ${{ inputs.ssh_admin_cidr }}
+          INPUT_EXPIRES: ${{ inputs.expires_on }}
+          DIGEST: ${{ inputs.reviewed_plan_digest }}
+        run: |
+          # The previous step already proved that the digest of the recovered copy equals the reviewed one.
+          export TF_VAR_box_id="$BOX_ID" TF_VAR_commit="$GITHUB_SHA" TF_VAR_expires_on="$INPUT_EXPIRES"
+          while read -r address; do
+            [ -n "$address" ] || continue
+            echo "untaint $address (in reviewed digest $DIGEST)"
+            terraform untaint -lock-timeout=60s "$address"
+          done < "$RUNNER_TEMP/recovery.txt"
+          terraform state pull > "$RUNNER_TEMP/state.json"
+          # The plan that is applied must use the real backend; it must equal the reviewed one again.
+          terraform plan -input=false -no-color -lock-timeout=60s -out="$RUNNER_TEMP/box.tfplan" > "$RUNNER_TEMP/plan.log" \
+            || { grep -E '^(Error|│ Error)' "$RUNNER_TEMP/plan.log" | head -20; exit 1; }
+          terraform show -json "$RUNNER_TEMP/box.tfplan" | jq 'del(.variables, .configuration, .prior_state)' > "$RUNNER_TEMP/plan.json"
+          python3 boxctl.py guard --box-id "$BOX_ID" --mode apply --plan "$RUNNER_TEMP/plan.json" --state "$RUNNER_TEMP/state.json" \
+            --commit "$GITHUB_SHA" --projection "$RUNNER_TEMP/projection.json" --expect-digest "$DIGEST" --adopt "$ADOPT" \
+            --expires-on "$TF_VAR_expires_on" --recovery "$RUNNER_TEMP/recovery.txt"
+          rm -f "$RUNNER_TEMP/plan.json"
+      - name: Upload redacted plan projection
+        if: contains(fromJSON('["plan","destroy-plan"]'), inputs.operation)
+        uses: actions/upload-artifact@v4
+        with:
+          name: box-${{ inputs.box_id }}-${{ inputs.operation }}-${{ github.sha }}
+          path: ${{ runner.temp }}/projection.json
+          retention-days: 30
+      - name: Apply exactly the reviewed plan
+        id: apply
+        if: inputs.operation == 'apply' || inputs.operation == 'destroy'
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+        run: terraform apply -input=false -no-color -lock-timeout=60s "$RUNNER_TEMP/box.tfplan"
+      - name: Record ownership ledger next to the state (also after a failed apply)
+        if: always() && (steps.apply.outcome == 'success' || steps.apply.outcome == 'failure')
+        working-directory: ${{ env.BOX_DIR }}
+        env:
+          CLOUDRU_STATE_BUCKET: ${{ vars.CLOUDRU_STATE_BUCKET }}
+          DIGEST: ${{ inputs.reviewed_plan_digest }}
+          INPUT_EXPIRES: ${{ inputs.expires_on }}
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          TF_VAR_auth_key_id: ${{ secrets.CLOUDRU_KEY_ID }}
+          TF_VAR_auth_secret: ${{ secrets.CLOUDRU_SECRET }}
+        run: |
+          terraform state pull > "$RUNNER_TEMP/state-after.json"
+          EXPIRES=$(jq -r '.outputs.ownership.value.expires_on // empty' "$RUNNER_TEMP/state-after.json")
+          python3 boxctl.py ledger-put --box-id "$BOX_ID" --state "$RUNNER_TEMP/state-after.json" \
+            --expires-on "${EXPIRES:-$INPUT_EXPIRES}" --commit "$GITHUB_SHA" --digest "$DIGEST"
+          # Fresh inventory, so resources created by this apply are not reported as missing.
+          (cd inventory && terraform plan -input=false -no-color -lock=false -out="$RUNNER_TEMP/inventory.tfplan" > "$RUNNER_TEMP/inventory-plan-after.log" \
+            && terraform show -json "$RUNNER_TEMP/inventory.tfplan" | jq '{planned_values: .planned_values}' > "$RUNNER_TEMP/inventory.json")
+          rm -f "$RUNNER_TEMP/inventory.tfplan"
+          python3 boxctl.py status --box-id "$BOX_ID" --inventory "$RUNNER_TEMP/inventory.json" --state "$RUNNER_TEMP/state-after.json" \
+            --out "$RUNNER_TEMP/status.json" || true
+          { echo "## Box after $OPERATION ($APPLY_OUTCOME)"; echo '```json'; cat "$RUNNER_TEMP/status.json"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
