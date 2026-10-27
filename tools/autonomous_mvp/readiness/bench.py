@@ -116,15 +116,21 @@ class RecordingJira(JiraStand):
 # ---------------------------------------------------------------------------- policy and sources
 
 
-def policy(change: dict, root: Path, commits: dict, *, include_revoked: bool) -> dict:
+def policy(change: dict, root: Path, commits: dict, *, include_revoked: bool, model: dict | None = None) -> dict:
+    """``model``: the ModelConfig of a model configuration, with the 2B read window; None runs without one."""
     revoked = set(change["grants"]["revoked"])
     names = [n for n in change["repositories"] if include_revoked or n not in revoked]
-    return dict(
+    out = dict(
         installation_id=change["installation_id"], environment=change["environment"], subject="readiness-6",
         capabilities=["read_context", "maintain", "propose", "report_check"],
         repositories=[dict(id=n, service=change["repositories"][n]["service"], root=str(root / "repos" / n),
                            snapshot="git", revision=commits[n]["main"]) for n in names],
         addresses=change["addresses"], requirements=[])
+    if model is not None:
+        from tools.autonomous_mvp.readiness.live import READ_WINDOW
+
+        out.update(model=model, limits=dict(max_tool_lines=READ_WINDOW))
+    return out
 
 
 def write_runtime_logs(change: dict, directory: Path, now: datetime) -> list[dict]:
@@ -156,9 +162,15 @@ def write_runtime_logs(change: dict, directory: Path, now: datetime) -> list[dic
 
 
 class ChangeBench:
-    """Stands, core and service for one change. Model disabled: ``model=None``."""
+    """Stands, core and service for one change.
 
-    def __init__(self, change: dict, root: Path):
+    Without ``model_section`` the model is off. With it the service gets that ModelConfig, the
+    qualification reference and ``model`` (the object that answers; None builds the policy's ChatModel),
+    and the analyzer's own qualification check decides whether the model is ever called.
+    """
+
+    def __init__(self, change: dict, root: Path, *, model_section: dict | None = None,
+                 qualification: dict | None = None, model=None):
         self.change, self.root = change, Path(root)
         self.started = time.monotonic()
         self.commits = materialize(change, self.root / "stand")
@@ -188,9 +200,10 @@ class ChangeBench:
                 earlier.reconcile_graph({n: c["main"] for n, c in self.commits.items()})
             finally:
                 earlier.close()
-        self.analyzer = CoreAnalyzer(policy(change, self.root / "stand", self.commits, include_revoked=False), state,
+        self.analyzer = CoreAnalyzer(policy(change, self.root / "stand", self.commits, include_revoked=False,
+                                            model=model_section), state,
                                      ownership_path=str(self.ownership_path), runtime_sources=self.runtime_sources,
-                                     code_version=CODE_VERSION, model=None, model_qualification=None,
+                                     code_version=CODE_VERSION, model=model, model_qualification=qualification,
                                      runtime_window_seconds=RUNTIME_WINDOW_SECONDS)
         self.service = self._service()
         self.receiver = Receiver(self.service)

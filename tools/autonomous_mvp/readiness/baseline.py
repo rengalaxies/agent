@@ -13,15 +13,19 @@ back as the next user message. Actions: ``list_repositories``, ``list_files``,
 ``finish`` with the answer. The transport interface is the 2B one:
 ``complete(payload, *, deadline) -> tools.autonomous_mvp.transport.TransportResult``,
 so ``CloudRuTransport`` plugs in for a live run on the same endpoint as the
-service's model. Live calls are out of scope of this batch; offline there are
-two transports:
+service's model. Transports:
 
+- ``live``: ``CloudRuTransport`` on the 2B endpoint with a 2B model id and its
+  completion limit (``live.py``); ledger ``baseline-live-<model slug>``. The
+  key is read from ``CLOUDRU_FOUNDATION_API_KEY`` at send time only;
 - ``ScriptedTransport`` (2B): replays prepared replies, for tests;
 - ``NaiveSearchTransport``: a fixed, deterministic policy that greps the route
   named by the task or diff and names every other repository with a hit. It is
   a harness check and a floor, not "the baseline": no model takes part.
 
-Usage: python -m tools.autonomous_mvp.readiness.baseline --split development --transport naive-search
+Usage:
+  python -m tools.autonomous_mvp.readiness.baseline --split development --transport naive-search
+  python -m tools.autonomous_mvp.readiness.baseline --split heldout --transport live --model openai/gpt-oss-120b
 """
 from __future__ import annotations
 
@@ -38,7 +42,7 @@ import tempfile
 import time
 import traceback
 
-from tools.autonomous_mvp.readiness import program as program_mod, world
+from tools.autonomous_mvp.readiness import live as live_mod, program as program_mod, world
 from tools.autonomous_mvp.transport import TransportResult
 
 PROTOCOL = "baseline-search-1"
@@ -162,13 +166,13 @@ def validate_answer(arguments):
     return None
 
 
-def run_agent(transport, workspace, task, *, model="offline"):
+def run_agent(transport, workspace, task, *, model="offline", max_completion_tokens=None):
     messages = [dict(role="system", content=SYSTEM_PROMPT), dict(role="user", content=task)]
     deadline = time.monotonic() + LIMITS["deadline_seconds"]
     steps, usage, invalid = [], [], 0
     for step in range(LIMITS["max_steps"]):
         payload = dict(model=model, messages=list(messages), temperature=0, stream=False,
-                       max_completion_tokens=LIMITS["max_completion_tokens"],
+                       max_completion_tokens=max_completion_tokens or LIMITS["max_completion_tokens"],
                        response_format=dict(type="json_schema", json_schema=dict(
                            name="baseline_action", strict=True, schema=ACTION_SCHEMA)))
         result = transport.complete(payload, deadline=deadline)
@@ -260,16 +264,19 @@ class NaiveSearchTransport:
         return _reply(dict(action="finish", arguments=dict(outcome=outcome, impacted=list(impacted.values()))))
 
 
-TRANSPORTS = {"naive-search": NaiveSearchTransport}
+TRANSPORTS = {"naive-search": NaiveSearchTransport, "live": None}  # live: CloudRuTransport, built per model
 
 
 # ---------------------------------------------------------------------------- runner
 
 
-def run_change(change, work: Path, transport) -> dict:
+def run_change(change, work: Path, transport, *, model_binding=None) -> dict:
+    """``model_binding`` (``live.binding``): the model id, completion limit and price of a live run."""
     from tools.autonomous_mvp.readiness.bench import materialize, write_runtime_logs
 
     record = dict(change_id=change["change_id"], split=change["split"], family=change["family"])
+    model = (dict(model=model_binding["model"], max_completion_tokens=model_binding["max_completion_tokens"])
+             if model_binding else {})
     started = time.monotonic()
     try:
         commits = materialize(change, work / "stand")
@@ -281,7 +288,7 @@ def run_change(change, work: Path, transport) -> dict:
             workspace = Workspace(change, work / "stand", commits, stage, logs_dir=logs)
             task = task_message(change, stage, changed_files=changed, diff=diff)
             clock = time.monotonic()
-            run = run_agent(transport, workspace, task)
+            run = run_agent(transport, workspace, task, **model)
             usage += run["usage"]
             record[stage] = dict(answer=run["answer"], terminal=run["terminal"], steps=run["steps"],
                                  latency_seconds=round(time.monotonic() - clock, 3), requests=len(run["usage"]),
@@ -290,10 +297,14 @@ def run_change(change, work: Path, transport) -> dict:
         known = all(u is not None for u in usage)
         # A scripted transport is not a model: no model calls and no money. Live usage stays unknown
         # (None) when the provider does not report it; the rouble price is applied by the reporting step.
+        prompt = sum(u["prompt_tokens"] for u in usage) if known else None
+        completion = sum(u["completion_tokens"] for u in usage) if known else None
+        price = live_mod.rub(prompt, completion, model_binding["price"]) if model_binding else None
         record["costs"] = dict(model_calls=len(usage) if live else 0, transport_requests=len(usage),
-                               prompt_tokens=sum(u["prompt_tokens"] for u in usage) if known else None,
-                               completion_tokens=sum(u["completion_tokens"] for u in usage) if known else None,
-                               rub=None if live else 0.0)
+                               prompt_tokens=prompt, completion_tokens=completion, rub=price if live else 0.0)
+        codes = [s["code"] for stage in ("jira", "pr") for s in record[stage]["steps"] if not s["valid"]]
+        record["model_requests"] = dict(calls=len(usage), codes=codes, failures=sum(
+            record[stage]["terminal"] == "transport_error" for stage in ("jira", "pr")))
         record["error"] = None
     except Exception as exc:
         record["error"] = f"{type(exc).__name__}: {exc}"
@@ -303,11 +314,24 @@ def run_change(change, work: Path, transport) -> dict:
     return record
 
 
-def run_split(split, transport_name, *, out=None, base=None):
+def run_split(split, transport_name, *, out=None, base=None, model_id=None, transport=None, only=None,
+              series_seconds=6 * 3600):
+    """``transport`` replaces the transport the name builds (tests); ``only`` is for the development split."""
     from tools.autonomous_mvp.readiness import runner
+    from tools.autonomous_mvp.transport import CloudRuTransport
 
-    transport = TRANSPORTS[transport_name]()
-    configuration = f"baseline-{transport_name}"
+    model_binding = None
+    if transport_name == "live":
+        if not model_id:
+            raise SystemExit("REFUSED: the live baseline needs --model, the model of the service it is compared with")
+        model_binding = live_mod.binding(model_id)
+        transport = transport or CloudRuTransport(endpoint=model_binding["endpoint"])
+        configuration = f"baseline-live-{live_mod.slug(model_id)}"
+    else:
+        transport = transport or TRANSPORTS[transport_name]()
+        configuration = f"baseline-{transport_name}"
+    if split == "heldout" and only:
+        raise SystemExit("REFUSED: the held-out run covers every change")
     current, digest = program_mod.status(base)
     path = Path(out) if out else runner.ledger_path(split, configuration, base=base)
     runner.guard(split, path, manifest_current=current)
@@ -315,10 +339,24 @@ def run_split(split, transport_name, *, out=None, base=None):
                   transport_kind=getattr(transport, "kind", "live"), protocol=fingerprint(),
                   manifest_digest=digest, manifest_current=current, source_sha=runner.source_sha(),
                   python=sys.version.split()[0], started_at=datetime.now(timezone.utc).isoformat(), records=[])
+    if model_binding:
+        ledger["model_binding"] = model_binding
+    stop = live_mod.SeriesStop(series_seconds) if ledger["transport_kind"] == "live" else None
     root = Path(tempfile.mkdtemp(prefix="readiness-6-baseline-"))
     try:
         for change in runner.load_changes(split, base):
-            ledger["records"].append(run_change(change, root / change["change_id"], transport))
+            if only and change["change_id"] not in only:
+                continue
+            if stop and stop.before_change():
+                record = live_mod.not_run(change, configuration, stop.reason)
+            else:
+                record = run_change(change, root / change["change_id"], transport, model_binding=model_binding)
+                if stop:
+                    requests = record.get("model_requests") or {}
+                    stop.observe(requests.get("calls", 0), requests.get("failures", 0), requests.get("codes", ()))
+            if stop and stop.reason:
+                ledger["stopped"] = stop.reason
+            ledger["records"].append(record)
     finally:
         shutil.rmtree(root, ignore_errors=True)
     ledger["finished_at"] = datetime.now(timezone.utc).isoformat()
@@ -331,11 +369,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--split", choices=world.SPLITS, required=True)
     parser.add_argument("--transport", choices=sorted(TRANSPORTS), required=True)
+    parser.add_argument("--model", help="live: a model id of the 2B program, the one the service runs with")
     parser.add_argument("--out")
+    parser.add_argument("--series-minutes", type=float, default=360, help="live: stop and record the rest as not run")
     args = parser.parse_args()
-    ledger, path = run_split(args.split, args.transport, out=args.out)
+    ledger, path = run_split(args.split, args.transport, out=args.out, model_id=args.model,
+                             series_seconds=args.series_minutes * 60)
     print(f"LEDGER {path} records={len(ledger['records'])} errors="
-          f"{sum(1 for r in ledger['records'] if r['error'])}")
+          f"{sum(1 for r in ledger['records'] if r['error'])} stopped={ledger.get('stopped')}")
 
 
 if __name__ == "__main__":

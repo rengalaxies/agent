@@ -12,8 +12,12 @@ between changes, so changes stay independent):
 The ledger records what the stands and the service's own queue show: result
 documents, comment bodies and counters, intents, latency from delivery to the
 last accepted comment write, graph freshness after the merge, model use. It
-never reads the oracle. Configuration ``service-no-model``: ``CoreAnalyzer``
-with ``model=None``, the deterministic core path.
+never reads the oracle. Configurations:
+
+- ``service-no-model``: ``CoreAnalyzer`` with ``model=None``, the deterministic core path;
+- ``service-model``: the 2B model profile and a qualification reference
+  (``live.py``). The series is refused before the first change unless the
+  qualification check passes; ledger ``service-model-<model slug>``.
 
 Held-out rule: the held-out split runs only when the committed manifest is
 current, and only once per configuration: an existing held-out ledger is never
@@ -22,6 +26,9 @@ overwritten.
 Usage:
   python -m tools.autonomous_mvp.readiness.runner --split development
   python -m tools.autonomous_mvp.readiness.runner --split heldout     # once, after the freeze commit
+  python -m tools.autonomous_mvp.readiness.runner --split heldout --configuration service-model \\
+      --model openai/gpt-oss-120b --qualification-report report.json --qualification-run-id ID \\
+      --qualification-sha256 HEX                                       # key in CLOUDRU_FOUNDATION_API_KEY
 """
 from __future__ import annotations
 
@@ -38,9 +45,11 @@ import time
 import traceback
 
 from agent_service.connectors.base import parse_marker
-from tools.autonomous_mvp.readiness import program as program_mod, world
+from tools.autonomous_mvp.readiness import live, program as program_mod, world
 
 CONFIGURATION = "service-no-model"
+CONFIGURATIONS = ("service-no-model", "service-model")
+SERIES_SECONDS = 6 * 3600
 FINAL_INTENT_STATES = ("DELIVERED", "SUPERSEDED", "FAILED")
 
 
@@ -149,15 +158,23 @@ def merge_and_reconcile(bench):
                 active_operations=operations, graph_version=query.version)
 
 
-def run_change(change, work: Path) -> dict:
+def run_change(change, work: Path, *, configuration=CONFIGURATION, live_model=None) -> dict:
+    """``live_model``: {section, qualification, price, make} of service-model; None runs without a model."""
     from tools.autonomous_mvp.readiness.bench import ChangeBench
 
     record = dict(change_id=change["change_id"], split=change["split"], family=change["family"],
-                  configuration=CONFIGURATION)
+                  configuration=configuration)
     started = time.monotonic()
-    bench = None
+    bench = counting = None
     try:
-        bench = ChangeBench(change, work)
+        options = {}
+        if live_model:
+            counting = live.CountingModel(live_model["make"]())
+            options = dict(model_section=live_model["section"], qualification=live_model["qualification"],
+                           model=counting)
+        bench = ChangeBench(change, work, **options)
+        if live_model:
+            record["qualification"] = bench.analyzer.qualification.reason_code
         record.update(commits=bench.commits, setup_seconds=round(bench.setup_seconds, 3),
                       initial_graph=bench.initial_graph)
         record["jira"] = run_stage(bench, "jira", lambda d: bench.deliver_jira(d))
@@ -166,9 +183,15 @@ def run_change(change, work: Path) -> dict:
         record["merge"] = merge_and_reconcile(bench)
         record["notices"] = sorted({n["kind"] for n in bench.service.store.notices()})
         calls = [(record[s]["result"] or {}).get("costs") or {} for s in ("jira", "pr")]
+        # A stage with model calls but no token count leaves the total unknown, never zero.
+        known = all(c.get("prompt_tokens") is not None and c.get("completion_tokens") is not None
+                    for c in calls if c.get("model_calls"))
         record["costs"] = dict(model_calls=sum(c.get("model_calls") or 0 for c in calls),
-                               prompt_tokens=sum(c.get("prompt_tokens") or 0 for c in calls),
-                               completion_tokens=sum(c.get("completion_tokens") or 0 for c in calls))
+                               prompt_tokens=sum(c.get("prompt_tokens") or 0 for c in calls) if known else None,
+                               completion_tokens=sum(c.get("completion_tokens") or 0 for c in calls) if known else None)
+        if live_model:
+            record["costs"]["rub"] = live.rub(record["costs"]["prompt_tokens"], record["costs"]["completion_tokens"],
+                                              live_model["price"])
         record["error"] = None
     except Exception as exc:  # a crash is a recorded failure of this change, never a skipped one
         record["error"] = f"{type(exc).__name__}: {exc}"
@@ -176,6 +199,8 @@ def run_change(change, work: Path) -> dict:
     finally:
         if bench is not None:
             bench.close()
+    if counting is not None:
+        record["model_requests"] = dict(calls=counting.calls, failures=counting.failures)
     record["wall_seconds"] = round(time.monotonic() - started, 3)
     # No step of this run waits for a person; minutes a person spends on the comments are not measured here.
     record["human"] = dict(interventions=0, active_minutes=None, status="NOT_RECORDED")
@@ -204,20 +229,52 @@ def guard(split, path, *, manifest_current: bool):
         raise SystemExit(f"REFUSED heldout_already_run: {path.name} exists; a held-out run is never repeated")
 
 
-def run_split(split, *, out: Path | None = None, only=None, keep=None, base=None):
+def model_run(model_id, qualification, *, make=None):
+    """The service-model configuration of one model: refused here, before any change, unless qualified.
+
+    ``make`` builds the object that answers; by default the policy's ``ChatModel`` on the 2B endpoint.
+    """
+    section = live.model_section(model_id)
+    live.preflight(section, qualification)
+    if make is None:
+        from agent_graph.contracts import ModelConfig
+        from agent_graph.inference import ChatModel
+
+        config = ModelConfig.model_validate(section)
+        make = lambda: ChatModel(config)  # noqa: E731
+    return dict(configuration=f"service-model-{live.slug(model_id)}", section=section, qualification=qualification,
+                price=live.model_entry(model_id)["price"], make=make,
+                binding=live.binding(model_id, qualification=qualification))
+
+
+def run_split(split, *, out: Path | None = None, only=None, keep=None, base=None, live_model=None,
+              series_seconds=SERIES_SECONDS):
+    configuration = live_model["configuration"] if live_model else CONFIGURATION
     current, digest = program_mod.status(base)
-    path = Path(out) if out else ledger_path(split, base=base)
+    path = Path(out) if out else ledger_path(split, configuration, base=base)
     guard(split, path, manifest_current=current)
     changes = [c for c in load_changes(split, base) if not only or c["change_id"] in only]
-    ledger = dict(schema="readiness-ledger-1", program=world.CURRENT, split=split, configuration=CONFIGURATION,
+    ledger = dict(schema="readiness-ledger-1", program=world.CURRENT, split=split, configuration=configuration,
                   manifest_digest=digest, manifest_current=current, source_sha=source_sha(),
                   python=sys.version.split()[0], platform=platform.platform(),
                   started_at=datetime.now(timezone.utc).isoformat(), records=[])
+    if live_model:
+        ledger["model_binding"] = live_model["binding"]
+    stop = live.SeriesStop(series_seconds) if live_model else None
     path.parent.mkdir(parents=True, exist_ok=True)
     root = Path(keep) if keep else Path(tempfile.mkdtemp(prefix="readiness-6-"))
     try:
         for change in changes:
-            record = run_change(change, root / change["change_id"])
+            if stop and stop.before_change():
+                record = live.not_run(change, configuration, stop.reason)
+            else:
+                record = run_change(change, root / change["change_id"], configuration=configuration,
+                                    live_model=live_model)
+                if stop:
+                    requests = record.get("model_requests") or {}
+                    stop.observe(requests.get("calls", 0), requests.get("failures", 0))
+            if stop and stop.reason:
+                ledger["stopped"] = stop.reason
             ledger["records"].append(record)
             print(f"{change['change_id']} {change['family']} jira={_status(record, 'jira')} "
                   f"pr={_status(record, 'pr')} wall={record['wall_seconds']}s"
@@ -241,10 +298,24 @@ def main():
     parser.add_argument("--only", nargs="*", help="development only: a subset of change ids")
     parser.add_argument("--out", help="ledger path (default: the program's results directory)")
     parser.add_argument("--keep", help="keep the stands in this directory")
+    parser.add_argument("--configuration", choices=CONFIGURATIONS, default=CONFIGURATION)
+    parser.add_argument("--model", help="service-model: a model id of the 2B program")
+    parser.add_argument("--qualification-report", help="service-model: the 2B report.json")
+    parser.add_argument("--qualification-run-id")
+    parser.add_argument("--qualification-sha256")
+    parser.add_argument("--series-minutes", type=float, default=SERIES_SECONDS / 60)
     args = parser.parse_args()
     if args.split == "heldout" and (args.only or args.out):
         raise SystemExit("REFUSED: the held-out run covers every change and writes the program ledger")
-    ledger, path = run_split(args.split, out=args.out, only=args.only, keep=args.keep)
+    live_model = None
+    if args.configuration == "service-model":
+        if not args.model:
+            raise SystemExit("REFUSED: service-model needs --model")
+        reference = (dict(report_path=args.qualification_report, run_id=args.qualification_run_id,
+                          report_sha256=args.qualification_sha256) if args.qualification_report else None)
+        live_model = model_run(args.model, reference)
+    ledger, path = run_split(args.split, out=args.out, only=args.only, keep=args.keep, live_model=live_model,
+                             series_seconds=args.series_minutes * 60)
     print(f"LEDGER {path} records={len(ledger['records'])} manifest={ledger['manifest_digest']} "
           f"current={ledger['manifest_current']}")
 
