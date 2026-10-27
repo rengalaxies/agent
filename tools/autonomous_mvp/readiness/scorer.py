@@ -27,12 +27,20 @@ frozen. Rules a revision adds are read from its ``program.json`` ``scoring``:
   get their own rate (``severity.runtime_basis``);
 - an expected Jira outcome ``candidate`` (6-r2 F13): PARTIAL candidates or an
   abstention are correct; USEFUL is a wrong confident answer; named bystanders
-  count in the Jira FP rate but do not make the stage wrong.
+  count in the Jira FP rate but do not make the stage wrong;
+- ``human_coverage: complete_sample`` (6-r3): the human usage median exists only
+  when every change of the split has a recorded value. The denominator is the
+  split's expected change ids from the oracle, so a change that never ran or has
+  no record stays in it. With partial coverage the median is None (the gate
+  stays INCOMPLETE) and only a lower bound is shown. A recorded zero counts; a
+  missing value is unknown. Setup minutes of the installation are reported apart
+  from usage minutes. Earlier revisions keep their rule: a partial median counts.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 import re
 
@@ -266,7 +274,7 @@ def score(ledger, oracle, *, kind="service", rules=None):
         out["latency"] = {s: latency(ledger, s) for s in STAGES}
         out["graph_freshness"] = graph_freshness(ledger, oracle)
     out["cost"] = cost(ledger)
-    out["human"] = human(ledger)
+    out["human"] = human(ledger, sorted(oracle), rules)
     out["families"] = families(per_change)
     out["per_change"] = [dict(change_id=r["change_id"], family=r["family"], useful=r["useful"], error=r["error"],
                               jira=dict(status=r["jira"]["status"], problems=r["jira"]["problems"]),
@@ -330,14 +338,64 @@ def cost(ledger):
                 cpu_wall_seconds=round(sum(r.get("wall_seconds") or 0 for r in records), 1))
 
 
-def human(ledger):
-    minutes = [r["human"]["active_minutes"] for r in ledger["records"]
-               if (r.get("human") or {}).get("active_minutes") is not None]
-    return dict(interventions=sum((r.get("human") or {}).get("interventions") or 0 for r in ledger["records"]),
-                active_minutes_recorded=len(minutes), active_minutes_total=sum(minutes) if minutes else None,
-                active_minutes_median=percentile(minutes, 0.5),
-                active_minutes_coverage=rate(len(minutes), len(ledger["records"])),
-                status="RECORDED" if minutes else "NOT_RECORDED")
+def minutes_value(value):
+    """A recorded minute value: finite, non-negative, a real number and not a bool; None otherwise."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+        return None
+    return float(value)
+
+
+def _provenance(entry):
+    return all(isinstance(entry.get(k), str) and entry[k].strip() for k in ("recorded_by", "method"))
+
+
+def human(ledger, expected=(), rules=None):
+    interventions = sum((r.get("human") or {}).get("interventions") or 0 for r in ledger["records"])
+    if (rules or {}).get("human_coverage") != "complete_sample":
+        # 6-r1 and 6-r2: any recorded minutes give a median, whatever the coverage.
+        minutes = [r["human"]["active_minutes"] for r in ledger["records"]
+                   if (r.get("human") or {}).get("active_minutes") is not None]
+        return dict(interventions=interventions,
+                    active_minutes_recorded=len(minutes), active_minutes_total=sum(minutes) if minutes else None,
+                    active_minutes_median=percentile(minutes, 0.5),
+                    active_minutes_coverage=rate(len(minutes), len(ledger["records"])),
+                    status="RECORDED" if minutes else "NOT_RECORDED")
+    expected = sorted(expected)
+    records = {r["change_id"]: r for r in ledger["records"]}
+    usage, rejected = {}, []
+    for cid in expected:
+        entry = (records.get(cid) or {}).get("human") or {}
+        if entry.get("active_minutes") is None:
+            continue
+        value = minutes_value(entry["active_minutes"])
+        if value is None or entry.get("status") != "RECORDED" or not _provenance(entry):
+            rejected.append(cid)
+            continue
+        usage[cid] = value
+    missing = [cid for cid in expected if cid not in usage]
+    values = sorted(usage.values())
+    complete = bool(expected) and not missing
+    setup = ledger.get("human_setup") or {}
+    setup_minutes = minutes_value(setup.get("active_minutes")) if _provenance(setup) else None
+    if not expected:
+        status = "NO_SAMPLE"
+    elif complete:
+        status = "COMPLETE"
+    else:
+        status = "INCOMPLETE" if values else "NOT_RECORDED"
+    return dict(
+        rule="complete_sample", status=status, interventions=interventions,
+        # The gated values: None unless every expected change has a recorded value.
+        active_minutes_median=percentile(values, 0.5) if complete else None,
+        active_minutes_total=round(sum(values), 3) if complete else None,
+        usage=dict(expected=len(expected), recorded=len(values), coverage=rate(len(values), len(expected)),
+                   missing=missing, rejected=rejected,
+                   # Missing values counted as zero: the median can only be at or above this.
+                   median_lower_bound=percentile(values + [0.0] * len(missing), 0.5) if values else None),
+        setup=dict(active_minutes=setup_minutes, status="RECORDED" if setup_minutes is not None else "NOT_RECORDED",
+                   recorded_by=setup.get("recorded_by") if setup_minutes is not None else None,
+                   method=setup.get("method") if setup_minutes is not None else None),
+        machine_time_is_not_human_time=True)
 
 
 def families(per_change):
@@ -375,12 +433,17 @@ def verdict(report, thresholds, *, baseline=None):
             observed = (lookup(report, t["metric"]) or 0) - (lookup(baseline, t["metric"]) or 0)
         else:
             observed = lookup(source, t["metric"])
+        row = dict(t)
         if observed is None:
             result = "NOT_MEASURED"
+            bound = lookup(source, t["bound_metric"]) if t.get("bound_metric") else None
+            if bound is not None and t["op"] == "<=" and bound > t["value"]:
+                # Incomplete data that already exceeds the limit: shown, never turned into a verdict.
+                row["diagnostic"] = "known_violation_while_incomplete"
         else:
             ok = {"<=": observed <= t["value"], ">=": observed >= t["value"], "==": observed == t["value"]}[t["op"]]
             result = "PASS" if ok else "FAIL"
-        rows.append(dict(t, observed=observed, result=result))
+        rows.append(dict(row, observed=observed, result=result))
         gates.setdefault(t["gate"], []).append(result)
     summary = {}
     for gate, results in gates.items():
@@ -393,23 +456,63 @@ def verdict(report, thresholds, *, baseline=None):
     return dict(thresholds=rows, gates=summary)
 
 
-def apply_human_minutes(ledger, recorded):
-    """Operator-recorded active minutes per change: {"recorded_by": ..., "minutes": {change_id: number}}.
+def apply_human_minutes(ledger, recorded, expected=None):
+    """Operator-recorded active minutes of a person.
 
-    Only recorded values enter the report; a change without a record stays NOT_RECORDED.
+    ``recorded``: {"recorded_by": who, "method": how it was measured (stopwatch, screen recording ...),
+    "minutes": {change_id: usage minutes}, "setup_minutes": optional one-time installation minutes}.
+    ``expected``: the change ids of the split; without it, the ledger's own records. A change id outside
+    it, a value that is not a finite non-negative number (bool, NaN, Infinity, text), or a record without
+    who and how is refused. A change without a value stays unknown; a zero counts only when given.
     """
+    if not isinstance(recorded, dict) or not _provenance(recorded):
+        raise SystemExit("REFUSED human minutes: need recorded_by and method")
     minutes = recorded.get("minutes") or {}
-    unknown = sorted(set(minutes) - {r["change_id"] for r in ledger["records"]})
-    if unknown or not recorded.get("recorded_by"):
-        raise SystemExit("REFUSED human minutes: need recorded_by and known change ids " + ",".join(unknown))
-    for r in ledger["records"]:
-        value = minutes.get(r["change_id"])
-        if value is not None:
-            if not isinstance(value, (int, float)) or value < 0:
-                raise SystemExit(f"REFUSED human minutes: invalid value for {r['change_id']}")
-            r["human"] = dict(r.get("human") or {}, active_minutes=float(value), status="RECORDED",
-                              recorded_by=recorded["recorded_by"])
+    if not isinstance(minutes, dict):
+        raise SystemExit("REFUSED human minutes: minutes must map change ids to numbers")
+    known = set(expected) if expected is not None else {r["change_id"] for r in ledger["records"]}
+    records = {r["change_id"]: r for r in ledger["records"]}
+    unknown = sorted(set(minutes) - known)
+    if unknown:
+        raise SystemExit("REFUSED human minutes: change ids outside the split " + ",".join(unknown))
+    not_run = sorted(set(minutes) - set(records))
+    if not_run:
+        raise SystemExit("REFUSED human minutes: no ledger record for " + ",".join(not_run))
+    values = {cid: minutes_value(v) for cid, v in minutes.items()}
+    invalid = sorted(cid for cid, v in values.items() if v is None)
+    if invalid:
+        raise SystemExit("REFUSED human minutes: invalid value for " + ",".join(invalid))
+    who = dict(recorded_by=recorded["recorded_by"].strip(), method=recorded["method"].strip())
+    if "setup_minutes" in recorded:
+        setup = minutes_value(recorded["setup_minutes"])
+        if setup is None:
+            raise SystemExit("REFUSED human minutes: invalid setup_minutes")
+        ledger["human_setup"] = dict(active_minutes=setup, status="RECORDED", **who)
+    for cid, value in values.items():
+        r = records[cid]
+        r["human"] = dict(r.get("human") or {}, active_minutes=value, status="RECORDED", **who)
     return ledger
+
+
+def check_change_ids(ledger, oracle):
+    """Every record belongs to the split; a missing change is scored as not run, an extra one is refused."""
+    extra = sorted({r["change_id"] for r in ledger["records"]} - set(oracle))
+    if extra:
+        raise SystemExit("REFUSED ledger change ids outside the split: " + ",".join(extra))
+
+
+def comparison_problem(service, baseline):
+    """Why a baseline ledger cannot be compared with a service ledger, or None."""
+    for field in ("program", "split", "manifest_digest"):
+        if service.get(field) != baseline.get(field):
+            return f"{field} differs"
+    if not baseline.get("configuration", "").startswith("baseline"):
+        return "not a baseline ledger"
+    own, other = service.get("model_binding") or {}, baseline.get("model_binding") or {}
+    if baseline.get("transport_kind") == "live" and (
+            not own or (own.get("model"), own.get("endpoint")) != (other.get("model"), other.get("endpoint"))):
+        return "a live baseline must use the model and endpoint of the service configuration"
+    return None
 
 
 def main():
@@ -420,10 +523,14 @@ def main():
     parser.add_argument("--full", action="store_true", help="print the per-change rows too")
     args = parser.parse_args()
     ledger = json.loads(Path(args.ledger).read_text(encoding="utf-8"))
-    if args.human_minutes:
-        apply_human_minutes(ledger, json.loads(Path(args.human_minutes).read_text(encoding="utf-8")))
     revision_dir = program_mod.program_dir(ledger["program"])
+    if ledger.get("split") not in program_mod.SPLITS:
+        raise SystemExit(f"REFUSED unknown split: {ledger.get('split')}")
     oracle = program_mod.load_oracle(ledger["split"], revision_dir)
+    check_change_ids(ledger, oracle)
+    if args.human_minutes:
+        apply_human_minutes(ledger, json.loads(Path(args.human_minutes).read_text(encoding="utf-8")),
+                            expected=sorted(oracle))
     _, program, _ = program_mod.load(revision_dir)
     rules = program.get("scoring") or {}
     kind = "baseline" if ledger.get("configuration", "").startswith("baseline") else "service"
@@ -431,8 +538,10 @@ def main():
     base = None
     if args.baseline:
         bl = json.loads(Path(args.baseline).read_text(encoding="utf-8"))
-        if bl.get("program") != ledger["program"] or bl.get("split") != ledger["split"]:
-            raise SystemExit("REFUSED baseline of another revision or split")
+        problem = comparison_problem(ledger, bl)
+        if problem:
+            raise SystemExit("REFUSED baseline: " + problem)
+        check_change_ids(bl, oracle)
         base = score(bl, oracle, kind="baseline", rules=rules)
         base["configuration_kind"] = bl.get("transport_kind")
     report["verdict"] = verdict(report, program["thresholds"], baseline=base) if kind == "service" else None

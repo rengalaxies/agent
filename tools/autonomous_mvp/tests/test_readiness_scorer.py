@@ -4,6 +4,7 @@ The ledgers here are built by hand in the runner's record shape: one that says
 exactly what the oracle says, then one deliberate error at a time.
 """
 import copy
+import json
 import unittest
 
 from tools.autonomous_mvp.readiness import program, scorer
@@ -176,23 +177,94 @@ class OneErrorAtATime(unittest.TestCase):
         self.assertEqual(report["graph_freshness"]["reflected_after_one_reconcile"]["numerator"], len(ORACLE) - 1)
 
 
-class HumanMinutes(unittest.TestCase):
-    def test_only_recorded_minutes_count_and_the_gate_stays_incomplete_without_them(self):
-        records = [ideal_record(o) for o in ORACLE.values()]
-        report = score(records)
-        self.assertEqual((report["human"]["status"], report["human"]["active_minutes_median"]), ("NOT_RECORDED", None))
-        data = scorer.apply_human_minutes(ledger(records), dict(recorded_by="operator", minutes={"D01": 3, "D02": 4}))
-        report = scorer.score(data, ORACLE)
-        self.assertEqual(report["human"]["active_minutes_recorded"], 2)
-        self.assertEqual(report["human"]["active_minutes_coverage"]["denominator"], len(ORACLE))
-        self.assertEqual(scorer.verdict(report, PROGRAM["thresholds"])["gates"]["human"], "FAIL")  # median 3 > 2
+COMPLETE_SAMPLE = dict(RULES, human_coverage="complete_sample")
+T29 = dict(id="T29", gate="human", metric="human.active_minutes_median", op="<=", value=2.0,
+           bound_metric="human.usage.median_lower_bound")
+WHO = dict(recorded_by="operator", method="stopwatch")
 
-    def test_minutes_for_an_unknown_change_or_without_a_recorder_are_refused(self):
-        records = [ideal_record(o) for o in ORACLE.values()]
-        with self.assertRaises(SystemExit):
-            scorer.apply_human_minutes(ledger(records), dict(recorded_by="operator", minutes={"H99": 1}))
-        with self.assertRaises(SystemExit):
-            scorer.apply_human_minutes(ledger(records), dict(minutes={"D01": 1}))
+
+def human_gate(report):
+    rows = scorer.verdict(report, [T29])
+    return rows["gates"]["human"], rows["thresholds"][0]
+
+
+class HumanCoverage(unittest.TestCase):
+    """The human gate needs a value for every expected change (6-r3 rule ``human_coverage``)."""
+
+    def records(self):
+        return [ideal_record(o) for o in ORACLE.values()]
+
+    def scored(self, recorded, records=None, rules=COMPLETE_SAMPLE):
+        data = scorer.apply_human_minutes(ledger(records or self.records()), dict(WHO, **recorded),
+                                          expected=sorted(ORACLE))
+        return scorer.score(data, ORACLE, rules=rules)
+
+    def test_one_of_65_recorded_changes_does_not_pass_the_6r2_heldout_human_gate(self):
+        # Review of #63, 26.10.2026: 0.5 min for the first change only gave coverage 1/65, median 0.5 and PASS.
+        base = program.program_dir("6-r2")
+        _, r2, _ = program.load(base)
+        oracle = program.load_oracle("heldout", base)
+        data = json.loads((base / "results" / "heldout-service-no-model.json").read_text(encoding="utf-8"))
+        first = sorted(oracle)[0]
+        scorer.apply_human_minutes(data, dict(WHO, minutes={first: 0.5}), expected=sorted(oracle))
+        report = scorer.score(data, oracle, rules=dict(r2["scoring"], human_coverage="complete_sample"))
+        gate, row = human_gate(report)
+        self.assertEqual((report["human"]["usage"]["coverage"]["numerator"],
+                          report["human"]["usage"]["coverage"]["denominator"]), (1, 65))
+        self.assertEqual((report["human"]["status"], report["human"]["active_minutes_median"]), ("INCOMPLETE", None))
+        self.assertEqual((gate, row["result"]), ("INCOMPLETE", "NOT_MEASURED"))
+        # The 6-r2 rules, as frozen, still give its historical meaning: a partial median counts.
+        self.assertEqual(human_gate(scorer.score(data, oracle, rules=r2["scoring"]))[0], "PASS")
+
+    def test_full_coverage_passes_at_or_below_the_limit_and_fails_above_it(self):
+        report = self.scored(dict(minutes={cid: 2 for cid in ORACLE}))
+        self.assertEqual((report["human"]["status"], human_gate(report)[0]), ("COMPLETE", "PASS"))
+        report = self.scored(dict(minutes={cid: 2.5 for cid in ORACLE}))
+        self.assertEqual(human_gate(report)[0], "FAIL")
+
+    def test_a_change_that_never_ran_stays_in_the_denominator(self):
+        records = self.records()
+        dropped = records.pop()["change_id"]
+        report = self.scored(dict(minutes={r["change_id"]: 1 for r in records}), records)
+        self.assertEqual(report["human"]["usage"]["missing"], [dropped])
+        self.assertEqual(human_gate(report)[0], "INCOMPLETE")
+
+    def test_a_recorded_zero_counts_and_a_missing_value_is_unknown(self):
+        report = self.scored(dict(minutes={cid: 0 for cid in ORACLE}))
+        self.assertEqual((report["human"]["active_minutes_median"], human_gate(report)[0]), (0.0, "PASS"))
+        report = scorer.score(ledger(self.records()), ORACLE, rules=COMPLETE_SAMPLE)
+        self.assertEqual((report["human"]["status"], human_gate(report)[0]), ("NOT_RECORDED", "INCOMPLETE"))
+
+    def test_partial_data_already_over_the_limit_is_a_diagnostic_not_a_verdict(self):
+        ids = sorted(ORACLE)
+        report = self.scored(dict(minutes={cid: 5 for cid in ids[:len(ids) // 2 + 1]}))
+        gate, row = human_gate(report)
+        self.assertEqual((gate, row["diagnostic"]), ("INCOMPLETE", "known_violation_while_incomplete"))
+
+    def test_setup_minutes_are_reported_apart_from_usage(self):
+        report = self.scored(dict(minutes={cid: 1 for cid in ORACLE}, setup_minutes=12))
+        self.assertEqual(report["human"]["setup"]["active_minutes"], 12.0)
+        self.assertEqual(report["human"]["active_minutes_median"], 1.0)
+
+    def test_an_empty_sample_never_passes(self):
+        report = scorer.score(ledger([]), {}, rules=COMPLETE_SAMPLE)
+        self.assertEqual((report["human"]["status"], human_gate(report)[0]), ("NO_SAMPLE", "INCOMPLETE"))
+
+    def test_invalid_values_foreign_ids_and_records_without_provenance_are_refused(self):
+        first = sorted(ORACLE)[0]
+        for bad in (True, float("nan"), float("inf"), -1, "1", None):
+            with self.subTest(value=bad), self.assertRaises(SystemExit):
+                scorer.apply_human_minutes(ledger(self.records()), dict(WHO, minutes={first: bad}),
+                                           expected=sorted(ORACLE))
+        refused = [dict(WHO, minutes={"H99": 1}), dict(recorded_by="operator", minutes={first: 1}),
+                   dict(method="stopwatch", minutes={first: 1}), dict(WHO, minutes={first: 1}, setup_minutes=-3)]
+        for recorded in refused:
+            with self.subTest(recorded=recorded), self.assertRaises(SystemExit):
+                scorer.apply_human_minutes(ledger(self.records()), recorded, expected=sorted(ORACLE))
+        records = self.records()
+        records.pop(0)
+        with self.assertRaises(SystemExit):  # in the split, but no record to attach the value to
+            scorer.apply_human_minutes(ledger(records), dict(WHO, minutes={first: 1}), expected=sorted(ORACLE))
 
 
 class Baseline(unittest.TestCase):
