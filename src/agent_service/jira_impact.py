@@ -48,12 +48,16 @@ def _model_use(investigation):
                    "reserved_micro": investigation.get("budget", {}).get("reserved_micro"), "currency": None}
 
 
-def jira_result(request, query, impacts: list[dict], *, context: dict, intent_reason: str, code_version: str,
+def jira_result(request, query, impacts: list[dict], *, context: dict, intent, code_version: str,
                 constitution_version: str, started_at: str, seconds: float, investigation=None):
-    """``impacts`` holds ``query.impact()`` for every operation the task names.
+    """``impacts`` holds ``query.impact()`` for every operation of ``intent`` (``intent.Intent``).
 
-    A model run (``investigation``) is recorded as model use and costs. Its
-    hypotheses are not rendered here yet; they are flagged as unverified.
+    An ``explicit`` intent gives the preliminary answer; a ``candidate`` intent
+    (a contract change of a named service, no operation named) shows the same
+    consumers as candidates only, PARTIAL; an intent with confidence ``none``
+    names no consumer at all. A model run (``investigation``) is recorded as
+    model use and costs. Its hypotheses are not rendered here yet; they are
+    flagged as unverified.
     """
     claims, checks, unknowns = [], [], [{"code": "jira_without_diff", "subject": None}]
     affected, paths, relationships, evidence = {}, [], {}, {}
@@ -115,13 +119,32 @@ def jira_result(request, query, impacts: list[dict], *, context: dict, intent_re
     model, costs = _model_use(investigation)
     if investigation and investigation.get("hypothesis_ids"):
         _unknown(unknowns, "model_hypothesis_unverified")
-    if not impacts:
+    named = ", ".join(intent.services)
+    if not impacts and intent.reason == "contract_unchanged_stated":
+        status, reason = "ABSTAINED", "out_of_scope"
+        summary = (f"The task names {named} and states that its API does not change; no consumer impact is "
+                   "claimed. The PR diff is analyzed when it exists.")
+    elif not impacts and intent.reason == "routes_stated_unchanged":
+        status, reason = "ABSTAINED", "out_of_scope"
+        summary = ("The task names its operations only to state that they do not change"
+                   + (f" ({named})" if named else "") + "; no consumer impact is claimed. The PR diff is "
+                   "analyzed when it exists.")
+    elif not impacts and intent.reason == "service_only":
         status, reason = "ABSTAINED", "intent_unclear"
-        summary = f"The task does not name an operation found in the graph ({intent_reason})."
+        summary = (f"The task names {named} but no change of its API or operations; no consumer impact is "
+                   "claimed before a diff.")
+    elif not impacts:
+        status, reason = "ABSTAINED", "intent_unclear"
+        summary = f"The task does not name an operation found in the graph ({intent.reason})."
     elif not affected:
         status, reason = "ABSTAINED", "no_consumer_found_within_profile"
         _unknown(unknowns, "runtime_not_observed")
         summary = "No consumer of the named operation was found in the graph. Absence is not proven."
+    elif intent.confidence == "candidate":
+        status, reason = "PARTIAL", "hypotheses_only"
+        summary = (f"The task names a contract change of {named} without naming an operation; {len(affected)} "
+                   f"service(s) use its {len(impacts)} operation(s) and are candidates only, not a "
+                   "preliminary answer.")
     elif any(c["kind"] == "fact" for c in claims):
         status, reason = "USEFUL", "preliminary_impact_found"
         summary = (f"{len(affected)} service(s) use the operation named by the task. No diff yet: this is a "

@@ -1,7 +1,8 @@
 """The real analysis: the batch 2A core and the batch 3 graph behind the service's Analyzer protocol.
 
 PR: base context at the PR base commit, ``Graph.analyze_change`` at the pinned
-head map, ``agent_graph.results.change_result``. Jira before any diff: the
+head map, ``agent_graph.results.change_result``, plus the runtime-only consumers
+of each changed operation from the graph (``runtime_impact``). Jira before any diff: the
 persistent graph is synced at the pinned default branches, the operations the
 task names are found in the graph (``intent``), and the result is assembled
 from ``GraphQuery.impact()`` (``jira_impact``). Owners always come from the
@@ -28,9 +29,10 @@ from agent_graph.contracts import GraphError, Policy
 from agent_graph.output_contracts import dump_document, parse_document
 
 from .analysis import AnalysisUnavailable
-from .intent import match_operations
+from .intent import match_intent
 from .jira_impact import jira_result
 from .qualification import check
+from .runtime_impact import add_runtime_candidates
 
 OWNERSHIP_SOURCES = ("installation_mapping", "codeowners", "service_catalog")
 
@@ -197,9 +199,11 @@ class CoreAnalyzer:
                     return dump_document(failed_result(req, "newer_head", superseded_by="newer-generation", **meta))
                 analysis = graph.analyze_change(base["id"], revisions=revisions)
                 investigation = self._investigate(analysis["context_used_id"], cancelled, deadline_epoch)
-                result = change_result(graph, req, analysis, ownership=self._ownership(self.query()),
+                query = self.query()
+                result = change_result(graph, req, analysis, ownership=self._ownership(query),
                                        investigation=investigation, started_at=started, finished_at=_now(),
                                        seconds={"analysis": time.monotonic() - clock}, **meta)
+                result = parse_document(add_runtime_candidates(dump_document(result), query))
             else:
                 synced = maintainer.on_code_event(revisions, trigger="jira_event")
                 context = graph.context(synced["context_id"])
@@ -208,10 +212,10 @@ class CoreAnalyzer:
                                                        superseded_by="newer-generation", **meta))
                 query = self.query()
                 texts = list(req.jira.text_fields.values())
-                operation_ids, reason = match_operations(GraphOperations(query).operations(), texts)
-                impacts = [query.impact(op, depth=2, limit=50) for op in operation_ids]
+                intent = match_intent(GraphOperations(query).operations(), texts)
+                impacts = [query.impact(op, depth=2, limit=50) for op in intent.operation_ids]
                 investigation = self._investigate(context["id"], cancelled, deadline_epoch)
-                result = jira_result(req, query, impacts, context=context, intent_reason=reason,
+                result = jira_result(req, query, impacts, context=context, intent=intent,
                                      investigation=investigation,
                                      code_version=self.code_version, constitution_version=self.constitution_version,
                                      started_at=started, seconds=time.monotonic() - clock)
