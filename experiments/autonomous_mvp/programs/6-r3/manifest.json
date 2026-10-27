@@ -1,0 +1,678 @@
+{
+  "baseline_protocol": {
+    "protocol": "baseline-search-1",
+    "sha256": "c6458b4a190786e42ae4196ea26f6cc6cd0faf1356fff9add8ec50af17e81cba"
+  },
+  "changes": {
+    "development": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10",
+      "D11",
+      "D12",
+      "D13",
+      "D14",
+      "D15",
+      "D16",
+      "D17",
+      "D18",
+      "D19",
+      "D20",
+      "D21",
+      "D22"
+    ],
+    "heldout": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "H05",
+      "H06",
+      "H07",
+      "H08",
+      "H09",
+      "H10",
+      "H11",
+      "H12",
+      "H13",
+      "H14",
+      "H15",
+      "H16",
+      "H17",
+      "H18",
+      "H19",
+      "H20",
+      "H21",
+      "H22",
+      "H23",
+      "H24",
+      "H25",
+      "H26",
+      "H27",
+      "H28",
+      "H29",
+      "H30",
+      "H31",
+      "H32",
+      "H33",
+      "H34",
+      "H35",
+      "H36",
+      "H37",
+      "H38",
+      "H39",
+      "H40",
+      "H41",
+      "H42",
+      "H43",
+      "H44",
+      "H45",
+      "H46",
+      "H47",
+      "H48",
+      "H49",
+      "H50",
+      "H51",
+      "H52",
+      "H53",
+      "H54",
+      "H55",
+      "H56",
+      "H57",
+      "H58",
+      "H59",
+      "H60",
+      "H61",
+      "H62",
+      "H63",
+      "H64",
+      "H65",
+      "H66",
+      "H67",
+      "H68",
+      "H69",
+      "H70"
+    ]
+  },
+  "code_sha256": {
+    "constitutions/agent-service-v1.yaml": "dfe166a4668abdc30e3a861515c8b8950442cb1396806c6b8306a3e6fc84f44d",
+    "examples/orders_reporting/stand.py": "9fe81709965c0980aeadcc6cc41545d23749cc928ef195477e806f78006f0c9b",
+    "src/agent_graph/__init__.py": "67325129feb526db751a97bac56a1eba132aeeee0a48b051a27a5e0b6b12571c",
+    "src/agent_graph/__main__.py": "dea8a6252651c1b2ea6e7aae2bb408f4673c6102cd66d5bbda6cbb10658cc6fa",
+    "src/agent_graph/actions.py": "7365af276f0b8ac4f73762f224278efdda067bcdc2c17d0c9b7f57dc6ed15402",
+    "src/agent_graph/constitution.py": "6c2cffa1d071d12f525584cc18d68db18b19dc9e5eb12a2ece2aa35e885f86ff",
+    "src/agent_graph/contracts.py": "c79fa9a9b97381003562ec457204f089311acb03cd3654e6c72571cefa62552d",
+    "src/agent_graph/discovery.py": "6b1a479a2aac6e720e75470c931bc545c48822d6d1340e3e1f660f63b420ab4b",
+    "src/agent_graph/engine.py": "154ec1de6901d85d7070e926d96af0c5149d27a624a7b2ea3366c8087a17839e",
+    "src/agent_graph/evidence_refs.py": "27908e35566cce20b56120e588edf3dcc5ac33e0d325b0ab04d21d930ebb9a8b",
+    "src/agent_graph/executor.py": "6ed0c0f1e239c1d2e94c7e674f14de03f221d445f7aa6f7ae53ea31642d51ee8",
+    "src/agent_graph/git_sources.py": "7fcf781865df303310a76523301bf244cd6952d10c02aaddc5abc10e27ff1e86",
+    "src/agent_graph/graph_query.py": "911dc8a80b1d6d4b2caf286f7f6e3974a44a03571187014e9c712005d77958e3",
+    "src/agent_graph/graph_store.py": "b316b1e2f341b57e56d5104d0e4b8f9cf427b9d783e5bb7ce060fcf991e5e1bb",
+    "src/agent_graph/graph_store_sync.py": "652b5cd45125750b0e0320f278e880e937ded50645364aa697334219adbef3c3",
+    "src/agent_graph/graph_view.py": "3606c9378fe0e66339e694de796eef60f2e07e6d6a626b95b8fe92c59ea80b97",
+    "src/agent_graph/inference.py": "893c8dfbc74c0c5aa997b117c32ce84656cc0b927bd824574a7e279202fed754",
+    "src/agent_graph/output_contracts.py": "d41b69c15844eb8d382faefe0430e3bb798437814ac6b594509975920371873c",
+    "src/agent_graph/portable.py": "915bc76cab886fee1be29086e9e2ceb4e3db7a69fae161ec733c498998633c9e",
+    "src/agent_graph/results.py": "5e94155443c8f4038baeabe77f169f207c13353e28de7ced66b9abc05d337539",
+    "src/agent_graph/runtime_observations.py": "54960ed8f008bc1ed8c19da38a99c8f30aa5b0a64ff1293a403fad74c3201fc4",
+    "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
+    "src/agent_graph/store.py": "8e1c88646e5662d474aefa89ea4387ed50ef0bae3537fe648cf85820905f9a15",
+    "src/agent_service/__init__.py": "76d87ca161b69d074d152bc622ab5ee7e03eaff358eadc28273e0c4bfad383ca",
+    "src/agent_service/__main__.py": "8fc02c5029ca5d1cd256c3ecb543a57df55b7dfc544cbeea57097e641d785b1d",
+    "src/agent_service/analysis.py": "aee26be6bca47a2a2959f7f81b7c021aef5b0e4c6979d66979e936040c9871c7",
+    "src/agent_service/api.py": "61c98ec59f0c1622ee71587bef2b3a5eae39734af8c27c149ffe14ea6e904fa4",
+    "src/agent_service/config.py": "676aef607c903726864170e8f8dec31c54090843292bd5eda8910950a2729cc2",
+    "src/agent_service/connectors/__init__.py": "4d79550005473d03382e02a37e5915722143416ffe2f9197b9f07af66da00d3d",
+    "src/agent_service/connectors/base.py": "f4ec617ded26a023f805350b91e47cae17c9ccf96715b5d521736dde851ca7c0",
+    "src/agent_service/connectors/github.py": "201ca9182cec6bee39d97ea01fe141943bb9cda02b8752d2562fa4a7f38abc1c",
+    "src/agent_service/connectors/jira.py": "0bfc409f0572495c072ac08cf8e178ddec8a360128182f4782162bbbf6e4c942",
+    "src/agent_service/core_analyzer.py": "9e3a72c2bb7b379465a573b833a817b591638b3bdadf7a53ef07e87d2ee62a54",
+    "src/agent_service/envelope.py": "5458c01ff3952c3e952aa6745c50832db230928d89e2eeb867f49c16ec0b2165",
+    "src/agent_service/http.py": "79f22c182bd3d4d912e42eb489de0664a18b0998b1847b096b57738f8f7c591c",
+    "src/agent_service/intent.py": "c50b8371dc6e3f90bf231145cd8057f14fc4b45ffcf680b4fd55d81102a8d1af",
+    "src/agent_service/jira_impact.py": "e7a6a1c5d4013aa2c49f1183f4139c10aac46445191a60dab927f1d06ca37be4",
+    "src/agent_service/publisher.py": "8c3b04728be5f1825267886cec335a6c7f7282f7a411c35bf8ebaa15cf728167",
+    "src/agent_service/qualification.py": "255e551860e9fdd385962f1b455a28f580ccbe997faaa4a83b2c317e2df32132",
+    "src/agent_service/queue.py": "0fcb3811ef62bb3a539bc71a451bbea5cc58fe6542e2bd21484142f0528745fd",
+    "src/agent_service/runtime_impact.py": "d97d66afb21395ee7d9ccfde29091625574acdb4996a18d76257ccddea5bca51",
+    "src/agent_service/service.py": "343b12c2432fa8021bea935d3d8fa68c6cda0bb893d0d9ad8eea0966100739f1",
+    "src/agent_service/smoke.py": "63ec3dbd7840f1f2d51c96fc3745dac2c6180221aab01268694d4a54788780a7",
+    "src/agent_service/stands.py": "2ef7da8548e19e0ff8546f16d693d73a1cb295410d190e0e5c9ee7d57741ca3c",
+    "tools/autonomous_mvp/readiness/__init__.py": "72c28a1965a48e9b4b0da95e3280f1e80940083c70bfc6efa47e4c7fe4ff3e62",
+    "tools/autonomous_mvp/readiness/baseline.py": "fae6bdd5a470e29dfdc512466b26b474c8fd51b0be74b15dc95a0517f832d571",
+    "tools/autonomous_mvp/readiness/bench.py": "fe03fc909a0cd2ab2d42e4b2442e5f819aae1593ce25a6f1ff2da8be574291fc",
+    "tools/autonomous_mvp/readiness/generate.py": "ba5824c2964fa83fbcd3edbe3578f32cc12876cddb891f3af8eea643521d8e47",
+    "tools/autonomous_mvp/readiness/live.py": "abdb708513d87a554388fa2c9e681c9369e8276da276ab74420b8b74f9086b23",
+    "tools/autonomous_mvp/readiness/oracle.py": "300fdb734781018c0ab806d24f13866b7e46f9972d882ccff863131eee1eb128",
+    "tools/autonomous_mvp/readiness/program.py": "55424746c9b5079069b7e655be3e2e243aafc2f04c6a33940ba8b9bfbc5425a3",
+    "tools/autonomous_mvp/readiness/runner.py": "cfb59b20782005014b834f96030f189f69b2d496c0c5dbea68eab5e2e65c2c4d",
+    "tools/autonomous_mvp/readiness/scorer.py": "d1199ae2b840f3b0ddba25dd1b7e74c8912aa0fb5385dfc5892b165d97361b62",
+    "tools/autonomous_mvp/readiness/world.py": "db6153e974e8810b59e2423a08f82b46bd44bd2e8d2f62b74fc38375c29c4166",
+    "tools/autonomous_mvp/scorer.py": "881e1b83aadeba464a7f154b4ebd4c264ebb5171bbc1a05ccb54f3d6e128e6d1",
+    "tools/autonomous_mvp/transport.py": "e90c228b44e4008e970375e37a5e2ac5957b754f01a5cae9e9f55bd57ae1f04f"
+  },
+  "manifest_digest": "e1c04f17d2d3dec3c6e5d9579f1a96590392cafe477809f5690c0c2b9c5a5f94",
+  "oracle_scope": "evaluator only; never passed to the service, the baseline, a model or its configuration",
+  "program": {
+    "configurations": {
+      "baseline-live": {
+        "configuration_id": "baseline-live-<model slug>",
+        "limits": "baseline LIMITS: 12 steps, 120 s per stage, max_completion_tokens of the model (4096); the service model runs under the constitution limits; both are recorded in the ledger binding",
+        "protocol": "baseline-search-1 over CloudRuTransport; its search prompt and actions differ from actions-v3 by design, so the 2B qualification of actions-v3 is no evidence about the quality of this prompt",
+        "status": "runs only with the model and endpoint of the service-model configuration it is compared with",
+        "stop": "as service-model; an unauthorised or rate-limited transport stops the series at once"
+      },
+      "baseline-naive-search": {
+        "protocol": "baseline-search-1 over NaiveSearchTransport",
+        "status": "runnable offline; harness check and floor, not a model"
+      },
+      "service-model": {
+        "analyzer": "CoreAnalyzer with the 2B model profile and the qualification reference; same stands and runner",
+        "configuration_id": "service-model-<model slug>",
+        "cost": "tokens from AnalysisResult.costs; roubles from the 2B model price; unknown usage stays unknown",
+        "model_profile": "2B program 2b-r1: endpoint, parameters and the model's max_completion_tokens; limits.max_tool_lines 60",
+        "status": "runs only after preflight: the qualification reference (2B report path, run_id, SHA-256) passes agent_service.qualification.check against the loaded constitution, code and the model profile built from the 2B program; on any mismatch the run is refused before a model call and the reason code is printed; never with a model admitted by a flag",
+        "stop": "the series stops after two consecutive changes whose model calls all failed, or at the series deadline; the remaining changes are recorded as not run and stay in every denominator"
+      },
+      "service-no-model": {
+        "analyzer": "CoreAnalyzer model=None, model_qualification=None",
+        "code_version": "readiness-6-r3",
+        "freshness": "graph query defaults: runtime 86400 s, ownership 604800 s",
+        "runtime_window_seconds": 259200,
+        "status": "runnable offline"
+      }
+    },
+    "every_world": "a provider with the changed operation and an unchanged count operation; 1-2 bystanders of the count operation; ownership mapping for every service; names, task keys and repository bytes of the two splits are disjoint",
+    "evidence_levels": [
+      "L1 synthetic Git stand: generated repositories, execution-grounded oracle (this program)",
+      "L2 local HTTP stand: the real service, webhook receiver, queue and connectors against local GitHub/Jira emulations on 127.0.0.1 (this program)",
+      "L3 real integration: GitHub App, Jira Cloud test project, VM installation (not in this program)",
+      "L4 company data: real repositories, history, consumers and people (not in this program)"
+    ],
+    "families": {
+      "F01_truncation": "default page size decreases; single-request consumers break, cursor and explicit-page-size consumers need a recheck; a same-named decoy provider and its caller are present",
+      "F02_operation_removed": "the operation is removed; every consumer breaks",
+      "F03_no_impact_noop": "README or docs-only change; Jira names the provider service (three wordings, the API stated unchanged in two, nothing about the API in one) or nothing; nobody is affected",
+      "F04_no_consumer_operation": "the changed operation has no consumers; consumers of another operation of the same provider are not affected",
+      "F05_runtime_only": "a consumer takes its URL from deployment configuration that no readable repository holds; only fresh access logs show the call",
+      "F06_code_only": "a runtime source is configured but does not show one of the code consumers",
+      "F07_stale_runtime": "as F05, but the only access-log window is two days old (older than the 24 h runtime freshness limit)",
+      "F08_revoked_source": "one consumer repository was readable earlier and is revoked now; it is affected but must never be shown",
+      "F09_ownership_conflict": "one affected consumer has two owner teams, one has none in the mapping",
+      "F10_ambiguous_jira": "two providers declare the same route and the Jira text names neither: abstaining is correct at Jira; the PR identifies the provider",
+      "F11_vague_jira": "the Jira text names no route and no service: abstaining is correct at Jira",
+      "F12_unclassified_change": "the declaration body changes in a way no classifier covers; consumers need a recheck, a partial answer is correct",
+      "F13_service_contract_unspecified": "as F01 on the PR; the Jira text names the provider and a contract change (page size, response, smaller portions) but not the operation: candidates or an abstention are correct at Jira, a confident answer is not",
+      "F14_route_stated_unchanged": "the PR changes only documentation; the Jira text names the provider operation only to state that it does not change (Russian and English, one paraphrase that names the route without a change verb); expected: Jira no_impact, PR no_impact"
+    },
+    "frozen_before": "any held-out run of 6-r3 in any configuration; the 6-r3 development worlds were generated while the wording was written; the 6-r3 held-out names, keys and seeds are new",
+    "id": "6-r3",
+    "oracle": {
+      "acceptable_statuses": {
+        "abstain": [
+          "ABSTAINED"
+        ],
+        "answer": [
+          "USEFUL"
+        ],
+        "candidate": [
+          "PARTIAL",
+          "ABSTAINED"
+        ],
+        "no_impact": [
+          "ABSTAINED"
+        ],
+        "partial": [
+          "PARTIAL",
+          "USEFUL"
+        ]
+      },
+      "basis": "code for clients whose URL is a constant; runtime or stale_runtime for clients whose URL comes from deployment configuration, by the age of the newest access-log window that shows them",
+      "isolation": "the oracle files are read only by scorer.py and the corpus tests; the runner and the baseline receive change files and stands only, and run with the oracle directory absent (tested)",
+      "outcome_rules": {
+        "jira": "abstain when the text does not identify the operation (ambiguous route or no mention); candidate when the text names the provider and a contract change but not the operation; no_impact when no consumer is affected; partial when some affected consumer has only a runtime basis; otherwise answer",
+        "pr": "no_impact when no consumer is affected; partial for an unclassified change or when some affected consumer has only a runtime basis; otherwise answer"
+      },
+      "owner_status": "from the ownership mapping: one team KNOWN, several CONFLICT, none UNKNOWN",
+      "severity": {
+        "breaking": "calls the changed operation and its result differs after the change (fewer records or an HTTP error)",
+        "none": "does not call the changed operation",
+        "recheck": "calls the changed operation and its result is the same"
+      },
+      "source": "execution: every consumer's load_day runs against a recording fake of requests with the providers as on main and as on the PR branch (oracle.py); the service, the static extractor, the baseline and any model take no part"
+    },
+    "pre_run_changes": [],
+    "relation_to_earlier_revisions": {
+      "fixes_measured": [
+        "Jira intent: a route named only as unchanged is no target; the rest of the text decides (src/agent_service/intent.py, review of #64 on 26.10.2026)",
+        "human gate: complete coverage of the split before a median counts (scoring.human_coverage)"
+      ],
+      "historical": "6-r1 (manifest 6140e378, FAIL) and 6-r2 (manifest 45f49527, technical and quality PASS without a model, human and comparison INCOMPLETE) keep their programs, corpora, ledgers and verdicts; their scoring rules are read from their own program.json",
+      "known_bias": "the 6-r3 wording (negated routes, paraphrases, English) was written after the route-negation fix by its author: it checks these phrasings, not how people write tasks; new seeds and names do not remove that bias. One F14 paraphrase names the route without a change verb, which the deterministic matcher is known to read as a change; it stays in the set as a stated limitation, not a tuned case",
+      "new_heldout": "70 changes drawn from seeds 6-r3:heldout:<i>, with names and Jira keys in no split of 6-r1 or 6-r2",
+      "not_comparable": "6-r1 47/60 and 6-r2 65/65 were scored under different rules on different corpora; neither is an improvement measured on an unchanged benchmark, and 6-r3 is not either",
+      "prepared_by": "the same executor (Claude) that wrote the fixes, the generator and the oracle rules, on 27.10.2026; no independent author wrote or reviewed the texts before the freeze",
+      "regression_examples": "the 26.10 review cases (route stated unchanged, 1 of 65 minutes) are regression tests in tests/service and tools/autonomous_mvp/tests; passing them is not held-out evidence"
+    },
+    "sample_size": {
+      "decision": "22 development and 70 held-out independent changes: the 6-r2 sizes plus one F14 world per development set and five per held-out set, so every family keeps 5 held-out changes",
+      "reasoning": [
+        "The gate rates (useful autonomous output, failure, wrong confident answer) are change-level and independent; at n=60 the 95% interval is within +-0.11 for rates near 0.7 and +-0.06 near 0.95, enough to tell a usable service (>=0.7) from a coin flip (0.5): their intervals do not overlap.",
+        "Zero-tolerance counters (lost, duplicate, stale publications, revoked leaks) over 120 resources bound the per-resource rate below 0.031 when zero is observed (rule of three: 3/120 = 0.025); over 60 changes below 0.060.",
+        "Per-family results (5 changes each) are descriptive only; no claim is made per family.",
+        "A service-versus-baseline difference is paired on the same 60 changes; an unpaired worst case needs about 0.18 to be distinguishable, so the comparison gate asks for at least 0.10 and is reported with both intervals, not as a significance claim.",
+        "More changes would narrow intervals but the stands are synthetic: precision beyond +-0.1 on synthetic worlds says nothing more about company data. The next evidence step is company history, not a larger synthetic set."
+      ],
+      "wilson95_half_width_at_n70": {
+        "p0.50": 0.114,
+        "p0.70": 0.105,
+        "p0.80": 0.093,
+        "p0.90": 0.072,
+        "p0.95": 0.058
+      },
+      "zero_event_upper95": {
+        "n140": 0.027,
+        "n22": 0.149,
+        "n70": 0.052
+      }
+    },
+    "schema": "readiness-program-1",
+    "scoring": {
+      "candidate_stage": "Jira stage with expected outcome candidate: correct when the status is PARTIAL or ABSTAINED, nothing revoked leaks and nothing stale is shown as current; USEFUL is a wrong confident answer (T23). Named services that the oracle marks as not affected count in the Jira FP rate (T22) but do not make the stage wrong, because the result labels them as unconfirmed candidates. There is no recall requirement at this stage.",
+      "cost": "model calls and tokens from AnalysisResult.costs; roubles only when every call has a price; no-model configuration has none",
+      "graph_freshness": "after the merge (provider default branch moves to the PR head) one periodic reconciliation: the provider's git source version equals the head and the active declared operations equal the head's",
+      "human_coverage": "complete_sample",
+      "human_minutes": "Recorded inputs only, with who recorded them and how (recorded_by, method). Usage minutes per change and setup minutes of the installation are separate. The usage median is reported and gated only when every expected change of the split (the oracle's change ids, so a change that never ran stays in the denominator) has a recorded value; otherwise the human gate is INCOMPLETE and only the lower bound of the median (missing values as zero) is shown, with a diagnostic when that bound already exceeds the limit. A recorded zero counts; a missing value is unknown. Machine wall time and zero interventions are not human minutes. The runner has no human step; synthetic changes are not labelled by the owner to make this gate pass.",
+      "latency": "seconds from the webhook delivery to the last accepted comment write of that stage, local stands; worker polling is synchronous in the runner",
+      "outcome_classes": "answer (USEFUL), partial (PARTIAL), abstain (ABSTAINED), failure (FAILED, no result or crash), counted separately per stage",
+      "pr_runtime_basis": "candidate",
+      "pr_runtime_basis_meaning": "On the PR stage a consumer whose only basis is runtime (its URL comes from deployment configuration that no readable repository holds) must be named with the changed provider operation and with freshness that is not CURRENT when its only window is stale. Its severity is not required and it leaves the breaking-as-breaking denominator (T18): the oracle's severity comes from executing code the service cannot read, and the service's profile assigns severity only from a call site's usage. Asking for 'breaking' would reward turning traffic into a proven break. The pairs get their own threshold (T30). The oracle's severities themselves are unchanged.",
+      "publication": "lost: no comment or the newest result intent not DELIVERED; duplicate: more than one service comment or create; stale: comment digest differs from the newest generation's body or the published generation is behind; plus writes caused by a redelivered webhook",
+      "stage_correct": "status acceptable, no missed expected consumer, no false positive, no revoked service in the result or comment text, every expected consumer with the right provider operation (and on the PR stage the right call site for code consumers), owner status as in the mapping, a stale-only consumer never shown with only CURRENT freshness, on the PR stage severity exactly as the oracle for code-basis consumers (runtime-basis consumers: see pr_runtime_basis)",
+      "useful_autonomous": "per change: Jira stage correct, PR stage correct, publication intact (one comment per resource, current body digest, delivered, no write after redelivery), no crash"
+    },
+    "splits": {
+      "development": {
+        "changes": 22,
+        "use": "allowed for tuning prompts, parameters and the service; rerunnable"
+      },
+      "heldout": {
+        "changes": 70,
+        "use": "never for tuning; run once per configuration after the manifest commit; the runner refuses a stale manifest and an existing held-out ledger"
+      }
+    },
+    "thresholds": [
+      {
+        "gate": "technical",
+        "id": "T01",
+        "metric": "error_count",
+        "op": "==",
+        "value": 0,
+        "why": "a crash is a lost change"
+      },
+      {
+        "gate": "technical",
+        "id": "T02",
+        "metric": "publication.lost",
+        "op": "==",
+        "value": 0,
+        "why": "every resource gets its comment"
+      },
+      {
+        "gate": "technical",
+        "id": "T03",
+        "metric": "publication.duplicate",
+        "op": "==",
+        "value": 0,
+        "why": "one updatable comment per resource"
+      },
+      {
+        "gate": "technical",
+        "id": "T04",
+        "metric": "publication.stale",
+        "op": "==",
+        "value": 0,
+        "why": "the comment shows the newest generation"
+      },
+      {
+        "gate": "technical",
+        "id": "T05",
+        "metric": "publication.writes_after_redelivery",
+        "op": "==",
+        "value": 0,
+        "why": "a redelivered webhook writes nothing"
+      },
+      {
+        "gate": "technical",
+        "id": "T06",
+        "metric": "stages.jira.revoked_leaks",
+        "op": "==",
+        "value": 0,
+        "why": "a revoked source is never shown"
+      },
+      {
+        "gate": "technical",
+        "id": "T07",
+        "metric": "stages.pr.revoked_leaks",
+        "op": "==",
+        "value": 0,
+        "why": "a revoked source is never shown"
+      },
+      {
+        "gate": "technical",
+        "id": "T08",
+        "metric": "stages.jira.stale_as_current.count",
+        "op": "==",
+        "value": 0,
+        "why": "stale evidence is never shown as current"
+      },
+      {
+        "gate": "technical",
+        "id": "T09",
+        "metric": "stages.pr.stale_as_current.count",
+        "op": "==",
+        "value": 0,
+        "why": "stale evidence is never shown as current"
+      },
+      {
+        "gate": "technical",
+        "id": "T10",
+        "metric": "stages.jira.failure.value",
+        "op": "<=",
+        "value": 0.02,
+        "why": "technical failures are rare"
+      },
+      {
+        "gate": "technical",
+        "id": "T11",
+        "metric": "stages.pr.failure.value",
+        "op": "<=",
+        "value": 0.02,
+        "why": "technical failures are rare"
+      },
+      {
+        "gate": "technical",
+        "id": "T12",
+        "metric": "latency.jira.p95",
+        "op": "<=",
+        "value": 60,
+        "why": "a Jira insight within a minute on local stands"
+      },
+      {
+        "gate": "technical",
+        "id": "T13",
+        "metric": "latency.pr.p95",
+        "op": "<=",
+        "value": 60,
+        "why": "a PR insight within a minute on local stands"
+      },
+      {
+        "gate": "technical",
+        "id": "T14",
+        "metric": "graph_freshness.reflected_after_one_reconcile.value",
+        "op": ">=",
+        "value": 1.0,
+        "why": "a merged change is in the graph after one reconciliation"
+      },
+      {
+        "gate": "technical",
+        "id": "T15",
+        "metric": "graph_freshness.seconds_p95",
+        "op": "<=",
+        "value": 30,
+        "why": "reconciliation of a small installation is fast"
+      },
+      {
+        "gate": "quality",
+        "id": "T16",
+        "metric": "useful_autonomous.value",
+        "op": ">=",
+        "value": 0.7,
+        "why": "most changes need no human correction of the comments"
+      },
+      {
+        "gate": "quality",
+        "id": "T17",
+        "metric": "useful_autonomous_lower95",
+        "op": ">=",
+        "value": 0.55,
+        "why": "the interval excludes a coin flip"
+      },
+      {
+        "gate": "quality",
+        "id": "T18",
+        "metric": "severity.breaking.reported_breaking.value",
+        "op": ">=",
+        "value": 0.9,
+        "why": "breaking consumers with a code basis are reported as breaking; runtime-basis consumers are scored by T30 (see scoring.pr_runtime_basis_meaning)"
+      },
+      {
+        "gate": "quality",
+        "id": "T19",
+        "metric": "stages.jira.consumer_recall.value",
+        "op": ">=",
+        "value": 0.85,
+        "why": "the preliminary insight names who may be affected"
+      },
+      {
+        "gate": "quality",
+        "id": "T20",
+        "metric": "stages.pr.path_correct.value",
+        "op": ">=",
+        "value": 0.9,
+        "why": "the path names the right operation and call site"
+      },
+      {
+        "gate": "quality",
+        "id": "T21",
+        "metric": "severity.negatives.pr_fp.value",
+        "op": "<=",
+        "value": 0.05,
+        "why": "PR comments rarely name unaffected services"
+      },
+      {
+        "gate": "quality",
+        "id": "T22",
+        "metric": "severity.negatives.jira_fp.value",
+        "op": "<=",
+        "value": 0.1,
+        "why": "the preliminary insight may be wider, but not much"
+      },
+      {
+        "gate": "quality",
+        "id": "T23",
+        "metric": "stages.jira.wrong_confident.value",
+        "op": "<=",
+        "value": 0.05,
+        "why": "no confident answer where abstaining or no impact is correct; 6-r2: stages with expected candidate count too"
+      },
+      {
+        "gate": "quality",
+        "id": "T24",
+        "metric": "stages.pr.wrong_confident.value",
+        "op": "<=",
+        "value": 0.05,
+        "why": "no confident answer where no impact is correct"
+      },
+      {
+        "gate": "quality",
+        "id": "T25",
+        "metric": "stages.jira.owner_accuracy.value",
+        "op": ">=",
+        "value": 0.98,
+        "why": "owners are not guessed"
+      },
+      {
+        "gate": "quality",
+        "id": "T26",
+        "metric": "stages.pr.owner_accuracy.value",
+        "op": ">=",
+        "value": 0.98,
+        "why": "owners are not guessed"
+      },
+      {
+        "gate": "cost",
+        "id": "T27",
+        "metric": "cost.rub_per_change",
+        "op": "<=",
+        "value": 15.0,
+        "why": "a model configuration stays cheap per change (2B prices incl. VAT)"
+      },
+      {
+        "gate": "comparison",
+        "id": "T28",
+        "metric": "useful_autonomous.value",
+        "needs": "baseline",
+        "op": ">=",
+        "value": 0.1,
+        "why": "the service beats an ordinary agent with search by at least 0.10 on the same changes; evaluated only against a live baseline ledger"
+      },
+      {
+        "bound_metric": "human.usage.median_lower_bound",
+        "gate": "human",
+        "id": "T29",
+        "metric": "human.active_minutes_median",
+        "op": "<=",
+        "value": 2.0,
+        "why": "a person spends little active time per change; measured only with complete coverage of the split, otherwise INCOMPLETE (scoring.human_minutes)"
+      },
+      {
+        "gate": "quality",
+        "id": "T30",
+        "metric": "severity.runtime_basis.named.value",
+        "op": ">=",
+        "value": 0.9,
+        "why": "consumers that only runtime sources show are named on the PR with the changed operation; 6-r1 named 0 of 10"
+      },
+      {
+        "gate": "human",
+        "id": "T31",
+        "metric": "human.setup.active_minutes",
+        "op": "<=",
+        "value": 30,
+        "why": "one-time connection of an installation takes at most half an hour of a person's active time; NOT_MEASURED until recorded"
+      }
+    ],
+    "title": "Batch 6, revision 3: technical readiness and usefulness of the autonomous Jira/PR impact service on synthetic stands, after the Jira route-negation fix, with complete human-minute coverage and live model configurations defined before any model run",
+    "unit": {
+      "change": "one Jira issue and the PR that implements it, on its own Git stand and its own fresh service installation; the Jira issue and the PR are one unit, not two",
+      "consumer_pair": "(change, consumer service) with an oracle severity; pairs of one change are correlated, their intervals are optimistic",
+      "negative_pair": "(change, service) that the oracle marks as not affected: decoy provider, decoy callers, bystanders of an unchanged operation, consumers of an unchanged route",
+      "resource": "one Jira issue or one PR, for publication integrity",
+      "stage": "the Jira comment or the PR comment of one change"
+    },
+    "verdict_rules": {
+      "business_usefulness": "UNVERIFIED in this program: it needs company history (real changes, real consumers, real incidents) and recorded human minutes; no synthetic result can establish it",
+      "gate_states": "PASS when every threshold passes, FAIL when any fails, INCOMPLETE when any is NOT_MEASURED or NOT_EVALUATED",
+      "technical_readiness": "gate technical PASS on the held-out ledger of the configuration",
+      "usefulness_on_synthetic_stands": "gate quality PASS on the held-out ledger; this is not business usefulness"
+    },
+    "written_at": "2026-10-27"
+  },
+  "program_files_sha256": {
+    "changes/development/D01.json": "72efe2bf5fb5afba103b9f25a70c0416024f539f4147c37038801e81325fdc4a",
+    "changes/development/D02.json": "06a9934d4a6f958ec36c66ff39b8d18ae6038a416269fb223377c722a3a0a05e",
+    "changes/development/D03.json": "d81b508d8c1011627f8f57904b0f5ae4bfc90a90e862caf95000ecfca77adb17",
+    "changes/development/D04.json": "8d96aecd3da12cb45d70ce81f1797a48fc82050fd7930880aa350e1d5fdc6958",
+    "changes/development/D05.json": "cec85b142eb1272b06edd2c5278f65d3b7724521bdb44032113f69c12b29760e",
+    "changes/development/D06.json": "1f0cec37f75ff811055a2cb6763a9846fe4ddd2bbf852d881fa802631da5f4d7",
+    "changes/development/D07.json": "e38c6ca3c6e1223068fcdbb9b8ee8bfbe03e3cb3b46704bdf9bdd94f7dc7e188",
+    "changes/development/D08.json": "57fedfe44c0b8c31d9da3a2f72e28afc7849cc9cd804a003ac8a41f5b2387445",
+    "changes/development/D09.json": "352df4f732e4d993946c34b77b04cc4745baad8882d9b679c1279db41adfe879",
+    "changes/development/D10.json": "dd660bfbd18bb26e2a9480348194cc00c409d8bdf214051f91a4d925c5e871e9",
+    "changes/development/D11.json": "b6df69bffac69bc3c144b34a9fd5eaaf1537419087c7f85a7d98f3257a295b14",
+    "changes/development/D12.json": "220a2397a901b85c67b3627ddad73fd8ba92a81074287095860dda715f59a61e",
+    "changes/development/D13.json": "dd481c0f498f8cd58badfaf3ba3e4c67a59703afb23c69ab32cf1d7d3bec996e",
+    "changes/development/D14.json": "df59177926407a6fbdc3c45644253f47e42893cb50b1db4bc272596ddc08bb40",
+    "changes/development/D15.json": "78352b332e915d1550877ee2cfa93cba87b0263209cf8adadd7ea3fadaaf0f91",
+    "changes/development/D16.json": "b3f4610b553e9d5e50d7db05e0b38d52390504da390541fd58990eb684679a99",
+    "changes/development/D17.json": "547c0ccfed5b1ab327b306466c185052cae22b9a0c0fda1e8da2ba286d885868",
+    "changes/development/D18.json": "6c0bb4d2bc56edde1f6368d9a4b78b8f3b38fe0159620dcb3b7b5ebb691cbab3",
+    "changes/development/D19.json": "00cbeb19b8f5eb448ae6683021f6f9404cb7abafebbf23d851831f2483f76774",
+    "changes/development/D20.json": "d3f78a83d42dff7bbb23e9d3ea40b0bc3687f950621d1732016c0d974a12fd03",
+    "changes/development/D21.json": "069d1ebf650ada1fab8d30237e73ddedfb9a28e4c3a2e91618ab6e90a575d19f",
+    "changes/development/D22.json": "f15e498909e532c011e338050170bb714c10da5eaadfb1e21bb2dc74ce92ac92",
+    "changes/heldout/H01.json": "d866ee27ddb9600a23adf1cc09d59135d2bcb995d82ea4196fb1a8b0ed02d698",
+    "changes/heldout/H02.json": "63ff4b33278ec254a894398705df03ac5dcf13660b751711848599e60fab61c7",
+    "changes/heldout/H03.json": "d1be2fbfc323a5c3056a5e87fa8cd5b1b7a6b0b18bff38b4f1a2a87f83f0c549",
+    "changes/heldout/H04.json": "b33521b7644b32a786f1c7d7e78f2c14a6afeeef544cbb3db2deabb8512ec221",
+    "changes/heldout/H05.json": "3efb6e401c9189889eacc5abb404f8b53afe6a27b1ae62a3c6fc108315c6d94e",
+    "changes/heldout/H06.json": "10618b6a5453a10344e61f2af8161e08acafb0603f26e5c90eea1d7f69da5cf8",
+    "changes/heldout/H07.json": "4b9f6860ea687d3f39a3c585875d451e0a07820523ce889fa5667b681cb2dc07",
+    "changes/heldout/H08.json": "137cfefbbd35e043017043511d149df5224cbc27018c5e4ad80237f969f9adad",
+    "changes/heldout/H09.json": "4b1842f25f0d2bf9f4c4da1c0ff3b19f9b8d531d490e768d730320ddef809277",
+    "changes/heldout/H10.json": "bcd22b8341bff3a666e65ab1f3614744176c4fbd03f61e63c2960a28e624d582",
+    "changes/heldout/H11.json": "a09995548f7f9e1d9804b5594efcaf19d6a4a849f1280af2a946f81b1e3aac30",
+    "changes/heldout/H12.json": "ec54fb72789d6c169fef8df375e21539d67713c4cf0ddab5c4eebd4c167aac69",
+    "changes/heldout/H13.json": "381bf40e67133cca81909e669cd432d65be5c05d1db520d9b8be8f5e1c70f8cd",
+    "changes/heldout/H14.json": "2d5190225b3b9dc0692e066230d771ea1b7c94e30bf0a2c42b0e5b5c2663a8b0",
+    "changes/heldout/H15.json": "f99040533ee9ac07b312ccb46e935853e92462b6a734f544e44f11d630b51000",
+    "changes/heldout/H16.json": "acf5200f80b7d6997151857ccac3b88072a76a86089f40fccec5be59d1e8a46c",
+    "changes/heldout/H17.json": "0cb05d59c5db54e0121574bb73a17711e9e14a0fb6215296501c09d63da33ae3",
+    "changes/heldout/H18.json": "30974a18a08129a006bf4ee0c3b61f7d55a6d9d61ac0624d3602b380d8b492da",
+    "changes/heldout/H19.json": "3e88d94919e086bae348a08e6392df6eed7ac30628c419ed3b0dcf70edbffd8d",
+    "changes/heldout/H20.json": "61593fba22adca666e071f1597113bf4c22e869aaa7c56a0a1f49e08a9b78e12",
+    "changes/heldout/H21.json": "05988ab1420e7a874f7c1f3fda3ba63b65c6faac99029c02a3b37faba6865cba",
+    "changes/heldout/H22.json": "fabf4db5a4ba38fb4aa6f42059df7d2badd8156288194a613d99038c0cf4f1cc",
+    "changes/heldout/H23.json": "8c94822bf0ba720192c5122d8969fe0534623735da40ad9d5883b5bfdef21527",
+    "changes/heldout/H24.json": "7f5048b539b3666ab6ed26e49d6d160bec1fdfa76a46f5b105453106f00ad6ea",
+    "changes/heldout/H25.json": "4778e6530bf39f966783298fa5d6c9d604f802dfc4df3840674a7c0063df4412",
+    "changes/heldout/H26.json": "67061785c393281dd9e401b0c48076873522ad571a007b3bb6618b8a9f171f28",
+    "changes/heldout/H27.json": "c2341aea1be1b05082af384ac3c383d2a9e6a82ac95136a18973c4a9367e4e75",
+    "changes/heldout/H28.json": "3638afcf1ce7f2ecf9eee2d3dfe0495b50e0940b59d6744a9a354ac1cf03dc6c",
+    "changes/heldout/H29.json": "e12d15d66b35b44f811f58036c7cd6dafe9b2fc25a99d3e8b9d206a7da52404d",
+    "changes/heldout/H30.json": "23441b8fa29ebbb1d810c8d326fe4af2988f1c07e44bf6f96b34294082e3d318",
+    "changes/heldout/H31.json": "3c19ecac4d471ec650d45a579a3d22c564c13b2d86bf8fb7f4395fbdff80b6e3",
+    "changes/heldout/H32.json": "ebd952ce6180aaf471d2a504f6f7883ba6d7b568cefc770161aff1ecce8655c1",
+    "changes/heldout/H33.json": "1c56b99cca2c5787bb264e71ca2baa685e464ab1888116eb90e2d218c15b1379",
+    "changes/heldout/H34.json": "f0b399bbf360d2e2a1fd09eacc4d835dc45f59c71a795df1bfb90ea9df64851a",
+    "changes/heldout/H35.json": "179c7b0100a1ff06b81d07d734387733e9863abb4410f521beb5208087f07796",
+    "changes/heldout/H36.json": "f38e35c52ef967594b13fcd124c1437d2b84c9ad24aea9404ac2b6c106edad4a",
+    "changes/heldout/H37.json": "083c2c603d73e044d210bbc23750a8729a731f83511fb49d1dec37df14c0f49b",
+    "changes/heldout/H38.json": "ef5ca2bacad0d83606922c8aeb7584c41f45728777a7fc278785bb428491ae4d",
+    "changes/heldout/H39.json": "2110e8476f145823d91a6286756a230104b1238f83335844239b91069fc57ec8",
+    "changes/heldout/H40.json": "82e4de82bf3e5aadc24aeca970bb1a741d211472c31f65e30af80c887bf445a1",
+    "changes/heldout/H41.json": "cf1214e262c20911dfdfb313d9bde8a81ff14ccfbff27d6ff066aa73d35923be",
+    "changes/heldout/H42.json": "7ab4878c47d581341399390f227283025d516520f3d0f458db4dea263eddb9c1",
+    "changes/heldout/H43.json": "40b64b3ea92934682d11725e18e3eea7eed54f7618acb4ada687e20f1dccecdc",
+    "changes/heldout/H44.json": "c1eb084a201c8c326ac65a85e74e4d36ce3a143439fd111b619450fa6746f9bc",
+    "changes/heldout/H45.json": "b8f6b43346994da2c3fa5bced3584cf5d0bbaf11efdd025321b4d727cef04388",
+    "changes/heldout/H46.json": "4c8bda7813065000f9c41d98ee2149b9758c2808fbf8ef35a4322a748446c701",
+    "changes/heldout/H47.json": "a292c3c819db0fe3fa4d1cbba2335c9d709ef3de43f3c2ba0c2bb67ee30e8f9f",
+    "changes/heldout/H48.json": "d99547cb579b2350ca41410f86933764aca4fc6704f0808f98e4ed6200c5349b",
+    "changes/heldout/H49.json": "881d15d6f304620df6e87688e5bb7c1437739ef5c3fc62c8a9edf8862cda7935",
+    "changes/heldout/H50.json": "887ea1965473cc9c1eb5d60512d11d4c81ae7d98ee1fc50ac6133606ac8a6885",
+    "changes/heldout/H51.json": "c995e82bf64df3f132625ac1e9cef6942ea95146ce885e0246dd493a8154899f",
+    "changes/heldout/H52.json": "95afc87f7ca3b72fe8a32d4b61203ebe081a29198a0fc3164df77b42fc194a6d",
+    "changes/heldout/H53.json": "b9a14c70945431b3358efb6eb14b6a06f05a837a35522ff696c6ab831b92efc7",
+    "changes/heldout/H54.json": "145a22b32c3315cb5c9b61c80088394d26cf078d5ec243d0ac3c58b96c618a01",
+    "changes/heldout/H55.json": "0a90d9e7337586e6f1003e242c8c248c525015739f7ce7f4c2a085972f6e09d5",
+    "changes/heldout/H56.json": "05fb4012d68116164e2a526ee390625662ab6468ef4a48030b6c89b71f766844",
+    "changes/heldout/H57.json": "4b23457a4431926f195bc7408a5fa5e91c54c21611d1c1710d84988a915c69f8",
+    "changes/heldout/H58.json": "09afc8edb4c6e8ab4aaf429d170afedaceb02b7b69759f26341da667b933b6d9",
+    "changes/heldout/H59.json": "69adfd2045d147382896539c2a6274dceae25aaa093d469384b2d1365dedc5ef",
+    "changes/heldout/H60.json": "4bcc5f5ff5da963a0b885645c81ce73a1884a08ed43a826688119198c6e1ed7f",
+    "changes/heldout/H61.json": "ece315db9785beeca9134a3d39b3dd3ce2fc1523c0791e4bb8c6824e51e63b34",
+    "changes/heldout/H62.json": "1125773b7ad871493e2fd77aadba03b70282408b0d22716c99da84af30f13be9",
+    "changes/heldout/H63.json": "def67fbf0dc47ce248c15c3f481a27b2a22fc308d2c1c62ca90e9b0054bf9e3d",
+    "changes/heldout/H64.json": "a3dcd34f47cffd7e6f065e67b92d6547e9f1408cb254a9c54d3682c56a6bfafa",
+    "changes/heldout/H65.json": "7e28f19c7a6e1da84c5a63956eefa9959ff445eeabcc1071f819c685829027b2",
+    "changes/heldout/H66.json": "709d2e6f446892c40fd5fed6625e7e266fd986e87fbd54a547bfcc01230c70db",
+    "changes/heldout/H67.json": "7e46e053d06e323c411501f7a550cef7fb2957040659157db42a5a7ef79d640b",
+    "changes/heldout/H68.json": "77ce66b905fda77ba424f024754320dbb14525d469f8a885e0e0834365144ac4",
+    "changes/heldout/H69.json": "54bb0278190642611ba8e70e5d40976bbc743740d99b66d1241d6c4eef25fd4d",
+    "changes/heldout/H70.json": "25adcbe4e2230cf39afe5e99d6d107a09131ef609cc8bb4f0616818de1ff488e",
+    "oracle/development.json": "f1b56b2f40071a1a3f9585850c2709a81f1a0aada4be783d102165655eedf14b",
+    "oracle/heldout.json": "53f27a495eb3958881e9415408d2f73c21da5cc6cd516b7337a006700f18d1b2",
+    "program.json": "fb62baf56d3d443ea48cf1ae253c08bd81c72dbd15a6b01f5f6936dd5b362b19"
+  },
+  "schema": "readiness-manifest-1"
+}

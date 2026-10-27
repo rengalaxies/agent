@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://licenses.test",
+      "service": "licenses"
+    },
+    {
+      "base_url": "https://notary.test",
+      "service": "notary"
+    }
+  ],
+  "change_id": "H02",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис licenses больше не отдаёт GET /licenses; эндпоинт удаляется.",
+    "issue_id": 11101,
+    "key": "LIC-1101",
+    "project": "LIC",
+    "summary": "Удалить устаревший список licenses"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "licenses": "team-licenses",
+      "nebula": "team-nebula",
+      "notary": "team-notary",
+      "onyx": "team-onyx",
+      "topaz": "team-topaz",
+      "xenon": "team-xenon",
+      "zephyr": "team-zephyr"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1101,
+    "repository": "licenses",
+    "title": "LIC-1101 Удалить устаревший список licenses"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "licenses": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "licenses"
+    },
+    "nebula": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nebula\n\nService nebula of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://notary.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nebula"
+    },
+    "notary": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# notary\n\nService notary of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_notary(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_notary(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "notary"
+    },
+    "onyx": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# onyx\n\nService onyx of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "onyx"
+    },
+    "topaz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# topaz\n\nService topaz of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "topaz"
+    },
+    "xenon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# xenon\n\nService xenon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "xenon"
+    },
+    "zephyr": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# zephyr\n\nService zephyr of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "zephyr"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

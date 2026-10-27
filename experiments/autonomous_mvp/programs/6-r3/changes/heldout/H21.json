@@ -1,0 +1,164 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://cargo.test",
+      "service": "cargo"
+    }
+  ],
+  "change_id": "H21",
+  "environment": "prod",
+  "family": "F07_stale_runtime",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /cargo: default page_size 50 -> 10.",
+    "issue_id": 11120,
+    "key": "CRG-1120",
+    "project": "CRG",
+    "summary": "Уменьшить стандартный размер страницы cargo с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "cargo": "team-cargo",
+      "kestrel": "team-kestrel",
+      "quill": "team-quill",
+      "raven": "team-raven",
+      "xenon": "team-xenon"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1120,
+    "repository": "cargo",
+    "title": "CRG-1120 Уменьшить стандартный размер страницы cargo с 50 до 10"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "cargo": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# cargo\n\nService cargo of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/cargo\")\ndef list_cargo(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/cargo/count\")\ndef count_cargo(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# cargo\n\nService cargo of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/cargo\")\ndef list_cargo(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/cargo/count\")\ndef count_cargo(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_cargo(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cargo"
+    },
+    "kestrel": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# kestrel\n\nService kestrel of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "kestrel"
+    },
+    "quill": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# quill\n\nService quill of the 6-r3 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"CARGO_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quill"
+    },
+    "raven": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# raven\n\nService raven of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "raven"
+    },
+    "xenon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# xenon\n\nService xenon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://cargo.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/cargo\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "xenon"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "cargo"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 2880,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "quill",
+            "method": "GET",
+            "route": "/cargo",
+            "status": 200
+          },
+          {
+            "client": "quill",
+            "method": "GET",
+            "route": "/cargo",
+            "status": 200
+          },
+          {
+            "client": "quill",
+            "method": "GET",
+            "route": "/cargo",
+            "status": 200
+          },
+          {
+            "client": "xenon",
+            "method": "GET",
+            "route": "/cargo",
+            "status": 200
+          },
+          {
+            "client": "xenon",
+            "method": "GET",
+            "route": "/cargo",
+            "status": 200
+          },
+          {
+            "client": "xenon",
+            "method": "GET",
+            "route": "/cargo",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

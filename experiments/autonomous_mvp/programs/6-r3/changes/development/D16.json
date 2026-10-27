@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://refunds.test",
+      "service": "refunds"
+    }
+  ],
+  "change_id": "D16",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис refunds больше не отдаёт GET /refunds; эндпоинт удаляется.",
+    "issue_id": 10915,
+    "key": "RFD-915",
+    "project": "RFD",
+    "summary": "Удалить устаревший список refunds"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "delta": "team-delta",
+      "falcon": "team-falcon",
+      "iris": "team-iris",
+      "refunds": "team-refunds"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 915,
+    "repository": "refunds",
+    "title": "RFD-915 Удалить устаревший список refunds"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "delta": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# delta\n\nService delta of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://refunds.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/refunds\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "delta"
+    },
+    "falcon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# falcon\n\nService falcon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://refunds.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/refunds/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "falcon"
+    },
+    "iris": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# iris\n\nService iris of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://refunds.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/refunds/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "iris"
+    },
+    "refunds": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# refunds\n\nService refunds of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/refunds/count\")\ndef count_refunds(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# refunds\n\nService refunds of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/refunds\")\ndef list_refunds(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/refunds/count\")\ndef count_refunds(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "refunds"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

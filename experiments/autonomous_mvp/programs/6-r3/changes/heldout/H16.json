@@ -1,0 +1,144 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://loans.test",
+      "service": "loans"
+    },
+    {
+      "base_url": "https://exchange.test",
+      "service": "exchange"
+    }
+  ],
+  "change_id": "H16",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис loans больше не отдаёт GET /loans; эндпоинт удаляется.",
+    "issue_id": 11115,
+    "key": "LON-1115",
+    "project": "LON",
+    "summary": "Удалить устаревший список loans"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "exchange": "team-exchange",
+      "loans": "team-loans",
+      "nebula": "team-nebula",
+      "pulsar": "team-pulsar",
+      "sierra": "team-sierra",
+      "topaz": "team-topaz",
+      "xenon": "team-xenon"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1115,
+    "repository": "loans",
+    "title": "LON-1115 Удалить устаревший список loans"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "exchange": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# exchange\n\nService exchange of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans\")\ndef list_exchange(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_exchange(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "exchange"
+    },
+    "loans": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# loans\n\nService loans of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans/count\")\ndef count_loans(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# loans\n\nService loans of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans\")\ndef list_loans(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/loans/count\")\ndef count_loans(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "loans"
+    },
+    "nebula": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nebula\n\nService nebula of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans\", params={\"day\": day, \"page_size\": 500}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nebula"
+    },
+    "pulsar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pulsar\n\nService pulsar of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pulsar"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://exchange.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    },
+    "topaz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# topaz\n\nService topaz of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "topaz"
+    },
+    "xenon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# xenon\n\nService xenon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "xenon"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

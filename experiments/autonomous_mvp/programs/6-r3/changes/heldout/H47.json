@@ -1,0 +1,146 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tenders.test",
+      "service": "tenders"
+    }
+  ],
+  "change_id": "H47",
+  "environment": "prod",
+  "family": "F05_runtime_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tenders: default page_size 100 -> 10.",
+    "issue_id": 11146,
+    "key": "TND-1146",
+    "project": "TND",
+    "summary": "Уменьшить стандартный размер страницы tenders с 100 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "kestrel": "team-kestrel",
+      "nebula": "team-nebula",
+      "pulsar": "team-pulsar",
+      "tenders": "team-tenders",
+      "xenon": "team-xenon"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1146,
+    "repository": "tenders",
+    "title": "TND-1146 Уменьшить стандартный размер страницы tenders с 100 до 10"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "kestrel": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# kestrel\n\nService kestrel of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "kestrel"
+    },
+    "nebula": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nebula\n\nService nebula of the 6-r3 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"TENDERS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nebula"
+    },
+    "pulsar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pulsar\n\nService pulsar of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pulsar"
+    },
+    "tenders": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tenders"
+    },
+    "xenon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# xenon\n\nService xenon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "xenon"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "tenders"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "nebula",
+            "method": "GET",
+            "route": "/tenders",
+            "status": 200
+          },
+          {
+            "client": "nebula",
+            "method": "GET",
+            "route": "/tenders",
+            "status": 200
+          },
+          {
+            "client": "nebula",
+            "method": "GET",
+            "route": "/tenders",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

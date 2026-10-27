@@ -19,9 +19,9 @@ Two outputs per change:
 
 Within a revision, development and held-out splits draw provider, consumer and
 Jira names from disjoint pools. Revision 6-r2 also uses names that appear in
-neither split of 6-r1, so its held-out set is new to everything tuned on 6-r1.
-6-r1 is historical: its configuration here regenerates its committed files
-byte for byte, and nothing about it changes.
+neither split of 6-r1, and 6-r3 names appear in neither split of 6-r1 or 6-r2.
+6-r1 and 6-r2 are historical: their configurations here regenerate their
+committed files byte for byte, and nothing about them changes.
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ INSTALLATION = "acme"
 ENVIRONMENT = "prod"
 RUNTIME_SOURCE = "access"
 SPLITS = ("development", "heldout")
-CURRENT = "6-r2"
+CURRENT = "6-r3"
 
 FAMILIES_6R1 = (
     "F01_truncation",
@@ -98,6 +98,30 @@ REVISIONS = {
                 consumers=["atlas", "beacon", "compass", "harvest", "lantern", "mosaic", "nimbus", "orbit", "prism",
                            "quartz", "relay", "summit", "tundra", "vector"],
                 first_issue=700)}),
+    # 6-r3: the 6-r2 families plus F14 (a route named only as unchanged), Jira wording with negated
+    # routes, paraphrases and English for F01, F03, F13 and F14, and names disjoint from 6-r1 and 6-r2.
+    "6-r3": dict(
+        families=FAMILIES_6R1 + ("F13_service_contract_unspecified", "F14_route_stated_unchanged"),
+        sizes={"development": 22, "heldout": 70}, development_extra=DEVELOPMENT_EXTRA, jira_variants=True,
+        wording="6-r3",
+        pools={
+            "development": dict(
+                providers=[("refunds", "/refunds", "list_refunds", "RFD"),
+                           ("tariffs", "/tariffs", "list_tariffs", "TRF"),
+                           ("visits", "/visits", "list_visits", "VIS")],
+                decoys=["customs", "postal"],
+                consumers=["abacus", "bridge", "cipher", "delta", "ember", "falcon", "glacier", "harbinger", "iris",
+                           "juniper"],
+                first_issue=900),
+            "heldout": dict(
+                providers=[("loans", "/loans", "list_loans", "LON"),
+                           ("tenders", "/tenders", "list_tenders", "TND"),
+                           ("cargo", "/cargo", "list_cargo", "CRG"),
+                           ("licenses", "/licenses", "list_licenses", "LIC")],
+                decoys=["notary", "mint", "exchange"],
+                consumers=["kestrel", "lotus", "meridian", "nebula", "onyx", "pulsar", "quill", "raven", "sierra",
+                           "topaz", "umbra", "willow", "xenon", "zephyr"],
+                first_issue=1100)}),
 }
 # The current revision, for callers that only ever mean it.
 PROGRAM = CURRENT
@@ -116,6 +140,27 @@ CANDIDATE_TEXTS = (
     ("{p}: уменьшить размер страницы по умолчанию", "Отдавать по {n} записей вместо {o}."),
     ("Сократить ответ {p} для дневной выгрузки", "Стандартный лимит {o} -> {n}."),
     ("{p}: отдавать данные меньшими порциями", "Вместо {o} записей за раз отдавать {n}."),
+)
+# 6-r3 wording: {m} {r} method and route of the changed operation. Written by the executor after the
+# route-negation fix of 26.10.2026, like the 6-r2 texts: a check of these phrasings, including one
+# (a route named positively with no change) that the deterministic matcher is known to misread.
+NOOP_SERVICE_TEXTS_6R3 = NOOP_SERVICE_TEXTS + (
+    ("{p}: refresh the README", "Describe the local run. No API changes."),
+)
+CANDIDATE_TEXTS_6R3 = CANDIDATE_TEXTS + (
+    ("{p}: return smaller pages by default", "Default limit {o} -> {n} records."),
+)
+TRUNCATION_TEXTS_6R3 = (
+    ("Уменьшить стандартный размер страницы {p} с {o} до {n}", "{m} {r}: default page_size {o} -> {n}."),
+    ("{p}: page size {o} -> {n}", "{m} {r}: default page_size {o} -> {n}. {m} {r}/count is unchanged."),
+    ("Уменьшить страницу {p}", "{m} {r}/count не меняется; {m} {r}: размер страницы по умолчанию {o} -> {n}."),
+    ("{p}: отдавать {n} записей на страницу", "Для {m} {r} по умолчанию теперь {n} вместо {o}."),
+)
+ROUTE_UNCHANGED_TEXTS = (
+    ("{p}: обновить README", "{m} {r} не меняется. Описать локальный запуск."),
+    ("{p}: refresh the runbook", "{m} {r} does not change; only the docs are updated."),
+    ("Документация {p}", "Контракт {m} {r} остаётся прежним, правим только описание."),
+    ("Описать {m} {r} в README", "Поведение {m} {r} без изменений."),
 )
 
 PROVIDER_OP = '''
@@ -261,6 +306,10 @@ def build(split, index, revision=CURRENT):
         take("explicit", rng.randint(0, 1))
         decoy_present = True
         take("decoy", 1, decoy)
+        if config.get("wording") == "6-r3":
+            summary, description = rng.choice(TRUNCATION_TEXTS_6R3)
+            jira_summary = summary.format(p=provider, o=old, n=new, m=method, r=route)
+            jira_description = description.format(p=provider, o=old, n=new, m=method, r=route)
     elif family == "F02_operation_removed":
         take("single", rng.randint(1, 2))
         take("cursor", rng.randint(0, 1))
@@ -285,7 +334,8 @@ def build(split, index, revision=CURRENT):
             jira_summary = f"Обновить README сервиса {provider}"
             jira_description = "Описать локальный запуск и ссылку на runbook. Поведение API не меняется."
             if config["jira_variants"]:
-                summary, description = rng.choice(NOOP_SERVICE_TEXTS)
+                summary, description = rng.choice(NOOP_SERVICE_TEXTS_6R3 if config.get("wording") == "6-r3"
+                                                  else NOOP_SERVICE_TEXTS)
                 jira_summary, jira_description = summary.format(p=provider), description
         else:
             intent = "vague"
@@ -350,9 +400,21 @@ def build(split, index, revision=CURRENT):
         take("single", rng.randint(1, 2))
         take("cursor", rng.randint(0, 1))
         intent = "candidate"
-        summary, description = rng.choice(CANDIDATE_TEXTS)
+        summary, description = rng.choice(CANDIDATE_TEXTS_6R3 if config.get("wording") == "6-r3"
+                                          else CANDIDATE_TEXTS)
         jira_summary = summary.format(p=provider, o=old, n=new)
         jira_description = description.format(p=provider, o=old, n=new)
+    elif family == "F14_route_stated_unchanged":
+        # As F03, but the Jira text names the operation only to say that it does not change.
+        take("single", 1)
+        take("cursor", rng.randint(0, 1))
+        provider_ops_change = provider_ops_main
+        changed = None
+        provider_extra_change = {"docs/runbook.md": f"# Runbook\n\nRestart {provider} with the deploy tool.\n"}
+        intent = "route_unchanged"
+        summary, description = rng.choice(ROUTE_UNCHANGED_TEXTS)
+        jira_summary = summary.format(p=provider, m=method, r=route)
+        jira_description = description.format(p=provider, m=method, r=route)
     else:  # pragma: no cover - the families of a revision are closed
         raise ValueError(family)
     take("bystander", rng.randint(1, 2))

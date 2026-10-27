@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://loans.test",
+      "service": "loans"
+    }
+  ],
+  "change_id": "H36",
+  "environment": "prod",
+  "family": "F08_revoked_source",
+  "grants": {
+    "revoked": [
+      "nebula"
+    ]
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /loans: default page_size 50 -> 20.",
+    "issue_id": 11135,
+    "key": "LON-1135",
+    "project": "LON",
+    "summary": "Уменьшить стандартный размер страницы loans с 50 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "kestrel": "team-kestrel",
+      "loans": "team-loans",
+      "nebula": "team-nebula",
+      "raven": "team-raven",
+      "zephyr": "team-zephyr"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1135,
+    "repository": "loans",
+    "title": "LON-1135 Уменьшить стандартный размер страницы loans с 50 до 20"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "kestrel": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# kestrel\n\nService kestrel of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/loans\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "kestrel"
+    },
+    "loans": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# loans\n\nService loans of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans\")\ndef list_loans(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/loans/count\")\ndef count_loans(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# loans\n\nService loans of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/loans\")\ndef list_loans(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/loans/count\")\ndef count_loans(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_loans(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "loans"
+    },
+    "nebula": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nebula\n\nService nebula of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nebula"
+    },
+    "raven": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# raven\n\nService raven of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "raven"
+    },
+    "zephyr": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# zephyr\n\nService zephyr of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://loans.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/loans/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "zephyr"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://refunds.test",
+      "service": "refunds"
+    }
+  ],
+  "change_id": "D11",
+  "environment": "prod",
+  "family": "F11_vague_jira",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Отвечать меньшими страницами: 20 записей вместо 50 по умолчанию.",
+    "issue_id": 10910,
+    "key": "RFD-910",
+    "project": "RFD",
+    "summary": "Ускорить выдачу списка за день"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "bridge": "team-bridge",
+      "ember": "team-ember",
+      "falcon": "team-falcon",
+      "refunds": "team-refunds"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 910,
+    "repository": "refunds",
+    "title": "RFD-910 Ускорить выдачу списка за день"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "bridge": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# bridge\n\nService bridge of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://refunds.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/refunds/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "bridge"
+    },
+    "ember": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# ember\n\nService ember of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://refunds.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/refunds/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "ember"
+    },
+    "falcon": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# falcon\n\nService falcon of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://refunds.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/refunds\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "falcon"
+    },
+    "refunds": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# refunds\n\nService refunds of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/refunds\")\ndef list_refunds(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/refunds/count\")\ndef count_refunds(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# refunds\n\nService refunds of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/refunds\")\ndef list_refunds(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/refunds/count\")\ndef count_refunds(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_refunds(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "refunds"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

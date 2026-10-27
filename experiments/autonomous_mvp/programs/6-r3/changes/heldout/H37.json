@@ -1,0 +1,116 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tenders.test",
+      "service": "tenders"
+    }
+  ],
+  "change_id": "H37",
+  "environment": "prod",
+  "family": "F09_ownership_conflict",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /tenders: default page_size 200 -> 20.",
+    "issue_id": 11136,
+    "key": "TND-1136",
+    "project": "TND",
+    "summary": "Уменьшить стандартный размер страницы tenders с 200 до 20"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "nebula": "team-nebula",
+      "pulsar": [
+        "team-platform",
+        "team-pulsar"
+      ],
+      "tenders": "team-tenders",
+      "topaz": "team-topaz"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1136,
+    "repository": "tenders",
+    "title": "TND-1136 Уменьшить стандартный размер страницы tenders с 200 до 20"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "nebula": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# nebula\n\nService nebula of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "nebula"
+    },
+    "pulsar": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# pulsar\n\nService pulsar of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "pulsar"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/tenders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    },
+    "tenders": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 20):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tenders\n\nService tenders of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tenders\")\ndef list_tenders(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tenders/count\")\ndef count_tenders(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tenders(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tenders"
+    },
+    "topaz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# topaz\n\nService topaz of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tenders.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tenders/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "topaz"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

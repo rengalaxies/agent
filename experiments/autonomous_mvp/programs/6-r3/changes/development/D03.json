@@ -1,0 +1,102 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://tariffs.test",
+      "service": "tariffs"
+    }
+  ],
+  "change_id": "D03",
+  "environment": "prod",
+  "family": "F03_no_impact_noop",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Описать локальный запуск и ссылку на runbook. Поведение API не меняется.",
+    "issue_id": 10902,
+    "key": "TRF-902",
+    "project": "TRF",
+    "summary": "Обновить документацию по запуску"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "abacus": "team-abacus",
+      "cipher": "team-cipher",
+      "delta": "team-delta",
+      "tariffs": "team-tariffs"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 902,
+    "repository": "tariffs",
+    "title": "TRF-902 Обновить документацию по запуску"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "abacus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# abacus\n\nService abacus of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "abacus"
+    },
+    "cipher": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# cipher\n\nService cipher of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/tariffs\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "cipher"
+    },
+    "delta": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# delta\n\nService delta of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://tariffs.test\"\n\n\ndef load_day(day):\n    items, cursor = [], None\n    while True:\n        response = requests.get(BASE_URL + \"/tariffs\", params={\"day\": day, \"cursor\": cursor}, timeout=10)\n        response.raise_for_status()\n        page = response.json()\n        items.extend(page[\"items\"])\n        cursor = page[\"next_cursor\"]\n        if cursor is None:\n            return items\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "delta"
+    },
+    "tariffs": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# tariffs\n\nService tariffs of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tariffs\")\ndef list_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tariffs/count\")\ndef count_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n",
+            "docs/runbook.md": "# Runbook\n\nRestart tariffs with the deploy tool.\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# tariffs\n\nService tariffs of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/tariffs\")\ndef list_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/tariffs/count\")\ndef count_tariffs(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_tariffs(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "tariffs"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "development"
+}

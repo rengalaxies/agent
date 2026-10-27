@@ -1,0 +1,101 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://licenses.test",
+      "service": "licenses"
+    }
+  ],
+  "change_id": "H30",
+  "environment": "prod",
+  "family": "F02_operation_removed",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "Сервис licenses больше не отдаёт GET /licenses; эндпоинт удаляется.",
+    "issue_id": 11129,
+    "key": "LIC-1129",
+    "project": "LIC",
+    "summary": "Удалить устаревший список licenses"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "licenses": "team-licenses",
+      "quill": "team-quill",
+      "topaz": "team-topaz",
+      "willow": "team-willow"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1129,
+    "repository": "licenses",
+    "title": "LIC-1129 Удалить устаревший список licenses"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "licenses": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "licenses"
+    },
+    "quill": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# quill\n\nService quill of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "quill"
+    },
+    "topaz": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# topaz\n\nService topaz of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "topaz"
+    },
+    "willow": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# willow\n\nService willow of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "willow"
+    }
+  },
+  "runtime": null,
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}

@@ -1,0 +1,164 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://visits.test",
+      "service": "visits"
+    }
+  ],
+  "change_id": "D18",
+  "environment": "prod",
+  "family": "F05_runtime_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /visits: default page_size 200 -> 25.",
+    "issue_id": 10917,
+    "key": "VIS-917",
+    "project": "VIS",
+    "summary": "Уменьшить стандартный размер страницы visits с 200 до 25"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "bridge": "team-bridge",
+      "glacier": "team-glacier",
+      "harbinger": "team-harbinger",
+      "juniper": "team-juniper",
+      "visits": "team-visits"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 917,
+    "repository": "visits",
+    "title": "VIS-917 Уменьшить стандартный размер страницы visits с 200 до 25"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "bridge": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# bridge\n\nService bridge of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "bridge"
+    },
+    "glacier": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# glacier\n\nService glacier of the 6-r3 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"VISITS_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "glacier"
+    },
+    "harbinger": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# harbinger\n\nService harbinger of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "harbinger"
+    },
+    "juniper": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# juniper\n\nService juniper of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://visits.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/visits/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "juniper"
+    },
+    "visits": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# visits\n\nService visits of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_visits(day: str, cursor: str | None = None, page_size: int | None = 25):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/visits/count\")\ndef count_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# visits\n\nService visits of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/visits\")\ndef list_visits(day: str, cursor: str | None = None, page_size: int | None = 200):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/visits/count\")\ndef count_visits(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_visits(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "visits"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "visits"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "bridge",
+            "method": "GET",
+            "route": "/visits",
+            "status": 200
+          },
+          {
+            "client": "bridge",
+            "method": "GET",
+            "route": "/visits",
+            "status": 200
+          },
+          {
+            "client": "bridge",
+            "method": "GET",
+            "route": "/visits",
+            "status": 200
+          },
+          {
+            "client": "glacier",
+            "method": "GET",
+            "route": "/visits",
+            "status": 200
+          },
+          {
+            "client": "glacier",
+            "method": "GET",
+            "route": "/visits",
+            "status": 200
+          },
+          {
+            "client": "glacier",
+            "method": "GET",
+            "route": "/visits",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "development"
+}

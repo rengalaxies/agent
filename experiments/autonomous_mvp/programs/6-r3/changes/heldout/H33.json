@@ -1,0 +1,133 @@
+{
+  "addresses": [
+    {
+      "base_url": "https://licenses.test",
+      "service": "licenses"
+    }
+  ],
+  "change_id": "H33",
+  "environment": "prod",
+  "family": "F05_runtime_only",
+  "grants": {
+    "revoked": []
+  },
+  "installation_id": "acme",
+  "jira": {
+    "description": "GET /licenses: default page_size 50 -> 10.",
+    "issue_id": 11132,
+    "key": "LIC-1132",
+    "project": "LIC",
+    "summary": "Уменьшить стандартный размер страницы licenses с 50 до 10"
+  },
+  "org": "acme",
+  "ownership": {
+    "services": {
+      "licenses": "team-licenses",
+      "lotus": "team-lotus",
+      "raven": "team-raven",
+      "sierra": "team-sierra"
+    },
+    "source": "installation_mapping",
+    "version": "ownership-1"
+  },
+  "pr": {
+    "base_branch": "main",
+    "head_branch": "change",
+    "number": 1132,
+    "repository": "licenses",
+    "title": "LIC-1132 Уменьшить стандартный размер страницы licenses с 50 до 10"
+  },
+  "program": "6-r3",
+  "repositories": {
+    "licenses": {
+      "branches": {
+        "change": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 10):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": "main"
+        },
+        "main": {
+          "files": {
+            "README.md": "# licenses\n\nService licenses of the 6-r3 stand.\n",
+            "api.py": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/licenses\")\ndef list_licenses(day: str, cursor: str | None = None, page_size: int | None = 50):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n\n\n@app.get(\"/licenses/count\")\ndef count_licenses(day: str, cursor: str | None = None, page_size: int | None = 100):\n    items, next_cursor = store.read_licenses(day, cursor, page_size)\n    return {\"items\": items, \"next_cursor\": next_cursor}\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "licenses"
+    },
+    "lotus": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# lotus\n\nService lotus of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "lotus"
+    },
+    "raven": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# raven\n\nService raven of the 6-r3 stand.\n",
+            "client.py": "import requests\n\nBASE_URL = \"https://licenses.test\"\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses/count\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "raven"
+    },
+    "sierra": {
+      "branches": {
+        "main": {
+          "files": {
+            "README.md": "# sierra\n\nService sierra of the 6-r3 stand.\n",
+            "client.py": "import os\n\nimport requests\n\nBASE_URL = os.environ[\"LICENSES_URL\"]\n\n\ndef load_day(day):\n    response = requests.get(BASE_URL + \"/licenses\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]\n"
+          },
+          "parent": null
+        }
+      },
+      "service": "sierra"
+    }
+  },
+  "runtime": {
+    "instrumented": [
+      "licenses"
+    ],
+    "segments": [
+      {
+        "end_minutes_ago": 0,
+        "minutes": 10,
+        "name": "w1",
+        "records": [
+          {
+            "client": "sierra",
+            "method": "GET",
+            "route": "/licenses",
+            "status": 200
+          },
+          {
+            "client": "sierra",
+            "method": "GET",
+            "route": "/licenses",
+            "status": 200
+          },
+          {
+            "client": "sierra",
+            "method": "GET",
+            "route": "/licenses",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "source_id": "access"
+  },
+  "schema": "readiness-change-1",
+  "split": "heldout"
+}
