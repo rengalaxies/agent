@@ -1,0 +1,39 @@
+{
+  "bundles": {
+    "orders": {
+      "name": "agent-pilot-orders.bundle",
+      "sha256": "5c6f676d17ff8fe49f429e39c497705840160109fd391e78a9b7e97864e08e84"
+    },
+    "reporting": {
+      "name": "agent-pilot-reporting.bundle",
+      "sha256": "cd7a729ee9cf9345b5c4c305c96bebd7c56f50a4d57d2d36f820786af143c415"
+    }
+  },
+  "repositories": {
+    "orders": {
+      "commits": {
+        "main": "c444814cf5a9826457b8a82300cc0422d1c5b359",
+        "pilot-docs-only": "e53b17fdbf8baf239fdc16386490312ae1711f91",
+        "pilot-page-limit": "c2a7f1b742d52b190424a5d14472c39588e87efb",
+        "pilot-restored": "23ba0ca3396ef49d3a88edeead029a59c182ddef"
+      },
+      "files": {
+        "README.md": "10b1e09af2a9e571375c16058ba817e7cf408db4246622dff5335a16b0843695",
+        "api.py": "170ebfc86d3501e4474435a8f5c79d4766ee82ba2970b3563224677702a58597"
+      }
+    },
+    "reporting": {
+      "commits": {
+        "main": "e7fd9c911fbe1e827ddd20a571a4a79ebef34335",
+        "pilot-explicit-limit": "6ca755536c0f865c86e80ec68cdbfa66eab9284c"
+      },
+      "files": {
+        "README.md": "ffbd753c45e1b3ca1ddb4f17adf8ac549027ea8a2b2b062ef313be11e5220637",
+        "audit_api.py": "3d8ccb0e305d601cc5e69b3fd0b20b625bbe9488afdbb918f19690a50f491170",
+        "client.py": "52da608306c414589275672d3ae4831aa5eeb9a522ff81477cf96e2b89bdec27",
+        "export-requirement.md": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718"
+      }
+    }
+  },
+  "schema": "author-pilot-preparation-1"
+}

@@ -1,0 +1,161 @@
+{
+  "at": "2026-10-28T19:15:39.961999+00:00",
+  "level": "REAL_GITHUB_API_AND_GIT",
+  "auth": "Codex Connector integration credential, NOT service GitHub App or PAT qualification",
+  "repositories": [
+    {
+      "repository": "rengalaxies/agent-pilot-orders",
+      "url": "https://github.com/rengalaxies/agent-pilot-orders",
+      "checks": [
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-orders",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "A38E:208FCD:318222D:A394A3F:6AE249D3"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-orders/branches?per_page=100",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "4AF9:CA16F:214F074:6D65A8A:6AE249D3"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-orders/contents/README.md?ref=main",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "F9AD:2DF541:BD164F7:26E37C42:6AE249D4"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-orders/contents/api.py?ref=main",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "C66C:20149A:22B7859:725962D:6AE249D5"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-orders/pulls?state=all&per_page=100",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "4A84:286585:B790117:25C014DD:6AE249D6"
+        }
+      ],
+      "id": 1437522215,
+      "private": true,
+      "default_branch": "main",
+      "connector_permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      },
+      "branches": {
+        "main": "c444814cf5a9826457b8a82300cc0422d1c5b359",
+        "pilot-docs-only": "e53b17fdbf8baf239fdc16386490312ae1711f91",
+        "pilot-page-limit": "c2a7f1b742d52b190424a5d14472c39588e87efb",
+        "pilot-restored": "23ba0ca3396ef49d3a88edeead029a59c182ddef"
+      },
+      "files": {
+        "README.md": {
+          "sha256": "10b1e09af2a9e571375c16058ba817e7cf408db4246622dff5335a16b0843695",
+          "git_blob_sha": "3b1a732cfe080f0a96b9e3258be5963fb8f834b5"
+        },
+        "api.py": {
+          "sha256": "170ebfc86d3501e4474435a8f5c79d4766ee82ba2970b3563224677702a58597",
+          "git_blob_sha": "373e76d89ad7989275da4d138ca30e456e4df902"
+        }
+      },
+      "git_transport_read": "PASS exact refs match API and local bundle",
+      "pull_requests_count": 0,
+      "status": "PASS"
+    },
+    {
+      "repository": "rengalaxies/agent-pilot-reporting",
+      "url": "https://github.com/rengalaxies/agent-pilot-reporting",
+      "checks": [
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "A38F:1B6D5E:2F83347:9D2FDE1:6AE249D7"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting/branches?per_page=100",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "B475:2FB2F4:233115C:73BB980:6AE249D7"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting/contents/README.md?ref=main",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "87AC:2578EE:3090E1F:A058970:6AE249D8"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting/contents/audit_api.py?ref=main",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "6436:3E23CA:C36F887:289F4C60:6AE249D9"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting/contents/client.py?ref=main",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "420C:1E2C88:230C034:733D519:6AE249D9"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting/contents/export-requirement.md?ref=main",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "4AF9:CA16F:2151FA8:6D6F719:6AE249D4"
+        },
+        {
+          "method": "GET",
+          "path": "repos/rengalaxies/agent-pilot-reporting/pulls?state=all&per_page=100",
+          "http": "HTTP/2.0 200 OK",
+          "request_id": "72AF:30E491:2296BB0:71CFDBE:6AE249DB"
+        }
+      ],
+      "id": 1437522551,
+      "private": true,
+      "default_branch": "main",
+      "connector_permissions": {
+        "admin": true,
+        "maintain": true,
+        "push": true,
+        "triage": true,
+        "pull": true
+      },
+      "branches": {
+        "main": "e7fd9c911fbe1e827ddd20a571a4a79ebef34335",
+        "pilot-explicit-limit": "6ca755536c0f865c86e80ec68cdbfa66eab9284c"
+      },
+      "files": {
+        "README.md": {
+          "sha256": "ffbd753c45e1b3ca1ddb4f17adf8ac549027ea8a2b2b062ef313be11e5220637",
+          "git_blob_sha": "8cf4bf0912abf49d0e937fefa9d5b191368b9c61"
+        },
+        "audit_api.py": {
+          "sha256": "3d8ccb0e305d601cc5e69b3fd0b20b625bbe9488afdbb918f19690a50f491170",
+          "git_blob_sha": "6f31bbcf83fc6b4ce2c69a9181708bf9f854536c"
+        },
+        "client.py": {
+          "sha256": "52da608306c414589275672d3ae4831aa5eeb9a522ff81477cf96e2b89bdec27",
+          "git_blob_sha": "ed2de4e346cda6a5c1d3347311391403e97d51fb"
+        },
+        "export-requirement.md": {
+          "sha256": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718",
+          "git_blob_sha": "d0396b457e7b5f328edba087fe6e4c8d7c3df00e"
+        }
+      },
+      "git_transport_read": "PASS exact refs match API and local bundle",
+      "pull_requests_count": 0,
+      "status": "PASS"
+    }
+  ],
+  "source_expectation": "evidence/prepared.json",
+  "write_action": "git push --all after private=true, exact owner/id and 409 empty-refs guard",
+  "test_PR_or_bot_comment_created": false,
+  "app_installation_proven": false,
+  "connected_to_M3": false,
+  "jira": "BLOCKED / NOT_RUN"
+}

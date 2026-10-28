@@ -1,0 +1,31 @@
+{
+  "status": "PREPARED_NOT_REGISTERED",
+  "public_https_base_url": null,
+  "github": {
+    "route": "/webhooks/github",
+    "events": ["pull_request", "issue_comment"],
+    "signature_header": "X-Hub-Signature-256",
+    "delivery_header": "X-GitHub-Delivery",
+    "event_header": "X-GitHub-Event",
+    "secret_env": "GITHUB_WEBHOOK_SECRET"
+  },
+  "jira": {
+    "registration_kind": "admin webhook with secret; not OAuth dynamic or Connect JWT",
+    "route": "/webhooks/jira",
+    "project_key": null,
+    "jql": null,
+    "events": ["jira:issue_created", "jira:issue_updated", "jira:issue_deleted", "comment_created", "comment_updated", "comment_deleted"],
+    "excludeBody": false,
+    "signature_header": "X-Hub-Signature",
+    "accepted_signature_method": "sha256",
+    "delivery_header": "X-Atlassian-Webhook-Identifier",
+    "secret_env": "JIRA_WEBHOOK_SECRET",
+    "real_protocol_delivery": "NOT_RUN"
+  },
+  "proxy": {
+    "raw_body_and_signature_headers_preserved": true,
+    "tls_verification": true,
+    "body_limit_bytes": 5242880,
+    "private_routes": ["/status", "/graph", "/healthz"]
+  }
+}

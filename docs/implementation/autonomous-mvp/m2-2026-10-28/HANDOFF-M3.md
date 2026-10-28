@@ -59,8 +59,11 @@ blob-ы **коммита**, не рабочее дерево; wheel-ы пров�
    разработки; LIVE acceptance проверяет App installation, не выдаёт токен за App.
 4. Выделить Jira Cloud bot account/accountId, право Browse projects, Add comments,
    Edit own comments и видимость согласованных задач; создать API token выбранного типа.
-   Для Basic — email+API token и URL site, для scoped/Bearer — соответствующий base URL
-   `https://api.atlassian.com/ex/jira/<cloudId>`. Администратор регистрирует webhook с
+   Для unscoped API token — **Basic email+API token** и URL site. Scoped API token
+   также использует **Basic**, но base URL `https://api.atlassian.com/ex/jira/<cloudId>`;
+   Bearer относится к отдельному OAuth access token, а не автоматически к scoped API token
+   ([Atlassian](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)).
+   Администратор регистрирует webhook с
    секретом и фильтром тестового проекта: issue created/updated/deleted; comment events
    для проверки цикла. Проверить настоящий `X-Hub-Signature: sha256=...` и стабильный
    `X-Atlassian-Webhook-Identifier` по полученной доставке. Локальная подпись этого не доказывает.

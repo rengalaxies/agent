@@ -1,0 +1,22 @@
+{
+  "main": "d5e25fde5927eca99e574b2ac82be80cd5adfe16",
+  "m3_head": "5ac9dbb291e9784f02fb4ccc266f459bdca52c0b",
+  "pr72_head": "f72c01827f203c2df46df9dc8e9071673df430e0",
+  "pr72_reviewed_parent": "214bec72ccb6df59a29e8d1069eca91202cf5c1e",
+  "pr72_ci": {
+    "core": 40749585359,
+    "http_demo": 40749585367,
+    "evidence": 40749585293,
+    "box": 40749585302
+  },
+  "pr72_ci_status": "ALL_SUCCESS",
+  "m3_ack": "NOT_RECEIVED",
+  "merged": false,
+  "merge_sha": null,
+  "file_overlap_pr72_m3": [],
+  "virtual_merge_tree": "d399f4c65feee879991c39caedec3d0a55b58b40",
+  "prepared_m3_release": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+  "release_pin_changed": false,
+  "installed_release_changed": false,
+  "blocking_decision": "Explicit M3 ack on current head required; no silence-as-consent"
+}
