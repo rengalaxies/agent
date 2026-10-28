@@ -22,13 +22,17 @@ class M4AIntentRegressions(unittest.TestCase):
 
     def test_editing_documentation_is_not_changing_the_documented_operation(self):
         for text in ("depot: Change README to describe GET /parcels pagination.",
-                     "depot: Изменить документацию: описать GET /parcels."):
+                     "depot: Изменить документацию: описать GET /parcels.",
+                     "depot: Change README to document GET /parcels page_size 40 -> 3."):
             with self.subTest(text=text):
                 self.assertEqual(match_intent(OPS, [text]).operation_ids, [])
 
     def test_api_change_after_documentation_edit_is_still_explicit(self):
-        intent = match_intent(OPS, ["depot: Change README and reduce GET /parcels page_size from 40 to 3."])
-        self.assertEqual((intent.operation_ids, intent.confidence), (["depot-get"], "explicit"))
+        for text in ("depot: Change README and reduce GET /parcels page_size from 40 to 3.",
+                     "depot: Change README and reduce GET /parcels page_size 40 -> 3."):
+            with self.subTest(text=text):
+                intent = match_intent(OPS, [text])
+                self.assertEqual((intent.operation_ids, intent.confidence), (["depot-get"], "explicit"))
 
     def test_negation_does_not_swallow_the_next_explicit_and_change_clause(self):
         intent = match_intent(OPS, ["depot: keep GET /parcels unchanged and change POST /labels response."])

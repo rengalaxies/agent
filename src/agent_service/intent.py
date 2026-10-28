@@ -87,7 +87,12 @@ def _has_contract_word(clause: str) -> bool:
 def _documentation_only(clause: str) -> bool:
     # A verb targeting documentation is not an API action. Other actions in
     # the same clause remain visible ("Change README and reduce GET ...").
-    return bool(DOCUMENTATION.search(clause)) and not CHANGE_ACTION.search(DOCUMENTATION_EDIT.sub("", clause))
+    remainder = DOCUMENTATION_EDIT.sub("", clause)
+    if remainder != clause:
+        # A numeric example in an explicit documentation edit is not an API
+        # action by itself; an additional change verb still establishes one.
+        remainder = remainder.replace("->", " ").replace("→", " ")
+    return bool(DOCUMENTATION.search(clause)) and not CHANGE_ACTION.search(remainder)
 
 
 def contract_wording(texts: list[str]) -> str:

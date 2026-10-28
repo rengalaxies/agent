@@ -63,3 +63,21 @@ Scope дополнен `src/agent_graph/{graph_query,graph_store,store}.py` дл
 пробелов миграции; схемы публичных документов и SQLite не изменились. M3 deployment,
 installer, pin/release, credentials и ВМ не менялись. До merge остаются новый зелёный CI
 и явное согласование M3 на актуальных heads. Подготовленный release 14e65e8 не обновлён.
+
+## Последний подслучай редактирования документации
+
+`Change README to document GET /parcels page_size 40 -> 3` всё ещё давал explicit intent:
+после удаления глагола редактирования документации оставалась числовая стрелка.
+[RED](docs-edit-arrow-before.log): 1 failure, контроль реального reduce API PASS.
+Минимальное уточнение: только при явном DOCUMENTATION_EDIT числовая стрелка сама
+не считается API-action; другой change/reduce глагол сохраняет API intent.
+[GREEN](docs-edit-arrow-after.log): 25 новых/существующих intent checks PASS.
+Число авторских методов прежнее (25 M4-A), добавлены подслучаи и отрицательный контроль.
+Закрытая грамматика не стала общим parser естественного языка.
+
+Подготовительный #73 слит отдельно после CI 861+152 PASS:
+main `40768d04bbc13147741c3d9a2308b730b4aa6128`, product code #72 туда не входит.
+Два private pilot repo уже заполнены и проверены реальными API/Git; App IDs получены
+из UI, bot identity подтверждена API, service App JWT NOT_RUN без PEM. Jira/M3/HTTPS
+BLOCKED. #72 подтягивает этот main в свою отдельную ветку, затем проходит новый CI
+на итоговом head; ack M3 всё ещё требуется. Поставка release14e/pin не меняется.
