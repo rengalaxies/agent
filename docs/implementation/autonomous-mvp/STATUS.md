@@ -447,9 +447,12 @@ persistent graph freshness при profile4→5; история сохранен�
 M3 head `5ac9dbb` сообщает HOST STOPPED / SUPPORT INVESTIGATION; чужая ветка, хост, pin,
 installer и release14e не менялись. Merge #72 требует явного согласования и новой сверки.
 
-M2-A: реальная GitHub identity rengalaxies проверена; pilot repositories API GET404
-(не различает отсутствие/скрытый доступ), разрешённый create получил integration403.
-Сервисная App/Jira/HTTPS/установка не подключены. Подготовлены воспроизводимые Git bundles,
+M2-A: после начального integration403 владелец создал два pilot-repo, добавил Connector
+и переключил private. Исполнитель загрузил все 6 веток; реальные API/Git SHA/bytes PASS.
+Orders ID 1437522215, Reporting ID 1437522551. Это Codex Connector, не сервисная App.
+App создана/установлена по сообщению владельца: 5515659 / installation 176298402;
+bot ID 349497413 подтверждён API. App JWT/token exchange BLOCKED без PEM; Jira/HTTPS/установка
+не подключены. Подготовлены воспроизводимые Git bundles,
 100→20→100 branches, исполняемый LOCAL HTTP 60→20→60, schema/fail-closed config, identity
 probe, разрешения/secrets delivery и LIVE/cleanup сценарий. Основной agent не test contour.
 [Отчёт и единый список владельца/M3](m2-a-2026-10-28/README.md). Авторские fixtures не

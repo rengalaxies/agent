@@ -30,6 +30,10 @@ class PilotPreparationTest(unittest.TestCase):
         self.assertNotIn("testing", config)
         self.assertEqual({r["name"] for r in config["github"]["repositories"]},
                          {"rengalaxies/agent-pilot-orders", "rengalaxies/agent-pilot-reporting"})
+        gh = dict(github_app_id="123", github_installation_id=456, github_bot_login="schema-test[bot]")
+        with self.assertRaisesRegex(ValueError, "missing_non_secret_identifiers"):
+            module.render(gh)
+        self.assertNotIn("jira", module.render(gh, github_only=True))
 
     def test_repeated_preparation_has_the_same_commits_and_bundles(self):
         with tempfile.TemporaryDirectory() as directory:

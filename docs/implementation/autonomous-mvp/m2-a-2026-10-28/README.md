@@ -1,7 +1,7 @@
 # M4-A integration + M2-A external contour preparation — 28.10.2026
 
-**PARTIAL / LIVE BLOCKED. MODEL OFF.** Ни сервис, ни Jira, ни собственная GitHub App
-не подключены этой пачкой. Основной `rengalaxies/agent` остаётся репозиторием разработки.
+**PARTIAL / LIVE BLOCKED. MODEL OFF.** Сервис/Jira не подключены. Владелец сообщил создание/установку private GitHub App;
+сервисная App-аутентификация пока не проверена. Основной `rengalaxies/agent` остаётся репозиторием разработки.
 Ни одной тестовой задачи, PR или bot comment во внешних системах здесь не создано.
 
 ## A. Интеграционное решение
@@ -42,6 +42,29 @@ sync пересчитывает основания с сохранением и�
 
 ## B. Фактический внешний доступ
 
+**Репозитории готовы на настоящем GitHub, connected-to-service=false.** Владелец создал
+оба repo, добавил Connector-доступ и переключил их из public в private. До private=true
+исходники не загружались. Затем исполнитель выполнил guarded push подготовленных refs.
+
+| Repository | Numeric ID | Проверено |
+|---|---|---|
+| [agent-pilot-orders](https://github.com/rengalaxies/agent-pilot-orders) | 1437522215 | private, main + 3 pilot branches, API/Git SHA/bytes совпали |
+| [agent-pilot-reporting](https://github.com/rengalaxies/agent-pilot-reporting) | 1437522551 | private, main + consumer repair branch, API/Git SHA/bytes совпали |
+
+[Реальные repository/branch/blob/pull-list API с request IDs](evidence/github-pilot-ready.json),
+[git push](evidence/github-push.json). Аутентификация — Codex Connector integration;
+успешный push/read **не доказывает** сервисную App installation. Test PR, Jira issue и
+bot comments ещё не создавались. Владелец сообщил установку App. Настоящий API подтвердил bot login
+`rengalaxies-agent-pilot[bot]`, ID `349497413`; private App GET404 и ограниченный
+`/user/installations` текущего Connector не дали App/installation IDs. App ID `5515659` получен из UI владельца;
+installation ID `176298402` получен из Configure URL; PEM/секреты не запрашивались в чат. [Metadata evidence](evidence/github-app-metadata.json).
+GET installation repositories текущим Connector получил 403, что не проверяет права
+другой App. [GitHub-only config](box.github-only.yaml) материализована с реальными IDs
+и проверена production schema, но не установлена. [App auth probe](evidence/app-auth-blocked.json)
+BLOCKED: PEM не доставлен; JWT/token exchange NOT_RUN. Jira пока BLOCKED.
+
+Ниже — начальная инвентаризация **до** действий владельца; 403/404 сохранены как история.
+
 [Санитизированные ответы настоящего GitHub API](evidence/github-api-inventory.json):
 GET `/user` подтверждает rengalaxies / `297624087`, development main читается.
 Доступная gh credential обслуживается интеграцией; её значение/формат не исследовались.
@@ -51,13 +74,13 @@ installation `162282851`. Это перечень видимых credential ус
 перечень всех зарегистрированных владельцем Apps. Эту стороннюю App не используем.
 
 Владелец подтвердил назначение двух private pilot-repositories; создание/Connector access
-пока не подтверждены, выбран следующий ручной шаг только repositories, затем App.
+затем подтверждены API/Git проверками выше; текущий ручной шаг — отдельная App.
 Оба целевых repository GET вернули 404 (отсутствие и скрытый доступ этим не различаются); назначения существующих приватных repos не
 подтверждены, они не использовались. Разрешённый POST `/user/repos` для
 `agent-pilot-orders` вернул **403 Resource not accessible by integration**. Создание
 не состоялось; второй POST не повторял заведомо недоступную операцию. Connector не
 предлагает create-repository/App-registration, браузерной сессии нет. Поэтому точные
-remote repository IDs, service App/installation/bot IDs остаются null.
+в тот момент IDs оставались null; актуальные repo IDs уже получены выше, service App/installation IDs ещё ожидаются из UI, bot ID подтверждён отдельно.
 
 Инструментов Jira и настроенных runtime secret bindings нет; site/project не назначены.
 Нет основания обращаться к случайному Jira tenant или создавать новый тариф/trial.
@@ -84,7 +107,11 @@ remote repository IDs, service App/installation/bot IDs остаются null.
   не дают deltas/findings. Expected IDs не передаются анализатору как consumer map.
 - [box.partial.yaml](box.partial.yaml), [inputs.json](inputs.json),
   [render_config.py](render_config.py) проверяют реальную BoxConfig schema.
-  На неполных inputs renderer отклоняет материализацию; installable config **нет**.
+  На неполных App inputs renderer отклоняет материализацию. После получения IDs
+  сохранён **schema-valid candidate** box.github-only.yaml, не target plan/install.
+  Полная Jira/LIVE-конфигурация пока не материализована.
+  Явный `--github-only` исключает Jira из конфигурации и позволяет готовить App независимо;
+  полноценная Jira/LIVE-конфигурация всё равно требует настоящие Jira IDs.
   Surrogate IDs используются только в schema test, никогда в сохранённой конфигурации.
   `.invalid` — символический address fixture, не внешний endpoint, DNS или webhook.
 - [Параметры App](github-app-settings.json), [webhook protocol/routes](webhooks.json),
@@ -98,11 +125,12 @@ CI этой отдельной ветки указывается в PR; он н�
 ## Границы и оставшийся шаг
 
 Единый список владельца/M3 — [OWNER-AND-M3.md](OWNER-AND-M3.md). Интеграция #72 ждёт
-явного ack, создание repos — owner-only UI/credential capability, Jira — выбор
+явного ack, repos уже созданы/заполнены и проверены, App — доверенная доставка PEM/секретов и проверка App token, Jira — выбор
 существующего проекта/доставка секретов. Восстановление хоста принадлежит M3/support.
 MODEL OFF; M2 не DONE, вся M4/клиентская полезность UNVERIFIED. Исторические
 2b-r1/6-r1..6-r3, их manifest/corpus/results не менялись. Человеческие минуты не измерялись.
 
 Ручные действия исполнителя: чтение/ревью кода/PR, воспроизведение ошибок и правки,
 локальные тесты/HTTP, API inventory/отказ create, публикация координационных PR comments,
-подготовка Git bundles/config/runbook. Действий человека в LIVE контуре не было.
+подготовка Git bundles/config/runbook. Владелец вручную создал repositories/Connector selection и переключил private;
+эти действия не равны продуктовой LIVE-приёмке, минуты NOT_MEASURED.

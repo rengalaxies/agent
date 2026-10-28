@@ -57,11 +57,13 @@ Profile 5 инвалидирует прежние contexts/knowledge/persistent 
 истории. До ack M3 интеграции нет; подготовленная M3 поставка остаётся 14e65e8/profile4.
 Общая M4 и клиентская полезность UNVERIFIED; это авторские регрессии, MODEL OFF.
 
-Настоящий GitHub control-plane API доступен, создание private pilot repos вернуло
-403 интеграции; GET404 не доказывает отсутствие скрытого repository. Два локальных Git
-bundle/ветки, реальное loopback HTTP 60→20→60, schema config, App/Jira permissions,
+После начального integration403 владелец создал private pilot repos и добавил Connector.
+Исполнитель загрузил все 6 веток, реальные API/Git SHA/bytes PASS (IDs 1437522215/1437522551).
+Это Codex Connector auth, сервисная App не доказана. Два Git bundles, реальное loopback
+HTTP 60→20→60, schema/fail-closed config с независимым GitHub-only режимом, App/Jira permissions,
 secret-delivery схема, LIVE/redelivery/API-error/self-loop/race/cleanup готовы.
-Сервисная App installation, Jira site/project/credentials и HTTPS не назначены,
+App 5515659 / installation 176298402 получены из UI, bot ID 349497413 подтверждён API;
+App JWT/read scoped repositories NOT_RUN без PEM. Jira site/project/credentials и HTTPS не назначены,
 connected-to-service=false; M3 сообщает stopped host/support. **M2 PARTIAL / LIVE BLOCKED**.
 [Доказательства и конкретные оставшиеся действия](m2-a-2026-10-28/README.md). Ни green CI,
 ни authored HTTP fixture не засчитываются за внешний Jira → PR → обновлённый результат.

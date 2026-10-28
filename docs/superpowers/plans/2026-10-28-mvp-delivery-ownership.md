@@ -46,10 +46,13 @@ Main `d5e25fd`; #71 M3 `5ac9dbb` не затронута, virtual merge с #72 �
 SUPPORT INVESTIGATION — по сообщению её PR, не наша новая проверка Cloud.ru.
 
 M2-A исполнила настоящий GitHub read API inventory и разрешённую попытку create (403
-integration capability). Подготовлены два авторских Git bundle, тестовые branches,
+integration capability). Затем владелец создал private pilot repos/Connector access;
+исполнитель загрузил все 6 веток, настоящие API/Git SHA/bytes PASS. IDs 1437522215/1437522551.
+Подготовлены два авторских Git bundle, тестовые branches,
 LOCAL real HTTP 60→20→60, production-schema/fail-closed config, App/Jira/secret/webhook
-параметры и LIVE/cleanup. Connected service/App/Jira/HTTPS отсутствуют; владелец должен
-создать/дать доступ к выделенным repos и подтвердить App/Jira параметры. Единый список
+параметры и LIVE/cleanup. App создана/установлена владельцем (App 5515659, installation 176298402 из UI; bot 349497413
+подтверждён API). GitHub-only candidate schema PASS, App JWT/token exchange BLOCKED без PEM.
+Connected service/Jira/HTTPS отсутствуют. Jira пока BLOCKED без повторного запроса всех настроек. Единый список
 и evidence: `docs/implementation/autonomous-mvp/m2-a-2026-10-28/README.md`.
 Смена профиля не запускает автоматически повторную публикацию unchanged resources;
 для будущего upgrade уже используемого сервиса нужна отдельная проверка reanalysis.

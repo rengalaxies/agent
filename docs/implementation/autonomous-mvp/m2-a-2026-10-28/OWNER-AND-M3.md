@@ -1,8 +1,10 @@
 # Единый список действий — владелец и M3
 
-Владелец подтвердил назначение обоих private pilot-repo. **Текущий ручной шаг — только
-создать два пустых repository и добавить их к Codex Connector.** Jira пока BLOCKED;
-её данные повторно не запрашиваются. После проверки repositories переходим к отдельной App.
+Владелец создал оба repository, добавил Connector и переключил private. Исполнитель
+уже заполнил их и проверил все refs/bytes настоящими API/Git. **Владелец сообщил создание/установку App. Bot ID 349497413 подтверждён API;
+App ID 5515659 и installation ID 176298402 получены из UI. Текущий Connector
+не может прочитать private App metadata; её JWT-аутентификация ждёт доверенной доставки PEM.** Jira пока BLOCKED;
+её данные повторно не запрашиваются.
 
 Значения секретов не отправлять в чат/PR, не печатать и не класть в Git/artifacts.
 Достаточны не-секретные IDs/URL и подтверждение доверенной доставки. Сессия исполнителя
@@ -11,9 +13,9 @@
 | Кто | Конкретное действие | Какую проверку блокирует |
 |---|---|---|
 | M3 | Ответить в #71/#72 на [запрос](https://github.com/rengalaxies/agent/pull/71#issuecomment-6477834664): принять f72c018/profile5 после нового зелёного CI, сохранив release14e как старый checkpoint; новую поставку согласовать отдельно | Merge #72 / выбор кода будущей приёмки |
-| Владелец GitHub | Создать **пустые private** `rengalaxies/agent-pilot-orders` и `rengalaxies/agent-pilot-reporting`, без README/license/.gitignore, платных настроек и чужого содержимого. Доступная интеграция вернула 403 create | Публикация уже подготовленных refs и реальные pilot read API |
-| Владелец GitHub | Для публикации исполнителем разрешить этим двум repos доступ существующей Codex Connector installation [162282851](https://github.com/settings/installations/162282851), либо самостоятельно push готовых bundles командами ниже | Заполнение pilot без передачи PAT в чат |
-| Владелец GitHub | В [New GitHub App](https://github.com/settings/apps/new) создать отдельную private App по github-app-settings.json и установить только на два pilot-repo; вернуть App ID, installation ID, реальный bot login | JWT/token exchange, App identity, права/границы установки; PAT-read это не заменяет |
+| Владелец GitHub | **DONE владельцем; источники уже загружены.** Исходная инструкция: создать **пустые private** `rengalaxies/agent-pilot-orders` и `rengalaxies/agent-pilot-reporting`, без README/license/.gitignore, платных настроек и чужого содержимого. Доступная интеграция вернула 403 create | Публикация уже подготовленных refs и реальные pilot read API |
+| Владелец GitHub | **DONE: Connector read и git push проверены.** Исходная инструкция: для публикации исполнителем разрешить этим двум repos доступ существующей Codex Connector installation [162282851](https://github.com/settings/installations/162282851), либо самостоятельно push готовых bundles командами ниже | Заполнение pilot без передачи PAT в чат |
+| Владелец GitHub | **Создание/установка сообщены владельцем.** **DONE:** App ID 5515659, installation ID 176298402 получены из UI; bot login/ID подтверждены реальным API. Новых действий по регистрации не требуется. Права/выбор repos из формы ещё не проверены App JWT | JWT/token exchange, App identity, права/границы установки; PAT-read это не заменяет |
 | Владелец Jira | Назначить существующий Jira Cloud site и изолированный test project (предлагаемый ключ APILOT, пока не создан), bot accountId и способ выдачи API token. Новую подписку/trial не создавать этой пачкой | Jira identity, Browse/comments, реальные задачи и webhook protocol |
 | Владелец → M3 | Сохранить PEM/отдельные webhook secrets и Jira API token в доверенном password manager/secret store, затем доставить на M3 по уже согласованному защищённому каналу. Не читать обратно GitHub Secrets | Credential probes и последующее подключение |
 | M3/support | Завершить расследование stopped dm-p1-ui; M3 затем перепроверяет VM/FIP/host key, inventory/backup, согласует точный релиз и план установки | Установленный SHA, loaded/status, worker/restart/recovery |
@@ -22,7 +24,7 @@
 Это внешние шаги, которые невозможно выполнить имеющимися инструментами/правами;
 они не заменяют уже выполненные исправления, тесты и подготовку источников.
 
-## Заполнение repos после их создания
+## Воспроизведение заполнения repos (уже выполнено)
 
 В checkout этого PR выполнить:
 
@@ -130,6 +132,14 @@ public artifact. GitHub App client secret сервису не требуется
 его ради этой проверки не нужно.
 
 ## Конфигурация/подключение и наблюдение M3
+
+[box.github-only.yaml](box.github-only.yaml) уже с реальными IDs и production schema PASS.
+Она не установлена; publication=dry_run, отдельный installation name. Actual App auth
+probe BLOCKED без PEM. Полная Jira конфигурация остаётся незаполненной.
+
+Для независимой GitHub-подготовки добавить к renderer `--github-only`: Jira секция
+исключается, probe выполняет только GitHub checks и явно указывает scope=github_only.
+Это не Jira/LIVE PASS и не обход проверки подлинности. Без App PEM/секретов probe BLOCKED.
 
 Заполнить только реальные не-секретные IDs в inputs.json; значения secrets туда не вносить.
 Renderer не пишет output при missing IDs. После заполнения:

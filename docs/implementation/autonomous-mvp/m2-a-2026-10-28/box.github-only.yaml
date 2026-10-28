@@ -1,0 +1,38 @@
+installation_id: agent-pilot-m2-github-dryrun
+environment: test
+listen:
+  host: 127.0.0.1
+  port: 8090
+github:
+  bot_login: rengalaxies-agent-pilot[bot]
+  auth:
+    kind: app
+    app_id: '5515659'
+    installation_id: 176298402
+  repositories:
+  - name: rengalaxies/agent-pilot-orders
+    id: orders
+    service: orders
+    watch_prs: true
+  - name: rengalaxies/agent-pilot-reporting
+    id: reporting
+    service: reporting
+service_addresses:
+  orders: https://orders.pilot.invalid
+requirements:
+- id: R-pilot-export-all
+  repository: reporting
+  path: export-requirement.md
+  sha256: 278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718
+  issuer: M2-A author test condition
+  consumer: reporting
+  service: orders
+  path_template: /orders
+  predicate: complete_collection
+publication: dry_run
+freshness:
+  reconcile_seconds: 900
+  mirror_sync_seconds: 120
+storage:
+  keep_backups: 7
+  daily_backup: true

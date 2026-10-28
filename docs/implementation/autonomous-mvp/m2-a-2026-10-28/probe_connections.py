@@ -21,12 +21,12 @@ from tools.agent_service.box.config import load  # noqa: E402
 
 def probe(path):
     config = load(path)
-    if config.github.auth.kind != "app" or not config.jira:
-        raise ValueError("app_and_jira_required")
+    if config.github.auth.kind != "app":
+        raise ValueError("app_required")
     service = ServiceConfig.model_validate(config.service(state=Path("/unused"), policy_path=Path("/unused"),
         constitution=Path("/unused"), release_id="identity-probe"))
     connectors, _ = build_connectors(service)
-    gh, jira = connectors["github"], connectors["jira"]
+    gh, jira = connectors["github"], connectors.get("jira")
     records = []
 
     def get(name, call, summarize, verify):
@@ -71,10 +71,11 @@ def probe(path):
             lambda r=repo: gh._call("GET", gh._repo(r.name) + "/branches/" + segment(r.branch)),
             lambda d: {"branch": d.get("name"), "sha": d.get("commit", {}).get("sha")},
             lambda d: bool(d.get("commit", {}).get("sha")))
-    get("jira_identity", lambda: jira._call("GET", "/rest/api/3/myself"),
-        lambda d: {k: d.get(k) for k in ("accountId", "active")},
-        lambda d: d.get("accountId") == config.jira.bot_account_id and d.get("active") is True)
-    for project in config.jira.project_keys:
+    if jira:
+        get("jira_identity", lambda: jira._call("GET", "/rest/api/3/myself"),
+            lambda d: {k: d.get(k) for k in ("accountId", "active")},
+            lambda d: d.get("accountId") == config.jira.bot_account_id and d.get("active") is True)
+    for project in config.jira.project_keys if config.jira else []:
         get("jira_project:" + project, lambda p=project: jira._call("GET", "/rest/api/3/project/" + segment(p)),
             lambda d: {k: d.get(k) for k in ("id", "key")}, lambda d, p=project: d.get("key") == p)
         permissions = ["BROWSE_PROJECTS", "ADD_COMMENTS", "EDIT_OWN_COMMENTS"]
@@ -82,7 +83,9 @@ def probe(path):
             query={"projectKey": p, "permissions": ",".join(permissions)}),
             lambda d: {k: d.get("permissions", {}).get(k, {}).get("havePermission") for k in permissions},
             lambda d: all(d.get("permissions", {}).get(k, {}).get("havePermission") is True for k in permissions))
-    return {"level": "REAL_API_READ_ONLY", "auth": "dedicated GitHub App installation + Jira Basic API token",
+    return {"level": "REAL_API_READ_ONLY", "auth": "dedicated GitHub App installation"
+                + (" + Jira Basic API token" if jira else " (Jira NOT_RUN)"),
+            "scope": "github_and_jira" if jira else "github_only",
             "at": datetime.now(timezone.utc).isoformat(), "checks": records,
             "status": "PASS" if all(r["status"] == "PASS" for r in records) else "FAIL",
             "not_proven": ["webhook signature/delivery", "publication rights by actual write", "installed M3", "LIVE M2"]}
