@@ -12,8 +12,9 @@ from datetime import datetime, timezone
 
 from . import PROFILE
 from .contracts import digest
+from .model_result import append_model_hypotheses, model_use
 from .output_contracts import (SCHEMA_VERSION, AnalysisRequest, AnalysisResult, normalize_route,
-                               parse_document)
+                               dump_document, parse_document)
 
 RISKS = {"POSSIBLE_TRUNCATION", "OPERATION_REMOVED"}
 
@@ -134,18 +135,7 @@ class _Builder:
             item = dict(code=code, subject=subject)
             if item not in unknown_items:
                 unknown_items.append(item)
-        model, costs = None, dict(model_calls=0, prompt_tokens=0, completion_tokens=0, reserved_micro=None,
-                                  currency=None)
-        if investigation is not None:
-            model = dict(configuration_id=investigation["configuration_id"], model=investigation["model"],
-                         protocol=investigation["protocol"])
-            usage = [e.get("usage") or {} for e in investigation.get("events", [])]
-            known = all(isinstance(u.get("prompt_tokens"), int) for u in usage)
-            costs = dict(model_calls=len(investigation.get("events", [])) + len(
-                [d for d in investigation.get("diagnostics", []) if d.get("layer") == "transport"]),
-                prompt_tokens=sum(u["prompt_tokens"] for u in usage) if known else None,
-                completion_tokens=sum(u["completion_tokens"] for u in usage) if known else None,
-                reserved_micro=investigation.get("budget", {}).get("reserved_micro"), currency=None)
+        model, costs = model_use(investigation)
         document = dict(
             schema="agent-graph-output", schema_version=SCHEMA_VERSION, kind="analysis_result", profile=PROFILE,
             code_version=code_version, constitution_version=constitution_version,
@@ -162,31 +152,14 @@ class _Builder:
             deltas=list(deltas), findings=list(findings), gaps=list(gaps), unknowns=unknown_items,
             source_freshness=list(freshness), evidence=list(self.evidence.values()),
             relationships=list(self.relationships.values()), model=model, costs=costs, timings=timings)
-        return parse_document(document)
+        document = dump_document(parse_document(document))
+        if not self.contexts:
+            return parse_document(document)
+        return parse_document(append_model_hypotheses(document, self.graph, self.contexts[0], investigation))
 
 
 def _timings(started_at, finished_at, seconds):
     return dict(started_at=started_at or _now(), finished_at=finished_at or _now(), seconds=dict(seconds or {}))
-
-
-def _investigation_claims(b, graph, investigation, unknowns):
-    if investigation is None:
-        return
-    records = {r["id"]: r for r in graph.store.proposals(graph.view)}
-    for candidate in investigation.get("hypothesis_ids", []):
-        record = records.get(candidate)
-        if record is None:
-            continue
-        refs = [b.cite(c) for c in record["proposal"]["citations"]]
-        id = "hyp:" + candidate[:40]
-        b.evidence[id] = dict(
-            id=id, origin="model_hypothesis", provenance="AUTHENTIC", sufficiency="NOT_ASSESSED",
-            freshness=dict(status="CURRENT", checked_at=b.checked_at), visibility=sorted(
-                {b.evidence[r]["repository"] for r in refs}), model_configuration_id=investigation["configuration_id"],
-            supporting_refs=refs, unknowns=["model_hypothesis_unverified"])
-        b.claim("hypothesis", record["proposal"]["statement"], [id], uncertainty="HIGH",
-                unknowns=["model_hypothesis_unverified"], applicability="Model candidate; never promoted automatically.")
-        unknowns.append(("model_hypothesis_unverified", None))
 
 
 def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_version, constitution_version,
@@ -251,7 +224,6 @@ def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_versi
             requirement_ids=finding["requirement_ids"]))
         if not b.owner(dep["consumer"])["teams"]:
             unknowns.append(("owner_unknown", dep["consumer"]))
-    _investigation_claims(b, graph, investigation, unknowns)
     classified = [f for f in findings if f["code"] != "UNCLASSIFIED_CHANGE_RECHECK"]
     if findings and classified:
         status, reason = "USEFUL", "impact_found_within_profile"
@@ -314,7 +286,6 @@ def preliminary_result(graph, request: AnalysisRequest, context: dict, operation
                    else "; whether it needs the complete collection is not known."))))
             if not b.owner(dep["consumer"])["teams"]:
                 unknowns.append(("owner_unknown", dep["consumer"]))
-    _investigation_claims(b, graph, investigation, unknowns)
     if not b.relationships:
         return b.finish(status="ABSTAINED", reason="no_consumer_found_within_profile", gaps=gaps,
                         unknowns=unknowns + [("runtime_not_observed", None)],

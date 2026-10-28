@@ -29,9 +29,23 @@ class CorpusShape(unittest.TestCase):
         for relative, text in generate_cases.outputs().items():
             self.assertEqual((BASE / relative).read_bytes().replace(b"\r\n", b"\n"), text.encode(), relative)
 
-    def test_committed_manifest_is_current(self):
+    def test_closed_2br1_manifest_and_program_remain_intact(self):
+        # 2b-r1 closed after transport (run 40566128227); never refresh its
+        # manifest to fit post-run publication fixes. New live work needs a revision.
         stored = json.loads((BASE / "manifest.json").read_text(encoding="utf-8"))
-        self.assertEqual(stored["manifest_digest"], program_mod.manifest()["manifest_digest"])
+        self.assertEqual(stored['manifest_digest'],
+                         '8d1c1afcb2a1247d5bba64a39e03772e99c30aec2a5d7eeaa6db0cae3f299222')
+        self.assertEqual(program_mod.digest({k: v for k, v in stored.items() if k != 'manifest_digest'}),
+                         stored['manifest_digest'])
+        self.assertEqual(stored['program'], PROGRAM)
+        files = {p.relative_to(BASE).as_posix(): program_mod.text_sha256(p)
+                 for p in sorted(BASE.rglob('*.json')) if p.name != 'manifest.json'}
+        self.assertEqual(stored['program_files_sha256'], files)
+
+    def test_closed_2br1_refuses_live_execution_after_code_drift(self):
+        from tools.autonomous_mvp.runner import RunnerError, committed_manifest
+        with self.assertRaisesRegex(RunnerError, 'manifest_stale_or_changed'):
+            committed_manifest('2b-r1')
 
     def test_every_section_8_family_is_in_both_splits(self):
         self.assertEqual({c["family"] for c in split("development")}, SECTION_8)

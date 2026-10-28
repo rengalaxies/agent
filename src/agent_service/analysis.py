@@ -156,7 +156,10 @@ def view_from_result(document, request: dict) -> ResultView:
                          "owner_source": source})
     claim_views = [{"kind": c.kind, "statement": c.statement, "applicability": c.applicability,
                     "uncertainty": c.uncertainty,
-                    "evidence": [_evidence_label(evidence[r]) for r in c.evidence_refs]} for c in result.claims]
+                    "evidence": [_evidence_label(evidence[r]) for r in c.evidence_refs]
+                    + [_evidence_label(evidence[s]) for r in c.evidence_refs
+                       if evidence[r].origin == "model_hypothesis" for s in evidence[r].supporting_refs]}
+                   for c in result.claims]
     paths = []
     for path in result.impact_paths:
         refs = []
@@ -182,6 +185,8 @@ def view_from_result(document, request: dict) -> ResultView:
                 "snapshots": {f"{s.repository} ({s.role})": s.commit or "WORKTREE" for s in result.snapshots}}
     if result.model:
         versions["model"] = f"{result.model.configuration_id} {result.model.model}"
+    else:
+        versions["model"] = "Детерминированный результат (модельный отчёт не представлен)"
     return ResultView(status=result.status, reason_code=result.reason_code, summary=result.summary,
                       affected=affected, claims=claim_views, deltas=deltas, findings=findings, paths=paths,
                       checks=checks, unknowns=unknowns,
