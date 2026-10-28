@@ -1,6 +1,6 @@
 {
-  "comment": "Release the box VM installs. Changed only by a reviewed PR after .github/workflows/agent-service-release.yml published the archive of an accepted main commit and verified the downloaded asset; copy name, sha256 and url from that run's summary. The workflow downloads the URL and checks sha256 before any plan. Pinned 27.10.2026 from run 40564865262: main f5c0c36e8eb99ad0d1467cf3d31a3d660c69cb58, manifest VERIFIED, the published asset installed with systemd (fresh_install, end_to_end_on_installed_release PASS).",
-  "name": "agent-service-0.1.0-gf5c0c36e8eb9-linux-x86_64-cp312",
-  "sha256": "88392b1e3b9609186842d67ed616e87af80cd78412408b00bc67361cb9d5ed91",
-  "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-gf5c0c36e8eb9/agent-service-0.1.0-gf5c0c36e8eb9-linux-x86_64-cp312.tar.gz"
+  "comment": "Reviewed M2 release pin after PR #69 merge 14e65e8affe3b64a9ceb647f537e8af6ff7a1138. Release run 40693796501: both release and install-published SUCCESS; published asset downloaded and verified independently. CI systemd fresh_install/end_to_end_on_installed_release PASS; this is not M3 VM/LIVE acceptance. MODEL OFF. Re-plan M3 with this pin; do not apply the old f4e6ab7 plan.",
+  "name": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+  "sha256": "95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013",
+  "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g14e65e8affe3/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312.tar.gz"
 }

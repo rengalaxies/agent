@@ -71,3 +71,13 @@ release workflow до нового pin. Все действия владельц
 Pre-send/post-send checks не дают атомарности с внешним API: старое тело может успеть
 появиться; LOCAL подтверждает stale notice → новый result и durable recheck при ошибке.
 Без API/worker верхней границы окна нет; live длительность не измерена.
+
+### M2 integration checkpoint
+
+#69 слит как `14e65e8affe3b64a9ceb647f537e8af6ff7a1138` (head `f488380b9a003368b365cf2b52c5e98adeab4ca8`);
+Core CI 40692584761: 858 + 152 PASS, box 40692584737: 11/11 systemd PASS.
+Релиз `agent-service-0.1.0-g14e65e8affe3`, archive sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`,
+run 40693796501: release + install-published SUCCESS, опубликованный asset VERIFIED
+и установлен на CI. Актуальный pin подготовлен отдельным PR. Не повторять выпуск этого
+тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
+M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.

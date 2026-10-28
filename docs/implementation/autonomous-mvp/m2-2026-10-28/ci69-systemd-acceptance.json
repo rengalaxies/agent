@@ -1,0 +1,806 @@
+{
+  "supervisor": "systemd",
+  "scenarios": [
+    {
+      "scenario": "fresh_install",
+      "detail": {
+        "install_wall_seconds": 7.3,
+        "machine_seconds": 6.9,
+        "phase_seconds": {
+          "validate": 0.05,
+          "release": 0.02,
+          "configure": 0.02,
+          "mirrors": 0.39,
+          "probes": 0.44,
+          "graph": 0.65,
+          "start": 1.72,
+          "smoke": 3.04,
+          "report": 0.54
+        },
+        "release": {
+          "name": "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+          "release_id": "0.1.0+gdb6bebfdcb72.linux-x86_64-cp312",
+          "commit": "db6bebfdcb721c0f2bb3da6d8217b10b873bf72e",
+          "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8"
+        },
+        "loaded": {
+          "code_version": "0.1.0+gdb6bebfdcb72.linux-x86_64-cp312",
+          "commit": "db6bebfdcb721c0f2bb3da6d8217b10b873bf72e",
+          "config": "/etc/agent-service/generated/agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312/service.json",
+          "constitution": "agent-service-v1.0:100bcad3db9c",
+          "constitution_default": "agent-service-v1.0:100bcad3db9c",
+          "constitution_path": "/opt/agent-service/releases/agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+          "core": {
+            "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8",
+            "output_schema_version": "2.1",
+            "profile": "http-requests-4",
+            "schema": "agent-graph-1"
+          },
+          "launcher_pid": null,
+          "listen": "127.0.0.1:8090",
+          "manifest_sha256": "f44130678633dee35aefe03f50e7203069c6f780e5e328633ce7062ea3952405",
+          "pid": 2960,
+          "python": "3.12.3",
+          "release": "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+          "release_id": "0.1.0+gdb6bebfdcb72.linux-x86_64-cp312",
+          "started_at": "2026-10-28T13:01:56.991586+00:00"
+        },
+        "graph": {
+          "active_bases": 9,
+          "by_origin": {
+            "code": 5,
+            "ownership": 4,
+            "runtime": 0
+          },
+          "closed_bases": 0,
+          "graph_version": "graph-6",
+          "relationships": 9,
+          "services": [
+            "archive",
+            "audit",
+            "billing",
+            "orders",
+            "reporting"
+          ]
+        },
+        "service_rss_kib": 67300
+      },
+      "result": "PASS",
+      "seconds": 8.4
+    },
+    {
+      "scenario": "end_to_end_on_installed_release",
+      "detail": {
+        "pr_first_line": "### Возможное влияние изменения",
+        "jira_delivery": 202,
+        "updates": {
+          "github": 2,
+          "jira": 0
+        }
+      },
+      "result": "PASS",
+      "seconds": 1.0
+    },
+    {
+      "scenario": "first_schema_update_then_rollback",
+      "detail": {
+        "update_machine_seconds": 6.9,
+        "backup": {
+          "backup": "20261028T130205526561Z-pre-update",
+          "counts": {
+            "delivered_comments": 2,
+            "events": 4,
+            "graph_artifacts": 11,
+            "graph_proposals": 0,
+            "history": 26,
+            "intents": 4,
+            "jobs": 3,
+            "resources": 2
+          },
+          "schemas": {
+            "graph_store": 2,
+            "service_store": 1
+          }
+        },
+        "rollback": {
+          "from": "agent-service-0.2.0-g7dc26e616959-linux-x86_64-cp312",
+          "to": "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+          "schemas_on_disk": {
+            "service_store": 2,
+            "graph_store": 2
+          },
+          "mode": "restored_backup",
+          "backup": "20261028T130205526561Z-pre-update",
+          "backup_created_at": "2026-10-28T13:02:05.532975+00:00",
+          "safety_backup": "20261028T130214979527Z-pre-rollback",
+          "note": "события после копии сервис забирает сверкой с Jira/GitHub при старте; комментарии находятся по маркеру и обновляются, а не создаются заново",
+          "process_ready": true,
+          "problems": []
+        },
+        "published_under_new": {
+          "code_version": "0.2.0+g7dc26e616959.linux-x86_64-cp312",
+          "constitution_version": "agent-service-v1.0:100bcad3db9c"
+        },
+        "published_after_rollback": {
+          "code_version": "0.1.0+gdb6bebfdcb72.linux-x86_64-cp312",
+          "constitution_version": "agent-service-v1.0:100bcad3db9c"
+        }
+      },
+      "result": "PASS",
+      "seconds": 16.4
+    },
+    {
+      "scenario": "failed_start_rolls_back",
+      "detail": {
+        "update_exit": 1,
+        "backup": {
+          "backup": "20261028T130222526544Z-pre-update",
+          "counts": {
+            "delivered_comments": 2,
+            "events": 6,
+            "graph_artifacts": 14,
+            "graph_proposals": 0,
+            "history": 46,
+            "intents": 8,
+            "jobs": 5,
+            "resources": 2
+          },
+          "schemas": {
+            "graph_store": 2,
+            "service_store": 1
+          }
+        },
+        "problems": [
+          "Сервис не перешёл в состояние готовности процесса: service_not_live, loaded_identity_missing, status_endpoint_unavailable",
+          "Автоматический откат на agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312: restored_backup"
+        ],
+        "queue_before": {
+          "events": {
+            "COALESCED": 1,
+            "INGESTED": 5
+          },
+          "jobs": {
+            "DONE": 5
+          },
+          "intents": {
+            "DELIVERED": 8
+          }
+        },
+        "queue_after": {
+          "events": {
+            "COALESCED": 1,
+            "INGESTED": 5
+          },
+          "jobs": {
+            "DONE": 5
+          },
+          "intents": {
+            "DELIVERED": 8
+          }
+        }
+      },
+      "result": "PASS",
+      "seconds": 129.4
+    },
+    {
+      "scenario": "reinstall_is_idempotent",
+      "detail": {
+        "machine_seconds": 5.3,
+        "pid": 6053
+      },
+      "result": "PASS",
+      "seconds": 7.9
+    },
+    {
+      "scenario": "interrupted_install_is_finished_by_rerun",
+      "detail": {
+        "configure": {
+          "killed_exit": 247,
+          "resumed_after": "configure",
+          "pid": 6053
+        },
+        "mirrors:start": {
+          "killed_exit": 247,
+          "resumed_after": "configure",
+          "pid": 6053
+        },
+        "graph": {
+          "killed_exit": 247,
+          "resumed_after": "graph",
+          "pid": 6053
+        },
+        "start": {
+          "killed_exit": 247,
+          "resumed_after": "start",
+          "pid": 6053
+        },
+        "smoke:start": {
+          "killed_exit": 247,
+          "resumed_after": "start",
+          "pid": 6053
+        }
+      },
+      "result": "PASS",
+      "seconds": 41.9
+    },
+    {
+      "scenario": "service_killed_comes_back",
+      "detail": {
+        "killed_pid": 6053,
+        "new_pid": 11234,
+        "restarted_by": "systemd Restart=on-failure"
+      },
+      "result": "PASS",
+      "seconds": 8.2
+    },
+    {
+      "scenario": "doctor_wrong_credentials",
+      "detail": {
+        "doctor_exit_with_wrong_token": 1,
+        "reasons": [
+          "probe:github:acme/archive:connection_unauthorized",
+          "probe:github:acme/audit:connection_unauthorized",
+          "probe:github:acme/billing:connection_unauthorized",
+          "probe:github:acme/orders:connection_unauthorized",
+          "probe:github:acme/reporting:connection_unauthorized",
+          "probe:github:connection_unauthorized"
+        ]
+      },
+      "result": "PASS",
+      "seconds": 4.5
+    },
+    {
+      "scenario": "backup_restore",
+      "detail": {
+        "backup": "20261028T130532140052Z-acceptance",
+        "backup_counts": {
+          "events": 7,
+          "resources": 2,
+          "jobs": 6,
+          "intents": 10,
+          "history": 56,
+          "delivered_comments": 2,
+          "graph_artifacts": 26,
+          "graph_proposals": 0
+        },
+        "restored": "20261028T130532140052Z-acceptance",
+        "safety_backup": "20261028T130533801017Z-pre-restore",
+        "queue_after": {
+          "events": {
+            "COALESCED": 1,
+            "INGESTED": 7
+          },
+          "jobs": {
+            "DONE": 7
+          },
+          "intents": {
+            "DELIVERED": 12
+          }
+        }
+      },
+      "result": "PASS",
+      "seconds": 4.7
+    },
+    {
+      "scenario": "restore_interrupted_is_recovered",
+      "detail": {
+        "killed_exit": 247,
+        "queue": {
+          "events": {
+            "COALESCED": 1,
+            "INGESTED": 8
+          },
+          "jobs": {
+            "DONE": 8
+          },
+          "intents": {
+            "DELIVERED": 14
+          }
+        }
+      },
+      "result": "PASS",
+      "seconds": 11.0
+    },
+    {
+      "scenario": "update_other_constitution_then_rollback",
+      "detail": {
+        "update_machine_seconds": 8.0,
+        "backup": {
+          "backup": "20261028T130548978847Z-pre-update",
+          "counts": {
+            "delivered_comments": 2,
+            "events": 9,
+            "graph_artifacts": 31,
+            "graph_proposals": 0,
+            "history": 76,
+            "intents": 14,
+            "jobs": 8,
+            "resources": 2
+          },
+          "schemas": {
+            "graph_store": 2,
+            "service_store": 1
+          }
+        },
+        "rollback": {
+          "from": "agent-service-0.1.1-g458569a12304-linux-x86_64-cp312",
+          "to": "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+          "schemas_on_disk": {
+            "service_store": 1,
+            "graph_store": 2
+          },
+          "mode": "release_only",
+          "process_ready": true,
+          "problems": []
+        },
+        "published_under_new": {
+          "code_version": "0.1.1+g458569a12304.linux-x86_64-cp312",
+          "constitution_version": "agent-service-v1.0:acd3267ca79c"
+        },
+        "published_after_rollback": {
+          "code_version": "0.1.0+gdb6bebfdcb72.linux-x86_64-cp312",
+          "constitution_version": "agent-service-v1.0:100bcad3db9c"
+        }
+      },
+      "result": "PASS",
+      "seconds": 15.8
+    }
+  ],
+  "box_calls": [
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 7.33
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "backups",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 0.47
+    },
+    {
+      "args": [
+        "agent-service-0.2.0-g7dc26e616959-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 8.38
+    },
+    {
+      "args": [
+        "agent-service-0.2.0-g7dc26e616959-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.2.0-g7dc26e616959-linux-x86_64-cp312",
+        "rollback",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 3.42
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.3.0-g9857a0aa3788-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 1,
+      "seconds": 126.29
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.83
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml"
+      ],
+      "exit": 247,
+      "seconds": 0.52
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.78
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml"
+      ],
+      "exit": 247,
+      "seconds": 0.52
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.78
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml"
+      ],
+      "exit": 247,
+      "seconds": 1.97
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.93
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml"
+      ],
+      "exit": 247,
+      "seconds": 2.32
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.78
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml"
+      ],
+      "exit": 247,
+      "seconds": 2.32
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.73
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 2,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 2,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.12
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "doctor"
+      ],
+      "exit": 1,
+      "seconds": 1.47
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "doctor",
+        "--json"
+      ],
+      "exit": 1,
+      "seconds": 1.47
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "doctor"
+      ],
+      "exit": 0,
+      "seconds": 1.52
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "backup",
+        "--label",
+        "acceptance",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 0.52
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "restore",
+        "20261028T130532140052Z-acceptance",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 2.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "backup",
+        "--label",
+        "restore-kill",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 0.52
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "restore",
+        "20261028T130536797800Z-restore-kill"
+      ],
+      "exit": 247,
+      "seconds": 0.62
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml"
+      ],
+      "exit": 0,
+      "seconds": 6.83
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.1-g458569a12304-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 9.44
+    },
+    {
+      "args": [
+        "agent-service-0.1.1-g458569a12304-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.1-g458569a12304-linux-x86_64-cp312",
+        "rollback",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 2.32
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-gdb6bebfdcb72-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    }
+  ],
+  "started_at": "2026-10-28T13:01:53Z",
+  "finished_at": "2026-10-28T13:06:03Z",
+  "passed": true
+}

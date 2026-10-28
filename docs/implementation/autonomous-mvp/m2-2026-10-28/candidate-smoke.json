@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "seconds": 2.1,
+  "checks": [
+    {
+      "check": "jira_delivery_accepted",
+      "ok": true,
+      "detail": "status=202"
+    },
+    {
+      "check": "jira_one_comment",
+      "ok": true,
+      "detail": "comments=1"
+    },
+    {
+      "check": "jira_names_reporting_and_archive",
+      "ok": true,
+      "detail": "\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n"
+    },
+    {
+      "check": "jira_excludes_audit_and_billing",
+      "ok": true,
+      "detail": "\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n"
+    },
+    {
+      "check": "jira_owner_from_graph",
+      "ok": true,
+      "detail": "\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n"
+    },
+    {
+      "check": "jira_graph_version",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "jira_says_preliminary",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "pr_delivery_accepted",
+      "ok": true,
+      "detail": "status=202"
+    },
+    {
+      "check": "pr_one_comment_for_readme_head",
+      "ok": true,
+      "detail": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d"
+    },
+    {
+      "check": "pr_same_comment_updated",
+      "ok": true,
+      "detail": "comments=1"
+    },
+    {
+      "check": "pr_shows_new_head",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "pr_shows_delta",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "pr_reporting_truncation_at_callsite",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "pr_archive_only_recheck",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "pr_audit_not_a_consumer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "superseded_head_never_published",
+      "ok": true,
+      "detail": "writes=4"
+    },
+    {
+      "check": "pr_single_create",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "generations_superseded_then_done",
+      "ok": true,
+      "detail": "DONE,SUPERSEDED,DONE"
+    },
+    {
+      "check": "graph_view_requires_token",
+      "ok": true,
+      "detail": "status=401"
+    },
+    {
+      "check": "graph_view_shows_paths",
+      "ok": true,
+      "detail": "status=200"
+    }
+  ]
+}
