@@ -18,6 +18,7 @@
 код `4a23d7c54f1128cd6c238f58f944df6c129af035`.
 Исправлены installation scope, версия base/head и полных полей Jira, post-send recheck,
 ограниченные листинги, reconciliation A → B → A/долгий outage/удалённая Jira и API retries.
+Общий LOCAL набор 857 PASS, runner 152 PASS, box units 46 PASS;
 18 новых проверок (17 исходных воспроизведений + положительная App/ping) PASS;
 локальный сценарий настоящего core Orders/Reporting 9/9 PASS: Jira → связанный PR →
 исправленный head в том же комментарии, дубли/reorder, 503, self-loop, воздержание.
