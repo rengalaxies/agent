@@ -1,5 +1,9 @@
 # Единый список действий — владелец и M3
 
+Владелец подтвердил назначение обоих private pilot-repo. **Текущий ручной шаг — только
+создать два пустых repository и добавить их к Codex Connector.** Jira пока BLOCKED;
+её данные повторно не запрашиваются. После проверки repositories переходим к отдельной App.
+
 Значения секретов не отправлять в чат/PR, не печатать и не класть в Git/artifacts.
 Достаточны не-секретные IDs/URL и подтверждение доверенной доставки. Сессия исполнителя
 уже имеет GitHub-доступ; повторно подключать существующий agent не требуется.
@@ -48,7 +52,10 @@ GET repository/branch/blob API должен подтвердить точные 
 
 ## App: точные параметры и почему такие права
 
-[github-app-settings.json](github-app-settings.json) — параметры формы, **не отправленный
+[github-app-settings.json](github-app-settings.json) содержит `prefilled_registration_url`
+для следующего шага: официальная GitHub форма с name/homepage/private/minimal permissions
+и webhook Active OFF, без секретов/фиктивного webhook URL. Проверка отправленной формы
+и создание/installation не выполнены. Это параметры формы, **не отправленный
 App manifest**. Manifest flow требует receive/redirect URL; здесь их нет, поэтому не
 создаём фиктивный endpoint и обработчик обмена секретами. Имя `rengalaxies-agent-pilot`
 предлагается, его глобальная доступность не проверена. Homepage — реальный agent URL;

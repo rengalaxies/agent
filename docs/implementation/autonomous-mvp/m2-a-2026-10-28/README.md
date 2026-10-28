@@ -37,6 +37,9 @@ sync пересчитывает основания с сохранением и�
 и план M3. Старый tag не заменять. Никакого автоматического обновления установленной
 или подготовленной M3 этим PR нет.
 
+Подготовка M2-A: [PR #73](https://github.com/rengalaxies/agent/pull/73), отдельная ветка
+`codex/m4-integration-m2-a`; product code #72 в неё не включён.
+
 ## B. Фактический внешний доступ
 
 [Санитизированные ответы настоящего GitHub API](evidence/github-api-inventory.json):
@@ -47,6 +50,8 @@ GET `/user/installations` видит только ChatGPT Codex Connector App `1
 installation `162282851`. Это перечень видимых credential установок, не полный
 перечень всех зарегистрированных владельцем Apps. Эту стороннюю App не используем.
 
+Владелец подтвердил назначение двух private pilot-repositories; создание/Connector access
+пока не подтверждены, выбран следующий ручной шаг только repositories, затем App.
 Оба целевых repository GET вернули 404 (отсутствие и скрытый доступ этим не различаются); назначения существующих приватных repos не
 подтверждены, они не использовались. Разрешённый POST `/user/repos` для
 `agent-pilot-orders` вернул **403 Resource not accessible by integration**. Создание

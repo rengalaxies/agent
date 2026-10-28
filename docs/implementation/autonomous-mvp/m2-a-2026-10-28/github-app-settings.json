@@ -22,10 +22,17 @@
   },
   "organization_permissions": {},
   "account_permissions": {},
-  "events_after_https_ready": ["pull_request", "issue_comment"],
+  "events_after_https_ready": [
+    "pull_request",
+    "issue_comment"
+  ],
   "repository_selection": "selected",
-  "repositories": ["rengalaxies/agent-pilot-orders", "rengalaxies/agent-pilot-reporting"],
+  "repositories": [
+    "rengalaxies/agent-pilot-orders",
+    "rengalaxies/agent-pilot-reporting"
+  ],
   "app_id": null,
   "installation_id": null,
-  "bot_login": null
+  "bot_login": null,
+  "prefilled_registration_url": "https://github.com/settings/apps/new?name=rengalaxies-agent-pilot&description=Isolated+Orders%2FReporting+M2+acceptance%2C+MODEL+OFF&url=https%3A%2F%2Fgithub.com%2Frengalaxies%2Fagent&public=false&webhook_active=false&request_oauth_on_install=false&metadata=read&contents=read&pull_requests=read&issues=write"
 }

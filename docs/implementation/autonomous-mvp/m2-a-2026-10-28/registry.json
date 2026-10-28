@@ -43,7 +43,8 @@
     "bot_login": null,
     "bot_numeric_id": null,
     "app_registration": "PREPARED_NOT_REGISTERED",
-    "visible_codex_connector_is_service_app": false
+    "visible_codex_connector_is_service_app": false,
+    "owner_designation": "CONFIRMED 2026-10-28 by user; remote creation/access not confirmed"
   },
   "jira": {
     "site_url": null,
@@ -52,7 +53,8 @@
     "bot_account_id": null,
     "credential_kind": "proposed Basic email + expiring API token",
     "status": "NOT_RUN_NO_SITE_PROJECT_OR_CREDENTIAL",
-    "webhook_protocol": "admin secret/HMAC sha256 required, real delivery NOT_RUN"
+    "webhook_protocol": "admin secret/HMAC sha256 required, real delivery NOT_RUN",
+    "owner_update": "No site/project/accountId supplied; remain BLOCKED, do not re-request now"
   },
   "https_origin": null,
   "installed_release": null,
@@ -64,5 +66,6 @@
     "service_app_read_API": "NOT_RUN",
     "jira_read_API": "NOT_RUN",
     "live_acceptance": "NOT_RUN"
-  }
+  },
+  "browser": "No authorized interactive browser available; web search does not create Apps/repositories"
 }
