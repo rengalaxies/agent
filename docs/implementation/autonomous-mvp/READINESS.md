@@ -24,9 +24,9 @@ head, API error и self-loop; зелёный CI не меняет этот ве�
 
 | Слой | Состояние | Доказательство и граница |
 |---|---|---|
-| Детерминированный сервис (Jira, PR, граф, очередь, один комментарий) | проверено на L1/L2 | 6-r3 held-out без модели 70/70, technical и quality PASS (`batch-6.md`); исправления D13 и прежние регрессии. Результат 6-r3 относится к старому коду (`f4e6ab7`), не к обновлённому продукту. M1 (#68) слит как `1ef7eac`: 838 основных и 152 runner-теста, HTTP-демо и systemd приёмка PASS. Формулировки 6-r3 писал тот же исполнитель |
+| Детерминированный сервис (Jira, PR, граф, очередь, один комментарий) | проверено на L1/L2 | 6-r3 held-out без модели 70/70, technical и quality PASS (`batch-6.md`); исправления D13 и прежние регрессии. Результат 6-r3 относится к старому коду (`f4e6ab7`), не к обновлённому продукту. M1 (#68) слит как `1ef7eac`. M2 (#69) — merge `14e65e8`: финальный CI 858 основных + 152 runner-теста, 11/11 systemd PASS; новый локальный core-сценарий 9/9 PASS. Это не LIVE Jira/GitHub. Формулировки 6-r3 писал тот же исполнитель |
 | Модельная автономность | допуск не пройден; модель OFF | 2Б transport завершён на `f4e6ab7`, run 40566128227: GPT 0/3, Qwen Coder 0/3, Qwen 3.6 1/3 error-free циклов при требуемых ≥2. Все DISABLED; development/evaluation и model-enabled readiness NOT_RUN. Публикационные исправления #68 слиты после офлайн/CI-проверок, без новой live-квалификации. [Доказательства](m1-2026-10-28/README.md) |
-| Коробочная поставка: install, update, rollback, restore | проверено на раннере GitHub с systemd | 11 из 11 сценариев на `6fa5562`; релиз `agent-service-0.1.0-gf5c0c36e8eb9` опубликован, скачанный asset поставлен с systemd (`fresh_install`, `end_to_end_on_installed_release` PASS) и закреплён в `release.json`. ВМ заказчика нет |
+| Коробочная поставка: install, update, rollback, restore | проверено на раннере GitHub с systemd | M2 #69: 11/11 на финальном head `f488380`; актуальный релиз `agent-service-0.1.0-g14e65e8affe3` содержит M1/M2. Run 40693796501: опубликованный asset скачан, VERIFIED и установлен с systemd (`fresh_install`, `end_to_end_on_installed_release` PASS); pin #70 заменяет старый f5c0c36. Установки M3 нет |
 | Cloud.ru: одна ВМ | не проверено | код в `main`; lock-test и plan запущены 27.10 и ждут одобрения сред, apply не запускался, ничего не создано |
 | Живая интеграция (GitHub App, Jira, runtime-источник клиента) | не проверено | нет тестовых ресурсов, разрешения публикации и доступа к runtime-источнику; локальные HTTP-стенды это не заменяют |
 | Сравнение с обычным агентом | не проверено | ворота comparison INCOMPLETE: живой baseline не запускался; `naive-search` только нижняя проверка pipeline |
@@ -39,3 +39,13 @@ head, API error и self-loop; зелёный CI не меняет этот ве�
 После M1 код изменён: оригинальные 2b-r1/6-r3 сохраняются как замороженные свидетельства;
 их current-code manifest checks намеренно отказывают. Тесты целостности истории не являются
 новой live-приёмкой. Для новой live-серии нужна отдельная ревизия и бюджет.
+
+### M2 integration checkpoint
+
+#69 слит как `14e65e8affe3b64a9ceb647f537e8af6ff7a1138` (head `f488380b9a003368b365cf2b52c5e98adeab4ca8`);
+Core CI 40692584761: 858 + 152 PASS, box 40692584737: 11/11 systemd PASS.
+Релиз `agent-service-0.1.0-g14e65e8affe3`, archive sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`,
+run 40693796501: release + install-published SUCCESS, опубликованный asset VERIFIED
+и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
+тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
+M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.

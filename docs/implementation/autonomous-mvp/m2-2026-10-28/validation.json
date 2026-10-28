@@ -34,7 +34,7 @@
       "level": "LOCAL",
       "result": "PASS",
       "tests": 19,
-      "machine_seconds": 13.952,
+      "machine_seconds": 14.492,
       "command_log": "regressions-after.log",
       "code_sha": "7a624ed431ac2c3d7b8488985ca3cdc6e34147c7"
     },
@@ -45,10 +45,44 @@
       "code_sha": "7a624ed431ac2c3d7b8488985ca3cdc6e34147c7",
       "tests": 22,
       "command_log": "final-targeted-tests.log"
+    },
+    {
+      "check": "final_core",
+      "level": "CI",
+      "result": "PASS",
+      "head_sha": "f488380b9a003368b365cf2b52c5e98adeab4ca8",
+      "tests": 858,
+      "runner_tests": 152,
+      "run_id": 40692584761
+    },
+    {
+      "check": "box_systemd",
+      "level": "CI",
+      "result": "PASS",
+      "installed_manifest_commit": "db6bebfdcb721c0f2bb3da6d8217b10b873bf72e",
+      "scenarios": 11,
+      "run_id": 40692584737
+    },
+    {
+      "check": "published_release_install",
+      "level": "CI",
+      "result": "PASS",
+      "installed_manifest_commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+      "scenarios": 2,
+      "run_id": 40693796501
     }
   ],
   "release_reproducible": "PASS (cmp returned 0)",
   "template": "PASS BoxConfig validation",
   "live": "NOT_RUN / BLOCKED",
-  "human_minutes": null
+  "human_minutes": null,
+  "merge69_sha": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+  "pr69_head_sha": "f488380b9a003368b365cf2b52c5e98adeab4ca8",
+  "published_release": {
+    "comment": "Reviewed M2 release pin after PR #69 merge 14e65e8affe3b64a9ceb647f537e8af6ff7a1138. Release run 40693796501: both release and install-published SUCCESS; published asset downloaded and verified independently. CI systemd fresh_install/end_to_end_on_installed_release PASS; this is not M3 VM/LIVE acceptance. MODEL OFF. Re-plan M3 with this pin; do not apply the old f4e6ab7 plan.",
+    "name": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+    "sha256": "95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013",
+    "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g14e65e8affe3/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312.tar.gz"
+  },
+  "installed_m3_version": "NOT_VERIFIED"
 }

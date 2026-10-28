@@ -8,8 +8,8 @@
 ## Код и точный артефакт
 
 Исходные исправления: `7a624ed431ac2c3d7b8488985ca3cdc6e34147c7` (или содержащий
-его проверенный merge в main, указанный в README). Не ставить старый pin
-`infra/cloudru/box/release.json`: `f5c0c36` не содержит M1/M2.
+его проверенный merge в main, указанный в README). На старте M2 pin
+`infra/cloudru/box/release.json` указывал на f5c0c36 без M1/M2. Актуальная поставка ниже.
 
 Рабочий способ выпуска уже существует, новый установщик не требуется. На принятом
 main после зелёных Core/box checks зафиксировать **полный** SHA:
@@ -166,3 +166,19 @@ loaded identity, `doctor`, reconciliation, author+marker и один комме�
 При внешней проблеме сначала остановить тестовый worker и webhook/отозвать только
 тестовый App access; сохранить state и журналы. Подтверждённые комментарии могут уже
 существовать во внешней системе: восстановление БД не откатывает внешний API.
+
+## Готовая поставка после #69
+
+Выпуск уже выполнен на main **`14e65e8affe3b64a9ceb647f537e8af6ff7a1138`**:
+[release](https://github.com/rengalaxies/agent/releases/tag/agent-service-0.1.0-g14e65e8affe3),
+[проверка опубликованной установки](https://github.com/rengalaxies/agent/actions/runs/40693796501).
+Архив `agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312`, sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`.
+Публичный URL: https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g14e65e8affe3/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312.tar.gz
+Pin в `infra/cloudru/box/release.json`: [PR #70](https://github.com/rengalaxies/agent/pull/70),
+после verification опубликованного asset.
+Команду выпуска выше повторять для этой версии не надо (существующий tag не заменяется).
+
+Для M3 остаются выбор хоста и контур/credentials/TLS, установка этого asset, сверка
+loaded с `14e65e8affe3b64a9ceb647f537e8af6ff7a1138`, и весь LIVE-сценарий. CI-установка с systemd не является M3.
+Старый pending cloud plan на f4e6ab7 не применять: после принятия pin нужен новый plan,
+review digest/срока/бюджета и отдельное одобрение apply. Здесь apply не выполнялся.

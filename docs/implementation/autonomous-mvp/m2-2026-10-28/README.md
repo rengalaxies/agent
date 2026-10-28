@@ -70,7 +70,7 @@ manifest verify PASS. [Сборка](release-build.json), [повтор](release
 [verify](release-verify.json). Это не установленная версия M3 и не обновлённый cloud pin.
 Финальные целевые regression/flow/core-scenario проверки на `7a624ed`: 22 PASS
 ([лог](final-targeted-tests.log)); regex-правка после общего набора проверяется также
-полным CI финального head. CI фиксируется ниже после завершения. Зелёный CI не закрывает LIVE/M2.
+полным CI финального head. Финальный CI: 858 основных + 152 runner-теста и 11/11 systemd-сценариев PASS (см. ниже). Зелёный CI не закрывает LIVE/M2.
 
 ## Что реально показывает пользовательский сценарий
 
@@ -147,3 +147,29 @@ commit/PR и подготовка конфигурации/инструкций.
 повтор A → B → A, retry pause и видимые постоянные ошибки. Существенные найденные дефекты
 исправлены с исходными воспроизведениями. Не заявляется независимое агентное ревью.
 Ограничения single worker, неизвестного внешнего write и недоступного LIVE сохранены явно.
+
+## Интеграция и поставка
+
+[PR #69](https://github.com/rengalaxies/agent/pull/69) слит: merge **`14e65e8affe3b64a9ceb647f537e8af6ff7a1138`**,
+проверенный head `f488380b9a003368b365cf2b52c5e98adeab4ca8`. На этом head
+[Core CI](https://github.com/rengalaxies/agent/actions/runs/40692584761) — **858 + 152 PASS**,
+[systemd box](https://github.com/rengalaxies/agent/actions/runs/40692584737) — **11/11 PASS**.
+[Сохранённый systemd report](ci69-systemd-acceptance.json), [manifest](ci69-manifest.json)
+и [core summary](ci-core-summary.txt). Установленный в PR CI commit — синтетический
+merge `db6bebfdcb721c0f2bb3da6d8217b10b873bf72e`; это не SHA установленного M3.
+Ранние runs на промежуточных heads не используются как финальная приёмка.
+
+[Новый релиз](https://github.com/rengalaxies/agent/releases/tag/agent-service-0.1.0-g14e65e8affe3)
+из main `14e65e8affe3b64a9ceb647f537e8af6ff7a1138` заменяет старую поставку f5c0c36:
+`agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312`. Archive sha256 **`95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`**.
+[Release workflow](https://github.com/rengalaxies/agent/actions/runs/40693796501): `release`
+и `install-published` SUCCESS; скачанный опубликованный asset установлен с systemd,
+`fresh_install` и `end_to_end_on_installed_release` PASS. [Отчёт](ci-published-install.json).
+[Независимое скачивание/manifest verify](published-verify.json) также VERIFIED.
+Pin в `infra/cloudru/box/release.json`: [PR #70](https://github.com/rengalaxies/agent/pull/70).
+Проверка pin: LOCAL 58 tests PASS, 1 skip без Terraform ([лог](pin-tests.log)). Старый pending plan
+на f4e6ab7 не подтверждает этот pin; M3 нужен новый review/plan, apply не выполнялся.
+
+Все эти установки — **CI**, модель OFF. Фактическая установка на dm-p1-ui/иной VM,
+настоящие Jira/GitHub webhooks, live race и человеческие минуты остаются NOT_RUN /
+NOT_MEASURED. **M2 PARTIAL / LIVE BLOCKED**, не DONE.

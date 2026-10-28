@@ -1,0 +1,110 @@
+{
+  "supervisor": "systemd",
+  "scenarios": [
+    {
+      "scenario": "fresh_install",
+      "detail": {
+        "install_wall_seconds": 6.4,
+        "machine_seconds": 5.4,
+        "phase_seconds": {
+          "validate": 0.03,
+          "release": 0.01,
+          "configure": 0.02,
+          "mirrors": 0.27,
+          "probes": 0.29,
+          "graph": 0.43,
+          "start": 1.47,
+          "smoke": 2.5,
+          "report": 0.35
+        },
+        "release": {
+          "name": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+          "release_id": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+          "commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+          "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8"
+        },
+        "loaded": {
+          "code_version": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+          "commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+          "config": "/etc/agent-service/generated/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312/service.json",
+          "constitution": "agent-service-v1.0:100bcad3db9c",
+          "constitution_default": "agent-service-v1.0:100bcad3db9c",
+          "constitution_path": "/opt/agent-service/releases/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+          "core": {
+            "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8",
+            "output_schema_version": "2.1",
+            "profile": "http-requests-4",
+            "schema": "agent-graph-1"
+          },
+          "launcher_pid": null,
+          "listen": "127.0.0.1:8090",
+          "manifest_sha256": "9fdd6e8aa48e5e09d803840ef262c1c3d57bb01af9c884a690f86a98888533a9",
+          "pid": 2467,
+          "python": "3.12.3",
+          "release": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+          "release_id": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+          "started_at": "2026-10-28T13:09:30.203898+00:00"
+        },
+        "graph": {
+          "active_bases": 9,
+          "by_origin": {
+            "code": 5,
+            "ownership": 4,
+            "runtime": 0
+          },
+          "closed_bases": 0,
+          "graph_version": "graph-6",
+          "relationships": 9,
+          "services": [
+            "archive",
+            "audit",
+            "billing",
+            "orders",
+            "reporting"
+          ]
+        },
+        "service_rss_kib": 67848
+      },
+      "result": "PASS",
+      "seconds": 7.1
+    },
+    {
+      "scenario": "end_to_end_on_installed_release",
+      "detail": {
+        "pr_first_line": "### Возможное влияние изменения",
+        "jira_delivery": 202,
+        "updates": {
+          "github": 2,
+          "jira": 0
+        }
+      },
+      "result": "PASS",
+      "seconds": 1.0
+    }
+  ],
+  "box_calls": [
+    {
+      "args": [
+        "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/srv/box-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 6.38
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 0.72
+    }
+  ],
+  "started_at": "2026-10-28T13:09:27Z",
+  "finished_at": "2026-10-28T13:09:35Z",
+  "passed": true
+}

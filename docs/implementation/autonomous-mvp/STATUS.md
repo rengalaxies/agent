@@ -26,7 +26,9 @@
 
 Владелец подтвердил отсутствие установленного M3 и тестовых App/Jira/HTTPS; dm-p1-ui
 не принят как M3. Новых ВМ/внешних тестовых публикаций/модельных вызовов нет.
-Фактически установленный SHA NOT_VERIFIED; старый pin f5c0c36 не содержит M1/M2.
+Фактически установленный SHA M3 NOT_VERIFIED. Старый pin f5c0c36 заменяется #70 на
+проверенный опубликованный `agent-service-0.1.0-g14e65e8affe3` (run 40693796501,
+release + install-published SUCCESS); это установка на CI, не M3.
 [Комплект M3](m2-2026-10-28/HANDOFF-M3.md) содержит build/release, шаблон box.yaml без
 секретов, HTTPS routes, permissions, status/журналы, LIVE evidence и rollback.
 Гонка между GET и внешним write допускает временно старый комментарий; атомарности
@@ -424,3 +426,13 @@ FP на PR 0/128, на Jira 10/128. Найдены два дефекта про�
 изменённой операции, Jira с одним названием сервиса даёт уверенный ответ. Их исправление
 требует ревизии `6-r2`. Конфигурация с моделью, живой baseline, минуты человека, L3 и L4
 не оценены.
+
+### M2 integration checkpoint
+
+#69 слит как `14e65e8affe3b64a9ceb647f537e8af6ff7a1138` (head `f488380b9a003368b365cf2b52c5e98adeab4ca8`);
+Core CI 40692584761: 858 + 152 PASS, box 40692584737: 11/11 systemd PASS.
+Релиз `agent-service-0.1.0-g14e65e8affe3`, archive sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`,
+run 40693796501: release + install-published SUCCESS, опубликованный asset VERIFIED
+и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
+тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
+M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.

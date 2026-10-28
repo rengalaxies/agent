@@ -42,3 +42,9 @@ merge и следующий шаг. SHA коммита, который доба�
 | Ветка | Пачка | Состояние |
 |---|---|---|
 | — | — | все подготовленные ветки опубликованы как PR |
+
+## M2 — 28.10.2026
+
+- [#69](https://github.com/rengalaxies/agent/pull/69) слит: merge `14e65e8affe3b64a9ceb647f537e8af6ff7a1138`, head `f488380b9a003368b365cf2b52c5e98adeab4ca8`. Core 40692584761: 858 + 152 PASS; box 40692584737: 11/11 systemd PASS.
+- [#70](https://github.com/rengalaxies/agent/pull/70): pin опубликованного актуального релиза и итоговые evidence. Release run 40693796501: release + install-published SUCCESS; sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`. Это CI, не M3.
+- Отчёт: [M2](m2-2026-10-28/README.md); M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF. Нужны установка M3 и согласованный тестовый App/Jira/HTTPS; чужие ВМ и pending cloud runs не менялись.
