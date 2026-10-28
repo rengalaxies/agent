@@ -42,9 +42,9 @@ Daniil/swan-Dive — разрешение доступа, одобрение з�
 - Качественная синтетика выдаётся за пользу, человеческая работа скрывается: M4/M5/M6.
 
 ## Очередь и статусы
-- [ ] M1 — IMPLEMENTED / CI PENDING: run 40566128227 завершён на exact f4e6ab7; ни одна модель не прошла transport prerequisite (0/3, 0/3, 1/3 при ≥2). Выбран режим модель OFF; development/evaluation/readiness с моделью не запускались. Исправления Jira/PR publication, refs, capacity и usage — PR #68, head beeef97cdec7283342933f443fe144ca08ace15e. 25 целевых тестов прошли; независимое агентное ревью без Important/Critical; полные проверки/CI и интеграция ещё проверяются. #66 обновлён итогами. Доказательства: docs/implementation/autonomous-mvp/m1-2026-10-28/README.md.
-- [ ] M2 — TODO: сначала инвентаризация доступных тестовых GitHub/Jira/HTTPS.
-- [ ] M3 — TODO: сначала результат lock-test и выбор площадки, без нового apply.
+- [x] M1 — DONE / MODEL OFF: серия 2b-r1 закрыта после transport, все три модели DISABLED. Код #68 слит как `1ef7eaca9b66256478022945eef7f8b205571dd2`, проверенный head `6d6d7d1a6f52e5eb619c7d580f577e892cfe3086`. CI: 838 основных + 152 runner-теста; HTTP-демо, evidence и systemd приёмка PASS. 55 целевых publication/qualification/result тестов прошли; повторное независимое агентное ревью без Important/Critical. Реальной модельной квалификации нового кода нет; M1 принят как обоснованный режим без модели. #66 актуализирован. Доказательства: docs/implementation/autonomous-mvp/m1-2026-10-28/README.md.
+- [ ] M2 — NEXT: Codex инвентаризирует доступные тестовые GitHub App/Jira/HTTPS и действующие endpoints, затем готовит/исправляет e2e Jira → PR → один актуальный комментарий. Live после подготовки M3; реальные публикации и доступы — в согласованном тестовом контуре.
+- [ ] M3 — TODO: проверить результат lock-test и актуальность plan, выбрать площадку и подготовить установку с моделью OFF; без нового apply до конкретного плана и бюджета.
 - [ ] M4 — TODO: кодовая регрессия и запрос независимого проекта.
 - [ ] M5 — TODO.
 - [ ] M6 — TODO.
@@ -55,3 +55,5 @@ Daniil/swan-Dive — разрешение доступа, одобрение з�
 ## Checkpoint M1 — 28.10.2026
 
 51 live-запрос в исходной серии; известная оценка 26,395201 ₽, ledger с unknown worst-case 30,287335 ₽, фактический биллинг не измерен. Оригинальные manifests/report/ledgers не переписывались. Заморозка main для закрытой 2b-r1 больше не нужна. Новый код не имеет live-квалификации; старые current-code checks должны отказывать. ВМ, секреты и релиз не менялись. Следующий исполнительский шаг Codex после CI/merge — M2 inventory, параллельно подготовка M3 в режиме без модели.
+
+Финальная проверка M1: [Core](https://github.com/rengalaxies/agent/actions/runs/40668612946), [HTTP demo](https://github.com/rengalaxies/agent/actions/runs/40668612932), [evidence](https://github.com/rengalaxies/agent/actions/runs/40668612994), [systemd box](https://github.com/rengalaxies/agent/actions/runs/40668612955) — все SUCCESS на финальном head #68. Сервисный qualification.check отклоняет настоящий report для каждой модели как model_not_qualified. Человеческая/клиентская полезность и финальная установка на Cloud.ru этим не подтверждены.
