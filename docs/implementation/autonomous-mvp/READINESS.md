@@ -46,6 +46,6 @@ head, API error и self-loop; зелёный CI не меняет этот ве�
 Core CI 40692584761: 858 + 152 PASS, box 40692584737: 11/11 systemd PASS.
 Релиз `agent-service-0.1.0-g14e65e8affe3`, archive sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`,
 run 40693796501: release + install-published SUCCESS, опубликованный asset VERIFIED
-и установлен на CI. Актуальный pin подготовлен отдельным PR. Не повторять выпуск этого
+и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
 тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
 M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.

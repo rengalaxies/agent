@@ -174,7 +174,8 @@ loaded identity, `doctor`, reconciliation, author+marker и один комме�
 [проверка опубликованной установки](https://github.com/rengalaxies/agent/actions/runs/40693796501).
 Архив `agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312`, sha256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`.
 Публичный URL: https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g14e65e8affe3/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312.tar.gz
-Pin в `infra/cloudru/box/release.json` подготовлен отдельным PR после verification.
+Pin в `infra/cloudru/box/release.json`: [PR #70](https://github.com/rengalaxies/agent/pull/70),
+после verification опубликованного asset.
 Команду выпуска выше повторять для этой версии не надо (существующий tag не заменяется).
 
 Для M3 остаются выбор хоста и контур/credentials/TLS, установка этого asset, сверка

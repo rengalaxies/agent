@@ -166,7 +166,8 @@ merge `db6bebfdcb721c0f2bb3da6d8217b10b873bf72e`; это не SHA установ
 и `install-published` SUCCESS; скачанный опубликованный asset установлен с systemd,
 `fresh_install` и `end_to_end_on_installed_release` PASS. [Отчёт](ci-published-install.json).
 [Независимое скачивание/manifest verify](published-verify.json) также VERIFIED.
-Pin подготовлен в `infra/cloudru/box/release.json` отдельным PR. Старый pending plan
+Pin в `infra/cloudru/box/release.json`: [PR #70](https://github.com/rengalaxies/agent/pull/70).
+Проверка pin: LOCAL 58 tests PASS, 1 skip без Terraform ([лог](pin-tests.log)). Старый pending plan
 на f4e6ab7 не подтверждает этот pin; M3 нужен новый review/plan, apply не выполнялся.
 
 Все эти установки — **CI**, модель OFF. Фактическая установка на dm-p1-ui/иной VM,
