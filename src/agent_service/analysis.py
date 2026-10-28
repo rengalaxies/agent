@@ -185,6 +185,8 @@ def view_from_result(document, request: dict) -> ResultView:
                 "snapshots": {f"{s.repository} ({s.role})": s.commit or "WORKTREE" for s in result.snapshots}}
     if result.model:
         versions["model"] = f"{result.model.configuration_id} {result.model.model}"
+    else:
+        versions["model"] = "OFF (не использовалась; детерминированный анализ)"
     return ResultView(status=result.status, reason_code=result.reason_code, summary=result.summary,
                       affected=affected, claims=claim_views, deltas=deltas, findings=findings, paths=paths,
                       checks=checks, unknowns=unknowns,
