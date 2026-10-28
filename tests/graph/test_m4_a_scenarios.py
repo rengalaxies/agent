@@ -1,5 +1,6 @@
 """Author-written scenarios on a fresh Depot/Dispatch fixture; not a held-out benchmark."""
 import json
+import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
@@ -10,6 +11,10 @@ from agent_graph.engine import Graph
 from tests.graph.m4_a_fixture import Fixture
 
 
+HAS_ASGI = all(importlib.util.find_spec(name) is not None for name in ("fastapi", "httpx"))
+ASGI_REASON = "optional FastAPI/httpx absent; full Core CI executes the ASGI oracle"
+
+
 class M4AScenarios(unittest.TestCase):
     def setUp(self):
         tmp = tempfile.TemporaryDirectory()
@@ -17,6 +22,7 @@ class M4AScenarios(unittest.TestCase):
         self.fixture = Fixture(Path(tmp.name))
         self.addCleanup(self.fixture.close)
 
+    @unittest.skipUnless(HAS_ASGI, ASGI_REASON)
     def test_documentation_commit_does_not_change_the_executed_api_or_produce_delta(self):
         f = self.fixture
         base = f.context()
@@ -29,6 +35,7 @@ class M4AScenarios(unittest.TestCase):
         self.assertEqual(analysis["deltas"], [])
         self.assertEqual(analysis["findings"], [])
 
+    @unittest.skipUnless(HAS_ASGI, ASGI_REASON)
     def test_configured_prefix_and_shared_route_resolve_only_the_authorized_address(self):
         f = self.fixture
         # Requirements do not discover the caller: repeat discovery without them.
@@ -41,6 +48,7 @@ class M4AScenarios(unittest.TestCase):
             self.assertEqual(exports["dispatch"](), list(range(9)))
         self.assertEqual(calls[0]["url"], "https://edge.example.test/v2/parcels")
 
+    @unittest.skipUnless(HAS_ASGI, ASGI_REASON)
     def test_wrapper_really_calls_the_api_but_is_not_promoted_to_a_static_dependency(self):
         f = self.fixture
         context = f.context()

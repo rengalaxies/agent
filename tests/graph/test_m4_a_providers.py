@@ -1,5 +1,6 @@
 """M4-A author regressions: impostor decorators cannot prove an HTTP declaration."""
 from pathlib import Path
+import importlib.util
 import tempfile
 import sys
 import types
@@ -87,6 +88,8 @@ class M4AProviderRegressions(unittest.TestCase):
                 self.assertEqual(analysis["deltas"], [])
                 self.assertIn("provider_route_unsupported", {g["code"] for g in analysis["gaps"]})
 
+    @unittest.skipUnless(importlib.util.find_spec("fastapi") is not None,
+                         "optional FastAPI absent; full Core CI executes provider registration")
     def test_executed_impostor_decorators_register_no_http_route(self):
         class Plain:
             def get(self, path):
