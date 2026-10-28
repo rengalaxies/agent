@@ -1,0 +1,15 @@
+# Replace the hostname after DNS and M3 placement are agreed.
+# Caddy obtains/renews a public certificate; ports 80/443 must reach this host.
+REPLACE-SERVICE.example.invalid {
+    @webhook path /webhooks/github /webhooks/jira
+    handle @webhook {
+        request_body {
+            max_size 5MB
+        }
+        reverse_proxy 127.0.0.1:8090
+    }
+    # Keep /status and /graph private; query through an SSH tunnel with their bearer token.
+    handle {
+        respond 404
+    }
+}

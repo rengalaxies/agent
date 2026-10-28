@@ -12,6 +12,25 @@
 - проверено live: прошло на настоящей модели, Jira, Git-хостинге или ВМ;
 - не проверено: нет доступа или проверка не выполнялась, причина указана.
 
+## Сводка M2 на 28.10.2026
+
+**PARTIAL / LIVE BLOCKED; модель OFF.** [PR #69](https://github.com/rengalaxies/agent/pull/69),
+код `4a23d7c54f1128cd6c238f58f944df6c129af035`.
+Исправлены installation scope, версия base/head и полных полей Jira, post-send recheck,
+ограниченные листинги, reconciliation A → B → A/долгий outage/удалённая Jira и API retries.
+18 новых проверок (17 исходных воспроизведений + положительная App/ping) PASS;
+локальный сценарий настоящего core Orders/Reporting 9/9 PASS: Jira → связанный PR →
+исправленный head в том же комментарии, дубли/reorder, 503, self-loop, воздержание.
+Доказательства и границы: [отчёт M2](m2-2026-10-28/README.md).
+
+Владелец подтвердил отсутствие установленного M3 и тестовых App/Jira/HTTPS; dm-p1-ui
+не принят как M3. Новых ВМ/внешних тестовых публикаций/модельных вызовов нет.
+Фактически установленный SHA NOT_VERIFIED; старый pin f5c0c36 не содержит M1/M2.
+[Комплект M3](m2-2026-10-28/HANDOFF-M3.md) содержит build/release, шаблон box.yaml без
+секретов, HTTPS routes, permissions, status/журналы, LIVE evidence и rollback.
+Гонка между GET и внешним write допускает временно старый комментарий; атомарности
+БД/API и жёсткой верхней границы при outage нет. M2 не DONE до настоящей приёмки.
+
 ## Сводка M1 на 28.10.2026
 
 Серия `2b-r1` на `f4e6ab7906fe5db5fbce9700bcad6547757bb63e` завершена после transport:

@@ -1,0 +1,496 @@
+test_base_moves_between_analysis_and_publication (tests.service.test_m2_regressions.M2RegressionTest.test_base_moves_between_analysis_and_publication) ... FAIL
+test_comment_scan_limit_does_not_allow_a_duplicate_create (tests.service.test_m2_regressions.M2RegressionTest.test_comment_scan_limit_does_not_allow_a_duplicate_create) ... FAIL
+test_failed_postsend_read_is_visible_and_durably_rechecked (tests.service.test_m2_regressions.M2RegressionTest.test_failed_postsend_read_is_visible_and_durably_rechecked) ... FAIL
+test_jira_comment_scan_limit_fails_closed (tests.service.test_m2_regressions.M2RegressionTest.test_jira_comment_scan_limit_fails_closed) ... FAIL
+test_jira_downtime_over_seven_days_is_not_clamped (tests.service.test_m2_regressions.M2RegressionTest.test_jira_downtime_over_seven_days_is_not_clamped) ... FAIL
+test_jira_scan_limit_does_not_advance_checkpoint (tests.service.test_m2_regressions.M2RegressionTest.test_jira_scan_limit_does_not_advance_checkpoint) ... FAIL
+test_known_jira_issue_deleted_without_delivery_is_reconciled (tests.service.test_m2_regressions.M2RegressionTest.test_known_jira_issue_deleted_without_delivery_is_reconciled) ... FAIL
+test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) ... 
+  test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='github', payload=[]) ... ERROR
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 411, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1194, in __call__
+    await super().__call__(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/telemetry/_asgi.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 2811, in app
+    await route.handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1330, in handle
+    await super().handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 284, in handle
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 372, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/api.py", line 27, in webhook
+    status, payload = await run_in_threadpool(service.receive, provider, dict(request.headers), bytes(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/service.py", line 43, in receive
+    envelope = connector.parse_webhook(headers, body)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/connectors/github.py", line 163, in parse_webhook
+    repository = str(((payload.get("repository") or {}).get("full_name")) or "").lower()
+                       ^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+  test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='github', payload={'repository': ['malformed']}) ... ERROR
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 411, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1194, in __call__
+    await super().__call__(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/telemetry/_asgi.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 2811, in app
+    await route.handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1330, in handle
+    await super().handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 284, in handle
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 372, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/api.py", line 27, in webhook
+    status, payload = await run_in_threadpool(service.receive, provider, dict(request.headers), bytes(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/service.py", line 43, in receive
+    envelope = connector.parse_webhook(headers, body)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/connectors/github.py", line 163, in parse_webhook
+    repository = str(((payload.get("repository") or {}).get("full_name")) or "").lower()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+  test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='jira', payload=[]) ... ERROR
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 411, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1194, in __call__
+    await super().__call__(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/telemetry/_asgi.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 2811, in app
+    await route.handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1330, in handle
+    await super().handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 284, in handle
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 372, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/api.py", line 27, in webhook
+    status, payload = await run_in_threadpool(service.receive, provider, dict(request.headers), bytes(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/service.py", line 43, in receive
+    envelope = connector.parse_webhook(headers, body)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/connectors/jira.py", line 123, in parse_webhook
+    event = str(payload.get("webhookEvent") or "")[:100] or "unknown"
+                ^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+  test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='jira', payload={'issue': ['malformed']}) ... ERROR
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 411, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1194, in __call__
+    await super().__call__(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/telemetry/_asgi.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 2811, in app
+    await route.handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1330, in handle
+    await super().handle(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/routing.py", line 284, in handle
+    await self.app(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 372, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/api.py", line 27, in webhook
+    status, payload = await run_in_threadpool(service.receive, provider, dict(request.headers), bytes(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/workspace/agent/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/service.py", line 43, in receive
+    envelope = connector.parse_webhook(headers, body)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/connectors/jira.py", line 125, in parse_webhook
+    issue_id = str(issue.get("id") or "")
+                   ^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+test_new_base_without_new_head_replaces_result (tests.service.test_m2_regressions.M2RegressionTest.test_new_base_without_new_head_replaces_result) ... FAIL
+test_noop_adoption_still_checks_for_a_racing_head (tests.service.test_m2_regressions.M2RegressionTest.test_noop_adoption_still_checks_for_a_racing_head) ... FAIL
+test_permanent_ingest_error_is_not_retried (tests.service.test_m2_regressions.M2RegressionTest.test_permanent_ingest_error_is_not_retried) ... FAIL
+test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor (tests.service.test_m2_regressions.M2RegressionTest.test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor) ... FAIL
+test_wrong_app_installation_is_rejected_before_enqueue (tests.service.test_m2_regressions.M2RegressionTest.test_wrong_app_installation_is_rejected_before_enqueue) ... FAIL
+
+======================================================================
+ERROR: test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='github', payload=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 35, in test_malformed_signed_payload_returns_400
+    self.assertEqual(deliver(payload)[0], 400)
+                     ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 228, in deliver_github
+    return post(self.receiver.url + "/webhooks/github", body, {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 162, in post
+    return exc.code, json.loads(exc.read() or b"{}")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='github', payload={'repository': ['malformed']})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 35, in test_malformed_signed_payload_returns_400
+    self.assertEqual(deliver(payload)[0], 400)
+                     ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 228, in deliver_github
+    return post(self.receiver.url + "/webhooks/github", body, {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 162, in post
+    return exc.code, json.loads(exc.read() or b"{}")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='jira', payload=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 35, in test_malformed_signed_payload_returns_400
+    self.assertEqual(deliver(payload)[0], 400)
+                     ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 234, in deliver_jira
+    return post(self.receiver.url + "/webhooks/jira", body, {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 162, in post
+    return exc.code, json.loads(exc.read() or b"{}")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) (provider='jira', payload={'issue': ['malformed']})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 35, in test_malformed_signed_payload_returns_400
+    self.assertEqual(deliver(payload)[0], 400)
+                     ^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 234, in deliver_jira
+    return post(self.receiver.url + "/webhooks/jira", body, {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/tests/service/helpers.py", line 162, in post
+    return exc.code, json.loads(exc.read() or b"{}")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+FAIL: test_base_moves_between_analysis_and_publication (tests.service.test_m2_regressions.M2RegressionTest.test_base_moves_between_analysis_and_publication)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 54, in test_base_moves_between_analysis_and_publication
+    self.assertFalse(any("base " + BASE[:12] in text for text in self.github.written))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_comment_scan_limit_does_not_allow_a_duplicate_create (tests.service.test_m2_regressions.M2RegressionTest.test_comment_scan_limit_does_not_allow_a_duplicate_create)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 104, in test_comment_scan_limit_does_not_allow_a_duplicate_create
+    with self.assertRaises(ClientError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ClientError not raised
+
+======================================================================
+FAIL: test_failed_postsend_read_is_visible_and_durably_rechecked (tests.service.test_m2_regressions.M2RegressionTest.test_failed_postsend_read_is_visible_and_durably_rechecked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 67, in test_failed_postsend_read_is_visible_and_durably_rechecked
+    self.assertIn("postsend_check_failed", {n["kind"] for n in self.service.store.notices()})
+AssertionError: 'postsend_check_failed' not found in set()
+
+======================================================================
+FAIL: test_jira_comment_scan_limit_fails_closed (tests.service.test_m2_regressions.M2RegressionTest.test_jira_comment_scan_limit_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 119, in test_jira_comment_scan_limit_fails_closed
+    with self.assertRaises(ClientError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ClientError not raised
+
+======================================================================
+FAIL: test_jira_downtime_over_seven_days_is_not_clamped (tests.service.test_m2_regressions.M2RegressionTest.test_jira_downtime_over_seven_days_is_not_clamped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 126, in test_jira_downtime_over_seven_days_is_not_clamped
+    self.assertIn("updated >= -20170m", call.call_args.kwargs["query"]["jql"])
+AssertionError: 'updated >= -20170m' not found in 'project in (ORD) AND updated >= -10080m ORDER BY updated ASC'
+
+======================================================================
+FAIL: test_jira_scan_limit_does_not_advance_checkpoint (tests.service.test_m2_regressions.M2RegressionTest.test_jira_scan_limit_does_not_advance_checkpoint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 112, in test_jira_scan_limit_does_not_advance_checkpoint
+    self.assertIsNone(self.service.store.checkpoint("reconcile:jira"))
+AssertionError: '1800000000.0' is not None
+
+======================================================================
+FAIL: test_known_jira_issue_deleted_without_delivery_is_reconciled (tests.service.test_m2_regressions.M2RegressionTest.test_known_jira_issue_deleted_without_delivery_is_reconciled)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 134, in test_known_jira_issue_deleted_without_delivery_is_reconciled
+    self.assertTrue(self.service.store.resource("jira:10001")["closed"])
+AssertionError: 0 is not true
+
+======================================================================
+FAIL: test_new_base_without_new_head_replaces_result (tests.service.test_m2_regressions.M2RegressionTest.test_new_base_without_new_head_replaces_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 44, in test_new_base_without_new_head_replaces_result
+    self.assertIn("base " + "d" * 12, comment["body"])
+AssertionError: 'base dddddddddddd' not found in '### Возможное влияние изменения\n\nPR меняет размер страницы GET /orders со 100 на 20; Reporting вызывает без page_size.\n\n**Что может затронуть**\n- reporting: команда team-reporting (источник: codeowners@cccccccccccc)\n\n**Почему и через какой путь**\n- Изменение orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20\n- Факт в пределах профиля: Reporting вызывает GET /orders без page_size. Применимость: закреплённые коммиты. Неопределённость: LOW. Основания: код reporting@cccccccccccc:reporting/export.py#L12-14\n- Путь: reporting.export -> orders GET /orders. Основания: код reporting@cccccccccccc:reporting/export.py#L12-14; наблюдаемые вызовы access-log: reporting -> orders, 2026-10-23T00:00:00Z..2026-10-24T00:00:00Z (STALE: sampled_source)\n\n**Что проверить**\n- reporting: Проверить, что выгрузка Reporting получает все страницы\n\n**Неизвестные и свежесть**\n- requirement_unknown (reporting)\n- runtime:access-log: STALE, проверено 2026-10-24T12:00:00Z\n\n**Версии**\n- PR acme/orders#7: base bbbbbbbbbbbb, head 111111111111\n- Связанные задачи Jira: ORD-1\n- Поколение анализа: 1\n- code_version: test\n- constitution_version: agent-service-v1\n- correlation_id: ca70b7d69ee349a0bed07013fb9e6510:1\n- graph_version: graph-7\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.0\n- снимок orders (base): bbbbbbbbbbbb\n- снимок orders (head): 111111111111\n- снимок reporting (consumer): cccccccccccc\n- Статус: USEFUL, код: impact_found_within_profile\n\n<!-- agent-service marker=4159e6ef2d3c97e5 digest=05f8ce81b66db85d8122d7a28104e3261f891119e125c27bc00fa39641ac95c1 generation=1 -->'
+
+======================================================================
+FAIL: test_noop_adoption_still_checks_for_a_racing_head (tests.service.test_m2_regressions.M2RegressionTest.test_noop_adoption_still_checks_for_a_racing_head)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 85, in test_noop_adoption_still_checks_for_a_racing_head
+    self.assertIn(HEAD2[:12], self.pr_comments()[0]["body"])
+AssertionError: '222222222222' not found in '### Возможное влияние изменения\n\nPR меняет размер страницы GET /orders со 100 на 20; Reporting вызывает без page_size.\n\n**Что может затронуть**\n- reporting: команда team-reporting (источник: codeowners@cccccccccccc)\n\n**Почему и через какой путь**\n- Изменение orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20\n- Факт в пределах профиля: Reporting вызывает GET /orders без page_size. Применимость: закреплённые коммиты. Неопределённость: LOW. Основания: код reporting@cccccccccccc:reporting/export.py#L12-14\n- Путь: reporting.export -> orders GET /orders. Основания: код reporting@cccccccccccc:reporting/export.py#L12-14; наблюдаемые вызовы access-log: reporting -> orders, 2026-10-23T00:00:00Z..2026-10-24T00:00:00Z (STALE: sampled_source)\n\n**Что проверить**\n- reporting: Проверить, что выгрузка Reporting получает все страницы\n\n**Неизвестные и свежесть**\n- requirement_unknown (reporting)\n- runtime:access-log: STALE, проверено 2026-10-24T12:00:00Z\n\n**Версии**\n- PR acme/orders#7: base bbbbbbbbbbbb, head 111111111111\n- Связанные задачи Jira: ORD-1\n- Поколение анализа: 1\n- code_version: test\n- constitution_version: agent-service-v1\n- correlation_id: 054ac92ee176406c9d501525db64b331:1\n- graph_version: graph-7\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.0\n- снимок orders (base): bbbbbbbbbbbb\n- снимок orders (head): 111111111111\n- снимок reporting (consumer): cccccccccccc\n- Статус: USEFUL, код: impact_found_within_profile\n\n<!-- agent-service marker=4159e6ef2d3c97e5 digest=a68ee0c37c4b3b0a76dad62b2429b80da0c216ad7224ec0c234a756b434d032a generation=1 -->'
+
+======================================================================
+FAIL: test_permanent_ingest_error_is_not_retried (tests.service.test_m2_regressions.M2RegressionTest.test_permanent_ingest_error_is_not_retried)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 140, in test_permanent_ingest_error_is_not_retried
+    self.assertEqual(self.github.count("GET", r".*/pulls/7"), 1)
+AssertionError: 4 != 1
+
+======================================================================
+FAIL: test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor (tests.service.test_m2_regressions.M2RegressionTest.test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 95, in test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor
+    self.assertIsNone(self.service.store.checkpoint("reconcile:github"))
+AssertionError: '1800000000.0' is not None
+
+======================================================================
+FAIL: test_wrong_app_installation_is_rejected_before_enqueue (tests.service.test_m2_regressions.M2RegressionTest.test_wrong_app_installation_is_rejected_before_enqueue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 26, in test_wrong_app_installation_is_rejected_before_enqueue
+    self.assertEqual(status, 403)
+AssertionError: 202 != 403
+
+----------------------------------------------------------------------
+Ran 13 tests in 11.055s
+
+FAILED (failures=12, errors=4)

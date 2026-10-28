@@ -1,0 +1,23 @@
+test_reconciliation_recovers_force_push_back_to_a_previous_head (tests.service.test_m2_regressions.M2RegressionTest.test_reconciliation_recovers_force_push_back_to_a_previous_head) ... FAIL
+test_jira_change_beyond_the_display_limit_invalidates_the_result (tests.service.test_m2_regressions.M2RegressionTest.test_jira_change_beyond_the_display_limit_invalidates_the_result) ... FAIL
+
+======================================================================
+FAIL: test_reconciliation_recovers_force_push_back_to_a_previous_head (tests.service.test_m2_regressions.M2RegressionTest.test_reconciliation_recovers_force_push_back_to_a_previous_head)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 142, in test_reconciliation_recovers_force_push_back_to_a_previous_head
+    self.assertIn(HEAD1[:12], self.pr_comments()[0]["body"])
+AssertionError: '111111111111' not found in '### Возможное влияние изменения\n\nPR меняет размер страницы GET /orders со 100 на 20; Reporting вызывает без page_size.\n\n**Что может затронуть**\n- reporting: команда team-reporting (источник: codeowners@cccccccccccc)\n\n**Почему и через какой путь**\n- Изменение orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20\n- Факт в пределах профиля: Reporting вызывает GET /orders без page_size. Применимость: закреплённые коммиты. Неопределённость: LOW. Основания: код reporting@cccccccccccc:reporting/export.py#L12-14\n- Путь: reporting.export -> orders GET /orders. Основания: код reporting@cccccccccccc:reporting/export.py#L12-14; наблюдаемые вызовы access-log: reporting -> orders, 2026-10-23T00:00:00Z..2026-10-24T00:00:00Z (STALE: sampled_source)\n\n**Что проверить**\n- reporting: Проверить, что выгрузка Reporting получает все страницы\n\n**Неизвестные и свежесть**\n- requirement_unknown (reporting)\n- runtime:access-log: STALE, проверено 2026-10-24T12:00:00Z\n\n**Версии**\n- PR acme/orders#7: base bbbbbbbbbbbb, head 222222222222\n- Связанные задачи Jira: ORD-1\n- Поколение анализа: 2\n- code_version: test\n- constitution_version: agent-service-v1\n- correlation_id: 6c33c76e893547e9be99bf62f008490d:1\n- graph_version: graph-7\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.0\n- снимок orders (base): bbbbbbbbbbbb\n- снимок orders (head): 222222222222\n- снимок reporting (consumer): cccccccccccc\n- Статус: USEFUL, код: impact_found_within_profile\n\n<!-- agent-service marker=4159e6ef2d3c97e5 digest=9fc79b5568387d6a05baa70fe8f4544994f51098afa60d925831313461db36bf generation=2 -->'
+
+======================================================================
+FAIL: test_jira_change_beyond_the_display_limit_invalidates_the_result (tests.service.test_m2_regressions.M2RegressionTest.test_jira_change_beyond_the_display_limit_invalidates_the_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 151, in test_jira_change_beyond_the_display_limit_invalidates_the_result
+    self.assertEqual(len(self.service.store.jobs("jira:10001")), 2)
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.319s
+
+FAILED (failures=2)

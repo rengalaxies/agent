@@ -1,0 +1,23 @@
+test_base_moves_between_analysis_and_publication (tests.service.test_m2_regressions.M2RegressionTest.test_base_moves_between_analysis_and_publication) ... ok
+test_comment_scan_limit_does_not_allow_a_duplicate_create (tests.service.test_m2_regressions.M2RegressionTest.test_comment_scan_limit_does_not_allow_a_duplicate_create) ... ok
+test_correct_installation_and_setup_ping_are_accepted (tests.service.test_m2_regressions.M2RegressionTest.test_correct_installation_and_setup_ping_are_accepted) ... ok
+test_failed_postsend_read_is_visible_and_durably_rechecked (tests.service.test_m2_regressions.M2RegressionTest.test_failed_postsend_read_is_visible_and_durably_rechecked) ... ok
+test_jira_change_beyond_the_display_limit_invalidates_the_result (tests.service.test_m2_regressions.M2RegressionTest.test_jira_change_beyond_the_display_limit_invalidates_the_result) ... ok
+test_jira_comment_scan_limit_fails_closed (tests.service.test_m2_regressions.M2RegressionTest.test_jira_comment_scan_limit_fails_closed) ... ok
+test_jira_downtime_over_seven_days_is_not_clamped (tests.service.test_m2_regressions.M2RegressionTest.test_jira_downtime_over_seven_days_is_not_clamped) ... ok
+test_jira_scan_limit_does_not_advance_checkpoint (tests.service.test_m2_regressions.M2RegressionTest.test_jira_scan_limit_does_not_advance_checkpoint) ... ok
+test_known_jira_issue_deleted_without_delivery_is_reconciled (tests.service.test_m2_regressions.M2RegressionTest.test_known_jira_issue_deleted_without_delivery_is_reconciled) ... ok
+test_malformed_signed_payload_returns_400 (tests.service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400) ... ok
+test_new_base_without_new_head_replaces_result (tests.service.test_m2_regressions.M2RegressionTest.test_new_base_without_new_head_replaces_result) ... ok
+test_noop_adoption_still_checks_for_a_racing_head (tests.service.test_m2_regressions.M2RegressionTest.test_noop_adoption_still_checks_for_a_racing_head) ... ok
+test_permanent_ingest_error_is_not_retried (tests.service.test_m2_regressions.M2RegressionTest.test_permanent_ingest_error_is_not_retried) ... ok
+test_permanent_prepare_error_is_not_retried (tests.service.test_m2_regressions.M2RegressionTest.test_permanent_prepare_error_is_not_retried) ... ok
+test_reconciliation_recovers_force_push_back_to_a_previous_head (tests.service.test_m2_regressions.M2RegressionTest.test_reconciliation_recovers_force_push_back_to_a_previous_head) ... ok
+test_revoked_auth_during_prepare_pauses_instead_of_spinning (tests.service.test_m2_regressions.M2RegressionTest.test_revoked_auth_during_prepare_pauses_instead_of_spinning) ... ok
+test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor (tests.service.test_m2_regressions.M2RegressionTest.test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor) ... ok
+test_wrong_app_installation_is_rejected_before_enqueue (tests.service.test_m2_regressions.M2RegressionTest.test_wrong_app_installation_is_rejected_before_enqueue) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 13.952s
+
+OK
