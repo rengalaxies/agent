@@ -26,7 +26,9 @@
 
 Владелец подтвердил отсутствие установленного M3 и тестовых App/Jira/HTTPS; dm-p1-ui
 не принят как M3. Новых ВМ/внешних тестовых публикаций/модельных вызовов нет.
-Фактически установленный SHA NOT_VERIFIED; старый pin f5c0c36 не содержит M1/M2.
+Фактически установленный SHA M3 NOT_VERIFIED. Старый pin f5c0c36 заменяется #70 на
+проверенный опубликованный `agent-service-0.1.0-g14e65e8affe3` (run 40693796501,
+release + install-published SUCCESS); это установка на CI, не M3.
 [Комплект M3](m2-2026-10-28/HANDOFF-M3.md) содержит build/release, шаблон box.yaml без
 секретов, HTTPS routes, permissions, status/журналы, LIVE evidence и rollback.
 Гонка между GET и внешним write допускает временно старый комментарий; атомарности
