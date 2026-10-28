@@ -107,13 +107,13 @@ class ModelPublicationTest(unittest.TestCase):
         self.assertIn('гипотеза модели', text)
         self.assertIn('код reporting@', text)
 
-    def test_model_off_is_explicit_in_the_user_comment(self):
+    def test_absent_model_report_is_explicit_in_the_user_comment(self):
         self.bench.deliver_jira()
         self.bench.drain()
         job = [j for j in self.bench.service.store.jobs('jira:10012') if j['state'] == 'DONE'][-1]
         self.assertIsNone(job['result']['model'])
         self.assertEqual(job['result']['costs']['model_calls'], 0)
-        self.assertIn('OFF (не использовалась; детерминированный анализ)', self.bench.jira_texts()[0])
+        self.assertIn('Детерминированный результат (модельный отчёт не представлен)', self.bench.jira_texts()[0])
 
     def test_bad_candidate_does_not_hide_an_authorized_candidate(self):
         result, text = self.run_jira(lambda r: {**r, 'hypothesis_ids': ['fabricated', *r['hypothesis_ids']]})

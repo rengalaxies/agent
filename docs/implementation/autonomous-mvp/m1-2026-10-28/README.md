@@ -76,8 +76,8 @@ valid deterministic result intact.
 
 These fixes were tested with explicitly **SCRIPTED** investigations through the
 real graph, service queue, local HTTP publishers and renderer. They were **not
-tested on a qualified live model**; none exists. The model-OFF comment explicitly says that the model was not used and the
-analysis is deterministic. Production qualification checks and model configuration
+tested on a qualified live model**; none exists. When no model report is present, the comment explicitly labels the result
+deterministic without claiming that no request was attempted. Production qualification checks and model configuration
 are unchanged. No VM installation, release or pin was
 changed by M1.
 
@@ -86,7 +86,8 @@ changed by M1.
 Regression tests reproduced missing Jira hypotheses, partial-usage exceptions,
 unknown usage shown as zero, wrong-context PR publication, capacity exhaustion
 and missing supporting-reference admission before their fixes. The final
-publication/result subset passed 26 tests (17 publication + 9 graph results).
+publication/qualification/result subset passed 55 tests (17 publication + 29
+qualification + 9 graph results). The offline runner suite passed 152 tests.
 A fresh read-only reviewer found two Important issues (capacity and supporting
 references); both were fixed and re-reviewed with no remaining Important or
 Critical findings. This is an internal independent agent review, not an external
@@ -119,3 +120,5 @@ manifest or rerun an exposed held-out set to obtain a new qualification.
 Next delivery step: M2 integration inventory and M3 deployment preparation with
 the model OFF. Customer usefulness, independent coverage and full human effort
 remain open in M4/M5.
+
+![Original Actions transport/report completion](live-series.jpg)

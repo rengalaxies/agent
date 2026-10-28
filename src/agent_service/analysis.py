@@ -186,7 +186,7 @@ def view_from_result(document, request: dict) -> ResultView:
     if result.model:
         versions["model"] = f"{result.model.configuration_id} {result.model.model}"
     else:
-        versions["model"] = "OFF (не использовалась; детерминированный анализ)"
+        versions["model"] = "Детерминированный результат (модельный отчёт не представлен)"
     return ResultView(status=result.status, reason_code=result.reason_code, summary=result.summary,
                       affected=affected, claims=claim_views, deltas=deltas, findings=findings, paths=paths,
                       checks=checks, unknowns=unknowns,
