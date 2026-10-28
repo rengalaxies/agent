@@ -1,0 +1,28 @@
+# CANDIDATE ONLY: requires verified host inventory and real approved App/Jira identifiers.
+# M3 owner fills non-secret identifiers. Validate with box plan before install.
+# This is a template, not an approved test contour. Never point it at agent by default.
+installation_id: m3-acceptance
+environment: test
+listen: {host: 127.0.0.1, port: 8091}
+github:
+  bot_login: REPLACE-app[bot]
+  auth:
+    kind: app
+    app_id: 'REPLACE_APP_ID'
+    installation_id: 1 # REPLACE with the approved test installation's numeric ID
+  repositories:
+    - {name: REPLACE/orders-test, service: orders, watch_prs: true}
+    - {name: REPLACE/reporting-test, service: reporting}
+jira:
+  base_url: https://REPLACE.atlassian.net
+  project_keys: [ORD] # REPLACE with the agreed test project
+  bot_account_id: REPLACE_ACCOUNT_ID
+service_addresses:
+  orders: https://orders.test.example.invalid
+# Optional ownership_file: /etc/agent-service/ownership.json
+# An approved completeness requirement must come from the owner; don't invent one.
+requirements: []
+publication: dry_run # change to live only for the agreed test resources
+freshness: {reconcile_seconds: 900, mirror_sync_seconds: 120}
+storage: {keep_backups: 7, daily_backup: true}
+# No model section: MODEL OFF. No testing overrides on the live installation.

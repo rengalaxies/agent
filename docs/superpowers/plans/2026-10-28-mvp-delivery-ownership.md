@@ -44,7 +44,7 @@ Daniil/swan-Dive — разрешение доступа, одобрение з�
 ## Очередь и статусы
 - [x] M1 — DONE / MODEL OFF: серия 2b-r1 закрыта после transport, все три модели DISABLED. Код #68 слит как `1ef7eaca9b66256478022945eef7f8b205571dd2`, проверенный head `6d6d7d1a6f52e5eb619c7d580f577e892cfe3086`. CI: 838 основных + 152 runner-теста; HTTP-демо, evidence и systemd приёмка PASS. 55 целевых publication/qualification/result тестов прошли; повторное независимое агентное ревью без Important/Critical. Реальной модельной квалификации нового кода нет; M1 принят как обоснованный режим без модели. #66 актуализирован. Доказательства: docs/implementation/autonomous-mvp/m1-2026-10-28/README.md.
 - [ ] M2 — PARTIAL / LIVE BLOCKED: [PR #69](https://github.com/rengalaxies/agent/pull/69), код `7a624ed431ac2c3d7b8488985ca3cdc6e34147c7`; подтверждённые ошибки исправлены, 19 новых проверок и 9/9 условий LOCAL core-сценария PASS. Владелец подтвердил отсутствие установки M3, тестовых App/Jira/HTTPS/credentials. Модель OFF. Отчёт: `docs/implementation/autonomous-mvp/m2-2026-10-28/README.md`; точный handoff M3 рядом. До LIVE пачка не DONE.
-- [ ] M3 — TODO / READY FOR CONNECTION: актуальный релиз M1+M2 `agent-service-0.1.0-g14e65e8affe3` проверен после публикации с systemd, pin #70. Дальше — выбрать/обследовать хост, определить тестовые App/repositories/Jira, доставить credentials, подготовить HTTPS, установить и пройти LIVE. Нужен новый plan вместо pending f4e6ab7; без apply до конкретного плана и бюджета. Единый список в M2/HANDOFF-M3.md.
+- [ ] M3 — IN PROGRESS / ACCESS BLOCKED: remote main `d5e25fd` без последующих изменений; опубликованный asset скачан локально, SHA256 и manifest VERIFIED (`14e65e8`). После входа владельца Cloud.ru console подтвердила dm-p1-ui/FIP и 2 vCPU/4 ГБ/30 ГБ. TCP22 CONNECTED, но ED25519 отличается от старого console pin; локальный SSH credential не найден. Полный OS inventory, backup, box plan/install и recovery checks на ВМ NOT_RUN. MODEL OFF; демо/SG не менялись, старый pending f4e6ab7 plan не применялся. Отчёт: `docs/implementation/autonomous-mvp/m3-2026-10-28/README.md`; для minimum config нужен настоящий тестовый GitHub App, Jira можно подключить позже.
 - [ ] M4 — TODO: кодовая регрессия и запрос независимого проекта.
 - [ ] M5 — TODO.
 - [ ] M6 — TODO.
@@ -81,3 +81,7 @@ run 40693796501: release + install-published SUCCESS, опубликованны
 и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
 тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
 M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.
+
+## Checkpoint M3 — 28.10.2026
+
+Проверка поставки и независимая сверка доступа начаты локальным исполнителем. Архив и manifest подтверждены, новый релиз не выпускался. В авторизованной Cloud.ru console найден прежний dm-p1-ui; обнаружен SSH host-key mismatch, требуется проверка в консоли ОС. Установка и recovery на целевом хосте не выполнены. Подготовлены read-only inventory и runbook размещения рядом с демо/отката. M2 LIVE остаётся отдельной приёмкой; новые ресурсы и расширение ingress не выполнялись.

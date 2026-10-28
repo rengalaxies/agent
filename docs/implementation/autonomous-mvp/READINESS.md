@@ -1,5 +1,20 @@
 # Готовность автономного MVP
 
+## M3 checkpoint — 28.10.2026: IN PROGRESS / ACCESS BLOCKED
+
+Main проверен на `d5e25fde5927eca99e574b2ac82be80cd5adfe16`, новых коммитов нет.
+Опубликованный архив M1+M2 скачан и проверен локально: SHA256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`,
+manifest VERIFIED, code `14e65e8affe3b64a9ceb647f537e8af6ff7a1138`. Повторного выпуска нет.
+В авторизованной Cloud.ru console подтверждены существующая dm-p1-ui/VM ID/FIP,
+Ubuntu 24.04, 2 vCPU/4 ГБ/30 ГБ. Это параметры облака, не свободные ресурсы ОС.
+TCP22 доступен; предъявленный ED25519 host key не совпал с прежним console pin.
+До независимой сверки вход не выполняется; локального SSH ключа dm-p1-ui не найдено.
+Полный inventory, backup, box plan/install, loaded/status/logs, restart/reboot,
+backup/restore/update/rollback **NOT_RUN на Cloud.ru**. Модель OFF, демо и SG не менялись.
+Настоящие App/Jira/HTTPS не готовы; минимальный box требует GitHub credentials даже без Jira.
+M2 остаётся PARTIAL / LIVE BLOCKED. [Отчёт, evidence и откат](m3-2026-10-28/README.md).
+
+
 Оценка по фактам из [STATUS.md](STATUS.md) на 28.10.2026. Техническая готовность и польза для
 команды разделены. Полная готовность требует всего списка ниже; пока хоть один пункт не
 проверен live, итог ограниченный.
