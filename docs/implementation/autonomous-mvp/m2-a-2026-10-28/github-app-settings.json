@@ -1,0 +1,31 @@
+{
+  "status": "PREPARED_NOT_REGISTERED",
+  "registration_url": "https://github.com/settings/apps/new",
+  "owner": "rengalaxies",
+  "proposed_name": "rengalaxies-agent-pilot",
+  "name_availability": "NOT_VERIFIED",
+  "homepage_url": "https://github.com/rengalaxies/agent",
+  "description": "Isolated Orders/Reporting M2 acceptance, MODEL OFF",
+  "public": false,
+  "request_user_authorization": false,
+  "device_flow": false,
+  "callback_urls": [],
+  "webhook_active_before_m3": false,
+  "webhook_url": null,
+  "webhook_secret_env": "GITHUB_WEBHOOK_SECRET",
+  "ssl_verification": true,
+  "repository_permissions": {
+    "metadata": "read",
+    "contents": "read",
+    "pull_requests": "read",
+    "issues": "write"
+  },
+  "organization_permissions": {},
+  "account_permissions": {},
+  "events_after_https_ready": ["pull_request", "issue_comment"],
+  "repository_selection": "selected",
+  "repositories": ["rengalaxies/agent-pilot-orders", "rengalaxies/agent-pilot-reporting"],
+  "app_id": null,
+  "installation_id": null,
+  "bot_login": null
+}

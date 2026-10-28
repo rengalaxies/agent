@@ -436,3 +436,22 @@ run 40693796501: release + install-published SUCCESS, опубликованны
 и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
 тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
 M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.
+
+## M4-A + M2-A checkpoint — 28.10.2026
+
+**PARTIAL / LIVE BLOCKED, MODEL OFF.** #72 после предметного ревью обновлена до
+`f72c01827f203c2df46df9dc8e9071673df430e0`: 883 LOCAL PASS, новый Core/HTTP/evidence/box CI
+SUCCESS. Дополнительно исправлены intent при редактировании README, legacy knowledge и
+persistent graph freshness при profile4→5; история сохранена. Ack M3 #71 пока нет,
+#72 **не слит**, main при сверке `d5e25fde5927eca99e574b2ac82be80cd5adfe16`.
+M3 head `5ac9dbb` сообщает HOST STOPPED / SUPPORT INVESTIGATION; чужая ветка, хост, pin,
+installer и release14e не менялись. Merge #72 требует явного согласования и новой сверки.
+
+M2-A: реальная GitHub identity rengalaxies проверена; pilot repositories API GET404
+(не различает отсутствие/скрытый доступ), разрешённый create получил integration403.
+Сервисная App/Jira/HTTPS/установка не подключены. Подготовлены воспроизводимые Git bundles,
+100→20→100 branches, исполняемый LOCAL HTTP 60→20→60, schema/fail-closed config, identity
+probe, разрешения/secrets delivery и LIVE/cleanup сценарий. Основной agent не test contour.
+[Отчёт и единый список владельца/M3](m2-a-2026-10-28/README.md). Авторские fixtures не
+подтверждают независимую M4 или клиентскую полезность. Смена профиля сама не переиздаёт
+внешние комментарии неизменных ресурсов; ограничение явно сохранено.

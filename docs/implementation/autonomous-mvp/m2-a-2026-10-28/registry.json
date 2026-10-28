@@ -1,0 +1,68 @@
+{
+  "schema": "pilot-contour-registry-1",
+  "model": "OFF",
+  "overall": "PARTIAL / LIVE BLOCKED",
+  "github": {
+    "owner": "rengalaxies",
+    "repositories": [
+      {
+        "service": "orders",
+        "requested_url": "https://github.com/rengalaxies/agent-pilot-orders",
+        "repository_id": null,
+        "remote_status": "GET_404_NOT_AVAILABLE",
+        "creation": "POST_403",
+        "local_prepared": true,
+        "permitted_operations": [
+          "initialize_empty_private_repository",
+          "test_branches_and_PR",
+          "bot_comments",
+          "redelivery",
+          "controlled_access_failure"
+        ],
+        "connected_to_service": false
+      },
+      {
+        "service": "reporting",
+        "requested_url": "https://github.com/rengalaxies/agent-pilot-reporting",
+        "repository_id": null,
+        "remote_status": "GET_404_NOT_AVAILABLE",
+        "creation": "NOT_RUN_SAME_CAPABILITY_BLOCKED",
+        "local_prepared": true,
+        "permitted_operations": [
+          "initialize_empty_private_repository",
+          "test_branches_and_PR",
+          "bot_comments",
+          "redelivery",
+          "controlled_access_failure"
+        ],
+        "connected_to_service": false
+      }
+    ],
+    "app_id": null,
+    "installation_id": null,
+    "bot_login": null,
+    "bot_numeric_id": null,
+    "app_registration": "PREPARED_NOT_REGISTERED",
+    "visible_codex_connector_is_service_app": false
+  },
+  "jira": {
+    "site_url": null,
+    "api_base_url": null,
+    "project_key": null,
+    "bot_account_id": null,
+    "credential_kind": "proposed Basic email + expiring API token",
+    "status": "NOT_RUN_NO_SITE_PROJECT_OR_CREDENTIAL",
+    "webhook_protocol": "admin secret/HMAC sha256 required, real delivery NOT_RUN"
+  },
+  "https_origin": null,
+  "installed_release": null,
+  "connected_to_service": false,
+  "evidence": {
+    "real_github_control_plane": "evidence/github-api-inventory.json",
+    "local_prepared_refs": "evidence/prepared.json",
+    "local_runtime": "evidence/runtime-local.json",
+    "service_app_read_API": "NOT_RUN",
+    "jira_read_API": "NOT_RUN",
+    "live_acceptance": "NOT_RUN"
+  }
+}

@@ -49,3 +49,19 @@ run 40693796501: release + install-published SUCCESS, опубликованны
 и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
 тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
 M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.
+
+## M4-A / M2-A — доступная подготовка, не LIVE, 28.10.2026
+
+#72 `f72c018` после ревью: 883 LOCAL PASS; Core, HTTP demo, evidence и box CI SUCCESS.
+Profile 5 инвалидирует прежние contexts/knowledge/persistent code bases с сохранением
+истории. До ack M3 интеграции нет; подготовленная M3 поставка остаётся 14e65e8/profile4.
+Общая M4 и клиентская полезность UNVERIFIED; это авторские регрессии, MODEL OFF.
+
+Настоящий GitHub control-plane API доступен, создание private pilot repos вернуло
+403 интеграции; GET404 не доказывает отсутствие скрытого repository. Два локальных Git
+bundle/ветки, реальное loopback HTTP 60→20→60, schema config, App/Jira permissions,
+secret-delivery схема, LIVE/redelivery/API-error/self-loop/race/cleanup готовы.
+Сервисная App installation, Jira site/project/credentials и HTTPS не назначены,
+connected-to-service=false; M3 сообщает stopped host/support. **M2 PARTIAL / LIVE BLOCKED**.
+[Доказательства и конкретные оставшиеся действия](m2-a-2026-10-28/README.md). Ни green CI,
+ни authored HTTP fixture не засчитываются за внешний Jira → PR → обновлённый результат.
