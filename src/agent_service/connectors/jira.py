@@ -18,7 +18,7 @@ import json
 import re
 
 from ..envelope import EventEnvelope, digest
-from ..http import HttpClient, NotFound, segment
+from ..http import ClientError, HttpClient, NotFound, segment
 from .base import (MAX_WEBHOOK_BYTES, Comment, Prepared, ResourceNotAllowed, Snapshot, WebhookRejected,
                    parse_marker, verify_hmac_sha256)
 
@@ -63,12 +63,13 @@ def adf_text(node) -> str:
     return inner + ("\n" if node.get("type") in {"paragraph", "heading", "listItem", "codeBlock"} else "")
 
 
-def semantic_fields(fields: dict, names) -> dict:
+def semantic_fields(fields: dict, names, *, truncate: bool = True) -> dict:
     out = {}
+    limit = MAX_TEXT if truncate else None
     for name in names:
         value = fields.get(name)
         if name == "description":
-            out[name] = adf_text(value).strip()[:MAX_TEXT]
+            out[name] = adf_text(value).strip()[:limit]
         elif name == "issuetype":
             out[name] = str((value or {}).get("name") or "")
         elif name == "components":
@@ -76,12 +77,12 @@ def semantic_fields(fields: dict, names) -> dict:
         elif name == "labels":
             out[name] = sorted(str(v) for v in value or [])
         else:
-            out[name] = adf_text(value).strip()[:MAX_TEXT] if value is not None else ""
+            out[name] = adf_text(value).strip()[:limit] if value is not None else ""
     return out
 
 
 def issue_version(fields: dict, names) -> str:
-    return "jira:" + digest(semantic_fields(fields, names))[:32]
+    return "jira:" + digest(semantic_fields(fields, names, truncate=False))[:32]
 
 
 class JiraConnector:
@@ -120,6 +121,14 @@ class JiraConnector:
             payload = json.loads(body)
         except (ValueError, UnicodeDecodeError):
             raise WebhookRejected(400, "payload_not_json") from None
+        if not isinstance(payload, dict):
+            raise WebhookRejected(400, "payload_invalid_shape")
+        for name in ("issue", "changelog"):
+            if name in payload and not isinstance(payload[name], dict):
+                raise WebhookRejected(400, "payload_invalid_shape")
+        fields = payload.get("issue", {}).get("fields", {})
+        if not isinstance(fields, dict) or not isinstance(fields.get("project", {}), dict):
+            raise WebhookRejected(400, "payload_invalid_shape")
         event = str(payload.get("webhookEvent") or "")[:100] or "unknown"
         issue = payload.get("issue") or {}
         issue_id = str(issue.get("id") or "")
@@ -153,7 +162,9 @@ class JiraConnector:
         version = issue_version(fields, self.fields)
         data = {"project": project, "key": str(issue["key"])[:40], "issue_id": str(issue["id"]),
                 "revision": version, "updated_at": str(fields.get("updated") or "")[:40],
-                "fields": semantic_fields(fields, self.fields)}
+                "fields": semantic_fields(fields, self.fields),
+                "fields_truncated": any(isinstance(v, str) and len(v) > MAX_TEXT
+                                        for v in semantic_fields(fields, self.fields, truncate=False).values())}
         return Snapshot(resource_id(issue["id"]), "jira", version, data)
 
     def fetch(self, rid: str) -> Snapshot:
@@ -167,12 +178,12 @@ class JiraConnector:
         return self._snapshot(issue)
 
     def prepare(self, snapshot: Snapshot) -> Prepared:
-        return Prepared(dict(snapshot.data), {}, {}, [])
+        gaps = ["jira_fields_truncated"] if snapshot.data.get("fields_truncated") else []
+        return Prepared(dict(snapshot.data), {}, {}, gaps)
 
     def reconcile_candidates(self, since: float | None) -> list[tuple[str, str]]:
         """Issues updated since the checkpoint, with the same semantic version as ``fetch``."""
         minutes = 7 * 24 * 60 if since is None else max(int((self.clock() - since) / 60) + 10, 10)
-        minutes = min(minutes, 7 * 24 * 60)
         # Relative JQL avoids the account time zone of absolute dates.
         jql = f"project in ({','.join(self.project_keys)}) AND updated >= -{minutes}m ORDER BY updated ASC"
         out, token = [], None
@@ -188,8 +199,10 @@ class JiraConnector:
                     continue
                 out.append((snap.resource_id, snap.version))
             token = page.get("nextPageToken")
-            if not token or page.get("isLast", True):
+            if not token or page.get("isLast", False):
                 break
+        else:
+            raise ClientError("reconcile_listing_incomplete")
         return out
 
     def complete_listing(self) -> bool:
@@ -211,8 +224,12 @@ class JiraConnector:
             items = page.get("comments", [])
             out.extend(self._comment(i) for i in items)
             start += len(items)
-            if not items or start >= int(page.get("total", 0)):
+            if start >= int(page.get("total", 0)):
                 break
+            if not items:
+                raise ClientError("comment_listing_incomplete")
+        else:
+            raise ClientError("comment_listing_incomplete")
         return out
 
     def get_comment(self, rid: str, comment_id: str) -> Comment | None:

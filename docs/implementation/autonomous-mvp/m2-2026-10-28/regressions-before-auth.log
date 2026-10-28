@@ -1,0 +1,23 @@
+test_revoked_auth_during_prepare_pauses_instead_of_spinning (tests.service.test_m2_regressions.M2RegressionTest.test_revoked_auth_during_prepare_pauses_instead_of_spinning) ... FAIL
+test_permanent_prepare_error_is_not_retried (tests.service.test_m2_regressions.M2RegressionTest.test_permanent_prepare_error_is_not_retried) ... FAIL
+
+======================================================================
+FAIL: test_revoked_auth_during_prepare_pauses_instead_of_spinning (tests.service.test_m2_regressions.M2RegressionTest.test_revoked_auth_during_prepare_pauses_instead_of_spinning)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 159, in test_revoked_auth_during_prepare_pauses_instead_of_spinning
+    self.assertGreaterEqual(job["not_before"] - self.clock(), 900)
+AssertionError: 0.0 not greater than or equal to 900
+
+======================================================================
+FAIL: test_permanent_prepare_error_is_not_retried (tests.service.test_m2_regressions.M2RegressionTest.test_permanent_prepare_error_is_not_retried)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 170, in test_permanent_prepare_error_is_not_retried
+    self.assertEqual(self.github.count("GET", r".*/compare/.*"), 1)
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.256s
+
+FAILED (failures=2)

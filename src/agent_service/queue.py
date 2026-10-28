@@ -306,7 +306,7 @@ class ServiceStore:
         return bool(row) and row["state"] == "RUNNING" and row["lease_owner"] == job["lease_owner"] \
             and row["generation"] == job["generation"]
 
-    def requeue_job(self, job, reason: str, *, count_attempt: bool) -> str:
+    def requeue_job(self, job, reason: str, *, count_attempt: bool, delay: float | None = None) -> str:
         """Release a RUNNING job. Bounded: exhausted attempts end in FAILED."""
         now = self.clock()
         with self._tx() as c:
@@ -318,7 +318,7 @@ class ServiceStore:
                           (reason, now, job["job_id"]))
                 self._history(c, job["resource_id"], "job_failed", generation=job["generation"], reason=reason)
                 return "FAILED"
-            delay = self.limits.backoff(attempts) if count_attempt else 0.0
+            delay = delay if delay is not None else (self.limits.backoff(attempts) if count_attempt else 0.0)
             c.execute("UPDATE jobs SET state='QUEUED', attempts=?, not_before=?, reason=?, lease_owner=NULL, "
                       "lease_expires=NULL, updated_at=? WHERE job_id=?",
                       (attempts, now + delay, reason, now, job["job_id"]))

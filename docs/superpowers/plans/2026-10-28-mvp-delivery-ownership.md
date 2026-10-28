@@ -43,7 +43,7 @@ Daniil/swan-Dive — разрешение доступа, одобрение з�
 
 ## Очередь и статусы
 - [x] M1 — DONE / MODEL OFF: серия 2b-r1 закрыта после transport, все три модели DISABLED. Код #68 слит как `1ef7eaca9b66256478022945eef7f8b205571dd2`, проверенный head `6d6d7d1a6f52e5eb619c7d580f577e892cfe3086`. CI: 838 основных + 152 runner-теста; HTTP-демо, evidence и systemd приёмка PASS. 55 целевых publication/qualification/result тестов прошли; повторное независимое агентное ревью без Important/Critical. Реальной модельной квалификации нового кода нет; M1 принят как обоснованный режим без модели. #66 актуализирован. Доказательства: docs/implementation/autonomous-mvp/m1-2026-10-28/README.md.
-- [ ] M2 — NEXT: Codex инвентаризирует доступные тестовые GitHub App/Jira/HTTPS и действующие endpoints, затем готовит/исправляет e2e Jira → PR → один актуальный комментарий. Live после подготовки M3; реальные публикации и доступы — в согласованном тестовом контуре.
+- [ ] M2 — PARTIAL / LIVE BLOCKED: [PR #69](https://github.com/rengalaxies/agent/pull/69), код `7a624ed431ac2c3d7b8488985ca3cdc6e34147c7`; подтверждённые ошибки исправлены, 19 новых проверок и 9/9 условий LOCAL core-сценария PASS. Владелец подтвердил отсутствие установки M3, тестовых App/Jira/HTTPS/credentials. Модель OFF. Отчёт: `docs/implementation/autonomous-mvp/m2-2026-10-28/README.md`; точный handoff M3 рядом. До LIVE пачка не DONE.
 - [ ] M3 — TODO: проверить результат lock-test и актуальность plan, выбрать площадку и подготовить установку с моделью OFF; без нового apply до конкретного плана и бюджета.
 - [ ] M4 — TODO: кодовая регрессия и запрос независимого проекта.
 - [ ] M5 — TODO.
@@ -57,3 +57,17 @@ Daniil/swan-Dive — разрешение доступа, одобрение з�
 51 live-запрос в исходной серии; известная оценка 26,395201 ₽, ledger с unknown worst-case 30,287335 ₽, фактический биллинг не измерен. Оригинальные manifests/report/ledgers не переписывались. Заморозка main для закрытой 2b-r1 больше не нужна. Новый код не имеет live-квалификации; старые current-code checks должны отказывать. ВМ, секреты и релиз не менялись. Следующий исполнительский шаг Codex после CI/merge — M2 inventory, параллельно подготовка M3 в режиме без модели.
 
 Финальная проверка M1: [Core](https://github.com/rengalaxies/agent/actions/runs/40668612946), [HTTP demo](https://github.com/rengalaxies/agent/actions/runs/40668612932), [evidence](https://github.com/rengalaxies/agent/actions/runs/40668612994), [systemd box](https://github.com/rengalaxies/agent/actions/runs/40668612955) — все SUCCESS на финальном head #68. Сервисный qualification.check отклоняет настоящий report для каждой модели как model_not_qualified. Человеческая/клиентская полезность и финальная установка на Cloud.ru этим не подтверждены.
+
+## Checkpoint M2 — 28.10.2026
+
+Репозиторий/инструменты обследованы, исходная main `47b774d`; GitHub connector и gh доступны,
+Jira/App service credentials не настроены. Lock-test 40566211910 waiting, plan 40566228282 pending;
+apply и ВМ не запускались. dm-p1-ui не считается M3. Основной agent не тестовый контур.
+Нужны выбор/обследование хоста, согласованные тестовые repositories/project и App installation,
+доставка секретов штатным способом, DNS/TLS/webhook и фактически установленный актуальный релиз.
+Старый pin f5c0c36 не включает M1/M2; выпуск и скачивание нового asset проверяются существующим
+release workflow до нового pin. Все действия владельца собраны в HANDOFF-M3.md.
+
+Pre-send/post-send checks не дают атомарности с внешним API: старое тело может успеть
+появиться; LOCAL подтверждает stale notice → новый result и durable recheck при ошибке.
+Без API/worker верхней границы окна нет; live длительность не измерена.
