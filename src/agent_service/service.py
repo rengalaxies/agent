@@ -14,7 +14,7 @@ from agent_graph.output_contracts import ContractError
 from .analysis import AnalysisUnavailable, build_request, view_from_result
 from .connectors.base import ResourceNotAllowed, Snapshot, WebhookRejected
 from .envelope import EventEnvelope, canonical, digest, iso
-from .http import AuthError, ConnectorError, NotFound, RateLimited
+from .http import AuthError, ClientError, ConnectorError, NotFound, RateLimited
 from .publisher import AUTH_RETRY_SECONDS, Publisher, doc_digest, failure_doc, resource_marker, result_doc, stale_doc
 from .queue import ServiceStore
 
@@ -102,12 +102,18 @@ class Service:
             self.store.note("connection_unauthorized", event["provider"], f"{event['provider']}:{exc.status}")
             self.store.defer_event(event, exc.code, AUTH_RETRY_SECONDS)
             return "ingest:deferred"
+        except ClientError as exc:
+            self.store.finish_event(event, "FAILED", exc.code)
+            self.store.note("provider_rejected", event["resource_id"], str(exc.status))
+            return "ingest:failed"
         except ConnectorError as exc:
             # 429/5xx/timeouts: bounded retries, then FAILED until the next reconciliation revives it.
             delay = exc.retry_after if isinstance(exc, RateLimited) else None
             state = self.store.defer_event(event, exc.code, delay)
             return "ingest:" + ("failed" if state == "FAILED" else "deferred")
         self.store.clear_notice("connection_unauthorized", event["provider"])
+        self.store.clear_notice("postsend_check_failed", event["resource_id"])
+        self.store.clear_notice("provider_rejected", event["resource_id"])
         outcome = self._apply(snapshot, event["event_id"])
         self.store.finish_event(event, "COALESCED" if outcome["action"] == "coalesced" else "INGESTED",
                                 outcome["action"])
@@ -120,12 +126,12 @@ class Service:
         return {"kind": "failure", "body": canonical(doc), "body_digest": doc_digest(doc),
                 "marker": resource_marker(self.installation_id, job["resource_id"])}
 
-    def _give_up_or_retry(self, job, reason_code) -> str:
+    def _give_up_or_retry(self, job, reason_code, delay=None) -> str:
         if job["attempts"] >= self.store.limits.max_analysis_attempts:
             self.store.complete_job(job, state="FAILED", result=None, reason=reason_code,
                                     intent=self._failure_intent(job, reason_code))
             return "analyze:failed"
-        self.store.requeue_job(job, reason_code, count_attempt=True)
+        self.store.requeue_job(job, reason_code, count_attempt=True, delay=delay)
         return "analyze:retry"
 
     def _analyze(self, job) -> str:
@@ -146,12 +152,20 @@ class Service:
                     prepared.attachments["mainline_revisions"] = mainline
         except AuthError as exc:
             self.store.note("connection_unauthorized", failing, f"{failing}:{exc.status}")
-            self.store.requeue_job(job, exc.code, count_attempt=False)
+            self.store.requeue_job(job, exc.code, count_attempt=False, delay=AUTH_RETRY_SECONDS)
             return "analyze:blocked"
         except NotFound:
             return self._give_up_or_retry(job, "source_unavailable")
+        except ClientError as exc:
+            self.store.note("provider_rejected", job["resource_id"], str(exc.status))
+            self.store.complete_job(job, state="FAILED", result=None, reason=exc.code,
+                                    intent=self._failure_intent(job, exc.code))
+            return "analyze:failed"
         except ConnectorError as exc:
-            return self._give_up_or_retry(job, exc.code)
+            return self._give_up_or_retry(job, exc.code, delay=exc.retry_after)
+        for provider in {connector.provider, failing}:
+            self.store.clear_notice("connection_unauthorized", provider)
+        self.store.clear_notice("provider_rejected", job["resource_id"])
         settings = dict(self.analysis_settings)
         describe = getattr(self.analyzer, "request_settings", None)
         if describe is not None:
@@ -220,12 +234,14 @@ class Service:
                 seen.add(rid)
                 resource = self.store.resource(rid)
                 if resource is None or resource["version"] != version or resource["closed"]:
-                    added += self._synthetic(provider, rid, f"reconcile:{rid}:{version}")
-            if connector.complete_listing():
-                for resource in self.store.resources(provider):
-                    if not resource["closed"] and resource["resource_id"] not in seen:
-                        added += self._synthetic(provider, resource["resource_id"],
-                                                 f"reconcile:{resource['resource_id']}:absent:{int(started)}")
+                    added += self._synthetic(provider, rid, f"reconcile:{rid}:{version}:{resource['generation'] if resource else 0}:"
+                                             f"{resource['closed'] if resource else 0}")
+            # Known resources outside a windowed listing still need a fetch:
+            # deleted/moved Jira issues cannot appear in a recent-updates search.
+            for resource in self.store.resources(provider):
+                if not resource["closed"] and resource["resource_id"] not in seen:
+                    added += self._synthetic(provider, resource["resource_id"],
+                                             f"reconcile:{resource['resource_id']}:absent:{int(started)}")
             self.store.checkpoint(name, str(started))
         return {"recovered": recovered, "revived": revived, "enqueued": added, "graph": self.reconcile_graph()}
 

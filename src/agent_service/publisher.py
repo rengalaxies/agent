@@ -15,7 +15,7 @@ from pathlib import Path
 
 from .analysis import ResultView
 from .connectors.base import Comment, marker_line
-from .envelope import canonical, digest
+from .envelope import EventEnvelope, canonical, digest
 from .http import AuthError, ClientError, NotFound, RateLimited, ServerError, TransportError
 
 STATUS_TITLES = {
@@ -103,9 +103,12 @@ def stale_doc(*, snapshot: dict, kind: str, generation: int) -> dict:
 
 def failure_doc(*, reason_code: str, snapshot: dict, kind: str, generation: int) -> dict:
     # No attempt counts or timestamps: identical failures keep an identical digest and cause no new write.
+    recovery = ("Проверьте настройки и права API; новый анализ возможен после исправления и изменения ресурса."
+                if reason_code in {"provider_rejected", "invalid_analysis_request"} else
+                "Сервис повторит его автоматически при следующей сверке или изменении.")
     return {"title": STATUS_TITLES["FAILED"],
-            "status_line": f"Анализ не выполнен ({reason_code}). Сервис повторит его автоматически при следующей "
-                           "сверке или изменении. Отсутствие вывода не означает отсутствие влияния.",
+            "status_line": f"Анализ не выполнен ({reason_code}). {recovery} "
+                           "Отсутствие вывода не означает отсутствие влияния.",
             "sections": [{"title": "Версии", "items": _versions(snapshot, kind, generation)}]}
 
 
@@ -220,7 +223,7 @@ class Publisher:
         if existing and existing.digest == intent["body_digest"]:
             self.store.intent_delivered(intent, comment_id=existing.comment_id, comment_digest=existing.digest,
                                         wrote=False)
-            return "unchanged"
+            return self._postsend(intent, connector, ingest_snapshot, "unchanged")
         if existing is None and resource["create_unknown_at"] is not None:
             # A create of ours is in doubt and listing may lag: wait once before creating.
             settle = self.store.limits.create_settle_seconds
@@ -252,11 +255,25 @@ class Publisher:
         self.store.clear_notice("connection_unauthorized", provider)
         current_at_delivery = self.store.intent_delivered(sending, comment_id=comment_id,
                                                           comment_digest=intent["body_digest"], wrote=True)
-        # Post-write reconciliation: a head that moved during the send must not stay "current".
+        return self._postsend(intent, connector, ingest_snapshot,
+                              "delivered" if current_at_delivery else "delivered_stale")
+
+    def _postsend(self, intent, connector, ingest_snapshot, outcome):
+        # External APIs provide no conditional write against a PR/issue version.
+        # A racing write can be briefly visible. Persist a recheck if the read
+        # fails; do not resend the already confirmed comment to check freshness.
+        rid = intent["resource_id"]
         try:
             after = connector.fetch(rid)
-        except (AuthError, RateLimited, ServerError, TransportError, ClientError):
-            return "delivered"
+        except (AuthError, RateLimited, ServerError, TransportError, ClientError, NotFound) as exc:
+            self.store.note("postsend_check_failed", rid, exc.code)
+            event_id = f"postsend:{intent['intent_id']}"
+            self.store.add_event(EventEnvelope(provider=connector.provider, source="postsend", event_id=event_id,
+                                              event_kind="reconcile", resource_id=rid,
+                                              payload_digest=digest(event_id), received_at=self.store.clock()))
+            return outcome
+        self.store.clear_notice("postsend_check_failed", rid)
         if after.closed or after.version != intent["resource_version"]:
             ingest_snapshot(after, f"postsend:{intent['intent_id']}")
-        return "delivered" if current_at_delivery else "delivered_stale"
+            return "delivered_stale"
+        return outcome

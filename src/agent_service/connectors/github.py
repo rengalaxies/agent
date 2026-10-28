@@ -45,10 +45,10 @@ def jira_keys(texts: list[str], project_keys: list[str]) -> list[str]:
     return sorted(found)
 
 
-def pr_version(head_sha: str, base_ref: str, keys: list[str]) -> str:
-    # Base branch movement alone does not open a new generation; head, target
-    # branch and explicit Jira links do.
-    return "pr:" + digest({"head": head_sha, "base_ref": base_ref, "jira": sorted(keys)})[:32]
+def pr_version(head_sha: str, base_ref: str, keys: list[str], base_sha: str) -> str:
+    # Both commits are analysis inputs; moving either invalidates the result.
+    return "pr:" + digest({"head": head_sha, "base": base_sha, "base_ref": base_ref,
+                           "jira": sorted(keys)})[:32]
 
 
 class StaticToken:
@@ -102,7 +102,8 @@ class GitHubConnector:
 
     def __init__(self, client: HttpClient, auth: Callable[[], str], *, repositories: list[str],
                  read_repositories: dict[str, str] | None = None, repository_ids: dict[str, str] | None = None,
-                 jira_project_keys: list[str] | None = None, bot_login: str, webhook_secret: bytes, clock):
+                 jira_project_keys: list[str] | None = None, bot_login: str, webhook_secret: bytes, clock,
+                 installation_id: int | None = None):
         for repo in list(repositories) + list((read_repositories or {}).keys()):
             if not REPO_RE.match(repo):
                 raise ValueError("invalid_repository")
@@ -117,6 +118,7 @@ class GitHubConnector:
         self.jira_project_keys = list(jira_project_keys or [])
         self.bot_login = bot_login
         self.webhook_secret = webhook_secret
+        self.installation_id = installation_id if installation_id is not None else getattr(auth, "installation_id", None)
 
     # -- transport --------------------------------------------------------
 
@@ -158,6 +160,17 @@ class GitHubConnector:
             payload = json.loads(body)
         except (ValueError, UnicodeDecodeError):
             raise WebhookRejected(400, "payload_not_json") from None
+        if not isinstance(payload, dict):
+            raise WebhookRejected(400, "payload_invalid_shape")
+        for name in ("repository", "installation", "pull_request", "issue"):
+            if name in payload and not isinstance(payload[name], dict):
+                raise WebhookRejected(400, "payload_invalid_shape")
+        pr_shape = payload.get("pull_request", {})
+        if any(name in pr_shape and not isinstance(pr_shape[name], dict) for name in ("head", "base")):
+            raise WebhookRejected(400, "payload_invalid_shape")
+        if event != "ping" and self.installation_id is not None \
+                and payload.get("installation", {}).get("id") != self.installation_id:
+            raise WebhookRejected(403, "installation_not_configured")
         common = dict(provider="github", event_id=delivery, event_kind=event, payload_digest=digest(body),
                       received_at=self.clock())
         repository = str(((payload.get("repository") or {}).get("full_name")) or "").lower()
@@ -178,10 +191,11 @@ class GitHubConnector:
         pr = payload.get("pull_request") or {}
         head, base = pr.get("head") or {}, pr.get("base") or {}
         hint = None
-        if isinstance(head.get("sha"), str) and SHA_RE.match(head["sha"]) and isinstance(base.get("ref"), str):
+        if isinstance(head.get("sha"), str) and SHA_RE.match(head["sha"]) and isinstance(base.get("ref"), str) \
+                and isinstance(base.get("sha"), str) and SHA_RE.match(base["sha"]):
             hint = pr_version(head["sha"], base["ref"],
                               jira_keys([str(pr.get("title") or ""), str(head.get("ref") or "")],
-                                        self.jira_project_keys))
+                                        self.jira_project_keys), base["sha"])
         return EventEnvelope(source=repository, resource_id=rid, resource_version_hint=hint,
                              ignored_reason=None if action in PR_ACTIONS else "action_not_relevant", **common)
 
@@ -197,7 +211,7 @@ class GitHubConnector:
                 "head_sha": head, "base_ref": str(pr["base"]["ref"])[:255], "linked_jira_keys": keys,
                 "updated_at": str(pr.get("updated_at") or "")[:40]}
         closed = pr.get("state") != "open"
-        return Snapshot(resource_id(repository, pr["number"]), "pr", pr_version(head, data["base_ref"], keys),
+        return Snapshot(resource_id(repository, pr["number"]), "pr", pr_version(head, data["base_ref"], keys, base),
                         data, closed)
 
     def fetch(self, rid: str) -> Snapshot:
@@ -259,6 +273,8 @@ class GitHubConnector:
                     out.append((snap.resource_id, snap.version))
                 if len(prs) < 50:
                     break
+            else:
+                raise ClientError("reconcile_listing_incomplete")
         return out
 
     def complete_listing(self) -> bool:
@@ -280,6 +296,8 @@ class GitHubConnector:
             out.extend(self._comment(i) for i in items)
             if len(items) < 100:
                 break
+        else:
+            raise ClientError("comment_listing_incomplete")
         return out
 
     def get_comment(self, rid: str, comment_id: str) -> Comment | None:

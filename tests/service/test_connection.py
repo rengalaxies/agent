@@ -45,6 +45,7 @@ class GitHubAppAuthTest(unittest.TestCase):
 
     def test_installation_token_is_exchanged_once_and_reused(self):
         connector = self.connector(self.pem)
+        self.assertEqual(connector.installation_id, 99)
         self.assertEqual(connector.fetch("github:acme/orders#7").data["head_sha"], HEAD1)
         connector.fetch("github:acme/orders#7")
         self.assertEqual(self.stand.token_exchanges, 1)
