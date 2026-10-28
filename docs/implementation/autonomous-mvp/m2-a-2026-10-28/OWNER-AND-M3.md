@@ -28,7 +28,9 @@ git clone work/pilot-ready/agent-pilot-orders.bundle work/pilot-orders-push
 git clone work/pilot-ready/agent-pilot-reporting.bundle work/pilot-reporting-push
 ```
 
-Сверить `prepared.json` с evidence/prepared.json. Проверить через настоящий API owner,
+Сверить commits и file hashes в `prepared.json` с evidence/prepared.json. Bundle hashes
+проверены на двух сборках этого окружения; на ином Git/zlib они могут отличаться при тех
+же Git objects, поэтому первичны полные commit/file hashes. Проверить через настоящий API owner,
 private=true и отсутствие чужих commits в remote. Если repo уже не пустой — остановиться,
 не force-push и не смешивать историю. Для свежих созданных владельцем repos:
 
