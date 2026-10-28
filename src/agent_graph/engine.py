@@ -24,10 +24,10 @@ def content_keys(context):
 
 
 def config_digest(policy, repositories):
-    """Configuration a proposal's sufficiency depends on: the service address map and the
+    """Configuration a proposal's sufficiency depends on: the extraction profile, service address map and the
     approved requirements stored in the repositories it cites. Other repositories and
     their requirements are excluded, so adding a repository keeps knowledge."""
-    return digest([policy.addresses_dump(),
+    return digest([PROFILE, policy.addresses_dump(),
                    [r.model_dump() for r in policy.requirements if r.repository in repositories]])
 
 
@@ -84,6 +84,9 @@ class Graph:
 
     def freshness(self, context):
         self.policy.require("read_context")
+        if context.get("profile") != PROFILE:
+            return dict(status="STALE", assessed_at=now(), comparison_basis="EXTRACTOR_PROFILE",
+                        reasons=["extractor_profile_changed"])
         if pinned_only(self.policy) and context.get("snapshots"):
             return pinned_freshness(self.policy, context)
         expired = time.time() - context["created_epoch"] > self.policy.limits.freshness_seconds

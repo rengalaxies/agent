@@ -1,6 +1,7 @@
 """Advisory, offline HTTP evidence graph. Independent of research release gates."""
 
-PROFILE = "http-requests-4"
+# Revision 5 narrows provider declarations; cached v4 bases require revalidation.
+PROFILE = "http-requests-5"
 SCHEMA = "agent-graph-1"
 
 
