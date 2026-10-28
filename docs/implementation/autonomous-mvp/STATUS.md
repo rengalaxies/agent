@@ -12,6 +12,32 @@
 - проверено live: прошло на настоящей модели, Jira, Git-хостинге или ВМ;
 - не проверено: нет доступа или проверка не выполнялась, причина указана.
 
+## Сводка M1 на 28.10.2026
+
+Серия `2b-r1` на `f4e6ab7906fe5db5fbce9700bcad6547757bb63e` завершена после transport:
+[run 40566128227](https://github.com/rengalaxies/agent/actions/runs/40566128227), attempt 1.
+GPT OSS 120B: 0/3 error-free циклов (три HTTP 500), Qwen3-Coder-Next: 0/3
+(несуществующие ID графа), Qwen3.6-35B-A3B: 1/3. Допуск к development требует ≥2;
+ни одна модель не допущена. Development/evaluation/model-enabled readiness НЕ ЗАПУСКАЛИСЬ.
+Итоговый report: все модели DISABLED, profile null. Дальнейшее движение MVP — **модель OFF**.
+Заморозка main под эту серию больше не требуется; старый запуск не продолжаем и не повторяем.
+
+51 новый запрос: 48 HTTP 200, 3 HTTP 500 с неизвестным usage. Известная оценка 26,395201 ₽;
+ledger с worst-case учётом неизвестного — 30,287335 ₽; фактический биллинг NOT_MEASURED.
+Исторические 44 запроса прежней серии сюда не включены. Оригинальные report/ledgers,
+проверенные hashes, разбор причин и границы: [M1 report](m1-2026-10-28/README.md),
+[PR #68](https://github.com/rengalaxies/agent/pull/68).
+
+#68 исправляет путь гипотез до Jira/PR, проверку supporting_refs, переполнение и unknown usage.
+Это отдельный новый код с офлайн-проверкой; live-квалификация ему не приписывается.
+Манифесты 2b-r1/6-r3 сохранены; на новом коде live-gates должны отказывать как stale.
+Новая модельная/readiness серия требует отдельной ревизии. #68 слит merge-коммитом `1ef7eaca9b66256478022945eef7f8b205571dd2`, проверенный head
+`6d6d7d1a6f52e5eb619c7d580f577e892cfe3086`. [Core CI](https://github.com/rengalaxies/agent/actions/runs/40668612946):
+838 основных + 152 runner-теста; HTTP-демо, evidence и системная приёмка также зелёные. ВМ, secrets/vars и опубликованный релиз в рамках M1 не менялись.
+
+Последующие разделы — датированная история; «ждёт одобрения» и «запросов нет» ниже описывают
+состояние 27.10, а не текущий результат.
+
 ## Окружение исполнителей
 
 Проверено 24.10.2026 на машине владельца: Windows 11, Git 2.55, Python 3.14.5.
@@ -43,6 +69,28 @@ API читается без токена, но ограничен 60 запро�
 - Дополнительно: ядро на исходном `main` не импортируется на Windows
   (`fcntl` в `store.py`, `O_NOFOLLOW`/`dir_fd` в `sources.py`). Отчёт серии
   22.10 уже отмечал это для `Store`.
+
+## Сводка на 27.10.2026, после слияния
+
+По разрешению владельца в чате слиты #64 (`a1f12d0`), #63 (`00553f0`), #62 (`f5c0c36`), затем pin
+#65 (`f4e6ab7`). **`main` = `f4e6ab7906fe5db5fbce9700bcad6547757bb63e`, её нельзя двигать до конца
+серии 2Б**: каждая фаза сверяет checkout `main` с этим SHA.
+
+| Что | Где | Состояние |
+|---|---|---|
+| Итоговая `main` до pin | локально, `f5c0c36`, Windows, Python 3.14.5 | manifest 2Б `8d1c1afc` и 6-r3 `e1c04f17` CURRENT, 6-r1 и 6-r2 INTACT, корпус CURRENT; `infra/cloudru/box` 58 OK (1 пропуск без Terraform), `tools/agent_service/box/tests` 46 OK (1 пропуск), `tests/service` 124 OK, `tools/autonomous_mvp/tests` 150 OK. Дерево `f4e6ab7` отличается только `release.json` |
+| Релиз | [agent-service-0.1.0-gf5c0c36e8eb9](https://github.com/rengalaxies/agent/releases/tag/agent-service-0.1.0-gf5c0c36e8eb9), [run 40564865262](https://github.com/rengalaxies/agent/actions/runs/40564865262) | архив собран дважды с одинаковыми байтами, sha256 `88392b1e3b9609186842d67ed616e87af80cd78412408b00bc67361cb9d5ed91`, коммит `f5c0c36`, lock `59f6e53f…`, конституция `agent-service-v1.0:100bcad3db9c`. Скачанный asset VERIFIED; отдельный job снова скачал его по URL и поставил с systemd: `fresh_install`, `end_to_end_on_installed_release` PASS. Повторный запуск тег не перезапишет |
+| Pin | [#65](https://github.com/rengalaxies/agent/pull/65) | `infra/cloudru/box/release.json` указывает на этот asset; URL и sha256 перепроверены скачиванием |
+| Manifest на `f4e6ab7` | `program --check` | 2Б `8d1c1afc` CURRENT, readiness 6-r3 `e1c04f17` CURRENT |
+| Серия 2Б, transport | [run 40566128227](https://github.com/rengalaxies/agent/actions/runs/40566128227), `f4e6ab7`, все три модели | offline job SUCCESS (тесты, корпус, эталон, manifest). Три phase job ждут одобрения среды `autonomous-mvp-live`; запросов к модели ещё нет. Учётных веток `experiment-state/autonomous-mvp/*` до запуска не было |
+| Cloud.ru lock-test | [run 40566211910](https://github.com/rengalaxies/agent/actions/runs/40566211910) | ждёт одобрения среды `cloudru-box-production`; трогает только `terraform/box/lock-probe-*` |
+| Cloud.ru plan | [run 40566228282](https://github.com/rengalaxies/agent/actions/runs/40566228282), `box_id=pilot1`, `expires_on=2026-11-26`, без SSH-правила | в очереди за lock-test (одна группа concurrency), затем ждёт одобрения `cloudru-box-review`. Plan state не пишет. Для доставки секретов нужен второй plan с `/32` владельца; digest изменится |
+
+Дальше по серии 2Б, всё на `f4e6ab7`: после transport сверить ledger, запросы и расходы каждой
+модели, затем `development`, `evaluation-1`, `evaluation-2`, `evaluation-3`, `report`. Re-run не
+использовать: workflow требует `run_attempt == 1`, повтор только новым dispatch после сверки
+ledger. При QUALIFIED: `autonomous-mvp-readiness.yml` для `service-model` и `baseline-live` той
+же модели на 6-r3 (тоже с одобрением среды).
 
 ## Сводка на 27.10.2026
 

@@ -14,6 +14,10 @@ merge и следующий шаг. SHA коммита, который доба�
 | 2Б: программа квалификации | [#59](https://github.com/rengalaxies/agent/pull/59) | `claude/mvp-2b-prep-9d9655` | `177d1d2ab65d60790cac8639a186ffcddfcdac77` | 25.10.2026 |
 | 5А: коробка и установщик | [#60](https://github.com/rengalaxies/agent/pull/60) | `claude/objective-feistel-a46433` | `0f0dc0276ef599bd953bc6d20e593aab4035233a` | 25.10.2026 |
 | исправления коробки и допуска модели | [#61](https://github.com/rengalaxies/agent/pull/61) | `claude/mvp-recovery-fixes` | `c64c949e2c3558cbfea0c62922d141355d6684c9` | 25.10.2026 |
+| исправления продукта: runtime-only потребители, намерение Jira (D13) | [#64](https://github.com/rengalaxies/agent/pull/64) | `claude/mvp-service-impact-fixes` голова `18e360b` | `a1f12d037e71640df848dec66a5b2bfd2aec77a0` | 27.10.2026 |
+| 6: ревизии 6-r1..6-r3, живые конфигурации readiness | [#63](https://github.com/rengalaxies/agent/pull/63) | `claude/mvp-6-readiness` голова `399bb56` | `00553f03dabcfc0cdcfcd7ad5986a8f9f982c3ff` | 27.10.2026 |
+| 5Б: одна ВМ Cloud.ru, строки квот (D14), релиз с установкой опубликованного архива | [#62](https://github.com/rengalaxies/agent/pull/62) | `claude/mvp-5b-cloudru` голова `2309fc0` | `f5c0c36e8eb99ad0d1467cf3d31a3d660c69cb58` | 27.10.2026 |
+| pin опубликованного релиза `f5c0c36` | [#65](https://github.com/rengalaxies/agent/pull/65) | `claude/mvp-release-pin` голова `81dd456` | `f4e6ab7906fe5db5fbce9700bcad6547757bb63e` | 27.10.2026 |
 
 Ветки `claude/mvp-3-runtime-1b13b3` и `claude/mvp-4-service-814d77` устарели и в стек
 не входят.
@@ -22,12 +26,16 @@ merge и следующий шаг. SHA коммита, который доба�
 
 | PR | Назначение | База / голова | Push | CI головы | Merge | Следующий шаг |
 |---|---|---|---|---|---|---|
-| [#62](https://github.com/rengalaxies/agent/pull/62) | 5Б: одна ВМ Cloud.ru, установка той же коробкой, inventory, digest плана, cleanup; plan без записи state; строки квот (D14); публикация релиза и установка опубликованного архива | `main` `c64c949` / `claude/mvp-5b-cloudru` | опубликован, `2309fc0` | offline, verify, actionlint, configuration зелёные на `7a5d47e`; для `2309fc0` см. checks PR | нет | merge владельцем; затем релиз, pin, `lock-test`, `plan`, одобрение apply |
-| [#63](https://github.com/rengalaxies/agent/pull/63) | 6: 6-r1 и 6-r2 исторические, ревизия 6-r3 (F14, правило полноты human, живые конфигурации), held-out 70/70 без модели; содержит #64 | `main` `c64c949` / `claude/mvp-6-readiness` | опубликован; голова этой записи см. PR | см. checks PR; box, core, verify, actionlint, configuration | нет | merge после #64 |
-| [#64](https://github.com/rengalaxies/agent/pull/64) | исправления продукта: runtime-only потребители на PR, намерение Jira по имени сервиса, маршрут только как неизменный (D13) | `main` `c64c949` / `claude/mvp-service-impact-fixes` | опубликован, `18e360b` | box и core зелёные на `18e360b` | нет | merge первым |
+| этот PR документов | STATUS, реестр и готовность после слияния #62–#65 и запуска серии 2Б | `main` `f4e6ab7` / `claude/mvp-docs-2b-series` | опубликован | см. checks PR | интеграция этим PR, см. GitHub | серия 2Б завершена; #68 слит, финальные результаты M1 внесены |
 
-Порядок merge: #64, затем #63 (уже содержит `18e360b`), затем #62. #62 и #63 не пересекаются по
-файлам; пробное слияние `origin/main` + #63 + #62 проходит без конфликтов (27.10).
+Каждый merge 27.10 сделан по разрешению владельца в чате, на голове с зелёным CI
+(`--match-head-commit`). Итоговая `main` для серии 2Б: `f4e6ab7`.
+
+## M1 на 28.10.2026
+
+- [#67](https://github.com/rengalaxies/agent/pull/67): сохранён план M1–M6, основной исполнитель Codex.
+- [#68](https://github.com/rengalaxies/agent/pull/68): итог transport, режим модель OFF, исправления публикации и учёта. Проверенный head `6d6d7d1a6f52e5eb619c7d580f577e892cfe3086`; все четыре workflow зелёные; merge `1ef7eaca9b66256478022945eef7f8b205571dd2`.
+- run 40566128227 завершён: все три модели DISABLED, дальнейших фаз нет. Заморозка main под старую серию снята; manifest не обновлять и live-серию не возобновлять.
 
 ## Подготовленные ветки без PR
 
