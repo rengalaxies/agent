@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-28T18:59:23.014568+00:00",
+  "level": "REAL_GITHUB_API_CONTROL_PLANE",
+  "authentication": "Injected gh integration credential; exact token type not inspected. Not a service App-installation or PAT qualification.",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "user",
+      "http": "HTTP/2.0 200 OK",
+      "request_id": "C4C1:25BFB4:B1DB29A:24959935:6AE24608",
+      "result": {
+        "login": "rengalaxies",
+        "id": 297624087
+      }
+    },
+    {
+      "method": "GET",
+      "path": "user/installations?per_page=100",
+      "http": "HTTP/2.0 200 OK",
+      "request_id": "E8F5:3770FC:2F7E8EC:9CB9DE8:6AE24608",
+      "result": {
+        "total_count": 1,
+        "installations": [
+          {
+            "id": 162282851,
+            "app_id": 1144995,
+            "app_slug": "chatgpt-codex-connector",
+            "repository_selection": "selected",
+            "permissions": {
+              "checks": "read",
+              "issues": "write",
+              "actions": "write",
+              "contents": "write",
+              "metadata": "read",
+              "statuses": "read",
+              "workflows": "write",
+              "pull_requests": "write"
+            },
+            "events": [
+              "check_run",
+              "check_suite",
+              "commit_comment",
+              "issues",
+              "issue_comment",
+              "pull_request",
+              "pull_request_review",
+              "pull_request_review_comment",
+              "pull_request_review_thread",
+              "repository",
+              "status",
+              "sub_issues"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "repos/rengalaxies/agent",
+      "http": "HTTP/2.0 200 OK",
+      "request_id": "B657:313F65:C02BEAA:27713CF4:6AE24609",
+      "result": {
+        "id": 1373491787,
+        "full_name": "rengalaxies/agent",
+        "private": false,
+        "default_branch": "main",
+        "permissions": {
+          "admin": true,
+          "maintain": true,
+          "push": true,
+          "triage": true,
+          "pull": true
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "repos/rengalaxies/agent-pilot-orders",
+      "http": "HTTP/2.0 404 Not Found",
+      "request_id": "4E23:3F526D:B63F25B:2580CD6F:6AE2460A",
+      "result": {
+        "message": "Not Found"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "repos/rengalaxies/agent-pilot-reporting",
+      "http": "HTTP/2.0 404 Not Found",
+      "request_id": "4CC1:125214:2E0DA68:98574E6:6AE2460A",
+      "result": {
+        "message": "Not Found"
+      }
+    }
+  ],
+  "create_attempt": {
+    "method": "POST",
+    "path": "user/repos",
+    "repository": "rengalaxies/agent-pilot-orders",
+    "http_status": 403,
+    "message": "Resource not accessible by integration",
+    "request_id": "NOT_CAPTURED",
+    "mutated": false
+  },
+  "jira": "NOT_RUN: no Jira tools/runtime credentials/site/project",
+  "installed_service": "NOT_RUN/BLOCKED"
+}

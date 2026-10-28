@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED",
+  "error_type": "ValueError",
+  "code": null,
+  "scope": "GitHub-only App authentication",
+  "app_id": 5515659,
+  "installation_id": 176298402,
+  "reason": "Service App PEM has not been delivered to this runtime",
+  "env_presence": {
+    "GITHUB_APP_PRIVATE_KEY_PATH": false,
+    "GITHUB_WEBHOOK_SECRET": false
+  },
+  "model": "OFF",
+  "service_db_opened": false,
+  "token_exchange": "NOT_RUN"
+}

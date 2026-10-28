@@ -1,0 +1,105 @@
+{
+  "schema": "pilot-contour-registry-1",
+  "model": "OFF",
+  "overall": "PARTIAL / LIVE BLOCKED",
+  "github": {
+    "owner": "rengalaxies",
+    "repositories": [
+      {
+        "service": "orders",
+        "requested_url": "https://github.com/rengalaxies/agent-pilot-orders",
+        "repository_id": 1437522215,
+        "remote_status": "PASS_REAL_API_AND_GIT",
+        "creation": "OWNER_CREATED_THEN_PRIVATE",
+        "local_prepared": true,
+        "permitted_operations": [
+          "initialize_empty_private_repository",
+          "test_branches_and_PR",
+          "bot_comments",
+          "redelivery",
+          "controlled_access_failure"
+        ],
+        "connected_to_service": false,
+        "actual_url": "https://github.com/rengalaxies/agent-pilot-orders",
+        "private": true,
+        "connector_access": "PASS_READ_AND_GIT_PUSH",
+        "branches": {
+          "main": "c444814cf5a9826457b8a82300cc0422d1c5b359",
+          "pilot-docs-only": "e53b17fdbf8baf239fdc16386490312ae1711f91",
+          "pilot-page-limit": "c2a7f1b742d52b190424a5d14472c39588e87efb",
+          "pilot-restored": "23ba0ca3396ef49d3a88edeead029a59c182ddef"
+        }
+      },
+      {
+        "service": "reporting",
+        "requested_url": "https://github.com/rengalaxies/agent-pilot-reporting",
+        "repository_id": 1437522551,
+        "remote_status": "PASS_REAL_API_AND_GIT",
+        "creation": "OWNER_CREATED_THEN_PRIVATE",
+        "local_prepared": true,
+        "permitted_operations": [
+          "initialize_empty_private_repository",
+          "test_branches_and_PR",
+          "bot_comments",
+          "redelivery",
+          "controlled_access_failure"
+        ],
+        "connected_to_service": false,
+        "actual_url": "https://github.com/rengalaxies/agent-pilot-reporting",
+        "private": true,
+        "connector_access": "PASS_READ_AND_GIT_PUSH",
+        "branches": {
+          "main": "e7fd9c911fbe1e827ddd20a571a4a79ebef34335",
+          "pilot-explicit-limit": "6ca755536c0f865c86e80ec68cdbfa66eab9284c"
+        }
+      }
+    ],
+    "app_id": 5515659,
+    "installation_id": 176298402,
+    "bot_login": "rengalaxies-agent-pilot[bot]",
+    "bot_numeric_id": 349497413,
+    "app_registration": "OWNER_CREATED_INSTALLED; BOT_REAL_API_PASS; JWT_AUTH_NOT_RUN",
+    "visible_codex_connector_is_service_app": false,
+    "owner_designation": "CONFIRMED 2026-10-28 by user; remote creation/access not confirmed",
+    "creation_blocker": "RESOLVED_BY_OWNER",
+    "visibility_blocker": "RESOLVED_BY_OWNER",
+    "app_id_source": "OWNER_UI",
+    "installation_id_source": "OWNER_CONFIGURE_URL",
+    "app_authentication": "BLOCKED_NO_PEM; no JWT/installation-token qualification",
+    "permissions_validation": "OWNER_CONFIGURED_PER_FORM; SERVICE_JWT_API_NOT_VERIFIED",
+    "webhook_active": "OFF_PER_OWNER_FORM; API_NOT_VERIFIED"
+  },
+  "jira": {
+    "site_url": null,
+    "api_base_url": null,
+    "project_key": null,
+    "bot_account_id": null,
+    "credential_kind": "proposed Basic email + expiring API token",
+    "status": "NOT_RUN_NO_SITE_PROJECT_OR_CREDENTIAL",
+    "webhook_protocol": "admin secret/HMAC sha256 required, real delivery NOT_RUN",
+    "owner_update": "No site/project/accountId supplied; remain BLOCKED, do not re-request now"
+  },
+  "https_origin": null,
+  "installed_release": null,
+  "connected_to_service": false,
+  "evidence": {
+    "real_github_control_plane": "evidence/github-api-inventory.json",
+    "local_prepared_refs": "evidence/prepared.json",
+    "local_runtime": "evidence/runtime-local.json",
+    "service_app_read_API": "NOT_RUN_NO_SERVICE_PEM",
+    "jira_read_API": "NOT_RUN",
+    "live_acceptance": "NOT_RUN",
+    "pilot_repositories": "evidence/github-pilot-ready.json",
+    "app_metadata": "evidence/github-app-metadata.json",
+    "github_only_config": "box.github-only.yaml (production schema validated; not installed)",
+    "app_authentication": "evidence/app-auth-blocked.json"
+  },
+  "browser": "No authorized interactive browser available; web search does not create Apps/repositories",
+  "human_actions": [
+    "Owner created two repositories and added them to Codex Connector",
+    "Owner switched both initially public repositories to private after API verification",
+    "Owner reported creating/installing dedicated private App with supplied form parameters",
+    "Owner supplied App ID 5515659 and installation ID 176298402 from UI"
+  ],
+  "human_minutes": "NOT_MEASURED"
+}
