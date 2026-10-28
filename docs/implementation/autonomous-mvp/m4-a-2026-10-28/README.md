@@ -6,7 +6,8 @@
 авторском требовании; они не являются ожиданиями независимого заказчика.
 
 База main: `d5e25fde5927eca99e574b2ac82be80cd5adfe16` (#68–70 учтены).
-Код M4-A: `8d0ff980d6653338e5eb51ecf641652e65263190`.
+Основные исправления M4-A: `8d0ff980d6653338e5eb51ecf641652e65263190`;
+совместимость тестов с optional API dependencies: `9a0c3b4dcdc0a016565c80627cb2b785d09a2ad1`.
 [Хеши кода и тестов](code-files.json), [фактические наблюдения](observations.json).
 Работа выполнена в отдельной ветке `codex/m4-a-analysis-boundaries`,
 [PR #72](https://github.com/rengalaxies/agent/pull/72). Финальный CI — в checks этого PR;
@@ -97,6 +98,12 @@ asyncio socketpair: sandbox-прогон был остановлен, затем
   Промежуточный прогон во время редактирования сработал на code fingerprint mismatch;
   он не использован как финальное evidence, защита квалификации не ослаблялась.
   CI окончательного PR фиксируется через его checks до окончания пачки.
+- Минимальный graph-evidence CI первоначально упал без FastAPI (run 40743953907).
+  Исправлена совместимость новых тестов, service/workflow dependencies не менялись:
+  core-only venv — 20 обнаруженных тестов, **16 PASS + 4 SKIP** с явной причиной
+  ([лог](core-only-tests.log)); с API dependencies — **20 PASS, 0 SKIP**
+  ([лог](author-tests-optional-final.log)). Пропускается только исполнение ASGI/регистрации,
+  чистые extraction/freshness/access случаи остаются активны в core-only CI.
 - Независимый проект, настоящие endpoints и клиентская полезность: **NOT_RUN**.
 
 ```bash

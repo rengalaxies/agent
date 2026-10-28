@@ -38,10 +38,30 @@
       "machine_seconds": 223.164,
       "log": "full-local-tests.log",
       "code_sha": "8d0ff980d6653338e5eb51ecf641652e65263190"
+    },
+    {
+      "check": "author_with_api_final",
+      "level": "LOCAL",
+      "result": "PASS",
+      "tests": 20,
+      "skipped": 0,
+      "log": "author-tests-optional-final.log",
+      "code_sha": "9a0c3b4dcdc0a016565c80627cb2b785d09a2ad1"
+    },
+    {
+      "check": "author_core_only_final",
+      "level": "LOCAL",
+      "result": "PASS",
+      "tests": 20,
+      "executed_pass": 16,
+      "skipped": 4,
+      "log": "core-only-tests.log",
+      "code_sha": "9a0c3b4dcdc0a016565c80627cb2b785d09a2ad1"
     }
   ],
   "independent_project": "NOT_RUN",
   "customer_utility": "NOT_VERIFIED",
   "m3_ack": "PENDING",
-  "human_minutes": null
+  "human_minutes": null,
+  "test_compatibility_sha": "9a0c3b4dcdc0a016565c80627cb2b785d09a2ad1"
 }
