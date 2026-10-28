@@ -7,7 +7,7 @@
 
 ## Код и точный артефакт
 
-Исходные исправления: `4a23d7c54f1128cd6c238f58f944df6c129af035` (или содержащий
+Исходные исправления: `7a624ed431ac2c3d7b8488985ca3cdc6e34147c7` (или содержащий
 его проверенный merge в main, указанный в README). Не ставить старый pin
 `infra/cloudru/box/release.json`: `f5c0c36` не содержит M1/M2.
 
@@ -19,8 +19,8 @@ gh workflow run agent-service-release.yml --ref main -f expected_main_sha=<EXACT
 ```
 
 Сохранить run ID, URL, manifest и `.sha256`. Локально уже проверен кандидат
-`4a23d7c54f1128cd6c238f58f944df6c129af035`, archive sha256
-`50916939b2375a4ae816618fbcded1030a287c3b95b5bc116b1949648861cf6f` (две
+`7a624ed431ac2c3d7b8488985ca3cdc6e34147c7`, archive sha256
+`9d665121216a54589aed02f319fa83c46ddebc6ed7bf19de80273a64b637f2ed` (две
 одинаковые сборки, manifest VERIFIED); он не установлен в M3. Дождаться `release` **и**
 `install-published`: сборка дважды, побайтное равенство архивов, скачивание
 опубликованного asset, проверка sha256/manifest и чистая установка с systemd на CI.

@@ -8,17 +8,18 @@ Jira/GitHub endpoints не проверены. Владелец подтверд
 
 Изменения: [PR #69](https://github.com/rengalaxies/agent/pull/69).
 Исходная main `47b774d16ac121a7e03c17c96ff1f78775c3538d`; код исправлений и тестов
-`4a23d7c54f1128cd6c238f58f944df6c129af035`. [Хеши файлов](code-files.json).
+`7a624ed431ac2c3d7b8488985ca3cdc6e34147c7`. [Хеши файлов](code-files.json).
 Фактически установленная версия M3: **NOT_INSTALLED / NOT_VERIFIED**.
 Старый release pin `f5c0c36` не является версией M1/M2.
 
 ## Подтверждённые дефекты и регрессии
 
-`tests/service/test_m2_regressions.py`: 17 воспроизведений ошибок и одна положительная
+`tests/service/test_m2_regressions.py`: 18 воспроизведений ошибок и одна положительная
 проверка installation/ping. Первые 13 тестов красные на исходном коде: [исходный
-прогон](regressions-before.log). Ещё [2 ошибки](regressions-before-extra.log) найдены
+прогон](regressions-before.log). Дополнительно исправлена [ложная Jira ссылка внутри слова](regressions-before-link.log);
+несколько полных ключей остаются списком. Ещё [2 ошибки](regressions-before-extra.log) найдены
 при ревью восстановления, ещё [2 ошибки](regressions-before-auth.log) — при ревью API.
-[Окончательный прогон](regressions-after.log): 18/18 PASS. Signed malformed payload
+[Окончательный прогон](regressions-after.log): 19/19 PASS. Signed malformed payload
 раньше мог давать HTTP 500; traceback в исходном логе — результат воспроизведения.
 
 | Ошибка | Исправление |
@@ -30,6 +31,7 @@ Jira/GitHub endpoints не проверены. Владелец подтверд
 | Ограниченные листинги считались полными | При достижении потолка GitHub/Jira reconciliation/comments — видимый отказ, cursor не двигается, blind create запрещён |
 | Jira outage >7 дней обрезал восстановление | Query использует весь интервал сохранённого checkpoint с overlap, без семидневного clamp |
 | Известная Jira-задача удалена/перемещена и пропала из search | Reconciliation перечитывает известные отсутствующие в выборке ресурсы; fetch проверяет project и доступ |
+| Ключ ORD-12 внутри ORD-12suffix считался ссылкой | Проверяются границы полного ключа; allowlist проектов и множественность сохраняются |
 | Force-push A → B → A терялся из-за уже виденного synthetic ID | Synthetic ID учитывает текущее поколение/closed; предыдущая версия не является вечным dedup ключом |
 | Изменение после 20 000-го символа Jira не меняло версию | Digest полных смысловых полей, ограничение display отдельно, `jira_fields_truncated` виден как gap |
 | Постоянный 422 на ingest/prepare повторялся; 401 prepare крутился без паузы | Постоянный отказ сразу FAILED/notice; auth pause 900s; Retry-After учитывается при подготовке анализа |
@@ -47,26 +49,28 @@ Jira/GitHub endpoints не проверены. Владелец подтверд
 | Уровень / проверка | Результат | Граница |
 |---|---|---|
 | LOCAL: исходный сервисный набор на main | PASS, 141 тест | Настоящий HTTP на 127.0.0.1, scripted analyzer и отдельные тесты настоящего core |
-| LOCAL: регрессии M2 | PASS, 18/18 | Воспроизведения исходных дефектов, фальшивые GitHub/Jira HTTP endpoints |
+| LOCAL: регрессии M2 | PASS, 19/19 | Воспроизведения исходных дефектов, фальшивые GitHub/Jira HTTP endpoints |
 | LOCAL: понятный сценарий, настоящее ядро Orders/Reporting | PASS, 9/9 условий | [Артефакт](local-scenario.json): event/request ID, Jira version, полные base/head, тела комментариев и history; synthetic repositories/tasks |
 | LOCAL: runner без внешней модели | PASS, 152 теста | Тесты runner, не модельная квалификация |
 | LOCAL: box unit tests | PASS, 46 тестов | Не установка на ВМ |
 | LOCAL: lint F401/F811/F841 | PASS | Версия ruff 0.17.1 как в CI |
 | LIVE: Jira → PR → fixed head, дубли, API error, self-loop, race/restart | NOT_RUN / BLOCKED | Нет установки M3 и согласованного контура; [пустая форма доказательств](live-record.template.json) |
 
-Общий LOCAL набор на указанном коде: **857 тестов PASS** (230,358s машинного времени).
+Общий LOCAL набор на исходном исправлении `4a23d7c54f1128cd6c238f58f944df6c129af035`: **857 тестов PASS** (230,358s машинного времени).
 [Машинный реестр](validation.json), [полный лог](full-tests.log), [runner](runner-tests.log),
 [box](box-tests.log). Дополнительные установки/некорректный запуск без PYTHONPATH
 не считались успешными проверками; итоговый запуск использовал env как в Core CI.
 Сеть/loopback сначала были недоступны в sandbox, тесты повторены с разрешёнными
 локальными сокетами; первый post-change прогон был прерван перезапуском окружения.
 
-Актуальный кандидат `agent-service-0.1.0-g4a23d7c54f11-linux-x86_64-cp312` собран локально
+Актуальный кандидат `agent-service-0.1.0-g7a624ed431ac-linux-x86_64-cp312` собран локально
 дважды с одинаковыми байтами; sha256
-`50916939b2375a4ae816618fbcded1030a287c3b95b5bc116b1949648861cf6f`,
+`9d665121216a54589aed02f319fa83c46ddebc6ed7bf19de80273a64b637f2ed`,
 manifest verify PASS. [Сборка](release-build.json), [повтор](release-build-second.json),
 [verify](release-verify.json). Это не установленная версия M3 и не обновлённый cloud pin.
-CI фиксируется ниже после завершения. Зелёный CI не закрывает LIVE/M2.
+Финальные целевые regression/flow/core-scenario проверки на `7a624ed`: 22 PASS
+([лог](final-targeted-tests.log)); regex-правка после общего набора проверяется также
+полным CI финального head. CI фиксируется ниже после завершения. Зелёный CI не закрывает LIVE/M2.
 
 ## Что реально показывает пользовательский сценарий
 

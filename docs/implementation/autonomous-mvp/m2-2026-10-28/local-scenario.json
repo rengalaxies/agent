@@ -53,47 +53,47 @@
   "deliveries": [
     {
       "provider": "jira",
-      "event_id": "48ed4ccb8002419baf92701c6a598dc5",
+      "event_id": "b00face43c994c1cb4f89fe6cc8c552d",
       "status": 202
     },
     {
       "provider": "github",
-      "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+      "event_id": "d4b00aaaa0c042609ac437ecf706867a",
       "status": 202,
       "duplicate": false,
       "state": "RECEIVED"
     },
     {
       "provider": "github",
-      "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+      "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
       "status": 202,
       "duplicate": false,
       "state": "RECEIVED"
     },
     {
       "provider": "github",
-      "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+      "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
       "status": 200,
       "duplicate": true,
       "state": "INGESTED"
     },
     {
       "provider": "github",
-      "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+      "event_id": "d4b00aaaa0c042609ac437ecf706867a",
       "status": 200,
       "duplicate": true,
       "state": "INGESTED"
     },
     {
       "provider": "github",
-      "event_id": "1b9de84ea3d243c894fdf12cff5b13d4",
+      "event_id": "0a7993185be548f18e4b619d167da072",
       "status": 202,
       "duplicate": false,
       "state": "RECEIVED"
     },
     {
       "provider": "github",
-      "event_id": "14f614ab70db49afa84302c93e1164af",
+      "event_id": "5a0f90c7555040fcbb368da58809c302",
       "status": 202,
       "duplicate": false,
       "state": "IGNORED"
@@ -103,7 +103,7 @@
     {
       "stage": "preliminary",
       "jira_comments": [
-        "Возможное влияние изменения\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.\nЧто может затронуть\narchive: команда team-data (источник: installation_mapping@ownership-1)\n\nreporting: команда team-reporting (источник: installation_mapping@ownership-1)\n\nПочему и через какой путь\nФакт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9\n\nГипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9\n\nФакт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nГипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nПуть: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9\n\nПуть: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nЧто проверить\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\nНеизвестные и свежесть\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:audit: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:billing: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:orders: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:reporting: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\nownership:installation_mapping: CURRENT, проверено 2026-10-28T12:51:16.659Z\n\nВерсии\nJira ORD-12: версия полей 7c4bf84cdfe6\n\nПоколение анализа: 1\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 9b061806685040ad88a3923c9cb7a65f:1\n\ngraph_version: graph-3\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: USEFUL, код: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=9b27d4de9a1c4fb34e71787ae3b73789f3e1f0636722196e9f390cc7de27da8a generation=1\n"
+        "Возможное влияние изменения\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.\nЧто может затронуть\narchive: команда team-data (источник: installation_mapping@ownership-1)\n\nreporting: команда team-reporting (источник: installation_mapping@ownership-1)\n\nПочему и через какой путь\nФакт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9\n\nГипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9\n\nФакт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nГипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nПуть: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9\n\nПуть: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nЧто проверить\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\nНеизвестные и свежесть\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:audit: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:billing: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:orders: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:reporting: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\nownership:installation_mapping: CURRENT, проверено 2026-10-28T13:00:09.449Z\n\nВерсии\nJira ORD-12: версия полей 7c4bf84cdfe6\n\nПоколение анализа: 1\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 741deb76c63545fdb047246bed01d870:1\n\ngraph_version: graph-3\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: USEFUL, код: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=e15036835d5949184b052cd9caf23406eb45e6e1396c5e0ea78f71a512f2dda4 generation=1\n"
       ],
       "pr_comments": [],
       "jobs": []
@@ -111,14 +111,14 @@
     {
       "stage": "breaking",
       "jira_comments": [
-        "Возможное влияние изменения\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.\nЧто может затронуть\narchive: команда team-data (источник: installation_mapping@ownership-1)\n\nreporting: команда team-reporting (источник: installation_mapping@ownership-1)\n\nПочему и через какой путь\nФакт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9\n\nГипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9\n\nФакт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nГипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nПуть: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9\n\nПуть: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nЧто проверить\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\nНеизвестные и свежесть\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:audit: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:billing: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:orders: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:reporting: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\nownership:installation_mapping: CURRENT, проверено 2026-10-28T12:51:16.659Z\n\nВерсии\nJira ORD-12: версия полей 7c4bf84cdfe6\n\nПоколение анализа: 1\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 9b061806685040ad88a3923c9cb7a65f:1\n\ngraph_version: graph-3\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: USEFUL, код: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=9b27d4de9a1c4fb34e71787ae3b73789f3e1f0636722196e9f390cc7de27da8a generation=1\n"
+        "Возможное влияние изменения\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.\nЧто может затронуть\narchive: команда team-data (источник: installation_mapping@ownership-1)\n\nreporting: команда team-reporting (источник: installation_mapping@ownership-1)\n\nПочему и через какой путь\nФакт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9\n\nГипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9\n\nФакт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nГипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nПуть: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9\n\nПуть: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nЧто проверить\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\nНеизвестные и свежесть\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:audit: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:billing: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:orders: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:reporting: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\nownership:installation_mapping: CURRENT, проверено 2026-10-28T13:00:09.449Z\n\nВерсии\nJira ORD-12: версия полей 7c4bf84cdfe6\n\nПоколение анализа: 1\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 741deb76c63545fdb047246bed01d870:1\n\ngraph_version: graph-3\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: USEFUL, код: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=e15036835d5949184b052cd9caf23406eb45e6e1396c5e0ea78f71a512f2dda4 generation=1\n"
       ],
       "pr_comments": [
         {
           "id": 1001,
           "repo": "acme/orders",
           "number": 7,
-          "body": "### Вывод о влиянии не сделан\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**Что может затронуть**\n- нет данных\n\n**Почему и через какой путь**\n- нет данных\n\n**Что проверить**\n- нет данных\n\n**Неизвестные и свежесть**\n- git:orders: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:reporting: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:archive: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:billing: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:audit: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n\n**Версии**\n- PR acme/orders#7: base 99aaceb50e06, head aea829462668\n- Связанные задачи Jira: ORD-12\n- Поколение анализа: 2\n- code_version: agent-service-smoke\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: ee34147da72f4fdf92b3f524a3a72ac5:1\n- graph_version: graph-4\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.1\n- снимок archive (consumer): 49405f4a048e\n- снимок audit (consumer): 89e053921b37\n- снимок billing (consumer): 46a72606b6f0\n- снимок orders (base): 99aaceb50e06\n- снимок orders (head): aea829462668\n- снимок reporting (consumer): 2cba012ba204\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=9d6be7022c568180 digest=4db532e1a1716d47909b7602a7ac8c9f57d167d9f7f046c01b7a026b7d34a7dc generation=2 -->",
+          "body": "### Вывод о влиянии не сделан\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**Что может затронуть**\n- нет данных\n\n**Почему и через какой путь**\n- нет данных\n\n**Что проверить**\n- нет данных\n\n**Неизвестные и свежесть**\n- git:orders: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:reporting: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:archive: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:billing: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:audit: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n\n**Версии**\n- PR acme/orders#7: base 99aaceb50e06, head aea829462668\n- Связанные задачи Jira: ORD-12\n- Поколение анализа: 2\n- code_version: agent-service-smoke\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: fec8778348a2424186bc0c02a72dbe71:1\n- graph_version: graph-4\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.1\n- снимок archive (consumer): 49405f4a048e\n- снимок audit (consumer): 89e053921b37\n- снимок billing (consumer): 46a72606b6f0\n- снимок orders (base): 99aaceb50e06\n- снимок orders (head): aea829462668\n- снимок reporting (consumer): 2cba012ba204\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=9d6be7022c568180 digest=5b8884cfb728e8361d7c502f5b0e8861ea8ec92fa4f6ff0d5d2fbeb465265494 generation=2 -->",
           "user": {
             "login": "agent-service[bot]"
           }
@@ -126,8 +126,8 @@
       ],
       "jobs": [
         {
-          "job_id": "d1554bf659be4f8d9baa06c45c9d029a",
-          "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+          "job_id": "9f81712d86804b0fb0dc621869282d63",
+          "event_id": "d4b00aaaa0c042609ac437ecf706867a",
           "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
           "generation": 1,
           "state": "DONE",
@@ -135,7 +135,7 @@
             "affected": [
               {
                 "owner": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "source": "installation_mapping",
                   "source_version": "ownership-1",
                   "status": "KNOWN",
@@ -159,7 +159,7 @@
               },
               {
                 "owner": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "source": "installation_mapping",
                   "source_version": "ownership-1",
                   "status": "KNOWN",
@@ -276,7 +276,7 @@
             ],
             "code_version": "agent-service-smoke",
             "constitution_version": "agent-service-v1.0:100bcad3db9c",
-            "correlation_id": "d1554bf659be4f8d9baa06c45c9d029a:1",
+            "correlation_id": "9f81712d86804b0fb0dc621869282d63:1",
             "costs": {
               "completion_tokens": 0,
               "currency": null,
@@ -304,7 +304,7 @@
               }
             ],
             "environment": "prod",
-            "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+            "event_id": "d4b00aaaa0c042609ac437ecf706867a",
             "evidence": [
               {
                 "blob": "0b7f7c10d31df4ea6a36aae3dea0ff9f78e8207a",
@@ -312,7 +312,7 @@
                 "content_sha256": "41f0da6cf09500f70d17cda0da9e4d668a65554709ce7933f802104234adb895",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -336,7 +336,7 @@
                 "content_sha256": "fb733703d80ccf51843ffd79f83c58960f68c5bf0cb37d2b0d3308c36ca103f3",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -360,7 +360,7 @@
                 "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
                 "end_line": 7,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -384,7 +384,7 @@
                 "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -408,7 +408,7 @@
                 "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -432,7 +432,7 @@
                 "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
                 "end_line": 15,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -536,7 +536,7 @@
                   "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
                 ],
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -574,7 +574,7 @@
                   "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
                 ],
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -606,7 +606,7 @@
                 ]
               }
             ],
-            "request_id": "d1554bf659be4f8d9baa06c45c9d029a:1",
+            "request_id": "9f81712d86804b0fb0dc621869282d63:1",
             "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
             "schema": "agent-graph-output",
             "schema_version": "2.1",
@@ -657,7 +657,7 @@
             "source_freshness": [
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -668,7 +668,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -679,7 +679,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -690,7 +690,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -701,7 +701,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -715,11 +715,11 @@
             "summary": "2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
             "superseded_by": null,
             "timings": {
-              "finished_at": "2026-10-28T12:51:17.143624Z",
+              "finished_at": "2026-10-28T13:00:09.847744Z",
               "seconds": {
-                "analysis": 0.32143582100002277
+                "analysis": 0.25817162199996346
               },
-              "started_at": "2026-10-28T12:51:16.822191Z"
+              "started_at": "2026-10-28T13:00:09.589576Z"
             },
             "trigger_kind": "pr",
             "unknowns": [
@@ -736,14 +736,14 @@
     {
       "stage": "fixed",
       "jira_comments": [
-        "Возможное влияние изменения\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.\nЧто может затронуть\narchive: команда team-data (источник: installation_mapping@ownership-1)\n\nreporting: команда team-reporting (источник: installation_mapping@ownership-1)\n\nПочему и через какой путь\nФакт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9\n\nГипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9\n\nФакт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nГипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nПуть: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9\n\nПуть: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nЧто проверить\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\nНеизвестные и свежесть\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:audit: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:billing: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:orders: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\ngit:reporting: CURRENT, проверено 2026-10-28T12:51:16.784Z\n\nownership:installation_mapping: CURRENT, проверено 2026-10-28T12:51:16.659Z\n\nВерсии\nJira ORD-12: версия полей 7c4bf84cdfe6\n\nПоколение анализа: 1\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 9b061806685040ad88a3923c9cb7a65f:1\n\ngraph_version: graph-3\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: USEFUL, код: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=9b27d4de9a1c4fb34e71787ae3b73789f3e1f0636722196e9f390cc7de27da8a generation=1\n"
+        "Возможное влияние изменения\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.\nЧто может затронуть\narchive: команда team-data (источник: installation_mapping@ownership-1)\n\nreporting: команда team-reporting (источник: installation_mapping@ownership-1)\n\nПочему и через какой путь\nФакт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9\n\nГипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9\n\nФакт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-4. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nГипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nПуть: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9\n\nПуть: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7\n\nЧто проверить\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\nНеизвестные и свежесть\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:audit: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:billing: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:orders: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\ngit:reporting: CURRENT, проверено 2026-10-28T13:00:09.558Z\n\nownership:installation_mapping: CURRENT, проверено 2026-10-28T13:00:09.449Z\n\nВерсии\nJira ORD-12: версия полей 7c4bf84cdfe6\n\nПоколение анализа: 1\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 741deb76c63545fdb047246bed01d870:1\n\ngraph_version: graph-3\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: USEFUL, код: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=e15036835d5949184b052cd9caf23406eb45e6e1396c5e0ea78f71a512f2dda4 generation=1\n"
       ],
       "pr_comments": [
         {
           "id": 1001,
           "repo": "acme/orders",
           "number": 7,
-          "body": "### Вывод о влиянии не сделан\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**Что может затронуть**\n- нет данных\n\n**Почему и через какой путь**\n- нет данных\n\n**Что проверить**\n- нет данных\n\n**Неизвестные и свежесть**\n- git:orders: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:reporting: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:archive: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:billing: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:audit: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n\n**Версии**\n- PR acme/orders#7: base 99aaceb50e06, head aea829462668\n- Связанные задачи Jira: ORD-12\n- Поколение анализа: 2\n- code_version: agent-service-smoke\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: ee34147da72f4fdf92b3f524a3a72ac5:1\n- graph_version: graph-4\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.1\n- снимок archive (consumer): 49405f4a048e\n- снимок audit (consumer): 89e053921b37\n- снимок billing (consumer): 46a72606b6f0\n- снимок orders (base): 99aaceb50e06\n- снимок orders (head): aea829462668\n- снимок reporting (consumer): 2cba012ba204\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=9d6be7022c568180 digest=4db532e1a1716d47909b7602a7ac8c9f57d167d9f7f046c01b7a026b7d34a7dc generation=2 -->",
+          "body": "### Вывод о влиянии не сделан\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**Что может затронуть**\n- нет данных\n\n**Почему и через какой путь**\n- нет данных\n\n**Что проверить**\n- нет данных\n\n**Неизвестные и свежесть**\n- git:orders: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:reporting: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:archive: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:billing: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:audit: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n\n**Версии**\n- PR acme/orders#7: base 99aaceb50e06, head aea829462668\n- Связанные задачи Jira: ORD-12\n- Поколение анализа: 2\n- code_version: agent-service-smoke\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: fec8778348a2424186bc0c02a72dbe71:1\n- graph_version: graph-4\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.1\n- снимок archive (consumer): 49405f4a048e\n- снимок audit (consumer): 89e053921b37\n- снимок billing (consumer): 46a72606b6f0\n- снимок orders (base): 99aaceb50e06\n- снимок orders (head): aea829462668\n- снимок reporting (consumer): 2cba012ba204\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=9d6be7022c568180 digest=5b8884cfb728e8361d7c502f5b0e8861ea8ec92fa4f6ff0d5d2fbeb465265494 generation=2 -->",
           "user": {
             "login": "agent-service[bot]"
           }
@@ -751,8 +751,8 @@
       ],
       "jobs": [
         {
-          "job_id": "d1554bf659be4f8d9baa06c45c9d029a",
-          "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+          "job_id": "9f81712d86804b0fb0dc621869282d63",
+          "event_id": "d4b00aaaa0c042609ac437ecf706867a",
           "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
           "generation": 1,
           "state": "DONE",
@@ -760,7 +760,7 @@
             "affected": [
               {
                 "owner": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "source": "installation_mapping",
                   "source_version": "ownership-1",
                   "status": "KNOWN",
@@ -784,7 +784,7 @@
               },
               {
                 "owner": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "source": "installation_mapping",
                   "source_version": "ownership-1",
                   "status": "KNOWN",
@@ -901,7 +901,7 @@
             ],
             "code_version": "agent-service-smoke",
             "constitution_version": "agent-service-v1.0:100bcad3db9c",
-            "correlation_id": "d1554bf659be4f8d9baa06c45c9d029a:1",
+            "correlation_id": "9f81712d86804b0fb0dc621869282d63:1",
             "costs": {
               "completion_tokens": 0,
               "currency": null,
@@ -929,7 +929,7 @@
               }
             ],
             "environment": "prod",
-            "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+            "event_id": "d4b00aaaa0c042609ac437ecf706867a",
             "evidence": [
               {
                 "blob": "0b7f7c10d31df4ea6a36aae3dea0ff9f78e8207a",
@@ -937,7 +937,7 @@
                 "content_sha256": "41f0da6cf09500f70d17cda0da9e4d668a65554709ce7933f802104234adb895",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -961,7 +961,7 @@
                 "content_sha256": "fb733703d80ccf51843ffd79f83c58960f68c5bf0cb37d2b0d3308c36ca103f3",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -985,7 +985,7 @@
                 "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
                 "end_line": 7,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1009,7 +1009,7 @@
                 "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1033,7 +1033,7 @@
                 "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1057,7 +1057,7 @@
                 "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
                 "end_line": 15,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1161,7 +1161,7 @@
                   "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
                 ],
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1199,7 +1199,7 @@
                   "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
                 ],
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1231,7 +1231,7 @@
                 ]
               }
             ],
-            "request_id": "d1554bf659be4f8d9baa06c45c9d029a:1",
+            "request_id": "9f81712d86804b0fb0dc621869282d63:1",
             "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
             "schema": "agent-graph-output",
             "schema_version": "2.1",
@@ -1282,7 +1282,7 @@
             "source_freshness": [
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1293,7 +1293,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1304,7 +1304,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1315,7 +1315,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1326,7 +1326,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1340,11 +1340,11 @@
             "summary": "2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
             "superseded_by": null,
             "timings": {
-              "finished_at": "2026-10-28T12:51:17.143624Z",
+              "finished_at": "2026-10-28T13:00:09.847744Z",
               "seconds": {
-                "analysis": 0.32143582100002277
+                "analysis": 0.25817162199996346
               },
-              "started_at": "2026-10-28T12:51:16.822191Z"
+              "started_at": "2026-10-28T13:00:09.589576Z"
             },
             "trigger_kind": "pr",
             "unknowns": [
@@ -1357,8 +1357,8 @@
           }
         },
         {
-          "job_id": "ee34147da72f4fdf92b3f524a3a72ac5",
-          "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+          "job_id": "fec8778348a2424186bc0c02a72dbe71",
+          "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
           "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
           "generation": 2,
           "state": "DONE",
@@ -1368,7 +1368,7 @@
             "claims": [],
             "code_version": "agent-service-smoke",
             "constitution_version": "agent-service-v1.0:100bcad3db9c",
-            "correlation_id": "ee34147da72f4fdf92b3f524a3a72ac5:1",
+            "correlation_id": "fec8778348a2424186bc0c02a72dbe71:1",
             "costs": {
               "completion_tokens": 0,
               "currency": null,
@@ -1378,7 +1378,7 @@
             },
             "deltas": [],
             "environment": "prod",
-            "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+            "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
             "evidence": [],
             "findings": [],
             "gaps": [],
@@ -1390,7 +1390,7 @@
             "profile": "http-requests-4",
             "reason_code": "no_supported_delta",
             "relationships": [],
-            "request_id": "ee34147da72f4fdf92b3f524a3a72ac5:1",
+            "request_id": "fec8778348a2424186bc0c02a72dbe71:1",
             "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
             "schema": "agent-graph-output",
             "schema_version": "2.1",
@@ -1441,7 +1441,7 @@
             "source_freshness": [
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1452,7 +1452,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1463,7 +1463,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1474,7 +1474,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1485,7 +1485,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1499,11 +1499,11 @@
             "summary": "No supported behavior change was found; arbitrary semantic changes are not classified.",
             "superseded_by": null,
             "timings": {
-              "finished_at": "2026-10-28T12:51:17.506271Z",
+              "finished_at": "2026-10-28T13:00:10.142059Z",
               "seconds": {
-                "analysis": 0.31393313000000944
+                "analysis": 0.2544908160000432
               },
-              "started_at": "2026-10-28T12:51:17.192244Z"
+              "started_at": "2026-10-28T13:00:09.887652Z"
             },
             "trigger_kind": "pr",
             "unknowns": [],
@@ -1515,14 +1515,14 @@
     {
       "stage": "ambiguous",
       "jira_comments": [
-        "Вывод о влиянии не сделан\nThe task does not name an operation found in the graph (ambiguous_route).\nЧто может затронуть\nнет данных\n\nПочему и через какой путь\nнет данных\n\nЧто проверить\nнет данных\n\nНеизвестные и свежесть\njira_without_diff\n\nВерсии\nJira ORD-12: версия полей a1a80c761e31\n\nПоколение анализа: 2\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: dd86f8675ab44ce190ef033d6cf05efb:1\n\ngraph_version: graph-5\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: ABSTAINED, код: intent_unclear\n\nagent-service marker=c4af9ac73f615c9e digest=541c94b2116d074fa2eff125837b54df6f11ddee506d470018d0156f1cb878a3 generation=2\n"
+        "Вывод о влиянии не сделан\nThe task does not name an operation found in the graph (ambiguous_route).\nЧто может затронуть\nнет данных\n\nПочему и через какой путь\nнет данных\n\nЧто проверить\nнет данных\n\nНеизвестные и свежесть\njira_without_diff\n\nВерсии\nJira ORD-12: версия полей a1a80c761e31\n\nПоколение анализа: 2\n\ncode_version: agent-service-smoke\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 9473fa162ccc4dc3a42118a99af2eb19:1\n\ngraph_version: graph-5\n\nmodel: Детерминированный результат (модельный отчёт не представлен)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\nснимок archive (consumer): 49405f4a048e\n\nснимок audit (consumer): 89e053921b37\n\nснимок billing (consumer): 46a72606b6f0\n\nснимок orders (consumer): 99aaceb50e06\n\nснимок reporting (consumer): 2cba012ba204\n\nСтатус: ABSTAINED, код: intent_unclear\n\nagent-service marker=c4af9ac73f615c9e digest=dfcab2a3caff831dd0ae6cc4e5af4832de138ce302c1bb7b4d3aeb0d497be81d generation=2\n"
       ],
       "pr_comments": [
         {
           "id": 1001,
           "repo": "acme/orders",
           "number": 7,
-          "body": "### Вывод о влиянии не сделан\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**Что может затронуть**\n- нет данных\n\n**Почему и через какой путь**\n- нет данных\n\n**Что проверить**\n- нет данных\n\n**Неизвестные и свежесть**\n- git:orders: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:reporting: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:archive: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:billing: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n- git:audit: CURRENT, проверено 2026-10-28T12:51:17.506511Z\n\n**Версии**\n- PR acme/orders#7: base 99aaceb50e06, head aea829462668\n- Связанные задачи Jira: ORD-12\n- Поколение анализа: 2\n- code_version: agent-service-smoke\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: ee34147da72f4fdf92b3f524a3a72ac5:1\n- graph_version: graph-4\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.1\n- снимок archive (consumer): 49405f4a048e\n- снимок audit (consumer): 89e053921b37\n- снимок billing (consumer): 46a72606b6f0\n- снимок orders (base): 99aaceb50e06\n- снимок orders (head): aea829462668\n- снимок reporting (consumer): 2cba012ba204\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=9d6be7022c568180 digest=4db532e1a1716d47909b7602a7ac8c9f57d167d9f7f046c01b7a026b7d34a7dc generation=2 -->",
+          "body": "### Вывод о влиянии не сделан\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**Что может затронуть**\n- нет данных\n\n**Почему и через какой путь**\n- нет данных\n\n**Что проверить**\n- нет данных\n\n**Неизвестные и свежесть**\n- git:orders: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:reporting: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:archive: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:billing: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n- git:audit: CURRENT, проверено 2026-10-28T13:00:10.142392Z\n\n**Версии**\n- PR acme/orders#7: base 99aaceb50e06, head aea829462668\n- Связанные задачи Jira: ORD-12\n- Поколение анализа: 2\n- code_version: agent-service-smoke\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: fec8778348a2424186bc0c02a72dbe71:1\n- graph_version: graph-4\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.1\n- снимок archive (consumer): 49405f4a048e\n- снимок audit (consumer): 89e053921b37\n- снимок billing (consumer): 46a72606b6f0\n- снимок orders (base): 99aaceb50e06\n- снимок orders (head): aea829462668\n- снимок reporting (consumer): 2cba012ba204\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=9d6be7022c568180 digest=5b8884cfb728e8361d7c502f5b0e8861ea8ec92fa4f6ff0d5d2fbeb465265494 generation=2 -->",
           "user": {
             "login": "agent-service[bot]"
           }
@@ -1530,8 +1530,8 @@
       ],
       "jobs": [
         {
-          "job_id": "d1554bf659be4f8d9baa06c45c9d029a",
-          "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+          "job_id": "9f81712d86804b0fb0dc621869282d63",
+          "event_id": "d4b00aaaa0c042609ac437ecf706867a",
           "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
           "generation": 1,
           "state": "DONE",
@@ -1539,7 +1539,7 @@
             "affected": [
               {
                 "owner": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "source": "installation_mapping",
                   "source_version": "ownership-1",
                   "status": "KNOWN",
@@ -1563,7 +1563,7 @@
               },
               {
                 "owner": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "source": "installation_mapping",
                   "source_version": "ownership-1",
                   "status": "KNOWN",
@@ -1680,7 +1680,7 @@
             ],
             "code_version": "agent-service-smoke",
             "constitution_version": "agent-service-v1.0:100bcad3db9c",
-            "correlation_id": "d1554bf659be4f8d9baa06c45c9d029a:1",
+            "correlation_id": "9f81712d86804b0fb0dc621869282d63:1",
             "costs": {
               "completion_tokens": 0,
               "currency": null,
@@ -1708,7 +1708,7 @@
               }
             ],
             "environment": "prod",
-            "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+            "event_id": "d4b00aaaa0c042609ac437ecf706867a",
             "evidence": [
               {
                 "blob": "0b7f7c10d31df4ea6a36aae3dea0ff9f78e8207a",
@@ -1716,7 +1716,7 @@
                 "content_sha256": "41f0da6cf09500f70d17cda0da9e4d668a65554709ce7933f802104234adb895",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1740,7 +1740,7 @@
                 "content_sha256": "fb733703d80ccf51843ffd79f83c58960f68c5bf0cb37d2b0d3308c36ca103f3",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1764,7 +1764,7 @@
                 "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
                 "end_line": 7,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1788,7 +1788,7 @@
                 "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1812,7 +1812,7 @@
                 "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
                 "end_line": 9,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1836,7 +1836,7 @@
                 "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
                 "end_line": 15,
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1940,7 +1940,7 @@
                   "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
                 ],
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -1978,7 +1978,7 @@
                   "ev:d2d042865eec34393fbeb1298ed26fa40e968ada"
                 ],
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2010,7 +2010,7 @@
                 ]
               }
             ],
-            "request_id": "d1554bf659be4f8d9baa06c45c9d029a:1",
+            "request_id": "9f81712d86804b0fb0dc621869282d63:1",
             "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
             "schema": "agent-graph-output",
             "schema_version": "2.1",
@@ -2061,7 +2061,7 @@
             "source_freshness": [
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2072,7 +2072,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2083,7 +2083,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2094,7 +2094,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2105,7 +2105,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.143928Z",
+                  "checked_at": "2026-10-28T13:00:09.848193Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2119,11 +2119,11 @@
             "summary": "2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
             "superseded_by": null,
             "timings": {
-              "finished_at": "2026-10-28T12:51:17.143624Z",
+              "finished_at": "2026-10-28T13:00:09.847744Z",
               "seconds": {
-                "analysis": 0.32143582100002277
+                "analysis": 0.25817162199996346
               },
-              "started_at": "2026-10-28T12:51:16.822191Z"
+              "started_at": "2026-10-28T13:00:09.589576Z"
             },
             "trigger_kind": "pr",
             "unknowns": [
@@ -2136,8 +2136,8 @@
           }
         },
         {
-          "job_id": "ee34147da72f4fdf92b3f524a3a72ac5",
-          "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+          "job_id": "fec8778348a2424186bc0c02a72dbe71",
+          "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
           "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
           "generation": 2,
           "state": "DONE",
@@ -2147,7 +2147,7 @@
             "claims": [],
             "code_version": "agent-service-smoke",
             "constitution_version": "agent-service-v1.0:100bcad3db9c",
-            "correlation_id": "ee34147da72f4fdf92b3f524a3a72ac5:1",
+            "correlation_id": "fec8778348a2424186bc0c02a72dbe71:1",
             "costs": {
               "completion_tokens": 0,
               "currency": null,
@@ -2157,7 +2157,7 @@
             },
             "deltas": [],
             "environment": "prod",
-            "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+            "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
             "evidence": [],
             "findings": [],
             "gaps": [],
@@ -2169,7 +2169,7 @@
             "profile": "http-requests-4",
             "reason_code": "no_supported_delta",
             "relationships": [],
-            "request_id": "ee34147da72f4fdf92b3f524a3a72ac5:1",
+            "request_id": "fec8778348a2424186bc0c02a72dbe71:1",
             "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
             "schema": "agent-graph-output",
             "schema_version": "2.1",
@@ -2220,7 +2220,7 @@
             "source_freshness": [
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2231,7 +2231,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2242,7 +2242,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2253,7 +2253,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2264,7 +2264,7 @@
               },
               {
                 "freshness": {
-                  "checked_at": "2026-10-28T12:51:17.506511Z",
+                  "checked_at": "2026-10-28T13:00:10.142392Z",
                   "reasons": [],
                   "status": "CURRENT",
                   "valid_from": null,
@@ -2278,11 +2278,11 @@
             "summary": "No supported behavior change was found; arbitrary semantic changes are not classified.",
             "superseded_by": null,
             "timings": {
-              "finished_at": "2026-10-28T12:51:17.506271Z",
+              "finished_at": "2026-10-28T13:00:10.142059Z",
               "seconds": {
-                "analysis": 0.31393313000000944
+                "analysis": 0.2544908160000432
               },
-              "started_at": "2026-10-28T12:51:17.192244Z"
+              "started_at": "2026-10-28T13:00:09.887652Z"
             },
             "trigger_kind": "pr",
             "unknowns": [],
@@ -2295,11 +2295,11 @@
   "history": [
     {
       "seq": 1,
-      "at": 1793191876.6814404,
+      "at": 1793192409.4672766,
       "resource_id": "jira:10012",
       "entry": "event_received",
       "detail": {
-        "event_id": "48ed4ccb8002419baf92701c6a598dc5",
+        "event_id": "b00face43c994c1cb4f89fe6cc8c552d",
         "event_kind": "jira:issue_created",
         "provider": "jira",
         "state": "RECEIVED"
@@ -2307,18 +2307,18 @@
     },
     {
       "seq": 2,
-      "at": 1793191876.6860926,
+      "at": 1793192409.4715772,
       "resource_id": "jira:10012",
       "entry": "generation_opened",
       "detail": {
-        "event_id": "48ed4ccb8002419baf92701c6a598dc5",
+        "event_id": "b00face43c994c1cb4f89fe6cc8c552d",
         "generation": 1,
         "version_digest": "jira:7c4bf84cdfe"
       }
     },
     {
       "seq": 3,
-      "at": 1793191876.6871893,
+      "at": 1793192409.47289,
       "resource_id": "jira:10012",
       "entry": "job_claimed",
       "detail": {
@@ -2328,7 +2328,7 @@
     },
     {
       "seq": 4,
-      "at": 1793191876.7913766,
+      "at": 1793192409.5660517,
       "resource_id": "jira:10012",
       "entry": "job_analyzed",
       "detail": {
@@ -2338,18 +2338,18 @@
     },
     {
       "seq": 5,
-      "at": 1793191876.791516,
+      "at": 1793192409.5661898,
       "resource_id": "jira:10012",
       "entry": "intent_created",
       "detail": {
-        "body_digest": "9b27d4de9a1c4fb3",
+        "body_digest": "e15036835d594918",
         "generation": 1,
         "intent_kind": "result"
       }
     },
     {
       "seq": 6,
-      "at": 1793191876.7957132,
+      "at": 1793192409.569981,
       "resource_id": "jira:10012",
       "entry": "intent_sending",
       "detail": {
@@ -2359,7 +2359,7 @@
     },
     {
       "seq": 7,
-      "at": 1793191876.7980793,
+      "at": 1793192409.5717816,
       "resource_id": "jira:10012",
       "entry": "intent_delivered",
       "detail": {
@@ -2370,11 +2370,11 @@
     },
     {
       "seq": 8,
-      "at": 1793191876.8034263,
+      "at": 1793192409.5758796,
       "resource_id": "github:acme/orders#7",
       "entry": "event_received",
       "detail": {
-        "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+        "event_id": "d4b00aaaa0c042609ac437ecf706867a",
         "event_kind": "pull_request.opened",
         "provider": "github",
         "state": "RECEIVED"
@@ -2382,18 +2382,18 @@
     },
     {
       "seq": 9,
-      "at": 1793191876.8074088,
+      "at": 1793192409.5791438,
       "resource_id": "github:acme/orders#7",
       "entry": "generation_opened",
       "detail": {
-        "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+        "event_id": "d4b00aaaa0c042609ac437ecf706867a",
         "generation": 1,
         "version_digest": "pr:bfb7713bab159"
       }
     },
     {
       "seq": 10,
-      "at": 1793191876.80944,
+      "at": 1793192409.5803993,
       "resource_id": "github:acme/orders#7",
       "entry": "job_claimed",
       "detail": {
@@ -2403,7 +2403,7 @@
     },
     {
       "seq": 11,
-      "at": 1793191877.1505516,
+      "at": 1793192409.8525476,
       "resource_id": "github:acme/orders#7",
       "entry": "job_analyzed",
       "detail": {
@@ -2413,18 +2413,18 @@
     },
     {
       "seq": 12,
-      "at": 1793191877.1506724,
+      "at": 1793192409.8526838,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_created",
       "detail": {
-        "body_digest": "a197570e475e0a4c",
+        "body_digest": "97fe62071a400730",
         "generation": 1,
         "intent_kind": "result"
       }
     },
     {
       "seq": 13,
-      "at": 1793191877.154869,
+      "at": 1793192409.8565497,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_sending",
       "detail": {
@@ -2434,7 +2434,7 @@
     },
     {
       "seq": 14,
-      "at": 1793191877.1573505,
+      "at": 1793192409.8588717,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_delivered",
       "detail": {
@@ -2445,11 +2445,11 @@
     },
     {
       "seq": 15,
-      "at": 1793191877.1618018,
+      "at": 1793192409.8628666,
       "resource_id": "github:acme/orders#7",
       "entry": "event_received",
       "detail": {
-        "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+        "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
         "event_kind": "pull_request.synchronize",
         "provider": "github",
         "state": "RECEIVED"
@@ -2457,18 +2457,18 @@
     },
     {
       "seq": 16,
-      "at": 1793191877.1651745,
+      "at": 1793192409.865765,
       "resource_id": "github:acme/orders#7",
       "entry": "generation_opened",
       "detail": {
-        "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+        "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
         "generation": 2,
         "version_digest": "pr:06b3ffb5a587f"
       }
     },
     {
       "seq": 17,
-      "at": 1793191877.1652591,
+      "at": 1793192409.8658452,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_created",
       "detail": {
@@ -2479,7 +2479,7 @@
     },
     {
       "seq": 18,
-      "at": 1793191877.170061,
+      "at": 1793192409.869403,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_sending",
       "detail": {
@@ -2489,7 +2489,7 @@
     },
     {
       "seq": 19,
-      "at": 1793191877.1714787,
+      "at": 1793192409.871206,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_retry",
       "detail": {
@@ -2501,7 +2501,7 @@
     },
     {
       "seq": 20,
-      "at": 1793191877.1754391,
+      "at": 1793192409.8743615,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_sending",
       "detail": {
@@ -2511,7 +2511,7 @@
     },
     {
       "seq": 21,
-      "at": 1793191877.177412,
+      "at": 1793192409.8762023,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_delivered",
       "detail": {
@@ -2522,7 +2522,7 @@
     },
     {
       "seq": 22,
-      "at": 1793191877.1807208,
+      "at": 1793192409.878509,
       "resource_id": "github:acme/orders#7",
       "entry": "job_claimed",
       "detail": {
@@ -2532,7 +2532,7 @@
     },
     {
       "seq": 23,
-      "at": 1793191877.5080123,
+      "at": 1793192410.1440809,
       "resource_id": "github:acme/orders#7",
       "entry": "job_analyzed",
       "detail": {
@@ -2542,18 +2542,18 @@
     },
     {
       "seq": 24,
-      "at": 1793191877.5081058,
+      "at": 1793192410.1442842,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_created",
       "detail": {
-        "body_digest": "4db532e1a1716d47",
+        "body_digest": "5b8884cfb728e836",
         "generation": 2,
         "intent_kind": "result"
       }
     },
     {
       "seq": 25,
-      "at": 1793191877.512322,
+      "at": 1793192410.1486523,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_sending",
       "detail": {
@@ -2563,7 +2563,7 @@
     },
     {
       "seq": 26,
-      "at": 1793191877.5143585,
+      "at": 1793192410.1504009,
       "resource_id": "github:acme/orders#7",
       "entry": "intent_delivered",
       "detail": {
@@ -2574,31 +2574,31 @@
     },
     {
       "seq": 27,
-      "at": 1793191877.5189278,
+      "at": 1793192410.154903,
       "resource_id": "github:acme/orders#7",
       "entry": "event_duplicate",
       "detail": {
-        "event_id": "8e4701a5fa124d4cb3d02ea9859b2480",
+        "event_id": "915d46ca8d7b4ec5a40286f9f935e134",
         "provider": "github"
       }
     },
     {
       "seq": 28,
-      "at": 1793191877.520943,
+      "at": 1793192410.156595,
       "resource_id": "github:acme/orders#7",
       "entry": "event_duplicate",
       "detail": {
-        "event_id": "1b5acca0111345c0a7bfec87a39fb02c",
+        "event_id": "d4b00aaaa0c042609ac437ecf706867a",
         "provider": "github"
       }
     },
     {
       "seq": 29,
-      "at": 1793191877.5230255,
+      "at": 1793192410.1583378,
       "resource_id": "github:acme/orders#7",
       "entry": "event_received",
       "detail": {
-        "event_id": "1b9de84ea3d243c894fdf12cff5b13d4",
+        "event_id": "0a7993185be548f18e4b619d167da072",
         "event_kind": "pull_request.opened",
         "provider": "github",
         "state": "RECEIVED"
@@ -2606,21 +2606,21 @@
     },
     {
       "seq": 30,
-      "at": 1793191877.5269043,
+      "at": 1793192410.1610317,
       "resource_id": "github:acme/orders#7",
       "entry": "event_coalesced",
       "detail": {
-        "event_id": "1b9de84ea3d243c894fdf12cff5b13d4",
+        "event_id": "0a7993185be548f18e4b619d167da072",
         "generation": 2
       }
     },
     {
       "seq": 31,
-      "at": 1793191877.5309827,
+      "at": 1793192410.1637876,
       "resource_id": "github:acme/orders#7",
       "entry": "event_received",
       "detail": {
-        "event_id": "14f614ab70db49afa84302c93e1164af",
+        "event_id": "5a0f90c7555040fcbb368da58809c302",
         "event_kind": "issue_comment",
         "provider": "github",
         "state": "IGNORED"
@@ -2628,11 +2628,11 @@
     },
     {
       "seq": 32,
-      "at": 1793191877.5332592,
+      "at": 1793192410.1655362,
       "resource_id": "jira:10012",
       "entry": "event_received",
       "detail": {
-        "event_id": "9eeb5697e65546118f698c5a53f012d8",
+        "event_id": "aeab10cf9b27434c8f7f2b5162163f22",
         "event_kind": "comment_created",
         "provider": "jira",
         "state": "IGNORED"
@@ -2640,11 +2640,11 @@
     },
     {
       "seq": 33,
-      "at": 1793191877.5351243,
+      "at": 1793192410.1672683,
       "resource_id": "jira:10012",
       "entry": "event_received",
       "detail": {
-        "event_id": "613055308022464393778c2de6be02f0",
+        "event_id": "62f064f2b14e4f13afa25eaab60b3f4f",
         "event_kind": "jira:issue_updated",
         "provider": "jira",
         "state": "IGNORED"
@@ -2652,11 +2652,11 @@
     },
     {
       "seq": 34,
-      "at": 1793191877.538708,
+      "at": 1793192410.1706192,
       "resource_id": "jira:10012",
       "entry": "event_received",
       "detail": {
-        "event_id": "d520fd9c2f6943feb479fa4626a6d65c",
+        "event_id": "ff20450b6e2749c187bdf2434ab9fc25",
         "event_kind": "jira:issue_updated",
         "provider": "jira",
         "state": "RECEIVED"
@@ -2664,18 +2664,18 @@
     },
     {
       "seq": 35,
-      "at": 1793191877.542295,
+      "at": 1793192410.1734772,
       "resource_id": "jira:10012",
       "entry": "generation_opened",
       "detail": {
-        "event_id": "d520fd9c2f6943feb479fa4626a6d65c",
+        "event_id": "ff20450b6e2749c187bdf2434ab9fc25",
         "generation": 2,
         "version_digest": "jira:a1a80c761e3"
       }
     },
     {
       "seq": 36,
-      "at": 1793191877.5423708,
+      "at": 1793192410.1735532,
       "resource_id": "jira:10012",
       "entry": "intent_created",
       "detail": {
@@ -2686,7 +2686,7 @@
     },
     {
       "seq": 37,
-      "at": 1793191877.5483446,
+      "at": 1793192410.1773171,
       "resource_id": "jira:10012",
       "entry": "intent_sending",
       "detail": {
@@ -2696,7 +2696,7 @@
     },
     {
       "seq": 38,
-      "at": 1793191877.5501115,
+      "at": 1793192410.1789536,
       "resource_id": "jira:10012",
       "entry": "intent_delivered",
       "detail": {
@@ -2707,7 +2707,7 @@
     },
     {
       "seq": 39,
-      "at": 1793191877.5533235,
+      "at": 1793192410.1812377,
       "resource_id": "jira:10012",
       "entry": "job_claimed",
       "detail": {
@@ -2717,7 +2717,7 @@
     },
     {
       "seq": 40,
-      "at": 1793191877.6445143,
+      "at": 1793192410.262444,
       "resource_id": "jira:10012",
       "entry": "job_analyzed",
       "detail": {
@@ -2727,18 +2727,18 @@
     },
     {
       "seq": 41,
-      "at": 1793191877.6445947,
+      "at": 1793192410.2625284,
       "resource_id": "jira:10012",
       "entry": "intent_created",
       "detail": {
-        "body_digest": "541c94b2116d074f",
+        "body_digest": "dfcab2a3caff831d",
         "generation": 2,
         "intent_kind": "result"
       }
     },
     {
       "seq": 42,
-      "at": 1793191877.6481285,
+      "at": 1793192410.265998,
       "resource_id": "jira:10012",
       "entry": "intent_sending",
       "detail": {
@@ -2748,7 +2748,7 @@
     },
     {
       "seq": 43,
-      "at": 1793191877.6498704,
+      "at": 1793192410.2677991,
       "resource_id": "jira:10012",
       "entry": "intent_delivered",
       "detail": {
@@ -2763,6 +2763,6 @@
     "breaking": "98675b17099a9485c4d26a0ec5bb47de1a10c7ef",
     "fixed": "aea829462668d665e6e612f3ad565b204f652fcf"
   },
-  "code_sha": "4a23d7c54f1128cd6c238f58f944df6c129af035",
+  "code_sha": "7a624ed431ac2c3d7b8488985ca3cdc6e34147c7",
   "installed_version": "NOT_INSTALLED; source checkout and local HTTP stands only"
 }

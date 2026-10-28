@@ -1,3 +1,4 @@
+test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit (tests.service.test_m2_regressions.JiraLinkParsingTest.test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit) ... ok
 test_base_moves_between_analysis_and_publication (tests.service.test_m2_regressions.M2RegressionTest.test_base_moves_between_analysis_and_publication) ... ok
 test_comment_scan_limit_does_not_allow_a_duplicate_create (tests.service.test_m2_regressions.M2RegressionTest.test_comment_scan_limit_does_not_allow_a_duplicate_create) ... ok
 test_correct_installation_and_setup_ping_are_accepted (tests.service.test_m2_regressions.M2RegressionTest.test_correct_installation_and_setup_ping_are_accepted) ... ok
@@ -18,6 +19,6 @@ test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor (tests.ser
 test_wrong_app_installation_is_rejected_before_enqueue (tests.service.test_m2_regressions.M2RegressionTest.test_wrong_app_installation_is_rejected_before_enqueue) ... ok
 
 ----------------------------------------------------------------------
-Ran 18 tests in 13.952s
+Ran 19 tests in 14.492s
 
 OK

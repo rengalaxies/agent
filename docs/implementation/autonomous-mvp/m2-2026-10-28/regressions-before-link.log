@@ -1,0 +1,21 @@
+test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit (tests.service.test_m2_regressions.JiraLinkParsingTest.test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit) ... FAIL
+
+======================================================================
+FAIL: test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit (tests.service.test_m2_regressions.JiraLinkParsingTest.test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m2_regressions.py", line 198, in test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit
+    self.assertEqual(jira_keys(["ORD-12suffix prefix_ORD-13 ORD-14_foo OTHER-1"], ["ORD"]), [])
+AssertionError: Lists differ: ['ORD-12', 'ORD-13', 'ORD-14'] != []
+
+First list contains 3 additional elements.
+First extra element 0:
+'ORD-12'
+
+- ['ORD-12', 'ORD-13', 'ORD-14']
++ []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

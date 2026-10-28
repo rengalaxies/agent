@@ -6,9 +6,9 @@
 
 ## M2 — PARTIAL / LIVE BLOCKED, 28.10.2026
 
-[PR #69](https://github.com/rengalaxies/agent/pull/69), код `4a23d7c54f1128cd6c238f58f944df6c129af035`:
+[PR #69](https://github.com/rengalaxies/agent/pull/69), код `7a624ed431ac2c3d7b8488985ca3cdc6e34147c7`:
 Общий LOCAL набор 857 PASS, runner 152 PASS, box units 46 PASS;
-18 регрессионных/положительных проверок и локальный настоящий core-сценарий 9/9 PASS.
+19 регрессионных/положительных проверок и локальный настоящий core-сценарий 9/9 PASS.
 Это LOCAL, не настоящие endpoints. Гонка GET → изменение → POST/PATCH реально допускает
 устаревшее тело; post-check/reconciliation исправляет его, при outage время не ограничено.
 [Отчёт и evidence](m2-2026-10-28/README.md), [готовый комплект M3](m2-2026-10-28/HANDOFF-M3.md).

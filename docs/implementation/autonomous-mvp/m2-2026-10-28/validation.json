@@ -1,5 +1,5 @@
 {
-  "code_sha": "4a23d7c54f1128cd6c238f58f944df6c129af035",
+  "code_sha": "7a624ed431ac2c3d7b8488985ca3cdc6e34147c7",
   "model": "OFF",
   "checks": [
     {
@@ -8,7 +8,8 @@
       "result": "PASS",
       "tests": 857,
       "machine_seconds": 230.358,
-      "command_log": "full-tests.log"
+      "command_log": "full-tests.log",
+      "code_sha": "4a23d7c54f1128cd6c238f58f944df6c129af035"
     },
     {
       "check": "runner",
@@ -16,7 +17,8 @@
       "result": "PASS",
       "tests": 152,
       "machine_seconds": 145.473,
-      "command_log": "runner-tests.log"
+      "command_log": "runner-tests.log",
+      "code_sha": "4a23d7c54f1128cd6c238f58f944df6c129af035"
     },
     {
       "check": "box_units",
@@ -24,15 +26,25 @@
       "result": "PASS",
       "tests": 46,
       "machine_seconds": 0.377,
-      "command_log": "box-tests.log"
+      "command_log": "box-tests.log",
+      "code_sha": "4a23d7c54f1128cd6c238f58f944df6c129af035"
     },
     {
       "check": "regressions",
       "level": "LOCAL",
       "result": "PASS",
-      "tests": 18,
+      "tests": 19,
       "machine_seconds": 13.952,
-      "command_log": "regressions-after.log"
+      "command_log": "regressions-after.log",
+      "code_sha": "7a624ed431ac2c3d7b8488985ca3cdc6e34147c7"
+    },
+    {
+      "check": "final_targeted_regression_flow_scenario",
+      "level": "LOCAL",
+      "result": "PASS",
+      "code_sha": "7a624ed431ac2c3d7b8488985ca3cdc6e34147c7",
+      "tests": 22,
+      "command_log": "final-targeted-tests.log"
     }
   ],
   "release_reproducible": "PASS (cmp returned 0)",
