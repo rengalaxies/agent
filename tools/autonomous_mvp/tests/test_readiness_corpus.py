@@ -26,9 +26,24 @@ class CorpusShape(unittest.TestCase):
         for relative, text in generate.outputs().items():
             self.assertEqual((BASE / relative).read_bytes().replace(b"\r\n", b"\n"), text.encode("utf-8"), relative)
 
-    def test_committed_manifest_is_current(self):
-        current, value = program.status()
-        self.assertTrue(current, f"manifest stale, recomputed {value}: run the program tool and commit")
+    def test_closed_6r3_manifest_program_and_ledgers_remain_intact(self):
+        # 6-r3's held-out result belongs to its original code. Post-run fixes
+        # must not rewrite the manifest beneath that result.
+        report = program.historical('6-r3')
+        self.assertTrue(report['intact'], report['problems'])
+        self.assertTrue(report['manifest_digest'].startswith('e1c04f17'))
+
+    def test_closed_6r3_is_not_current_after_publication_fixes(self):
+        current, _ = program.status()
+        self.assertFalse(current)
+        # Both readiness CLI and held-out runner require this same status()
+        # gate; preserve its refusal rather than refreshing the frozen evidence.
+        import subprocess
+        import sys
+        check = subprocess.run([sys.executable, '-m', 'tools.autonomous_mvp.readiness.program', '--check'],
+                               capture_output=True, text=True)
+        self.assertNotEqual(check.returncode, 0)
+        self.assertIn('MANIFEST_STALE', check.stderr)
 
     def test_sizes_and_every_family_in_both_splits(self):
         self.assertEqual((len(split("development")), len(split("heldout"))), (22, 70))

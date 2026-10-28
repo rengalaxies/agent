@@ -1,0 +1,47 @@
+[
+  {
+    "model": "openai/gpt-oss-120b",
+    "requests": 11,
+    "transport_ok": 8,
+    "actions": 8,
+    "valid_actions": 8,
+    "full_cycles": 0,
+    "transport_success": 0.7272727272727273,
+    "action_validity": 1.0,
+    "development_allowed": false,
+    "known_cost_micro": 255922,
+    "unknown_usage": 3,
+    "charged_micro": 4148056,
+    "ledger_sha256": "0dfb9209efd4323670e4ddb483ee81b3bca24fde3e1b47f888f5229391984f6a"
+  },
+  {
+    "model": "Qwen/Qwen3-Coder-Next",
+    "requests": 16,
+    "transport_ok": 16,
+    "actions": 16,
+    "valid_actions": 7,
+    "full_cycles": 0,
+    "transport_success": 1.0,
+    "action_validity": 0.4375,
+    "development_allowed": false,
+    "known_cost_micro": 4289398,
+    "unknown_usage": 0,
+    "charged_micro": 4289398,
+    "ledger_sha256": "3f5aca6d27af7eb80881f462ef1a7092c3ab76483c735f4005402231f0639b41"
+  },
+  {
+    "model": "Qwen/Qwen3.6-35B-A3B",
+    "requests": 24,
+    "transport_ok": 24,
+    "actions": 24,
+    "valid_actions": 20,
+    "full_cycles": 1,
+    "transport_success": 1.0,
+    "action_validity": 0.8333333333333334,
+    "development_allowed": false,
+    "known_cost_micro": 21849881,
+    "unknown_usage": 0,
+    "charged_micro": 21849881,
+    "ledger_sha256": "55a417dcef32998b2bc7b9b24f6c8cf8052eed981543db6a1f1c7360b24701b8"
+  }
+]

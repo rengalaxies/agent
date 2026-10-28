@@ -156,7 +156,10 @@ def view_from_result(document, request: dict) -> ResultView:
                          "owner_source": source})
     claim_views = [{"kind": c.kind, "statement": c.statement, "applicability": c.applicability,
                     "uncertainty": c.uncertainty,
-                    "evidence": [_evidence_label(evidence[r]) for r in c.evidence_refs]} for c in result.claims]
+                    "evidence": [_evidence_label(evidence[r]) for r in c.evidence_refs]
+                    + [_evidence_label(evidence[s]) for r in c.evidence_refs
+                       if evidence[r].origin == "model_hypothesis" for s in evidence[r].supporting_refs]}
+                   for c in result.claims]
     paths = []
     for path in result.impact_paths:
         refs = []

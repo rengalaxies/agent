@@ -31,6 +31,7 @@ from agent_graph.output_contracts import dump_document, parse_document
 from .analysis import AnalysisUnavailable
 from .intent import match_intent
 from .jira_impact import jira_result
+from agent_graph.model_result import append_model_hypotheses
 from .qualification import check
 from .runtime_impact import add_runtime_candidates
 
@@ -219,6 +220,7 @@ class CoreAnalyzer:
                                      investigation=investigation,
                                      code_version=self.code_version, constitution_version=self.constitution_version,
                                      started_at=started, seconds=time.monotonic() - clock)
+                result = parse_document(append_model_hypotheses(dump_document(result), graph, context, investigation))
         except GraphError as exc:
             if str(exc) in ("sources_changed_during_scan", "busy"):
                 raise AnalysisUnavailable("source_unavailable") from None

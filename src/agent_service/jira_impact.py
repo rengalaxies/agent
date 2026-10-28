@@ -17,6 +17,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from agent_graph import PROFILE
+from agent_graph.model_result import model_use
 from agent_graph.output_contracts import SCHEMA_VERSION, parse_document
 
 from .envelope import digest
@@ -32,22 +33,6 @@ def _unknown(items, code, subject=None):
         items.append(item)
 
 
-def _model_use(investigation):
-    """ModelUse and Costs of a constitution run; unknown token counts stay None, never zero."""
-    if investigation is None:
-        return None, {"model_calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reserved_micro": None,
-                      "currency": None}
-    usage = [e.get("usage") or {} for e in investigation.get("events", [])]
-    known = all(isinstance(u.get("prompt_tokens"), int) for u in usage)
-    model = {"configuration_id": investigation["configuration_id"], "model": investigation["model"],
-             "protocol": investigation["protocol"]}
-    return model, {"model_calls": len(usage) + sum(d.get("layer") == "transport"
-                                                   for d in investigation.get("diagnostics", [])),
-                   "prompt_tokens": sum(u["prompt_tokens"] for u in usage) if known else None,
-                   "completion_tokens": sum(u["completion_tokens"] for u in usage) if known else None,
-                   "reserved_micro": investigation.get("budget", {}).get("reserved_micro"), "currency": None}
-
-
 def jira_result(request, query, impacts: list[dict], *, context: dict, intent, code_version: str,
                 constitution_version: str, started_at: str, seconds: float, investigation=None):
     """``impacts`` holds ``query.impact()`` for every operation of ``intent`` (``intent.Intent``).
@@ -56,8 +41,8 @@ def jira_result(request, query, impacts: list[dict], *, context: dict, intent, c
     (a contract change of a named service, no operation named) shows the same
     consumers as candidates only, PARTIAL; an intent with confidence ``none``
     names no consumer at all. A model run (``investigation``) is recorded as
-    model use and costs. Its hypotheses are not rendered here yet; they are
-    flagged as unverified.
+    model use and costs. The analyzer appends authorized current hypotheses
+    separately; they never change the deterministic intent or impact verdict.
     """
     claims, checks, unknowns = [], [], [{"code": "jira_without_diff", "subject": None}]
     affected, paths, relationships, evidence = {}, [], {}, {}
@@ -116,7 +101,7 @@ def jira_result(request, query, impacts: list[dict], *, context: dict, intent, c
     sources = {(s["source_kind"], s["source_id"]): {k: s[k] for k in ("source_kind", "source_id", "freshness")}
                for impact in impacts for s in impact["sources"]}
     graph_version = impacts[0]["graph_version"] if impacts else request.graph_version
-    model, costs = _model_use(investigation)
+    model, costs = model_use(investigation)
     if investigation and investigation.get("hypothesis_ids"):
         _unknown(unknowns, "model_hypothesis_unverified")
     named = ", ".join(intent.services)

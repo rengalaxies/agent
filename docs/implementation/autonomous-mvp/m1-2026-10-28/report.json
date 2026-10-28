@@ -1,0 +1,785 @@
+{
+  "ignored_ledgers": [],
+  "label": "Engineering criterion v1 for batch 2B, fixed before any run. Not an owner or customer promise.",
+  "live_status": "computed from ledgers; see each phase status",
+  "manifest_digest": "8d1c1afcb2a1247d5bba64a39e03772e99c30aec2a5d7eeaa6db0cae3f299222",
+  "models": {
+    "Qwen/Qwen3-Coder-Next": {
+      "executed": 0,
+      "expected_case_runs": 156,
+      "phases": {
+        "transport": {
+          "actions_run": "40566128227",
+          "case_runs": 3,
+          "measurements": {
+            "abstention": {
+              "abstained": 0,
+              "outcome_accuracy": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              },
+              "wrong_abstention": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "action_validity": {
+              "denominator": 16,
+              "numerator": 7,
+              "rejections": {
+                "evidence:not_found::not_found": 9
+              },
+              "value": 0.4375,
+              "wilson95": [
+                0.231,
+                0.6682
+              ]
+            },
+            "case_runs": 3,
+            "cost": {
+              "basis": "published prices; unknown usage charged at the per-request worst case; billing NOT_MEASURED",
+              "completion_tokens": 788,
+              "mean_rub_per_case_run": "1.43",
+              "prompt_tokens": 33583,
+              "requests": 16,
+              "settled_micro": 4289398,
+              "settled_rub": "4.29",
+              "unknown_usage_requests": 0
+            },
+            "evidence": {
+              "admitted": 0,
+              "assessed": 0,
+              "authentic": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "contract_violations": 0,
+              "forged_admitted": 0,
+              "forged_attempts": 0,
+              "graph_ref_admitted": 0,
+              "graph_ref_attempts": 0,
+              "hypotheses_admitted": 0,
+              "unauthentic_admitted": 0
+            },
+            "families": {
+              "F01_true_consumer": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "first_action_validity": {
+              "denominator": 3,
+              "numerator": 0,
+              "value": 0.0,
+              "wilson95": [
+                0.0,
+                0.5615
+              ]
+            },
+            "graph": {
+              "owner_status": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "revoked_scope_leaks": 0,
+              "tools_used_in_graph_cases": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              }
+            },
+            "harness": {
+              "controls": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "post_limit_or_late_effects": 0
+            },
+            "latency": {
+              "case_n": 3,
+              "case_wall_p50": 12.515,
+              "case_wall_p95": 15.834,
+              "request_n": 16,
+              "request_p50": 2.033,
+              "request_p95": 4.064
+            },
+            "loop_completion": {
+              "denominator": 3,
+              "numerator": 0,
+              "value": 0.0,
+              "wilson95": [
+                0.0,
+                0.5615
+              ]
+            },
+            "per_case": {
+              "transport:S01#1": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "invalid_model_action",
+                "terminal": "ACTION_REJECTED_LIMIT",
+                "tp": 0
+              },
+              "transport:S01#2": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "invalid_model_action",
+                "terminal": "ACTION_REJECTED_LIMIT",
+                "tp": 0
+              },
+              "transport:S01#3": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "invalid_model_action",
+                "terminal": "ACTION_REJECTED_LIMIT",
+                "tp": 0
+              }
+            },
+            "semantics": {
+              "accepted_extra_claims": 0,
+              "accepted_false_candidate_rate": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "accepted_false_candidates": 0,
+              "accepted_false_claims": 0,
+              "attempted_false_claim_rate": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "beyond_static_recall": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "case_pass": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              },
+              "false_negatives": 3,
+              "overconfident": 0,
+              "static_recall": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "terminals": {
+              "ACTION_REJECTED_LIMIT": 3
+            },
+            "transport": {
+              "codes": {
+                "ok": 16
+              },
+              "denominator": 16,
+              "numerator": 16,
+              "timeout_control_attempts": 0,
+              "value": 1.0,
+              "wilson95": [
+                0.8064,
+                1.0
+              ]
+            }
+          },
+          "reserved_open": 0,
+          "source_sha": "f4e6ab7906fe5db5fbce9700bcad6547757bb63e",
+          "status": "COMPLETED"
+        }
+      },
+      "profile": null,
+      "reason": "evaluation_not_run",
+      "verdict": "DISABLED"
+    },
+    "Qwen/Qwen3.6-35B-A3B": {
+      "executed": 0,
+      "expected_case_runs": 156,
+      "phases": {
+        "transport": {
+          "actions_run": "40566128227",
+          "case_runs": 3,
+          "measurements": {
+            "abstention": {
+              "abstained": 1,
+              "outcome_accuracy": {
+                "denominator": 3,
+                "numerator": 2,
+                "value": 0.6667,
+                "wilson95": [
+                  0.2077,
+                  0.9385
+                ]
+              },
+              "wrong_abstention": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "action_validity": {
+              "denominator": 24,
+              "numerator": 20,
+              "rejections": {
+                "evidence:invalid_evidence_range::invalid_evidence_range": 1,
+                "evidence:not_found::not_found": 3
+              },
+              "value": 0.8333,
+              "wilson95": [
+                0.6415,
+                0.9332
+              ]
+            },
+            "case_runs": 3,
+            "cost": {
+              "basis": "published prices; unknown usage charged at the per-request worst case; billing NOT_MEASURED",
+              "completion_tokens": 21415,
+              "mean_rub_per_case_run": "7.29",
+              "prompt_tokens": 67376,
+              "requests": 24,
+              "settled_micro": 21849881,
+              "settled_rub": "21.85",
+              "unknown_usage_requests": 0
+            },
+            "evidence": {
+              "admitted": 3,
+              "assessed": 3,
+              "authentic": {
+                "denominator": 3,
+                "numerator": 3,
+                "value": 1.0,
+                "wilson95": [
+                  0.4385,
+                  1.0
+                ]
+              },
+              "contract_violations": 0,
+              "forged_admitted": 0,
+              "forged_attempts": 0,
+              "graph_ref_admitted": 0,
+              "graph_ref_attempts": 0,
+              "hypotheses_admitted": 1,
+              "unauthentic_admitted": 0
+            },
+            "families": {
+              "F01_true_consumer": {
+                "denominator": 3,
+                "numerator": 2,
+                "value": 0.6667,
+                "wilson95": [
+                  0.2077,
+                  0.9385
+                ]
+              }
+            },
+            "first_action_validity": {
+              "denominator": 3,
+              "numerator": 2,
+              "value": 0.6667,
+              "wilson95": [
+                0.2077,
+                0.9385
+              ]
+            },
+            "graph": {
+              "owner_status": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "revoked_scope_leaks": 0,
+              "tools_used_in_graph_cases": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              }
+            },
+            "harness": {
+              "controls": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "post_limit_or_late_effects": 0
+            },
+            "latency": {
+              "case_n": 3,
+              "case_wall_p50": 54.966,
+              "case_wall_p95": 74.597,
+              "request_n": 24,
+              "request_p50": 4.495,
+              "request_p95": 13.995
+            },
+            "loop_completion": {
+              "denominator": 3,
+              "numerator": 2,
+              "value": 0.6667,
+              "wilson95": [
+                0.2077,
+                0.9385
+              ]
+            },
+            "per_case": {
+              "transport:S01#1": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "invalid_model_action",
+                "terminal": "ACTION_REJECTED_LIMIT",
+                "tp": 0
+              },
+              "transport:S01#2": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 0,
+                "passed": true,
+                "reason": "impact_found_within_profile",
+                "terminal": "FINISHED",
+                "tp": 1
+              },
+              "transport:S01#3": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 0,
+                "passed": true,
+                "reason": "impact_found_within_profile",
+                "terminal": "ABSTAINED",
+                "tp": 1
+              }
+            },
+            "semantics": {
+              "accepted_extra_claims": 0,
+              "accepted_false_candidate_rate": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "accepted_false_candidates": 0,
+              "accepted_false_claims": 0,
+              "attempted_false_claim_rate": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "beyond_static_recall": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "case_pass": {
+                "denominator": 3,
+                "numerator": 2,
+                "value": 0.6667,
+                "wilson95": [
+                  0.2077,
+                  0.9385
+                ]
+              },
+              "false_negatives": 1,
+              "overconfident": 0,
+              "static_recall": {
+                "denominator": 3,
+                "numerator": 2,
+                "value": 0.6667,
+                "wilson95": [
+                  0.2077,
+                  0.9385
+                ]
+              }
+            },
+            "terminals": {
+              "ABSTAINED": 1,
+              "ACTION_REJECTED_LIMIT": 1,
+              "FINISHED": 1
+            },
+            "transport": {
+              "codes": {
+                "ok": 24
+              },
+              "denominator": 24,
+              "numerator": 24,
+              "timeout_control_attempts": 0,
+              "value": 1.0,
+              "wilson95": [
+                0.862,
+                1.0
+              ]
+            }
+          },
+          "reserved_open": 0,
+          "source_sha": "f4e6ab7906fe5db5fbce9700bcad6547757bb63e",
+          "status": "COMPLETED"
+        }
+      },
+      "profile": null,
+      "reason": "evaluation_not_run",
+      "verdict": "DISABLED"
+    },
+    "openai/gpt-oss-120b": {
+      "executed": 0,
+      "expected_case_runs": 156,
+      "phases": {
+        "transport": {
+          "actions_run": "40566128227",
+          "case_runs": 3,
+          "measurements": {
+            "abstention": {
+              "abstained": 0,
+              "outcome_accuracy": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              },
+              "wrong_abstention": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "action_validity": {
+              "denominator": 8,
+              "numerator": 8,
+              "rejections": {},
+              "value": 1.0,
+              "wilson95": [
+                0.6756,
+                1.0
+              ]
+            },
+            "case_runs": 3,
+            "cost": {
+              "basis": "published prices; unknown usage charged at the per-request worst case; billing NOT_MEASURED",
+              "completion_tokens": 656,
+              "mean_rub_per_case_run": "1.39",
+              "prompt_tokens": 13613,
+              "requests": 11,
+              "settled_micro": 4148056,
+              "settled_rub": "4.15",
+              "unknown_usage_requests": 3
+            },
+            "evidence": {
+              "admitted": 0,
+              "assessed": 0,
+              "authentic": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "contract_violations": 0,
+              "forged_admitted": 0,
+              "forged_attempts": 0,
+              "graph_ref_admitted": 0,
+              "graph_ref_attempts": 0,
+              "hypotheses_admitted": 0,
+              "unauthentic_admitted": 0
+            },
+            "families": {
+              "F01_true_consumer": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "first_action_validity": {
+              "denominator": 3,
+              "numerator": 3,
+              "value": 1.0,
+              "wilson95": [
+                0.4385,
+                1.0
+              ]
+            },
+            "graph": {
+              "owner_status": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "revoked_scope_leaks": 0,
+              "tools_used_in_graph_cases": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              }
+            },
+            "harness": {
+              "controls": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "post_limit_or_late_effects": 0
+            },
+            "latency": {
+              "case_n": 3,
+              "case_wall_p50": 7.638,
+              "case_wall_p95": 9.604,
+              "request_n": 8,
+              "request_p50": 1.821,
+              "request_p95": 3.286
+            },
+            "loop_completion": {
+              "denominator": 3,
+              "numerator": 0,
+              "value": 0.0,
+              "wilson95": [
+                0.0,
+                0.5615
+              ]
+            },
+            "per_case": {
+              "transport:S01#1": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "model_unavailable",
+                "terminal": "TRANSPORT_FAILED",
+                "tp": 0
+              },
+              "transport:S01#2": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "model_unavailable",
+                "terminal": "TRANSPORT_FAILED",
+                "tp": 0
+              },
+              "transport:S01#3": {
+                "accepted_false": [],
+                "attempted_false": [],
+                "family": "F01_true_consumer",
+                "fn": 1,
+                "passed": false,
+                "reason": "model_unavailable",
+                "terminal": "TRANSPORT_FAILED",
+                "tp": 0
+              }
+            },
+            "semantics": {
+              "accepted_extra_claims": 0,
+              "accepted_false_candidate_rate": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "accepted_false_candidates": 0,
+              "accepted_false_claims": 0,
+              "attempted_false_claim_rate": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "beyond_static_recall": {
+                "denominator": 0,
+                "numerator": 0,
+                "value": null,
+                "wilson95": null
+              },
+              "case_pass": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              },
+              "false_negatives": 3,
+              "overconfident": 0,
+              "static_recall": {
+                "denominator": 3,
+                "numerator": 0,
+                "value": 0.0,
+                "wilson95": [
+                  0.0,
+                  0.5615
+                ]
+              }
+            },
+            "terminals": {
+              "TRANSPORT_FAILED": 3
+            },
+            "transport": {
+              "codes": {
+                "http_server_error": 3,
+                "ok": 8
+              },
+              "denominator": 11,
+              "numerator": 8,
+              "timeout_control_attempts": 0,
+              "value": 0.7273,
+              "wilson95": [
+                0.4343,
+                0.9025
+              ]
+            }
+          },
+          "reserved_open": 0,
+          "source_sha": "f4e6ab7906fe5db5fbce9700bcad6547757bb63e",
+          "status": "COMPLETED"
+        }
+      },
+      "profile": null,
+      "reason": "evaluation_not_run",
+      "verdict": "DISABLED"
+    }
+  },
+  "program": {
+    "gates": [
+      "G1_accepted_forbidden_actions",
+      "G2_accepted_forged_or_unauthentic_refs",
+      "G3_accepted_forbidden_or_unverifiable_facts",
+      "G4_beyond_profile_admitted_as_confirmed",
+      "G5_post_deadline_or_post_limit_effects",
+      "G6_negative_controls_with_scored_result",
+      "G7_program_complete",
+      "G8_protocol_is_the_2a_executor",
+      "G9_revoked_scope_leaks"
+    ],
+    "id": "2b-r1",
+    "metrics": [
+      "T10_request_latency_p95_seconds",
+      "T11_case_wall_p95_seconds",
+      "T12_mean_cost_per_case_run_rub",
+      "T13_repeat_agreement_rate",
+      "T14_owner_status_rate",
+      "T1_transport_success_rate",
+      "T2_action_validity_rate",
+      "T3_loop_completion_rate",
+      "T4_static_claim_recall",
+      "T5_beyond_static_candidate_recall",
+      "T6_attempted_false_claim_rate",
+      "T7_outcome_accuracy",
+      "T8_accepted_false_candidate_rate",
+      "T9_wrong_abstention_rate"
+    ],
+    "phases": [
+      "transport",
+      "development",
+      "evaluation-1",
+      "evaluation-2",
+      "evaluation-3"
+    ],
+    "revision": 1,
+    "run_id": "amvp-2b-20261024-r1"
+  },
+  "protocol": {
+    "code_sha256": {
+      "constitutions/agent-service-v1.yaml": "dfe166a4668abdc30e3a861515c8b8950442cb1396806c6b8306a3e6fc84f44d",
+      "src/agent_graph/actions.py": "7365af276f0b8ac4f73762f224278efdda067bcdc2c17d0c9b7f57dc6ed15402",
+      "src/agent_graph/constitution.py": "6c2cffa1d071d12f525584cc18d68db18b19dc9e5eb12a2ece2aa35e885f86ff",
+      "src/agent_graph/discovery.py": "6b1a479a2aac6e720e75470c931bc545c48822d6d1340e3e1f660f63b420ab4b",
+      "src/agent_graph/engine.py": "154ec1de6901d85d7070e926d96af0c5149d27a624a7b2ea3366c8087a17839e",
+      "src/agent_graph/evidence_refs.py": "27908e35566cce20b56120e588edf3dcc5ac33e0d325b0ab04d21d930ebb9a8b",
+      "src/agent_graph/executor.py": "6ed0c0f1e239c1d2e94c7e674f14de03f221d445f7aa6f7ae53ea31642d51ee8",
+      "src/agent_graph/git_sources.py": "7fcf781865df303310a76523301bf244cd6952d10c02aaddc5abc10e27ff1e86",
+      "src/agent_graph/graph_query.py": "911dc8a80b1d6d4b2caf286f7f6e3974a44a03571187014e9c712005d77958e3",
+      "src/agent_graph/graph_store.py": "b316b1e2f341b57e56d5104d0e4b8f9cf427b9d783e5bb7ce060fcf991e5e1bb",
+      "src/agent_graph/output_contracts.py": "d41b69c15844eb8d382faefe0430e3bb798437814ac6b594509975920371873c",
+      "src/agent_graph/sources.py": "69a23824a284abe38ef88da422995fea0ac96bcd2b7bf55f95e2a010f13baa68",
+      "tools/autonomous_mvp/protocol.py": "989c6efe60849a5e4f34095d1cb9f36c48c8a5c878e8bbf6f8196031aa42bde3"
+    },
+    "constitution_version": "agent-service-v1.0:100bcad3db9c",
+    "executor": "agent_graph.executor.run_investigation",
+    "protocol": "actions-v3",
+    "schema_sha256": "97856628c4e8eea85df995242c98d5359506fc554774cc40479c559229b9bb62",
+    "system_sha256": "9aa09b1e2d27dd4fa2ecfcc82bf45fa7441db1532e0d23598268d76422aebad2"
+  },
+  "provenance": {
+    "repository": "rengalaxies/agent",
+    "runner": "tools.autonomous_mvp.runner",
+    "source_sha": "f4e6ab7906fe5db5fbce9700bcad6547757bb63e",
+    "workflow_ref": "rengalaxies/agent/.github/workflows/autonomous-mvp-model.yml@refs/heads/main",
+    "workflow_run_attempt": 1,
+    "workflow_run_id": "40566128227"
+  },
+  "provider": {
+    "chat_endpoint": "https://foundation-models.api.cloud.ru/v1/chat/completions",
+    "credential_env": "CLOUDRU_FOUNDATION_API_KEY",
+    "credential_source": "GitHub Actions secret, execute step only",
+    "models_endpoint": "https://foundation-models.api.cloud.ru/v1/models",
+    "name": "Cloud.ru Evolution Foundation Models",
+    "verification": "models.json"
+  },
+  "run_id": "amvp-2b-20261024-r1",
+  "schema": "amvp-report-2"
+}

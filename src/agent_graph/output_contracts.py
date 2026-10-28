@@ -504,7 +504,8 @@ class AnalysisResult(_Document):
                 + [r for d in self.deltas for r in d.evidence_refs]
                 + [r for f in self.findings for r in f.evidence_refs]
                 + [r for g in self.gaps for r in g.evidence_refs]
-                + [r for x in self.relationships for r in x.evidence_refs])
+                + [r for x in self.relationships for r in x.evidence_refs]
+                + [r for e in self.evidence if e.origin == "model_hypothesis" for r in e.supporting_refs])
         if any(r not in evidence for r in refs):
             raise ValueError("unknown_evidence_ref")
         if any(r not in relationships for a in self.affected for r in a.relationship_refs) or any(
