@@ -37,7 +37,8 @@ def holds(row, keys, policy, view):
     configuration; its own view, which includes both, must then match."""
     bases = row.get("cited_bases") or []
     config = config_digest(policy, {b["repository"] for b in bases})
-    same_config = row["cited_config"] == config if row.get("cited_config") else row.get("cited_view") == view
+    same_config = (row["cited_config"] == config if row.get("cited_config")
+                   else row.get("cited_view") == view and row.get("cited_profile") == PROFILE)
     return bool(bases) and same_config and all(
         keys.get((b["repository"], b["path"])) == b["sha256"] for b in bases)
 
@@ -215,7 +216,8 @@ class Graph:
                            and x["proposal"]["key"] == row["proposal"]["key"]
                            and x["proposal"]["statement"] != row["proposal"]["statement"]
                            and x["id"] in holding and row["id"] in holding and x["id"] not in superseded]
-            public = {k: v for k, v in row.items() if k not in ("cited_bases", "cited_config", "cited_view")}
+            public = {k: v for k, v in row.items()
+                      if k not in ("cited_bases", "cited_config", "cited_view", "cited_profile")}
             output.append({**public, "status": "SUPERSEDED" if row["id"] in superseded else fresh["status"],
                            "freshness": fresh,
                            "conflicts_with": conflicting})

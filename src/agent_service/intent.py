@@ -57,6 +57,9 @@ DOCUMENTATION = re.compile(r"\b(readme|docs?|documentation|document(?:ing)?|desc
 CHANGE_ACTION = re.compile(
     r"\b(chang\w*|remov\w*|delet\w*|renam\w*|reduc\w*|increas\w*|"
     r"измен\w*|поменя\w*|удал\w*|переимен\w*|уменьш\w*|увелич\w*)\b|(?:->|→)", re.I)
+DOCUMENTATION_EDIT = re.compile(
+    r"\b(?:change|edit|update|revise|измен\w*|обнов\w*)\s+(?:the\s+)?"
+    r"(?:readme|docs?|documentation|документац\w*)\b", re.I)
 
 
 @dataclass
@@ -82,7 +85,9 @@ def _has_contract_word(clause: str) -> bool:
 
 
 def _documentation_only(clause: str) -> bool:
-    return bool(DOCUMENTATION.search(clause)) and not CHANGE_ACTION.search(clause)
+    # A verb targeting documentation is not an API action. Other actions in
+    # the same clause remain visible ("Change README and reduce GET ...").
+    return bool(DOCUMENTATION.search(clause)) and not CHANGE_ACTION.search(DOCUMENTATION_EDIT.sub("", clause))
 
 
 def contract_wording(texts: list[str]) -> str:

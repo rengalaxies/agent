@@ -1,0 +1,41 @@
+test_legacy_knowledge_without_config_digest_checks_its_original_profile (tests.graph.test_m4_a_scenarios.M4AScenarios.test_legacy_knowledge_without_config_digest_checks_its_original_profile) ... FAIL
+test_persisted_code_is_stale_before_profile_rebuild_and_history_survives (tests.graph.test_m4_a_scenarios.M4AScenarios.test_persisted_code_is_stale_before_profile_rebuild_and_history_survives) ... FAIL
+test_untagged_persisted_code_is_stale_until_revalidated (tests.graph.test_m4_a_scenarios.M4AScenarios.test_untagged_persisted_code_is_stale_until_revalidated) ... FAIL
+
+======================================================================
+FAIL: test_legacy_knowledge_without_config_digest_checks_its_original_profile (tests.graph.test_m4_a_scenarios.M4AScenarios.test_legacy_knowledge_without_config_digest_checks_its_original_profile)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_scenarios.py", line 135, in test_legacy_knowledge_without_config_digest_checks_its_original_profile
+    self.assertEqual(rows[proposal["id"]]["status"], expected)
+AssertionError: 'CURRENT' != 'STALE'
+- CURRENT
++ STALE
+
+
+======================================================================
+FAIL: test_persisted_code_is_stale_before_profile_rebuild_and_history_survives (tests.graph.test_m4_a_scenarios.M4AScenarios.test_persisted_code_is_stale_before_profile_rebuild_and_history_survives)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_scenarios.py", line 148, in test_persisted_code_is_stale_before_profile_rebuild_and_history_survives
+    self.assertEqual({query.basis_freshness(b)["status"] for b in previous}, {"STALE"})
+AssertionError: Items in the first set but not the second:
+'CURRENT'
+Items in the second set but not the first:
+'STALE'
+
+======================================================================
+FAIL: test_untagged_persisted_code_is_stale_until_revalidated (tests.graph.test_m4_a_scenarios.M4AScenarios.test_untagged_persisted_code_is_stale_until_revalidated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_scenarios.py", line 166, in test_untagged_persisted_code_is_stale_until_revalidated
+    self.assertEqual({query.basis_freshness(b)["status"] for b in gs.bases(query.scope)}, {"STALE"})
+AssertionError: Items in the first set but not the second:
+'CURRENT'
+Items in the second set but not the first:
+'STALE'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.413s
+
+FAILED (failures=3)

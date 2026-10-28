@@ -8,6 +8,8 @@ from unittest.mock import patch
 
 from agent_graph.contracts import GraphError
 from agent_graph.engine import Graph
+from agent_graph.graph_query import GraphQuery
+from agent_graph.graph_store import GraphStore
 from tests.graph.m4_a_fixture import Fixture
 
 
@@ -114,6 +116,54 @@ class M4AScenarios(unittest.TestCase):
              patch("agent_graph.sources.PROFILE", "http-requests-previous"):
             old = f.context()
         self.assertEqual(f.graph.freshness(old)["status"], "STALE")
+
+    def test_legacy_knowledge_without_config_digest_checks_its_original_profile(self):
+        f = self.fixture
+        for profile, expected in (("http-requests-4", "STALE"), ("http-requests-5", "CURRENT")):
+            with self.subTest(profile=profile), patch("agent_graph.engine.PROFILE", profile), \
+                 patch("agent_graph.sources.PROFILE", profile):
+                old = f.context()
+                source = next(s for s in old["sources"].values() if s["repository"] == "dispatch"
+                              and s["path"] == "client.py")
+                proposal = f.graph.propose(old["id"], dict(key=profile, kind="hypothesis", statement=profile,
+                    citations=[dict(source_id=source["id"], start_line=1, end_line=1,
+                                    quote=source["text"].splitlines()[0])]))
+                # Legacy schema-1 proposals have no stored configuration digest.
+                f.store.db.execute("UPDATE proposal_bases SET config=NULL WHERE id=?", (proposal["id"],))
+            current = f.context()
+            rows = {p["id"]: p for p in f.graph.proposals(current)}
+            self.assertEqual(rows[proposal["id"]]["status"], expected)
+            self.assertEqual(f.graph.context(old["id"]), old)
+
+    def test_persisted_code_is_stale_before_profile_rebuild_and_history_survives(self):
+        f = self.fixture
+        gs = GraphStore(f.store)
+        with patch("agent_graph.engine.PROFILE", "http-requests-4"), \
+             patch("agent_graph.sources.PROFILE", "http-requests-4"):
+            old = f.context()
+        gs.sync_code(old)
+        query = GraphQuery.for_policy(gs, f.policy)
+        previous = [b for b in gs.bases(query.scope) if b["origin"] == "code"]
+        self.assertTrue(previous)
+        self.assertEqual({query.basis_freshness(b)["status"] for b in previous}, {"STALE"})
+        gs.sync_code(f.context())
+        query = GraphQuery.for_policy(gs, f.policy)
+        history = {b["id"]: b for b in gs.bases(query.scope)}
+        self.assertTrue(all(history[b["id"]]["closed_version"] is not None for b in previous))
+        active = [b for b in history.values() if b["closed_version"] is None]
+        self.assertEqual({query.basis_freshness(b)["status"] for b in active}, {"CURRENT"})
+        self.assertEqual(f.graph.context(old["id"]), old)
+
+    def test_untagged_persisted_code_is_stale_until_revalidated(self):
+        f = self.fixture
+        gs = GraphStore(f.store)
+        gs.sync_code(f.context())
+        for id, raw in f.store.db.execute("SELECT id,data FROM graph_bases WHERE origin='code'").fetchall():
+            data = json.loads(raw)
+            data.pop("profile", None)  # representation written by profile 4
+            f.store.db.execute("UPDATE graph_bases SET data=? WHERE id=?", (json.dumps(data), id))
+        query = GraphQuery.for_policy(gs, f.policy)
+        self.assertEqual({query.basis_freshness(b)["status"] for b in gs.bases(query.scope)}, {"STALE"})
 
 
 if __name__ == "__main__":

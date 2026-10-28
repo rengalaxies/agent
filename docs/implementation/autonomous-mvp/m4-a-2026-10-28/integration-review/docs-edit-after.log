@@ -1,0 +1,15 @@
+test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route (tests.service.test_m4_a_intent.M4AIntentRegressions.test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route) ... ok
+test_an_explicit_change_alongside_documentation_is_preserved (tests.service.test_m4_a_intent.M4AIntentRegressions.test_an_explicit_change_alongside_documentation_is_preserved) ... ok
+test_api_change_after_documentation_edit_is_still_explicit (tests.service.test_m4_a_intent.M4AIntentRegressions.test_api_change_after_documentation_edit_is_still_explicit) ... ok
+test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) ... ok
+test_editing_documentation_is_not_changing_the_documented_operation (tests.service.test_m4_a_intent.M4AIntentRegressions.test_editing_documentation_is_not_changing_the_documented_operation) ... ok
+test_explicit_per_clause_service_targets_stay_distinct (tests.service.test_m4_a_intent.M4AIntentRegressions.test_explicit_per_clause_service_targets_stay_distinct) ... ok
+test_literal_placeholder_like_text_is_not_an_operation_or_an_exception (tests.service.test_m4_a_intent.M4AIntentRegressions.test_literal_placeholder_like_text_is_not_an_operation_or_an_exception) ... ok
+test_negation_does_not_swallow_the_next_explicit_and_change_clause (tests.service.test_m4_a_intent.M4AIntentRegressions.test_negation_does_not_swallow_the_next_explicit_and_change_clause) ... ok
+test_russian_future_negation_is_not_a_positive_route_mention (tests.service.test_m4_a_intent.M4AIntentRegressions.test_russian_future_negation_is_not_a_positive_route_mention) ... ok
+test_service_scope_cannot_be_borrowed_from_an_unrelated_operation (tests.service.test_m4_a_intent.M4AIntentRegressions.test_service_scope_cannot_be_borrowed_from_an_unrelated_operation) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.003s
+
+OK
