@@ -187,5 +187,14 @@ class M2RegressionTest(ServiceCase):
         self.assertIn("provider_rejected", {n["kind"] for n in self.service.store.notices()})
 
 
+class JiraLinkParsingTest(unittest.TestCase):
+    def test_only_complete_allowlisted_keys_are_links_and_multiple_keys_stay_explicit(self):
+        from agent_service.connectors.github import jira_keys
+
+        self.assertEqual(jira_keys(["ORD-12suffix prefix_ORD-13 ORD-14_foo OTHER-1"], ["ORD"]), [])
+        self.assertEqual(jira_keys(["ORD-12 / ORD-13", "feature/ORD-12-fix"], ["ORD"]),
+                         ["ORD-12", "ORD-13"])
+
+
 if __name__ == "__main__":
     unittest.main()

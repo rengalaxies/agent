@@ -38,7 +38,7 @@ def jira_keys(texts: list[str], project_keys: list[str]) -> list[str]:
     allowed = {p.upper() for p in project_keys}
     found = set()
     for text in texts:
-        for project, number in re.findall(r"(?<![A-Za-z0-9])([A-Z][A-Z0-9_]{1,9})-([1-9][0-9]{0,8})(?![0-9])",
+        for project, number in re.findall(r"(?<![A-Za-z0-9_])([A-Z][A-Z0-9_]{1,9})-([1-9][0-9]{0,8})(?![A-Za-z0-9_])",
                                           text or ""):
             if project in allowed:
                 found.add(f"{project}-{number}")
