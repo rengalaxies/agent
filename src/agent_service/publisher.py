@@ -52,8 +52,62 @@ def _evidence(items: list[dict]) -> str:
                      for e in items) or "основания не указаны"
 
 
-def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, gaps: list[str]) -> dict:
-    """что затронуто → почему/путь → что проверить → неизвестные/свежесть → версии."""
+def _items(result, key) -> list[dict]:
+    value = result.get(key) if isinstance(result, dict) else None
+    return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
+
+
+def _field(item: dict, key: str) -> dict:
+    value = item.get(key)
+    return value if isinstance(value, dict) else {}
+
+
+def _risks(result) -> dict[str, str]:
+    """Deltas and findings of a raw result, keyed so that two generations compare.
+
+    Raw: the previous result was stored by whatever release analysed it, so shapes
+    are checked here instead of trusted.
+    """
+    risks = {}
+    for d in _items(result, "deltas"):
+        op = _field(d, "operation")
+        if op.get("service") and d.get("code"):
+            name = f"{op['service']} {op.get('method')} {op.get('route')}"
+            risks[f"delta {name} {d['code']}"] = f"изменение {name}: {d['code']} {d.get('before')} -> {d.get('after')}"
+    for f in _items(result, "findings"):
+        consumer = _field(f, "consumer").get("service")
+        if consumer and f.get("code"):
+            risks[f"finding {consumer} {f['code']}"] = f"{f['code']} у {consumer}"
+    return risks
+
+
+# Only these outcomes looked at the change and can say a risk is no longer found.
+# FAILED, incompatible, unclear intent and other abstentions did not.
+TRANSITION_OUTCOMES = {"USEFUL", "PARTIAL", "ABSTAINED:no_supported_delta"}
+
+
+def since_previous(previous: tuple[int, str, dict] | None, current, view: ResultView,
+                   resource_version: str) -> list[str]:
+    """What the last published result reported and the current one no longer does."""
+    if previous is None or not isinstance(current, dict) or not view.compatible:
+        return []
+    if view.status not in TRANSITION_OUTCOMES and f"{view.status}:{view.reason_code}" not in TRANSITION_OUTCOMES:
+        return []
+    generation, version, result = previous
+    if version == resource_version:
+        # Same resource, new analyzer (profile change): a missing finding is not a fix.
+        return []
+    now = _risks(current)
+    gone = [text for key, text in _risks(result).items() if key not in now]
+    if not gone:
+        return []
+    return [f"Поколение {generation}: {text}. В текущей версии не обнаружено." for text in gone] + [
+        "Это отсутствие находки в поддерживаемом профиле, а не выполненная проверка: тесты не запускались."]
+
+
+def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, gaps: list[str],
+               earlier: list[str] = ()) -> dict:
+    """что изменилось → что затронуто → почему/путь → что проверить → неизвестные/свежесть → версии."""
     if not view.compatible:
         title = "Результат анализа несовместим с сервисом"
         status = f"Результат не показан: {view.reason_code}. Это не означает отсутствие влияния."
@@ -84,11 +138,20 @@ def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, 
     versions += [f"снимок {repo}: {sha[:12]}" for repo, sha in sorted(view.versions.get("snapshots", {}).items())]
     if not view.compatible:
         affected, paths = [], []
+    checks = list(view.checks)
+    if view.compatible and view.status == "ABSTAINED":
+        # An empty section reads as missing data; say what the abstention means instead.
+        affected = affected or [f"Потребители не названы ({view.reason_code}). "
+                                "Это не доказывает отсутствие влияния."]
+        paths = paths or ["Путь влияния не построен."]
+        checks = checks or ["Изменения вне поддерживаемого профиля сервис не классифицирует: "
+                            "их проверяет обычный review."]
     versions.append(f"Статус: {view.status}, код: {view.reason_code}")
-    return {"title": title, "status_line": status, "sections": [
+    sections = [{"title": "Что изменилось с прошлого вывода", "items": list(earlier)}] if earlier else []
+    return {"title": title, "status_line": status, "sections": sections + [
         {"title": "Что может затронуть", "items": affected},
         {"title": "Почему и через какой путь", "items": paths},
-        {"title": "Что проверить", "items": list(view.checks)},
+        {"title": "Что проверить", "items": checks},
         {"title": "Неизвестные и свежесть", "items": unknowns},
         {"title": "Версии", "items": versions},
     ]}

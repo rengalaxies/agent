@@ -69,8 +69,11 @@ def run_scenario(root):
         fixed_body, fixed_id = send_pr()
         bench.drain()
         [fixed] = bench.pr_comments()
+        # The disappeared risk is named only in "what changed since the previous result".
+        earlier, _, current = fixed["body"].partition("**Что может затронуть**")
         check("fixed_head_replaces_risk_in_same_comment", fixed["id"] == comment_id
-              and "POSSIBLE_TRUNCATION" not in fixed["body"] and "no_supported_delta" in fixed["body"])
+              and "POSSIBLE_TRUNCATION" not in current and "no_supported_delta" in current
+              and "POSSIBLE_TRUNCATION у reporting. В текущей версии не обнаружено." in earlier)
         check("transient_api_failure_recovers", any(h["entry"] == "intent_retry"
               and h["detail"].get("reason") == "provider_unavailable" for h in bench.service.store.history(rid)))
         observe("fixed")

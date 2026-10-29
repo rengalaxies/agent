@@ -122,6 +122,19 @@ class CoreAnalyzer:
                 "model_configuration_id": self.policy.model.configuration_id
                 if self.qualification.ok else None}
 
+    def analysis_basis(self) -> str:
+        """Everything a result depends on besides the resource and the graph data.
+
+        graph_version is left out: every push to a default branch moves it, and
+        re-analysing all open resources on each push would be churn, not freshness.
+        """
+        from agent_graph import PROFILE
+
+        from .envelope import digest
+
+        settings = {k: v for k, v in self.request_settings().items() if k != "graph_version"}
+        return digest({**settings, "profile": PROFILE})
+
     def model_status(self):
         """For doctor and notices: whether the model path is on, and why not."""
         return self.qualification
