@@ -68,6 +68,24 @@ class ReconcileTest(ServiceCase):
         self.drain()
         self.assertEqual(len(self.analyzer.requests), before)
 
+    def test_new_basis_keeps_a_queued_new_version_and_its_stale_notice(self):
+        # Review finding: revoking here dropped the pending "result is stale" notice.
+        self.deliver_github(self.pr_payload(HEAD1, action="opened"))
+        self.drain()
+        store, rid = self.service.store, "github:acme/orders#7"
+        store.apply_snapshot(resource_id=rid, provider="github", kind="pr", version="v-new", snapshot={},
+                             event_id="push-not-yet-analysed", stale_notice=lambda g: ("stale", "d" * 64, "m"))
+        self.assertEqual(store.reopen_open_resources(reason="analysis_basis_changed", event_id="basis",
+                                                     providers={"github", "jira"}), 0)
+        self.assertEqual([j["state"] for j in store.jobs(rid)][-1], "QUEUED")
+        self.assertIn(("stale", "PENDING"), [(i["kind"], i["state"]) for i in store.intents(rid)])
+
+    def test_resource_of_a_removed_provider_is_not_reopened(self):
+        self.deliver_github(self.pr_payload(HEAD1, action="opened"))
+        self.drain()
+        self.assertEqual(self.service.store.reopen_open_resources(reason="analysis_basis_changed",
+                                                                  event_id="basis", providers={"jira"}), 0)
+
     def test_closed_pull_request_is_not_reanalysed_on_a_new_basis(self):
         self.deliver_github(self.pr_payload(HEAD1, action="opened"))
         self.drain()

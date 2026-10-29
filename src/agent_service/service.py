@@ -265,7 +265,8 @@ class Service:
                 graph is None or any(r.get("error") or r.get("status") == "UNAVAILABLE" for r in graph)):
             return 0
         reopened = self.store.reopen_open_resources(reason="analysis_basis_changed",
-                                                    event_id=f"analysis_basis:{current[:16]}")
+                                                    event_id=f"analysis_basis:{current[:16]}",
+                                                    providers=set(self.connectors))
         self.store.checkpoint("analysis_basis", current)
         return reopened
 

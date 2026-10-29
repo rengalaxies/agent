@@ -242,16 +242,23 @@ class ServiceStore:
                                     body_digest, marker, now)
             return {"action": "new_generation", "generation": generation, "job_id": job_id}
 
-    def reopen_open_resources(self, *, reason: str, event_id: str) -> int:
+    def reopen_open_resources(self, *, reason: str, event_id: str, providers) -> int:
         """Re-analyse every open resource at its unchanged version: a new generation each.
 
         Unlike a new version no stale notice is queued: the published result still
         belongs to the current version and the new result replaces it under the same marker.
+        Skipped: resources whose current job is still QUEUED or RUNNING (the running code
+        analyses them anyway; revoking would also drop their pending stale notice) and
+        resources of providers that are no longer configured.
         """
         now = self.clock()
         with self._tx() as c:
-            rows = c.execute("SELECT resource_id, generation, version FROM resources "
-                             "WHERE closed=0 AND version IS NOT NULL").fetchall()
+            rows = c.execute(
+                "SELECT r.resource_id, r.generation, r.version, r.provider FROM resources r "
+                "WHERE r.closed=0 AND r.version IS NOT NULL AND NOT EXISTS (SELECT 1 FROM jobs j "
+                "WHERE j.resource_id=r.resource_id AND j.generation=r.generation "
+                "AND j.state IN ('QUEUED','RUNNING'))").fetchall()
+            rows = [row for row in rows if row["provider"] in providers]
             for row in rows:
                 resource_id, generation = row["resource_id"], row["generation"] + 1
                 self._revoke(c, resource_id, generation, reason)
