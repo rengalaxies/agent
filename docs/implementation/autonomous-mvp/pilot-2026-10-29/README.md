@@ -17,7 +17,7 @@ M3 после 28.10 нет). ВМ, сеть, host key, release14e, pin, installe
 | [#74](https://github.com/rengalaxies/agent/pull/74) | Защищённый workflow проверки App-аутентификации без ВМ, отзыв токена | `bde4cf9` | CI actionlint/config PASS; LOCAL fake GitHub PASS; настоящий запуск NOT_RUN |
 | [#75](https://github.com/rengalaxies/agent/pull/75) | R2: «что изменилось с прошлого вывода», понятное воздержание, локальный показ | `f1c0885` | LOCAL 167/168 service-тестов (1 Windows-блокировка файла, не связана); CI см. PR |
 | [#76](https://github.com/rengalaxies/agent/pull/76) | Пересчёт открытых PR и задач после смены основы анализа | `d0e6aed` | CI Core 865 + 152 PASS, box PASS |
-| этот PR | R3: предложение, презентация 29.10, подключение и выход, протокол, независимая проверка, индекс | см. PR | рендер 8 слайдов PowerPoint |
+| [#77](https://github.com/rengalaxies/agent/pull/77) | R3: предложение, презентация 29.10, подключение и выход, протокол, независимая проверка, индекс | см. PR | рендер 8 слайдов PowerPoint |
 
 Все три кодовых PR отделены от #72 и не содержат его кода. Они не меняют release,
 pin, installer, схемы SQLite и публичные контракты.
