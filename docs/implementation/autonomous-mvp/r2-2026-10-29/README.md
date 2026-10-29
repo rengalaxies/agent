@@ -1,4 +1,4 @@
-# R2: пользовательский путь и локальный показ — 29.10.2026
+# R2: пользовательский путь и локальный показ, 29.10.2026
 
 **LOCAL PASS. Не LIVE, не INSTALLED, не измерение пользы. MODEL OFF.**
 
@@ -6,9 +6,9 @@
 
 Обследование существующих экранов:
 
-- У автономного сервиса два пользовательских экрана. Первый — комментарий в PR и задаче Jira
+- У автономного сервиса два пользовательских экрана. Первый: комментарий в PR и задаче Jira
   (`src/agent_service/publisher.py`, рендер в `connectors/github.py` и `connectors/jira.py`).
-  Второй — HTML-страница графа по `GET /graph` под status token (`agent_graph/graph_view.py`).
+  Второй: HTML-страница графа по `GET /graph` под status token (`agent_graph/graph_view.py`).
 - `ui/index.html`, `services/*demo*.py`, `stand/` и `src/agent_graph_demo` относятся к прежним
   демо (datamesh_release_protocol, A/B/D/E и agent_graph_demo). Они **не** UI текущего релиза
   и в этой пачке не менялись и не показываются.
@@ -53,7 +53,7 @@ python examples/pilot_orders_reporting/demo.py work/demo
 
 Драйвер собирает авторские репозитории `prepare.py` (те же SHA, что в private pilot repos),
 поднимает настоящий `CoreAnalyzer`, `Service`, FastAPI-приёмник с проверкой подписей и
-SQLite state. GitHub и Jira — локальные стенды `agent_service.stands` на 127.0.0.1.
+SQLite state. GitHub и Jira заменены локальными стендами `agent_service.stands` на 127.0.0.1.
 Состояние лежит в `work/demo/state` и переживает перезапуск сервиса внутри сценария.
 
 | Шаг | Событие | Что видит пользователь |
@@ -65,12 +65,12 @@ SQLite state. GitHub и Jira — локальные стенды `agent_service.
 | 5 | перезапуск на том же state + reconcile | Ни одного нового комментария, ID прежние |
 
 `demo.json` содержит тела комментариев, delivery IDs, версии кода/профиля и пять проверок.
-`site/index.html` — статическая страница без скриптов: легенда статусов, шаги, проверки,
+`site/index.html` это статическая страница без скриптов: легенда статусов, шаги, проверки,
 источники и `graph.html` (та же страница, что отдаёт `/graph`). Её снимок из этого прогона
 лежит в [site/](site/index.html).
 
 Проверено: `tests/service/test_pilot_demo.py` запускает весь сценарий и требует 5/5 PASS.
-Страница открыта во встроенном браузере (1280×1000, светлая тема), снимки — в
+Страница открыта во встроенном браузере (1280×1000, светлая тема), снимки лежат в
 [screenshots/](screenshots/). Видео не записывалось.
 
 | Снимок | Что показывает |
