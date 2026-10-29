@@ -127,6 +127,19 @@ class MainLineMemoryTest(GraphCase):
         self.assertEqual({a["service"]["service"] for a in second["affected"]}, {"reporting", "archive"})
         self.assertEqual(sorted(e["id"] for e in second["evidence"]), sorted(e["id"] for e in first["evidence"]))
 
+    def test_default_branch_push_moves_the_graph_without_reanalysing_open_resources(self):
+        # The analysis basis must exclude graph_version: otherwise every push to main
+        # would re-analyse and re-edit every open comment on the next reconciliation.
+        self.bench.push("pr-7")
+        self.bench.drain()
+        self.bench.service.reconcile()  # records the basis (one re-analysis after install)
+        self.bench.drain()
+        version = self.bench.analyzer.query().version
+        self.bench.github.branches[("acme/orders", "main")] = self.bench.stand.head("orders", "readme-only")
+        result = self.bench.service.reconcile()
+        self.assertGreater(self.bench.analyzer.query().version, version)
+        self.assertEqual(result["reanalysed"], 0)
+
     def test_pr_head_never_becomes_graph_memory(self):
         self.bench.push("pr-7")
         self.bench.drain()
