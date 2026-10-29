@@ -1,0 +1,24 @@
+<!doctype html><html lang=ru><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Граф зависимостей</title><style>body{font:14px/1.45 system-ui,sans-serif;margin:16px;max-width:1100px;color:#1d1d1f;background:#fff}
+h1{font-size:20px}h2{font-size:17px;margin-top:28px}h3{font-size:15px;margin:18px 0 6px}
+table{border-collapse:collapse;width:100%;margin:6px 0}td,th{border:1px solid #ddd;padding:4px 6px;
+text-align:left;vertical-align:top}th{background:#f5f5f7}.b{display:inline-block;padding:0 6px;border-radius:8px;
+background:#eef;margin-right:4px}.warn{color:#a40}.muted{color:#666}nav a{margin-right:10px}
+@media (prefers-color-scheme:dark){body{background:#111;color:#eee}th{background:#222}td,th{border-color:#444}
+.b{background:#334}.muted{color:#aaa}.warn{color:#f96}}</style></head><body>
+<h1>Граф зависимостей: agent-pilot / test</h1>
+<nav>Окружение: <a href="?environment=test"><b>test</b></a></nav>
+<p class="muted">Версия графа graph-10. Связей: 5, активных оснований: 5, закрытых: 0. Показано только то, что разрешено текущими правами.</p>
+<h2>Источники</h2><table><tr><th>Тип</th><th>Источник</th><th>Состояние</th><th>Версия</th><th>Проверено</th><th>Свежесть</th></tr>
+<tr><td>git</td><td>orders</td><td>OK</td><td>ce09f3db25ee</td><td>2026-10-29T16:03:37.094Z</td><td><span>свежее</span></td></tr>
+<tr><td>git</td><td>reporting</td><td>OK</td><td>e7fd9c911fbe</td><td>2026-10-29T16:03:37.094Z</td><td><span>свежее</span></td></tr>
+<tr><td>ownership</td><td>installation_mapping</td><td>OK</td><td>pilot-ownership-1</td><td>2026-10-29T16:03:37.100Z</td><td><span>свежее</span></td></tr>
+</table><h2>Операции и кто от них зависит</h2>
+<h3>orders GET /orders</h3><p>Владелец orders: team-orders <span class="muted">(installation_mapping)</span></p>
+<p>Объявление (действует): <span class="b">код</span>orders/api.py:8 @ce09f3db25ee</p>
+<table><tr><th>Путь влияния</th><th>Статус</th><th>Свежесть</th><th>Команда потребителя</th><th>Основания</th></tr>
+<tr><td>reporting -&gt; orders GET /orders</td><td>действует</td><td><span>свежее</span></td><td>team-reporting <span class="muted">(installation_mapping)</span></td><td><span class="b">код</span>reporting/client.py:8 (load_day) @e7fd9c911fbe</td></tr>
+</table>
+<h3>reporting GET /orders</h3><p>Владелец reporting: team-reporting <span class="muted">(installation_mapping)</span></p>
+<p>Объявление (действует): <span class="b">код</span>reporting/audit_api.py:8 @e7fd9c911fbe</p>
+<p class="muted">Потребители не найдены в разрешённых источниках. Это не доказывает их отсутствия.</p>
+</body></html>

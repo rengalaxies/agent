@@ -15,7 +15,8 @@ from .analysis import AnalysisUnavailable, build_request, view_from_result
 from .connectors.base import ResourceNotAllowed, Snapshot, WebhookRejected
 from .envelope import EventEnvelope, canonical, digest, iso
 from .http import AuthError, ClientError, ConnectorError, NotFound, RateLimited
-from .publisher import AUTH_RETRY_SECONDS, Publisher, doc_digest, failure_doc, resource_marker, result_doc, stale_doc
+from .publisher import (AUTH_RETRY_SECONDS, Publisher, doc_digest, failure_doc, resource_marker, result_doc,
+                        since_previous, stale_doc)
 from .queue import ServiceStore
 
 TRIGGER = {"pr": "pr", "jira": "jira"}
@@ -203,8 +204,10 @@ class Service:
             self.store.requeue_job(job, "newer_event_pending", count_attempt=False)
             return "analyze:deferred"
         view = view_from_result(result, request)
+        earlier = since_previous(self.store.published_result(job["resource_id"], job["generation"]), result,
+                                 view, job["resource_version"])
         doc = result_doc(view, snapshot=job["snapshot"], kind=snapshot.kind, generation=job["generation"],
-                         gaps=prepared.gaps)
+                         gaps=prepared.gaps, earlier=earlier)
         intent = {"kind": "result", "result_digest": digest(result) if isinstance(result, dict) else None,
                   "body": canonical(doc), "body_digest": doc_digest(doc),
                   "marker": resource_marker(self.installation_id, job["resource_id"])}

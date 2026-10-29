@@ -71,7 +71,9 @@ class AmbiguousJiraTest(BenchCase):
         self.bench.drain()
         [text] = self.bench.jira_texts()
         self.assertIn("intent_unclear", text)
-        self.assertEqual(_section(text, "Что может затронуть", "Почему и через какой путь").strip(), "нет данных")
+        affected = _section(text, "Что может затронуть", "Почему и через какой путь")
+        self.assertIn("Потребители не названы (intent_unclear)", affected)
+        self.assertNotIn("reporting", affected)
 
 
 class UnavailableCommitTest(BenchCase):
