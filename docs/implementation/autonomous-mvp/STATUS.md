@@ -1,5 +1,22 @@
 # Состояние автономного MVP
 
+## M3 checkpoint — 28.10.2026: HOST STOPPED / SUPPORT INVESTIGATION
+
+Позднее владелец сообщил: после попытки перезагрузки ВМ остановлена, инцидент передан поддержке Cloud.ru. Причина не установлена; это не reboot-приёмка M3. Операции с хостом до завершения разбора не выполняются. Ниже — предшествующие наблюдения, не текущая доступность. После восстановления обязательны новая сверка identity/host key, inventory и backup перед установкой.
+
+Main проверен на `d5e25fde5927eca99e574b2ac82be80cd5adfe16`, новых коммитов нет.
+Опубликованный архив M1+M2 скачан и проверен локально: SHA256 `95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013`,
+manifest VERIFIED, code `14e65e8affe3b64a9ceb647f537e8af6ff7a1138`. Повторного выпуска нет.
+В авторизованной Cloud.ru console подтверждены существующая dm-p1-ui/VM ID/FIP,
+Ubuntu 24.04, 2 vCPU/4 ГБ/30 ГБ. Это параметры облака, не свободные ресурсы ОС.
+TCP22 доступен; предъявленный ED25519 host key не совпал с прежним console pin.
+До независимой сверки вход не выполняется; локального SSH ключа dm-p1-ui не найдено.
+Полный inventory, backup, box plan/install, loaded/status/logs, restart/reboot,
+backup/restore/update/rollback **NOT_RUN на Cloud.ru**. Модель OFF, демо и SG не менялись.
+Настоящие App/Jira/HTTPS не готовы; минимальный box требует GitHub credentials даже без Jira.
+M2 остаётся PARTIAL / LIVE BLOCKED. [Отчёт, evidence и откат](m3-2026-10-28/README.md).
+
+
 Задание владельца от 24.10.2026: пачки 2А, 2Б, 3, 4, 5А, 5Б и 6. Порядок
 интеграции `2А → 3 → 4 → 5А → 5Б → 6`, 2Б после 2А. Решения и их причины
 записаны в [DECISIONS.md](DECISIONS.md). Подробности каждой пачки лежат в

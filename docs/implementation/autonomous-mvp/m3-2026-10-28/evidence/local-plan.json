@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-28T18:01:44.846977+00:00",
+  "scope": "LOCAL macOS configuration rehearsal using released CLI and separate prefix; NOT target box plan; no Linux bootstrap/venv/systemd installation",
+  "config": "box.candidate.yaml; identifiers are placeholders",
+  "exit_code": 1,
+  "result": {
+    "plan": [
+      "релиз agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312 (commit 14e65e8affe3) будет установлен",
+      "конфигурация: docs/implementation/autonomous-mvp/m3-2026-10-28/box.candidate.yaml → /Users/user/Documents/ChatGPT/ВКР/agent/work/m3-plan-prefix/etc/agent-service/box.yaml; сгенерированные service.json, policy.json этого релиза в /Users/user/Documents/ChatGPT/ВКР/agent/work/m3-plan-prefix/etc/agent-service/generated/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+      "Git-зеркала: обновить 0, клонировать 2",
+      "проверки источников: GitHub (2 репозиториев), Jira",
+      "начальный граф по веткам по умолчанию; запуск сервиса process на 127.0.0.1:8091; offline smoke установленного релиза",
+      "публикация: dry_run; модель: выключена"
+    ],
+    "problems": [
+      "git Git-154) слишком старый, нужен 2.31 или новее.",
+      "Нет файла секретов /Users/user/Documents/ChatGPT/ВКР/agent/work/m3-plan-prefix/etc/agent-service/secrets.env. Создайте его (права 600) со строками: GITHUB_WEBHOOK_SECRET=..., GITHUB_APP_PRIVATE_KEY_PATH=..., JIRA_WEBHOOK_SECRET=..., JIRA_API_TOKEN=..., JIRA_EMAIL=...",
+      "Порт 127.0.0.1:8091 занят другим процессом."
+    ]
+  }
+}
