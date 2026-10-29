@@ -65,7 +65,8 @@ jobs:
           printf '%s\n' "$APP_PRIVATE_KEY" > "$GITHUB_APP_PRIVATE_KEY_PATH"
           unset APP_PRIVATE_KEY
           # The probe never verifies webhooks; the connector only needs a value to construct.
-          export GITHUB_WEBHOOK_SECRET="$(openssl rand -hex 32)"
+          GITHUB_WEBHOOK_SECRET="$(openssl rand -hex 32)"
+          export GITHUB_WEBHOOK_SECRET
           status=0
           python docs/implementation/autonomous-mvp/m2-a-2026-10-28/probe_connections.py \
             --box-config "$BOX_CONFIG" --output work/app-identity.json || status=$?
