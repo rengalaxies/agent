@@ -275,6 +275,14 @@ class ServiceStore:
             return [self._dict(r) for r in c.execute(
                 "SELECT * FROM jobs WHERE resource_id=? ORDER BY generation", (resource_id,))]
 
+    def published_result(self, resource_id: str, generation: int):
+        """(generation, result) last delivered as current before ``generation``, or None."""
+        with self._connect() as c:
+            row = c.execute("SELECT generation, result FROM jobs WHERE resource_id=? AND generation<? "
+                            "AND state='DONE' AND result IS NOT NULL ORDER BY generation DESC LIMIT 1",
+                            (resource_id, generation)).fetchone()
+        return (row["generation"], json.loads(row["result"])) if row else None
+
     def claim_job(self, worker: str):
         now = self.clock()
         with self._tx() as c:

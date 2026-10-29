@@ -52,8 +52,35 @@ def _evidence(items: list[dict]) -> str:
                      for e in items) or "основания не указаны"
 
 
-def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, gaps: list[str]) -> dict:
-    """что затронуто → почему/путь → что проверить → неизвестные/свежесть → версии."""
+def _risks(result: dict) -> dict[str, str]:
+    """Deltas and findings of a raw result, keyed so that two generations compare."""
+    risks = {}
+    for d in result.get("deltas") or []:
+        op = d.get("operation") or {}
+        name = f"{op.get('service')} {op.get('method')} {op.get('route')}"
+        risks[f"delta {name} {d.get('code')}"] = f"изменение {name}: {d.get('code')} {d.get('before')} -> {d.get('after')}"
+    for f in result.get("findings") or []:
+        consumer = (f.get("consumer") or {}).get("service")
+        risks[f"finding {consumer} {f.get('code')}"] = f"{f.get('code')} у {consumer}"
+    return risks
+
+
+def since_previous(previous: tuple[int, dict] | None, current) -> list[str]:
+    """What the last published result reported and the current one no longer does."""
+    if previous is None or not isinstance(current, dict):
+        return []
+    generation, result = previous
+    now = _risks(current)
+    gone = [text for key, text in _risks(result).items() if key not in now]
+    if not gone:
+        return []
+    return [f"Поколение {generation}: {text}. В текущей версии не обнаружено." for text in gone] + [
+        "Это отсутствие находки в поддерживаемом профиле, а не выполненная проверка: тесты не запускались."]
+
+
+def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, gaps: list[str],
+               earlier: list[str] = ()) -> dict:
+    """что изменилось → что затронуто → почему/путь → что проверить → неизвестные/свежесть → версии."""
     if not view.compatible:
         title = "Результат анализа несовместим с сервисом"
         status = f"Результат не показан: {view.reason_code}. Это не означает отсутствие влияния."
@@ -84,11 +111,20 @@ def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, 
     versions += [f"снимок {repo}: {sha[:12]}" for repo, sha in sorted(view.versions.get("snapshots", {}).items())]
     if not view.compatible:
         affected, paths = [], []
+    checks = list(view.checks)
+    if view.compatible and view.status == "ABSTAINED":
+        # An empty section reads as missing data; say what the abstention means instead.
+        affected = affected or [f"Потребители не названы ({view.reason_code}). "
+                                "Это не доказывает отсутствие влияния."]
+        paths = paths or ["Путь влияния не построен."]
+        checks = checks or ["Изменения вне поддерживаемого профиля сервис не классифицирует: "
+                            "их проверяет обычный review."]
     versions.append(f"Статус: {view.status}, код: {view.reason_code}")
-    return {"title": title, "status_line": status, "sections": [
+    sections = [{"title": "Что изменилось с прошлого вывода", "items": list(earlier)}] if earlier else []
+    return {"title": title, "status_line": status, "sections": sections + [
         {"title": "Что может затронуть", "items": affected},
         {"title": "Почему и через какой путь", "items": paths},
-        {"title": "Что проверить", "items": list(view.checks)},
+        {"title": "Что проверить", "items": checks},
         {"title": "Неизвестные и свежесть", "items": unknowns},
         {"title": "Версии", "items": versions},
     ]}
