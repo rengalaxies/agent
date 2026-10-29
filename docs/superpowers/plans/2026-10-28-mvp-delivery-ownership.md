@@ -105,3 +105,25 @@ run 40693796501: release + install-published SUCCESS, опубликованны
 и установлен на CI. Актуальный pin — [#70](https://github.com/rengalaxies/agent/pull/70); LOCAL pin tests 58 PASS, 1 skip без Terraform. Не повторять выпуск этого
 тега; M3 нужен новый plan вместо старого pending f4e6ab7 и фактическая установка.
 M2 **PARTIAL / LIVE BLOCKED**, MODEL OFF; ВМ и настоящие App/Jira/HTTPS не проверены.
+
+## Checkpoint программы закрытого пилота — 29.10.2026
+
+Исполнитель Claude (аккаунт swan-Dive) по поручению Daniil от 29.10. Строки выше не
+переписаны. Индекс результата: `docs/implementation/autonomous-mvp/pilot-2026-10-29/README.md`.
+
+| Пачка | Подэтап | Статус |
+|---|---|---|
+| M2 | Понятный переход после исправления, воздержание без «нет данных» (#75) | DONE LOCAL, слит `731fa80` |
+| M2 | Проверка App-аутентификации без ВМ (#74) | PREPARED; настоящий запуск BLOCKED без PEM в environment |
+| M2 | LIVE GitHub/Jira | BLOCKED |
+| M3 | Новый релиз с #72 | NOT_RUN: нет ack M3 |
+| M3 | Установка на хост | BLOCKED: хост остановлен, разбор у поддержки |
+| M4 | Переход profile 4 → 5 на существующем state | DONE LOCAL с #76; на установке NOT_RUN |
+| M4 | Независимый проект | PREPARED: запрос данных и шаблон; NOT_RUN |
+| M5 | Локальный показ с настоящим backend (#75) | DONE LOCAL |
+| M5 | Протокол пилота | PREPARED; пороги ждут согласования владельца |
+| M5 | Измерение пользы | UNVERIFIED |
+| M6 | Предложение, колода PPTX/PDF, подключение и выход | DONE как материалы; условия пилота не утверждены |
+
+#74, #76, #75 слиты 29.10 с подтверждения владельца (main `731fa80`). Следующий шаг:
+#72 после ack M3; затем релиз и pin. MODEL OFF.
