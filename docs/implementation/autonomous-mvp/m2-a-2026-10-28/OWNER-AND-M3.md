@@ -24,6 +24,29 @@ App ID 5515659 и installation ID 176298402 получены из UI. Текущ
 Это внешние шаги, которые невозможно выполнить имеющимися инструментами/правами;
 они не заменяют уже выполненные исправления, тесты и подготовку источников.
 
+## Проверка App-аутентификации без ВМ (29.10.2026)
+
+Token exchange не требует хоста M3. Для него подготовлен workflow
+[agent-pilot-app-probe.yml](../../../../.github/workflows/agent-pilot-app-probe.yml):
+только `workflow_dispatch`, только `main` на точном SHA, без повторов, environment
+`agent-pilot-app`. PEM попадает в файл 0600 в `RUNNER_TEMP` и удаляется после шага.
+Probe читает `/app`, installation, selected repositories, bot и две ветки, затем
+отзывает installation token через `DELETE /installation/token`, не дожидаясь часа.
+Артефакт содержит только IDs, permissions, список repos и request IDs. Webhook secret
+для probe генерируется на месте случайным, он не проверяет подписи.
+
+LOCAL: полный путь JWT → token → 6 чтений → revoke прошёл против одноразового
+fake GitHub на loopback (PASS, 8 запросов, revoke 204). Настоящий запуск NOT_RUN:
+в репозитории нет секрета с PEM этой App (имена секретов проверены, значения не читались).
+
+Одно действие владельца: в Settings → Environments создать `agent-pilot-app`
+с required reviewer (Daniil) и deployment branch rule `main`, добавить в него
+environment secret `AGENT_PILOT_APP_PRIVATE_KEY` с содержимым PEM App 5515659.
+Если PEM не сохранён, выпустить новый ключ в настройках App и удалить старый после проверки.
+После merge этого workflow запуск: Actions → Agent pilot App identity probe →
+`expected_main_sha` = текущий main. Тот же PEM затем доставляется на M3 по runbook;
+environment secret не читается обратно и не копируется на хост.
+
 ## Воспроизведение заполнения repos (уже выполнено)
 
 В checkout этого PR выполнить:

@@ -1,0 +1,81 @@
+name: Agent pilot App identity probe (manual, accepted main only)
+
+# Read-only GitHub App authentication check for the dedicated pilot App.
+# Dispatch only: PR code never receives the PEM. The job checks out main at the
+# exact SHA given by the owner, refuses reruns, writes the PEM to a 0600 file in
+# RUNNER_TEMP, revokes the installation token at the end and uploads selected
+# metadata only (IDs, permissions, selected repositories, request IDs).
+# The environment must have a required reviewer and a main-only branch rule.
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        type: string
+        required: true
+        description: Exact accepted main SHA (40 hex)
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-pilot-app-probe
+  cancel-in-progress: false
+
+env:
+  PYTHONPATH: '.:src'
+  EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+  BOX_CONFIG: docs/implementation/autonomous-mvp/m2-a-2026-10-28/box.github-only.yaml
+
+jobs:
+  probe:
+    if: github.repository == 'rengalaxies/agent' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: agent-pilot-app
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main code
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_MAIN_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install probe dependencies
+        run: python -m pip install 'pydantic>=2.10,<3' 'PyYAML>=6.0,<7' 'cryptography>=46,<47'
+      - name: App JWT, installation token, scoped reads, token revocation
+        shell: bash
+        env:
+          APP_PRIVATE_KEY: ${{ secrets.AGENT_PILOT_APP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p work
+          if [ -z "$APP_PRIVATE_KEY" ]; then
+            echo '{"status": "BLOCKED", "reason": "AGENT_PILOT_APP_PRIVATE_KEY is not set in environment agent-pilot-app"}' > work/app-identity.json
+            exit 1
+          fi
+          export GITHUB_APP_PRIVATE_KEY_PATH="$RUNNER_TEMP/app.pem"
+          printf '%s\n' "$APP_PRIVATE_KEY" > "$GITHUB_APP_PRIVATE_KEY_PATH"
+          unset APP_PRIVATE_KEY
+          # The probe never verifies webhooks; the connector only needs a value to construct.
+          GITHUB_WEBHOOK_SECRET="$(openssl rand -hex 32)"
+          export GITHUB_WEBHOOK_SECRET
+          status=0
+          python docs/implementation/autonomous-mvp/m2-a-2026-10-28/probe_connections.py \
+            --box-config "$BOX_CONFIG" --output work/app-identity.json || status=$?
+          rm -f "$GITHUB_APP_PRIVATE_KEY_PATH"
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent-pilot-app-identity
+          path: work/app-identity.json
+          if-no-files-found: warn
+          retention-days: 30

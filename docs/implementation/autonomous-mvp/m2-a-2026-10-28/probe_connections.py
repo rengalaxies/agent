@@ -32,7 +32,7 @@ def probe(path):
     def get(name, call, summarize, verify):
         try:
             response = call()
-            data = response.json()
+            data = response.json() if response.body else {}
             record = {"check": name, "status": "PASS" if verify(data) else "FAIL",
                       "http_status": response.status, "metadata": summarize(data),
                       "request_id": next((response.headers[k] for k in
@@ -83,6 +83,10 @@ def probe(path):
             query={"projectKey": p, "permissions": ",".join(permissions)}),
             lambda d: {k: d.get("permissions", {}).get(k, {}).get("havePermission") for k in permissions},
             lambda d: all(d.get("permissions", {}).get(k, {}).get("havePermission") is True for k in permissions))
+    # Shortest token life: revoke the installation token instead of letting it live its hour.
+    if gh.auth._token:
+        get("revoke_installation_token", lambda: gh._call("DELETE", "/installation/token"),
+            lambda d: {}, lambda d: True)
     return {"level": "REAL_API_READ_ONLY", "auth": "dedicated GitHub App installation"
                 + (" + Jira Basic API token" if jira else " (Jira NOT_RUN)"),
             "scope": "github_and_jira" if jira else "github_only",
