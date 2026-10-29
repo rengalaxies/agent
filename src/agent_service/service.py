@@ -243,7 +243,31 @@ class Service:
                     added += self._synthetic(provider, resource["resource_id"],
                                              f"reconcile:{resource['resource_id']}:absent:{int(started)}")
             self.store.checkpoint(name, str(started))
-        return {"recovered": recovered, "revived": revived, "enqueued": added, "graph": self.reconcile_graph()}
+        graph = self.reconcile_graph()
+        return {"recovered": recovered, "revived": revived, "enqueued": added, "graph": graph,
+                "reanalysed": self.reanalyse_on_new_basis(graph)}
+
+    def reanalyse_on_new_basis(self, graph) -> int:
+        """A new analysis basis (extractor profile, constitution, view) re-analyses open resources.
+
+        Their versions did not change, so ingestion alone would leave the old basis'
+        results published indefinitely. An unrecorded basis counts as new: an upgraded
+        installation re-analyses once. Waits for a clean graph reconciliation, so the new
+        basis is analysed on rebuilt graph bases.
+        """
+        basis = getattr(self.analyzer, "analysis_basis", None)
+        if basis is None:
+            return 0
+        current = basis()
+        if self.store.checkpoint("analysis_basis") == current:
+            return 0
+        if getattr(self.analyzer, "reconcile_graph", None) is not None and "github" in self.connectors and (
+                graph is None or any(r.get("error") or r.get("status") == "UNAVAILABLE" for r in graph)):
+            return 0
+        reopened = self.store.reopen_open_resources(reason="analysis_basis_changed",
+                                                    event_id=f"analysis_basis:{current[:16]}")
+        self.store.checkpoint("analysis_basis", current)
+        return reopened
 
     def reconcile_graph(self):
         """Periodic graph reconciliation: code at the default branches, runtime windows, ownership."""

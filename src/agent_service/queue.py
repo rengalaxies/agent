@@ -233,11 +233,7 @@ class ServiceStore:
             self._revoke(c, resource_id, generation, "superseded_by_new_version")
             c.execute("UPDATE resources SET generation=?, version=?, snapshot=?, closed=0, updated_at=? "
                       "WHERE resource_id=?", (generation, version, canonical(snapshot), now, resource_id))
-            job_id = uuid.uuid4().hex
-            c.execute("INSERT INTO jobs(job_id, resource_id, generation, resource_version, event_id, state, "
-                      "not_before, deadline, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                      (job_id, resource_id, generation, version, event_id, "QUEUED", now,
-                       now + self.limits.job_deadline_seconds, now, now))
+            job_id = self._queue_job(c, resource_id, generation, version, event_id, now)
             self._history(c, resource_id, "generation_opened", generation=generation, event_id=event_id,
                           version_digest=version[:16])
             if stale_notice and row["published_generation"] is not None:
@@ -245,6 +241,34 @@ class ServiceStore:
                 self._insert_intent(c, resource_id, generation, version, "stale", None, None, body,
                                     body_digest, marker, now)
             return {"action": "new_generation", "generation": generation, "job_id": job_id}
+
+    def reopen_open_resources(self, *, reason: str, event_id: str) -> int:
+        """Re-analyse every open resource at its unchanged version: a new generation each.
+
+        Unlike a new version no stale notice is queued: the published result still
+        belongs to the current version and the new result replaces it under the same marker.
+        """
+        now = self.clock()
+        with self._tx() as c:
+            rows = c.execute("SELECT resource_id, generation, version FROM resources "
+                             "WHERE closed=0 AND version IS NOT NULL").fetchall()
+            for row in rows:
+                resource_id, generation = row["resource_id"], row["generation"] + 1
+                self._revoke(c, resource_id, generation, reason)
+                c.execute("UPDATE resources SET generation=?, updated_at=? WHERE resource_id=?",
+                          (generation, now, resource_id))
+                self._queue_job(c, resource_id, generation, row["version"], event_id, now)
+                self._history(c, resource_id, "generation_opened", generation=generation, event_id=event_id,
+                              version_digest=row["version"][:16], reason=reason)
+        return len(rows)
+
+    def _queue_job(self, c, resource_id, generation, version, event_id, now) -> str:
+        job_id = uuid.uuid4().hex
+        c.execute("INSERT INTO jobs(job_id, resource_id, generation, resource_version, event_id, state, "
+                  "not_before, deadline, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                  (job_id, resource_id, generation, version, event_id, "QUEUED", now,
+                   now + self.limits.job_deadline_seconds, now, now))
+        return job_id
 
     def _revoke(self, c, resource_id, generation, reason):
         now = self.clock()
