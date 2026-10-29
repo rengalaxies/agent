@@ -67,3 +67,12 @@ App JWT/read scoped repositories NOT_RUN без PEM. Jira site/project/credentia
 connected-to-service=false; M3 сообщает stopped host/support. **M2 PARTIAL / LIVE BLOCKED**.
 [Доказательства и конкретные оставшиеся действия](m2-a-2026-10-28/README.md). Ни green CI,
 ни authored HTTP fixture не засчитываются за внешний Jira → PR → обновлённый результат.
+
+## Программа закрытого пилота — 29.10.2026
+
+Вердикт не меняется: **NOT READY** для закрытого технического пилота. Добавлено:
+пересчёт открытых ресурсов после смены основы анализа (#76, CI 865 + 152 PASS; LOCAL
+переход state profile 4 → 5 обновляет те же комментарии), понятный переход после
+исправления и локальный показ (#75, LOCAL), защищённый путь проверки App (#74,
+настоящий запуск NOT_RUN). Релиз с #72, App auth, установка M3 и LIVE не выполнены.
+Польза UNVERIFIED, MODEL OFF. [Индекс и внешние действия](pilot-2026-10-29/README.md).

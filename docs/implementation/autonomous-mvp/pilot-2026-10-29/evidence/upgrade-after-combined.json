@@ -1,0 +1,47 @@
+{
+  "phase": "after",
+  "level": "LOCAL",
+  "model": "OFF",
+  "code": "b66d2dd09d3b800758bfd3f4d48798f92a170819",
+  "profile": "http-requests-5",
+  "at": "2026-10-29T16:29:11.141372+00:00",
+  "reconcile": {
+    "enqueued": 0,
+    "reanalysed": 3
+  },
+  "worker_steps": [
+    "analyze:done",
+    "publish:delivered",
+    "analyze:done",
+    "publish:delivered",
+    "analyze:done",
+    "publish:delivered"
+  ],
+  "generations": {
+    "github:rengalaxies/agent-pilot-orders#1": 2,
+    "github:rengalaxies/agent-pilot-orders#2": 2,
+    "jira:10001": 2
+  },
+  "comments": {
+    "github:rengalaxies/agent-pilot-orders#1": {
+      "id": "5f6ec98670bf",
+      "profile": "http-requests-5",
+      "generation": 2,
+      "title": "Возможное влияние изменения"
+    },
+    "github:rengalaxies/agent-pilot-orders#2": {
+      "id": "a68a36065f94",
+      "profile": "http-requests-5",
+      "generation": 2,
+      "title": "Вывод о влиянии не сделан"
+    },
+    "jira:10001": {
+      "id": "4cae85ff785d",
+      "profile": "http-requests-5",
+      "generation": 2,
+      "title": "Возможное влияние изменения"
+    }
+  },
+  "history_entries": 39,
+  "result_intents": 6
+}
