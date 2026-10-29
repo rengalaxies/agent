@@ -1,0 +1,29 @@
+{
+  "schema": "independent-cases-intake-1",
+  "provided_by": "<имя или роль инженера, не автор реализации>",
+  "license_or_permission": "<основание обработки кода>",
+  "repositories": [
+    {"id": "<короткое имя>", "url": "<git URL или путь архива>", "default_branch": "main",
+     "pinned_sha": "<40 hex>", "role": "provider | consumer | both"}
+  ],
+  "changes": [
+    {
+      "id": "C1",
+      "kind": "pr | jira | both",
+      "jira_text": "<текст задачи, если есть>",
+      "provider_repository": "<id>",
+      "base_sha": "<40 hex>",
+      "head_sha": "<40 hex>",
+      "notes_for_runner": "<только техника запуска, без ожидаемого ответа>"
+    }
+  ],
+  "oracle_location": "отдельный файл independent-oracle.json, передаётся после заморозки ответов",
+  "oracle_example": {
+    "C1": {
+      "written_at": "<дата, до просмотра ответов>",
+      "affected": [{"consumer": "<repo id или сервис>", "severity": "breaking | recheck",
+                    "what_to_check": "<что проверить>"}],
+      "not_affected_but_similar": ["<сервис, который легко принять за потребителя>"]
+    }
+  }
+}
