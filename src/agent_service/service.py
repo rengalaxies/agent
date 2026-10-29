@@ -204,7 +204,8 @@ class Service:
             self.store.requeue_job(job, "newer_event_pending", count_attempt=False)
             return "analyze:deferred"
         view = view_from_result(result, request)
-        earlier = since_previous(self.store.published_result(job["resource_id"], job["generation"]), result)
+        earlier = since_previous(self.store.published_result(job["resource_id"], job["generation"]), result,
+                                 view, job["resource_version"])
         doc = result_doc(view, snapshot=job["snapshot"], kind=snapshot.kind, generation=job["generation"],
                          gaps=prepared.gaps, earlier=earlier)
         intent = {"kind": "result", "result_digest": digest(result) if isinstance(result, dict) else None,

@@ -52,24 +52,51 @@ def _evidence(items: list[dict]) -> str:
                      for e in items) or "основания не указаны"
 
 
-def _risks(result: dict) -> dict[str, str]:
-    """Deltas and findings of a raw result, keyed so that two generations compare."""
+def _items(result, key) -> list[dict]:
+    value = result.get(key) if isinstance(result, dict) else None
+    return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
+
+
+def _field(item: dict, key: str) -> dict:
+    value = item.get(key)
+    return value if isinstance(value, dict) else {}
+
+
+def _risks(result) -> dict[str, str]:
+    """Deltas and findings of a raw result, keyed so that two generations compare.
+
+    Raw: the previous result was stored by whatever release analysed it, so shapes
+    are checked here instead of trusted.
+    """
     risks = {}
-    for d in result.get("deltas") or []:
-        op = d.get("operation") or {}
-        name = f"{op.get('service')} {op.get('method')} {op.get('route')}"
-        risks[f"delta {name} {d.get('code')}"] = f"изменение {name}: {d.get('code')} {d.get('before')} -> {d.get('after')}"
-    for f in result.get("findings") or []:
-        consumer = (f.get("consumer") or {}).get("service")
-        risks[f"finding {consumer} {f.get('code')}"] = f"{f.get('code')} у {consumer}"
+    for d in _items(result, "deltas"):
+        op = _field(d, "operation")
+        if op.get("service") and d.get("code"):
+            name = f"{op['service']} {op.get('method')} {op.get('route')}"
+            risks[f"delta {name} {d['code']}"] = f"изменение {name}: {d['code']} {d.get('before')} -> {d.get('after')}"
+    for f in _items(result, "findings"):
+        consumer = _field(f, "consumer").get("service")
+        if consumer and f.get("code"):
+            risks[f"finding {consumer} {f['code']}"] = f"{f['code']} у {consumer}"
     return risks
 
 
-def since_previous(previous: tuple[int, dict] | None, current) -> list[str]:
+# Only these outcomes looked at the change and can say a risk is no longer found.
+# FAILED, incompatible, unclear intent and other abstentions did not.
+TRANSITION_OUTCOMES = {"USEFUL", "PARTIAL", "ABSTAINED:no_supported_delta"}
+
+
+def since_previous(previous: tuple[int, str, dict] | None, current, view: ResultView,
+                   resource_version: str) -> list[str]:
     """What the last published result reported and the current one no longer does."""
-    if previous is None or not isinstance(current, dict):
+    if previous is None or not isinstance(current, dict) or not view.compatible:
         return []
-    generation, result = previous
+    if view.status not in TRANSITION_OUTCOMES and f"{view.status}:{view.reason_code}" not in TRANSITION_OUTCOMES:
+        return []
+    generation, version, result = previous
+    if version == resource_version:
+        # Same resource, new analyzer (profile change): a missing finding is not a fix.
+        return []
     now = _risks(current)
     gone = [text for key, text in _risks(result).items() if key not in now]
     if not gone:
