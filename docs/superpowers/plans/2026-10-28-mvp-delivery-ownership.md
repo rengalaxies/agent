@@ -166,3 +166,29 @@ docs/implementation/autonomous-mvp/pilot-review-2026-10-30/README.md.
 Точный финальный head/CI/merge — PR #79; до его зелёных проверок интеграция не принята.
 Это готовность технического локального показа для разговора, не готовность внешнего
 пилота: participant/client/VM/external NOT_RUN, пять DEFERRED_72 остаются, MODEL OFF.
+
+## Кандидат пилота и отдельное согласование — 30.10.2026
+
+База этапа main e84e913 (после принятого #79). Самостоятельная ветка
+codex/pilot-candidate-evidence-2026-10-30 исправляет CURRENT сохранённого demo graph/knowledge
+после profile change и передачу UNAVAILABLE code source в существующий basis-reconciliation
+gate; PARTIAL не подсказывает «показ завершён». Есть RED/GREEN и отрицательные контроли.
+
+Отдельное объединение #72 f25e82f с main и новыми fixes: profile6, PENDING_APPROVAL.
+Пять DEFERRED_72 заново FAIL на main и PASS в кандидате. Новая ошибка прямого setattr
+в положительном AST исправлена только в pending ветке; profile4/5 bases требуют пересмотра.
+Явного M3 ack в #71/#72 нет; их refs, pin/release14e и ВМ не изменялись. Предложение
+и точные финальные SHA/CI находятся в собственных PR, интеграция #72 до ack запрещена.
+
+LOCAL: full core/service 917 PASS + runner 152 PASS; новый HTTP/intent/schema corpus;
+actual old/new processes 4→6→4→6, unavailable
+source, restart после ANALYZED, fresh head, те же 3 comment IDs и история; build twice
+identical/manifest VERIFIED; настоящий Docker/Chromium UI. Последний PARTIAL hint проверяет
+финальный CI. Existing #76/#78 basis reconciliation действительно переиздаёт unchanged
+resources; при source failure basis checkpoint теперь ждёт восстановления. DB/API не
+атомарны, outage/stale window не ограничено SLA. Целевой rollback старого release14e NOT_RUN.
+
+Полный отчёт: docs/implementation/autonomous-mvp/pilot-candidate-2026-10-30/README.md.
+Handoff M3 рядом, протокол участника docs/product/pilot/PARTICIPANT-SESSION.md.
+MODEL OFF. M2 LIVE/M3 BLOCKED, независимая M4/M5/клиентская полезность UNVERIFIED;
+participant/VM/external NOT_RUN. Green CI не снимает PENDING_APPROVAL и не подтверждает LIVE.

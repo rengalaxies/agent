@@ -1,0 +1,31 @@
+test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route (tests.graph.test_candidate_mutation.MutableDeclarationTest.test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route) ... FAIL
+
+======================================================================
+FAIL: test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route (tests.graph.test_candidate_mutation.MutableDeclarationTest.test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-pilot-profile5/tests/graph/test_candidate_mutation.py", line 27, in test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route
+    self.assertEqual(context["graph"]["operations"], [])
+AssertionError: Lists differ: [{'id': '98cc79491ce9e8e25375c629306416652[409 chars]1']}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'id': '98cc79491ce9e8e25375c6293064166528c017f8b0dcc85ad981a7f84e0fe4da', 'service': 'catalog', 'method': 'GET', 'path': '/records/{record_id}', 'evidence': [{'source_id': 'cfb07db3962065bc91d5b2f29c3b41aa906a26d2984da01dab9cc0f49172598c', 'start_line': 5, 'end_line': 6, 'quote': 'def read(record_id: int):\n    return {"state": "ghost"}'}], 'default_known': False, 'tracked_basis': ['a57e61822688df9b8437302579ff76b3196ef4bfaa9d771da18decb39b1e6ae1']}
+
++ []
+- [{'default_known': False,
+-   'evidence': [{'end_line': 6,
+-                 'quote': 'def read(record_id: int):\n'
+-                          '    return {"state": "ghost"}',
+-                 'source_id': 'cfb07db3962065bc91d5b2f29c3b41aa906a26d2984da01dab9cc0f49172598c',
+-                 'start_line': 5}],
+-   'id': '98cc79491ce9e8e25375c6293064166528c017f8b0dcc85ad981a7f84e0fe4da',
+-   'method': 'GET',
+-   'path': '/records/{record_id}',
+-   'service': 'catalog',
+-   'tracked_basis': ['a57e61822688df9b8437302579ff76b3196ef4bfaa9d771da18decb39b1e6ae1']}]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (failures=1)
