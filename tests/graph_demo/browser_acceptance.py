@@ -291,6 +291,7 @@ def journey(base_url, username, password, operator, output, store):
                     else:
                         assert page.locator("#coverage").inner_text().startswith("Неполные данные")
                         assert "repository_unavailable" in page.locator("#gaps").text_content()
+                        assert "Неполные исходники" in page.locator("#next-action").inner_text()
                     page.screenshot(path=str(output / (name + ".png")), full_page=True)
                     screenshots.append(name + ".png")
                 finally:
