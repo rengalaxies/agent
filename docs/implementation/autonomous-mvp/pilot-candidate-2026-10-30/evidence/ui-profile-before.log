@@ -1,0 +1,17 @@
+test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction (tests.graph_demo.test_profile_upgrade.ProfileUpgradeTests.test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction) ... FAIL
+
+======================================================================
+FAIL: test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction (tests.graph_demo.test_profile_upgrade.ProfileUpgradeTests.test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-pilot-next/tests/graph_demo/test_profile_upgrade.py", line 29, in test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction
+    self.assertEqual(stale["freshness"]["status"], "STALE")
+AssertionError: 'CURRENT' != 'STALE'
+- CURRENT
++ STALE
+
+
+----------------------------------------------------------------------
+Ran 1 test in 1.491s
+
+FAILED (failures=1)

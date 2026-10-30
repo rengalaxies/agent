@@ -1,0 +1,75 @@
+{
+  "kind": "authored regression corpus, expectations fixed before execution, not held-out",
+  "requirement": "display caller requires response.state to be a string; no requirement is approved in analyzer policy",
+  "supported_edges": {
+    "display": [
+      "catalog",
+      "GET"
+    ],
+    "submit": [
+      "catalog",
+      "POST"
+    ],
+    "admin_display": [
+      "admin",
+      "GET"
+    ]
+  },
+  "runtime_only": [
+    "wrapper"
+  ],
+  "before": {
+    "display": {
+      "state": "open"
+    },
+    "submit": {
+      "accepted": true
+    },
+    "admin_display": {
+      "state": "admin"
+    },
+    "wrapper": {
+      "state": "open"
+    },
+    "wrong_prefix": 404,
+    "wrong_method": 405
+  },
+  "after": {
+    "display": {
+      "state": 42
+    },
+    "submit": {
+      "accepted": true
+    },
+    "admin_display": {
+      "state": "admin"
+    },
+    "wrapper": {
+      "state": 42
+    },
+    "wrong_prefix": 404,
+    "wrong_method": 405
+  },
+  "intent": [
+    {
+      "text": "catalog: Update README to describe GET /records/{record_id}; change POST /records/{record_id} schema",
+      "expected": [
+        "catalog:POST"
+      ]
+    },
+    {
+      "text": "catalog: GET /records/{record_id} unchanged and change POST /records/{record_id} schema",
+      "expected": [
+        "catalog:POST"
+      ]
+    },
+    {
+      "text": "GET /records/{record_id} changes response",
+      "expected": []
+    }
+  ],
+  "mutated_provider": {
+    "expected_operations": [],
+    "reason": "setattr replaces FastAPI.get before decorators; the real application has no matching route"
+  }
+}

@@ -1,0 +1,14 @@
+test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction (tests.graph_demo.test_profile_upgrade.ProfileUpgradeTests.test_saved_graph_and_knowledge_are_stale_and_cannot_accept_a_correction) ... ok
+test_auth_origin_roles_and_foreign_session (tests.graph_demo.test_api.APITests.test_auth_origin_roles_and_foreign_session) ... ok
+test_correction_uses_server_owned_exact_evidence_current_revision (tests.graph_demo.test_api.APITests.test_correction_uses_server_owned_exact_evidence_current_revision) ... ok
+test_foreign_evidence_and_base_context_rejected (tests.graph_demo.test_api.APITests.test_foreign_evidence_and_base_context_rejected) ... ok
+test_historical_refresh_diff_keeps_executed_version_after_later_selection (tests.graph_demo.test_api.APITests.test_historical_refresh_diff_keeps_executed_version_after_later_selection) ... ok
+test_model_unavailable_and_external_import_separate (tests.graph_demo.test_api.APITests.test_model_unavailable_and_external_import_separate) ... ok
+test_reset_requires_stop_and_preserves_history_idempotently (tests.graph_demo.test_api.APITests.test_reset_requires_stop_and_preserves_history_idempotently) ... ok
+test_selection_cas_history_and_proposed_runtime_distinction (tests.graph_demo.test_api.APITests.test_selection_cas_history_and_proposed_runtime_distinction) ... ok
+test_strict_schema_and_no_paths_or_model_configuration (tests.graph_demo.test_api.APITests.test_strict_schema_and_no_paths_or_model_configuration) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 8.442s
+
+OK

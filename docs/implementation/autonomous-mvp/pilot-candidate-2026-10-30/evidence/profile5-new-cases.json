@@ -1,0 +1,229 @@
+{
+  "level": "LOCAL",
+  "status": "FAIL",
+  "author_written": true,
+  "independent_held_out": false,
+  "edges": {
+    "submit": [
+      "catalog",
+      "POST"
+    ],
+    "display": [
+      "catalog",
+      "GET"
+    ],
+    "admin_display": [
+      "admin",
+      "GET"
+    ]
+  },
+  "intent": [
+    {
+      "text": "catalog: Update README to describe GET /records/{record_id}; change POST /records/{record_id} schema",
+      "expected": [
+        "catalog:POST"
+      ],
+      "actual": [
+        "catalog:POST"
+      ],
+      "status": "PASS"
+    },
+    {
+      "text": "catalog: GET /records/{record_id} unchanged and change POST /records/{record_id} schema",
+      "expected": [
+        "catalog:POST"
+      ],
+      "actual": [
+        "catalog:POST"
+      ],
+      "status": "PASS"
+    },
+    {
+      "text": "GET /records/{record_id} changes response",
+      "expected": [],
+      "actual": [],
+      "status": "PASS"
+    }
+  ],
+  "mutable_decorator": {
+    "expected": [],
+    "actual": [
+      "/records/{record_id}"
+    ],
+    "status": "FAIL"
+  },
+  "findings": [
+    {
+      "code": "UNCLASSIFIED_CHANGE_RECHECK",
+      "dependency_id": "1538c227328c6cdff6e133b04805c5c1a58f87630e2b5c6e12e8b70e468797ef",
+      "consumer": "display",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "callsite": {
+        "repository": "display",
+        "path": "app.py",
+        "line": 4
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "The tracked declaration changed in a way no classifier covers",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 5,
+          "quote": "def read(record_id: int):\n    return {\"state\": \"open\"}",
+          "source_id": "65b5ee6314120c75a56c1cf495ebdb7062411d79ad81b7a0a8eb648f345bf54d",
+          "start_line": 4
+        },
+        {
+          "source_id": "8bc03b70cbbeddf6676469ede2a0af445de330548eb1962c1b7f8ff7c68b7450",
+          "start_line": 4,
+          "end_line": 5,
+          "quote": "def read(record_id: int):\n    return {\"state\": 42}"
+        },
+        {
+          "source_id": "8596b5da2030c13f453f173ed19aec56c42989bbdd58a55f03e61b6988b13f69",
+          "start_line": 4,
+          "end_line": 4,
+          "quote": "    return send(\"GET\", BASE + \"/records/7\", timeout=3)"
+        },
+        {
+          "source_id": "8596b5da2030c13f453f173ed19aec56c42989bbdd58a55f03e61b6988b13f69",
+          "start_line": 3,
+          "end_line": 4,
+          "quote": "def run():\n    return send(\"GET\", BASE + \"/records/7\", timeout=3)"
+        }
+      ],
+      "requirement_ids": [],
+      "check": "Exercise the changed operation against this consumer's independent expectations",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "before": {
+    "display": {
+      "state": "open"
+    },
+    "submit": {
+      "accepted": true
+    },
+    "admin_display": {
+      "state": "admin"
+    },
+    "wrong_prefix": 404,
+    "wrong_method": 405,
+    "wrapper": {
+      "state": "open"
+    }
+  },
+  "after": {
+    "display": {
+      "state": 42
+    },
+    "submit": {
+      "accepted": true
+    },
+    "admin_display": {
+      "state": "admin"
+    },
+    "wrong_prefix": 404,
+    "wrong_method": 405,
+    "wrapper": {
+      "state": 42
+    }
+  },
+  "http": [
+    {
+      "method": "GET",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 37743,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 37743,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/admin/v3/records/7",
+      "port": 37743,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/catalog/v4/records/7",
+      "port": 37743,
+      "address": "127.0.0.1",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 37743,
+      "address": "127.0.0.1",
+      "status": 405
+    },
+    {
+      "method": "GET",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 37743,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 34635,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 34635,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/admin/v3/records/7",
+      "port": 34635,
+      "address": "127.0.0.1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/catalog/v4/records/7",
+      "port": 34635,
+      "address": "127.0.0.1",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 34635,
+      "address": "127.0.0.1",
+      "status": 405
+    },
+    {
+      "method": "GET",
+      "path": "/edge/catalog/v3/records/7",
+      "port": 34635,
+      "address": "127.0.0.1",
+      "status": 200
+    }
+  ],
+  "no_approved_requirement": true,
+  "quality": {
+    "denominator_runtime_successful_callers": 4,
+    "false_positives": 0,
+    "supported_false_negatives": 0,
+    "all_runtime_false_negatives": 1,
+    "unsupported_abstentions": 1,
+    "provider_false_positives": 1
+  },
+  "limitations": "FN includes unsupported wrapper; abstentions overlap FN, not a different denominator. Wrong method/prefix are observed HTTP calls but no declared operation. No customer-completeness estimate."
+}
