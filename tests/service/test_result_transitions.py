@@ -15,6 +15,28 @@ def without_change(request):
 
 
 class ResultTransitionTest(ServiceCase):
+    def test_incompatible_schema_was_not_a_previously_displayed_risk(self):
+        self.analyzer.result = lambda request: orders_result(request, schema_version='99.0')
+        self.deliver_github(self.pr_payload(HEAD1, action='opened'))
+        self.drain()
+        self.assertIn('несовместим', self.pr_comments()[0]['body'])
+        self.analyzer.result = without_change
+        self.github.set_head(REPO, 7, HEAD2)
+        self.deliver_github(self.pr_payload(HEAD2))
+        self.drain()
+        self.assertNotIn('Что изменилось с прошлого вывода', self.pr_comments()[0]['body'])
+
+    def test_foreign_request_was_not_a_previously_displayed_risk(self):
+        self.analyzer.result = lambda request: {**orders_result(request), 'request_id': 'foreign-request'}
+        self.deliver_github(self.pr_payload(HEAD1, action='opened'))
+        self.drain()
+        self.assertIn('result_request_mismatch', self.pr_comments()[0]['body'])
+        self.analyzer.result = without_change
+        self.github.set_head(REPO, 7, HEAD2)
+        self.deliver_github(self.pr_payload(HEAD2))
+        self.drain()
+        self.assertNotIn('Что изменилось с прошлого вывода', self.pr_comments()[0]['body'])
+
     def test_fix_in_the_same_pr_names_the_risk_that_is_no_longer_found(self):
         self.deliver_github(self.pr_payload(HEAD1, action="opened"))
         self.drain()

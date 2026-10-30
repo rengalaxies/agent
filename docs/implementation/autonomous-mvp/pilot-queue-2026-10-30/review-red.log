@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_uncounted_retry_does_not_renew_background_budget (tests.service.test_pilot_queue_fairness.FairnessTest.test_uncounted_retry_does_not_renew_background_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_pilot_queue_fairness.py", line 116, in test_uncounted_retry_does_not_renew_background_budget
+    self.assertIsNone(self.store.claim_job('w'))
+AssertionError: {'job_id': '6f69d0bf765a41888cc5b07de59a0edb', 'resource_id': 'github:acme/orders#1', 'generation': 2, 'resource_version': 'v1', 'event_id': 'analysis_basis:new', 'state': 'RUNNING', 'attempts': 1, 'not_before': 1800000000.0, 'deadline': 1800000180.0, 'lease_owner': 'w', 'lease_expires': 1800000130.0, 'claimed_at': 1800000120.0, 'result': None, 'reason': 'authentication_failed', 'created_at': 1800000000.0, 'updated_at': 1800000120.0, 'snapshot': {'number': 1}} is not None
+
+======================================================================
+FAIL: test_old_writer_after_rollback_is_repaired_on_next_upgrade (tests.service.test_pilot_queue_fairness.FairnessTest.test_old_writer_after_rollback_is_repaired_on_next_upgrade)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_pilot_queue_fairness.py", line 129, in test_old_writer_after_rollback_is_repaired_on_next_upgrade
+    self.assertIsNotNone(job)
+AssertionError: unexpectedly None
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.166s
+
+FAILED (failures=2)

@@ -1,0 +1,18 @@
+......F..
+======================================================================
+FAIL: test_legacy_background_queue_is_recognized_on_upgrade (tests.service.test_pilot_queue_fairness.FairnessTest.test_legacy_background_queue_is_recognized_on_upgrade)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_pilot_queue_fairness.py", line 93, in test_legacy_background_queue_is_recognized_on_upgrade
+    self.assertEqual(self.store.claim_job('w')['resource_id'], fresh)
+AssertionError: 'github:acme/orders#1' != 'github:acme/orders#99'
+- github:acme/orders#1
+?                    ^
++ github:acme/orders#99
+?                    ^^
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.547s
+
+FAILED (failures=1)

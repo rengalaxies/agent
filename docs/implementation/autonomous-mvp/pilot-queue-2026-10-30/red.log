@@ -1,0 +1,50 @@
+..FF.F...FF...
+======================================================================
+FAIL: test_fairness_survives_restart_under_continuous_fresh_work (tests.service.test_pilot_queue_fairness.FairnessTest.test_fairness_survives_restart_under_continuous_fresh_work)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_pilot_queue_fairness.py", line 59, in test_fairness_survives_restart_under_continuous_fresh_work
+    self.assertNotIn('github:acme/orders#1', claimed[:4])
+AssertionError: 'github:acme/orders#1' unexpectedly found in ['github:acme/orders#1', 'github:acme/orders#100', 'github:acme/orders#101', 'github:acme/orders#102']
+
+======================================================================
+FAIL: test_fresh_delivery_precedes_an_older_profile_backlog (tests.service.test_pilot_queue_fairness.FairnessTest.test_fresh_delivery_precedes_an_older_profile_backlog)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_pilot_queue_fairness.py", line 39, in test_fresh_delivery_precedes_an_older_profile_backlog
+    self.assertEqual(self.store.claim_job('w')['resource_id'], fresh)
+AssertionError: 'github:acme/orders#1' != 'github:acme/orders#99'
+- github:acme/orders#1
+?                    ^
++ github:acme/orders#99
+?                    ^^
+
+
+======================================================================
+FAIL: test_unstarted_background_job_keeps_budget_after_a_long_queue_wait (tests.service.test_pilot_queue_fairness.FairnessTest.test_unstarted_background_job_keeps_budget_after_a_long_queue_wait)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_pilot_queue_fairness.py", line 45, in test_unstarted_background_job_keeps_budget_after_a_long_queue_wait
+    self.assertIsNotNone(job)
+AssertionError: unexpectedly None
+
+======================================================================
+FAIL: test_foreign_request_was_not_a_previously_displayed_risk (tests.service.test_result_transitions.ResultTransitionTest.test_foreign_request_was_not_a_previously_displayed_risk)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_result_transitions.py", line 38, in test_foreign_request_was_not_a_previously_displayed_risk
+    self.assertNotIn('Что изменилось с прошлого вывода', self.pr_comments()[0]['body'])
+AssertionError: 'Что изменилось с прошлого вывода' unexpectedly found in '### Вывод о влиянии не сделан\n\nNo supported behavior change was found.\n\n**Что изменилось с прошлого вывода**\n- Поколение 1: изменение orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20. В текущей версии не обнаружено.\n- Это отсутствие находки в поддерживаемом профиле, а не выполненная проверка: тесты не запускались.\n\n**Что может затронуть**\n- Потребители не названы (no_supported_delta). Это не доказывает отсутствие влияния.\n\n**Почему и через какой путь**\n- Путь влияния не построен.\n\n**Что проверить**\n- Изменения вне поддерживаемого профиля сервис не классифицирует: их проверяет обычный review.\n\n**Неизвестные и свежесть**\n- requirement_unknown (reporting)\n- runtime:access-log: STALE, проверено 2026-10-24T12:00:00Z\n\n**Версии**\n- PR acme/orders#7: base bbbbbbbbbbbb, head 222222222222\n- Связанные задачи Jira: ORD-1\n- Поколение анализа: 2\n- code_version: test\n- constitution_version: agent-service-v1\n- correlation_id: 17f4894b3caf48d7a1a6fe9540cccc4c:1\n- graph_version: graph-7\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.0\n- снимок orders (base): bbbbbbbbbbbb\n- снимок orders (head): 222222222222\n- снимок reporting (consumer): cccccccccccc\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=4159e6ef2d3c97e5 digest=725b0118a218ec5ee12c12f1797ccdac084a591eb90a443d0965a2d5bf328181 generation=2 -->'
+
+======================================================================
+FAIL: test_incompatible_schema_was_not_a_previously_displayed_risk (tests.service.test_result_transitions.ResultTransitionTest.test_incompatible_schema_was_not_a_previously_displayed_risk)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/a223e7af6ad1/agent-pilot-queue/tests/service/test_result_transitions.py", line 27, in test_incompatible_schema_was_not_a_previously_displayed_risk
+    self.assertNotIn('Что изменилось с прошлого вывода', self.pr_comments()[0]['body'])
+AssertionError: 'Что изменилось с прошлого вывода' unexpectedly found in '### Вывод о влиянии не сделан\n\nNo supported behavior change was found.\n\n**Что изменилось с прошлого вывода**\n- Поколение 1: изменение orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20. В текущей версии не обнаружено.\n- Это отсутствие находки в поддерживаемом профиле, а не выполненная проверка: тесты не запускались.\n\n**Что может затронуть**\n- Потребители не названы (no_supported_delta). Это не доказывает отсутствие влияния.\n\n**Почему и через какой путь**\n- Путь влияния не построен.\n\n**Что проверить**\n- Изменения вне поддерживаемого профиля сервис не классифицирует: их проверяет обычный review.\n\n**Неизвестные и свежесть**\n- requirement_unknown (reporting)\n- runtime:access-log: STALE, проверено 2026-10-24T12:00:00Z\n\n**Версии**\n- PR acme/orders#7: base bbbbbbbbbbbb, head 222222222222\n- Связанные задачи Jira: ORD-1\n- Поколение анализа: 2\n- code_version: test\n- constitution_version: agent-service-v1\n- correlation_id: 5cc498e8db724b0092151c309d3aad2f:1\n- graph_version: graph-7\n- model: Детерминированный результат (модельный отчёт не представлен)\n- profile: http-requests-4\n- schema_version: 2.0\n- снимок orders (base): bbbbbbbbbbbb\n- снимок orders (head): 222222222222\n- снимок reporting (consumer): cccccccccccc\n- Статус: ABSTAINED, код: no_supported_delta\n\n<!-- agent-service marker=4159e6ef2d3c97e5 digest=89e014b8e80abc1dc1db280d9db9c0849e4923db78d92a956ae17f93e23b2ab4 generation=2 -->'
+
+----------------------------------------------------------------------
+Ran 14 tests in 5.595s
+
+FAILED (failures=5)

@@ -24,6 +24,8 @@ import sqlite3
 import time
 import uuid
 
+from agent_graph.output_contracts import display_verdict
+
 from .envelope import EventEnvelope, canonical
 
 SCHEMA_VERSION = 1
@@ -103,12 +105,35 @@ class ServiceStore:
                 key TEXT PRIMARY KEY, kind TEXT NOT NULL, subject TEXT, count INTEGER NOT NULL,
                 first_at REAL NOT NULL, last_at REAL NOT NULL, detail TEXT NOT NULL);
               CREATE TABLE IF NOT EXISTS checkpoints(name TEXT PRIMARY KEY, value TEXT NOT NULL);
+              CREATE INDEX IF NOT EXISTS jobs_due ON jobs(state, not_before, created_at);
             """)
             row = c.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
             if row is None:
                 c.execute("INSERT INTO meta VALUES('schema_version', ?)", (str(SCHEMA_VERSION),))
             elif row[0] != str(SCHEMA_VERSION):
                 raise ValueError("unsupported_state_schema")
+        self._upgrade_scheduling_metadata()
+
+    def _upgrade_scheduling_metadata(self):
+        """Recognize old queued rebuilds from new trusted append-only history.
+
+        Do not trust an external delivery's event_id to identify background work.
+        The additive checkpoints/index are ignored by older releases on rollback.
+        """
+        with self._tx() as c:
+            cursor = c.execute("SELECT value FROM checkpoints WHERE name='queue_scheduling_history_seq'").fetchone()
+            since = int(cursor[0]) if cursor else 0
+            # A high-water mark, not a permanent migration flag: rollback can run
+            # an old writer that appends unmarked maintenance jobs after this point.
+            c.execute("INSERT OR IGNORE INTO checkpoints(name, value) "
+                      "SELECT 'background_job:' || j.job_id, '1' FROM jobs j JOIN history h "
+                      "ON h.resource_id=j.resource_id WHERE j.state IN ('QUEUED','RUNNING') "
+                      "AND h.seq>? AND h.entry='generation_opened' "
+                      "AND json_extract(h.detail, '$.generation')=j.generation "
+                      "AND json_extract(h.detail, '$.reason')='analysis_basis_changed'", (since,))
+            end = c.execute("SELECT coalesce(max(seq),0) FROM history").fetchone()[0]
+            c.execute("INSERT OR REPLACE INTO checkpoints VALUES ('queue_scheduling_history_seq', ?)",
+                      (str(end),))
 
     # -- plumbing ---------------------------------------------------------
 
@@ -264,7 +289,10 @@ class ServiceStore:
                 self._revoke(c, resource_id, generation, reason)
                 c.execute("UPDATE resources SET generation=?, updated_at=? WHERE resource_id=?",
                           (generation, now, resource_id))
-                self._queue_job(c, resource_id, generation, row["version"], event_id, now)
+                job_id = self._queue_job(c, resource_id, generation, row["version"], event_id, now)
+                # Private durable scheduling metadata; external event IDs cannot
+                # select this lane. Old releases safely ignore these checkpoints.
+                c.execute("INSERT INTO checkpoints VALUES (?,?)", ("background_job:" + job_id, "1"))
                 self._history(c, resource_id, "generation_opened", generation=generation, event_id=event_id,
                               version_digest=row["version"][:16], reason=reason)
         return len(rows)
@@ -309,28 +337,53 @@ class ServiceStore:
     def published_result(self, resource_id: str, generation: int):
         """(generation, resource version, result) last delivered as current before ``generation``, or None."""
         with self._connect() as c:
-            row = c.execute("SELECT generation, resource_version, result FROM jobs WHERE resource_id=? "
+            row = c.execute("SELECT generation, resource_version, result, reason FROM jobs WHERE resource_id=? "
                             "AND generation<? AND state='DONE' AND result IS NOT NULL "
                             "ORDER BY generation DESC LIMIT 1", (resource_id, generation)).fetchone()
-        return (row["generation"], row["resource_version"], json.loads(row["result"])) if row else None
+        if row is None:
+            return None
+        result = json.loads(row["result"])
+        # DONE means the external write succeeded, including incompatibility notices.
+        # The stored reason is the trusted view verdict (identity mismatches included),
+        # not necessarily the analyzer's self-declared reason_code.
+        if (display_verdict(result)["display"] == "INCOMPATIBLE"
+                or row["reason"] != result.get("reason_code")):
+            return None
+        return row["generation"], row["resource_version"], result
 
     def claim_job(self, worker: str):
         now = self.clock()
         with self._tx() as c:
             while True:
-                row = c.execute("SELECT * FROM jobs WHERE state='QUEUED' AND not_before<=? "
-                                "ORDER BY not_before, created_at LIMIT 1", (now,)).fetchone()
+                marker = ("EXISTS (SELECT 1 FROM checkpoints m "
+                          "WHERE m.name='background_job:' || j.job_id)")
+                due = "SELECT j.* FROM jobs j WHERE state='QUEUED' AND not_before<=? AND "
+                order = " ORDER BY not_before, created_at, j.rowid LIMIT 1"
+                foreground = c.execute(due + "NOT " + marker + order, (now,)).fetchone()
+                background = c.execute(due + marker + order, (now,)).fetchone()
+                streak_row = c.execute("SELECT value FROM checkpoints WHERE name='queue_foreground_streak'").fetchone()
+                streak = int(streak_row[0]) if streak_row else 0
+                maintenance = background is not None and (foreground is None or streak >= 4)
+                row = background if maintenance else foreground
                 if row is None:
                     return None
-                if row["deadline"] <= now:
+                # The maintenance backlog has no source-event SLA. Its first attempt
+                # gets an execution budget; retries and recovered leases keep it.
+                deadline = (now + self.limits.job_deadline_seconds
+                            if maintenance and row["claimed_at"] is None else row["deadline"])
+                if deadline <= now:
                     c.execute("UPDATE jobs SET state='FAILED', reason='deadline_exceeded', updated_at=? "
                               "WHERE job_id=?", (now, row["job_id"]))
                     self._history(c, row["resource_id"], "job_failed", generation=row["generation"],
                                   reason="deadline_exceeded")
                     continue
                 c.execute("UPDATE jobs SET state='RUNNING', attempts=attempts+1, lease_owner=?, lease_expires=?, "
+                          "deadline=?, "
                           "claimed_at=?, updated_at=? WHERE job_id=?",
-                          (worker, now + self.limits.lease_seconds, now, now, row["job_id"]))
+                          (worker, now + self.limits.lease_seconds, deadline, now, now, row["job_id"]))
+                next_streak = streak + 1 if background is not None and not maintenance else 0
+                c.execute("INSERT OR REPLACE INTO checkpoints VALUES ('queue_foreground_streak', ?)",
+                          (str(next_streak),))
                 self._history(c, row["resource_id"], "job_claimed", generation=row["generation"],
                               attempt=row["attempts"] + 1)
                 job = self._dict(c.execute("SELECT * FROM jobs WHERE job_id=?", (row["job_id"],)).fetchone())
