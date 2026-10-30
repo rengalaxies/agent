@@ -9,6 +9,9 @@ on:
       - 'tools/agent_graph_demo/**'
       - 'infra/agent_graph_demo/**'
       - 'tests/graph_demo/**'
+      - 'tests/graph/pilot_review.py'
+      - 'tests/graph/pilot_expectations.json'
+      - 'tests/graph/pilot_boundaries.py'
       - '.github/workflows/agent-graph-demo.yml'
       - 'pyproject.toml'
   workflow_dispatch:
@@ -49,6 +52,11 @@ jobs:
       - name: Core regression on this checkout
         run: |
           PYTHONPATH=src:. python tests/graph/ci_unittest.py discover -s tests/graph -t . -v > work/core-tests.log 2>&1             || { grep '^::error' work/core-tests.log; exit 1; }
+      - name: New authored HTTP matrix with separate expectations
+        run: |
+          python -m tests.graph.pilot_review --runtime --output work/review-matrix
+          python -m tests.graph.pilot_boundaries work/review-matrix/deferred-boundaries.json
+          python tools/agent_graph_demo/local_show.py --help
       - name: Prepare wheelhouse and build off-VM
         id: image
         run: |
@@ -61,6 +69,8 @@ jobs:
         run: |
           set -o pipefail
           python tools/agent_graph_demo/accept.py --mode local --image '${{ steps.image.outputs.image_id }}' --product-sha "$GITHUB_SHA" --output work/acceptance 2>&1 | tee work/accept.log             || { grep -E '^\{"status": "FAIL"|^[A-Za-z_.]*(Error|Exception)|^  File "' work/accept.log | tail -n 8 | sed 's/^/::error title=demo acceptance::/'; exit 1; }
+      - name: Documented clean local-show commands and restart
+        run: python tests/graph_demo/local_show_acceptance.py --directory work/local-show-check --image '${{ steps.image.outputs.image_id }}'
       - name: Safe acceptance artifacts only
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -71,5 +81,9 @@ jobs:
           path: |
             work/app-tests.log
             work/core-tests.log
+            work/review-matrix/expectations-before.json
+            work/review-matrix/observations.json
+            work/review-matrix/deferred-boundaries.json
             work/acceptance/ACCEPTANCE.json
             work/acceptance/*.png
+            work/local-show-check/LOCAL-SHOW.json

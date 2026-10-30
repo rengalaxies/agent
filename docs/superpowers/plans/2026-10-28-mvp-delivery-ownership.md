@@ -145,3 +145,24 @@ RED/GREEN: docs/superpowers/plans/2026-10-30-pilot-queue-and-result-history.md;
 восстановленного доверенного хоста и одного оператора M3. Для настоящих
 webhooks нужен работающий сервис и HTTPS/App/Jira; SSH не нужен каждому
 тестирующему. M2 LIVE и M3 до этого не закрываются.
+
+## Локальный путь участника — 30.10.2026, PR #79
+
+Отдельная ветка от 59529b4 после #78. Existing HTTP UI, worker, guarded Docker runner;
+не новая копия интерфейса. Изменение → потребитель → основания → запуск → исправление →
+повторная проверка/история. Исправление stale evidence при graph failure; новая авторская
+HTTP matrix и отдельные ожидания. Известные ошибки #72 не перенесены и не объявлены PASS.
+LOCAL проверки частичные до потери среды; восстановленный код квалифицирует CI точного
+SHA #79. Пока CI/ревью не завершены — не принято. MODEL OFF, ВМ/релиз/pin/секреты неизменны.
+Человеческая оценка/реальный проект/M2 LIVE не выполнены. Сценарий и параметры разговора:
+docs/product/pilot/LOCAL-SHOW.md. Полный отчёт и таблица работ без ВМ:
+docs/implementation/autonomous-mvp/pilot-review-2026-10-30/README.md.
+
+Продолжение checkpoint #79 после восстановления среды: чистое дерево приложения
+1c8e44b проверено LOCAL Docker/Chromium PASS — A 250, B 100 (Billing 250), D/E 250,
+пять показов, ноль sandbox после stop; 38 backend/CLI tests и новая HTTP matrix PASS.
+Документированные init/serve/run/observe/stop/reset/serve LOCAL PASS, история сохранена.
+Реальные снимки до/после и JSON сохранены в pilot-review-2026-10-30/evidence.
+Точный финальный head/CI/merge — PR #79; до его зелёных проверок интеграция не принята.
+Это готовность технического локального показа для разговора, не готовность внешнего
+пилота: participant/client/VM/external NOT_RUN, пять DEFERRED_72 остаются, MODEL OFF.

@@ -4,6 +4,7 @@ const state = {
   sid: null,
   session: null,
   graph: null,
+  graphLoadFailed: false,
   job: null,
   evidence: null,
   selectedJob: null,
@@ -24,6 +25,46 @@ const labels = {
   CANCELLED: "Отменено",
   UNKNOWN_AFTER_RESTART: "После перезапуска результат неизвестен",
 };
+const versionNames = { A: "Исходное поведение", B: "Orders: лимит 100", D: "Reporting: пагинация исправлена", E: "Добавлен Export" };
+function versionName(v) { return `${versionNames[v] || "Версия неизвестна"} (${v})`; }
+function nextAction() {
+  const session = state.session;
+  let text = "Создайте новый показ и обследуйте исходники.";
+  if (session && !state.graph) text = "Данных анализа пока нет. Обследуйте исходники или повторите загрузку текущего результата.";
+  else if (state.selectedJob) text = "Вы смотрите историю. Вернитесь к текущему результату перед следующим действием.";
+  else if (session && state.graph?.freshness.status !== "CURRENT") text = "Свежесть основания не подтверждена. Обследуйте исходники заново.";
+  else if (session) {
+    const check = [...session.checks].reverse().find(r => r.applicable);
+    text = !check ? "Откройте основание связи; затем оператор запускает предложенную версию и фактическую проверку. Статический риск не доказывает поломку."
+      : check.status === "FAIL" ? "Проверка обнаружила нарушение. Примените исправление и повторите проверку на новой версии."
+      : check.status === "ERROR" ? "Проверка не завершилась. Оператору нужно устранить ошибку и повторить запуск; результат неизвестен."
+      : session.scenario_version === "A" ? "Исходная версия проверена. Подготовьте уменьшение страницы Orders до 100 и рассмотрите влияние."
+      : session.scenario_version === "E" ? "Показ завершён. Сравните версии в истории и обсудите пропущенные связи; сброс доступен после остановки сервисов."
+      : "Проверка этой версии завершилась. Сравните её с прежней в истории; следующий контроль — новый потребитель Export.";
+  }
+  if (state.busy) text = "Задание выполняется. Вывод станет доступен после завершения; проверка сервисов запускается отдельно.";
+  $("next-action").textContent = text;
+}
+function clearGraphView(text) {
+  state.graph = null;
+  state.evidence = null;
+  $("correct").disabled = true;
+  $("edges").replaceChildren();
+  $("proposals").textContent = "Предложения не загружены";
+  $("supersedes").replaceChildren(node("option", "Новое утверждение"));
+  $("supersedes").firstChild.value = "";
+  $("graph-drawing").replaceChildren();
+  $("graph-drawing").setAttribute("aria-label", "Граф ещё не загружен");
+  $("impact").textContent = text;
+  $("source").textContent = text;
+  $("evidence-meta").textContent = "Основание не загружено";
+  $("evidence-diagnostics").textContent = "Нет загруженного основания";
+  $("coverage").textContent = "Нет актуальных данных графа. Это не означает отсутствия зависимостей.";
+  $("gaps").textContent = "Данные не загружены";
+  $("diff").textContent = "Diff не загружен";
+  $("freshness").textContent = "Свежесть не установлена";
+  nextAction();
+}
 const errors = {
   session_busy:
     "Уже выполняется изменение этого показа. Дождитесь завершения или отмените задание.",
@@ -128,13 +169,14 @@ async function api(path, body) {
 }
 function lock(value) {
   state.busy = value;
+  nextAction();
   $("sessions").disabled = value;
   for (const b of document.querySelectorAll(
     ".actions button:not(#cancel),#new-session,#reset,#correct",
   ))
     b.disabled =
       value || !state.canWrite || (!state.sid && b.id !== "new-session");
-  for (const b of document.querySelectorAll("[data-version]"))
+  for (const b of document.querySelectorAll("button[data-version]"))
     b.disabled = value || !state.canWrite || !state.session?.current_context_id;
   $("correct").disabled =
     value ||
@@ -171,14 +213,16 @@ async function load(sid, keepHistory = false) {
   const option = [...$("sessions").options].find((o) => o.value === sid);
   if (option)
     option.textContent = `${formatTime(s.created_at, true)} · ${s.scenario_version}${s.closed ? " · завершён" : ""}`;
-  for (const b of document.querySelectorAll("[data-version]"))
+  for (const b of document.querySelectorAll("button[data-version]"))
     b.setAttribute(
       "aria-pressed",
       String(b.dataset.version === s.scenario_version),
     );
-  $("proposed").textContent = `${s.scenario_version} · ревизия ${s.revision}`;
+  $("proposed").dataset.version = s.scenario_version;
+  $("proposed").textContent = `${versionName(s.scenario_version)} · ревизия ${s.revision}`;
+  $("running").dataset.version = s.running_version || "";
   $("running").textContent =
-    s.running_version ||
+    (s.running_version ? versionName(s.running_version) : null) ||
     {
       STOPPED: "Остановлено",
       STARTING: "Запускается",
@@ -220,6 +264,9 @@ async function loadGraph(jobId = null) {
   state.evidenceToken++;
   state.selectedJob = jobId;
   state.evidence = null;
+  clearGraphView("Загружаем граф, анализ и основания выбранной версии…");
+  $("workspace").setAttribute("aria-busy", "true");
+  try {
   const suffix = jobId ? "?job_id=" + encodeURIComponent(jobId) : "";
   const [g, d] = await Promise.all([
     api(`/sessions/${sid}/graph${suffix}`),
@@ -229,6 +276,7 @@ async function loadGraph(jobId = null) {
   state.graph = g;
   $("diff").textContent = d.text || "Нет отличий от исходной версии A.";
   $("current").hidden = !jobId;
+  $("current").textContent = "Вернуться к текущему результату";
   $("freshness").textContent = g.historical
     ? "Исторический результат · основание устарело"
     : g.freshness.status === "CURRENT"
@@ -268,6 +316,26 @@ async function loadGraph(jobId = null) {
   $("source").textContent =
     "Здесь появится точный фрагмент неизменяемого снимка.";
   $("correct").disabled = true;
+  if (state.graphLoadFailed) {
+    state.graphLoadFailed = false;
+    message("Граф и анализ загружены. Выберите связь, чтобы открыть основание.");
+  }
+  } catch (error) {
+    if (state.sid !== sid || token !== state.graphToken) return;
+    state.graphLoadFailed = true;
+    clearGraphView("Не удалось загрузить результат. Прежние основания скрыты; повторите загрузку.");
+    const retry = node("button", "Повторить загрузку графа и анализа");
+    retry.addEventListener("click", () => safely(() => loadGraph()));
+    $("impact").append(retry);
+    $("current").hidden = false;
+    $("current").textContent = "Повторить загрузку текущего результата";
+    throw Error("Граф или анализ недоступен. Повторите загрузку текущего результата; история сохранена.");
+  } finally {
+    if (state.sid === sid && token === state.graphToken) {
+      $("workspace").setAttribute("aria-busy", "false");
+      nextAction();
+    }
+  }
 }
 function renderGraph(g) {
   $("edges").replaceChildren();
@@ -486,7 +554,7 @@ function renderChecks(checks) {
   box.replaceChildren();
   const current = [...checks].reverse().find((r) => r.applicable);
   $("check-summary").textContent = current
-    ? `Реальная проверка ${current.version}: ` +
+    ? `Проверено ${versionName(current.version)}: ` +
       Object.entries(current.consumers || {})
         .map(
           ([name, c]) => `${name} ${c.actual_count ?? "?"} / 250 · ${c.status}`,
@@ -666,7 +734,7 @@ $("sessions").addEventListener("change", () =>
   }),
 );
 $("prepare").addEventListener("click", () => submit("prepare_context"));
-for (const b of document.querySelectorAll("[data-version]"))
+for (const b of document.querySelectorAll("button[data-version]"))
   b.addEventListener("click", () =>
     submit("analyze_change", b.dataset.version),
   );

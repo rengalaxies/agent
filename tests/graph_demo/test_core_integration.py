@@ -64,6 +64,12 @@ class CodeCompatibilityTests(DemoCase):
         self.worker.run_once()
         j = self.store.job(j["id"])
         self.assertEqual((j["status"], j["error_code"]), ("FAILED", "incompatible_core_output"))
+        self.assertIsNone(j["result_ref"])
+        self.cli.invoke = original
+        good = self.run_job("analyze_change", target_version="B", base_context_id=base)
+        self.assertIsNotNone(good["result_ref"])
+        self.assertEqual(self.store.session(self.sid)["scenario_version"], "B")
+        self.assertEqual(self.store.job(j["id"])["error_code"], "incompatible_core_output")
 
     def test_every_contract_finding_code_has_a_ui_label_and_unknown_is_not_recheck(self):
         app = (ROOT / "src/agent_graph_demo/web/app.js").read_text(encoding="utf-8")

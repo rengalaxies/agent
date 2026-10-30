@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "level": "LOCAL",
+  "commands": [
+    "init",
+    "serve",
+    "run A",
+    "observe",
+    "stop",
+    "reset",
+    "serve"
+  ],
+  "preserved_sessions": [
+    "17a93f21-6afa-48a2-8cc4-283bb887680a",
+    "8702604f-172d-4402-bf7c-b21157c474c0"
+  ],
+  "model": "OFF",
+  "human_acceptance": "NOT_RUN"
+}

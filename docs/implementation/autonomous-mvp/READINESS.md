@@ -76,3 +76,27 @@ connected-to-service=false; M3 сообщает stopped host/support. **M2 PARTI
 исправления и локальный показ (#75, LOCAL), защищённый путь проверки App (#74,
 настоящий запуск NOT_RUN). Релиз с #72, App auth, установка M3 и LIVE не выполнены.
 Польза UNVERIFIED, MODEL OFF. [Индекс и внешние действия](pilot-2026-10-29/README.md).
+
+## Локальный показ — checkpoint 30.10.2026
+
+PR #79 от main 59529b4: исправляется показ старых цитат/findings при отказе загрузки
+графа, уточняются версии и следующий шаг. Новая авторская матрица различает method,
+origin/port/prefix/route и реальное исполнение wrapper. Это не независимый benchmark.
+Известные пять границ intent/declaration/profile на main остаются DEFERRED_72;
+код #72 не включён и требует отдельного согласования M3.
+До сбоя LOCAL: 38 demo tests PASS, новая HTTP matrix PASS, compatibility recovery PASS.
+Полный локальный Docker прогон был неполным FAIL из-за старого текстового assertion.
+После потери managed executor изменения восстановлены GitHub API: приёмка требует
+зелёных Checks точного финального SHA #79. Никакого LIVE/человеческого тестирования/
+целевой ВМ нет. MODEL OFF. M2/M3 BLOCKED, M4/M5/клиентская полезность UNVERIFIED.
+[Отчёт и риски](pilot-review-2026-10-30/README.md),
+[сценарий первого разговора](../../product/pilot/LOCAL-SHOW.md).
+
+Продолжение checkpoint #79 после восстановления среды: чистое дерево приложения
+1c8e44b проверено LOCAL Docker/Chromium PASS — A 250, B 100 (Billing 250), D/E 250,
+пять показов, ноль sandbox после stop; 38 backend/CLI tests и новая HTTP matrix PASS.
+Документированные init/serve/run/observe/stop/reset/serve LOCAL PASS, история сохранена.
+Реальные снимки до/после и JSON сохранены в pilot-review-2026-10-30/evidence.
+Точный финальный head/CI/merge — PR #79; до его зелёных проверок интеграция не принята.
+Это готовность технического локального показа для разговора, не готовность внешнего
+пилота: participant/client/VM/external NOT_RUN, пять DEFERRED_72 остаются, MODEL OFF.

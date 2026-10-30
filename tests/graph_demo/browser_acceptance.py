@@ -79,22 +79,24 @@ def journey(base_url, username, password, operator, output, store):
                     "button", name="Получить результаты", exact=True
                 ).click()
                 page.wait_for_function(
-                    f"() => document.querySelector('#running').textContent==='{version}'"
+                    f"() => document.querySelector('#running').dataset.version==='{version}'"
                 )
                 return receipt
 
             a = actual("A")
+            page.screenshot(path=str(output / "baseline.png"), full_page=True)
+            screenshots.append("baseline.png")
             assert a["status"] == "PASS"
             assert all(
                 v["actual_count"] == 250 and v["passed"]
                 for v in a["consumers"].values()
             )
-            page.get_by_role("button", name="B · Лимит 100", exact=True).click()
+            page.locator('button[data-version="B"]').click()
             page.wait_for_function(
-                "() => document.querySelector('#proposed').textContent.startsWith('B') && !document.querySelector('#prepare').disabled",
+                "() => document.querySelector('#proposed').dataset.version==='B' && !document.querySelector('#prepare').disabled",
                 timeout=180000,
             )
-            assert page.locator("#running").inner_text() == "A"
+            assert page.locator("#running").get_attribute("data-version") == "A"
             assert "Reporting: возможна потеря" in page.locator("#impact").inner_text()
             page.locator("#edges button").filter(has_text="Reporting → Orders").click()
             page.wait_for_function(
@@ -133,22 +135,44 @@ def journey(base_url, username, password, operator, output, store):
                 )
                 screenshots.append(label + ".png")
             page.set_viewport_size({"width": 1440, "height": 1100})
-            page.get_by_role(
-                "button", name="D · Исправить Reporting", exact=True
-            ).click()
+            # A failed graph/history read must not leave the previous usable quote.
+            page.route("**/graph*", lambda route: route.abort())
+            page.locator("#history button").last.click()
+            page.wait_for_function("() => document.querySelector('#source').textContent.includes('Прежние основания скрыты')")
+            assert "requests.get" not in page.locator("#source").inner_text()
+            assert page.locator("#edges button").count() == 0
+            assert page.locator("#correct").is_disabled()
+            assert "недоступен" in page.locator("#message").inner_text()
+            page.screenshot(path=str(output / "graph-unavailable.png"), full_page=True)
+            screenshots.append("graph-unavailable.png")
+            page.unroute("**/graph*")
+            page.locator("#current").click()
+            page.wait_for_function("() => document.querySelector('#edges').children.length===3 && document.querySelector('#workspace').getAttribute('aria-busy')==='false'")
+            assert page.locator("#source").inner_text().strip().startswith("Здесь появится")
+            assert page.locator("#workspace").get_attribute("aria-busy") == "false"
+            assert "недоступен" not in page.locator("#message").inner_text()
+            assert "error" not in (page.locator("#message").get_attribute("class") or "").split()
+            page.locator("#prepare").focus()
+            assert page.locator("#prepare").evaluate("e => e === document.activeElement")
+            page.set_viewport_size({"width": 390, "height": 844})
+            assert page.evaluate("() => document.documentElement.scrollWidth <= innerWidth")
+            page.set_viewport_size({"width": 1440, "height": 1100})
+            page.locator('button[data-version="D"]').click()
             page.wait_for_function(
-                "() => document.querySelector('#proposed').textContent.startsWith('D') && !document.querySelector('#prepare').disabled",
+                "() => document.querySelector('#proposed').dataset.version==='D' && !document.querySelector('#prepare').disabled",
                 timeout=180000,
             )
-            assert page.locator("#running").inner_text() == "B"
+            assert page.locator("#running").get_attribute("data-version") == "B"
             d = actual("D")
+            page.screenshot(path=str(output / "repair.png"), full_page=True)
+            screenshots.append("repair.png")
             assert (
                 d["status"] == "PASS"
                 and d["consumers"]["Reporting"]["actual_count"] == 250
             )
-            page.get_by_role("button", name="E · Добавить Export", exact=True).click()
+            page.locator('button[data-version="E"]').click()
             page.wait_for_function(
-                "() => document.querySelector('#proposed').textContent.startsWith('E') && !document.querySelector('#prepare').disabled",
+                "() => document.querySelector('#proposed').dataset.version==='E' && !document.querySelector('#prepare').disabled",
                 timeout=180000,
             )
             assert page.locator("#edges button").count() == 4
@@ -237,6 +261,13 @@ def journey(base_url, username, password, operator, output, store):
             assert "<script>" in page.locator("#source").inner_text()
             assert page.locator("#source img, #source script").count() == 0
             assert page.evaluate("() => window.__source_executed") is None
+            page.reload()
+            page.wait_for_function(
+                "() => document.querySelector('#proposed').dataset.version==='E' && document.querySelector('#edges').children.length===4 && document.querySelector('#workspace').getAttribute('aria-busy')==='false'"
+            )
+            assert page.locator("#sessions").input_value() == sid
+            assert page.locator("#history button").filter(has_text="Анализ B").count() == 1
+            assert "Исторический" not in page.locator("#freshness").inner_text()
             assert not errors, errors
             guard.stop(sid, guard.read()["generation"])
             assert not guard.inventory()
@@ -252,6 +283,9 @@ def journey(base_url, username, password, operator, output, store):
                     "Status negative control",
                     "proposed/running separation",
                     "history reopened",
+                    "page reload restores saved E and B history",
+                    "graph failure clears old evidence and findings",
+                    "graph retry restores current result and clears error",
                     "keyboard edge selection",
                     "context change clears SVG selection",
                     "reverse evidence response arrival (real API, injected client delay)",
