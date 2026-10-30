@@ -55,6 +55,14 @@ def check(directory, image):
         import signal
         os.killpg(process.pid, signal.SIGTERM)
         process.wait(timeout=10)
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            try:
+                request("/sessions")
+            except URLError:
+                return
+            time.sleep(.1)
+        raise RuntimeError("local_show_backend_stop_timeout")
 
     process = start()
     try:
