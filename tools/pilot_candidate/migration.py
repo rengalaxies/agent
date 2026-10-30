@@ -55,8 +55,16 @@ def phase(connection, action, output):
             assert status == 202
         recovered = service.recover()
         reconciliation = service.reconcile()
-        if action == "partial":
-            outcomes = [service.step()]  # durable stop part way through notices/jobs; next process resumes
+        if action == "unavailable":
+            outcomes = []
+        elif action == "partial":
+            outcomes = []
+            for _ in range(30):
+                outcome = service.step()
+                outcomes.append(outcome)
+                if outcome == "analyze:done":
+                    break  # durable ANALYZED + publication intent; next process resumes before send
+            assert outcomes[-1] == "analyze:done"
         else:
             outcomes = service.run_until_idle(200)
         context = analyzer.graph.prepare_context()
@@ -75,6 +83,7 @@ def phase(connection, action, output):
         proposals = [{"id": p["id"], "status": p["status"]} for p in analyzer.graph.proposals(context)]
         resources = ["jira:10012", "github:acme/orders#7", "github:acme/orders#8"]
         report = dict(profile=agent_graph.PROFILE, code_sha=config["code_sha"], action=action,
+            coverage=context["coverage"], gaps=context["graph"]["gaps"],
             before_contexts=assessments, before_code_bases=before_bases, recovered=recovered,
             reconciliation=reconciliation, steps=outcomes, proposals=proposals,
             resources={rid: dict(generation=store.resource(rid)["generation"], jobs=[
@@ -135,6 +144,13 @@ def run(old_checkout, new_checkout, output):
         execute(old_checkout, "initial", "before")
         original_ids = {k: [c["id"] for c in v] for k, v in snapshot().items()}
         assert all(len(ids) == 1 for ids in original_ids.values())
+        orders = stand.repo("orders")
+        hidden = orders.with_name(orders.name + "-temporarily-unavailable")
+        orders.rename(hidden)
+        try:
+            execute(new_checkout, "unavailable", "upgrade-source-unavailable")
+        finally:
+            hidden.rename(orders)
         execute(new_checkout, "partial", "upgrade-partial")
         github.set_head("acme/orders", 7, stand.head("orders", "unclassified"))
         pr = github.prs[("acme/orders", 7)]
@@ -147,15 +163,21 @@ def run(old_checkout, new_checkout, output):
         for item in observations:
             assert {k: [c["id"] for c in v] for k, v in item["comments"].items()} == original_ids
         assert all(p["status"] == "STALE" for p in final["report"]["proposals"])
-        for item in (observations[2], final):
+        by_label = {item["label"]: item for item in observations}
+        for item in (by_label["upgrade-resumed"], final):
             assert all(item["report"]["profile"] in rows[0]["body"] for rows in item["comments"].values())
-        assert "STALE" in observations[1]["report"]["before_contexts"].values()
-        assert observations[1]["report"]["before_code_bases"] and set(observations[1]["report"]["before_code_bases"]) == {"STALE"}
+            assert stand.head("orders", "unclassified")[:12] in item["comments"]["pr7"][0]["body"]
+        assert "STALE" in by_label["upgrade-partial"]["report"]["before_contexts"].values()
+        old_bases = by_label["upgrade-source-unavailable"]["report"]["before_code_bases"]
+        assert old_bases and set(old_bases) == {"STALE"}
+        assert by_label["upgrade-source-unavailable"]["report"]["coverage"] == "PARTIAL"
+        assert by_label["upgrade-source-unavailable"]["report"]["reconciliation"]["reanalysed"] == 0
         histories = [[x["report"]["resources"][rid]["history_count"] for x in observations]
                      for rid in final["report"]["resources"]]
         assert all(values == sorted(values) for values in histories)
         report = dict(level="CI" if os.environ.get("GITHUB_ACTIONS") == "true" else "LOCAL", status="PASS",
                       profile=new_profile, model="OFF", same_comment_ids=original_ids, phases=observations,
+                      fresh_head=stand.head("orders", "unclassified"),
                       warning="Old-code rollback may assess newer pinned contexts CURRENT before reconciliation. Hold publication and rebuild; no old release safety is inferred. DB/API are not atomic; comments update over durable steps without a maximum outage window.")
         (root / "MIGRATION.json").write_text(json.dumps(report, indent=2) + "\n")
         return report
