@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 
 from .contracts import GraphError
 from .engine import Graph
-from .graph_store import GraphStore, load_ownership
+from .graph_store import GraphStore, UNAVAILABLE_GAPS, load_ownership
 from .runtime_observations import AccessLogSource, FreshnessPolicy, read_access_logs
 
 
@@ -33,7 +33,10 @@ class GraphMaintainer:
     def on_code_event(self, revisions=None, trigger="event"):
         context = self.graph.prepare_context(revisions=revisions)
         version, summary = self.gs.sync_code(context, trigger)
-        return dict(source="code", version=version, summary=summary, context_id=context["id"])
+        unavailable = any(g.get("code") in UNAVAILABLE_GAPS and g.get("repository")
+                          for g in context["graph"]["gaps"])
+        return dict(source="code", version=version, summary=summary, context_id=context["id"],
+                    status="UNAVAILABLE" if unavailable else "OK")
 
     def on_runtime_window(self, source, start, end, trigger="event"):
         result = read_access_logs(source, start, end, freshness=self.runtime_freshness)
