@@ -48,6 +48,7 @@ def main():
         receipt = run(operator, args.session, args.version, record["generation"], root / "receipts")
         print(json.dumps(dict(status=receipt["status"], version=receipt["version"],
                               consumers=receipt["consumers"]), ensure_ascii=False))
+        return 2 if receipt["status"] == "ERROR" else 0
     elif args.action == "stop":
         guard.stop(record.get("session_id"), record["generation"])
         print("STOPPED; history preserved. UI reset can create the next show.")
@@ -56,4 +57,4 @@ def main():
         print("Observation refreshed; this is not a new behavior check.")
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -175,7 +175,7 @@ function lock(value) {
   ))
     b.disabled =
       value || !state.canWrite || (!state.sid && b.id !== "new-session");
-  for (const b of document.querySelectorAll("[data-version]"))
+  for (const b of document.querySelectorAll("button[data-version]"))
     b.disabled = value || !state.canWrite || !state.session?.current_context_id;
   $("correct").disabled =
     value ||
@@ -212,7 +212,7 @@ async function load(sid, keepHistory = false) {
   const option = [...$("sessions").options].find((o) => o.value === sid);
   if (option)
     option.textContent = `${formatTime(s.created_at, true)} · ${s.scenario_version}${s.closed ? " · завершён" : ""}`;
-  for (const b of document.querySelectorAll("[data-version]"))
+  for (const b of document.querySelectorAll("button[data-version]"))
     b.setAttribute(
       "aria-pressed",
       String(b.dataset.version === s.scenario_version),
@@ -728,7 +728,7 @@ $("sessions").addEventListener("change", () =>
   }),
 );
 $("prepare").addEventListener("click", () => submit("prepare_context"));
-for (const b of document.querySelectorAll("[data-version]"))
+for (const b of document.querySelectorAll("button[data-version]"))
   b.addEventListener("click", () =>
     submit("analyze_change", b.dataset.version),
   );

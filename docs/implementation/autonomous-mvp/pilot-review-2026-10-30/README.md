@@ -86,6 +86,10 @@ graph-unavailable.png. Если run FAIL, артефакты являются д
 Проверки: PYTHONPATH=src:. python tests/graph/ci_unittest.py discover -s tests -v;
 отдельно tools/autonomous_mvp/tests; HTTP workflow выполняет graph/demo suites,
 новую runtime matrix, Docker/browser и пять последовательных показов с zero sandboxes.
+Отдельный CI smoke исполняет документированные init/serve/run A/observe/stop/reset/serve
+на чистом каталоге, настоящем Docker и backend; проверяет сохранение history после рестарта.
+Одноразовый пароль передаётся только дочернему configure, не публикуется в artifact.
+Это автоматическая проверка команд; человеческое прохождение остаётся NOT_RUN.
 Повтор из чистого checkout и сценарий: docs/product/pilot/LOCAL-SHOW.md.
 CI не подтверждает ресурсы Cloud.ru, LIVE или пользовательскую пользу.
 
@@ -93,7 +97,8 @@ CI не подтверждает ресурсы Cloud.ru, LIVE или польз
 
 Проверены invalidation всех производных views, late-response tokens, отсутствие старых
 correction citations, retry на текущем результате, сохранение rejected job, границы
-expected data/Policy, cleanup только своих ресурсов. Прежний профиль/коннекторы/очередь
+expected data/Policy, cleanup только своих ресурсов. Селекторы кнопок ограничены button,
+чтобы отображаемый data-version не становился элементом управления. Прежний профиль/коннекторы/очередь
 #78 не переписаны. Независимого человека/второго ревьюера здесь не было.
 
 ## Уровни и риски
@@ -110,7 +115,7 @@ expected data/Policy, cleanup только своих ресурсов. Преж
 P1: ошибки intent/declaration/profile на main до согласованного #72; не использовать этот
 показ как квалификацию незнакомого проекта. P1: M3/LIVE недоступны. P2: runtime observation
 истекает за 120s, требуется observe. P2: очередь на диске не ограничена, есть нагрузочный
-риск #78. P2: init/serve wrapper после восстановления API требует CI и последующей проверки
+риск #78. P2: wrapper после восстановления API требует PASS отдельного CI smoke и последующей проверки
 интерактивного запуска человеком. Нет SLA stale window, atomic DB/API или доказанной пользы.
 
 | Следующая работа | Можно без ВМ | Доступ/участники | Критерий завершения |

@@ -91,7 +91,7 @@ def journey(base_url, username, password, operator, output, store):
                 v["actual_count"] == 250 and v["passed"]
                 for v in a["consumers"].values()
             )
-            page.locator('[data-version="B"]').click()
+            page.locator('button[data-version="B"]').click()
             page.wait_for_function(
                 "() => document.querySelector('#proposed').dataset.version==='B' && !document.querySelector('#prepare').disabled",
                 timeout=180000,
@@ -155,7 +155,7 @@ def journey(base_url, username, password, operator, output, store):
             page.set_viewport_size({"width": 390, "height": 844})
             assert page.evaluate("() => document.documentElement.scrollWidth <= innerWidth")
             page.set_viewport_size({"width": 1440, "height": 1100})
-            page.locator('[data-version="D"]').click()
+            page.locator('button[data-version="D"]').click()
             page.wait_for_function(
                 "() => document.querySelector('#proposed').dataset.version==='D' && !document.querySelector('#prepare').disabled",
                 timeout=180000,
@@ -168,7 +168,7 @@ def journey(base_url, username, password, operator, output, store):
                 d["status"] == "PASS"
                 and d["consumers"]["Reporting"]["actual_count"] == 250
             )
-            page.locator('[data-version="E"]').click()
+            page.locator('button[data-version="E"]').click()
             page.wait_for_function(
                 "() => document.querySelector('#proposed').dataset.version==='E' && !document.querySelector('#prepare').disabled",
                 timeout=180000,
