@@ -49,6 +49,11 @@ jobs:
       - name: Core regression on this checkout
         run: |
           PYTHONPATH=src:. python tests/graph/ci_unittest.py discover -s tests/graph -t . -v > work/core-tests.log 2>&1             || { grep '^::error' work/core-tests.log; exit 1; }
+      - name: New authored HTTP matrix with separate expectations
+        run: |
+          python -m tests.graph.pilot_review --runtime --output work/review-matrix
+          python -m tests.graph.pilot_boundaries work/review-matrix/deferred-boundaries.json
+          python tools/agent_graph_demo/local_show.py --help
       - name: Prepare wheelhouse and build off-VM
         id: image
         run: |
@@ -71,5 +76,8 @@ jobs:
           path: |
             work/app-tests.log
             work/core-tests.log
+            work/review-matrix/expectations-before.json
+            work/review-matrix/observations.json
+            work/review-matrix/deferred-boundaries.json
             work/acceptance/ACCEPTANCE.json
             work/acceptance/*.png

@@ -1,0 +1,66 @@
+{
+  "origin": "Author-written before execution; not independent held-out",
+  "requirement": "reader and wrapper need six shipment IDs once each",
+  "runtime": {
+    "reader": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "wrapper": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "writer": {
+      "accepted": true
+    },
+    "remote": [
+      99
+    ],
+    "wrong_prefix": 404,
+    "wrong_method": 405
+  },
+  "limited": {
+    "reader": [
+      1,
+      2
+    ],
+    "wrapper": [
+      1,
+      2
+    ]
+  },
+  "structural": {
+    "reader": [
+      "warehouse",
+      "GET",
+      "/shipments"
+    ],
+    "writer": [
+      "warehouse",
+      "POST",
+      "/shipments"
+    ],
+    "remote_reader": [
+      "remote",
+      "GET",
+      "/shipments"
+    ]
+  },
+  "changed_consumers": [
+    "reader"
+  ],
+  "unknown": [
+    "wrapper",
+    "wrong_prefix",
+    "wrong_method"
+  ],
+  "notes": "No edge does not mean no HTTP call. Static risk is separate from observed truncation."
+}
