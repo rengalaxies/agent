@@ -42,6 +42,12 @@ def bindings(tree):
     """Conservative file-wide binding counts, including non-Name AST targets."""
     stores = Counter()
     for node in ast.walk(tree):
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                and node.func.id in {"setattr", "delattr"} and node.args
+                and isinstance(node.args[0], ast.Name)):
+            # Explicit mutation invalidates a positive binding just like obj.attr = ... .
+            # No alias/dataflow or arbitrary side-effect inference is added to this profile.
+            stores[node.args[0].id] += 1
         if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
             stores[node.id] += 1
         elif isinstance(node, ast.arg):

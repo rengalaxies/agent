@@ -119,7 +119,7 @@ class M4AScenarios(unittest.TestCase):
 
     def test_legacy_knowledge_without_config_digest_checks_its_original_profile(self):
         f = self.fixture
-        for profile, expected in (("http-requests-4", "STALE"), ("http-requests-5", "CURRENT")):
+        for profile, expected in (("http-requests-4", "STALE"), ("http-requests-5", "STALE"), ("http-requests-6", "CURRENT")):
             with self.subTest(profile=profile), patch("agent_graph.engine.PROFILE", profile), \
                  patch("agent_graph.sources.PROFILE", profile):
                 old = f.context()
