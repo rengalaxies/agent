@@ -163,10 +163,13 @@ class Store:
                 ).fetchall()
                 if not any(json.loads(r[0]).get("context_id") == cid for r in refs):
                     raise DemoError("context_not_published_here", 422)
-            if action == "propose" and (
-                cid != s["current_context_id"] or s.get("needs_refresh")
-            ):
-                raise DemoError("stale_context")
+            if action == "propose":
+                from .contracts import PROFILE
+                graph_row = c.execute("SELECT doc FROM artifacts WHERE session=? AND id=? AND kind='graph'",
+                                      (sid, s.get("graph_ref"))).fetchone()
+                if (cid != s["current_context_id"] or s.get("needs_refresh") or not graph_row
+                        or json.loads(graph_row[0]).get("profile") != PROFILE):
+                    raise DemoError("stale_context")
             if action == "investigate":
                 raise DemoError("model_unavailable", 503)
             j = dict(
