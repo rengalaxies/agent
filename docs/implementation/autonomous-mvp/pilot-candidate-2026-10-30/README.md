@@ -153,7 +153,9 @@ LOCAL full suite сперва FAIL из-за неверного PYTHONPATH бе�
 99ce1f0e (UI-only hint позже). [Full log](evidence/full-local.log),
 [runner log](evidence/runner-local.log). Итоговые Checks точного final head — в PR;
 предыдущий green не засчитывается окончательному head.
-Исторические expectation/results не переписывались. Ранний migration harness FAIL
+Исторические expectation/results не переписывались. Whole diff --check к main
+указывает две унаследованные trailing-whitespace строки старых logs #72; новый diff
+проверен отдельно к обоим родителям, эти исторические logs сохранены. Ранний migration harness FAIL
 reanalysed 3 вместо 0 сохранён как подтверждение source-status дефекта, ожидание не ослаблено.
 
 | Уровень | Факт |
