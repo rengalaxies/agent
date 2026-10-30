@@ -4,6 +4,7 @@ const state = {
   sid: null,
   session: null,
   graph: null,
+  graphLoadFailed: false,
   job: null,
   evidence: null,
   selectedJob: null,
@@ -315,8 +316,13 @@ async function loadGraph(jobId = null) {
   $("source").textContent =
     "Здесь появится точный фрагмент неизменяемого снимка.";
   $("correct").disabled = true;
+  if (state.graphLoadFailed) {
+    state.graphLoadFailed = false;
+    message("Граф и анализ загружены. Выберите связь, чтобы открыть основание.");
+  }
   } catch (error) {
     if (state.sid !== sid || token !== state.graphToken) return;
+    state.graphLoadFailed = true;
     clearGraphView("Не удалось загрузить результат. Прежние основания скрыты; повторите загрузку.");
     const retry = node("button", "Повторить загрузку графа и анализа");
     retry.addEventListener("click", () => safely(() => loadGraph()));

@@ -147,9 +147,11 @@ def journey(base_url, username, password, operator, output, store):
             screenshots.append("graph-unavailable.png")
             page.unroute("**/graph*")
             page.locator("#current").click()
-            page.wait_for_function("() => document.querySelector('#edges').children.length===3")
+            page.wait_for_function("() => document.querySelector('#edges').children.length===3 && document.querySelector('#workspace').getAttribute('aria-busy')==='false'")
             assert page.locator("#source").inner_text().strip().startswith("Здесь появится")
             assert page.locator("#workspace").get_attribute("aria-busy") == "false"
+            assert "недоступен" not in page.locator("#message").inner_text()
+            assert "error" not in (page.locator("#message").get_attribute("class") or "").split()
             page.locator("#prepare").focus()
             assert page.locator("#prepare").evaluate("e => e === document.activeElement")
             page.set_viewport_size({"width": 390, "height": 844})
