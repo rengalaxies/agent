@@ -261,6 +261,13 @@ def journey(base_url, username, password, operator, output, store):
             assert "<script>" in page.locator("#source").inner_text()
             assert page.locator("#source img, #source script").count() == 0
             assert page.evaluate("() => window.__source_executed") is None
+            page.reload()
+            page.wait_for_function(
+                "() => document.querySelector('#proposed').dataset.version==='E' && document.querySelector('#edges').children.length===4 && document.querySelector('#workspace').getAttribute('aria-busy')==='false'"
+            )
+            assert page.locator("#sessions").input_value() == sid
+            assert page.locator("#history button").filter(has_text="Анализ B").count() == 1
+            assert "Исторический" not in page.locator("#freshness").inner_text()
             assert not errors, errors
             guard.stop(sid, guard.read()["generation"])
             assert not guard.inventory()
@@ -276,6 +283,9 @@ def journey(base_url, username, password, operator, output, store):
                     "Status negative control",
                     "proposed/running separation",
                     "history reopened",
+                    "page reload restores saved E and B history",
+                    "graph failure clears old evidence and findings",
+                    "graph retry restores current result and clears error",
                     "keyboard edge selection",
                     "context change clears SVG selection",
                     "reverse evidence response arrival (real API, injected client delay)",

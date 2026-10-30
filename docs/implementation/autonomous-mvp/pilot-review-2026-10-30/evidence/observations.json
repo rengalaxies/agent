@@ -1,0 +1,222 @@
+{
+  "level": "LOCAL",
+  "status": "PASS",
+  "author_written": true,
+  "independent_held_out": false,
+  "structural": {
+    "remote_reader": [
+      "remote",
+      "GET",
+      "/shipments"
+    ],
+    "writer": [
+      "warehouse",
+      "POST",
+      "/shipments"
+    ],
+    "reader": [
+      "warehouse",
+      "GET",
+      "/shipments"
+    ]
+  },
+  "gaps": [
+    {
+      "code": "unmapped_call",
+      "evidence": {
+        "source_id": "f79af2c91f44fc56a351db76324cd5c841eaa5dc995855bea2cc6baa5469d413",
+        "start_line": 4,
+        "end_line": 4,
+        "quote": "    return requests.delete(BASE + \"/shipments\", timeout=3)"
+      }
+    },
+    {
+      "code": "unmapped_call",
+      "evidence": {
+        "source_id": "5344e2c24d96223ec8ac92bb4eb0f5e759d6e6722a03a77d4289c7566e7cf40c",
+        "start_line": 4,
+        "end_line": 4,
+        "quote": "    return requests.get(BASE + \"/shipments\", timeout=3)"
+      }
+    },
+    {
+      "code": "dynamic_or_unsupported_call",
+      "evidence": {
+        "source_id": "fbafd18d9c65e996ebc84165cb6f4f94d4e2b26ee30215456a3de08e6edf5f04",
+        "start_line": 3,
+        "end_line": 3,
+        "quote": "    return requests.get(target, timeout=3)"
+      }
+    }
+  ],
+  "findings": [
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "dependency_id": "37e11055ce84c4e92f0e84283c8f0f1f813d3295ae13fca674e5e846d3aecc1d",
+      "consumer": "reader",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "callsite": {
+        "repository": "reader",
+        "path": "app.py",
+        "line": 4
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 2, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 5,
+          "quote": "def listing(page_size: int = 60):\n    return list(range(1, 7))[:page_size]",
+          "source_id": "528c2c69846dc36c50a99a6c930b37a3c582876136d1fd2b371c2940b9eec317",
+          "start_line": 4
+        },
+        {
+          "source_id": "b5738416864c7b208027886a5aabca07fcd6daefde7d36a715945912c3dd9f86",
+          "start_line": 4,
+          "end_line": 5,
+          "quote": "def listing(page_size: int = 2):\n    return list(range(1, 7))[:page_size]"
+        },
+        {
+          "source_id": "17f7192398ca44cae237e84e522cbf574f82f583ab8b1d6e9fb53b830911dabd",
+          "start_line": 4,
+          "end_line": 4,
+          "quote": "    return requests.get(BASE + \"/shipments\", timeout=3)"
+        },
+        {
+          "source_id": "17f7192398ca44cae237e84e522cbf574f82f583ab8b1d6e9fb53b830911dabd",
+          "start_line": 3,
+          "end_line": 4,
+          "quote": "def run():\n    return requests.get(BASE + \"/shipments\", timeout=3)"
+        }
+      ],
+      "requirement_ids": [],
+      "check": "Run consumer with more than 2 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "before": {
+    "reader": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "writer": {
+      "accepted": true
+    },
+    "remote": [
+      99
+    ],
+    "wrong_prefix": 404,
+    "wrong_method": 405,
+    "wrapper": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "limited": {
+    "reader": [
+      1,
+      2
+    ],
+    "writer": {
+      "accepted": true
+    },
+    "remote": [
+      99
+    ],
+    "wrong_prefix": 404,
+    "wrong_method": 405,
+    "wrapper": [
+      1,
+      2
+    ]
+  },
+  "actual_http_requests": [
+    {
+      "method": "GET",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v1/shipments",
+      "port": 40667,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v2/shipments",
+      "port": 40101,
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 405
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v1/shipments",
+      "port": 40667,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v2/shipments",
+      "port": 40101,
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 405
+    },
+    {
+      "method": "GET",
+      "path": "/edge/v1/shipments",
+      "port": 40101,
+      "status": 200
+    }
+  ],
+  "lifecycle": {
+    "add_remove": "PASS",
+    "cited_source_stale": "PASS",
+    "unavailable": "PARTIAL"
+  },
+  "unknown_meaning": "No edge does not mean no HTTP call. Static risk is separate from observed truncation."
+}

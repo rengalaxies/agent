@@ -1,0 +1,56 @@
+[
+  {
+    "case": "documentation",
+    "expected": [],
+    "actual": [
+      "wg",
+      "wp"
+    ],
+    "basis": "Task is documentation / GET explicitly unchanged / GET provider not disambiguated",
+    "status": "DEFERRED_72"
+  },
+  {
+    "case": "negation_mixed",
+    "expected": [
+      "wp"
+    ],
+    "actual": [
+      "wp"
+    ],
+    "basis": "Task is documentation / GET explicitly unchanged / GET provider not disambiguated",
+    "status": "PASS"
+  },
+  {
+    "case": "scope",
+    "expected": [],
+    "actual": [
+      "wg",
+      "wp"
+    ],
+    "basis": "Task is documentation / GET explicitly unchanged / GET provider not disambiguated",
+    "status": "DEFERRED_72"
+  },
+  {
+    "case": "old_pinned_profile",
+    "expected": "STALE",
+    "actual": "CURRENT",
+    "basis": "Extractor identity changed despite identical pinned tree",
+    "status": "DEFERRED_72"
+  },
+  {
+    "case": "old_knowledge_profile",
+    "expected": "STALE",
+    "actual": "CURRENT",
+    "basis": "Knowledge basis used prior extractor; do not delete history",
+    "status": "DEFERRED_72"
+  },
+  {
+    "case": "rebound_factory",
+    "expected": [],
+    "actual": [
+      "/ghost"
+    ],
+    "basis": "Plain decorator object does not register a FastAPI HTTP route",
+    "status": "DEFERRED_72"
+  }
+]

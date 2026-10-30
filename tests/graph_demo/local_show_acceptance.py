@@ -2,6 +2,7 @@
 import argparse
 import base64
 import json
+import os
 import secrets
 import subprocess
 import sys
@@ -51,7 +52,6 @@ def check(directory, image):
 
     def stop_backend(process):
         # serve is a CLI parent of the backend. Terminate its own process group only.
-        import os
         import signal
         os.killpg(process.pid, signal.SIGTERM)
         process.wait(timeout=10)
@@ -100,7 +100,8 @@ def check(directory, image):
         assert sid in ids and new["id"] in ids, "serve must reopen the same state"
     finally:
         stop_backend(process)
-    report = dict(status="PASS", level="CI", commands=["init", "serve", "run A", "observe", "stop", "reset", "serve"],
+    report = dict(status="PASS", level="CI" if os.environ.get("GITHUB_ACTIONS") == "true" else "LOCAL",
+                  commands=["init", "serve", "run A", "observe", "stop", "reset", "serve"],
                   preserved_sessions=[sid, new["id"]], model="OFF", human_acceptance="NOT_RUN")
     (directory / "LOCAL-SHOW.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report))
