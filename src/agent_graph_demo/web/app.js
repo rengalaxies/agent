@@ -284,6 +284,8 @@ async function loadGraph(jobId = null) {
       : g.freshness.status === "STALE"
         ? "Основание устарело"
         : "Свежесть не установлена";
+  if (g.freshness.reason === "extractor_profile_changed")
+    $("freshness").textContent = "Изменился профиль анализа · обследуйте исходники заново";
   if (g.freshness.assessed_at)
     $("freshness").textContent += " · " + formatTime(g.freshness.assessed_at);
   renderGraph(g);
@@ -508,6 +510,8 @@ async function showEvidence(id) {
 function renderImpact(result, g) {
   const box = $("impact");
   box.replaceChildren();
+  if (g.freshness.reason === "extractor_profile_changed")
+    box.append(node("p", "Ниже сохранённый вывод прежнего профиля. Его основания требуют нового обследования; это не текущий анализ.", "note"));
   if (g.historical)
     box.append(
       node(
