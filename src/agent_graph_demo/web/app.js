@@ -33,6 +33,7 @@ function nextAction() {
   if (session && !state.graph) text = "Данных анализа пока нет. Обследуйте исходники или повторите загрузку текущего результата.";
   else if (state.selectedJob) text = "Вы смотрите историю. Вернитесь к текущему результату перед следующим действием.";
   else if (session && state.graph?.freshness.status !== "CURRENT") text = "Свежесть основания не подтверждена. Обследуйте исходники заново.";
+  else if (session && state.graph?.coverage === "PARTIAL") text = "Неполные исходники или неподдержанные вызовы. Изучите границы и недостающие данные; восстановите источник и обследуйте заново. Успешная проверка фикстуры не доказывает полноту графа.";
   else if (session) {
     const check = [...session.checks].reverse().find(r => r.applicable);
     text = !check ? "Откройте основание связи; затем оператор запускает предложенную версию и фактическую проверку. Статический риск не доказывает поломку."
@@ -284,6 +285,8 @@ async function loadGraph(jobId = null) {
       : g.freshness.status === "STALE"
         ? "Основание устарело"
         : "Свежесть не установлена";
+  if (g.freshness.reason === "extractor_profile_changed")
+    $("freshness").textContent = "Изменился профиль анализа · обследуйте исходники заново";
   if (g.freshness.assessed_at)
     $("freshness").textContent += " · " + formatTime(g.freshness.assessed_at);
   renderGraph(g);
@@ -508,6 +511,8 @@ async function showEvidence(id) {
 function renderImpact(result, g) {
   const box = $("impact");
   box.replaceChildren();
+  if (g.freshness.reason === "extractor_profile_changed")
+    box.append(node("p", "Ниже сохранённый вывод прежнего профиля. Его основания требуют нового обследования; это не текущий анализ.", "note"));
   if (g.historical)
     box.append(
       node(

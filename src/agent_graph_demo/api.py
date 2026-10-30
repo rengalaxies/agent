@@ -16,6 +16,7 @@ from .contracts import (
     DemoError,
     DemoSettings,
     JobRequest,
+    PROFILE,
     ResetRequest,
     Strict,
     VERSIONS,
@@ -244,14 +245,25 @@ def create_app(settings: DemoSettings):
             ).total_seconds()
             > 3600
         )
+        profile_changed = g.get("profile") != PROFILE
         return {
             **g,
+            "proposals": [
+                {**p, "status": "STALE", "freshness": {
+                    **p.get("freshness", {}), "status": "STALE",
+                    "reasons": [*p.get("freshness", {}).get("reasons", []), "extractor_profile_changed"],
+                }}
+                if profile_changed and p["status"] != "SUPERSEDED" else p
+                for p in g.get("proposals", [])
+            ],
             "historical": historical,
             "session_revision": revision,
             "freshness": {
                 **g["freshness"],
                 **(
-                    {"status": "STALE", "reason": "historical_result"}
+                    {"status": "STALE", "reason": "extractor_profile_changed"}
+                    if profile_changed
+                    else {"status": "STALE", "reason": "historical_result"}
                     if historical
                     else {
                         "status": "UNKNOWN",

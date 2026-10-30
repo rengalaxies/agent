@@ -268,6 +268,35 @@ def journey(base_url, username, password, operator, output, store):
             assert page.locator("#sessions").input_value() == sid
             assert page.locator("#history button").filter(has_text="Анализ B").count() == 1
             assert "Исторический" not in page.locator("#freshness").inner_text()
+            # Explicit persisted-state fixtures exercise the real API/UI; they are not new discoveries.
+            saved_session = store.session(sid)
+            saved_graph = store.get_artifact(sid, saved_session["graph_ref"], "graph")
+            for name, graph_fixture in (
+                ("profile-stale", {**saved_graph, "profile": "author-previous-profile"}),
+                ("partial-source", {**saved_graph, "coverage": "PARTIAL",
+                                    "gaps": [{"code": "repository_unavailable", "repository": "reporting"}]}),
+            ):
+                fixture_ref = store.artifact(sid, "graph", graph_fixture)
+                with store.transaction() as db:
+                    store.put_session(db, {**saved_session, "graph_ref": fixture_ref})
+                try:
+                    page.reload()
+                    page.wait_for_function("() => document.querySelector('#edges').children.length===4 && document.querySelector('#workspace').getAttribute('aria-busy')==='false'")
+                    if name == "profile-stale":
+                        assert "Изменился профиль анализа" in page.locator("#freshness").inner_text()
+                        assert "прежнего профиля" in page.locator("#impact").inner_text()
+                        page.locator("#edges button").filter(has_text="Export → Orders").click()
+                        page.wait_for_function("() => document.querySelector('#evidence-meta').textContent.includes('export / client.py')")
+                        assert page.locator("#correct").is_disabled()
+                    else:
+                        assert page.locator("#coverage").inner_text().startswith("Неполные данные")
+                        assert "repository_unavailable" in page.locator("#gaps").text_content()
+                        assert "Неполные исходники" in page.locator("#next-action").inner_text()
+                    page.screenshot(path=str(output / (name + ".png")), full_page=True)
+                    screenshots.append(name + ".png")
+                finally:
+                    with store.transaction() as db:
+                        store.put_session(db, saved_session)
             assert not errors, errors
             guard.stop(sid, guard.read()["generation"])
             assert not guard.inventory()
@@ -286,6 +315,7 @@ def journey(base_url, username, password, operator, output, store):
                     "page reload restores saved E and B history",
                     "graph failure clears old evidence and findings",
                     "graph retry restores current result and clears error",
+                    "old profile and PARTIAL shown using explicit persisted-state UI fixtures",
                     "keyboard edge selection",
                     "context change clears SVG selection",
                     "reverse evidence response arrival (real API, injected client delay)",

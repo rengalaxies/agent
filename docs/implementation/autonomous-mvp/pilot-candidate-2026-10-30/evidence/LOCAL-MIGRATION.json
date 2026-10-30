@@ -1,0 +1,889 @@
+{
+  "level": "LOCAL",
+  "status": "PASS",
+  "profile": "http-requests-6",
+  "model": "OFF",
+  "same_comment_ids": {
+    "pr7": [
+      1001
+    ],
+    "pr8": [
+      1002
+    ],
+    "jira": [
+      "5001"
+    ]
+  },
+  "phases": [
+    {
+      "label": "before",
+      "report": {
+        "profile": "http-requests-4",
+        "code_sha": "e84e91395a8846e2f43df3a1a6e402e3487e7a27",
+        "action": "initial",
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "gaps": [],
+        "before_contexts": {},
+        "before_code_bases": [],
+        "recovered": {
+          "jobs": 0,
+          "sending": 0,
+          "released": 0
+        },
+        "reconciliation": {
+          "recovered": {
+            "jobs": 0,
+            "sending": 0,
+            "released": 0
+          },
+          "revived": 0,
+          "enqueued": 3,
+          "graph": [
+            {
+              "source": "code",
+              "version": 1
+            },
+            {
+              "source": "ownership",
+              "version": 2,
+              "status": "OK"
+            }
+          ],
+          "reanalysed": 0
+        },
+        "steps": [
+          "ingest:new_generation",
+          "ingest:new_generation",
+          "ingest:new_generation",
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered"
+        ],
+        "proposals": [
+          {
+            "id": "9689fb262fbfc192473747b8c2f38ba542db69d0c26a30547105e96029c95292",
+            "status": "CURRENT"
+          },
+          {
+            "id": "e048d2600d4d025c2ed91d9ef9073384df6ddc9acbadff1bc72916957f69be46",
+            "status": "CURRENT"
+          }
+        ],
+        "resources": {
+          "jira:10012": {
+            "generation": 1,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              }
+            ],
+            "history_count": 7
+          },
+          "github:acme/orders#7": {
+            "generation": 1,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              }
+            ],
+            "history_count": 7
+          },
+          "github:acme/orders#8": {
+            "generation": 1,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              }
+            ],
+            "history_count": 7
+          }
+        }
+      },
+      "comments": {
+        "pr7": [
+          {
+            "id": 1001,
+            "body": "### \u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n\n2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- archive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n- reporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 POSSIBLE_TRUNCATION \u0443 reporting: \u0432\u044b\u0437\u043e\u0432 reporting:client.py:7, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 SINGLE_REQUEST_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044f reporting-complete\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 RECHECK_REQUIRED \u0443 archive: \u0432\u044b\u0437\u043e\u0432 archive:client.py:9, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 CURSOR_LOOP_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435 \u0437\u0430\u0434\u0430\u043d\u043e\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L6-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: POSSIBLE_TRUNCATION: If helper obeys page_size, result set exceeds 20, and consumer needs complete data. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: MEDIUM. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L6-15; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: RECHECK_REQUIRED: If helper obeys page_size, result set exceeds 20, and consumer needs complete data. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- reporting: Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits\n- archive: Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- requirement_unknown (archive)\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#7: base 99aaceb50e06, head 98675b17099a\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 176415c1e5f542f683bf9817ccf14586:1\n- graph_version: graph-2\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): 98675b17099a\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: impact_found_within_profile\n\n<!-- agent-service marker=9d6be7022c568180 digest=cd71ffe168c093edbea38823f8ec4b570cad30e1b37b1d50425e3f7e32850d85 generation=1 -->"
+          }
+        ],
+        "pr8": [
+          {
+            "id": 1002,
+            "body": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438 \u043d\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u044b (no_supported_delta). \u042d\u0442\u043e \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u044f.\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u041f\u0443\u0442\u044c \u0432\u043b\u0438\u044f\u043d\u0438\u044f \u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d.\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f \u0441\u0435\u0440\u0432\u0438\u0441 \u043d\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u0442: \u0438\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 review.\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#8: base 99aaceb50e06, head aea829462668\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 34437c23cc4c4d8c8841b9c2dbcac1cf:1\n- graph_version: graph-3\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): aea829462668\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: ABSTAINED, \u043a\u043e\u0434: no_supported_delta\n\n<!-- agent-service marker=e108338b940de83a digest=aca39bf7002ab1590a235dfb0fa21f1bd8f52650258b7c9e4845235c6a485f3c generation=1 -->"
+          }
+        ],
+        "jira": [
+          {
+            "id": "5001",
+            "body": "\u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. \u042d\u0442\u043e \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u043e \u0437\u0430\u0434\u0430\u0447\u0435 \u0434\u043e \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043a\u043e\u0434\u0430; \u043e\u043d \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443.\n\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at archive:client.py:9. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-5; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at reporting:client.py:7. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-5; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\n\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\ngit:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.005Z\n\ngit:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.005Z\n\ngit:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\ngit:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\nownership:installation_mapping: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.141Z\n\n\u0412\u0435\u0440\u0441\u0438\u0438\nJira ORD-12: \u0432\u0435\u0440\u0441\u0438\u044f \u043f\u043e\u043b\u0435\u0439 7c4bf84cdfe6\n\n\u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n\ncode_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 88a61662ec304d2fabc75f002734efcd:1\n\ngraph_version: graph-5\n\nmodel: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\n\u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n\n\u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n\n\u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n\n\u0441\u043d\u0438\u043c\u043e\u043a orders (consumer): 99aaceb50e06\n\n\u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n\n\u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=e1d730059c5144dd9bc6c0f579795cb9c1d1e7897c83ad5988c056fd0f3b712a generation=1\n"
+          }
+        ]
+      }
+    },
+    {
+      "label": "upgrade-source-unavailable",
+      "report": {
+        "profile": "http-requests-6",
+        "code_sha": "99ce1f0ecd39c838b0a8613d64311655c743321f",
+        "action": "unavailable",
+        "coverage": "PARTIAL",
+        "gaps": [
+          {
+            "code": "commit_unavailable",
+            "repository": "orders"
+          },
+          {
+            "code": "unmapped_call",
+            "evidence": {
+              "source_id": "cd52194c6ee9fd41d71d98437cde1bfe436914587455bccc76fde6980a45c0cb",
+              "start_line": 7,
+              "end_line": 7,
+              "quote": "    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)"
+            }
+          },
+          {
+            "code": "unmapped_call",
+            "evidence": {
+              "source_id": "4a54711701597aa6f0cf5923e0f675adb956cb7acd0962f66f5bd6b70c1a2379",
+              "start_line": 9,
+              "end_line": 9,
+              "quote": "        response = requests.get(BASE_URL + \"/orders\", params={\"day\": day, \"cursor\": cursor}, timeout=10)"
+            }
+          }
+        ],
+        "before_contexts": {
+          "http-requests-4": "STALE"
+        },
+        "before_code_bases": [
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE"
+        ],
+        "recovered": {
+          "jobs": 0,
+          "sending": 0,
+          "released": 0
+        },
+        "reconciliation": {
+          "recovered": {
+            "jobs": 0,
+            "sending": 0,
+            "released": 0
+          },
+          "revived": 0,
+          "enqueued": 0,
+          "graph": [
+            {
+              "source": "code",
+              "version": 6,
+              "status": "UNAVAILABLE"
+            },
+            {
+              "source": "ownership",
+              "version": 7,
+              "status": "OK"
+            }
+          ],
+          "reanalysed": 0
+        },
+        "steps": [],
+        "proposals": [
+          {
+            "id": "9689fb262fbfc192473747b8c2f38ba542db69d0c26a30547105e96029c95292",
+            "status": "STALE"
+          },
+          {
+            "id": "e048d2600d4d025c2ed91d9ef9073384df6ddc9acbadff1bc72916957f69be46",
+            "status": "STALE"
+          }
+        ],
+        "resources": {
+          "jira:10012": {
+            "generation": 1,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              }
+            ],
+            "history_count": 7
+          },
+          "github:acme/orders#7": {
+            "generation": 1,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              }
+            ],
+            "history_count": 7
+          },
+          "github:acme/orders#8": {
+            "generation": 1,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              }
+            ],
+            "history_count": 7
+          }
+        }
+      },
+      "comments": {
+        "pr7": [
+          {
+            "id": 1001,
+            "body": "### \u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n\n2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- archive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n- reporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 POSSIBLE_TRUNCATION \u0443 reporting: \u0432\u044b\u0437\u043e\u0432 reporting:client.py:7, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 SINGLE_REQUEST_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044f reporting-complete\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 RECHECK_REQUIRED \u0443 archive: \u0432\u044b\u0437\u043e\u0432 archive:client.py:9, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 CURSOR_LOOP_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435 \u0437\u0430\u0434\u0430\u043d\u043e\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L6-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: POSSIBLE_TRUNCATION: If helper obeys page_size, result set exceeds 20, and consumer needs complete data. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: MEDIUM. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L6-15; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: RECHECK_REQUIRED: If helper obeys page_size, result set exceeds 20, and consumer needs complete data. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- reporting: Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits\n- archive: Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- requirement_unknown (archive)\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#7: base 99aaceb50e06, head 98675b17099a\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 176415c1e5f542f683bf9817ccf14586:1\n- graph_version: graph-2\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): 98675b17099a\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: impact_found_within_profile\n\n<!-- agent-service marker=9d6be7022c568180 digest=cd71ffe168c093edbea38823f8ec4b570cad30e1b37b1d50425e3f7e32850d85 generation=1 -->"
+          }
+        ],
+        "pr8": [
+          {
+            "id": 1002,
+            "body": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438 \u043d\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u044b (no_supported_delta). \u042d\u0442\u043e \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u044f.\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u041f\u0443\u0442\u044c \u0432\u043b\u0438\u044f\u043d\u0438\u044f \u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d.\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f \u0441\u0435\u0440\u0432\u0438\u0441 \u043d\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u0442: \u0438\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 review.\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#8: base 99aaceb50e06, head aea829462668\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 34437c23cc4c4d8c8841b9c2dbcac1cf:1\n- graph_version: graph-3\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): aea829462668\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: ABSTAINED, \u043a\u043e\u0434: no_supported_delta\n\n<!-- agent-service marker=e108338b940de83a digest=aca39bf7002ab1590a235dfb0fa21f1bd8f52650258b7c9e4845235c6a485f3c generation=1 -->"
+          }
+        ],
+        "jira": [
+          {
+            "id": "5001",
+            "body": "\u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. \u042d\u0442\u043e \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u043e \u0437\u0430\u0434\u0430\u0447\u0435 \u0434\u043e \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043a\u043e\u0434\u0430; \u043e\u043d \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443.\n\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at archive:client.py:9. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-5; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at reporting:client.py:7. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-5; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\n\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\ngit:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.005Z\n\ngit:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.005Z\n\ngit:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\ngit:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\nownership:installation_mapping: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.141Z\n\n\u0412\u0435\u0440\u0441\u0438\u0438\nJira ORD-12: \u0432\u0435\u0440\u0441\u0438\u044f \u043f\u043e\u043b\u0435\u0439 7c4bf84cdfe6\n\n\u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n\ncode_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 88a61662ec304d2fabc75f002734efcd:1\n\ngraph_version: graph-5\n\nmodel: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\n\u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n\n\u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n\n\u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n\n\u0441\u043d\u0438\u043c\u043e\u043a orders (consumer): 99aaceb50e06\n\n\u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n\n\u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=e1d730059c5144dd9bc6c0f579795cb9c1d1e7897c83ad5988c056fd0f3b712a generation=1\n"
+          }
+        ]
+      }
+    },
+    {
+      "label": "upgrade-partial",
+      "report": {
+        "profile": "http-requests-6",
+        "code_sha": "99ce1f0ecd39c838b0a8613d64311655c743321f",
+        "action": "partial",
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "gaps": [],
+        "before_contexts": {
+          "http-requests-4": "STALE",
+          "http-requests-6": "STALE"
+        },
+        "before_code_bases": [
+          "CURRENT",
+          "CURRENT",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE"
+        ],
+        "recovered": {
+          "jobs": 0,
+          "sending": 0,
+          "released": 0
+        },
+        "reconciliation": {
+          "recovered": {
+            "jobs": 0,
+            "sending": 0,
+            "released": 0
+          },
+          "revived": 0,
+          "enqueued": 0,
+          "graph": [
+            {
+              "source": "code",
+              "version": 8,
+              "status": "OK"
+            },
+            {
+              "source": "ownership",
+              "version": 9,
+              "status": "OK"
+            }
+          ],
+          "reanalysed": 3
+        },
+        "steps": [
+          "analyze:done"
+        ],
+        "proposals": [
+          {
+            "id": "9689fb262fbfc192473747b8c2f38ba542db69d0c26a30547105e96029c95292",
+            "status": "STALE"
+          },
+          {
+            "id": "e048d2600d4d025c2ed91d9ef9073384df6ddc9acbadff1bc72916957f69be46",
+            "status": "STALE"
+          }
+        ],
+        "resources": {
+          "jira:10012": {
+            "generation": 2,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "QUEUED",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": null
+              }
+            ],
+            "history_count": 8
+          },
+          "github:acme/orders#7": {
+            "generation": 2,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              },
+              {
+                "state": "ANALYZED",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              }
+            ],
+            "history_count": 11
+          },
+          "github:acme/orders#8": {
+            "generation": 2,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "QUEUED",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": null
+              }
+            ],
+            "history_count": 8
+          }
+        }
+      },
+      "comments": {
+        "pr7": [
+          {
+            "id": 1001,
+            "body": "### \u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n\n2 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- archive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n- reporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 POSSIBLE_TRUNCATION \u0443 reporting: \u0432\u044b\u0437\u043e\u0432 reporting:client.py:7, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 SINGLE_REQUEST_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044f reporting-complete\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 RECHECK_REQUIRED \u0443 archive: \u0432\u044b\u0437\u043e\u0432 archive:client.py:9, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 CURSOR_LOOP_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435 \u0437\u0430\u0434\u0430\u043d\u043e\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L6-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: POSSIBLE_TRUNCATION: If helper obeys page_size, result set exceeds 20, and consumer needs complete data. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: MEDIUM. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L6-15; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: RECHECK_REQUIRED: If helper obeys page_size, result set exceeds 20, and consumer needs complete data. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n- \u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9; \u043a\u043e\u0434 orders@98675b17099a:api.py#L7-9\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- reporting: Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits\n- archive: Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- requirement_unknown (archive)\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.534815Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#7: base 99aaceb50e06, head 98675b17099a\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 176415c1e5f542f683bf9817ccf14586:1\n- graph_version: graph-2\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): 98675b17099a\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: impact_found_within_profile\n\n<!-- agent-service marker=9d6be7022c568180 digest=cd71ffe168c093edbea38823f8ec4b570cad30e1b37b1d50425e3f7e32850d85 generation=1 -->"
+          }
+        ],
+        "pr8": [
+          {
+            "id": 1002,
+            "body": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438 \u043d\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u044b (no_supported_delta). \u042d\u0442\u043e \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u044f.\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u041f\u0443\u0442\u044c \u0432\u043b\u0438\u044f\u043d\u0438\u044f \u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d.\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f \u0441\u0435\u0440\u0432\u0438\u0441 \u043d\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u0442: \u0438\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 review.\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.892151Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#8: base 99aaceb50e06, head aea829462668\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 34437c23cc4c4d8c8841b9c2dbcac1cf:1\n- graph_version: graph-3\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): aea829462668\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: ABSTAINED, \u043a\u043e\u0434: no_supported_delta\n\n<!-- agent-service marker=e108338b940de83a digest=aca39bf7002ab1590a235dfb0fa21f1bd8f52650258b7c9e4845235c6a485f3c generation=1 -->"
+          }
+        ],
+        "jira": [
+          {
+            "id": "5001",
+            "body": "\u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. \u042d\u0442\u043e \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u043e \u0437\u0430\u0434\u0430\u0447\u0435 \u0434\u043e \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043a\u043e\u0434\u0430; \u043e\u043d \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443.\n\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at archive:client.py:9. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-5; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at reporting:client.py:7. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-5; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\n\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\ngit:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.005Z\n\ngit:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.005Z\n\ngit:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\ngit:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:23.004Z\n\nownership:installation_mapping: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:22.141Z\n\n\u0412\u0435\u0440\u0441\u0438\u0438\nJira ORD-12: \u0432\u0435\u0440\u0441\u0438\u044f \u043f\u043e\u043b\u0435\u0439 7c4bf84cdfe6\n\n\u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 1\n\ncode_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 88a61662ec304d2fabc75f002734efcd:1\n\ngraph_version: graph-5\n\nmodel: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\n\u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n\n\u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n\n\u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n\n\u0441\u043d\u0438\u043c\u043e\u043a orders (consumer): 99aaceb50e06\n\n\u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n\n\u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=e1d730059c5144dd9bc6c0f579795cb9c1d1e7897c83ad5988c056fd0f3b712a generation=1\n"
+          }
+        ]
+      }
+    },
+    {
+      "label": "upgrade-resumed",
+      "report": {
+        "profile": "http-requests-6",
+        "code_sha": "99ce1f0ecd39c838b0a8613d64311655c743321f",
+        "action": "resume",
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "gaps": [],
+        "before_contexts": {
+          "http-requests-4": "STALE",
+          "http-requests-6": "CURRENT"
+        },
+        "before_code_bases": [
+          "CURRENT",
+          "CURRENT",
+          "CURRENT",
+          "STALE",
+          "STALE",
+          "STALE",
+          "CURRENT",
+          "STALE",
+          "STALE",
+          "CURRENT"
+        ],
+        "recovered": {
+          "jobs": 0,
+          "sending": 0,
+          "released": 0
+        },
+        "reconciliation": {
+          "recovered": {
+            "jobs": 0,
+            "sending": 0,
+            "released": 0
+          },
+          "revived": 0,
+          "enqueued": 1,
+          "graph": [
+            {
+              "source": "code",
+              "version": 11,
+              "status": "OK"
+            },
+            {
+              "source": "ownership",
+              "version": 12,
+              "status": "OK"
+            }
+          ],
+          "reanalysed": 0
+        },
+        "steps": [
+          "ingest:new_generation",
+          "ingest:coalesced",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered"
+        ],
+        "proposals": [
+          {
+            "id": "9689fb262fbfc192473747b8c2f38ba542db69d0c26a30547105e96029c95292",
+            "status": "STALE"
+          },
+          {
+            "id": "e048d2600d4d025c2ed91d9ef9073384df6ddc9acbadff1bc72916957f69be46",
+            "status": "STALE"
+          }
+        ],
+        "resources": {
+          "jira:10012": {
+            "generation": 2,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              }
+            ],
+            "history_count": 13
+          },
+          "github:acme/orders#7": {
+            "generation": 3,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              },
+              {
+                "state": "SUPERSEDED",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "superseded_by_new_version"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:f3026cff621b5e8f5e68eef651509069",
+                "reason": "unclassified_change"
+              }
+            ],
+            "history_count": 24
+          },
+          "github:acme/orders#8": {
+            "generation": 2,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              }
+            ],
+            "history_count": 13
+          }
+        }
+      },
+      "comments": {
+        "pr7": [
+          {
+            "id": 1001,
+            "body": "### \u0427\u0430\u0441\u0442\u0438\u0447\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438\n\nA tracked operation changed in a way no classifier covers; its consumers need a recheck.\n\n**\u0427\u0442\u043e \u0438\u0437\u043c\u0435\u043d\u0438\u043b\u043e\u0441\u044c \u0441 \u043f\u0440\u043e\u0448\u043b\u043e\u0433\u043e \u0432\u044b\u0432\u043e\u0434\u0430**\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 1: \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: PAGE_DEFAULT_CHANGED 100 -> 20. \u0412 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0432\u0435\u0440\u0441\u0438\u0438 \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u043e.\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 1: POSSIBLE_TRUNCATION \u0443 reporting. \u0412 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0432\u0435\u0440\u0441\u0438\u0438 \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u043e.\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 1: RECHECK_REQUIRED \u0443 archive. \u0412 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0432\u0435\u0440\u0441\u0438\u0438 \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u043e.\n- \u042d\u0442\u043e \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u043d\u0430\u0445\u043e\u0434\u043a\u0438 \u0432 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u043c \u043f\u0440\u043e\u0444\u0438\u043b\u0435, \u0430 \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u043d\u0430\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430: \u0442\u0435\u0441\u0442\u044b \u043d\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u043b\u0438\u0441\u044c.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- archive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n- reporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: UNCLASSIFIED_OPERATION_CHANGE TRACKED_BASIS_CHANGED -> TRACKED_BASIS_CHANGED\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 UNCLASSIFIED_CHANGE_RECHECK \u0443 reporting: \u0432\u044b\u0437\u043e\u0432 reporting:client.py:7, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 SINGLE_REQUEST_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044f reporting-complete\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 UNCLASSIFIED_CHANGE_RECHECK \u0443 archive: \u0432\u044b\u0437\u043e\u0432 archive:client.py:9, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 CURSOR_LOOP_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435 \u0437\u0430\u0434\u0430\u043d\u043e\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L6-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: UNCLASSIFIED_CHANGE_RECHECK: The tracked declaration changed in a way no classifier covers. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L6-15; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: UNCLASSIFIED_CHANGE_RECHECK: The tracked declaration changed in a way no classifier covers. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n- \u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n- \u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- reporting: Exercise the changed operation against this consumer's independent expectations\n- archive: Exercise the changed operation against this consumer's independent expectations\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- unclassified_change\n- helper_semantics_unknown\n- requirement_unknown (archive)\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.376853Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.376853Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.376853Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.376853Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.376853Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#7: base 99aaceb50e06, head 2d2287e151bc\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 3\n- code_version: 99ce1f0ecd39c838b0a8613d64311655c743321f\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: adad542f53124602aaa718cefb41f89a:1\n- graph_version: graph-12\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-6\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): 2d2287e151bc\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: PARTIAL, \u043a\u043e\u0434: unclassified_change\n\n<!-- agent-service marker=9d6be7022c568180 digest=f9572c75eefcaa93cfc841dc8b6749ccb90c165fcd7ccb33d8eb9decc1aa7b30 generation=3 -->"
+          }
+        ],
+        "pr8": [
+          {
+            "id": 1002,
+            "body": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438 \u043d\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u044b (no_supported_delta). \u042d\u0442\u043e \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u044f.\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u041f\u0443\u0442\u044c \u0432\u043b\u0438\u044f\u043d\u0438\u044f \u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d.\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f \u0441\u0435\u0440\u0432\u0438\u0441 \u043d\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u0442: \u0438\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 review.\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.754137Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.754137Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.754137Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.754137Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.754137Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#8: base 99aaceb50e06, head aea829462668\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 2\n- code_version: 99ce1f0ecd39c838b0a8613d64311655c743321f\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 2f7f7cc241154746938bae6e4d1532e2:1\n- graph_version: graph-13\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-6\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): aea829462668\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: ABSTAINED, \u043a\u043e\u0434: no_supported_delta\n\n<!-- agent-service marker=e108338b940de83a digest=4969c551194b281aab7ae107bea5d2b51cb1232f66d71a7074754240f42133b9 generation=2 -->"
+          }
+        ],
+        "jira": [
+          {
+            "id": "5001",
+            "body": "\u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. \u042d\u0442\u043e \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u043e \u0437\u0430\u0434\u0430\u0447\u0435 \u0434\u043e \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043a\u043e\u0434\u0430; \u043e\u043d \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443.\n\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at archive:client.py:9. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-15; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at reporting:client.py:7. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-15; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\n\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.875Z\n\ngit:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.875Z\n\ngit:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.875Z\n\ngit:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.875Z\n\ngit:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.875Z\n\nownership:installation_mapping: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:26.020Z\n\n\u0412\u0435\u0440\u0441\u0438\u0438\nJira ORD-12: \u0432\u0435\u0440\u0441\u0438\u044f \u043f\u043e\u043b\u0435\u0439 7c4bf84cdfe6\n\n\u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 2\n\ncode_version: 99ce1f0ecd39c838b0a8613d64311655c743321f\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: ece40e4793ab470a94cd078400b9da5d:1\n\ngraph_version: graph-15\n\nmodel: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n\nprofile: http-requests-6\n\nschema_version: 2.1\n\n\u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n\n\u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n\n\u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n\n\u0441\u043d\u0438\u043c\u043e\u043a orders (consumer): 99aaceb50e06\n\n\u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n\n\u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=08b2a161c3a0f9115f0d913f847a2b6d21dc2a75d8e7a7eefa1713a35de9bc9d generation=2\n"
+          }
+        ]
+      }
+    },
+    {
+      "label": "rollback-code-reconcile-before-publication",
+      "report": {
+        "profile": "http-requests-4",
+        "code_sha": "e84e91395a8846e2f43df3a1a6e402e3487e7a27",
+        "action": "drain",
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "gaps": [],
+        "before_contexts": {
+          "http-requests-4": "CURRENT",
+          "http-requests-6": "CURRENT"
+        },
+        "before_code_bases": [
+          "CURRENT",
+          "CURRENT",
+          "CURRENT",
+          "STALE",
+          "STALE",
+          "STALE",
+          "CURRENT",
+          "STALE",
+          "STALE",
+          "CURRENT"
+        ],
+        "recovered": {
+          "jobs": 0,
+          "sending": 0,
+          "released": 0
+        },
+        "reconciliation": {
+          "recovered": {
+            "jobs": 0,
+            "sending": 0,
+            "released": 0
+          },
+          "revived": 0,
+          "enqueued": 0,
+          "graph": [
+            {
+              "source": "code",
+              "version": 16
+            },
+            {
+              "source": "ownership",
+              "version": 17,
+              "status": "OK"
+            }
+          ],
+          "reanalysed": 3
+        },
+        "steps": [
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered"
+        ],
+        "proposals": [
+          {
+            "id": "9689fb262fbfc192473747b8c2f38ba542db69d0c26a30547105e96029c95292",
+            "status": "CURRENT"
+          },
+          {
+            "id": "e048d2600d4d025c2ed91d9ef9073384df6ddc9acbadff1bc72916957f69be46",
+            "status": "CURRENT"
+          }
+        ],
+        "resources": {
+          "jira:10012": {
+            "generation": 3,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              }
+            ],
+            "history_count": 19
+          },
+          "github:acme/orders#7": {
+            "generation": 4,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              },
+              {
+                "state": "SUPERSEDED",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "superseded_by_new_version"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:f3026cff621b5e8f5e68eef651509069",
+                "reason": "unclassified_change"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:f3026cff621b5e8f5e68eef651509069",
+                "reason": "unclassified_change"
+              }
+            ],
+            "history_count": 30
+          },
+          "github:acme/orders#8": {
+            "generation": 3,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              }
+            ],
+            "history_count": 19
+          }
+        }
+      },
+      "comments": {
+        "pr7": [
+          {
+            "id": 1001,
+            "body": "### \u0427\u0430\u0441\u0442\u0438\u0447\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438\n\nA tracked operation changed in a way no classifier covers; its consumers need a recheck.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- archive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n- reporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: UNCLASSIFIED_OPERATION_CHANGE TRACKED_BASIS_CHANGED -> TRACKED_BASIS_CHANGED\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 UNCLASSIFIED_CHANGE_RECHECK \u0443 reporting: \u0432\u044b\u0437\u043e\u0432 reporting:client.py:7, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 SINGLE_REQUEST_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044f reporting-complete\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 UNCLASSIFIED_CHANGE_RECHECK \u0443 archive: \u0432\u044b\u0437\u043e\u0432 archive:client.py:9, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 CURSOR_LOOP_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435 \u0437\u0430\u0434\u0430\u043d\u043e\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L6-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: UNCLASSIFIED_CHANGE_RECHECK: The tracked declaration changed in a way no classifier covers. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L6-15; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: UNCLASSIFIED_CHANGE_RECHECK: The tracked declaration changed in a way no classifier covers. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n- \u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n- \u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- reporting: Exercise the changed operation against this consumer's independent expectations\n- archive: Exercise the changed operation against this consumer's independent expectations\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- unclassified_change\n- helper_semantics_unknown\n- requirement_unknown (archive)\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.025083Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.025083Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.025083Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.025083Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.025083Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#7: base 99aaceb50e06, head 2d2287e151bc\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 4\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 2f370ff30dd140198c78d581ce049c4e:1\n- graph_version: graph-17\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): 2d2287e151bc\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: PARTIAL, \u043a\u043e\u0434: unclassified_change\n\n<!-- agent-service marker=9d6be7022c568180 digest=05ee1a01289a356581565d0754cb7e3b440f18f9f54d20ade47e817b00d940dc generation=4 -->"
+          }
+        ],
+        "pr8": [
+          {
+            "id": 1002,
+            "body": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438 \u043d\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u044b (no_supported_delta). \u042d\u0442\u043e \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u044f.\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u041f\u0443\u0442\u044c \u0432\u043b\u0438\u044f\u043d\u0438\u044f \u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d.\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f \u0441\u0435\u0440\u0432\u0438\u0441 \u043d\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u0442: \u0438\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 review.\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.409869Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.409869Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.409869Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.409869Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.409869Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#8: base 99aaceb50e06, head aea829462668\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 3\n- code_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 0ca2672273604e2f88e25d5c221f5bb1:1\n- graph_version: graph-18\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-4\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): aea829462668\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: ABSTAINED, \u043a\u043e\u0434: no_supported_delta\n\n<!-- agent-service marker=e108338b940de83a digest=78178e53efb69acd70771e615ae4f64b5d3d10d3a612be8802578afe3d99f0a4 generation=3 -->"
+          }
+        ],
+        "jira": [
+          {
+            "id": "5001",
+            "body": "\u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. \u042d\u0442\u043e \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u043e \u0437\u0430\u0434\u0430\u0447\u0435 \u0434\u043e \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043a\u043e\u0434\u0430; \u043e\u043d \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443.\n\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at archive:client.py:9. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-20; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at reporting:client.py:7. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-20; static profile http-requests-4. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\n\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.531Z\n\ngit:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.531Z\n\ngit:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.531Z\n\ngit:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.531Z\n\ngit:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:28.531Z\n\nownership:installation_mapping: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:27.668Z\n\n\u0412\u0435\u0440\u0441\u0438\u0438\nJira ORD-12: \u0432\u0435\u0440\u0441\u0438\u044f \u043f\u043e\u043b\u0435\u0439 7c4bf84cdfe6\n\n\u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 3\n\ncode_version: e84e91395a8846e2f43df3a1a6e402e3487e7a27\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 1bc5e3276382493db246514756752524:1\n\ngraph_version: graph-20\n\nmodel: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n\nprofile: http-requests-4\n\nschema_version: 2.1\n\n\u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n\n\u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n\n\u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n\n\u0441\u043d\u0438\u043c\u043e\u043a orders (consumer): 99aaceb50e06\n\n\u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n\n\u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=862bfd977d8711404ebcba7dfa457c27a5c214fa923dd2103b30351023991076 generation=3\n"
+          }
+        ]
+      }
+    },
+    {
+      "label": "repeat-upgrade",
+      "report": {
+        "profile": "http-requests-6",
+        "code_sha": "99ce1f0ecd39c838b0a8613d64311655c743321f",
+        "action": "drain",
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "gaps": [],
+        "before_contexts": {
+          "http-requests-4": "STALE",
+          "http-requests-6": "CURRENT"
+        },
+        "before_code_bases": [
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE",
+          "STALE"
+        ],
+        "recovered": {
+          "jobs": 0,
+          "sending": 0,
+          "released": 0
+        },
+        "reconciliation": {
+          "recovered": {
+            "jobs": 0,
+            "sending": 0,
+            "released": 0
+          },
+          "revived": 0,
+          "enqueued": 0,
+          "graph": [
+            {
+              "source": "code",
+              "version": 21,
+              "status": "OK"
+            },
+            {
+              "source": "ownership",
+              "version": 22,
+              "status": "OK"
+            }
+          ],
+          "reanalysed": 3
+        },
+        "steps": [
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered",
+          "analyze:done",
+          "publish:delivered"
+        ],
+        "proposals": [
+          {
+            "id": "9689fb262fbfc192473747b8c2f38ba542db69d0c26a30547105e96029c95292",
+            "status": "STALE"
+          },
+          {
+            "id": "e048d2600d4d025c2ed91d9ef9073384df6ddc9acbadff1bc72916957f69be46",
+            "status": "STALE"
+          }
+        ],
+        "resources": {
+          "jira:10012": {
+            "generation": 4,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+                "reason": "preliminary_impact_found"
+              }
+            ],
+            "history_count": 25
+          },
+          "github:acme/orders#7": {
+            "generation": 5,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "impact_found_within_profile"
+              },
+              {
+                "state": "SUPERSEDED",
+                "resource_version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+                "reason": "superseded_by_new_version"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:f3026cff621b5e8f5e68eef651509069",
+                "reason": "unclassified_change"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:f3026cff621b5e8f5e68eef651509069",
+                "reason": "unclassified_change"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:f3026cff621b5e8f5e68eef651509069",
+                "reason": "unclassified_change"
+              }
+            ],
+            "history_count": 36
+          },
+          "github:acme/orders#8": {
+            "generation": 4,
+            "jobs": [
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              },
+              {
+                "state": "DONE",
+                "resource_version": "pr:06b3ffb5a587f7248adf04cd0a81b883",
+                "reason": "no_supported_delta"
+              }
+            ],
+            "history_count": 25
+          }
+        }
+      },
+      "comments": {
+        "pr7": [
+          {
+            "id": 1001,
+            "body": "### \u0427\u0430\u0441\u0442\u0438\u0447\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438\n\nA tracked operation changed in a way no classifier covers; its consumers need a recheck.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- archive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n- reporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 orders GET /orders: UNCLASSIFIED_OPERATION_CHANGE TRACKED_BASIS_CHANGED -> TRACKED_BASIS_CHANGED\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 UNCLASSIFIED_CHANGE_RECHECK \u0443 reporting: \u0432\u044b\u0437\u043e\u0432 reporting:client.py:7, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 SINGLE_REQUEST_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u044f reporting-complete\n- \u041d\u0430\u0445\u043e\u0434\u043a\u0430 UNCLASSIFIED_CHANGE_RECHECK \u0443 archive: \u0432\u044b\u0437\u043e\u0432 archive:client.py:9, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 CURSOR_LOOP_OBSERVED, \u0441\u0432\u044f\u0437\u044c CURRENT, \u0442\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435 \u0437\u0430\u0434\u0430\u043d\u043e\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at client.py:7; observed usage SINGLE_REQUEST_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L6-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: UNCLASSIFIED_CHANGE_RECHECK: The tracked declaration changed in a way no classifier covers. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n- \u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at client.py:9; observed usage CURSOR_LOOP_OBSERVED. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L6-15; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n- \u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: UNCLASSIFIED_CHANGE_RECHECK: The tracked declaration changed in a way no classifier covers. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Pinned snapshots only; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 orders@99aaceb50e06:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n- \u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n- \u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 orders@2d2287e151bc:api.py#L7-9; \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- reporting: Exercise the changed operation against this consumer's independent expectations\n- archive: Exercise the changed operation against this consumer's independent expectations\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- unclassified_change\n- helper_semantics_unknown\n- requirement_unknown (archive)\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.585186Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.585186Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.585186Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.585186Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.585186Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#7: base 99aaceb50e06, head 2d2287e151bc\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 5\n- code_version: 99ce1f0ecd39c838b0a8613d64311655c743321f\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 6868bee25d554782b338b9f897699072:1\n- graph_version: graph-22\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-6\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): 2d2287e151bc\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: PARTIAL, \u043a\u043e\u0434: unclassified_change\n\n<!-- agent-service marker=9d6be7022c568180 digest=538e7611cfa8c7786232e0e14a24a8291b2ec05ef679377d05d4e075aecb7fa2 generation=5 -->"
+          }
+        ],
+        "pr8": [
+          {
+            "id": 1002,
+            "body": "### \u0412\u044b\u0432\u043e\u0434 \u043e \u0432\u043b\u0438\u044f\u043d\u0438\u0438 \u043d\u0435 \u0441\u0434\u0435\u043b\u0430\u043d\n\nNo supported behavior change was found; arbitrary semantic changes are not classified.\n\n**\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c**\n- \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438 \u043d\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u044b (no_supported_delta). \u042d\u0442\u043e \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u044f.\n\n**\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c**\n- \u041f\u0443\u0442\u044c \u0432\u043b\u0438\u044f\u043d\u0438\u044f \u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d.\n\n**\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c**\n- \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u043e\u0433\u043e \u043f\u0440\u043e\u0444\u0438\u043b\u044f \u0441\u0435\u0440\u0432\u0438\u0441 \u043d\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u0442: \u0438\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 review.\n\n**\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c**\n- git:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.947179Z\n- git:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.947179Z\n- git:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.947179Z\n- git:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.947179Z\n- git:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.947179Z\n\n**\u0412\u0435\u0440\u0441\u0438\u0438**\n- PR acme/orders#8: base 99aaceb50e06, head aea829462668\n- \u0421\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438 Jira: ORD-12\n- \u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 4\n- code_version: 99ce1f0ecd39c838b0a8613d64311655c743321f\n- constitution_version: agent-service-v1.0:100bcad3db9c\n- correlation_id: 2ce61a671bd64fc4be93de766bbc3379:1\n- graph_version: graph-23\n- model: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n- profile: http-requests-6\n- schema_version: 2.1\n- \u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n- \u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n- \u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (base): 99aaceb50e06\n- \u0441\u043d\u0438\u043c\u043e\u043a orders (head): aea829462668\n- \u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n- \u0421\u0442\u0430\u0442\u0443\u0441: ABSTAINED, \u043a\u043e\u0434: no_supported_delta\n\n<!-- agent-service marker=e108338b940de83a digest=7b3694884196f57a7e8456c4205eda8bebb9fb4b22311ba4029082d3409c36eb generation=4 -->"
+          }
+        ],
+        "jira": [
+          {
+            "id": "5001",
+            "body": "\u0412\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0435 \u0432\u043b\u0438\u044f\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\n2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. \u042d\u0442\u043e \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u043e \u0437\u0430\u0434\u0430\u0447\u0435 \u0434\u043e \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043a\u043e\u0434\u0430; \u043e\u043d \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043f\u043e\u043b\u043e\u043c\u043a\u0443.\n\u0427\u0442\u043e \u043c\u043e\u0436\u0435\u0442 \u0437\u0430\u0442\u0440\u043e\u043d\u0443\u0442\u044c\narchive: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-data (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\nreporting: \u043a\u043e\u043c\u0430\u043d\u0434\u0430 team-reporting (\u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a: installation_mapping@ownership-1)\n\n\u041f\u043e\u0447\u0435\u043c\u0443 \u0438 \u0447\u0435\u0440\u0435\u0437 \u043a\u0430\u043a\u043e\u0439 \u043f\u0443\u0442\u044c\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: archive calls GET /orders of orders at archive:client.py:9. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-25; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u0424\u0430\u043a\u0442 \u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u043f\u0440\u043e\u0444\u0438\u043b\u044f: reporting calls GET /orders of orders at reporting:client.py:7. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Graph graph-25; static profile http-requests-6. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: LOW. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. \u041f\u0440\u0438\u043c\u0435\u043d\u0438\u043c\u043e\u0441\u0442\u044c: Before any diff; graph query only. \u041d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c: HIGH. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u041f\u0443\u0442\u044c: archive -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 archive@49405f4a048e:client.py#L9-9\n\n\u041f\u0443\u0442\u044c: reporting -> orders GET /orders. \u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f: \u043a\u043e\u0434 reporting@2cba012ba204:client.py#L7-7\n\n\u0427\u0442\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\narchive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.\n\nreporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).\n\n\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u0435 \u0438 \u0441\u0432\u0435\u0436\u0435\u0441\u0442\u044c\njira_without_diff\n\nrequirement_unknown (archive)\n\ngit:archive: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:30.061Z\n\ngit:audit: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:30.061Z\n\ngit:billing: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:30.061Z\n\ngit:orders: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:30.060Z\n\ngit:reporting: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:30.061Z\n\nownership:installation_mapping: CURRENT, \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e 2026-10-30T18:59:29.249Z\n\n\u0412\u0435\u0440\u0441\u0438\u0438\nJira ORD-12: \u0432\u0435\u0440\u0441\u0438\u044f \u043f\u043e\u043b\u0435\u0439 7c4bf84cdfe6\n\n\u041f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u0435 \u0430\u043d\u0430\u043b\u0438\u0437\u0430: 4\n\ncode_version: 99ce1f0ecd39c838b0a8613d64311655c743321f\n\nconstitution_version: agent-service-v1.0:100bcad3db9c\n\ncorrelation_id: 9cbb623edf88467ba21e755d6ec0e471:1\n\ngraph_version: graph-25\n\nmodel: \u0414\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 (\u043c\u043e\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0447\u0451\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043b\u0435\u043d)\n\nprofile: http-requests-6\n\nschema_version: 2.1\n\n\u0441\u043d\u0438\u043c\u043e\u043a archive (consumer): 49405f4a048e\n\n\u0441\u043d\u0438\u043c\u043e\u043a audit (consumer): 89e053921b37\n\n\u0441\u043d\u0438\u043c\u043e\u043a billing (consumer): 46a72606b6f0\n\n\u0441\u043d\u0438\u043c\u043e\u043a orders (consumer): 99aaceb50e06\n\n\u0441\u043d\u0438\u043c\u043e\u043a reporting (consumer): 2cba012ba204\n\n\u0421\u0442\u0430\u0442\u0443\u0441: USEFUL, \u043a\u043e\u0434: preliminary_impact_found\n\nagent-service marker=c4af9ac73f615c9e digest=a36bddfe55f1211913f8f0b58cb5335365fdf4501c1221d99ff1445062c6dd4f generation=4\n"
+          }
+        ]
+      }
+    }
+  ],
+  "fresh_head": "2d2287e151bca32eea6c5ef9ec5f9afdee254a21",
+  "warning": "Old-code rollback may assess newer pinned contexts CURRENT before reconciliation. Hold publication and rebuild; no old release safety is inferred. DB/API are not atomic; comments update over durable steps without a maximum outage window."
+}

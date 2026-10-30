@@ -1,0 +1,14 @@
+test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments (tests.service.test_candidate_source_upgrade.SourceUpgradeTest.test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments) ... FAIL
+
+======================================================================
+FAIL: test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments (tests.service.test_candidate_source_upgrade.SourceUpgradeTest.test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-pilot-next/tests/service/test_candidate_source_upgrade.py", line 28, in test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments
+    self.assertEqual(result["reanalysed"], 0)
+AssertionError: 2 != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 2.409s
+
+FAILED (failures=1)
