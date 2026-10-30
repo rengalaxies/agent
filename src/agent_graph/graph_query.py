@@ -19,6 +19,7 @@ from typing import Literal
 
 from pydantic import Field
 
+from . import PROFILE
 from .contracts import GraphError, Strict
 from .graph_store import GraphStore, service_entity
 from .output_contracts import (
@@ -105,6 +106,9 @@ class GraphQuery:
             return Freshness(status="STALE", checked_at=b["checked_at"], reasons=["basis_changed"]).model_dump()
         if state and state["status"] == "UNAVAILABLE":
             reasons.append("source_unavailable")
+            stale = True
+        if b["origin"] == "code" and data.get("profile") != PROFILE:
+            reasons.append("basis_changed")
             stale = True
         if b["origin"] == "code" and data.get("snapshot") == "WORKTREE":
             reasons.append("worktree_not_reproducible")

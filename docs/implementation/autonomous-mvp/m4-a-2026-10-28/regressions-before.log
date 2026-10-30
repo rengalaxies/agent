@@ -1,0 +1,193 @@
+test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route (tests.service.test_m4_a_intent.M4AIntentRegressions.test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route) ... FAIL
+test_an_explicit_change_alongside_documentation_is_preserved (tests.service.test_m4_a_intent.M4AIntentRegressions.test_an_explicit_change_alongside_documentation_is_preserved) ... ok
+test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) ...
+  test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) (texts=['depot: update README', 'Document GET /parcels pagination.']) ... FAIL
+  test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) (texts=['depot: обновить README', 'Описать GET /parcels и POST /labels.']) ... FAIL
+  test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) (texts=['depot: documentation for GET /parcels and POST /labels']) ... FAIL
+test_explicit_per_clause_service_targets_stay_distinct (tests.service.test_m4_a_intent.M4AIntentRegressions.test_explicit_per_clause_service_targets_stay_distinct) ... ok
+test_negation_does_not_swallow_the_next_explicit_and_change_clause (tests.service.test_m4_a_intent.M4AIntentRegressions.test_negation_does_not_swallow_the_next_explicit_and_change_clause) ... FAIL
+test_russian_future_negation_is_not_a_positive_route_mention (tests.service.test_m4_a_intent.M4AIntentRegressions.test_russian_future_negation_is_not_a_positive_route_mention) ... FAIL
+test_service_scope_cannot_be_borrowed_from_an_unrelated_operation (tests.service.test_m4_a_intent.M4AIntentRegressions.test_service_scope_cannot_be_borrowed_from_an_unrelated_operation) ... FAIL
+test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) ...
+  test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='relative_import') ... FAIL
+  test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='shadowed_factory') ... FAIL
+  test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='rebound_application') ... FAIL
+  test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='mutated_decorator') ... FAIL
+test_transition_to_an_impostor_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_transition_to_an_impostor_is_not_a_proven_removal) ... FAIL
+test_unmodified_absolute_import_and_alias_still_resolve (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unmodified_absolute_import_and_alias_still_resolve) ... ok
+
+======================================================================
+FAIL: test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route (tests.service.test_m4_a_intent.M4AIntentRegressions.test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 29, in test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route
+    self.assertEqual((intent.operation_ids, intent.confidence), (["depot-get"], "explicit"))
+AssertionError: Tuples differ: (['depot-get', 'ledger-get'], 'explicit') != (['depot-get'], 'explicit')
+
+First differing element 0:
+['depot-get', 'ledger-get']
+['depot-get']
+
+- (['depot-get', 'ledger-get'], 'explicit')
+?              --------------
+
++ (['depot-get'], 'explicit')
+
+======================================================================
+FAIL: test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) (texts=['depot: update README', 'Document GET /parcels pagination.'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 17, in test_documenting_a_named_route_is_not_an_api_change
+    self.assertEqual(match_intent(OPS, texts).operation_ids, [])
+AssertionError: Lists differ: ['depot-get'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'depot-get'
+
+- ['depot-get']
++ []
+
+======================================================================
+FAIL: test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) (texts=['depot: обновить README', 'Описать GET /parcels и POST /labels.'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 17, in test_documenting_a_named_route_is_not_an_api_change
+    self.assertEqual(match_intent(OPS, texts).operation_ids, [])
+AssertionError: Lists differ: ['depot-get', 'depot-post'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'depot-get'
+
+- ['depot-get', 'depot-post']
++ []
+
+======================================================================
+FAIL: test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) (texts=['depot: documentation for GET /parcels and POST /labels'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 17, in test_documenting_a_named_route_is_not_an_api_change
+    self.assertEqual(match_intent(OPS, texts).operation_ids, [])
+AssertionError: Lists differ: ['depot-get', 'depot-post'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'depot-get'
+
+- ['depot-get', 'depot-post']
++ []
+
+======================================================================
+FAIL: test_negation_does_not_swallow_the_next_explicit_and_change_clause (tests.service.test_m4_a_intent.M4AIntentRegressions.test_negation_does_not_swallow_the_next_explicit_and_change_clause)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 25, in test_negation_does_not_swallow_the_next_explicit_and_change_clause
+    self.assertEqual((intent.operation_ids, intent.confidence), (["depot-post"], "explicit"))
+AssertionError: Tuples differ: ([], 'none') != (['depot-post'], 'explicit')
+
+First differing element 0:
+[]
+['depot-post']
+
+- ([], 'none')
++ (['depot-post'], 'explicit')
+
+======================================================================
+FAIL: test_russian_future_negation_is_not_a_positive_route_mention (tests.service.test_m4_a_intent.M4AIntentRegressions.test_russian_future_negation_is_not_a_positive_route_mention)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 38, in test_russian_future_negation_is_not_a_positive_route_mention
+    self.assertEqual((intent.operation_ids, intent.confidence), ([], "none"))
+AssertionError: Tuples differ: (['depot-get'], 'explicit') != ([], 'none')
+
+First differing element 0:
+['depot-get']
+[]
+
+- (['depot-get'], 'explicit')
++ ([], 'none')
+
+======================================================================
+FAIL: test_service_scope_cannot_be_borrowed_from_an_unrelated_operation (tests.service.test_m4_a_intent.M4AIntentRegressions.test_service_scope_cannot_be_borrowed_from_an_unrelated_operation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 33, in test_service_scope_cannot_be_borrowed_from_an_unrelated_operation
+    self.assertEqual((intent.operation_ids, intent.confidence), ([], "none"))
+AssertionError: Tuples differ: (['depot-get', 'depot-post'], 'explicit') != ([], 'none')
+
+First differing element 0:
+['depot-get', 'depot-post']
+[]
+
+- (['depot-get', 'depot-post'], 'explicit')
++ ([], 'none')
+
+======================================================================
+FAIL: test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='relative_import')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 64, in test_impostors_are_gaps_not_resolved_api_operations
+    self.assertEqual(context["graph"]["operations"], [])
+AssertionError: Lists differ: [{'id': 'e4f118a0c14ff480d5632e33e7481c13c[521 chars] 40}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca', 'service': 'depot', 'method': 'GET', 'path': '/parcels', 'evidence': [{'source_id': 'b743059909a4baf78ecc4deeaf2a4613c7b23da2af2660aba03dadd91b8084fa', 'start_line': 4, 'end_line': 4, 'quote': 'def parcels(page_size: int = 40): return {"items": []}'}], 'default_known': True, 'tracked_basis': ['0e8199f118a9278c4e8df2b167555066e1907d263755c8fb7bd7e3ac6f8145ad'], 'page_size_declared': True, 'declarations': ['def parcels(page_size: int = 40): return {"items": []}'], 'page_size_default': 40}
+
+Diff is 696 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='shadowed_factory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 64, in test_impostors_are_gaps_not_resolved_api_operations
+    self.assertEqual(context["graph"]["operations"], [])
+AssertionError: Lists differ: [{'id': 'e4f118a0c14ff480d5632e33e7481c13c[521 chars] 40}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca', 'service': 'depot', 'method': 'GET', 'path': '/parcels', 'evidence': [{'source_id': 'b9838ea3419d2fe00af06de781e80fef3114a470ab2b30b4afbb8b3e21910418', 'start_line': 6, 'end_line': 6, 'quote': 'def parcels(page_size: int = 40): return {"items": []}'}], 'default_known': True, 'tracked_basis': ['0e8199f118a9278c4e8df2b167555066e1907d263755c8fb7bd7e3ac6f8145ad'], 'page_size_declared': True, 'declarations': ['def parcels(page_size: int = 40): return {"items": []}'], 'page_size_default': 40}
+
+Diff is 696 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='rebound_application')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 64, in test_impostors_are_gaps_not_resolved_api_operations
+    self.assertEqual(context["graph"]["operations"], [])
+AssertionError: Lists differ: [{'id': 'e4f118a0c14ff480d5632e33e7481c13c[521 chars] 40}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca', 'service': 'depot', 'method': 'GET', 'path': '/parcels', 'evidence': [{'source_id': '2f9451bd14d8d9365ceeffc6e9e7c27c4523b0fe45c65a95b03969639f0f2cb7', 'start_line': 7, 'end_line': 7, 'quote': 'def parcels(page_size: int = 40): return {"items": []}'}], 'default_known': True, 'tracked_basis': ['0e8199f118a9278c4e8df2b167555066e1907d263755c8fb7bd7e3ac6f8145ad'], 'page_size_declared': True, 'declarations': ['def parcels(page_size: int = 40): return {"items": []}'], 'page_size_default': 40}
+
+Diff is 696 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) (name='mutated_decorator')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 64, in test_impostors_are_gaps_not_resolved_api_operations
+    self.assertEqual(context["graph"]["operations"], [])
+AssertionError: Lists differ: [{'id': 'e4f118a0c14ff480d5632e33e7481c13c[521 chars] 40}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca', 'service': 'depot', 'method': 'GET', 'path': '/parcels', 'evidence': [{'source_id': 'db5e9cd468e69d8f275d598b3724099eb698972b1e9acdd2aaed597603ffec7c', 'start_line': 5, 'end_line': 5, 'quote': 'def parcels(page_size: int = 40): return {"items": []}'}], 'default_known': True, 'tracked_basis': ['0e8199f118a9278c4e8df2b167555066e1907d263755c8fb7bd7e3ac6f8145ad'], 'page_size_declared': True, 'declarations': ['def parcels(page_size: int = 40): return {"items": []}'], 'page_size_default': 40}
+
+Diff is 696 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_transition_to_an_impostor_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_transition_to_an_impostor_is_not_a_proven_removal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 73, in test_transition_to_an_impostor_is_not_a_proven_removal
+    self.assertTrue(analysis["gaps"])
+AssertionError: [] is not true
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.017s
+
+FAILED (failures=12)

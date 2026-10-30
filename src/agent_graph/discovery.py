@@ -42,6 +42,12 @@ def bindings(tree):
     """Conservative file-wide binding counts, including non-Name AST targets."""
     stores = Counter()
     for node in ast.walk(tree):
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                and node.func.id in {"setattr", "delattr"} and node.args
+                and isinstance(node.args[0], ast.Name)):
+            # Explicit mutation invalidates a positive binding just like obj.attr = ... .
+            # No alias/dataflow or arbitrary side-effect inference is added to this profile.
+            stores[node.args[0].id] += 1
         if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
             stores[node.id] += 1
         elif isinstance(node, ast.arg):
@@ -150,18 +156,28 @@ def providers(policy, sources):
             gaps.append(dict(code="python_parse_error", source_id=source["id"]))
             continue
         constants = module_constants(tree)
+        counts = bindings(tree)
+        factories = {a.asname or a.name for n in tree.body if isinstance(n, ast.ImportFrom)
+                     and n.module == "fastapi" for a in n.names if a.name == "FastAPI"}
         fastapi = {a.asname or a.name for n in tree.body if isinstance(n, ast.ImportFrom)
-                   and n.module == "fastapi" for a in n.names if a.name == "FastAPI"}
-        apps = {n.targets[0].id for n in tree.body if isinstance(n, ast.Assign) and len(n.targets) == 1
-                and isinstance(n.targets[0], ast.Name) and isinstance(n.value, ast.Call)
-                and isinstance(n.value.func, ast.Name) and n.value.func.id in fastapi}
+                   and n.module == "fastapi" and n.level == 0 for a in n.names
+                   if a.name == "FastAPI" and counts[a.asname or a.name] == 1 and not counts["*"]}
+        candidates = {n.targets[0].id: n.value.func.id for n in tree.body
+                      if isinstance(n, ast.Assign) and len(n.targets) == 1 and isinstance(n.targets[0], ast.Name)
+                      and isinstance(n.value, ast.Call) and isinstance(n.value.func, ast.Name)
+                      and n.value.func.id in factories}
+        # Same conservative binding guard as consumers: relative imports,
+        # reassignment or method mutation do not establish a FastAPI app.
+        apps = {name for name, factory in candidates.items() if factory in fastapi and counts[name] == 1}
         for fn in [n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]:
             for d in fn.decorator_list:
                 if (isinstance(d, ast.Call) and isinstance(d.func, ast.Attribute)
-                        and isinstance(d.func.value, ast.Name) and d.func.value.id in apps
-                        and (fn not in tree.body or d.func.attr not in METHODS
-                             or not d.args or not isinstance(d.args[0], ast.Constant)
-                             or not isinstance(d.args[0].value, str))):
+                        and ((isinstance(d.func.value, ast.Name) and d.func.value.id in candidates)
+                             or (d.func.attr in METHODS and d.args and isinstance(d.args[0], ast.Constant)
+                                 and isinstance(d.args[0].value, str) and d.args[0].value.startswith("/")))
+                        and (not isinstance(d.func.value, ast.Name) or d.func.value.id not in apps
+                             or fn not in tree.body or d.func.attr not in METHODS or not d.args
+                             or not isinstance(d.args[0], ast.Constant) or not isinstance(d.args[0].value, str))):
                     gaps.append(dict(code="provider_route_unsupported", source_id=source["id"]))
         for fn in [n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]:
             for d in fn.decorator_list:

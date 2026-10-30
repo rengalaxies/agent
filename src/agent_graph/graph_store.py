@@ -101,7 +101,7 @@ def code_bases(context):
     result = []
 
     def located(source, ev):
-        return dict(repository=source["repository"], path=source["path"], commit=source.get("commit"),
+        return dict(profile=context.get("profile"), repository=source["repository"], path=source["path"], commit=source.get("commit"),
                     blob=source.get("blob"), sha256=source["sha256"],
                     snapshot=source.get("snapshot") or "WORKTREE",
                     start_line=ev["start_line"], end_line=ev["end_line"], fragment=digest(ev["quote"]))
@@ -115,7 +115,7 @@ def code_bases(context):
             data = dict(origin="code", kind="declares", locator=[source["repository"], source["path"]],
                         **located(source, ev))
             result.append((dict(id=rel, kind="declares", source=provider, target=target),
-                           digest(["code", rel, data["locator"], data["fragment"]]), data))
+                           digest(["code", context.get("profile"), rel, data["locator"], data["fragment"]]), data))
     symbols, ordinals = {}, {}
     for dep in sorted(context["graph"]["dependencies"], key=lambda d: (d["repository"], d["path"], d["call_line"])):
         op = operations.get(dep["operation_id"])
@@ -140,7 +140,7 @@ def code_bases(context):
                     provider_repositories=sorted({sources[e["source_id"]]["repository"] for e in op["evidence"]}),
                     **located(source, ev))
         result.append((dict(id=rel, kind="calls", source=consumer, target=target),
-                       digest(["code", rel, data["locator"], data["fragment"]]), data))
+                       digest(["code", context.get("profile"), rel, data["locator"], data["fragment"]]), data))
     return result
 
 
@@ -240,6 +240,8 @@ class GraphStore:
         def close_reason(row, wanted):
             data = load_json(row[2])
             same_rel = [(b, d) for b, (rel, d, _, _) in wanted.items() if rel == row[1]]
+            if data.get("profile") != context.get("profile"):
+                return "code_changed", next((b for b, _ in same_rel), None)
             moved = next((b for b, d in same_rel if d["fragment"] == data["fragment"]), None)
             if moved:
                 return "code_moved", moved

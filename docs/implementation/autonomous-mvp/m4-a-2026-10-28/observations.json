@@ -1,0 +1,448 @@
+{
+  "classification": "AUTHOR_WRITTEN_REGRESSIONS; NOT INDEPENDENT HELD_OUT",
+  "level": "LOCAL",
+  "model": "OFF",
+  "transport": "in-process ASGI; requests.get shim to actual FastAPI handlers",
+  "limitations": [
+    "no requests library/network parity claim",
+    "not live Jira/GitHub",
+    "not customer utility"
+  ],
+  "code_sha": "8d0ff980d6653338e5eb51ecf641652e65263190",
+  "fixture_hashes": {
+    "depot/api.py": "80cf682f466a34751e09f534ad55bd58b8ce6a2059afa266eb77fa51814dc63a",
+    "depot/README.md": "28045703365e18f9252c06f44492f46ccb43844469e028f58d482cf88dd3730a",
+    "dispatch/requirement.md": "2db5e4c35411cb6f28a1fd9d72a16639da4a78ef707b9d143fe9626e74907e20",
+    "dispatch/client.py": "7086db2c3242eea93b6a2832ec588418dcf244a3d0225bfe903265fdcd094156",
+    "ledger/api.py": "9d41c0f06bcd74e1fa7be4e211e296b6d023c3b6039d9804e34a20740e66106b",
+    "wrapped/client.py": "0c6600bd3278e824c07653b388a9712d22c4e5fa9844c2c7f672960d83563478"
+  },
+  "base_pins": {
+    "depot": "52d964d3ec2da26c61ed8bfcdf8b68dc181e0de8",
+    "dispatch": "7dd577152d702387f3e3312f8eb88966f779cf38",
+    "ledger": "71d03288ab687a5aebc3667d88dc2a9bf8ec4188",
+    "wrapped": "fee81de6f19be1eda262138a6eb502ffb32c34e6"
+  },
+  "final_pins": {
+    "depot": "54f71829670e2177545aa44fc0d5ecf6e52250c0",
+    "dispatch": "46521ab5495560b0ef85c590fcae2af6a775c446",
+    "wrapped": "fee81de6f19be1eda262138a6eb502ffb32c34e6",
+    "ledger": "71d03288ab687a5aebc3667d88dc2a9bf8ec4188"
+  },
+  "base_graph": {
+    "operations": [
+      {
+        "id": "57670671c6cf5d3672fba8027cbc0ab234cc1c2d0dcc157ff45dd62c4f383419",
+        "service": "ledger",
+        "method": "GET",
+        "path": "/parcels",
+        "evidence": [
+          {
+            "source_id": "2470d7506206d9d7849bedd8ae9a946152e93f3a4768d22f45c8dbb87cd5fe0d",
+            "start_line": 7,
+            "end_line": 8,
+            "quote": "def parcels(page_size: int = 40):\n    return {\"items\": [\"unrelated-ledger-entry\"]}"
+          }
+        ],
+        "default_known": true,
+        "tracked_basis": [
+          "1eaa60e044b6bdd795f927b631201f948da8a055d75c5c79fcbce9e9e825b924"
+        ],
+        "page_size_declared": true,
+        "declarations": [
+          "def parcels(page_size: int = 40):\n    return {\"items\": [\"unrelated-ledger-entry\"]}"
+        ],
+        "page_size_default": 40
+      },
+      {
+        "id": "ee31620915d2bd59d23bd5bb8d57c0f660dc40bb71a2b817f74679507dbcc5df",
+        "service": "depot",
+        "method": "GET",
+        "path": "/parcels",
+        "evidence": [
+          {
+            "source_id": "914d6d828fdd921110f495dfe8fe805fd6292604152ffb07a85c788cd5b616bc",
+            "start_line": 8,
+            "end_line": 9,
+            "quote": "def parcels(page_size: int = 40):\n    return {\"items\": list(ROWS[:page_size])}"
+          }
+        ],
+        "default_known": true,
+        "tracked_basis": [
+          "036f6483bad968ccb9cf7d1834245a6478caab60c41e513678881cf1140654ff"
+        ],
+        "page_size_declared": true,
+        "declarations": [
+          "def parcels(page_size: int = 40):\n    return {\"items\": list(ROWS[:page_size])}"
+        ],
+        "page_size_default": 40
+      },
+      {
+        "id": "f0c4f667f2a841480c2f8c87d32df9948d57e11160b0b438664d13815b4d389f",
+        "service": "depot",
+        "method": "POST",
+        "path": "/labels",
+        "evidence": [
+          {
+            "source_id": "914d6d828fdd921110f495dfe8fe805fd6292604152ffb07a85c788cd5b616bc",
+            "start_line": 13,
+            "end_line": 14,
+            "quote": "def labels():\n    return {\"created\": True}"
+          }
+        ],
+        "default_known": false,
+        "tracked_basis": [
+          "261315e97ebdde76daade9a0f5e25e9bc528c6ac7a91f67e57c78254951534a5"
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "aa34cdb699de57f649c70ab7bd52941d9d14501a5beb0ed12b9a6d0a30bd91e4",
+        "operation_id": "ee31620915d2bd59d23bd5bb8d57c0f660dc40bb71a2b817f74679507dbcc5df",
+        "consumer": "dispatch",
+        "repository": "dispatch",
+        "path": "client.py",
+        "call_line": 7,
+        "status": "STATIC_RESOLVED",
+        "usage": "SINGLE_REQUEST_OBSERVED",
+        "environment": "test",
+        "evidence": [
+          {
+            "source_id": "08b81a7348ba4bdfbfe296c5dfcc6679b2dc8d5b6c3c00253fe2ff0ffc3cda8d",
+            "start_line": 7,
+            "end_line": 7,
+            "quote": "    return net.get(HOST + \"/v2/parcels\", params={\"region\": \"west\"}).json()[\"items\"]"
+          }
+        ],
+        "usage_evidence": [
+          {
+            "source_id": "08b81a7348ba4bdfbfe296c5dfcc6679b2dc8d5b6c3c00253fe2ff0ffc3cda8d",
+            "start_line": 6,
+            "end_line": 7,
+            "quote": "def export():\n    return net.get(HOST + \"/v2/parcels\", params={\"region\": \"west\"}).json()[\"items\"]"
+          }
+        ]
+      }
+    ],
+    "requirements": [
+      {
+        "id": "R-dispatch-all",
+        "repository": "dispatch",
+        "path": "requirement.md",
+        "sha256": "2db5e4c35411cb6f28a1fd9d72a16639da4a78ef707b9d143fe9626e74907e20",
+        "issuer": "M4-A author test operator",
+        "service": "depot",
+        "method": "GET",
+        "path_template": "/parcels",
+        "consumer": "dispatch",
+        "predicate": "complete_collection",
+        "kind": "APPROVED_REQUIREMENT",
+        "operation_id": "ee31620915d2bd59d23bd5bb8d57c0f660dc40bb71a2b817f74679507dbcc5df",
+        "evidence": [
+          {
+            "source_id": "5a3642bf9e1b85ef6e2c3c20de32626a34342b414465c9ca42628508122d4c9a",
+            "start_line": 1,
+            "end_line": 1,
+            "quote": "Author-owned test requirement R-dispatch-all:"
+          }
+        ]
+      }
+    ],
+    "candidates": [
+      {
+        "kind": "UNTRUSTED_NOTE",
+        "evidence": [
+          {
+            "source_id": "6cb8584b219fce7092932e7c731306dd8bc6cc4da515a178b85de56c23b082db",
+            "start_line": 1,
+            "end_line": 1,
+            "quote": "Depot fixture: GET /parcels lists parcel IDs; POST /labels creates a label."
+          }
+        ]
+      },
+      {
+        "kind": "UNTRUSTED_NOTE",
+        "evidence": [
+          {
+            "source_id": "5a3642bf9e1b85ef6e2c3c20de32626a34342b414465c9ca42628508122d4c9a",
+            "start_line": 1,
+            "end_line": 1,
+            "quote": "Author-owned test requirement R-dispatch-all:"
+          }
+        ]
+      }
+    ],
+    "conflicts": [],
+    "gaps": [
+      {
+        "code": "dynamic_or_unsupported_call",
+        "evidence": {
+          "source_id": "947761ffb5497963230d33df3b69bd60e9baf444038ff238032edf9a7087b180",
+          "start_line": 7,
+          "end_line": 7,
+          "quote": "    return net.get(target).json()[\"items\"]"
+        }
+      }
+    ],
+    "file_coverage": [
+      {
+        "source_id": "6cb8584b219fce7092932e7c731306dd8bc6cc4da515a178b85de56c23b082db",
+        "repository": "depot",
+        "path": "README.md",
+        "status": "NOT_CODE"
+      },
+      {
+        "source_id": "914d6d828fdd921110f495dfe8fe805fd6292604152ffb07a85c788cd5b616bc",
+        "repository": "depot",
+        "path": "api.py",
+        "status": "EXTRACTED"
+      },
+      {
+        "source_id": "08b81a7348ba4bdfbfe296c5dfcc6679b2dc8d5b6c3c00253fe2ff0ffc3cda8d",
+        "repository": "dispatch",
+        "path": "client.py",
+        "status": "EXTRACTED"
+      },
+      {
+        "source_id": "5a3642bf9e1b85ef6e2c3c20de32626a34342b414465c9ca42628508122d4c9a",
+        "repository": "dispatch",
+        "path": "requirement.md",
+        "status": "NOT_CODE"
+      },
+      {
+        "source_id": "2470d7506206d9d7849bedd8ae9a946152e93f3a4768d22f45c8dbb87cd5fe0d",
+        "repository": "ledger",
+        "path": "api.py",
+        "status": "EXTRACTED"
+      },
+      {
+        "source_id": "947761ffb5497963230d33df3b69bd60e9baf444038ff238032edf9a7087b180",
+        "repository": "wrapped",
+        "path": "client.py",
+        "status": "UNSUPPORTED_CALLS"
+      }
+    ]
+  },
+  "runtime": {
+    "before": {
+      "dispatch": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "wrapped": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "after_documentation": {
+      "dispatch": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "wrapped": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "after_limit": {
+      "dispatch": [
+        0,
+        1,
+        2
+      ],
+      "wrapped": [
+        0,
+        1,
+        2
+      ]
+    }
+  },
+  "documentation": {
+    "deltas": [],
+    "findings": []
+  },
+  "limit_change": {
+    "deltas": [
+      {
+        "operation_id": "ee31620915d2bd59d23bd5bb8d57c0f660dc40bb71a2b817f74679507dbcc5df",
+        "code": "PAGE_DEFAULT_CHANGED",
+        "before": 40,
+        "after": 3,
+        "evidence": [
+          {
+            "end_line": 9,
+            "quote": "def parcels(page_size: int = 40):\n    return {\"items\": list(ROWS[:page_size])}",
+            "source_id": "914d6d828fdd921110f495dfe8fe805fd6292604152ffb07a85c788cd5b616bc",
+            "start_line": 8
+          },
+          {
+            "source_id": "cd9b4181d87626c2eccac1600901d661cbd7b2fd1948386eafcaeda2480f65c0",
+            "start_line": 8,
+            "end_line": 9,
+            "quote": "def parcels(page_size: int = 3):\n    return {\"items\": list(ROWS[:page_size])}"
+          }
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "code": "POSSIBLE_TRUNCATION",
+        "dependency_id": "aa34cdb699de57f649c70ab7bd52941d9d14501a5beb0ed12b9a6d0a30bd91e4",
+        "consumer": "dispatch",
+        "usage": "SINGLE_REQUEST_OBSERVED",
+        "callsite": {
+          "repository": "dispatch",
+          "path": "client.py",
+          "line": 7
+        },
+        "dependency_freshness": "CURRENT",
+        "condition": "If helper obeys page_size, result set exceeds 3, and consumer needs complete data",
+        "evidence_stage": "STATIC",
+        "evidence": [
+          {
+            "end_line": 9,
+            "quote": "def parcels(page_size: int = 40):\n    return {\"items\": list(ROWS[:page_size])}",
+            "source_id": "914d6d828fdd921110f495dfe8fe805fd6292604152ffb07a85c788cd5b616bc",
+            "start_line": 8
+          },
+          {
+            "source_id": "cd9b4181d87626c2eccac1600901d661cbd7b2fd1948386eafcaeda2480f65c0",
+            "start_line": 8,
+            "end_line": 9,
+            "quote": "def parcels(page_size: int = 3):\n    return {\"items\": list(ROWS[:page_size])}"
+          },
+          {
+            "source_id": "08b81a7348ba4bdfbfe296c5dfcc6679b2dc8d5b6c3c00253fe2ff0ffc3cda8d",
+            "start_line": 7,
+            "end_line": 7,
+            "quote": "    return net.get(HOST + \"/v2/parcels\", params={\"region\": \"west\"}).json()[\"items\"]"
+          },
+          {
+            "source_id": "08b81a7348ba4bdfbfe296c5dfcc6679b2dc8d5b6c3c00253fe2ff0ffc3cda8d",
+            "start_line": 6,
+            "end_line": 7,
+            "quote": "def export():\n    return net.get(HOST + \"/v2/parcels\", params={\"region\": \"west\"}).json()[\"items\"]"
+          }
+        ],
+        "requirement_ids": [
+          "R-dispatch-all"
+        ],
+        "check": "Run consumer with more than 3 records; compare full expected set, page traversal and explicit limits",
+        "test_executed": false,
+        "compatibility_confirmed": false
+      }
+    ],
+    "coverage": "PARTIAL",
+    "gaps": [
+      {
+        "code": "dynamic_or_unsupported_call",
+        "evidence": {
+          "source_id": "947761ffb5497963230d33df3b69bd60e9baf444038ff238032edf9a7087b180",
+          "start_line": 7,
+          "end_line": 7,
+          "quote": "    return net.get(target).json()[\"items\"]"
+        }
+      }
+    ]
+  },
+  "citation": {
+    "pinned_old_context_freshness": {
+      "status": "CURRENT",
+      "assessed_at": "2026-10-28T18:12:03.272960+00:00",
+      "comparison_basis": "PINNED_COMMITS",
+      "reasons": [
+        "partial_coverage"
+      ]
+    },
+    "new_proposal_status": "STALE",
+    "proposal_id": "6e816356f12d56dcb72ba2eb412a5e31e0c9169ff868f821b13b0b79b0196d14"
+  },
+  "access": {
+    "old_wide_context": "not_found",
+    "visible_repositories": [
+      "depot",
+      "ledger",
+      "wrapped"
+    ]
+  },
+  "profile_change": {
+    "status": "STALE",
+    "assessed_at": "2026-10-28T18:12:03.443525+00:00",
+    "comparison_basis": "EXTRACTOR_PROFILE",
+    "reasons": [
+      "extractor_profile_changed"
+    ]
+  },
+  "intents": [
+    {
+      "text": "depot: update README. Document GET /parcels pagination.",
+      "operation_ids": [],
+      "reason": "documentation_only",
+      "confidence": "none",
+      "services": [
+        "depot"
+      ]
+    },
+    {
+      "text": "depot: keep GET /parcels unchanged and change POST /labels response.",
+      "operation_ids": [
+        "f0c4f667f2a841480c2f8c87d32df9948d57e11160b0b438664d13815b4d389f"
+      ],
+      "reason": "route",
+      "confidence": "explicit",
+      "services": [
+        "depot"
+      ]
+    },
+    {
+      "text": "ledger GET /parcels is unchanged; depot GET /parcels changes page size.",
+      "operation_ids": [
+        "ee31620915d2bd59d23bd5bb8d57c0f660dc40bb71a2b817f74679507dbcc5df"
+      ],
+      "reason": "route",
+      "confidence": "explicit",
+      "services": [
+        "depot"
+      ]
+    },
+    {
+      "text": "depot POST /labels changes response; GET /parcels changes page size.",
+      "operation_ids": [],
+      "reason": "ambiguous_route",
+      "confidence": "none",
+      "services": [
+        "depot",
+        "ledger"
+      ]
+    }
+  ]
+}
