@@ -1,0 +1,21 @@
+test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged (tests.graph.test_m4_a_scenarios.M4AScenarios.test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged) ... FAIL
+
+======================================================================
+FAIL: test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged (tests.graph.test_m4_a_scenarios.M4AScenarios.test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_scenarios.py", line 101, in test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged
+    self.assertEqual([p["status"] for p in f.graph.proposals(current)], ["STALE"])
+AssertionError: Lists differ: ['CURRENT'] != ['STALE']
+
+First differing element 0:
+'CURRENT'
+'STALE'
+
+- ['CURRENT']
++ ['STALE']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.276s
+
+FAILED (failures=1)

@@ -1,6 +1,6 @@
 """Deterministic Jira intent: which graph operations a task names, before any diff exists.
 
-Only explicit mentions count: ``METHOD /route`` and service names from the
+Only explicit non-documentation mentions count: ``METHOD /route`` and service names from the
 graph. A route declared by several services is ambiguous unless the task also
 names one of them, so a same-named ``GET /orders`` of another service is never
 taken for the intended one. No match means "intent unclear", not "no impact".
@@ -21,6 +21,11 @@ page size, removal and so on):
 - a named service without contract wording, or with the contract stated as
   unchanged: ``none``, nothing is claimed about its consumers.
 
+A service label before a colon or a route-free summary can scope a route; a
+service mentioned for another operation cannot disambiguate it. Documentation
+clauses do not establish a change. The fixed grammar recognizes an explicit
+"unchanged and change ..." contrast, not arbitrary coordination or negation.
+
 The word lists are a fixed profile, not language understanding: a contract
 change described in other words stays ``service_only`` and the PR diff decides.
 """
@@ -40,12 +45,21 @@ CONTRACT_WORDS = (
     "format", "schema", "схем", "status code", "код ответа", "удал", "remove", "delete", "deprecat", "устарев",
     "rename", "переимен", "сортировк", "sort", "тип данных", "timeout", "таймаут")
 UNCHANGED = re.compile(
-    r"(не\s+(меня|изменя)\w*|без\s+изменени\w*|остаётся|остается|прежн\w*|unchanged|not\s+chang\w*|"
+    r"(не\s+(меня|изменя|измени)\w*|без\s+изменени\w*|остаётся|остается|прежн\w*|unchanged|not\s+chang\w*|"
     r"(does|do|will)\s*n[o']t\s+change|no\s+(api\s+|contract\s+)?changes?)", re.I)
 SERVICE_WIDE = re.compile(
     r"(все[хм]?|всего|весь|кажд\w*|целиком|all|every|entire|whole)\s+(\w+\s+)?"
     r"(эндпоинт\w*|ручк\w*|маршрут\w*|операци\w*|метод\w*|api|endpoints?|operations?|routes?)", re.I)
-CLAUSE_SPLIT = re.compile(r"[.;!?\n]+|,\s*(?:но|а|однако|but|while)\s+|\s+(?:но|однако|but)\s+", re.I)
+CLAUSE_SPLIT = re.compile(
+    r"[.;!?\n]+|,\s*(?:но|а|однако|but|while)\s+|\s+(?:но|однако|but)\s+|"
+    r"(?<=unchanged)\s+and\s+(?=(?:change|remove|delete|rename|reduce|increase|update)\b)", re.I)
+DOCUMENTATION = re.compile(r"\b(readme|docs?|documentation|document(?:ing)?|describe|описать|описани\w*|документац\w*)\b", re.I)
+CHANGE_ACTION = re.compile(
+    r"\b(chang\w*|remov\w*|delet\w*|renam\w*|reduc\w*|increas\w*|"
+    r"измен\w*|поменя\w*|удал\w*|переимен\w*|уменьш\w*|увелич\w*)\b|(?:->|→)", re.I)
+DOCUMENTATION_EDIT = re.compile(
+    r"\b(?:change|edit|update|revise|измен\w*|обнов\w*)\s+(?:the\s+)?"
+    r"(?:readme|docs?|documentation|документац\w*)\b", re.I)
 
 
 @dataclass
@@ -70,12 +84,23 @@ def _has_contract_word(clause: str) -> bool:
     return any(re.search(rf"(?<![\w]){re.escape(w)}", clause, re.I) for w in CONTRACT_WORDS)
 
 
+def _documentation_only(clause: str) -> bool:
+    # A verb targeting documentation is not an API action. Other actions in
+    # the same clause remain visible ("Change README and reduce GET ...").
+    remainder = DOCUMENTATION_EDIT.sub("", clause)
+    if remainder != clause:
+        # A numeric example in an explicit documentation edit is not an API
+        # action by itself; an additional change verb still establishes one.
+        remainder = remainder.replace("->", " ").replace("→", " ")
+    return bool(DOCUMENTATION.search(clause)) and not CHANGE_ACTION.search(remainder)
+
+
 def contract_wording(texts: list[str]) -> str:
     """``changed``, ``unchanged`` (only negated mentions) or ``absent``."""
     changed = unchanged = False
     for text in texts:
         for clause in CLAUSE_SPLIT.split(text):
-            if not _has_contract_word(clause):
+            if not _has_contract_word(clause) or _documentation_only(clause):
                 continue
             if UNCHANGED.search(clause):
                 unchanged = True
@@ -84,24 +109,41 @@ def contract_wording(texts: list[str]) -> str:
     return "changed" if changed else "unchanged" if unchanged else "absent"
 
 
-def route_mentions(texts: list[str]) -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:
-    """(changed, unchanged): routes named in a clause without negation, and routes named only as unchanged.
-
-    A route stated unchanged in one clause and named again without negation is changed.
-    """
-    named, negated = set(), set()
+def _route_clauses(texts: list[str]):
+    """Mask route punctuation before splitting, preserving each mention's local prose."""
     for text in texts:
         found = []
 
         def placeholder(m):
-            # Keeps the dots and slashes of a route out of the clause split.
             found.append((m.group(1), _route(m.group(2))))
             return f" @@{len(found) - 1}@@ "
 
-        masked = ROUTE_RE.sub(placeholder, text)
+        # Literal marker-like prose must not index the private route table.
+        masked = ROUTE_RE.sub(placeholder, text.replace("@@", " "))
+        # A field label ("depot: ...") may scope that field. A service named
+        # inside another operation's clause may not disambiguate this one.
+        prefix = masked.partition(":")[0] if ":" in masked else ""
         for clause in CLAUSE_SPLIT.split(masked):
-            for i in re.findall(r"@@(\d+)@@", clause):
-                (negated if UNCHANGED.search(clause) else named).add(found[int(i)])
+            yield clause, [found[int(i)] for i in re.findall(r"@@(\d+)@@", clause)], prefix
+
+
+def _documentation_context(texts):
+    return any(_documentation_only(text) for text in texts)
+
+
+def _route_is_documentation(clause, docs):
+    return _documentation_only(clause) or (docs and not CHANGE_ACTION.search(clause)
+                                          and not UNCHANGED.search(clause))
+
+
+def route_mentions(texts: list[str]) -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:
+    """Changed/unchanged route mentions; documentation is neither."""
+    named, negated = set(), set()
+    docs = _documentation_context(texts)
+    for clause, routes, _ in _route_clauses(texts):
+        if _route_is_documentation(clause, docs):
+            continue
+        (negated if UNCHANGED.search(clause) else named).update(routes)
     return named, negated - named
 
 
@@ -116,14 +158,30 @@ def match_intent(operations: list[dict], texts: list[str]) -> Intent:
     prose = [ROUTE_RE.sub(" ", t) for t in texts]
     services = named_services(prose, {o["service"] for o in operations})
     routes, unchanged = route_mentions(texts)
+    docs = _documentation_context(texts)
     if routes:
-        matched = [o for o in operations if (o["method"], _route(o["path"])) in routes]
-        if services:
-            matched = [o for o in matched if o["service"] in services]
-        elif len({o["service"] for o in matched}) > 1:
-            return Intent([], "ambiguous_route", "none", sorted({o["service"] for o in matched}))
-        return Intent(sorted(o["id"] for o in matched), "route" if matched else "route_not_in_graph",
-                      "explicit" if matched else "none", sorted({o["service"] for o in matched}))
+        matched = {}
+        names = {o["service"] for o in operations}
+        # Only route-free fields can provide shared context (e.g. a Jira summary).
+        context_services = named_services([t for t in texts if not ROUTE_RE.search(t)], names)
+        context_services |= named_services([prefix for _, _, prefix in _route_clauses(texts)
+                                            if "@@" not in prefix], names)
+        for clause, mentions, prefix in _route_clauses(texts):
+            if UNCHANGED.search(clause) or _route_is_documentation(clause, docs):
+                continue
+            local = named_services([clause], names) or named_services([prefix], names)
+            if not local and len(context_services) == 1:
+                local = context_services
+            for route in mentions:
+                candidates = [o for o in operations if (o["method"], _route(o["path"])) == route
+                              and (not local or o["service"] in local)]
+                if not local and len({o["service"] for o in candidates}) > 1:
+                    return Intent([], "ambiguous_route", "none", sorted({o["service"] for o in candidates}))
+                matched.update({o["id"]: o for o in candidates})
+        return Intent(sorted(matched), "route" if matched else "route_not_in_graph",
+                      "explicit" if matched else "none", sorted({o["service"] for o in matched.values()}))
+    if docs and any(ROUTE_RE.search(t) for t in texts) and not unchanged:
+        return Intent([], "documentation_only", "none", sorted(services))
     stated_unchanged = Intent([], "routes_stated_unchanged", "none", sorted(
         services or {o["service"] for o in operations if (o["method"], _route(o["path"])) in unchanged}))
     if not services:

@@ -1,0 +1,73 @@
+test_literal_placeholder_like_text_is_not_an_operation_or_an_exception (tests.service.test_m4_a_intent.M4AIntentRegressions.test_literal_placeholder_like_text_is_not_an_operation_or_an_exception) ... ERROR
+test_unsupported_router_or_module_factory_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unsupported_router_or_module_factory_is_not_a_proven_removal) ...
+  test_unsupported_router_or_module_factory_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unsupported_router_or_module_factory_is_not_a_proven_removal) (source='from fastapi import APIRouter as Factory\napi = Factory()\n@api.get("/parcels")\ndef parcels(page_size: int = 40): return {"items": []}\n') ... FAIL
+  test_unsupported_router_or_module_factory_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unsupported_router_or_module_factory_is_not_a_proven_removal) (source='import fastapi\napi = fastapi.FastAPI()\n@api.get("/parcels")\ndef parcels(page_size: int = 40): return {"items": []}\n') ... FAIL
+
+======================================================================
+ERROR: test_literal_placeholder_like_text_is_not_an_operation_or_an_exception (tests.service.test_m4_a_intent.M4AIntentRegressions.test_literal_placeholder_like_text_is_not_an_operation_or_an_exception)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/service/test_m4_a_intent.py", line 41, in test_literal_placeholder_like_text_is_not_an_operation_or_an_exception
+    intent = match_intent(OPS, ["depot: GET /parcels changes page_size 40 -> 3. Note @@999@@."])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/intent.py", line 149, in match_intent
+    routes, unchanged = route_mentions(texts)
+                        ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/intent.py", line 132, in route_mentions
+    for clause, routes, _ in _route_clauses(texts):
+                             ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent/src/agent_service/intent.py", line 116, in _route_clauses
+    yield clause, [found[int(i)] for i in re.findall(r"@@(\d+)@@", clause)], prefix
+                   ~~~~~^^^^^^^^
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_unsupported_router_or_module_factory_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unsupported_router_or_module_factory_is_not_a_proven_removal) (source='from fastapi import APIRouter as Factory\napi = Factory()\n@api.get("/parcels")\ndef parcels(page_size: int = 40): return {"items": []}\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 87, in test_unsupported_router_or_module_factory_is_not_a_proven_removal
+    self.assertEqual(analysis["deltas"], [])
+AssertionError: Lists differ: [{'operation_id': 'e4f118a0c14ff480d5632e3[293 chars]4}]}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'operation_id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca', 'code': 'OPERATION_REMOVED', 'before': 40, 'after': None, 'evidence': [{'end_line': 4, 'quote': 'def parcels(page_size: int = 40): return {"items": []}', 'source_id': 'bfaf2e0615bc268292e680108fcb91f2f83b16ce560760c05c5ca8d2a0bce57f', 'start_line': 4}]}
+
++ []
+- [{'after': None,
+-   'before': 40,
+-   'code': 'OPERATION_REMOVED',
+-   'evidence': [{'end_line': 4,
+-                 'quote': 'def parcels(page_size: int = 40): return {"items": '
+-                          '[]}',
+-                 'source_id': 'bfaf2e0615bc268292e680108fcb91f2f83b16ce560760c05c5ca8d2a0bce57f',
+-                 'start_line': 4}],
+-   'operation_id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca'}]
+
+======================================================================
+FAIL: test_unsupported_router_or_module_factory_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unsupported_router_or_module_factory_is_not_a_proven_removal) (source='import fastapi\napi = fastapi.FastAPI()\n@api.get("/parcels")\ndef parcels(page_size: int = 40): return {"items": []}\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent/tests/graph/test_m4_a_providers.py", line 87, in test_unsupported_router_or_module_factory_is_not_a_proven_removal
+    self.assertEqual(analysis["deltas"], [])
+AssertionError: Lists differ: [{'operation_id': 'e4f118a0c14ff480d5632e3[293 chars]4}]}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'operation_id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca', 'code': 'OPERATION_REMOVED', 'before': 40, 'after': None, 'evidence': [{'end_line': 4, 'quote': 'def parcels(page_size: int = 40): return {"items": []}', 'source_id': 'bfaf2e0615bc268292e680108fcb91f2f83b16ce560760c05c5ca8d2a0bce57f', 'start_line': 4}]}
+
++ []
+- [{'after': None,
+-   'before': 40,
+-   'code': 'OPERATION_REMOVED',
+-   'evidence': [{'end_line': 4,
+-                 'quote': 'def parcels(page_size: int = 40): return {"items": '
+-                          '[]}',
+-                 'source_id': 'bfaf2e0615bc268292e680108fcb91f2f83b16ce560760c05c5ca8d2a0bce57f',
+-                 'start_line': 4}],
+-   'operation_id': 'e4f118a0c14ff480d5632e33e7481c13cb02b3722dbd89ae5024fd71c1cccaca'}]
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.011s
+
+FAILED (failures=2, errors=1)
