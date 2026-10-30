@@ -221,7 +221,7 @@ async function load(sid, keepHistory = false) {
   $("proposed").textContent = `${versionName(s.scenario_version)} · ревизия ${s.revision}`;
   $("running").dataset.version = s.running_version || "";
   $("running").textContent =
-    s.running_version ||
+    (s.running_version ? versionName(s.running_version) : null) ||
     {
       STOPPED: "Остановлено",
       STARTING: "Запускается",

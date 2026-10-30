@@ -18,11 +18,11 @@ Make the path from an API change to its affected consumer, exact source evidence
 
 ## Operating Context
 
-Approved PR29 spec and implementation plan at 778b7668fd78e7c9dbaa8c0e6ce07b48ce9d82e4. Batch 2 owns this app; batch 1 owns the graph core and model qualification. Operator-controlled runtime is separate from the web app. Deployment is a later handoff, not an action in this PR.
+The executable synthetic demo follows PR29; the current local participant path is docs/product/pilot/LOCAL-SHOW.md. Batch 2 owns this app; batch 1 owns the graph core and model qualification. Operator-controlled runtime is separate from the web app. Deployment is a later handoff, not an action in this PR.
 
 ## Capabilities and Constraints
 
-Executable A/B/D/E HTTP scenario with independent exact-set checks. Static discovery uses a pinned external agent_graph CLI. Immutable history, bounded durable queue, explicit proposed/running versions. One sandbox across the installation. No web Docker socket, shell, cloud credentials or SSH. No live model calls here. A static finding, unapproved candidate, human correction, real check and external report retain separate meanings.
+Executable A/B/D/E HTTP scenario with independent exact-set checks. Static discovery uses the bundled agent_graph CLI with a checked core identity. Immutable history, bounded durable queue, explicit proposed/running versions. One sandbox across the installation. No web Docker socket, shell, cloud credentials or SSH. No live model calls here. A static finding, unapproved candidate, human correction, real check and external report retain separate meanings.
 
 ## Evidence on Hand
 
@@ -38,3 +38,5 @@ Russian task-first UI, keyboard-operable graph and evidence controls, readable l
 - Keep a predicted risk separate from a real consequence.
 - An unknown result remains unknown.
 - Preserve history and show when it no longer applies.
+
+This local show is separate from the autonomous service: a person explicitly starts the known runtime/check; MODEL OFF. See PR #79 for diagnostics and the limits of profile 4 before #72.

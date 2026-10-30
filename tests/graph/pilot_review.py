@@ -2,6 +2,7 @@
 import argparse
 import contextlib
 import json
+import os
 from pathlib import Path
 import socket
 import threading
@@ -141,7 +142,7 @@ def review(root, *, runtime=False):
         path.parent.rename(path.parent.with_name("reader-unavailable"))
         partial = graph.prepare_context()
         assert partial["coverage"] == "PARTIAL" and partial["graph"]["gaps"]
-        return dict(level="LOCAL" if runtime else "STATIC", status="PASS", author_written=True,
+        return dict(level="CI" if os.environ.get("GITHUB_ACTIONS") == "true" else "LOCAL", status="PASS", author_written=True,
                     independent_held_out=False, structural=structural, gaps=base["graph"]["gaps"],
                     findings=analysis["findings"], before=before, limited=after, actual_http_requests=calls,
                     lifecycle=dict(add_remove="PASS", cited_source_stale="PASS", unavailable="PARTIAL"),

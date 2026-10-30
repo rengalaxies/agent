@@ -78,3 +78,16 @@ Panels and the state strip use the panel radius; buttons and code blocks use the
 - Do keep unknown, incomplete and unavailable states explicit; an empty map or absent finding is not evidence of safety.
 - Don't merge static discovery, a model candidate, human correction, runtime observation or external report into one success state.
 - Don't use decorative illustrations, invented metrics or the historical research UI's canned ACCEPT/REJECT presentation for this evidence workflow.
+
+## Local participant refinement, 30.10.2026
+
+Preserve the existing Operate surface, system typography, palette, evidence/diff/history
+and 390px reading order. Version names now describe the change with A/B/D/E as secondary
+codes. A contextual next action uses actual receipt applicability, never a fabricated
+success. Graph/history loading clears previous quotes, findings, diff and proposals
+immediately; failure leaves unknown freshness, disabled correction and an inline retry.
+aria-busy marks the workspace; raw data-version allows tests to validate identity
+independently of translated copy. Browser regression retains CSP and checks recovery,
+focus and no page overflow. Captures and execution limits are in PR #79's CI artifact;
+local verification stopped when its executor became unavailable. This is not participant
+feedback or proof of customer utility.
