@@ -207,10 +207,12 @@ def verify(layout: Layout, name: str) -> dict:
         if rel not in allowed:
             raise BackupError("unsafe_backup_member")
         path = root / rel
-        if not path.is_file() or _sha(path) != digest:
+        if not path.is_file() or path.is_symlink() or _sha(path) != digest:
             raise BackupError("backup_file_modified", rel)
         if rel in {f"state/{r.as_posix()}" for r in DATABASES.values()} and not _integrity(path):
             raise BackupError("backup_integrity_failed", rel)
+    if schemas(root / "state") != meta["schemas"] or counts(root / "state") != meta["counts"]:
+        raise BackupError("backup_manifest_state_differs")
     return meta
 
 
@@ -341,7 +343,9 @@ def restore(layout: Layout, name: str, *, chown=None, fault=None) -> dict:
 
 def prune(layout: Layout, keep: int, protect: set[str]) -> list[str]:
     """Delete the oldest backups beyond ``keep``; never the protected ones (rollback points)."""
-    names = [m["name"] for m in listing(layout)]
+    items = listing(layout)
+    names = [m["name"] for m in items]
+    protect = protect | {m["name"] for m in items if m["label"] in ("pre-rollback", "pre-restore")}
     removed = []
     for name in names[:-keep] if len(names) > keep else []:
         if name in protect:

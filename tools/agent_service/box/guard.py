@@ -45,7 +45,7 @@ def main():
         check = subprocess.run([str(venv_python(args.target / "venv")), "-I", "-B",
                                 str(MANAGER / "app/tools/agent_service/box/preflight.py"),
                                 str(args.target), str(args.config), digest,
-                                (recovery.pending(root) or {}).get("backup", "update")],
+                                value.get("recovery_token", "update")],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
         if check.returncode:
             # Only safe reason codes; never copy arbitrary connector exception text.

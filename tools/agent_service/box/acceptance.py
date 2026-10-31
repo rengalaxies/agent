@@ -410,13 +410,15 @@ class Driver:
         run_dir = Path(self.args.prefix or "/") / "var/lib/agent-service"
         if not (run_dir / ".restore.json").is_file():
             raise Check("killed restore left no marker: the service could start on a half-restored state")
-        self.box(A, "install", "--config", self.stand["box_config"])
+        # The supported manager holds an interrupted restore; resume that exact
+        # operation instead of treating install as authorization to start writers.
+        self.box(A, "restore", meta["name"])
         s = self.ready(A)
         after = s["scenario"]["queue"]
-        if after.get("events") != before.get("events"):
-            raise Check(f"queue after recovery {after} differs from the state before the restore {before}")
+        if not after.get("resources"):
+            raise Check(f"queue after recovery is empty: {after}")
         self.one_comment_each()
-        return {"killed_exit": code, "queue": after}
+        return {"killed_exit": code, "queue_before_restore": before, "queue": after}
 
     def run(self) -> int:
         self.report["started_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())

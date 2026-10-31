@@ -101,7 +101,7 @@ User={SERVICE_USER}
 Group={SERVICE_USER}
 EnvironmentFile={L.secrets}
 WorkingDirectory={L.state}
-ExecStart={" ".join(box_command(L, release, "sync-mirrors"))}
+ExecStart={" ".join(box_command(L, getattr(self, "manager", release), "sync-mirrors"))}
 TimeoutStartSec=900
 ReadWritePaths={L.state}
 {HARDENING}
@@ -123,7 +123,7 @@ Description=agent-service daily state backup
 
 [Service]
 Type=oneshot
-ExecStart={" ".join(box_command(L, release, "backup", "--label", "daily"))}
+ExecStart={" ".join(box_command(L, getattr(self, "manager", release), "backup", "--label", "daily"))}
 """
             units[f"{BACKUP_UNIT}.timer"] = """[Unit]
 Description=agent-service daily state backup

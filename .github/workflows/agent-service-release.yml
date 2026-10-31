@@ -150,3 +150,11 @@ jobs:
           name: published-release-install
           path: work/box
           if-no-files-found: warn
+
+  recovery-published:
+    needs: release
+    uses: ./.github/workflows/agent-service-recovery.yml
+    with:
+      expected_main_sha: ${{ inputs.expected_main_sha }}
+      candidate_url: ${{ needs.release.outputs.url }}
+      candidate_sha256: ${{ needs.release.outputs.sha }}

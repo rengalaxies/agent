@@ -41,6 +41,7 @@ def main(argv=None) -> int:
     from agent_service.connectors.jira import adf_text
     from agent_service.smoke import ORG, load_stand_module, post
     from agent_service.stands import GitHubStand, JiraStand, sign
+    from agent_service.stands import Fault
 
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["serve"])
@@ -146,6 +147,13 @@ def main(argv=None) -> int:
                 return self._reply(200, {"status": status, "response": payload})
             if self.path == "/jira/summary":
                 jira.set_summary(10012, body["summary"])
+                return self._reply(200, {"ok": True})
+            if self.path == "/faults":
+                target = github if body.get("provider") == "github" else jira
+                with target.lock:
+                    target.faults.clear()
+                    if body.get("status"):
+                        target.faults.append(Fault("GET", ".*", status=body["status"], times=10000))
                 return self._reply(200, {"ok": True})
             if self.path == "/shutdown":
                 stop.set()

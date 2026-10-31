@@ -49,9 +49,10 @@ def read_identity(state: Path) -> dict | None:
     return value
 
 
-def identify(state: Path, manifest: dict, manifest_sha: str, *, reconcile=False) -> dict:
+def identify(state: Path, manifest: dict, manifest_sha: str, *, reconcile=False, token="update") -> dict:
     value = {"protocol": 1, "writer": record(manifest, manifest_sha),
-             "semantics": semantics(manifest, manifest_sha), "reconcile_required": reconcile}
+             "semantics": semantics(manifest, manifest_sha), "reconcile_required": reconcile,
+             "recovery_token": token}
     write_json(state / IDENTITY, value)
     return value
 

@@ -709,7 +709,8 @@ class Box:
                           counts=meta["counts"],
                           note="Локальная история после backup остаётся в safety backup; автоматического слияния нет. "
                                "Текущее состояние внешних ресурсов возвращается сверкой, комментарии — по маркерам.")
-        recovery.identify(L.state, manifest, manifest_sha, reconcile=True)
+        recovery.identify(L.state, manifest, manifest_sha, reconcile=True,
+                          token=pending["backup"] if pending else "update")
         self.chown(L.state / recovery.IDENTITY, 0o600)
         if pending:
             recovery.hold(L.state, {**pending, "phase": "READY_TO_START"})
