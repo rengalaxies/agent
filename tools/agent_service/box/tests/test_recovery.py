@@ -35,7 +35,10 @@ class RollbackBoundary(unittest.TestCase):
                        "history": [recovery.record(self.old, "c" * 64)]})
         for name in ("old", "new"):
             self.layout.bindings(name).mkdir(parents=True)
-            config.write_json(self.layout.bindings(name) / "service.json", {})
+            config.write_json(self.layout.bindings(name) / "service.json", {
+                "analysis": {"code_version": name}, "state_path": str(self.layout.state / "service/service.sqlite"),
+                "core": {"state_dir": str(self.layout.state / "core"),
+                         "policy_path": str(self.layout.bindings(name) / "policy.json")}})
         recovery.identify(self.layout.state, self.new, "b" * 64)
         self.cfg = SimpleNamespace()
         self.box.current_config = lambda: self.cfg
@@ -73,6 +76,17 @@ class RollbackBoundary(unittest.TestCase):
         self.assertEqual(result["mode"], "release_only")
         self.assertEqual(box_state.counts(self.layout.state), before)
         self.assertFalse(self.layout.backups.exists())
+
+    def test_status_during_recovery_never_opens_sqlite_through_old_readiness_task(self):
+        recovery.hold(self.layout.state, {"phase": "RESTORING", "target": recovery.record(self.old, "c" * 64)})
+        process = {"live": False, "process_ready": False, "problems": ["held"], "loaded": None}
+        with mock.patch.object(self.box, "process_level", return_value=process), \
+                mock.patch.object(self.box, "task") as task, \
+                mock.patch.object(self.box, "active_manifest", return_value=self.new):
+            status = self.box.readiness({"host": "127.0.0.1", "port": 1})
+        task.assert_not_called()
+        self.assertEqual(status["scenario"]["status"], "NOT_READY")
+        self.assertIn("graph:recovery_held", status["scenario"]["reasons"])
 
     def matching_backup(self):
         self.layout.config.write_text("{}")

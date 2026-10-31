@@ -27,7 +27,8 @@ class RecoveryDriver(Driver):
         return json.loads((self.root / "var/lib/agent-service/.box-state.json").read_text())
 
     def versions(self):
-        db = sqlite3.connect(f"file:{self.root}/var/lib/agent-service/core/graph.sqlite3?mode=ro", uri=True)
+        path = self.root / "var/lib/agent-service/core/graph.sqlite3"
+        db = sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)
         try:
             return sorted({json.loads(row[0])["profile"] for row in db.execute("SELECT data FROM artifacts")
                            if "profile" in json.loads(row[0])})
@@ -97,6 +98,15 @@ class RecoveryDriver(Driver):
                 raise Check("API failure allowed publication before reconciliation")
         finally:
             self.control("/faults", {"provider": "jira"})
+        mirror = self.root / "var/lib/agent-service/mirrors/orders.git"
+        hidden = mirror.with_name("orders.git.unavailable")
+        mirror.rename(hidden)
+        try:
+            self.box(self.args.candidate, "rollback", "--to", Path(self.args.release).name, expect=1)
+            if self.comments()["updates"] != writes:
+                raise Check("missing source allowed publication before reconciliation")
+        finally:
+            hidden.rename(mirror)
         result = self.box_json(self.args.candidate, "rollback", "--to", Path(self.args.release).name)
         if result["mode"] != "restored_backup" or result["backup"] != self.backup:
             raise Check(f"wrong recovery selection: {result}")
@@ -116,10 +126,41 @@ class RecoveryDriver(Driver):
         wrapper = (self.root / "usr/local/sbin/agent-service-box").read_text()
         if Path(self.args.candidate).name not in wrapper:
             raise Check("rollback replaced the supported manager with the legacy CLI")
-        return {"interruptions": outcomes, "api_failure": "HELD_NO_WRITES", "rollback": result,
+        return {"interruptions": outcomes, "api_failure": "HELD_NO_WRITES", "source_failure": "HELD_NO_WRITES",
+                "rollback": result,
                 "current_head": head, "comment_ids": {"pr": [x["id"] for x in c["pr"]],
                                                         "jira": [x["id"] for x in c["jira"]]},
                 "stored_profiles": self.versions(), "manager_preserved": True}
+
+    def restart_recovered_writer(self):
+        from tools.agent_service.box.layout import Layout
+        from tools.agent_service.box.supervisor import choose
+
+        state = self.root / "var/lib/agent-service/service/service.sqlite"
+
+        def generations():
+            db = sqlite3.connect(f"file:{state}?mode=ro", uri=True)
+            try:
+                return dict(db.execute("SELECT resource_id,generation FROM resources"))
+            finally:
+                db.close()
+
+        before = generations()
+        creates = self.comments()["creates"]
+        choose(Layout.at(self.args.prefix), self.args.supervisor).restart()
+        # wait_ready polls the process identity and status, including the manager's guard.
+        import time
+        deadline = time.monotonic() + 60
+        while time.monotonic() < deadline:
+            try:
+                self.ready(self.args.release)
+                break
+            except Check:
+                time.sleep(1)
+        self.ready(self.args.release)
+        if generations() != before or self.comments()["creates"] != creates:
+            raise Check("restart of a reconciled state duplicated generations/publications")
+        return {"generations": before, "same_comment_ids": True, "durable_recovery_checkpoint": True}
 
     def reupgrade(self):
         result = self.upgrade()
@@ -136,6 +177,7 @@ class RecoveryDriver(Driver):
         for name, fn in (("fresh_legacy", self.fresh_install), ("upgrade_before_new_writer", self.upgrade),
                          ("invalid_matching_backups", self.invalid_backups),
                          ("rollback_interruptions_api_failure_external_recovery", self.interrupted_rollback),
+                         ("restart_recovered_writer", self.restart_recovered_writer),
                          ("reupgrade_same_comment_ids", self.reupgrade)):
             if not self.scenario(name, fn):
                 break

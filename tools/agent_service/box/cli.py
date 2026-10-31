@@ -756,8 +756,12 @@ class Box:
     def readiness(self, listen: dict, run: dict | None = None, probes: dict | None = None) -> dict:
         process = self.process_level(listen)
         active = self.active_release()
-        view = self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
-                         release=active, timeout=300)
+        pending = recovery.pending(self.layout.state)
+        # The old "readiness" task itself opens SQLite. During a transition it
+        # must not turn a status request into an unguarded state writer.
+        view = ({"graph_error": {"code": "recovery_held"}} if pending else
+                self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
+                          release=active, timeout=300))
         reasons = []
         sources = view.get("sources", [])
         if "graph_error" in view:
@@ -785,6 +789,8 @@ class Box:
         manifest = self.active_manifest() or {}
         return {
             "checked_at": now(),
+            "manager": recovery.record(self.manifest, self.manifest_sha),
+            "recovery": {"pending": pending, "state_identity": recovery.read_identity(self.layout.state)},
             "release": {"name": manifest.get("name"), "release_id": manifest.get("release_id"),
                         "commit": (manifest.get("code") or {}).get("commit"),
                         "core_digest": ((manifest.get("contracts") or {}).get("core") or {}).get("core_digest")},

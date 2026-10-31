@@ -116,8 +116,16 @@ def verify_backup(layout, meta: dict, manifest: dict, manifest_sha: str):
                 raise BackupError("backup_semantics_mismatch")
         finally:
             db.close()
-    elif identity["semantics"] != semantics(manifest, manifest_sha):
+    elif (identity["semantics"] != semantics(manifest, manifest_sha)
+          or identity.get("writer") != record(manifest, manifest_sha)):
         raise BackupError("backup_semantics_mismatch")
+    cfg = json.loads((root / "config/service.json").read_text(encoding="utf-8"))
+    if ((cfg.get("analysis") or {}).get("code_version") != manifest["release_id"]
+            or Path(cfg.get("state_path", "")).resolve() != (layout.state / "service/service.sqlite").resolve()
+            or Path((cfg.get("core") or {}).get("state_dir", "")).resolve() != (layout.state / "core").resolve()
+            or Path((cfg.get("core") or {}).get("policy_path", "")).resolve()
+            != (layout.bindings(manifest["name"]) / "policy.json").resolve()):
+        raise BackupError("backup_configuration_mismatch")
 
 
 def restore_config(layout, meta: dict, manifest: dict):
