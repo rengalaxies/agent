@@ -1,6 +1,8 @@
 """Advisory, offline HTTP evidence graph. Independent of research release gates."""
 
-PROFILE = "http-requests-4"
+# Revision 6 also invalidates explicit setattr/delattr mutation of positive bindings.
+# Saved v4/v5 contexts and knowledge require revalidation; schemas are unchanged.
+PROFILE = "http-requests-6"
 SCHEMA = "agent-graph-1"
 
 

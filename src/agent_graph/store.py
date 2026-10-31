@@ -212,8 +212,11 @@ class Store:
             if b_scope == scope and set(load_json(visibility)) <= grants:
                 # config: digest of the addresses and requirements the proposal was judged
                 # under; None for v1 rows, whose view (which includes both) stands in.
+                origin = self.db.execute("SELECT data FROM artifacts WHERE id=? AND view=? AND kind='context'",
+                                         (record.get("context_id"), view)).fetchone() if not config else None
                 result.append({**record, "cited_bases": load_json(bases), "cited_config": config,
-                               "cited_view": view})
+                               "cited_view": view,
+                               "cited_profile": load_json(origin[0]).get("profile") if origin else None})
         return result
 
     def propose(self, view, proposal, expected_head, *, limit, admission_check=None, scope=None,

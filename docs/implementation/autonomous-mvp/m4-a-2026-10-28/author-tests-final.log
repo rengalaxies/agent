@@ -1,0 +1,27 @@
+test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route (tests.service.test_m4_a_intent.M4AIntentRegressions.test_a_service_mentioned_for_an_unchanged_route_cannot_claim_the_changed_route) ... ok
+test_an_explicit_change_alongside_documentation_is_preserved (tests.service.test_m4_a_intent.M4AIntentRegressions.test_an_explicit_change_alongside_documentation_is_preserved) ... ok
+test_documenting_a_named_route_is_not_an_api_change (tests.service.test_m4_a_intent.M4AIntentRegressions.test_documenting_a_named_route_is_not_an_api_change) ... ok
+test_explicit_per_clause_service_targets_stay_distinct (tests.service.test_m4_a_intent.M4AIntentRegressions.test_explicit_per_clause_service_targets_stay_distinct) ... ok
+test_literal_placeholder_like_text_is_not_an_operation_or_an_exception (tests.service.test_m4_a_intent.M4AIntentRegressions.test_literal_placeholder_like_text_is_not_an_operation_or_an_exception) ... ok
+test_negation_does_not_swallow_the_next_explicit_and_change_clause (tests.service.test_m4_a_intent.M4AIntentRegressions.test_negation_does_not_swallow_the_next_explicit_and_change_clause) ... ok
+test_russian_future_negation_is_not_a_positive_route_mention (tests.service.test_m4_a_intent.M4AIntentRegressions.test_russian_future_negation_is_not_a_positive_route_mention) ... ok
+test_service_scope_cannot_be_borrowed_from_an_unrelated_operation (tests.service.test_m4_a_intent.M4AIntentRegressions.test_service_scope_cannot_be_borrowed_from_an_unrelated_operation) ... ok
+test_executed_impostor_decorators_register_no_http_route (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_executed_impostor_decorators_register_no_http_route) ... ok
+test_impostors_are_gaps_not_resolved_api_operations (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_impostors_are_gaps_not_resolved_api_operations) ... ok
+test_transition_to_an_impostor_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_transition_to_an_impostor_is_not_a_proven_removal) ... ok
+test_unmodified_absolute_import_and_alias_still_resolve (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unmodified_absolute_import_and_alias_still_resolve) ... ok
+test_unsupported_router_or_module_factory_is_not_a_proven_removal (tests.graph.test_m4_a_providers.M4AProviderRegressions.test_unsupported_router_or_module_factory_is_not_a_proven_removal) ... ok
+test_configured_prefix_and_shared_route_resolve_only_the_authorized_address (tests.graph.test_m4_a_scenarios.M4AScenarios.test_configured_prefix_and_shared_route_resolve_only_the_authorized_address) ... /workspace/agent/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+ok
+test_documentation_commit_does_not_change_the_executed_api_or_produce_delta (tests.graph.test_m4_a_scenarios.M4AScenarios.test_documentation_commit_does_not_change_the_executed_api_or_produce_delta) ... ok
+test_new_cited_git_source_makes_the_basis_stale_without_rewriting_pinned_history (tests.graph.test_m4_a_scenarios.M4AScenarios.test_new_cited_git_source_makes_the_basis_stale_without_rewriting_pinned_history) ... ok
+test_old_extractor_profile_cannot_stay_current_just_because_git_trees_are_pinned (tests.graph.test_m4_a_scenarios.M4AScenarios.test_old_extractor_profile_cannot_stay_current_just_because_git_trees_are_pinned) ... ok
+test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged (tests.graph.test_m4_a_scenarios.M4AScenarios.test_old_profile_knowledge_needs_revalidation_even_if_its_quotes_are_unchanged) ... ok
+test_revocation_cannot_reuse_a_wide_context_after_the_source_changed (tests.graph.test_m4_a_scenarios.M4AScenarios.test_revocation_cannot_reuse_a_wide_context_after_the_source_changed) ... ok
+test_wrapper_really_calls_the_api_but_is_not_promoted_to_a_static_dependency (tests.graph.test_m4_a_scenarios.M4AScenarios.test_wrapper_really_calls_the_api_but_is_not_promoted_to_a_static_dependency) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 1.707s
+
+OK
