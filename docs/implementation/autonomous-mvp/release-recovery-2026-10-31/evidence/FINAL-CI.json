@@ -1,0 +1,43 @@
+{
+  "head": "e520c9e401ec2b973f72d702626929518cf878f2",
+  "tree": "bd96c449e62ca9fb2679dfab003c125529341ce4",
+  "accepted_main": "23412df5e385f11b097d9e67d334d262967ca387",
+  "checks": [
+    {
+      "run_id": 41235516199,
+      "name": "core917-runner152",
+      "status": "PASS"
+    },
+    {
+      "run_id": 41235516233,
+      "name": "box71-systemd11",
+      "status": "PASS"
+    },
+    {
+      "run_id": 41235516198,
+      "name": "exact-release-systemd6",
+      "status": "PASS"
+    },
+    {
+      "run_id": 41235516236,
+      "name": "p1",
+      "status": "PASS"
+    },
+    {
+      "run_id": 41235516293,
+      "name": "workflow-security",
+      "status": "PASS"
+    }
+  ],
+  "artifact": {
+    "id": 13056045098,
+    "zip_sha256": "55359b8e5395cf6cc488d4908d06b7537881d5f5c45194d28f5ee5450c25ee9a"
+  },
+  "review": "separate self-review, not independent human approval",
+  "protected_main": false,
+  "rulesets": [],
+  "target_vm": "NOT_RUN",
+  "external_live": "NOT_RUN",
+  "participant": "NOT_RUN",
+  "model": "OFF"
+}

@@ -1,0 +1,114 @@
+{
+  "accepted_main": "23412df5e385f11b097d9e67d334d262967ca387",
+  "reviewed_pr_head": "e520c9e401ec2b973f72d702626929518cf878f2",
+  "accepted_tree": "bd96c449e62ca9fb2679dfab003c125529341ce4",
+  "release": {
+    "id": 430150365,
+    "tag": "agent-service-0.1.0-g23412df5e385",
+    "url": "https://github.com/rengalaxies/agent/releases/tag/agent-service-0.1.0-g23412df5e385",
+    "published_at": "2026-10-31T19:51:33Z",
+    "assets": [
+      {
+        "id": 696331282,
+        "name": "agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.manifest.json",
+        "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g23412df5e385/agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.manifest.json",
+        "sha256": "2e72fe9a66436aca30ff20dafdda216bb4b99d5ea5a76ff19226e23f95e9c5fb",
+        "size": 11960
+      },
+      {
+        "id": 696331280,
+        "name": "agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.tar.gz",
+        "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g23412df5e385/agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.tar.gz",
+        "sha256": "af1cf03135628e875d7071b19033f6870254132e02fac3a0e70695d5a898b227",
+        "size": 8993716
+      },
+      {
+        "id": 696331281,
+        "name": "agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.tar.gz.sha256",
+        "url": "https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g23412df5e385/agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.tar.gz.sha256",
+        "sha256": "b750ba1531b7388c139f4218b96bdd08cdaf8ce2b2cd98e9ee89166c0f7eca9c",
+        "size": 126
+      }
+    ]
+  },
+  "download_verification": {
+    "status": "PASS",
+    "archive_sha256": "af1cf03135628e875d7071b19033f6870254132e02fac3a0e70695d5a898b227",
+    "manifest_sha256": "2e72fe9a66436aca30ff20dafdda216bb4b99d5ea5a76ff19226e23f95e9c5fb",
+    "manifest_status": "VERIFIED",
+    "matches_two_independent_local_builds": true
+  },
+  "workflow": {
+    "id": 41236132485,
+    "url": "https://github.com/rengalaxies/agent/actions/runs/41236132485",
+    "release": "PASS",
+    "install_published": "PASS",
+    "recovery_published": "PASS",
+    "status": "PASS",
+    "jobs": [
+      {
+        "name": "release",
+        "id": 124640198147,
+        "conclusion": "success"
+      },
+      {
+        "name": "recovery-published / recovery",
+        "id": 124640295903,
+        "conclusion": "success"
+      },
+      {
+        "name": "install-published",
+        "id": 124640295935,
+        "conclusion": "success"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 13056246187,
+        "name": "exact-release-recovery",
+        "zip_sha256": "2458c29bd51ef8980acd1a0282be672201bc904e9e20eaa3e47bbfc08d480953",
+        "download_verified": true
+      },
+      {
+        "id": 13055239732,
+        "name": "published-release-install",
+        "zip_sha256": "f8c0f1744f29a53ba515bdf6af2209ff7746aaf652d07d0fba91121b1b1978a2",
+        "download_verified": true
+      }
+    ]
+  },
+  "levels": {
+    "code": "PASS",
+    "local": "PASS",
+    "ci": "PASS",
+    "published_asset_bytes": "PASS",
+    "target_vm": "NOT_RUN",
+    "external_live": "NOT_RUN",
+    "participant": "NOT_RUN",
+    "published_asset_qualification": "PASS"
+  },
+  "deployment_pin_changed": false,
+  "foreign_pr_71_changed": false,
+  "target_installed_version": "UNKNOWN_NOT_INSPECTED",
+  "ui_image": "NOT_BUILT_NOT_PUBLISHED",
+  "model": "OFF",
+  "performed_actions": [
+    {
+      "actor": "AGENT_TOOL",
+      "action": "Created own worktrees/PR83 and reviewed exact head; fixed reproduced regressions"
+    },
+    {
+      "actor": "AGENT_TOOL",
+      "action": "Merged PR83 after all five checks passed, without bypassing protection"
+    },
+    {
+      "actor": "AGENT_TOOL",
+      "action": "Dispatched the existing release workflow once for exact accepted main"
+    },
+    {
+      "actor": "AGENT_TOOL",
+      "action": "Downloaded published archive and manifest, verified and compared against two independent local builds"
+    }
+  ],
+  "human_minutes": "NOT_MEASURED"
+}
