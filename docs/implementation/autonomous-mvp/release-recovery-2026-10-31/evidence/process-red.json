@@ -1,0 +1,54 @@
+{
+  "baseline_commit": "89391a6f7d2526caee15b26b4a71f148c750e051",
+  "rollback": {
+    "from": "agent-service-0.1.0-g89391a6f7d25-linux-x86_64-cp312",
+    "to": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+    "schemas_on_disk": {
+      "service_store": 1,
+      "graph_store": 2
+    },
+    "mode": "release_only",
+    "process_ready": true,
+    "problems": []
+  },
+  "loaded": {
+    "code_version": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+    "commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+    "config": "/workspace/agent-recovery/work/recovery/prefix/etc/agent-service/generated/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312/service.json",
+    "constitution": "agent-service-v1.0:100bcad3db9c",
+    "constitution_default": "agent-service-v1.0:100bcad3db9c",
+    "constitution_path": "/workspace/agent-recovery/work/recovery/prefix/opt/agent-service/releases/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+    "core": {
+      "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8",
+      "output_schema_version": "2.1",
+      "profile": "http-requests-4",
+      "schema": "agent-graph-1"
+    },
+    "launcher_pid": null,
+    "listen": "127.0.0.1:18090",
+    "manifest_sha256": "9fdd6e8aa48e5e09d803840ef262c1c3d57bb01af9c884a690f86a98888533a9",
+    "pid": 219648,
+    "python": "3.12.14",
+    "release": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+    "release_id": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+    "started_at": "2026-10-31T19:00:35.803510+00:00"
+  },
+  "comments_before": {
+    "ids": {
+      "pr": [
+        1001
+      ],
+      "jira": [
+        "5001"
+      ]
+    },
+    "creates": {
+      "github": 1,
+      "jira": 1
+    },
+    "updates": {
+      "github": 1,
+      "jira": 1
+    }
+  }
+}

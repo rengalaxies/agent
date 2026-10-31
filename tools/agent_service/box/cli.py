@@ -8,7 +8,9 @@
     box status                         release and core the running process loaded; liveness / process / scenario
     box doctor                         status plus live credential and source checks with what to do
     box backup [--label L] | backups | restore NAME
-    box rollback [--to RELEASE]        previous release; restores the matching backup when the state schema differs
+    box rollback [--to RELEASE]        previous release; requires matching schema AND semantic state contract,
+                                       otherwise restores its verified matching backup before guarded startup
+    box rollback --abort              restore the safety copy of an interrupted recovery through the same guard
     box sync-mirrors                   fetch Git mirrors (the systemd timer runs it)
 
 Every phase is idempotent: a second install changes nothing that is already
@@ -37,6 +39,7 @@ import uuid
 from . import config as box_config
 from . import release as rel
 from . import state as box_state
+from . import recovery
 from .layout import SERVICE_USER, Layout, is_root, venv_python
 from .messages import explain
 from .supervisor import box_command, choose
@@ -65,6 +68,7 @@ class Box:
         self.manifest, self.manifest_sha = rel.load_manifest(self.release)
         self.bindings = layout.bindings(self.manifest["name"])
         self.supervisor = choose(layout, supervisor)
+        self.supervisor.manager = self.release
         self.out = out
 
     # -- journal and lock ------------------------------------------------
@@ -252,6 +256,8 @@ class Box:
         if Path(config_path).resolve() != L.config.resolve():
             if box_config.write_bytes(L.config, Path(config_path).read_bytes(), 0o644):
                 changed.append("box.yaml")
+        box_config.write_bytes(self.bindings / "box.yaml", Path(config_path).read_bytes(), 0o640)
+        self.chown(self.bindings / "box.yaml", 0o640, group_only=True)
         values = self.secrets()
         if not values.get(box_config.STATUS_TOKEN_ENV):
             import secrets as tokens
@@ -315,6 +321,7 @@ class Box:
     def activate(self, cfg: box_config.BoxConfig, release: Path, manifest: dict) -> dict:
         """Point the supervisor at ``release`` and make sure exactly one process of it runs."""
         L = self.layout
+        recovery.check_start(L.state, manifest, rel.load_manifest(release)[1])
         units_changed = self.supervisor.configure(release, cfg.listen.host, cfg.listen.port,
                                                   sync_seconds=cfg.freshness.mirror_sync_seconds,
                                                   daily_backup=cfg.storage.daily_backup)
@@ -345,9 +352,11 @@ class Box:
         journal["history"] = history[-20:]
         journal["config_digest"] = digest
         journal["supervisor"] = self.supervisor.name
+        journal["manager"] = recovery.record(self.manifest, self.manifest_sha)
         journal["listen"] = {"host": cfg.listen.host, "port": cfg.listen.port}
         self.save(journal)
-        self.write_wrapper(release)
+        # Keep the new manager after a downgrade; the old archive's CLI is not patched.
+        self.write_wrapper(self.release)
         ready = self.wait_ready(cfg, manifest, timeout=120)
         return {"action": action, "units_changed": units_changed, **ready}
 
@@ -472,9 +481,11 @@ class Box:
             try:
                 detail = fn() or {}
                 state = detail.pop("_state", "DONE")
-            except Failed:
+            except (Failed, rel.ReleaseError, box_state.BackupError) as exc:
                 run["phases"].append({"phase": name, "state": "FAILED", "seconds": round(time.monotonic() - t, 2)})
-                raise
+                if isinstance(exc, Failed):
+                    raise
+                raise Failed([exc.code]) from None
             entry = {"phase": name, "state": state, "seconds": round(time.monotonic() - t, 2), "detail": detail}
             run["phases"].append(entry)
             j = self.journal()
@@ -485,6 +496,9 @@ class Box:
             return detail
 
         try:
+            if recovery.pending(L.state):
+                raise Failed(["recovery_unfinished: сначала повторите ту же команду rollback/restore; "
+                              "новое обновление не запускается."])
             def do_validate():
                 nonlocal cfg
                 cfg, problems, plan = self.validate(config_path)
@@ -500,10 +514,26 @@ class Box:
                                       "manifest_sha256": rel.verify_tree(self.release)[1]})
             previous = self.journal().get("active")
             if previous and previous["name"] != self.manifest["name"]:
+                # Arm the new guard persistently BEFORE new code can open state.
+                # A killed update/reboot must not retain the old direct ExecStart.
+                self.supervisor.configure(self.release, cfg.listen.host, cfg.listen.port,
+                                          sync_seconds=cfg.freshness.mirror_sync_seconds,
+                                          daily_backup=cfg.storage.daily_backup)
+                self.write_wrapper(self.release)
                 # The old service stops and its state, box.yaml and bindings are copied before any code of this
                 # release opens the state (graph, start) or writes configuration (configure).
                 phase("backup", lambda: self.pre_update_backup(previous))
+            else:
+                existing = recovery.read_identity(L.state)
+                if (existing is not None and (existing.get("writer") != recovery.record(self.manifest, self.manifest_sha)
+                                             or existing.get("semantics") != recovery.semantics(self.manifest, self.manifest_sha))
+                        or existing is None and any((L.state / p).exists() for p in box_state.DATABASES.values())):
+                    raise Failed(["state_provenance_unknown: install не перезаписывает идентичность существующих БД."])
+            # Record the writer before graph/tasks opens SQLite, including interrupted upgrades.
+            recovery.identify(L.state, self.manifest, self.manifest_sha,
+                              reconcile=True if previous and previous["name"] != self.manifest["name"] else None)
             phase("configure", lambda: self.configure(cfg, config_path))
+            self.chown(L.state / recovery.IDENTITY, 0o600)
 
             def do_mirrors():
                 r = self.mirrors(cfg)
@@ -597,15 +627,41 @@ class Box:
     def pre_update_backup(self, previous: dict) -> dict:
         upd = self.update_state()
         if upd.get("state") == "IN_PROGRESS" and upd.get("to") == self.manifest["name"] and upd.get("backup"):
+            meta = box_state.verify(self.layout, upd["backup"])
+            old, old_sha = rel.verify_tree(self.layout.release(upd["from"]))
+            recovery.verify_backup(self.layout, meta, old, old_sha)
+            if not box_state.compatible(old["contracts"]["state"], meta["schemas"])[0]:
+                raise box_state.BackupError("backup_schema_mismatch")
             return {"backup": upd["backup"], "reused": True}  # an interrupted update keeps its first backup
+        old, old_sha = rel.verify_tree(self.layout.release(previous["name"]))
+        recovery.semantics(old, old_sha)  # unknown old contracts are not guessed from schema
         self.supervisor.stop()
+        validated = False
         try:
-            meta = box_state.create(self.layout, label="pre-update", release=previous)
-        except (OSError, box_state.BackupError) as exc:
-            self.supervisor.start()  # nothing of the new release ran yet: the old service goes on as it was
+            identity = recovery.read_identity(self.layout.state)
+            if identity is None:
+                recovery.adopt_legacy(self.layout.state, old, old_sha)
+            elif (identity["semantics"] != recovery.semantics(old, old_sha)
+                  or identity.get("writer") != recovery.record(old, old_sha)):
+                raise box_state.BackupError("active_state_semantics_mismatch")
+            validated = True
+            box_config.write_bytes(self.layout.bindings(old["name"]) / "box.yaml",
+                                   self.layout.config.read_bytes(), 0o640)
+            self.chown(self.layout.bindings(old["name"]) / "box.yaml", 0o640, group_only=True)
+            meta = box_state.create(self.layout, label="pre-update", release=recovery.record(old, old_sha))
+        except (OSError, box_state.BackupError, rel.ReleaseError) as exc:
+            # Restart only the previously configured process; no new state writer ran.
+            if validated:
+                current = self.current_config()
+                self.supervisor.configure(self.layout.release(previous["name"]),
+                                          current.listen.host, current.listen.port,
+                                          sync_seconds=current.freshness.mirror_sync_seconds,
+                                          daily_backup=current.storage.daily_backup)
+                self.supervisor.start()
             raise Failed([f"Копия перед обновлением не создана ({getattr(exc, 'code', None) or type(exc).__name__}"
                           f"{': ' + exc.strerror if getattr(exc, 'strerror', None) else ''}). Обновление не начато, "
-                          f"работает {previous['name']}."]) from None
+                          + (f"работает {previous['name']}." if validated else
+                             "state provenance не подтверждён; старый writer оставлен остановленным.")]) from None
         j = self.journal()
         j["update"] = {"from": previous["name"], "to": self.manifest["name"], "backup": meta["name"],
                        "state": "IN_PROGRESS", "started_at": now()}
@@ -625,7 +681,7 @@ class Box:
             return "не удался: " + "; ".join(exc.problems)
         return r["mode"] + ("" if r["process_ready"] else ", но процесс не готов: " + ", ".join(r["problems"]))
 
-    def rollback(self, cfg: box_config.BoxConfig, target_name: str | None) -> dict:
+    def rollback(self, cfg: box_config.BoxConfig, target_name: str | None, *, backup_name: str | None = None) -> dict:
         L = self.layout
         journal = self.journal()
         active = journal.get("active", {}).get("name")
@@ -636,7 +692,8 @@ class Box:
             target_name = older[0]
         target = L.release(target_name)
         try:
-            manifest, _ = rel.verify_tree(target)
+            manifest, manifest_sha = rel.verify_tree(target)
+            target_semantics = recovery.semantics(manifest, manifest_sha)
         except (OSError, rel.ReleaseError) as exc:
             raise Failed([f"Релиз {target_name} не найден или повреждён ({getattr(exc, 'code', exc)})."]) from None
         if not (L.bindings(target_name) / "service.json").is_file():
@@ -644,34 +701,73 @@ class Box:
                           f"({L.bindings(target_name)}). Установите его заново: box install."])
         disk = box_state.schemas(L.state)
         ok, why = box_state.compatible(manifest["contracts"]["state"], disk)
+        identity = recovery.read_identity(L.state)
+        semantic_ok = identity is not None and identity["semantics"] == target_semantics
+        pending = recovery.pending(L.state)
+        if pending and pending["target"] != recovery.record(manifest, manifest_sha):
+            raise Failed(["recovery_unfinished: повторите rollback к " + pending["target"]["name"]])
+        if pending and backup_name and pending.get("backup") != backup_name:
+            raise Failed(["recovery_unfinished: сначала повторите исходный restore или rollback --abort."])
         result = {"from": active, "to": target_name, "schemas_on_disk": disk}
-        self.supervisor.stop()
-        if ok:
+        if ok and semantic_ok and backup_name is None and (not pending or pending.get("mode") == "release_only"):
+            try:
+                target_config = (L.bindings(target_name) / "box.yaml").read_bytes()
+            except OSError:
+                raise Failed(["target_configuration_missing: нет owner config целевого релиза; "
+                              "нужен matching backup/config."]) from None
+            self.supervisor.stop()
             result["mode"] = "release_only"  # state stays: no event or comment after the update is lost
+            pending = pending or {"target": recovery.record(manifest, manifest_sha), "backup": None,
+                                  "safety_backup": None, "mode": "release_only"}
+            recovery.hold(L.state, {**pending, "phase": "RESTORING"})
+            box_config.write_bytes(L.config, target_config, 0o644)
         else:
             candidates = [m for m in box_state.listing(L)
-                          if (m.get("release") or {}).get("name") == target_name
+                          if recovery.backup_matches(m, manifest, manifest_sha)
                           and box_state.compatible(manifest["contracts"]["state"], m["schemas"])[0]]
-            point = (journal.get("rollback_point") or {}).get("backup")
+            point = (journal.get("rollback_point") or {}).get("backup") or (
+                journal.get("update", {}).get("backup") if journal.get("update", {}).get("from") == target_name else None)
             # Prefer the backup the update itself took when it left the target release.
             candidates.sort(key=lambda m: (m["name"] == point, m["name"]))
             if not candidates:
-                self.supervisor.start()
-                raise Failed([f"Состояние несовместимо с {target_name} ({'; '.join(why)}), а резервной копии, "
-                              "сделанной этим релизом, нет. Откат не выполнен, сервис оставлен как был."])
-            backup = candidates[-1]["name"]
+                raise Failed([f"matching_backup_missing: состояние/schema/semantics не подтверждены для {target_name} "
+                              f"({'; '.join(why)}). Запуск целевого релиза запрещён."])
+            backup = pending["backup"] if pending else backup_name or candidates[-1]["name"]
             try:
-                safety = box_state.create(L, label="pre-rollback", release=journal.get("active"))
-                meta = box_state.restore(L, backup, chown=lambda p: self.chown(p, 0o600))
+                meta = box_state.verify(L, backup)
+                recovery.verify_backup(L, meta, manifest, manifest_sha)
+                self.supervisor.stop()
+                safety = ({"name": pending["safety_backup"]} if pending else
+                          box_state.create(L, label="pre-rollback", release=journal.get("active")))
+                pending = {**(pending or {}), "target": recovery.record(manifest, manifest_sha), "backup": backup,
+                           "safety_backup": safety["name"], "phase": "RESTORING"}
+                recovery.hold(L.state, pending)
+                meta = box_state.restore(L, backup, chown=lambda p: self.chown(p, 0o600),
+                                         fault=lambda point: self.fault("restore", point, cfg))
+                recovery.restore_config(L, meta, manifest)
+                for name in ("service.json", "policy.json", "box.yaml"):
+                    self.chown(L.bindings(target_name) / name, 0o640, group_only=True)
             except (OSError, box_state.BackupError) as exc:
-                self.supervisor.start()  # restore put the current databases back; the active release goes on
                 raise Failed([f"Восстановление копии {backup} не удалось ({getattr(exc, 'code', None) or exc}). "
-                              "Текущее состояние возвращено, откат не выполнен."]) from None
+                              "Запуск удерживается. Повторите ту же команду; safety backup сохранён."]) from None
             result.update(mode="restored_backup", backup=backup, backup_created_at=meta["created_at"],
                           safety_backup=safety["name"],
-                          note="события после копии сервис забирает сверкой с Jira/GitHub при старте; "
-                               "комментарии находятся по маркеру и обновляются, а не создаются заново")
+                          counts=meta["counts"],
+                          note="Локальная история после backup остаётся в safety backup; автоматического слияния нет. "
+                               "Текущее состояние внешних ресурсов возвращается сверкой, комментарии — по маркерам.")
+        recovery.identify(L.state, manifest, manifest_sha, reconcile=True,
+                          token=pending.get("backup") or "update")
+        self.chown(L.state / recovery.IDENTITY, 0o600)
+        if pending:
+            recovery.hold(L.state, {**pending, "phase": "READY_TO_START"})
+        self.fault("rollback", "before-start", cfg)
+        cfg = self.current_config()
         level = self.activate(cfg, target, manifest)
+        if not level["process_ready"]:
+            self.supervisor.stop()
+            raise Failed(["recovery_start_failed: публикация удерживается; повторите rollback. "
+                          + ", ".join(level["problems"])])
+        (L.state / recovery.TRANSITION).unlink(missing_ok=True)
         j = self.journal()
         j.pop("rollback_point", None)
         if j.get("update", {}).get("state") == "IN_PROGRESS":
@@ -681,13 +777,42 @@ class Box:
         result["problems"] = level["problems"]
         return result
 
+    def abort_recovery(self, cfg):
+        """Restore the pre-recovery safety set through the same guarded mechanism."""
+        pending = recovery.pending(self.layout.state)
+        if not pending or not pending.get("safety_backup"):
+            raise Failed(["recovery_abort_unavailable: нет matching safety backup; повторите исходный rollback."])
+        if pending.get("operation") == "abort":
+            return self.rollback(cfg, pending["target"]["name"], backup_name=pending["backup"])
+        meta = box_state.verify(self.layout, pending["safety_backup"])
+        name = (meta.get("release") or {}).get("name")
+        if not name:
+            raise Failed(["recovery_abort_release_unknown"])
+        manifest, sha = rel.verify_tree(self.layout.release(name))
+        recovery.verify_backup(self.layout, meta, manifest, sha)
+        recovery.hold(self.layout.state, {"target": recovery.record(manifest, sha), "backup": meta["name"],
+                                         "safety_backup": pending["backup"], "phase": "RESTORING", "operation": "abort"})
+        return self.rollback(cfg, name, backup_name=meta["name"])
+
     # -- readiness, status, doctor ----------------------------------------
 
     def readiness(self, listen: dict, run: dict | None = None, probes: dict | None = None) -> dict:
         process = self.process_level(listen)
         active = self.active_release()
-        view = self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
-                         release=active, timeout=300)
+        pending = recovery.pending(self.layout.state)
+        # The old "readiness" task itself opens SQLite. During a transition it
+        # must not turn a status request into an unguarded state writer.
+        if pending:
+            view = {"graph_error": {"code": "recovery_held"}}
+        else:
+            try:
+                active_manifest, active_sha = rel.load_manifest(active)
+                recovery.check_start(self.layout.state, active_manifest, active_sha)
+            except (OSError, rel.ReleaseError) as exc:
+                view = {"graph_error": {"code": getattr(exc, "code", "state_provenance_unknown")}}
+            else:
+                view = self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
+                                 release=active, timeout=300)
         reasons = []
         sources = view.get("sources", [])
         if "graph_error" in view:
@@ -715,6 +840,9 @@ class Box:
         manifest = self.active_manifest() or {}
         return {
             "checked_at": now(),
+            "manager": self.journal().get("manager") or recovery.record(self.manifest, self.manifest_sha),
+            "invoked_cli": recovery.record(self.manifest, self.manifest_sha),
+            "recovery": {"pending": pending, "state_identity": recovery.read_identity(self.layout.state)},
             "release": {"name": manifest.get("name"), "release_id": manifest.get("release_id"),
                         "commit": (manifest.get("code") or {}).get("commit"),
                         "core_digest": ((manifest.get("contracts") or {}).get("core") or {}).get("core_digest")},
@@ -825,7 +953,9 @@ def main(argv=None, *, release_dir: Path) -> int:
     command("backup").add_argument("--label", default="manual")
     command("backups")
     command("restore").add_argument("name")
-    command("rollback").add_argument("--to")
+    rollback_options = command("rollback").add_mutually_exclusive_group()
+    rollback_options.add_argument("--to")
+    rollback_options.add_argument("--abort", action="store_true")
     command("sync-mirrors")
     args = parser.parse_args(argv)
     for stream in (sys.stdout, sys.stderr):  # a non-UTF-8 console must not abort an install half way
@@ -889,6 +1019,12 @@ def main(argv=None, *, release_dir: Path) -> int:
                 return code
             if args.command == "backup":
                 cfg = current_config()
+                identity = recovery.read_identity(layout.state)
+                if identity is not None:
+                    active = box.journal().get("active") or {}
+                    if any(identity.get("writer", {}).get(k) != active.get(k)
+                           for k in ("name", "commit", "manifest_sha256")):
+                        raise box_state.BackupError("backup_active_writer_mismatch")
                 meta = box_state.create(layout, label=args.label, release=box.journal().get("active"))
                 box.fix_sidecars()
                 protect = {(box.journal().get("rollback_point") or {}).get("backup")}
@@ -906,29 +1042,15 @@ def main(argv=None, *, release_dir: Path) -> int:
             if args.command == "restore":
                 cfg = current_config()
                 manifest = box.active_manifest()
-                target = box_state.verify(layout, args.name)
-                ok, why = box_state.compatible(manifest["contracts"]["state"], target["schemas"])
-                if not ok:
-                    raise Failed([f"Копия {args.name} несовместима с активным релизом ({'; '.join(why)}): "
-                                  "используйте box rollback к релизу, который её сделал."])
-                box.supervisor.stop()
-                try:
-                    safety = box_state.create(layout, label="pre-restore", release=box.journal().get("active"))
-                    meta = box_state.restore(layout, args.name, chown=lambda p: box.chown(p, 0o600),
-                                             fault=lambda point: box.fault("restore", point, cfg))
-                except (OSError, box_state.BackupError) as exc:
-                    box.supervisor.start()  # the current databases are back in place: the service goes on with them
-                    raise Failed([f"Восстановление из {args.name} не выполнено "
-                                  f"({getattr(exc, 'code', None) or type(exc).__name__}). Текущее состояние "
-                                  "сохранено, сервис запущен с ним."]) from None
-                level = box.activate(cfg, layout.release(manifest["name"]), manifest)
-                result = {"restored": meta["name"], "counts": meta["counts"], "safety_backup": safety["name"],
-                          "process_ready": level["process_ready"], "problems": level["problems"]}
+                if manifest is None:
+                    raise Failed(["active_release_unknown"])
+                result = box.rollback(cfg, manifest["name"], backup_name=args.name)
+                result["restored"] = result["backup"]
                 emit(result)
-                box.out(f"Восстановлено из {meta['name']} (страховочная копия текущего состояния: {safety['name']}).")
-                return 0 if level["process_ready"] else EXIT_FAILED
+                box.out(f"Восстановлено из {result['backup']} (safety backup: {result['safety_backup']}).")
+                return 0 if result["process_ready"] else EXIT_FAILED
             if args.command == "rollback":
-                result = box.rollback(current_config(), args.to)
+                result = box.abort_recovery(current_config()) if args.abort else box.rollback(current_config(), args.to)
                 emit(result)
                 box.out(f"Откат {result['from']} → {result['to']}: {result['mode']}")
                 if result.get("note"):

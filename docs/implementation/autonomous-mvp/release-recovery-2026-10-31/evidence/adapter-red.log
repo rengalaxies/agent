@@ -1,0 +1,14 @@
+test_new_version_already_queued_is_not_revoked_by_recovery_reopen (tools.agent_service.box.tests.test_recovery.LegacyGenerationAdapter.test_new_version_already_queued_is_not_revoked_by_recovery_reopen) ... FAIL
+
+======================================================================
+FAIL: test_new_version_already_queued_is_not_revoked_by_recovery_reopen (tools.agent_service.box.tests.test_recovery.LegacyGenerationAdapter.test_new_version_already_queued_is_not_revoked_by_recovery_reopen)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 190, in test_new_version_already_queued_is_not_revoked_by_recovery_reopen
+    self.assertEqual(store.resource(rid)["generation"], 1)
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (failures=1)

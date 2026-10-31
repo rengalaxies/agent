@@ -49,6 +49,17 @@ TEXT = {
     "backup_file_modified": "Файл резервной копии изменён или повреждён.",
     "backup_integrity_failed": "SQLite в резервной копии не прошёл integrity_check.",
     "restore_counts_differ": "После восстановления число записей не совпало с копией.",
+    "state_semantics_mismatch": "Профиль/идентичность состояния не совпадает с целевым writer. Запуск запрещён; "
+                                "используйте новый manager и matching backup.",
+    "state_identity_unreadable": "Идентичность состояния не читается. Не удаляйте marker; сохраните state и "
+                                 "проверьте matching backup новым manager.",
+    "unknown_legacy_state_semantics": "Legacy manifest не имеет известного recovery-контракта. Запуск по "
+                                      "совпадению SQLite schema запрещён.",
+    "unknown_recovery_contract": "Recovery-контракт релиза не поддерживается этим manager; запуск запрещён.",
+    "backup_configuration_mismatch": "Конфигурация backup не соответствует релизу или путям этой установки.",
+    "backup_manifest_state_differs": "Schema/counts backup не совпадают с его manifest; рабочее состояние не заменено.",
+    "recovery_marker_unreadable": "Marker восстановления повреждён. Не запускайте старый CLI и не удаляйте marker; "
+                                  "сохраните диагностику и safety backup.",
 }
 
 

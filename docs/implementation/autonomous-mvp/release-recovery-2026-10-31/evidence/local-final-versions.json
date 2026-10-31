@@ -1,0 +1,81 @@
+{
+  "level": "LOCAL_PROCESS",
+  "source_commit": "f59e7beaf5356bc9be0f95199015b1d5e6171458",
+  "resources": [
+    {
+      "resource_id": "github:acme/orders#7",
+      "version": "pr:bfb7713bab159bdb0066af09c1b0e6d4",
+      "generation": 3,
+      "comment_id": "1001",
+      "versions": {
+        "base_sha": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549",
+        "head_sha": "98675b17099a9485c4d26a0ec5bb47de1a10c7ef",
+        "updated_at": "2026-10-24T10:00:00Z"
+      }
+    },
+    {
+      "resource_id": "jira:10012",
+      "version": "jira:f1d87c919278b0683d93c0f431abf3b3",
+      "generation": 3,
+      "comment_id": "5001",
+      "versions": {
+        "revision": "jira:f1d87c919278b0683d93c0f431abf3b3",
+        "updated_at": "2026-10-31T19:23:02.000+0000"
+      }
+    }
+  ],
+  "events": [
+    {
+      "provider": "github",
+      "event_id": "reconcile:github:acme/orders#7:pr:06b3ffb5a587f7248adf04cd0a81b883:0:0",
+      "event_kind": "reconcile",
+      "state": "INGESTED"
+    },
+    {
+      "provider": "jira",
+      "event_id": "reconcile:jira:10012:jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5:0:0",
+      "event_kind": "reconcile",
+      "state": "INGESTED"
+    },
+    {
+      "provider": "github",
+      "event_id": "reconcile:github:acme/orders#7:pr:bfb7713bab159bdb0066af09c1b0e6d4:1:0",
+      "event_kind": "reconcile",
+      "state": "COALESCED"
+    },
+    {
+      "provider": "jira",
+      "event_id": "reconcile:jira:10012:jira:f1d87c919278b0683d93c0f431abf3b3:1:0",
+      "event_kind": "reconcile",
+      "state": "COALESCED"
+    },
+    {
+      "provider": "github",
+      "event_id": "recovery-pr-duplicate",
+      "event_kind": "pull_request.synchronize",
+      "state": "COALESCED"
+    },
+    {
+      "provider": "jira",
+      "event_id": "recovery-jira-duplicate",
+      "event_kind": "jira:issue_updated",
+      "state": "COALESCED"
+    },
+    {
+      "provider": "github",
+      "event_id": "3de990f31552422eb75e00d2f599325f",
+      "event_kind": "pull_request.synchronize",
+      "state": "COALESCED"
+    },
+    {
+      "provider": "jira",
+      "event_id": "b22a56b20a7546bb9ac097974b79b2b0",
+      "event_kind": "jira:issue_updated",
+      "state": "COALESCED"
+    }
+  ],
+  "model": "OFF",
+  "target_vm": "NOT_RUN",
+  "external_live": "NOT_RUN",
+  "participant": "NOT_RUN"
+}

@@ -1,0 +1,15 @@
+test_interrupted_update_cannot_reuse_a_backup_of_another_release (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_interrupted_update_cannot_reuse_a_backup_of_another_release) ... FAIL
+
+======================================================================
+FAIL: test_interrupted_update_cannot_reuse_a_backup_of_another_release (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_interrupted_update_cannot_reuse_a_backup_of_another_release)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 176, in test_interrupted_update_cannot_reuse_a_backup_of_another_release
+    with self.assertRaises(box_state.BackupError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: BackupError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+FAILED (failures=1)

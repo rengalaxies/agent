@@ -34,7 +34,11 @@ LockPersonality=yes
 UMask=0077"""
 
 
-def service_command(layout: Layout, release: Path, host: str, port: int) -> list[str]:
+def service_command(layout: Layout, release: Path, host: str, port: int, manager: Path | None = None) -> list[str]:
+    if manager:
+        return [str(venv_python(manager / "venv")), "-I", "-B", str(manager / "app/tools/agent_service/box/guard.py"),
+                "--target", str(release), "--config", str(layout.bindings(release.name) / "service.json"),
+                "--run", str(layout.run), "--host", host, "--port", str(port)]
     return [str(venv_python(release / "venv")), "-I", "-B", str(release / "app/tools/agent_service/box/launch.py"),
             "--config", str(layout.bindings(release.name) / "service.json"), "--run", str(layout.run),
             "--host", host, "--port", str(port)]
@@ -64,7 +68,7 @@ class Systemd:
 
     def units(self, release: Path, host: str, port: int, *, sync_seconds: int, daily_backup: bool) -> dict[str, str]:
         L = self.layout
-        command = " ".join(service_command(L, release, host, port))
+        command = " ".join(service_command(L, release, host, port, getattr(self, "manager", None)))
         units = {UNIT: f"""[Unit]
 Description=agent-service ({release.name})
 Wants=network-online.target
@@ -97,7 +101,7 @@ User={SERVICE_USER}
 Group={SERVICE_USER}
 EnvironmentFile={L.secrets}
 WorkingDirectory={L.state}
-ExecStart={" ".join(box_command(L, release, "sync-mirrors"))}
+ExecStart={" ".join(box_command(L, getattr(self, "manager", release), "sync-mirrors"))}
 TimeoutStartSec=900
 ReadWritePaths={L.state}
 {HARDENING}
@@ -119,7 +123,7 @@ Description=agent-service daily state backup
 
 [Service]
 Type=oneshot
-ExecStart={" ".join(box_command(L, release, "backup", "--label", "daily"))}
+ExecStart={" ".join(box_command(L, getattr(self, "manager", release), "backup", "--label", "daily"))}
 """
             units[f"{BACKUP_UNIT}.timer"] = """[Unit]
 Description=agent-service daily state backup
@@ -181,7 +185,7 @@ class Process:
         self.spec = layout.box / "process.cmd"
 
     def configure(self, release: Path, host: str, port: int, *, sync_seconds: int, daily_backup: bool) -> bool:
-        command = "\0".join(service_command(self.layout, release, host, port))
+        command = "\0".join(service_command(self.layout, release, host, port, getattr(self, "manager", None)))
         return write_bytes(self.spec, command.encode(), 0o600)
 
     def _env(self) -> dict:

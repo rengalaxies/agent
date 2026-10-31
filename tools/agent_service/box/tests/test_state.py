@@ -175,6 +175,28 @@ class Backups(unittest.TestCase):
         left = [m["name"] for m in box_state.listing(self.layout)]
         self.assertEqual(left, [names[0], names[2], names[3]])
 
+    def test_safety_copy_is_not_silently_pruned_by_daily_retention(self):
+        safety = box_state.create(self.layout, label="pre-rollback", release=None)["name"]
+        for i in range(3):
+            box_state.create(self.layout, label=f"daily-{i}", release=None)
+        box_state.prune(self.layout, keep=1, protect=set())
+        self.assertTrue((self.layout.backups / safety / "backup.json").is_file())
+
+    def test_backup_counts_are_verified_before_working_state_is_changed(self):
+        meta = box_state.create(self.layout, label="manual", release=None)
+        meta["counts"]["events"] = 900
+        (self.layout.backups / meta["name"] / "backup.json").write_text(__import__("json").dumps(meta))
+        with self.assertRaisesRegex(box_state.BackupError, "backup_manifest_state_differs"):
+            box_state.restore(self.layout, meta["name"])
+        self.assertEqual(box_state.counts(self.layout.state)["events"], 3)
+
+    def test_killed_between_database_replacements_returns_all_previous_files(self):
+        meta = box_state.create(self.layout, label="manual", release=None)
+        add_event(self.layout.state)
+        self.kill_restore_at("file:service/service.sqlite", meta["name"])
+        self.assertEqual(box_state.recover(self.layout)["outcome"], "returned_previous_state")
+        self.assertEqual(box_state.counts(self.layout.state)["events"], 4)
+
 
 if __name__ == "__main__":
     unittest.main()

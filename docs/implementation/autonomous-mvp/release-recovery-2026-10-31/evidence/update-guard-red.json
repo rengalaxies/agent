@@ -1,0 +1,148 @@
+{
+  "supervisor": "process",
+  "scenarios": [
+    {
+      "scenario": "fresh_legacy",
+      "detail": {
+        "install_wall_seconds": 7.2,
+        "machine_seconds": 5.8,
+        "phase_seconds": {
+          "validate": 0.04,
+          "release": 0.02,
+          "configure": 0.0,
+          "mirrors": 0.35,
+          "probes": 0.36,
+          "graph": 0.56,
+          "start": 1.07,
+          "smoke": 2.96,
+          "report": 0.45
+        },
+        "release": {
+          "name": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+          "release_id": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+          "commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+          "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8"
+        },
+        "loaded": {
+          "code_version": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+          "commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+          "config": "/workspace/agent-recovery/work/recovery/prefix-update-red/etc/agent-service/generated/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312/service.json",
+          "constitution": "agent-service-v1.0:100bcad3db9c",
+          "constitution_default": "agent-service-v1.0:100bcad3db9c",
+          "constitution_path": "/workspace/agent-recovery/work/recovery/prefix-update-red/opt/agent-service/releases/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+          "core": {
+            "core_digest": "6cf7b4ec8e7442a2fcfb5092cec7e64afe9685c82195785c5158a80a1b47eec8",
+            "output_schema_version": "2.1",
+            "profile": "http-requests-4",
+            "schema": "agent-graph-1"
+          },
+          "launcher_pid": null,
+          "listen": "127.0.0.1:18093",
+          "manifest_sha256": "9fdd6e8aa48e5e09d803840ef262c1c3d57bb01af9c884a690f86a98888533a9",
+          "pid": 342322,
+          "python": "3.12.14",
+          "release": "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+          "release_id": "0.1.0+g14e65e8affe3.linux-x86_64-cp312",
+          "started_at": "2026-10-31T19:40:35.540469+00:00"
+        },
+        "graph": {
+          "active_bases": 9,
+          "by_origin": {
+            "code": 5,
+            "ownership": 4,
+            "runtime": 0
+          },
+          "closed_bases": 0,
+          "graph_version": "graph-6",
+          "relationships": 9,
+          "services": [
+            "archive",
+            "audit",
+            "billing",
+            "orders",
+            "reporting"
+          ]
+        },
+        "service_rss_kib": 59708
+      },
+      "result": "PASS",
+      "seconds": 8.3
+    },
+    {
+      "scenario": "upgrade_before_new_writer",
+      "result": "FAIL",
+      "error": "interrupted update did not leave a guarded NEW service entry",
+      "trace": "Traceback (most recent call last):\n  File \"/workspace/agent-recovery/tools/agent_service/box/acceptance.py\", line 168, in scenario\n    entry[\"detail\"] = fn() or {}\n                      ^^^^\n  File \"/workspace/agent-recovery/tools/agent_service/box/recovery_acceptance.py\", line 66, in upgrade\n    raise Check(\"interrupted update did not leave a guarded NEW service entry\")\ntools.agent_service.box.acceptance.Check: interrupted update did not leave a guarded NEW service entry\n",
+      "seconds": 93.4
+    }
+  ],
+  "box_calls": [
+    {
+      "args": [
+        "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/workspace/agent-recovery/work/recovery/stand-update-red/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 7.24
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.02
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g61f1f37ebd56-linux-x86_64-cp312",
+        "update",
+        "--config",
+        "/workspace/agent-recovery/work/recovery/stand-update-red/box.yaml"
+      ],
+      "exit": 247,
+      "seconds": 33.08
+    }
+  ],
+  "level": "LOCAL_PROCESS",
+  "legacy": {
+    "commit": "14e65e8affe3b64a9ceb647f537e8af6ff7a1138",
+    "committed_at": "2026-10-28T13:08:10Z",
+    "paths": [
+      "src/agent_graph",
+      "src/agent_service",
+      "constitutions/agent-service-v1.yaml",
+      "schemas/agent-graph-output-2.json",
+      "examples/orders_reporting",
+      "tools/agent_service/box",
+      "infra/agent_service"
+    ],
+    "repository": "github.com/rengalaxies/agent",
+    "tree": "17b7c4e64240d497df941825afd14fa4f04f333e"
+  },
+  "candidate": {
+    "commit": "61f1f37ebd56246ef0381448d9ae30767bc2a4c9",
+    "committed_at": "2026-10-31T19:33:45Z",
+    "paths": [
+      "src/agent_graph",
+      "src/agent_service",
+      "constitutions/agent-service-v1.yaml",
+      "schemas/agent-graph-output-2.json",
+      "examples/orders_reporting",
+      "tools/agent_service/box",
+      "infra/agent_service"
+    ],
+    "repository": "github.com/rengalaxies/agent",
+    "tree": "ea2d590bb6c8f07c03973deb010e4f7cf1a1728c"
+  },
+  "model": "OFF",
+  "target_vm": "NOT_RUN",
+  "external_live": "NOT_RUN",
+  "participant": "NOT_RUN",
+  "finished_at": "2026-10-31T19:42:14Z",
+  "passed": false
+}
