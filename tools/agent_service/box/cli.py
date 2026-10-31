@@ -348,6 +348,7 @@ class Box:
         journal["history"] = history[-20:]
         journal["config_digest"] = digest
         journal["supervisor"] = self.supervisor.name
+        journal["manager"] = recovery.record(self.manifest, self.manifest_sha)
         journal["listen"] = {"host": cfg.listen.host, "port": cfg.listen.port}
         self.save(journal)
         # Keep the new manager after a downgrade; the old archive's CLI is not patched.
@@ -615,19 +616,23 @@ class Box:
         old, old_sha = rel.verify_tree(self.layout.release(previous["name"]))
         recovery.semantics(old, old_sha)  # unknown old contracts are not guessed from schema
         self.supervisor.stop()
+        validated = False
         try:
             identity = recovery.read_identity(self.layout.state)
             if identity is None:
                 recovery.adopt_legacy(self.layout.state, old, old_sha)
             elif identity["semantics"] != recovery.semantics(old, old_sha):
                 raise box_state.BackupError("active_state_semantics_mismatch")
+            validated = True
             meta = box_state.create(self.layout, label="pre-update", release=recovery.record(old, old_sha))
         except (OSError, box_state.BackupError, rel.ReleaseError) as exc:
             # Restart only the previously configured process; no new state writer ran.
-            self.supervisor.start()
+            if validated:
+                self.supervisor.start()
             raise Failed([f"Копия перед обновлением не создана ({getattr(exc, 'code', None) or type(exc).__name__}"
                           f"{': ' + exc.strerror if getattr(exc, 'strerror', None) else ''}). Обновление не начато, "
-                          f"работает {previous['name']}."]) from None
+                          + (f"работает {previous['name']}." if validated else
+                             "state provenance не подтверждён; старый writer оставлен остановленным.")]) from None
         j = self.journal()
         j["update"] = {"from": previous["name"], "to": self.manifest["name"], "backup": meta["name"],
                        "state": "IN_PROGRESS", "started_at": now()}
@@ -789,7 +794,8 @@ class Box:
         manifest = self.active_manifest() or {}
         return {
             "checked_at": now(),
-            "manager": recovery.record(self.manifest, self.manifest_sha),
+            "manager": self.journal().get("manager") or recovery.record(self.manifest, self.manifest_sha),
+            "invoked_cli": recovery.record(self.manifest, self.manifest_sha),
             "recovery": {"pending": pending, "state_identity": recovery.read_identity(self.layout.state)},
             "release": {"name": manifest.get("name"), "release_id": manifest.get("release_id"),
                         "commit": (manifest.get("code") or {}).get("commit"),

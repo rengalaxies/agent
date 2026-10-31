@@ -208,6 +208,12 @@ class Driver:
 
     def reinstall(self):
         A = self.args.release
+        selected_manager = self.status(A).get("manager", {}).get("name")
+        if selected_manager != self.manifest(A)["name"]:
+            # A rollback now deliberately keeps the newer guarded manager (D/B).
+            # Selecting A's manager is a real configuration change; measure the
+            # subsequent unchanged install, not that explicit manager switch.
+            self.box(A, "install", "--config", self.stand["box_config"])
         before = self.status(A)
         before_comments = self.comments()
         out = self.box_json(A, "install", "--config", self.stand["box_config"])
@@ -231,7 +237,8 @@ class Driver:
         self.one_comment_each()
         if self.comments()["creates"] != before_comments["creates"]:
             raise Check("reinstall created comments")
-        return {"machine_seconds": out.get("machine_seconds"), "pid": after["process"]["loaded"]["pid"]}
+        return {"machine_seconds": out.get("machine_seconds"), "pid": after["process"]["loaded"]["pid"],
+                "previous_manager": selected_manager, "selected_manager": self.manifest(A)["name"]}
 
     def interrupted(self):
         A = self.args.release
@@ -415,7 +422,7 @@ class Driver:
         self.box(A, "restore", meta["name"])
         s = self.ready(A)
         after = s["scenario"]["queue"]
-        if not after.get("resources"):
+        if not sum(after.get("intents", {}).values()):
             raise Check(f"queue after recovery is empty: {after}")
         self.one_comment_each()
         return {"killed_exit": code, "queue_before_restore": before, "queue": after}

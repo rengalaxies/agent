@@ -74,6 +74,13 @@ class RollbackBoundary(unittest.TestCase):
                 self.box.rollback(self.cfg, "old")
         activate.assert_not_called()
 
+    def test_update_does_not_restart_old_writer_after_provenance_refusal(self):
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)):
+            with self.assertRaisesRegex(cli.Failed, "provenance"):
+                self.box.pre_update_backup(recovery.record(self.old, "c" * 64))
+        self.box.supervisor.stop.assert_called_once()
+        self.box.supervisor.start.assert_not_called()
+
     def test_equal_semantics_keeps_queue_and_history_without_backup(self):
         self.old["contracts"]["recovery"] = self.new["contracts"]["recovery"]
         before = box_state.counts(self.layout.state)
