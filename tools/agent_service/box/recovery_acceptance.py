@@ -12,6 +12,8 @@ from pathlib import Path
 import shutil
 import sqlite3
 import sys
+import os
+import fcntl
 
 APP = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(APP / "src"), str(APP)]
@@ -100,6 +102,11 @@ class RecoveryDriver(Driver):
             self.control("/faults", {"provider": "jira"})
         mirror = self.root / "var/lib/agent-service/mirrors/orders.git"
         hidden = mirror.with_name("orders.git.unavailable")
+        # The real systemd mirror timer correctly repairs a merely renamed mirror.
+        # Hold its existing lock so this fault actually remains unavailable; do not
+        # mistake successful reconciliation for a failed publication gate.
+        sync_lock = os.open(mirror.parent / ".sync.lock", os.O_RDWR)
+        fcntl.flock(sync_lock, fcntl.LOCK_EX)
         mirror.rename(hidden)
         try:
             self.box(self.args.candidate, "rollback", "--to", Path(self.args.release).name, expect=1)
@@ -107,6 +114,7 @@ class RecoveryDriver(Driver):
                 raise Check("missing source allowed publication before reconciliation")
         finally:
             hidden.rename(mirror)
+            os.close(sync_lock)
         result = self.box_json(self.args.candidate, "rollback", "--to", Path(self.args.release).name)
         if result["mode"] != "restored_backup" or result["backup"] != self.backup:
             raise Check(f"wrong recovery selection: {result}")

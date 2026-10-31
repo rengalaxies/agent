@@ -3,6 +3,12 @@
 import json
 from pathlib import Path
 import tempfile
+import os
+import signal
+import sqlite3
+import subprocess
+import sys
+import time
 from types import SimpleNamespace
 import unittest
 from unittest import mock
@@ -11,6 +17,8 @@ from tools.agent_service.box import cli, config, recovery, release
 from tools.agent_service.box import state as box_state
 from tools.agent_service.box.layout import Layout
 from tools.agent_service.box.tests.test_state import make_state, RELEASE_V1
+from tools.agent_service.box.preflight import legacy_reopen
+from agent_service.queue import ServiceStore
 
 
 def manifest(name, profile):
@@ -175,3 +183,62 @@ class SemanticContract(unittest.TestCase):
             recovery.identify(state, manifest("x", "p"), "d" * 64)
             with self.assertRaisesRegex(release.ReleaseError, "state_semantics_mismatch"):
                 recovery.check_start(state, manifest("y", "p"), "e" * 64)
+
+
+class LegacyGenerationAdapter(unittest.TestCase):
+    def test_new_version_already_queued_is_not_revoked_by_recovery_reopen(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store = ServiceStore(Path(tmp) / "queue.sqlite")
+            rid = "github:acme/orders#7"
+            store.apply_snapshot(resource_id=rid, provider="github", kind="pull_request", version="new-head",
+                                 snapshot={}, event_id="recovered-new-head")
+            legacy_reopen(store, {"github"}, "box_recovery")
+            self.assertEqual(store.resource(rid)["generation"], 1)
+            self.assertEqual(len(store.jobs(rid)), 1)
+
+
+@unittest.skipIf(os.name == "nt", "POSIX SIGTERM of a process-supervisor guard")
+class GuardProcessLifetime(unittest.TestCase):
+    def test_stopping_guard_stops_its_sqlite_preflight_writer_before_return(self):
+        self.check_stop(signal.SIGTERM)
+
+    def test_killed_guard_cannot_leave_an_orphan_sqlite_writer(self):
+        self.check_stop(signal.SIGKILL)
+
+    def check_stop(self, stop_signal):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            writer = root / "writer.py"
+            writer.write_text("import os,sqlite3,time,sys\nfrom pathlib import Path\n"
+                              "Path(sys.argv[2]).write_text(str(os.getpid()))\n"
+                              "db=sqlite3.connect(sys.argv[1]); db.execute('CREATE TABLE ticks(x)'); db.commit()\n"
+                              "while True:\n db.execute('INSERT INTO ticks VALUES(1)'); db.commit(); time.sleep(.02)\n")
+            command = [sys.executable, str(writer), str(root / "state.sqlite"), str(root / "pid")]
+            parent = subprocess.Popen([sys.executable, "-c",
+                                       "from tools.agent_service.box.guard import run_preflight; "
+                                       f"run_preflight({command!r})"], stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
+            try:
+                deadline = time.monotonic() + 5
+                while not (root / "pid").exists() and time.monotonic() < deadline:
+                    time.sleep(.02)
+                time.sleep(.1)
+                parent.send_signal(stop_signal)
+                parent.wait(timeout=5)
+                db = sqlite3.connect(root / "state.sqlite")
+                try:
+                    before = db.execute("SELECT count(*) FROM ticks").fetchone()[0]
+                    time.sleep(.15)
+                    after = db.execute("SELECT count(*) FROM ticks").fetchone()[0]
+                    self.assertEqual(after, before, "orphan preflight still writes after supervisor stop")
+                finally:
+                    db.close()
+            finally:
+                if parent.poll() is None:
+                    parent.kill()
+                    parent.wait()
+                if (root / "pid").exists():
+                    try:
+                        os.kill(int((root / "pid").read_text()), signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass

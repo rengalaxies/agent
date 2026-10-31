@@ -12,9 +12,47 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import signal
+import ctypes
 
 MANAGER = Path(__file__).resolve().parents[4]
 sys.path[:0] = [str(MANAGER / "app/src"), str(MANAGER / "app")]
+
+
+def run_preflight(command):
+    if not sys.platform.startswith("linux"):
+        raise RuntimeError("guarded_recovery_requires_linux")
+    parent = os.getpid()
+    libc = ctypes.CDLL(None, use_errno=True)
+
+    def parent_death():
+        # Linux deployment only. Also close the fork/parent-death race before
+        # the interpreter opens any state. An orphan must not write during restore.
+        if libc.prctl(1, signal.SIGKILL, 0, 0, 0) != 0 or os.getppid() != parent:
+            os._exit(1)
+
+    child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=parent_death)
+
+    def stop_child(signum, frame):
+        child.terminate()
+        try:
+            child.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            child.kill()
+            child.wait()
+        raise SystemExit(128 + signum)
+
+    previous = signal.signal(signal.SIGTERM, stop_child)
+    try:
+        stdout, stderr = child.communicate(timeout=300)
+        return subprocess.CompletedProcess(command, child.returncode, stdout, stderr)
+    except BaseException:
+        if child.poll() is None:
+            child.kill()
+            child.wait()
+        raise
+    finally:
+        signal.signal(signal.SIGTERM, previous)
 
 
 def main():
@@ -42,11 +80,10 @@ def main():
     # This program runs with target imports in a separate interpreter. It may
     # recover/enqueue but never calls step(), run_until_idle() or any publisher.
     if value.get("reconcile_required"):
-        check = subprocess.run([str(venv_python(args.target / "venv")), "-I", "-B",
+        check = run_preflight([str(venv_python(args.target / "venv")), "-I", "-B",
                                 str(MANAGER / "app/tools/agent_service/box/preflight.py"),
                                 str(args.target), str(args.config), digest,
-                                value.get("recovery_token", "update")],
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
+                                value.get("recovery_token", "update")])
         if check.returncode:
             # Only safe reason codes; never copy arbitrary connector exception text.
             try:

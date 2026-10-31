@@ -22,7 +22,9 @@ def legacy_reopen(store, providers, event):
     """Explicit queue-schema-1 adapter for release14e, which predates basis reopen."""
     now = store.clock()
     with store._tx() as db:
-        for row in db.execute("SELECT * FROM resources WHERE closed=0 AND version IS NOT NULL").fetchall():
+        for row in db.execute("SELECT r.* FROM resources r WHERE r.closed=0 AND r.version IS NOT NULL "
+                              "AND NOT EXISTS (SELECT 1 FROM jobs j WHERE j.resource_id=r.resource_id "
+                              "AND j.generation=r.generation AND j.state IN ('QUEUED','RUNNING'))").fetchall():
             if row["provider"] not in providers:
                 continue
             generation = row["generation"] + 1
