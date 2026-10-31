@@ -14,6 +14,7 @@ import sqlite3
 import sys
 import os
 import fcntl
+import subprocess
 
 APP = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(APP / "src"), str(APP)]
@@ -45,11 +46,21 @@ class RecoveryDriver(Driver):
         meta = json.loads((self.root / "var/backups/agent-service" / backup / "backup.json").read_text())
         if meta["release"]["commit"] != "14e65e8affe3b64a9ceb647f537e8af6ff7a1138":
             raise Check("backup was not made for actual release14e")
+        saved_identity = json.loads((self.root / "var/backups/agent-service" / backup /
+                                     "state/.box-state.json").read_text())
+        if saved_identity["semantics"]["extractor_profile"] != "http-requests-4":
+            raise Check("backup identity was written by the new profile")
         self.backup = backup
+        release_id = self.manifest(self.args.candidate)["release_id"]
+        updated = self.wait("both results carry the candidate release identity",
+                            lambda c: c["pr"] and release_id in c["pr"][0]["body"]
+                            and c["jira"] and f"code_version: {release_id}" in c["jira"][0]["text"])
+        self.versions_in_comment(updated, self.args.candidate)
         self.one_comment_each()
         if self.comments()["creates"] != before["creates"]:
             raise Check("upgrade duplicated external comments")
         return {"backup": meta["name"], "schemas": meta["schemas"], "backup_release": meta["release"],
+                "backup_state_identity": saved_identity,
                 "loaded_profile": self.state()["semantics"], "stored_profiles": self.versions()}
 
     def invalid_backups(self):
@@ -98,6 +109,8 @@ class RecoveryDriver(Driver):
             self.box(self.args.candidate, "rollback", "--to", Path(self.args.release).name, expect=1)
             if self.comments()["updates"] != writes:
                 raise Check("API failure allowed publication before reconciliation")
+            if self.status(self.args.candidate)["scenario"]["status"] != "NOT_READY":
+                raise Check("API failure was presented as READY")
         finally:
             self.control("/faults", {"provider": "jira"})
         mirror = self.root / "var/lib/agent-service/mirrors/orders.git"
@@ -112,6 +125,8 @@ class RecoveryDriver(Driver):
             self.box(self.args.candidate, "rollback", "--to", Path(self.args.release).name, expect=1)
             if self.comments()["updates"] != writes:
                 raise Check("missing source allowed publication before reconciliation")
+            if self.status(self.args.candidate)["scenario"]["status"] != "NOT_READY":
+                raise Check("missing source was presented as READY")
         finally:
             hidden.rename(mirror)
             os.close(sync_lock)
@@ -120,30 +135,34 @@ class RecoveryDriver(Driver):
             raise Check(f"wrong recovery selection: {result}")
         self.loaded_is(self.ready(self.args.release), self.args.release)
         head = self.comments()["heads"]["pr-7"][:12]
+        legacy_id = self.manifest(self.args.release)["release_id"]
         c = self.wait("restored legacy writer reconciles the current head and Jira",
                       lambda c: c["pr"] and f"head {head}" in c["pr"][0]["body"]
-                      and "code_version: " in c["jira"][0]["text"], timeout=180)
+                      and f"code_version: {legacy_id}" in c["jira"][0]["text"], timeout=180)
         self.one_comment_each(c)
         if [x["id"] for x in c["pr"]] != [x["id"] for x in before["pr"]] or (
                 [x["id"] for x in c["jira"]] != [x["id"] for x in before["jira"]]):
             raise Check("recovery changed comment identities")
+        duplicates = {}
         for _ in range(2):
-            self.control("/deliver/pr", {"action": "synchronize", "delivery_id": "recovery-pr-duplicate"})
-            self.control("/deliver/jira", {"event": "updated", "delivery_id": "recovery-jira-duplicate"})
+            duplicates["github"] = self.control("/deliver/pr", {
+                "action": "synchronize", "delivery_id": "recovery-pr-duplicate"})
+            duplicates["jira"] = self.control("/deliver/jira", {
+                "event": "updated", "delivery_id": "recovery-jira-duplicate"})
+        if not all(result["response"].get("duplicate") for result in duplicates.values()):
+            raise Check("exact event redelivery was not recognized as duplicate")
         self.one_comment_each()
         wrapper = (self.root / "usr/local/sbin/agent-service-box").read_text()
         if Path(self.args.candidate).name not in wrapper:
             raise Check("rollback replaced the supported manager with the legacy CLI")
         return {"interruptions": outcomes, "api_failure": "HELD_NO_WRITES", "source_failure": "HELD_NO_WRITES",
                 "rollback": result,
+                "duplicate_deliveries": duplicates,
                 "current_head": head, "comment_ids": {"pr": [x["id"] for x in c["pr"]],
                                                         "jira": [x["id"] for x in c["jira"]]},
                 "stored_profiles": self.versions(), "manager_preserved": True}
 
     def restart_recovered_writer(self):
-        from tools.agent_service.box.layout import Layout
-        from tools.agent_service.box.supervisor import choose
-
         state = self.root / "var/lib/agent-service/service/service.sqlite"
 
         def generations():
@@ -155,7 +174,14 @@ class RecoveryDriver(Driver):
 
         before = generations()
         creates = self.comments()["creates"]
-        choose(Layout.at(self.args.prefix), self.args.supervisor).restart()
+        if self.args.supervisor == "process":
+            from tools.agent_service.box.layout import Layout
+            from tools.agent_service.box.supervisor import choose
+
+            choose(Layout.at(self.args.prefix), "process").restart()
+        else:
+            # The system Python drives acceptance without release dependencies.
+            subprocess.run(["systemctl", "restart", "agent-service.service"], check=True)
         # wait_ready polls the process identity and status, including the manager's guard.
         import time
         deadline = time.monotonic() + 60
@@ -189,6 +215,23 @@ class RecoveryDriver(Driver):
                          ("reupgrade_same_comment_ids", self.reupgrade)):
             if not self.scenario(name, fn):
                 break
+        if all(s["result"] == "PASS" for s in self.report["scenarios"]):
+            db = sqlite3.connect((self.root / "var/lib/agent-service/service/service.sqlite").resolve().as_uri()
+                                 + "?mode=ro", uri=True)
+            db.row_factory = sqlite3.Row
+            try:
+                resources = []
+                for row in db.execute("SELECT resource_id,version,generation,comment_id,snapshot FROM resources"):
+                    data = dict(row)
+                    snapshot = json.loads(data.pop("snapshot"))
+                    data["versions"] = {k: snapshot[k] for k in
+                                        ("base_sha", "head_sha", "revision", "updated_at") if k in snapshot}
+                    resources.append(data)
+                self.report["resource_versions"] = resources
+                self.report["event_ids"] = [dict(row) for row in db.execute(
+                    "SELECT provider,event_id,event_kind,state FROM events ORDER BY received_at")]
+            finally:
+                db.close()
         return self.finish()
 
 
