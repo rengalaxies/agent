@@ -514,12 +514,19 @@ class Box:
                                       "manifest_sha256": rel.verify_tree(self.release)[1]})
             previous = self.journal().get("active")
             if previous and previous["name"] != self.manifest["name"]:
+                # Arm the new guard persistently BEFORE new code can open state.
+                # A killed update/reboot must not retain the old direct ExecStart.
+                self.supervisor.configure(self.release, cfg.listen.host, cfg.listen.port,
+                                          sync_seconds=cfg.freshness.mirror_sync_seconds,
+                                          daily_backup=cfg.storage.daily_backup)
+                self.write_wrapper(self.release)
                 # The old service stops and its state, box.yaml and bindings are copied before any code of this
                 # release opens the state (graph, start) or writes configuration (configure).
                 phase("backup", lambda: self.pre_update_backup(previous))
             else:
                 existing = recovery.read_identity(L.state)
-                if (existing is not None and existing.get("writer") != recovery.record(self.manifest, self.manifest_sha)
+                if (existing is not None and (existing.get("writer") != recovery.record(self.manifest, self.manifest_sha)
+                                             or existing.get("semantics") != recovery.semantics(self.manifest, self.manifest_sha))
                         or existing is None and any((L.state / p).exists() for p in box_state.DATABASES.values())):
                     raise Failed(["state_provenance_unknown: install не перезаписывает идентичность существующих БД."])
             # Record the writer before graph/tasks opens SQLite, including interrupted upgrades.
@@ -645,6 +652,11 @@ class Box:
         except (OSError, box_state.BackupError, rel.ReleaseError) as exc:
             # Restart only the previously configured process; no new state writer ran.
             if validated:
+                current = self.current_config()
+                self.supervisor.configure(self.layout.release(previous["name"]),
+                                          current.listen.host, current.listen.port,
+                                          sync_seconds=current.freshness.mirror_sync_seconds,
+                                          daily_backup=current.storage.daily_backup)
                 self.supervisor.start()
             raise Failed([f"Копия перед обновлением не создана ({getattr(exc, 'code', None) or type(exc).__name__}"
                           f"{': ' + exc.strerror if getattr(exc, 'strerror', None) else ''}). Обновление не начато, "
@@ -1007,6 +1019,12 @@ def main(argv=None, *, release_dir: Path) -> int:
                 return code
             if args.command == "backup":
                 cfg = current_config()
+                identity = recovery.read_identity(layout.state)
+                if identity is not None:
+                    active = box.journal().get("active") or {}
+                    if any(identity.get("writer", {}).get(k) != active.get(k)
+                           for k in ("name", "commit", "manifest_sha256")):
+                        raise box_state.BackupError("backup_active_writer_mismatch")
                 meta = box_state.create(layout, label=args.label, release=box.journal().get("active"))
                 box.fix_sidecars()
                 protect = {(box.journal().get("rollback_point") or {}).get("backup")}

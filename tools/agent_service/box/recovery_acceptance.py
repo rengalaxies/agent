@@ -15,6 +15,7 @@ import sys
 import os
 import fcntl
 import subprocess
+import time
 
 APP = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(APP / "src"), str(APP)]
@@ -40,6 +41,30 @@ class RecoveryDriver(Driver):
 
     def upgrade(self):
         before = self.comments()
+        interrupted = None
+        if not getattr(self, "checked_interrupted_update", False):
+            code, _ = self.box(self.args.candidate, "update", "--config", self.stand["box_config"],
+                               env={"AGENT_SERVICE_BOX_KILL_AT": "graph"}, expect=None)
+            if code == 0:
+                raise Check("update was not interrupted after the new graph task")
+            if self.args.supervisor == "process":
+                from tools.agent_service.box.layout import Layout
+                from tools.agent_service.box.supervisor import choose
+
+                choose(Layout.at(self.args.prefix), "process").start()
+            else:
+                subprocess.run(["systemctl", "start", "agent-service.service"], check=True)
+            deadline = time.monotonic() + 60
+            loaded_path = self.root / "var/lib/agent-service/run/loaded.json"
+            while time.monotonic() < deadline:
+                loaded = json.loads(loaded_path.read_text()) if loaded_path.exists() else {}
+                if loaded.get("commit") == self.manifest(self.args.candidate)["code"]["commit"]:
+                    interrupted = {"killed_exit": code, "loaded_after_supervisor_start": loaded}
+                    break
+                time.sleep(.2)
+            if interrupted is None:
+                raise Check("interrupted update did not leave a guarded NEW service entry")
+            self.checked_interrupted_update = True
         result = self.box_json(self.args.candidate, "update", "--config", self.stand["box_config"])
         self.loaded_is(self.ready(self.args.candidate), self.args.candidate)
         backup = next(p["detail"]["backup"] for p in result["phases"] if p["phase"] == "backup")
@@ -60,6 +85,7 @@ class RecoveryDriver(Driver):
         if self.comments()["creates"] != before["creates"]:
             raise Check("upgrade duplicated external comments")
         return {"backup": meta["name"], "schemas": meta["schemas"], "backup_release": meta["release"],
+                "interrupted_after_graph_before_activate": interrupted,
                 "backup_state_identity": saved_identity,
                 "loaded_profile": self.state()["semantics"], "stored_profiles": self.versions()}
 
@@ -183,7 +209,6 @@ class RecoveryDriver(Driver):
             # The system Python drives acceptance without release dependencies.
             subprocess.run(["systemctl", "restart", "agent-service.service"], check=True)
         # wait_ready polls the process identity and status, including the manager's guard.
-        import time
         deadline = time.monotonic() + 60
         while time.monotonic() < deadline:
             try:
