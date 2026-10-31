@@ -54,7 +54,14 @@ def read_identity(state: Path) -> dict | None:
     return value
 
 
-def identify(state: Path, manifest: dict, manifest_sha: str, *, reconcile=False, token="update") -> dict:
+def identify(state: Path, manifest: dict, manifest_sha: str, *, reconcile=None, token=None) -> dict:
+    previous = read_identity(state)
+    if previous is None or previous.get("writer") != record(manifest, manifest_sha):
+        previous = {}
+    if reconcile is None:
+        reconcile = previous.get("reconcile_required", False)
+    if token is None:
+        token = previous.get("recovery_token", "update")
     value = {"protocol": 1, "writer": record(manifest, manifest_sha),
              "semantics": semantics(manifest, manifest_sha), "reconcile_required": reconcile,
              "recovery_token": token}

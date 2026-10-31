@@ -155,6 +155,27 @@ class RollbackBoundary(unittest.TestCase):
                 self.box.rollback(self.cfg, "old")
         activate.assert_not_called()
 
+    def test_interrupted_update_reuses_original_verified_backup_after_new_state_was_opened(self):
+        meta = self.matching_backup()
+        journal = self.box.journal()
+        journal["update"] = {"state": "IN_PROGRESS", "from": "old", "to": "new", "backup": meta["name"]}
+        self.box.save(journal)
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)):
+            result = self.box.pre_update_backup(recovery.record(self.old, "c" * 64))
+        self.assertTrue(result["reused"])
+        self.box.supervisor.stop.assert_not_called()
+
+    def test_interrupted_update_cannot_reuse_a_backup_of_another_release(self):
+        meta = self.matching_backup()
+        journal = self.box.journal()
+        journal["update"] = {"state": "IN_PROGRESS", "from": "old", "to": "new", "backup": meta["name"]}
+        self.box.save(journal)
+        meta["release"]["manifest_sha256"] = "f" * 64
+        (self.layout.backups / meta["name"] / "backup.json").write_text(json.dumps(meta))
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)):
+            with self.assertRaises(box_state.BackupError):
+                self.box.pre_update_backup(recovery.record(self.old, "c" * 64))
+
     def test_failed_start_leaves_durable_hold_and_safety_backup(self):
         self.matching_backup()
         with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)), \
@@ -200,6 +221,16 @@ class RollbackBoundary(unittest.TestCase):
 
 
 class SemanticContract(unittest.TestCase):
+    def test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp)
+            m = manifest("x", "p")
+            recovery.identify(state, m, "d" * 64, reconcile=True, token="matching-backup")
+            recovery.identify(state, m, "d" * 64)
+            value = recovery.read_identity(state)
+            self.assertTrue(value["reconcile_required"])
+            self.assertEqual(value["recovery_token"], "matching-backup")
+
     def test_equality_is_not_profile_number_order(self):
         m = manifest("x", "arbitrary-profile-without-number")
         self.assertEqual(recovery.semantics(m, "d" * 64)["extractor_profile"],

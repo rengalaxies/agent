@@ -517,9 +517,14 @@ class Box:
                 # The old service stops and its state, box.yaml and bindings are copied before any code of this
                 # release opens the state (graph, start) or writes configuration (configure).
                 phase("backup", lambda: self.pre_update_backup(previous))
+            else:
+                existing = recovery.read_identity(L.state)
+                if (existing is not None and existing.get("writer") != recovery.record(self.manifest, self.manifest_sha)
+                        or existing is None and any((L.state / p).exists() for p in box_state.DATABASES.values())):
+                    raise Failed(["state_provenance_unknown: install не перезаписывает идентичность существующих БД."])
             # Record the writer before graph/tasks opens SQLite, including interrupted upgrades.
             recovery.identify(L.state, self.manifest, self.manifest_sha,
-                              reconcile=bool(previous and previous["name"] != self.manifest["name"]))
+                              reconcile=True if previous and previous["name"] != self.manifest["name"] else None)
             phase("configure", lambda: self.configure(cfg, config_path))
             self.chown(L.state / recovery.IDENTITY, 0o600)
 
@@ -615,7 +620,11 @@ class Box:
     def pre_update_backup(self, previous: dict) -> dict:
         upd = self.update_state()
         if upd.get("state") == "IN_PROGRESS" and upd.get("to") == self.manifest["name"] and upd.get("backup"):
-            box_state.verify(self.layout, upd["backup"])
+            meta = box_state.verify(self.layout, upd["backup"])
+            old, old_sha = rel.verify_tree(self.layout.release(upd["from"]))
+            recovery.verify_backup(self.layout, meta, old, old_sha)
+            if not box_state.compatible(old["contracts"]["state"], meta["schemas"])[0]:
+                raise box_state.BackupError("backup_schema_mismatch")
             return {"backup": upd["backup"], "reused": True}  # an interrupted update keeps its first backup
         old, old_sha = rel.verify_tree(self.layout.release(previous["name"]))
         recovery.semantics(old, old_sha)  # unknown old contracts are not guessed from schema
