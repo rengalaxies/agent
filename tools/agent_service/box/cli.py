@@ -8,7 +8,9 @@
     box status                         release and core the running process loaded; liveness / process / scenario
     box doctor                         status plus live credential and source checks with what to do
     box backup [--label L] | backups | restore NAME
-    box rollback [--to RELEASE]        previous release; restores the matching backup when the state schema differs
+    box rollback [--to RELEASE]        previous release; requires matching schema AND semantic state contract,
+                                       otherwise restores its verified matching backup before guarded startup
+    box rollback --abort              restore the safety copy of an interrupted recovery through the same guard
     box sync-mirrors                   fetch Git mirrors (the systemd timer runs it)
 
 Every phase is idempotent: a second install changes nothing that is already
@@ -621,7 +623,8 @@ class Box:
             identity = recovery.read_identity(self.layout.state)
             if identity is None:
                 recovery.adopt_legacy(self.layout.state, old, old_sha)
-            elif identity["semantics"] != recovery.semantics(old, old_sha):
+            elif (identity["semantics"] != recovery.semantics(old, old_sha)
+                  or identity.get("writer") != recovery.record(old, old_sha)):
                 raise box_state.BackupError("active_state_semantics_mismatch")
             validated = True
             meta = box_state.create(self.layout, label="pre-update", release=recovery.record(old, old_sha))
@@ -764,9 +767,17 @@ class Box:
         pending = recovery.pending(self.layout.state)
         # The old "readiness" task itself opens SQLite. During a transition it
         # must not turn a status request into an unguarded state writer.
-        view = ({"graph_error": {"code": "recovery_held"}} if pending else
-                self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
-                          release=active, timeout=300))
+        if pending:
+            view = {"graph_error": {"code": "recovery_held"}}
+        else:
+            try:
+                active_manifest, active_sha = rel.load_manifest(active)
+                recovery.check_start(self.layout.state, active_manifest, active_sha)
+            except (OSError, rel.ReleaseError) as exc:
+                view = {"graph_error": {"code": getattr(exc, "code", "state_provenance_unknown")}}
+            else:
+                view = self.task("readiness", "--config", str(self.layout.bindings(active.name) / "service.json"),
+                                 release=active, timeout=300)
         reasons = []
         sources = view.get("sources", [])
         if "graph_error" in view:

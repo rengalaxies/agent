@@ -103,6 +103,16 @@ class RollbackBoundary(unittest.TestCase):
         self.assertEqual(status["scenario"]["status"], "NOT_READY")
         self.assertIn("graph:recovery_held", status["scenario"]["reasons"])
 
+    def test_status_with_mismatched_writer_never_opens_old_sqlite_task(self):
+        process = {"live": False, "process_ready": False, "problems": [], "loaded": None}
+        with mock.patch.object(self.box, "process_level", return_value=process), \
+                mock.patch.object(self.box, "task") as task, \
+                mock.patch.object(cli.rel, "load_manifest", return_value=(self.old, "c" * 64)), \
+                mock.patch.object(self.box, "active_manifest", return_value=self.old):
+            status = self.box.readiness({"host": "127.0.0.1", "port": 1})
+        task.assert_not_called()
+        self.assertIn("graph:state_semantics_mismatch", status["scenario"]["reasons"])
+
     def matching_backup(self):
         self.layout.config.write_text("{}")
         config.write_json(self.layout.bindings("old") / "policy.json", {})

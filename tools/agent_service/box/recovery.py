@@ -22,7 +22,8 @@ LEGACY_14E = "9fdd6e8aa48e5e09d803840ef262c1c3d57bb01af9c884a690f86a98888533a9"
 def semantics(manifest: dict, manifest_sha: str) -> dict:
     contract = manifest.get("contracts", {}).get("recovery")
     if contract is not None:
-        if (contract.get("protocol") != 1 or not isinstance(contract.get("state_semantics"), dict)
+        if (not isinstance(contract, dict) or contract.get("protocol") != 1
+                or not isinstance(contract.get("state_semantics"), dict)
                 or set(contract["state_semantics"]) != {"extractor_profile", "graph_schema", "output_schema"}
                 or not all(isinstance(v, str) and v for v in contract["state_semantics"].values())):
             raise rel.ReleaseError("unknown_recovery_contract")
@@ -44,6 +45,10 @@ def read_identity(state: Path) -> dict | None:
         value = json.loads((state / IDENTITY).read_text(encoding="utf-8"))
     except FileNotFoundError:
         return None
+    except ValueError:
+        raise rel.ReleaseError("state_identity_unreadable") from None
+    if not isinstance(value, dict):
+        raise rel.ReleaseError("state_identity_unreadable")
     if value.get("protocol") != 1 or not isinstance(value.get("semantics"), dict):
         raise rel.ReleaseError("state_identity_unreadable")
     return value
@@ -84,6 +89,8 @@ def pending(state: Path) -> dict | None:
         return json.loads((state / TRANSITION).read_text(encoding="utf-8"))
     except FileNotFoundError:
         return None
+    except ValueError:
+        raise rel.ReleaseError("recovery_marker_unreadable") from None
 
 
 def hold(state: Path, value: dict):
