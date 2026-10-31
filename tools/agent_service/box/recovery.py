@@ -142,6 +142,7 @@ def restore_config(layout, meta: dict, manifest: dict):
     for name in ("service.json", "policy.json"):
         write_bytes(layout.bindings(manifest["name"]) / name, (root / name).read_bytes(), 0o640)
     write_bytes(layout.config, (root / "box.yaml").read_bytes(), 0o644)
+    write_bytes(layout.bindings(manifest["name"]) / "box.yaml", (root / "box.yaml").read_bytes(), 0o640)
 
 
 def backup_matches(meta: dict, manifest: dict, manifest_sha: str) -> bool:

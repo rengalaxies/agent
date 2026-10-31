@@ -256,6 +256,8 @@ class Box:
         if Path(config_path).resolve() != L.config.resolve():
             if box_config.write_bytes(L.config, Path(config_path).read_bytes(), 0o644):
                 changed.append("box.yaml")
+        box_config.write_bytes(self.bindings / "box.yaml", Path(config_path).read_bytes(), 0o640)
+        self.chown(self.bindings / "box.yaml", 0o640, group_only=True)
         values = self.secrets()
         if not values.get(box_config.STATUS_TOKEN_ENV):
             import secrets as tokens
@@ -627,6 +629,9 @@ class Box:
                   or identity.get("writer") != recovery.record(old, old_sha)):
                 raise box_state.BackupError("active_state_semantics_mismatch")
             validated = True
+            box_config.write_bytes(self.layout.bindings(old["name"]) / "box.yaml",
+                                   self.layout.config.read_bytes(), 0o640)
+            self.chown(self.layout.bindings(old["name"]) / "box.yaml", 0o640, group_only=True)
             meta = box_state.create(self.layout, label="pre-update", release=recovery.record(old, old_sha))
         except (OSError, box_state.BackupError, rel.ReleaseError) as exc:
             # Restart only the previously configured process; no new state writer ran.
@@ -684,10 +689,17 @@ class Box:
             raise Failed(["recovery_unfinished: сначала повторите исходный restore или rollback --abort."])
         result = {"from": active, "to": target_name, "schemas_on_disk": disk}
         if ok and semantic_ok and backup_name is None and (not pending or pending.get("mode") == "release_only"):
+            try:
+                target_config = (L.bindings(target_name) / "box.yaml").read_bytes()
+            except OSError:
+                raise Failed(["target_configuration_missing: нет owner config целевого релиза; "
+                              "нужен matching backup/config."]) from None
             self.supervisor.stop()
             result["mode"] = "release_only"  # state stays: no event or comment after the update is lost
             pending = pending or {"target": recovery.record(manifest, manifest_sha), "backup": None,
                                   "safety_backup": None, "mode": "release_only"}
+            recovery.hold(L.state, {**pending, "phase": "RESTORING"})
+            box_config.write_bytes(L.config, target_config, 0o644)
         else:
             candidates = [m for m in box_state.listing(L)
                           if recovery.backup_matches(m, manifest, manifest_sha)
@@ -706,13 +718,13 @@ class Box:
                 self.supervisor.stop()
                 safety = ({"name": pending["safety_backup"]} if pending else
                           box_state.create(L, label="pre-rollback", release=journal.get("active")))
-                pending = {"target": recovery.record(manifest, manifest_sha), "backup": backup,
+                pending = {**(pending or {}), "target": recovery.record(manifest, manifest_sha), "backup": backup,
                            "safety_backup": safety["name"], "phase": "RESTORING"}
                 recovery.hold(L.state, pending)
                 meta = box_state.restore(L, backup, chown=lambda p: self.chown(p, 0o600),
                                          fault=lambda point: self.fault("restore", point, cfg))
                 recovery.restore_config(L, meta, manifest)
-                for name in ("service.json", "policy.json"):
+                for name in ("service.json", "policy.json", "box.yaml"):
                     self.chown(L.bindings(target_name) / name, 0o640, group_only=True)
             except (OSError, box_state.BackupError) as exc:
                 raise Failed([f"Восстановление копии {backup} не удалось ({getattr(exc, 'code', None) or exc}). "
@@ -749,6 +761,8 @@ class Box:
         pending = recovery.pending(self.layout.state)
         if not pending or not pending.get("safety_backup"):
             raise Failed(["recovery_abort_unavailable: нет matching safety backup; повторите исходный rollback."])
+        if pending.get("operation") == "abort":
+            return self.rollback(cfg, pending["target"]["name"], backup_name=pending["backup"])
         meta = box_state.verify(self.layout, pending["safety_backup"])
         name = (meta.get("release") or {}).get("name")
         if not name:
@@ -756,7 +770,7 @@ class Box:
         manifest, sha = rel.verify_tree(self.layout.release(name))
         recovery.verify_backup(self.layout, meta, manifest, sha)
         recovery.hold(self.layout.state, {"target": recovery.record(manifest, sha), "backup": meta["name"],
-                                         "safety_backup": pending["backup"], "phase": "RESTORING"})
+                                         "safety_backup": pending["backup"], "phase": "RESTORING", "operation": "abort"})
         return self.rollback(cfg, name, backup_name=meta["name"])
 
     # -- readiness, status, doctor ----------------------------------------

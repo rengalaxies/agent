@@ -47,6 +47,7 @@ class RollbackBoundary(unittest.TestCase):
                 "analysis": {"code_version": name}, "state_path": str(self.layout.state / "service/service.sqlite"),
                 "core": {"state_dir": str(self.layout.state / "core"),
                          "policy_path": str(self.layout.bindings(name) / "policy.json")}})
+            (self.layout.bindings(name) / "box.yaml").write_text("{}")
         recovery.identify(self.layout.state, self.new, "b" * 64)
         self.cfg = SimpleNamespace()
         self.box.current_config = lambda: self.cfg
@@ -91,6 +92,15 @@ class RollbackBoundary(unittest.TestCase):
         self.assertEqual(result["mode"], "release_only")
         self.assertEqual(box_state.counts(self.layout.state), before)
         self.assertFalse(self.layout.backups.exists())
+
+    def test_release_only_selects_target_owner_configuration_too(self):
+        self.old["contracts"]["recovery"] = self.new["contracts"]["recovery"]
+        self.layout.config.write_text('{"owner_config":"new"}')
+        (self.layout.bindings("old") / "box.yaml").write_text('{"owner_config":"old"}')
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)), \
+                mock.patch.object(self.box, "activate", return_value={"process_ready": True, "problems": []}):
+            self.box.rollback(self.cfg, "old")
+        self.assertEqual(json.loads(self.layout.config.read_text())["owner_config"], "old")
 
     def test_status_during_recovery_never_opens_sqlite_through_old_readiness_task(self):
         recovery.hold(self.layout.state, {"phase": "RESTORING", "target": recovery.record(self.old, "c" * 64)})
@@ -171,6 +181,22 @@ class RollbackBoundary(unittest.TestCase):
         self.assertEqual(recovery.read_identity(self.layout.state)["semantics"]["extractor_profile"],
                          "http-requests-6")
         self.assertIsNone(recovery.pending(self.layout.state))
+
+    def test_retry_of_failed_abort_resumes_same_safety_target(self):
+        self.matching_backup()
+        config.write_json(self.layout.bindings("new") / "policy.json", {"original": True})
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)), \
+                mock.patch.object(self.box, "activate", return_value={"process_ready": False, "problems": ["down"]}):
+            with self.assertRaises(cli.Failed):
+                self.box.rollback(self.cfg, "old")
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.new, "b" * 64)), \
+                mock.patch.object(self.box, "activate", return_value={"process_ready": False, "problems": ["down"]}):
+            with self.assertRaises(cli.Failed):
+                self.box.abort_recovery(self.cfg)
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.new, "b" * 64)), \
+                mock.patch.object(self.box, "activate", return_value={"process_ready": True, "problems": []}):
+            result = self.box.abort_recovery(self.cfg)
+        self.assertEqual(result["to"], "new")
 
 
 class SemanticContract(unittest.TestCase):
