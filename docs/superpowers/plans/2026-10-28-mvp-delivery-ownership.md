@@ -192,3 +192,18 @@ resources; при source failure basis checkpoint теперь ждёт восс
 Handoff M3 рядом, протокол участника docs/product/pilot/PARTICIPANT-SESSION.md.
 MODEL OFF. M2 LIVE/M3 BLOCKED, независимая M4/M5/клиентская полезность UNVERIFIED;
 participant/VM/external NOT_RUN. Green CI не снимает PENDING_APPROVAL и не подтверждает LIVE.
+
+
+## Checkpoint 31.10.2026 — интеграция profile6
+
+По явному поручению владельца техническое согласование M3 выполнено здесь. #81 exact
+head e217599 слит в 5f60a0fb88369f1e1e7da00b960f6b6ed462c614; дерево совпало с
+CI-проверенным. #72 автоматически merged через историю. 48 targeted, 6 boundaries,
+HTTP matrix и real process migration PASS; семь CI runs exact head success.
+[Протокол](../../implementation/autonomous-mvp/profile6-integration-2026-10-31/README.md).
+
+Прежний gate согласования кода снят. Отдельный recovery gate остаётся: rollback при
+schema-compatible state делает release_only и запускает старый writer; downgrade
+profile6→release14e не квалифицирован. Следующая работа без ВМ — проверить matching
+backup/recovery с контролем публикации, затем новый published asset. Установка после
+восстановления хоста отдельно. Participant/client/VM/external NOT_RUN; MODEL OFF.
