@@ -154,6 +154,11 @@ def _create(layout: Layout, tmp: Path, name: str, label: str, release: dict | No
         if src.is_file():
             _copy_db(src, tmp / "state" / rel)
             files[f"state/{rel.as_posix()}"] = None
+    identity = layout.state / ".box-state.json"
+    if identity.is_file():
+        (tmp / "state").mkdir(exist_ok=True)
+        shutil.copy2(identity, tmp / "state" / identity.name)
+        files[f"state/{identity.name}"] = None
     bindings = layout.bindings(release["name"]) if release else None
     for src, rel in ((layout.config, "config/box.yaml"),
                      (bindings and bindings / "service.json", "config/service.json"),
@@ -164,7 +169,7 @@ def _create(layout: Layout, tmp: Path, name: str, label: str, release: dict | No
             files[rel] = None
     for rel in files:
         files[rel] = _sha(tmp / rel)
-        if rel.startswith("state/") and not _integrity(tmp / rel):
+        if rel in {f"state/{r.as_posix()}" for r in DATABASES.values()} and not _integrity(tmp / rel):
             raise BackupError("backup_integrity_failed", rel)
     meta = {"format": FORMAT, "name": name, "label": label,
             "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -194,11 +199,17 @@ def verify(layout: Layout, name: str) -> dict:
     meta = json.loads((root / "backup.json").read_text(encoding="utf-8"))
     if meta.get("format") != FORMAT:
         raise BackupError("unknown_backup_format")
+    if meta.get("name") != name or not isinstance(meta.get("files"), dict):
+        raise BackupError("backup_manifest_invalid")
+    allowed = {f"state/{r.as_posix()}" for r in DATABASES.values()} | {
+        "state/.box-state.json", "config/box.yaml", "config/service.json", "config/policy.json"}
     for rel, digest in meta["files"].items():
+        if rel not in allowed:
+            raise BackupError("unsafe_backup_member")
         path = root / rel
         if not path.is_file() or _sha(path) != digest:
             raise BackupError("backup_file_modified", rel)
-        if rel.startswith("state/") and not _integrity(path):
+        if rel in {f"state/{r.as_posix()}" for r in DATABASES.values()} and not _integrity(path):
             raise BackupError("backup_integrity_failed", rel)
     return meta
 
@@ -230,6 +241,8 @@ def _entries(state: Path) -> list[dict]:
             out.append({"path": f"{rel.as_posix()}{suffix}",
                         "aside": f"{rel.parent.as_posix()}/.{target.name}{suffix}.pre-restore",
                         "staged": f"{rel.parent.as_posix()}/.{target.name}.restore" if suffix == "" else None})
+    out.append({"path": ".box-state.json", "aside": ".box-state.json.pre-restore",
+                "staged": ".box-state.json.restore"})
     return out
 
 
@@ -288,6 +301,15 @@ def restore(layout: Layout, name: str, *, chown=None, fault=None) -> dict:
                 _fsync(tmp)
                 if _sha(tmp) != meta["files"][f"state/{rel.as_posix()}"] or not _integrity(tmp):
                     raise BackupError("restore_copy_differs", rel.as_posix())
+        identity = root / "state/.box-state.json"
+        if identity.is_file():
+            tmp = state / ".box-state.json.restore"
+            staged.append(tmp)
+            shutil.copyfile(identity, tmp)
+            os.chmod(tmp, 0o600)
+            _fsync(tmp)
+            if _sha(tmp) != meta["files"]["state/.box-state.json"]:
+                raise BackupError("restore_copy_differs", ".box-state.json")
         fault("staged")
         _write_marker(state, {"backup": name, "phase": "swapping",
                               "existed": [e["path"] for e in entries if (state / e["path"]).exists()]})
@@ -305,6 +327,7 @@ def restore(layout: Layout, name: str, *, chown=None, fault=None) -> dict:
                 os.replace(state / e["staged"], state / e["path"])
                 if chown:
                     chown(state / e["path"])
+                fault("file:" + e["path"])
         fault("swapped")
         if counts(state) != meta["counts"]:
             raise BackupError("restore_counts_differ")

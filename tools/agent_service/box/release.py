@@ -172,6 +172,9 @@ def contracts_of(app: Path, python: str) -> dict:
         # refuses newer ones (agent_graph.store._migrate). The installer decides rollback from these.
         "state": {"service_store": {"version": found["state"]["service_store"], "opens": "equal"},
                   "graph_store": {"version": found["state"]["graph_store"], "opens": "older_or_equal"}},
+        "recovery": {"protocol": 1, "state_semantics": {
+            "extractor_profile": found["core"]["profile"], "graph_schema": found["core"]["schema"],
+            "output_schema": found["core"]["output_schema_version"]}},
     }
 
 
