@@ -137,7 +137,8 @@ def backup_matches(meta: dict, manifest: dict, manifest_sha: str) -> bool:
 
 def check_start(state: Path, manifest: dict, manifest_sha: str) -> dict:
     value = read_identity(state)
-    if value is None or value["semantics"] != semantics(manifest, manifest_sha):
+    if (value is None or value["semantics"] != semantics(manifest, manifest_sha)
+            or value.get("writer") != record(manifest, manifest_sha)):
         raise rel.ReleaseError("state_semantics_mismatch")
     marker = state / TRANSITION
     if marker.exists():

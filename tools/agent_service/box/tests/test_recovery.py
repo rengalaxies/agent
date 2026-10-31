@@ -118,6 +118,21 @@ class RollbackBoundary(unittest.TestCase):
         self.assertEqual(recovery.read_identity(self.layout.state)["semantics"]["extractor_profile"],
                          "http-requests-4")
 
+    def test_failed_recovery_can_restore_original_safety_set_with_same_guard(self):
+        self.matching_backup()
+        config.write_json(self.layout.bindings("new") / "policy.json", {"original": True})
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.old, "c" * 64)), \
+                mock.patch.object(self.box, "activate", return_value={"process_ready": False, "problems": ["down"]}):
+            with self.assertRaises(cli.Failed):
+                self.box.rollback(self.cfg, "old")
+        with mock.patch.object(cli.rel, "verify_tree", return_value=(self.new, "b" * 64)), \
+                mock.patch.object(self.box, "activate", return_value={"process_ready": True, "problems": []}):
+            result = self.box.abort_recovery(self.cfg)
+        self.assertEqual(result["mode"], "restored_backup")
+        self.assertEqual(recovery.read_identity(self.layout.state)["semantics"]["extractor_profile"],
+                         "http-requests-6")
+        self.assertIsNone(recovery.pending(self.layout.state))
+
 
 class SemanticContract(unittest.TestCase):
     def test_equality_is_not_profile_number_order(self):
@@ -139,3 +154,10 @@ class SemanticContract(unittest.TestCase):
             (state / recovery.TRANSITION).write_text(json.dumps({"phase": "RESTORING"}))
             with self.assertRaisesRegex(release.ReleaseError, "recovery_unfinished"):
                 recovery.check_start(state, m, "d" * 64)
+
+    def test_same_semantics_wrong_process_identity_is_not_ready(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp)
+            recovery.identify(state, manifest("x", "p"), "d" * 64)
+            with self.assertRaisesRegex(release.ReleaseError, "state_semantics_mismatch"):
+                recovery.check_start(state, manifest("y", "p"), "e" * 64)

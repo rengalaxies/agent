@@ -49,7 +49,11 @@ def main():
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
         if check.returncode:
             # Only safe reason codes; never copy arbitrary connector exception text.
-            print("recovery_reconciliation_failed: publisher remains stopped", flush=True)
+            try:
+                code = json.loads(check.stdout)["code"]
+            except (ValueError, KeyError):
+                code = "recovery_preflight_crashed"
+            print(f"recovery_reconciliation_failed:{code}: publisher remains stopped", flush=True)
             return 1
     command = [str(venv_python(args.target / "venv")), "-I", "-B",
                str(args.target / "app/tools/agent_service/box/launch.py"),

@@ -110,8 +110,8 @@ class RecoveryDriver(Driver):
                 [x["id"] for x in c["jira"]] != [x["id"] for x in before["jira"]]):
             raise Check("recovery changed comment identities")
         for _ in range(2):
-            self.control("/deliver/pr", {"action": "synchronize"})
-            self.control("/deliver/jira", {"event": "updated"})
+            self.control("/deliver/pr", {"action": "synchronize", "delivery_id": "recovery-pr-duplicate"})
+            self.control("/deliver/jira", {"event": "updated", "delivery_id": "recovery-jira-duplicate"})
         self.one_comment_each()
         wrapper = (self.root / "usr/local/sbin/agent-service-box").read_text()
         if Path(self.args.candidate).name not in wrapper:

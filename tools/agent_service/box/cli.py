@@ -672,15 +672,20 @@ class Box:
         pending = recovery.pending(L.state)
         if pending and pending["target"] != recovery.record(manifest, manifest_sha):
             raise Failed(["recovery_unfinished: повторите rollback к " + pending["target"]["name"]])
+        if pending and backup_name and pending.get("backup") != backup_name:
+            raise Failed(["recovery_unfinished: сначала повторите исходный restore или rollback --abort."])
         result = {"from": active, "to": target_name, "schemas_on_disk": disk}
-        if ok and semantic_ok and not pending and backup_name is None:
+        if ok and semantic_ok and backup_name is None and (not pending or pending.get("mode") == "release_only"):
             self.supervisor.stop()
             result["mode"] = "release_only"  # state stays: no event or comment after the update is lost
+            pending = pending or {"target": recovery.record(manifest, manifest_sha), "backup": None,
+                                  "safety_backup": None, "mode": "release_only"}
         else:
             candidates = [m for m in box_state.listing(L)
                           if recovery.backup_matches(m, manifest, manifest_sha)
                           and box_state.compatible(manifest["contracts"]["state"], m["schemas"])[0]]
-            point = (journal.get("rollback_point") or {}).get("backup")
+            point = (journal.get("rollback_point") or {}).get("backup") or (
+                journal.get("update", {}).get("backup") if journal.get("update", {}).get("from") == target_name else None)
             # Prefer the backup the update itself took when it left the target release.
             candidates.sort(key=lambda m: (m["name"] == point, m["name"]))
             if not candidates:
@@ -710,7 +715,7 @@ class Box:
                           note="Локальная история после backup остаётся в safety backup; автоматического слияния нет. "
                                "Текущее состояние внешних ресурсов возвращается сверкой, комментарии — по маркерам.")
         recovery.identify(L.state, manifest, manifest_sha, reconcile=True,
-                          token=pending["backup"] if pending else "update")
+                          token=pending.get("backup") or "update")
         self.chown(L.state / recovery.IDENTITY, 0o600)
         if pending:
             recovery.hold(L.state, {**pending, "phase": "READY_TO_START"})
@@ -730,6 +735,21 @@ class Box:
         result["process_ready"] = level["process_ready"]
         result["problems"] = level["problems"]
         return result
+
+    def abort_recovery(self, cfg):
+        """Restore the pre-recovery safety set through the same guarded mechanism."""
+        pending = recovery.pending(self.layout.state)
+        if not pending or not pending.get("safety_backup"):
+            raise Failed(["recovery_abort_unavailable: нет matching safety backup; повторите исходный rollback."])
+        meta = box_state.verify(self.layout, pending["safety_backup"])
+        name = (meta.get("release") or {}).get("name")
+        if not name:
+            raise Failed(["recovery_abort_release_unknown"])
+        manifest, sha = rel.verify_tree(self.layout.release(name))
+        recovery.verify_backup(self.layout, meta, manifest, sha)
+        recovery.hold(self.layout.state, {"target": recovery.record(manifest, sha), "backup": meta["name"],
+                                         "safety_backup": pending["backup"], "phase": "RESTORING"})
+        return self.rollback(cfg, name, backup_name=meta["name"])
 
     # -- readiness, status, doctor ----------------------------------------
 
@@ -875,7 +895,9 @@ def main(argv=None, *, release_dir: Path) -> int:
     command("backup").add_argument("--label", default="manual")
     command("backups")
     command("restore").add_argument("name")
-    command("rollback").add_argument("--to")
+    rollback_options = command("rollback").add_mutually_exclusive_group()
+    rollback_options.add_argument("--to")
+    rollback_options.add_argument("--abort", action="store_true")
     command("sync-mirrors")
     args = parser.parse_args(argv)
     for stream in (sys.stdout, sys.stderr):  # a non-UTF-8 console must not abort an install half way
@@ -964,7 +986,7 @@ def main(argv=None, *, release_dir: Path) -> int:
                 box.out(f"Восстановлено из {result['backup']} (safety backup: {result['safety_backup']}).")
                 return 0 if result["process_ready"] else EXIT_FAILED
             if args.command == "rollback":
-                result = box.rollback(current_config(), args.to)
+                result = box.abort_recovery(current_config()) if args.abort else box.rollback(current_config(), args.to)
                 emit(result)
                 box.out(f"Откат {result['from']} → {result['to']}: {result['mode']}")
                 if result.get("note"):

@@ -13,6 +13,11 @@ from pathlib import Path
 import uuid
 
 
+class PreflightError(Exception):
+    def __init__(self, code):
+        self.code = code
+
+
 def legacy_reopen(store, providers, event):
     """Explicit queue-schema-1 adapter for release14e, which predates basis reopen."""
     now = store.clock()
@@ -44,7 +49,7 @@ def main():
     policy = json.loads(Path(cfg["core"]["policy_path"]).read_text(encoding="utf-8"))
     for repository in policy["repositories"]:
         if not Path(repository["root"]).is_dir():
-            raise RuntimeError("recovery_source_missing")
+            raise PreflightError("recovery_source_missing")
         subprocess.run(["git", "-C", repository["root"], "cat-file", "-e",
                         repository["revision"] + "^{commit}"], check=True, capture_output=True)
     # Full listings, not a restored timestamp's bounded window; fetch every known
@@ -60,7 +65,7 @@ def main():
     service.reconcile()
     sources = service.analyzer.query().source_freshness()
     if not sources or any(s.get("status") == "UNAVAILABLE" for s in sources):
-        raise RuntimeError("recovery_source_unavailable")
+        raise PreflightError("recovery_source_unavailable")
     for snapshot in snapshots:
         service._apply(snapshot, "box_recovery_snapshot")
     token = f"{digest}:{backup}"
@@ -77,6 +82,8 @@ def main():
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
-    except Exception:
-        print("recovery_preflight_failed")
+    except Exception as exc:
+        code = getattr(exc, "code", type(exc).__name__)
+        # Connector reason codes are safe; arbitrary exception messages are not.
+        print(json.dumps({"ok": False, "code": code}))
         raise SystemExit(1)

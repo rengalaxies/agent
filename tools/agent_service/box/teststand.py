@@ -85,23 +85,24 @@ def main(argv=None) -> int:
         f"GITHUB_TOKEN={github.token}\nGITHUB_WEBHOOK_SECRET={gh_secret}\nJIRA_EMAIL=bot@example.invalid\n"
         f"JIRA_API_TOKEN=jira-test-token\nJIRA_WEBHOOK_SECRET={jira_secret}\n", encoding="utf-8")
 
-    def deliver_pr(action):
+    def deliver_pr(action, delivery_id=None):
         pr = github.prs[(repos["orders"], 7)]
         body = json.dumps({"action": action, "number": 7, "repository": {"full_name": repos["orders"]},
                            "pull_request": {"number": 7, "title": pr["title"], "head": dict(pr["head"]),
                                             "base": dict(pr["base"])}}).encode()
         return post(service_url + "/webhooks/github", body, {
-            "X-GitHub-Event": "pull_request", "X-GitHub-Delivery": uuid.uuid4().hex,
+            "X-GitHub-Event": "pull_request", "X-GitHub-Delivery": delivery_id or uuid.uuid4().hex,
             "X-Hub-Signature-256": sign(gh_secret.encode(), body)})
 
-    def deliver_jira(event):
+    def deliver_jira(event, delivery_id=None):
         name = {"created": ("jira:issue_created", "issue_created"),
                 "updated": ("jira:issue_updated", "issue_generic")}[event]
         body = json.dumps({"webhookEvent": name[0], "issue_event_type_name": name[1], "timestamp": 1,
                            "issue": {"id": "10012", "key": issue["key"],
                                      "fields": {"project": {"key": issue["project"]}}}}).encode()
         return post(service_url + "/webhooks/jira", body, {
-            "X-Atlassian-Webhook-Identifier": uuid.uuid4().hex, "X-Hub-Signature": sign(jira_secret.encode(), body)})
+            "X-Atlassian-Webhook-Identifier": delivery_id or uuid.uuid4().hex,
+            "X-Hub-Signature": sign(jira_secret.encode(), body)})
 
     def comments():
         pr = github.service_comments(repos["orders"], 7)
@@ -136,14 +137,14 @@ def main(argv=None) -> int:
             length = int(self.headers.get("content-length") or 0)
             body = json.loads(self.rfile.read(length) or b"{}")
             if self.path == "/deliver/pr":
-                status, payload = deliver_pr(body.get("action", "opened"))
+                status, payload = deliver_pr(body.get("action", "opened"), body.get("delivery_id"))
                 return self._reply(200, {"status": status, "response": payload})
             if self.path == "/push":
                 github.set_head(repos["orders"], 7, stand.head("orders", body["branch"]))
                 result = deliver_pr("synchronize") if body.get("deliver", True) else (None, None)
                 return self._reply(200, {"status": result[0], "response": result[1]})
             if self.path == "/deliver/jira":
-                status, payload = deliver_jira(body.get("event", "created"))
+                status, payload = deliver_jira(body.get("event", "created"), body.get("delivery_id"))
                 return self._reply(200, {"status": status, "response": payload})
             if self.path == "/jira/summary":
                 jira.set_summary(10012, body["summary"])
