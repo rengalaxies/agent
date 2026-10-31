@@ -14,13 +14,15 @@
 head e217599 повторно сверены success; итоговое дерево merge совпало с проверенным.
 [Решение, доказательства и ограничения](profile6-integration-2026-10-31/README.md).
 
-**Recovery gate обновляется в [#83](https://github.com/rengalaxies/agent/pull/83):**
+**Recovery gate закрыт для нового manager в [#83](https://github.com/rengalaxies/agent/pull/83):**
 прежний main 89391a6 и прямой старый release14e CLI остаются небезопасным путём
 code-only downgrade profile6→14e. Новый manager проверяет semantic contract отдельно
 от SQLite schema, восстанавливает matching backup/config и удерживает запуск guard до
 сверки API/источников; после downgrade manager/guard не заменяется старым CLI.
 LOCAL: реальный release14e↔candidate, прерывания, API/source outage, redelivery и restart PASS;
-71 box regressions, 917 core/service и 152 runner PASS. Последний CI exact head и выпуск —
+71 box regressions, 917 core/service и 152 runner PASS. Все пять CI exact head e520 PASS. #83 принят в main23412df; опубликован
+agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312. Download/verify, build twice,
+install-published и recovery-published (real14e↔234) PASS; детали —
 [#83](https://github.com/rengalaxies/agent/pull/83),
 [единый отчёт и ограничения](release-recovery-2026-10-31/README.md).
 Restore не сливает новую локальную историю: она остаётся в safety backup; внешняя сверка

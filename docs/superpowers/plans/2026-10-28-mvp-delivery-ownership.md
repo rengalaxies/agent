@@ -225,3 +225,19 @@ copy, не обещается автоматическое слияние. По�
 с expected_main_sha, build twice, download/verify/install-published и exact recovery-published.
 Deployment pin и #71 не меняются. M3 target VM/reboot и M2 external LIVE отдельно NOT_RUN;
 модель OFF, participant/client benefit UNVERIFIED. Действия владельца/M3 сведены в handoff.
+
+
+## Принятый и опубликованный recovery release — 31.10.2026
+
+#83 head e520c9e слит в `23412df5e385f11b097d9e67d334d262967ca387`, проверенное tree совпало.
+Пять workflows exact head PASS: core917/runner152, box71/systemd11, exact real-release6,
+P1 и workflow lint. Новый release agent-service-0.1.0-g23412df5e385 опубликован штатным
+workflow 41236132485: release/install-published/recovery-published PASS. Downloaded archive
+сверен с двумя LOCAL rebuilds accepted main и отдельным manifest, verify VERIFIED.
+Checksum/URLs/полные base/head, Jira revision и event/comment IDs сохранены в общем отчёте
+release-recovery-2026-10-31. Deployment pin 14e, #71, VM/Cloud.ru и credentials не менялись.
+
+Оставшийся этап — M3 на восстановленном доверенном хосте: отдельный pin/plan/update,
+matching backup, restart/reboot/rollback/re-upgrade и loaded identity. Затем App/Jira/HTTPS
+и M2 external LIVE; participant/независимая полезность отдельно. Все эти уровни NOT_RUN здесь,
+установленная версия UNKNOWN, MODEL OFF. Service asset поставлен; Docker UI image — отдельный artifact.

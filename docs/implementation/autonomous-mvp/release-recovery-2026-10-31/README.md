@@ -3,8 +3,12 @@
 Работа [#83](https://github.com/rengalaxies/agent/pull/83) от main
 `89391a6f7d2526caee15b26b4a71f148c750e051`. MODEL OFF.
 Это авторские регрессии и проверка поставки, не независимый benchmark и не проверка пользы.
-Точные окончательные head/accepted SHA, CI и выпуск связаны с PR; данные опубликованного
-asset добавляются после его выпуска. Target VM / external LIVE / participant — **NOT_RUN**.
+#83 слит после зелёного exact head `e520c9e401ec2b973f72d702626929518cf878f2`;
+accepted main `23412df5e385f11b097d9e67d334d262967ca387`, tree `bd96c449e62ca9fb2679dfab003c125529341ce4`.
+[Выпуск agent-service-0.1.0-g23412df5e385](https://github.com/rengalaxies/agent/releases/tag/agent-service-0.1.0-g23412df5e385)
+и все три jobs [штатного workflow](https://github.com/rengalaxies/agent/actions/runs/41236132485) PASS.
+[Идентичность и доказательство downloaded asset](evidence/PUBLISHED.json).
+Target VM / external LIVE / participant — **NOT_RUN**.
 
 ## Проблема и воспроизведение
 
@@ -72,19 +76,29 @@ recovery или несовпадения writer он не вызывает ст�
 
 ## Доказательства и матрица
 
-| Сценарий | Unit / авторская регрессия | Процессы LOCAL | systemd CI |
+| Сценарий | Unit / регрессия | LOCAL processes, source672 | CI |
 |---|---|---|---|
-| 14e→новый профиль, backup до нового writer | контракт и provenance | первый цикл PASS; окончательный checkpoint — JSON ниже | exact-head Checks #83 |
-| Откат нового профиля | missing backup не вызывает activate | matching backup, старый writer только после restore | exact old/new archives |
-| Совместимый schema/profile, другая constitution | release_only без потери строк | отдельный existing acceptance | existing box C→A |
-| Неизвестный legacy/protocol | REFUSED | отдельный unit, не выдуманный asset | unit job |
-| Missing / corrupt matching backup | REFUSED до stop/activate | текущий PID сохранён | exact recovery scenario |
-| Staged / aside / первый DB swap / swapped / before-start | восстановление обеих БД | пять SIGKILL и повторы | exact recovery scenario |
-| Broken start / auto-rollback | один механизм rollback | unit hold/abort | existing D→A scenario |
-| Новый head, изменённая Jira, дубли | существующий queue/core | старые comment IDs, новые версии | exact recovery scenario |
-| API 503 / источник недоступен | hold и status без SQLite task | no writes до успешной сверки | exact recovery scenario |
-| Restart после restore и повторное upgrade | durable checkpoint | отдельный окончательный цикл | exact recovery scenario |
-| Abort на safety copy | реальный state/config restore в unit | без внешних API | unit job |
+| Update14e→новый профиль, backup до нового writer | PASS | PASS + kill после graph/start нового guard/resume | PASS exact head и published234 |
+| Откат нового профиля | PASS, неизвестный writer не запускается | PASS matching backup → profile4 | PASS exact head и published234 |
+| Совместимый profile/schema, другая constitution | PASS release_only, owner config и counts | NOT_RUN отдельным процессом | PASS existing box C→A |
+| Неизвестный legacy/protocol | PASS REFUSED | NOT_RUN отдельным архивом; unit | PASS unit job |
+| Missing / corrupt matching backup | PASS до stop/activate | PASS текущий PID сохранён | PASS exact head и published234 |
+| Staged / aside / первый DB swap / swapped / before-start | PASS обе БД | PASS пять прерываний и повторы | PASS exact head и published234 |
+| Broken start / auto-rollback | PASS hold/abort | NOT_RUN отдельным D archive | PASS existing box D→A |
+| Новый head, изменённая Jira, exact redelivery | PASS existing queue/core | PASS прежние IDs и новые версии | PASS exact head и published234 |
+| API503 / источник недоступен | PASS status без SQLite task | PASS no writes + NOT_READY | PASS exact head и published234 |
+| Restart без новых поколений / re-upgrade | PASS gate/checkpoint | PASS | PASS exact head и published234 |
+| Abort safety copy, в том числе повтор отказа | PASS real SQLite/config unit | NOT_RUN с HTTP publishers | PASS unit job |
+| SIGTERM/SIGKILL guard не оставляет writer | PASS реальные дочерние SQLite writers | PASS process regression в unit | PASS unit job |
+
+Финальный LOCAL [source672: 6/6 PASS](evidence/guarded-final-acceptance.json) включает
+прерывание после открытия graph новым кодом и фактический start supervisor до resume.
+Service payload source672, head e520 и accepted main234 совпадает; manifest release IDs различаются.
+[CI exact head](evidence/FINAL-CI.json): все пять workflows PASS, 917 core + 152 runner,
+71 box и 11 existing installed/systemd scenarios. [Actual-archive CI JSON](evidence/ci-final-acceptance.json).
+[Published fresh install/e2e](evidence/published-install-acceptance.json) — 2/2 PASS;
+[published14e↔234 recovery](evidence/published-recovery-acceptance.json) — 6/6 PASS.
+Последние два ряда — реальные Linux процессы на CI, не целевая ВМ.
 
 Первый завершённый LOCAL цикл использовал candidate
 `f100f2c28756c58d370edd2ee138780f6a6b338c`: пять сценариев PASS, два comment IDs сохранены.
@@ -93,10 +107,10 @@ recovery или несовпадения writer он не вызывает ст�
 все шесть сценариев PASS, включая source failure, exact redelivery и restart без новых поколений.
 [Финальный LOCAL JSON](evidence/local-final-acceptance.json),
 [полные base/head, Jira revision, comment/event IDs](evidence/local-final-versions.json).
-Окончательный CI обязан проверять последний head PR, в том числе поздние guards status/provenance,
+Окончательный CI проверил последний head PR, в том числе поздние guards status/provenance,
 повтор abort и owner-config restoration. Эти поздние изменения не приписываются старому LOCAL архиву.
 Product freeze после review: `672055e3baece0de67163d3b3c61f3fa7a4dd1da`; последующие файлы отчёта
-не меняют service payload. Exact окончательные head/accepted SHA указаны в PR и release evidence.
+не меняют service payload. Exact окончательные head/accepted SHA указаны выше, в PR и release evidence.
 
 71 box unit/regression tests без skips; [GREEN](evidence/unit-final-green.log).
 917 core/service tests LOCAL PASS; [лог](evidence/full-core-local.log).
@@ -151,12 +165,26 @@ notice/нового результата; при outage окно не огран
 
 ## Выпуск и следующий шаг
 
-После принятия main используется существующий agent-service-release.yml с точным
-expected_main_sha: две byte-identical сборки, уникальный тег, скачивание published asset,
-sha256/manifest verify, install-published. Добавлен recovery-published: тот же скачанный
-новый asset проходит переход с настоящим release14e на отдельном systemd runner.
-При отказе этого job релиз не объявляется готовым к эксплуатации; старый tag/asset не заменяется.
-Живой deployment pin не меняется. Service archive не содержит Docker UI image.
+Выполнен существующий agent-service-release.yml с expected_main_sha=23412df5e385f11b097d9e67d334d262967ca387.
+Две byte-identical CI сборки, уникальный ранее несуществовавший tag, download/sha256/manifest,
+install-published и recovery-published — PASS. Никакой tag/asset не заменялся.
+Архив скачан отдельно исполнителем, прошёл release.py verify и побайтно совпал с **двумя**
+независимыми LOCAL сборками accepted main. Скачанный отдельный manifest совпал с архивом.
+
+- Archive SHA256: `af1cf03135628e875d7071b19033f6870254132e02fac3a0e70695d5a898b227`.
+- Manifest SHA256: `2e72fe9a66436aca30ff20dafdda216bb4b99d5ea5a76ff19226e23f95e9c5fb`.
+- [Downloaded verify](evidence/published-verify.json), [manifest](evidence/published.manifest.json),
+  [independent build](evidence/accepted-build.json), [все evidence/artifact IDs](evidence/PUBLISHED.json).
+
+Действия исполнителя через инструменты: собственные worktrees/PR, отдельный self-review,
+обычный merge после CI, один workflow dispatch, скачивание/проверка assets и CI artifacts,
+завершение локальных стендов. Независимый человек/participant не участвовал; человеческие
+минуты NOT_MEASURED. Прямой gh artifact download получил transport403; ZIP загружены через
+GitHub Connector и сверены с GitHub artifact digests. Это не ограничение published asset:
+его постоянный public release URL скачан и проверен отдельно.
+
+Deployment pin 14e и #71 не менялись. Фактически установленная на ВМ версия **не обследована**.
+Service archive не содержит Docker UI image; UI здесь не собирался и не публиковался.
 
 [Поддерживаемые команды и действия M3](HANDOFF-M3.md). Установка на восстановленной ВМ,
 reboot, настоящие App/Jira/HTTPS, внешняя M2-приёмка и participant-сессия остаются отдельно.

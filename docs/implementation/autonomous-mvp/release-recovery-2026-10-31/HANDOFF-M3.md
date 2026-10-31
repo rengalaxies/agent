@@ -1,8 +1,18 @@
 # Handoff M3: manager с recovery guard
 
-Применять только после зелёного CI #83, принятия main и проверки опубликованного нового asset.
-Точные accepted SHA, release name/URL/checksum/manifest записываются в итоговое evidence этого
-каталога и PR. Действующий pin release14e не менялся. Этот документ не разрешает установку на ВМ.
+Accepted main: `23412df5e385f11b097d9e67d334d262967ca387` (#83), профиль6.
+[Release](https://github.com/rengalaxies/agent/releases/tag/agent-service-0.1.0-g23412df5e385):
+`agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312`.
+[Архив](https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g23412df5e385/agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.tar.gz),
+[manifest](https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g23412df5e385/agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312.manifest.json).
+
+Archive SHA256 `af1cf03135628e875d7071b19033f6870254132e02fac3a0e70695d5a898b227`;
+manifest SHA256 `2e72fe9a66436aca30ff20dafdda216bb4b99d5ea5a76ff19226e23f95e9c5fb`.
+[Published workflow](https://github.com/rengalaxies/agent/actions/runs/41236132485):
+release / install-published / recovery-published **PASS**. Отдельный download/verify и две
+LOCAL rebuilds совпали побайтно; [полная запись](evidence/PUBLISHED.json).
+Действующий deployment pin остаётся 14e. Установленная версия ВМ здесь UNKNOWN/NOT_RUN.
+Следующая установка относится к M3; настоящий контур и хост этим прогоном не проверены.
 
 ## Управляющий инструмент
 
