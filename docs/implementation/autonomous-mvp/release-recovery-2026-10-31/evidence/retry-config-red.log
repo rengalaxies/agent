@@ -1,0 +1,31 @@
+test_retry_of_failed_abort_resumes_same_safety_target (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_retry_of_failed_abort_resumes_same_safety_target) ... ERROR
+test_release_only_selects_target_owner_configuration_too (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_release_only_selects_target_owner_configuration_too) ... FAIL
+
+======================================================================
+ERROR: test_retry_of_failed_abort_resumes_same_safety_target (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_retry_of_failed_abort_resumes_same_safety_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 197, in test_retry_of_failed_abort_resumes_same_safety_target
+    result = self.box.abort_recovery(self.cfg)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/agent-recovery/tools/agent_service/box/cli.py", line 757, in abort_recovery
+    recovery.verify_backup(self.layout, meta, manifest, sha)
+  File "/workspace/agent-recovery/tools/agent_service/box/recovery.py", line 106, in verify_backup
+    raise BackupError("backup_release_mismatch")
+tools.agent_service.box.state.BackupError: backup_release_mismatch
+
+======================================================================
+FAIL: test_release_only_selects_target_owner_configuration_too (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_release_only_selects_target_owner_configuration_too)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 102, in test_release_only_selects_target_owner_configuration_too
+    self.assertEqual(json.loads(self.layout.config.read_text())["owner_config"], "old")
+AssertionError: 'new' != 'old'
+- new
++ old
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.036s
+
+FAILED (failures=1, errors=1)

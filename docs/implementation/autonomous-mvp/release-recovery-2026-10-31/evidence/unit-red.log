@@ -1,0 +1,28 @@
+test_equal_schema_different_semantics_without_backup_never_starts_target (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_equal_schema_different_semantics_without_backup_never_starts_target) ... FAIL
+test_unknown_legacy_manifest_refuses_before_activation (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_unknown_legacy_manifest_refuses_before_activation) ... FAIL
+test_equality_is_not_profile_number_order (tools.agent_service.box.tests.test_recovery.SemanticContract.test_equality_is_not_profile_number_order) ... ok
+test_incomplete_transition_blocks_start_even_with_matching_identity (tools.agent_service.box.tests.test_recovery.SemanticContract.test_incomplete_transition_blocks_start_even_with_matching_identity) ... ok
+test_unknown_protocol_is_closed (tools.agent_service.box.tests.test_recovery.SemanticContract.test_unknown_protocol_is_closed) ... ok
+
+======================================================================
+FAIL: test_equal_schema_different_semantics_without_backup_never_starts_target (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_equal_schema_different_semantics_without_backup_never_starts_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 50, in test_equal_schema_different_semantics_without_backup_never_starts_target
+    with self.assertRaises(cli.Failed):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Failed not raised
+
+======================================================================
+FAIL: test_unknown_legacy_manifest_refuses_before_activation (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_unknown_legacy_manifest_refuses_before_activation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 60, in test_unknown_legacy_manifest_refuses_before_activation
+    with self.assertRaises(cli.Failed):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Failed not raised
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.006s
+
+FAILED (failures=2)

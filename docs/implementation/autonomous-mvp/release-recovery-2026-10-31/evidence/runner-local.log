@@ -1,0 +1,10 @@
+D01 F01_truncation jira=USEFUL pr=USEFUL wall=2.377s
+D01 F01_truncation jira=USEFUL pr=USEFUL wall=2.173s
+D03 F03_no_impact_noop jira=ABSTAINED pr=ABSTAINED wall=1.47s
+D22 F10_ambiguous_jira jira=NONE pr=NONE wall=0.0s ERROR not_run:model_requests_failing
+D01 F01_truncation jira=USEFUL pr=USEFUL wall=1.424s
+D08 F08_revoked_source jira=USEFUL pr=USEFUL wall=1.386s
+----------------------------------------------------------------------
+Ran 152 tests in 153.268s
+
+OK

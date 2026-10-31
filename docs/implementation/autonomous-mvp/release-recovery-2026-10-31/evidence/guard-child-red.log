@@ -1,0 +1,14 @@
+test_stopping_guard_stops_its_sqlite_preflight_writer_before_return (tools.agent_service.box.tests.test_recovery.GuardProcessLifetime.test_stopping_guard_stops_its_sqlite_preflight_writer_before_return) ... FAIL
+
+======================================================================
+FAIL: test_stopping_guard_stops_its_sqlite_preflight_writer_before_return (tools.agent_service.box.tests.test_recovery.GuardProcessLifetime.test_stopping_guard_stops_its_sqlite_preflight_writer_before_return)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 227, in test_stopping_guard_stops_its_sqlite_preflight_writer_before_return
+    self.assertEqual(after, before, "orphan preflight still writes after supervisor stop")
+AssertionError: 14 != 6 : orphan preflight still writes after supervisor stop
+
+----------------------------------------------------------------------
+Ran 1 test in 0.376s
+
+FAILED (failures=1)

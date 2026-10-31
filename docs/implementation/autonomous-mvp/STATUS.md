@@ -14,13 +14,19 @@
 head e217599 повторно сверены success; итоговое дерево merge совпало с проверенным.
 [Решение, доказательства и ограничения](profile6-integration-2026-10-31/README.md).
 
-**Установка остаётся заблокированной:** code-only rollback profile6→release14e на новом
-state не квалифицирован. При совместимой schema `Box.rollback()` выбирает release_only
-и запускает старый процесс; предварительная остановка сама по себе не сохраняет запрет
-публикации. Нужна отдельно проверенная процедура matching backup/recovery до запуска
-старого writer, включая контроль публикации и повторную сверку внешних ресурсов.
-Pin/release14e, #71, ВМ и credentials не изменены. Новый release, target VM, participant
-и настоящие внешние интеграции NOT_RUN. MODEL OFF.
+**Recovery gate обновляется в [#83](https://github.com/rengalaxies/agent/pull/83):**
+прежний main 89391a6 и прямой старый release14e CLI остаются небезопасным путём
+code-only downgrade profile6→14e. Новый manager проверяет semantic contract отдельно
+от SQLite schema, восстанавливает matching backup/config и удерживает запуск guard до
+сверки API/источников; после downgrade manager/guard не заменяется старым CLI.
+LOCAL: реальный release14e↔candidate, прерывания, API/source outage, redelivery и restart PASS;
+68 box regressions, 917 core/service и 152 runner PASS. Последний CI exact head и выпуск —
+[#83](https://github.com/rengalaxies/agent/pull/83),
+[единый отчёт и ограничения](release-recovery-2026-10-31/README.md).
+Restore не сливает новую локальную историю: она остаётся в safety backup; внешняя сверка
+возвращает текущие доступные версии. Поддерживаемые команды — в новом handoff.
+Pin/release14e, #71, ВМ и credentials не изменены. Target VM, participant и настоящие внешние
+интеграции NOT_RUN. M2 PARTIAL / LIVE BLOCKED; общая польза UNVERIFIED. MODEL OFF.
 
 Задание владельца от 24.10.2026: пачки 2А, 2Б, 3, 4, 5А, 5Б и 6. Порядок
 интеграции `2А → 3 → 4 → 5А → 5Б → 6`, 2Б после 2А. Решения и их причины
