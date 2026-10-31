@@ -27,6 +27,8 @@ test_equal_schema_different_semantics_without_backup_never_starts_target (tools.
 test_equal_semantics_keeps_queue_and_history_without_backup (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_equal_semantics_keeps_queue_and_history_without_backup) ... ok
 test_failed_recovery_can_restore_original_safety_set_with_same_guard (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_failed_recovery_can_restore_original_safety_set_with_same_guard) ... ok
 test_failed_start_leaves_durable_hold_and_safety_backup (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_failed_start_leaves_durable_hold_and_safety_backup) ... ok
+test_interrupted_update_cannot_reuse_a_backup_of_another_release (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_interrupted_update_cannot_reuse_a_backup_of_another_release) ... ok
+test_interrupted_update_reuses_original_verified_backup_after_new_state_was_opened (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_interrupted_update_reuses_original_verified_backup_after_new_state_was_opened) ... ok
 test_release_only_selects_target_owner_configuration_too (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_release_only_selects_target_owner_configuration_too) ... ok
 test_retry_of_failed_abort_resumes_same_safety_target (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_retry_of_failed_abort_resumes_same_safety_target) ... ok
 test_status_during_recovery_never_opens_sqlite_through_old_readiness_task (tools.agent_service.box.tests.test_recovery.RollbackBoundary.test_status_during_recovery_never_opens_sqlite_through_old_readiness_task) ... ok
@@ -36,6 +38,7 @@ test_update_does_not_restart_old_writer_after_provenance_refusal (tools.agent_se
 test_equality_is_not_profile_number_order (tools.agent_service.box.tests.test_recovery.SemanticContract.test_equality_is_not_profile_number_order) ... ok
 test_incomplete_transition_blocks_start_even_with_matching_identity (tools.agent_service.box.tests.test_recovery.SemanticContract.test_incomplete_transition_blocks_start_even_with_matching_identity) ... ok
 test_same_semantics_wrong_process_identity_is_not_ready (tools.agent_service.box.tests.test_recovery.SemanticContract.test_same_semantics_wrong_process_identity_is_not_ready) ... ok
+test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity (tools.agent_service.box.tests.test_recovery.SemanticContract.test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity) ... ok
 test_unknown_protocol_is_closed (tools.agent_service.box.tests.test_recovery.SemanticContract.test_unknown_protocol_is_closed) ... ok
 test_requirement_without_hash_is_rejected (tools.agent_service.box.tests.test_release.Lock.test_requirement_without_hash_is_rejected) ... ok
 test_several_platform_hashes_per_requirement (tools.agent_service.box.tests.test_release.Lock.test_several_platform_hashes_per_requirement) ... ok
@@ -68,6 +71,6 @@ test_graph_store_may_be_older_but_not_newer (tools.agent_service.box.tests.test_
 test_service_store_must_match_exactly (tools.agent_service.box.tests.test_state.Compatibility.test_service_store_must_match_exactly) ... ok
 
 ----------------------------------------------------------------------
-Ran 68 tests in 1.047s
+Ran 71 tests in 1.042s
 
 OK

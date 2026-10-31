@@ -34,7 +34,10 @@ sudo /usr/local/sbin/agent-service-box backups --json
 Сначала подтвердить инвентаризацию/доверие восстановленному хосту. Сохранить текущие config,
 секреты в доверенном хранилище, внешние ownership/custom-constitution файлы и старый immutable
 release14e. Один оператор; внешние доставки могут повториться, но writer должен управляться box.
-Pre-update backup создаётся после stop и **до** graph/start нового кода. Зафиксировать его имя,
+Новый guarded ExecStart устанавливается до открытия state новым кодом; после прерывания
+supervisor не возвращается к старому прямому launcher. Pre-update backup создаётся после stop
+и **до** graph/start нового кода. Повтор update проверяет происхождение первоначальной копии,
+а unchanged install сохраняет reconciliation gate. Зафиксировать его имя,
 target manifest SHA, schemas/counts и оба config hashes из backup.json. Не редактировать backup.
 
 ```bash

@@ -1,0 +1,14 @@
+test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity (tools.agent_service.box.tests.test_recovery.SemanticContract.test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity) ... FAIL
+
+======================================================================
+FAIL: test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity (tools.agent_service.box.tests.test_recovery.SemanticContract.test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-recovery/tools/agent_service/box/tests/test_recovery.py", line 231, in test_unchanged_install_does_not_clear_recovery_gate_or_checkpoint_identity
+    self.assertTrue(value["reconcile_required"])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

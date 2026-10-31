@@ -215,7 +215,7 @@ backup/recovery с контролем публикации, затем новы�
 release14e; новый manager использует schema + exact semantic contract, matching backup/config,
 переживает прерывания, не оставляет orphan SQLite writer и удерживает publisher до сверки.
 LOCAL 14e→candidate→restored14e→candidate, API/source outage, exact duplicates/restart PASS;
-68 box, 917 core/service, 152 runner PASS. Финальные CI exact head и выпуск связывает #83.
+71 box, 917 core/service, 152 runner PASS. Финальные CI exact head и выпуск связывает #83.
 [Единый отчёт и матрица](../../implementation/autonomous-mvp/release-recovery-2026-10-31/README.md),
 [операторский handoff](../../implementation/autonomous-mvp/release-recovery-2026-10-31/HANDOFF-M3.md).
 

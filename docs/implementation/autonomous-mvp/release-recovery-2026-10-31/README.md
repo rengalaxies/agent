@@ -95,10 +95,10 @@ recovery или несовпадения writer он не вызывает ст�
 [полные base/head, Jira revision, comment/event IDs](evidence/local-final-versions.json).
 Окончательный CI обязан проверять последний head PR, в том числе поздние guards status/provenance,
 повтор abort и owner-config restoration. Эти поздние изменения не приписываются старому LOCAL архиву.
-Product freeze после review: `61f1f37ebd56246ef0381448d9ae30767bc2a4c9`; последующие файлы отчёта
+Product freeze после review: `672055e3baece0de67163d3b3c61f3fa7a4dd1da`; последующие файлы отчёта
 не меняют service payload. Exact окончательные head/accepted SHA указаны в PR и release evidence.
 
-68 box unit/regression tests без skips; [GREEN](evidence/unit-final-green.log).
+71 box unit/regression tests без skips; [GREEN](evidence/unit-final-green.log).
 917 core/service tests LOCAL PASS; [лог](evidence/full-core-local.log).
 152 runner tests LOCAL PASS; [лог](evidence/runner-local.log).
 Scripted/model-failure cases в runner-логе — тестовые ответы, не реальные LLM-вызовы.
@@ -111,6 +111,13 @@ reopen отзывал уже queued новую версию ([RED](evidence/adap
 Также RED→GREEN: [повтор --abort и target owner config](evidence/retry-config-red.log)
 → [GREEN](evidence/retry-config-green.log). Release-only сохраняет строки состояния, но выбирает
 сохранённый owner box.yaml целевого релиза; повтор незавершённого abort не меняет цель.
+Последние проверки interrupted update: [чужой backup RED](evidence/resume-red.log) →
+[matching reuse GREEN](evidence/resume-green.log); [reinstall сбрасывал gate RED](evidence/reinstall-gate-red.log)
+→ [GREEN](evidence/reinstall-gate-green.log). Наконец, [реальный candidate61 RED](evidence/update-guard-red.json)
+после kill графа запускал старый supervisor entry. Теперь новый guard записывается **до** backup/нового
+SQLite writer; он не запускает неподходящий state даже при запуске supervisor после прерывания.
+Exact recovery CI выполняет kill после graph, start supervisor и resume с исходным backup.
+Обычный backup также не приписывает state другого writer старому active release.
 Это собственный отдельный проход review, не независимый человеческий approval.
 
 Первые CI отказы не скрыты: 41233052865 — driver строил file://var для root `/`;

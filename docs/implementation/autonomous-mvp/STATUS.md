@@ -20,7 +20,7 @@ code-only downgrade profile6→14e. Новый manager проверяет semant
 от SQLite schema, восстанавливает matching backup/config и удерживает запуск guard до
 сверки API/источников; после downgrade manager/guard не заменяется старым CLI.
 LOCAL: реальный release14e↔candidate, прерывания, API/source outage, redelivery и restart PASS;
-68 box regressions, 917 core/service и 152 runner PASS. Последний CI exact head и выпуск —
+71 box regressions, 917 core/service и 152 runner PASS. Последний CI exact head и выпуск —
 [#83](https://github.com/rengalaxies/agent/pull/83),
 [единый отчёт и ограничения](release-recovery-2026-10-31/README.md).
 Restore не сливает новую локальную историю: она остаётся в safety backup; внешняя сверка
