@@ -164,6 +164,6 @@ Main837f856 сверён, результаты release/recovery #83–84 сох�
 private pilot repo1437522215/1437522551, 6refs/6file hashes, bot349497413; PR lists пусты.
 Это не App auth. Environment agent-pilot-app отсутствует (полный API list200); protected
 probe не dispatched, PEM/repo-secret наличие не предполагается. App5515659/install176298402
-пока configured, JWT/token/permissions REAL API NOT_RUN. Probe boundary fixes и 11 LOCAL tests,
+пока configured, JWT/token/permissions REAL API NOT_RUN. Probe boundary fixes и 12 LOCAL tests,
 авторский runtime HTTP PASS; CI собственного PR отдельно. [Отчёт и handoff](github-pilot-2026-11-01/README.md).
 Pin/сервис/M3/VM/webhooks/secrets не менялись; M2 PARTIAL/LIVE BLOCKED, MODEL OFF.

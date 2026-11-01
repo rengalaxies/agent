@@ -14,12 +14,14 @@ spec.loader.exec_module(probe)
 PERMS = dict(metadata='read', contents='read', pull_requests='read', issues='write')
 
 class ProbeBoundary(unittest.TestCase):
-    def run_probe(self, wrong_install=False, foreign=False):
+    def run_probe(self, wrong_install=False, foreign=False, error=False):
         calls = []
         auth = SimpleNamespace(_jwt=lambda: 'JWT-SENTINEL', _token=None)
         repos = ['rengalaxies/agent-pilot-orders', 'rengalaxies/agent-pilot-reporting']
         def request(method, path, **kwargs):
             calls.append((method, path))
+            if error:
+                raise RuntimeError('JWT-SENTINEL PEM-SENTINEL TOKEN-SENTINEL')
             data = {}
             if path == '/app':
                 data = dict(id=5515659, slug='rengalaxies-agent-pilot', permissions=PERMS)
@@ -61,3 +63,9 @@ class ProbeBoundary(unittest.TestCase):
         self.assertEqual(sum(p.endswith('/pulls') for _,p in calls), 2)
         self.assertEqual(sum('/branches/' in p for _,p in calls), 2)
         self.assertEqual(calls[-1], ('DELETE','/installation/token'))
+
+    def test_provider_exception_details_do_not_reach_report(self):
+        result, calls = self.run_probe(error=True)
+        self.assertEqual(result['status'], 'FAIL')
+        self.assertEqual(result['checks'][0]['error_type'], 'RuntimeError')
+        self.assertEqual(len(calls), 1)

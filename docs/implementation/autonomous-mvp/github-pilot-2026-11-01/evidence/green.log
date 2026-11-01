@@ -1,4 +1,5 @@
 test_foreign_repository_scope_refuses_reads_and_revokes_token (tests.service.test_pilot_app_probe.ProbeBoundary.test_foreign_repository_scope_refuses_reads_and_revokes_token) ... ok
+test_provider_exception_details_do_not_reach_report (tests.service.test_pilot_app_probe.ProbeBoundary.test_provider_exception_details_do_not_reach_report) ... ok
 test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output (tests.service.test_pilot_app_probe.ProbeBoundary.test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output) ... ok
 test_wrong_installation_refuses_before_token_or_repository_reads (tests.service.test_pilot_app_probe.ProbeBoundary.test_wrong_installation_refuses_before_token_or_repository_reads) ... ok
 test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider (tests.service.test_connection.ConfigTest.test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider) ... ok
@@ -11,6 +12,6 @@ test_partial_configuration_is_blocked_and_rendered_shape_uses_real_box_contract 
 test_repeated_preparation_has_the_same_commits_and_bundles (tests.service.test_pilot_preparation.PilotPreparationTest.test_repeated_preparation_has_the_same_commits_and_bundles) ... ok
 
 ----------------------------------------------------------------------
-Ran 11 tests in 3.970s
+Ran 12 tests in 3.895s
 
 OK

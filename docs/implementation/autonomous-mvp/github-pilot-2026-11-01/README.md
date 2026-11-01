@@ -15,7 +15,7 @@
 | App5515659 / installation176298402 | Config + ранее owner UI | CONFIGURED, App API NOT_RUN |
 | JWT→installation token, permissions и scope от имени App | REAL App API | BLOCKED / NOT_RUN |
 | Wrong installation / foreign repo refusal | LOCAL scripted probe regression | PASS, не LIVE |
-| Existing auth + preparation + probe tests | LOCAL | 11 PASS |
+| Existing auth + preparation + probe tests | LOCAL | 12 PASS |
 | Runtime Orders→Reporting (100→20→100 + explicit limit) | LOCAL real loopback HTTP | PASS, авторский fixture |
 | M3, external Jira→PR→comment, webhook delivery | LIVE | NOT_RUN |
 
@@ -28,7 +28,7 @@
 продолжение repo reads после неправильного installation scope и отсутствие PR reads.
 Теперь probe сверяет installation.id, прекращает чтения при неверной App/installation/scope,
 отзывает уже полученный token и читает refs + PR endpoint обоих разрешённых repos.
-[GREEN](evidence/green.log) — 11 tests, включая существующий RSA/JWT token transport.
+[GREEN](evidence/green.log) — 12 tests, включая существующий RSA/JWT token transport.
 Новые boundary tests используют scripted HTTP responses; они не подтверждают настоящий App key.
 Service queue/connectors/auth не переписывались. Негативные App API вызовы NOT_RUN.
 
