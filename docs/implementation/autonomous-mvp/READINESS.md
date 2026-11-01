@@ -156,3 +156,14 @@ resources; при source failure basis checkpoint теперь ждёт восс
 Handoff M3 рядом, протокол участника docs/product/pilot/PARTICIPANT-SESSION.md.
 MODEL OFF. M2 LIVE/M3 BLOCKED, независимая M4/M5/клиентская полезность UNVERIFIED;
 participant/VM/external NOT_RUN. Green CI не снимает PENDING_APPROVAL и не подтверждает LIVE.
+
+
+## GitHub pilot — 01.11.2026, без deployment
+
+Main837f856 сверён, результаты release/recovery #83–84 сохранены. Connector API подтвердил
+private pilot repo1437522215/1437522551, 6refs/6file hashes, bot349497413; PR lists пусты.
+Это не App auth. Environment agent-pilot-app отсутствует (полный API list200); protected
+probe не dispatched, PEM/repo-secret наличие не предполагается. App5515659/install176298402
+пока configured, JWT/token/permissions REAL API NOT_RUN. Probe boundary fixes и 11 LOCAL tests,
+авторский runtime HTTP PASS; CI собственного PR отдельно. [Отчёт и handoff](github-pilot-2026-11-01/README.md).
+Pin/сервис/M3/VM/webhooks/secrets не менялись; M2 PARTIAL/LIVE BLOCKED, MODEL OFF.
