@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import sys
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
@@ -23,9 +24,14 @@ def probe(path):
     config = load(path)
     if config.github.auth.kind != "app":
         raise ValueError("app_required")
-    service = ServiceConfig.model_validate(config.service(state=Path("/unused"), policy_path=Path("/unused"),
-        constitution=Path("/unused"), release_id="identity-probe"))
-    connectors, _ = build_connectors(service)
+    # Connector construction also prepares unused dry-run sinks. Own their directory
+    # rather than attempting to create /unused as an unprivileged Actions user.
+    # No service DB or publisher is run; discard the empty sinks before API reads.
+    with tempfile.TemporaryDirectory(prefix="agent-pilot-probe-") as directory:
+        root = Path(directory)
+        service = ServiceConfig.model_validate(config.service(state=root, policy_path=root / "policy.json",
+            constitution=root / "constitution.yaml", release_id="identity-probe"))
+        connectors, _ = build_connectors(service)
     gh, jira = connectors["github"], connectors.get("jira")
     records = []
 
