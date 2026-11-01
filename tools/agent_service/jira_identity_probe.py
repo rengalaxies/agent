@@ -57,7 +57,8 @@ def probe(request):
          and all(re.fullmatch(r"KAN-[1-9][0-9]*", i.get("key", ""))
                  and str(i.get("id", "")).isdigit() for i in d["issues"]),
          lambda d: dict(tasks=[dict(id=str(i["id"]), key=i["key"]) for i in d["issues"]],
-                        complete_listing=d.get("isLast") is True and not d.get("nextPageToken")),
+                        sample_page_is_last=d.get("isLast") is True and not d.get("nextPageToken"),
+                        complete_listing=False),
          dict(jql="project = KAN ORDER BY key ASC", maxResults=5, fields="key"))
     return finish()
 

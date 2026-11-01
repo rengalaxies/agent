@@ -8,7 +8,7 @@ from agent_service.http import Response
 
 
 class JiraIdentityProbeTest(unittest.TestCase):
-    def execute(self, *, project="KAN", allowed=True, error=None, foreign=False, status=200):
+    def execute(self, *, project="KAN", allowed=True, error=None, foreign=False, status=200, last=False):
         path = Path(__file__).resolve().parents[2] / "tools/agent_service/jira_identity_probe.py"
         self.assertTrue(path.exists(), "missing read-only Jira probe")
         spec = importlib.util.spec_from_file_location("jira_identity_probe", path)
@@ -27,7 +27,7 @@ class JiraIdentityProbeTest(unittest.TestCase):
             elif endpoint.endswith("/mypermissions"):
                 data = dict(permissions={p: dict(havePermission=allowed) for p in module.PERMISSIONS})
             else:
-                data = dict(issues=[dict(id="10001", key="OTHER-1" if foreign else "KAN-1")], isLast=False)
+                data = dict(issues=[dict(id="10001", key="OTHER-1" if foreign else "KAN-1")], isLast=last)
             return Response(status, {}, json.dumps(data).encode())
 
         result = module.probe(request)
@@ -65,3 +65,8 @@ class JiraIdentityProbeTest(unittest.TestCase):
     def test_foreign_task_is_rejected(self):
         report, _ = self.execute(foreign=True)
         self.assertEqual(report["status"], "FAIL")
+
+    def test_final_sample_page_does_not_qualify_complete_enumeration(self):
+        report, _ = self.execute(last=True)
+        self.assertEqual(report["status"], "PASS")
+        self.assertFalse(report["checks"][-1]["complete_listing"])
