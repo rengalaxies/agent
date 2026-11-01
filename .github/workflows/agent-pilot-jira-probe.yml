@@ -1,0 +1,52 @@
+name: Agent pilot Jira identity probe (read-only, accepted main)
+on:
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        type: string
+        required: true
+        description: Exact accepted main SHA (40 hex)
+permissions:
+  contents: read
+concurrency:
+  group: agent-pilot-jira-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.repository == 'rengalaxies/agent' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    environment: agent-pilot-jira
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Require exact accepted main
+        env:
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_MAIN_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN_SHA"
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install locked runtime dependencies
+        run: python -m pip install --require-hashes -r infra/agent_graph_demo/requirements.lock
+      - name: Read identity, project, permissions and five task IDs
+        env:
+          PYTHONPATH: '.:src'
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          umask 077
+          python tools/agent_service/jira_identity_probe.py work/jira-identity.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-pilot-jira-identity
+          path: work/jira-identity.json
+          if-no-files-found: warn
+          retention-days: 14
