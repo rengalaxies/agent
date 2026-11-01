@@ -3,6 +3,7 @@ import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
+import tempfile
 import unittest
 from unittest.mock import patch
 from agent_service.http import Response
@@ -14,6 +15,32 @@ spec.loader.exec_module(probe)
 PERMS = dict(metadata='read', contents='read', pull_requests='read', issues='write')
 
 class ProbeBoundary(unittest.TestCase):
+    def test_real_connector_setup_uses_owned_temporary_sinks_and_cleans_them(self):
+        import agent_service.config as config_module
+        from agent_service.publisher import DirectorySink
+        roots = []
+
+        def sink(path):
+            root = Path(path)
+            roots.append(root)
+            self.assertIn(Path(tempfile.gettempdir()), root.parents,
+                          'probe must not create state under a root-owned placeholder')
+            return DirectorySink(path)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            key = Path(tmp) / 'test.pem'
+            key.write_text('SYNTHETIC_KEY_NOT_PARSED')
+            auth = SimpleNamespace(_token=None, _jwt=lambda: 'SYNTHETIC_JWT')
+            with patch.dict('os.environ', {'GITHUB_APP_PRIVATE_KEY_PATH':str(key),
+                                          'GITHUB_WEBHOOK_SECRET':'synthetic-webhook'}), \
+                 patch('agent_service.config.GitHubAppAuth', return_value=auth), \
+                 patch.object(config_module, 'DirectorySink', side_effect=sink), \
+                 patch('agent_service.http.HttpClient.request', return_value=Response(403, {}, b'{}')):
+                result = probe.probe(PATH / 'box.github-only.yaml')
+        self.assertEqual(result['status'], 'FAIL')  # synthetic API refusal, not App auth
+        self.assertTrue(roots)
+        self.assertTrue(all(not root.exists() for root in roots))
+
     def run_probe(self, wrong_install=False, foreign=False, error=False):
         calls = []
         auth = SimpleNamespace(_jwt=lambda: 'JWT-SENTINEL', _token=None)
