@@ -241,3 +241,16 @@ release-recovery-2026-10-31. Deployment pin 14e, #71, VM/Cloud.ru и credentials
 matching backup, restart/reboot/rollback/re-upgrade и loaded identity. Затем App/Jira/HTTPS
 и M2 external LIVE; participant/независимая полезность отдельно. Все эти уровни NOT_RUN здесь,
 установленная версия UNKNOWN, MODEL OFF. Service asset поставлен; Docker UI image — отдельный artifact.
+
+
+## Направление 01.11.2026 — намерение до PR, заменяемый трекер
+
+Владелец согласовал task-first сценарий и независимость ядра от Jira/Kaiten/Трекера.
+[Приоритеты I0–I8, роли, доступы и коммерческая гипотеза](../../product/pilot/INTENT-FIRST-ROADMAP-2026-11-01.md).
+Jira остаётся первым адаптером; второй выбирается по доступному участнику, а не
+реализуются все сразу. MCP и REST — адаптеры доступа, не источник доказанной зависимости.
+Полноценная минимальная приёмка обязательно начинается настоящей задачей без PR;
+GitHub-only не закрывает главную гипотезу. Service release234 проверен на CI, но по
+отчёту оператора не установлен на ВМ из-за отсутствующей box.yaml. #85 probe исправлен
+и слит; App auth и tracker LIVE не доказаны. MODEL OFF; новая LLM-серия требует
+отдельного протокола/данных/бюджета. Это план, не заявление о выполнении I0–I8.
