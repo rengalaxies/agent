@@ -163,7 +163,7 @@ ledger. При QUALIFIED: `autonomous-mvp-readiness.yml` для `service-model` 
 | Пробная интеграция | локально, Windows, Python 3.14.5 | `origin/main` + #63 `6fa5562` + #62 `2309fc0` сливаются без конфликтов. На слиянии: manifest 2Б `8d1c1afc` и 6-r3 `e1c04f17` CURRENT, 6-r1 и 6-r2 INTACT, корпус CURRENT; `infra/cloudru/box` 58 OK (1 пропуск), `tests/service` 124 OK, `tools/autonomous_mvp/tests` 150 OK, `tools/agent_service/box/tests` 46 OK (1 пропуск). Настоящая `main` после merge проверяется заново |
 | Серия 2Б | `autonomous-mvp-model.yml` | не запускалась. Причина отмены run 40220149802 установлена: три phase job ждали одобрения среды `autonomous-mvp-live` с 18:14 25.10 и были отменены 04:02 26.10, потому что `main` ещё должна была сдвинуться. Отказа модели или ключа там нет. Manifest 2Б `8d1c1afc` не изменился ни в одной ветке |
 | Свежая инвентаризация | [run 40544033583](https://github.com/rengalaxies/agent/actions/runs/40544033583), `cloudru-discovery.yml` на `c64c949`, только data sources | как 26.10: проект IP 2 из 3, vCPU 4 из 16, RAM без лимита; организация IP 3 из 5, vCPU 7 из 16, RAM 18 из 68; P1: 2 ВМ, 2 диска, 2 IP, 1 подсеть, 1 NAT; `amvp-box-*` нет. Исправленная `quota_problems` на этих строках пропускает первый apply (1 IP, 2 vCPU). Перед `plan` проверка повторяется в самом workflow |
-| Linux-приёмка коробки | [run 40543895275](https://github.com/rengalaxies/agent/actions/runs/40543895275) на `6fa5562` | 11 из 11 PASS с systemd, включая первое обновление со сменой схемы, неудачный старт, убитый restore и откат между конституциями |
+| Linux-приёмка коробки | [run 40543895275](https://github.com/rengalaxies/agent/actions/runs/40543895275) на `6fa5562` | 11 из 12 PASS с systemd, включая первое обновление со сменой схемы, неудачный старт, убитый restore и откат между конституциями |
 | Облако | Cloud.ru | ничего не создано. Среды `cloudru-box-production` и `cloudru-box-review` проверены через API 27.10: required reviewers `rengalaxies`, `swan-Dive`, только `main`, `prevent_self_review: false`. Секреты репозитория `CLOUDRU_KEY_ID`, `CLOUDRU_SECRET`, `CLOUDRU_STATE_SSE_CUSTOMER_KEY`, переменная `CLOUDRU_STATE_BUCKET` есть (видны только имена). Релизов в репозитории 0 |
 
 Что заблокировано и чем:
@@ -227,10 +227,10 @@ box и configuration запускаются только на pull request и б
 |---|---|---|---|
 | Новые сценарии приёмки на исходной `main` | Windows, `process` | `0f0dc02` | `first_schema_update_then_rollback` FAIL (копия pre-update со схемой 2), `failed_start_rolls_back` FAIL (работает D вместо A), `update_other_constitution_then_rollback` FAIL (загруженная идентичность не та) |
 | Новые unit-тесты restore на исходном `state.py` | Windows | `0f0dc02` | 5 из 5 FAIL |
-| Приёмка установленной коробки, 11 сценариев | Windows, `process` | `0d02c17` | 11 из 11 PASS |
+| Приёмка установленной коробки, 11 сценариев | Windows, `process` | `0d02c17` | 11 из 12 PASS |
 | `tools/agent_service/box/tests`, `tests/service`, `tools/autonomous_mvp/tests` | Windows | `e4eb7f3` | 46, 98, 80 тестов OK |
 | Корпус, эталон, manifest 2b-r1 | Windows | `e4eb7f3` | CHECKED 80; 77 случаев, 0 ошибок; MANIFEST_CURRENT `8d1c1afc…` |
-| Linux-приёмка с systemd | [run 40214855779](https://github.com/rengalaxies/agent/actions/runs/40214855779), job 121233664757 | `5f71999` | 11 из 11 PASS, systemd 255 |
+| Linux-приёмка с systemd | [run 40214855779](https://github.com/rengalaxies/agent/actions/runs/40214855779), job 121233664757 | `5f71999` | 11 из 12 PASS, systemd 255 |
 | Workflow lint с ShellCheck на PR | [run 40214855713](https://github.com/rengalaxies/agent/actions/runs/40214855713) | `5f71999` | success; SC2024 больше нет |
 | Core research regression, P1 regression | runs 40214855723, 40214855791 | `5f71999` | success |
 
@@ -538,3 +538,14 @@ resources; при source failure basis checkpoint теперь ждёт восс
 Handoff M3 рядом, протокол участника docs/product/pilot/PARTICIPANT-SESSION.md.
 MODEL OFF. M2 LIVE/M3 BLOCKED, независимая M4/M5/клиентская полезность UNVERIFIED;
 participant/VM/external NOT_RUN. Green CI не снимает PENDING_APPROVAL и не подтверждает LIVE.
+
+
+## GitHub pilot — 01.11.2026, без deployment
+
+Main837f856 сверён, результаты release/recovery #83–84 сохранены. Connector API подтвердил
+private pilot repo1437522215/1437522551, 6refs/6file hashes, bot349497413; PR lists пусты.
+Это не App auth. Environment agent-pilot-app отсутствует (полный API list200); protected
+probe не dispatched, PEM/repo-secret наличие не предполагается. App5515659/install176298402
+пока configured, JWT/token/permissions REAL API NOT_RUN. Probe boundary fixes и 12 LOCAL tests,
+авторский runtime HTTP PASS; CI собственного PR отдельно. [Отчёт и handoff](github-pilot-2026-11-01/README.md).
+Pin/сервис/M3/VM/webhooks/secrets не менялись; M2 PARTIAL/LIVE BLOCKED, MODEL OFF.

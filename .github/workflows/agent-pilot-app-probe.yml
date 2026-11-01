@@ -62,6 +62,7 @@ jobs:
             exit 1
           fi
           export GITHUB_APP_PRIVATE_KEY_PATH="$RUNNER_TEMP/app.pem"
+          trap 'rm -f "$GITHUB_APP_PRIVATE_KEY_PATH"' EXIT
           printf '%s\n' "$APP_PRIVATE_KEY" > "$GITHUB_APP_PRIVATE_KEY_PATH"
           unset APP_PRIVATE_KEY
           # The probe never verifies webhooks; the connector only needs a value to construct.

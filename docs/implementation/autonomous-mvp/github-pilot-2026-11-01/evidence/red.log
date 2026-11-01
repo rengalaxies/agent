@@ -1,0 +1,35 @@
+test_foreign_repository_scope_refuses_reads_and_revokes_token (tests.service.test_pilot_app_probe.ProbeBoundary.test_foreign_repository_scope_refuses_reads_and_revokes_token) ... FAIL
+test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output (tests.service.test_pilot_app_probe.ProbeBoundary.test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output) ... FAIL
+test_wrong_installation_refuses_before_token_or_repository_reads (tests.service.test_pilot_app_probe.ProbeBoundary.test_wrong_installation_refuses_before_token_or_repository_reads) ... FAIL
+
+======================================================================
+FAIL: test_foreign_repository_scope_refuses_reads_and_revokes_token (tests.service.test_pilot_app_probe.ProbeBoundary.test_foreign_repository_scope_refuses_reads_and_revokes_token)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-github-pilot/tests/service/test_pilot_app_probe.py", line 55, in test_foreign_repository_scope_refuses_reads_and_revokes_token
+    self.assertFalse(any(p.startswith('/repos/') for _,p in calls))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output (tests.service.test_pilot_app_probe.ProbeBoundary.test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-github-pilot/tests/service/test_pilot_app_probe.py", line 61, in test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output
+    self.assertEqual(sum(p.endswith('/pulls') for _,p in calls), 2)
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_wrong_installation_refuses_before_token_or_repository_reads (tests.service.test_pilot_app_probe.ProbeBoundary.test_wrong_installation_refuses_before_token_or_repository_reads)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/agent-github-pilot/tests/service/test_pilot_app_probe.py", line 49, in test_wrong_installation_refuses_before_token_or_repository_reads
+    self.assertEqual(result['status'], 'FAIL')
+AssertionError: 'PASS' != 'FAIL'
+- PASS
++ FAIL
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.033s
+
+FAILED (failures=3)

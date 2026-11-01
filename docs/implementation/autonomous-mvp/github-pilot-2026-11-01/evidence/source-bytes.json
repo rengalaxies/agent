@@ -1,0 +1,41 @@
+{
+  "auth": "Codex Connector, NOT pilot App",
+  "checks": [
+    {
+      "repository": "rengalaxies/agent-pilot-orders",
+      "path": "README.md",
+      "sha256": "10b1e09af2a9e571375c16058ba817e7cf408db4246622dff5335a16b0843695",
+      "status": "PASS"
+    },
+    {
+      "repository": "rengalaxies/agent-pilot-orders",
+      "path": "api.py",
+      "sha256": "170ebfc86d3501e4474435a8f5c79d4766ee82ba2970b3563224677702a58597",
+      "status": "PASS"
+    },
+    {
+      "repository": "rengalaxies/agent-pilot-reporting",
+      "path": "README.md",
+      "sha256": "ffbd753c45e1b3ca1ddb4f17adf8ac549027ea8a2b2b062ef313be11e5220637",
+      "status": "PASS"
+    },
+    {
+      "repository": "rengalaxies/agent-pilot-reporting",
+      "path": "audit_api.py",
+      "sha256": "3d8ccb0e305d601cc5e69b3fd0b20b625bbe9488afdbb918f19690a50f491170",
+      "status": "PASS"
+    },
+    {
+      "repository": "rengalaxies/agent-pilot-reporting",
+      "path": "client.py",
+      "sha256": "52da608306c414589275672d3ae4831aa5eeb9a522ff81477cf96e2b89bdec27",
+      "status": "PASS"
+    },
+    {
+      "repository": "rengalaxies/agent-pilot-reporting",
+      "path": "export-requirement.md",
+      "sha256": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718",
+      "status": "PASS"
+    }
+  ]
+}

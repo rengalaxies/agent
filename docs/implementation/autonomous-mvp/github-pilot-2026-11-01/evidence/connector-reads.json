@@ -1,0 +1,34 @@
+{
+  "auth": "Codex Connector (NOT pilot App)",
+  "repositories": {
+    "orders": {
+      "id": 1437522215,
+      "full_name": "rengalaxies/agent-pilot-orders",
+      "private": true,
+      "default_branch": "main",
+      "branches": {
+        "main": "c444814cf5a9826457b8a82300cc0422d1c5b359",
+        "pilot-docs-only": "e53b17fdbf8baf239fdc16386490312ae1711f91",
+        "pilot-page-limit": "c2a7f1b742d52b190424a5d14472c39588e87efb",
+        "pilot-restored": "23ba0ca3396ef49d3a88edeead029a59c182ddef"
+      },
+      "pull_requests": []
+    },
+    "reporting": {
+      "id": 1437522551,
+      "full_name": "rengalaxies/agent-pilot-reporting",
+      "private": true,
+      "default_branch": "main",
+      "branches": {
+        "main": "e7fd9c911fbe1e827ddd20a571a4a79ebef34335",
+        "pilot-explicit-limit": "6ca755536c0f865c86e80ec68cdbfa66eab9284c"
+      },
+      "pull_requests": []
+    }
+  },
+  "bot": {
+    "id": 349497413,
+    "login": "rengalaxies-agent-pilot[bot]",
+    "type": "Bot"
+  }
+}

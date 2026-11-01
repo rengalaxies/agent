@@ -1,0 +1,17 @@
+test_foreign_repository_scope_refuses_reads_and_revokes_token (tests.service.test_pilot_app_probe.ProbeBoundary.test_foreign_repository_scope_refuses_reads_and_revokes_token) ... ok
+test_provider_exception_details_do_not_reach_report (tests.service.test_pilot_app_probe.ProbeBoundary.test_provider_exception_details_do_not_reach_report) ... ok
+test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output (tests.service.test_pilot_app_probe.ProbeBoundary.test_valid_scope_reads_prs_and_refs_and_revokes_without_secret_output) ... ok
+test_wrong_installation_refuses_before_token_or_repository_reads (tests.service.test_pilot_app_probe.ProbeBoundary.test_wrong_installation_refuses_before_token_or_repository_reads) ... ok
+test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider (tests.service.test_connection.ConfigTest.test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider) ... ok
+test_missing_secret_names_the_variable_not_a_value (tests.service.test_connection.ConfigTest.test_missing_secret_names_the_variable_not_a_value) ... ok
+test_installation_token_is_exchanged_once_and_reused (tests.service.test_connection.GitHubAppAuthTest.test_installation_token_is_exchanged_once_and_reused) ... ok
+test_wrong_app_key_is_a_connection_problem (tests.service.test_connection.GitHubAppAuthTest.test_wrong_app_key_is_a_connection_problem) ... ok
+test_status_requires_the_token_and_contains_no_secrets (tests.service.test_connection.StatusEndpointTest.test_status_requires_the_token_and_contains_no_secrets) ... ok
+test_authored_git_scenario_has_supported_static_evidence_and_negative_controls (tests.service.test_pilot_preparation.PilotPreparationTest.test_authored_git_scenario_has_supported_static_evidence_and_negative_controls) ... ok
+test_partial_configuration_is_blocked_and_rendered_shape_uses_real_box_contract (tests.service.test_pilot_preparation.PilotPreparationTest.test_partial_configuration_is_blocked_and_rendered_shape_uses_real_box_contract) ... ok
+test_repeated_preparation_has_the_same_commits_and_bundles (tests.service.test_pilot_preparation.PilotPreparationTest.test_repeated_preparation_has_the_same_commits_and_bundles) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 3.895s
+
+OK
