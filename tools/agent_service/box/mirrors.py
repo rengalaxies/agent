@@ -48,7 +48,9 @@ def github_token(config: BoxConfig, env: dict) -> str:
 
     key = Path(env[auth.private_key_path_env]).read_bytes()
     client = HttpClient(config.github.api_base, allow_loopback_http=config.testing.allow_loopback_http)
-    return GitHubAppAuth(client, auth.app_id, auth.installation_id, key, time.time)()
+    # The REST client consumes an Authorization value; Git Basic needs only
+    # the installation token as its password.
+    return GitHubAppAuth(client, auth.app_id, auth.installation_id, key, time.time)().removeprefix("Bearer ")
 
 
 def git_env(home: Path, *, header: tuple[str, str] | None, allow_local: bool) -> dict:
