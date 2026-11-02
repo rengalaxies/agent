@@ -1,61 +1,25 @@
-# Проверка release234 без доступа исполнителя к ВМ
+# Принятый immutable release для оператора
 
-Вердикт: **блокирует дефект неполного обнаружения существующих Jira-задач**.
-В принятом release234 `reconcile_candidates(None)` ищет только `updated >= -10080m`.
-Задача без PR, не обновлявшаяся 30 дней и отсутствующая в локальной БД, не ставится
-в очередь. Recovery preflight успешно завершается с тем же пропуском, если задачи
-нет в восстановленной копии. Уже известные задачи отдельно fetch-ятся и этим
-дефектом не затронуты. Проблема воспроизведена; исправление — PR #89. Наличие PR
-не исправляет опубликованный release234 и не разрешает менять pin или патчить архив.
+Code SHA: `292db6b55b4144a11080fa7813095478702c69ef`.
+Archive SHA256: `b49d54ef12e2e3453da9a28fb219fff003fbad6f64c5fded550e7ca9ef5971a2`.
+Manifest SHA256: `9e4287cea0db42f4e64dc23e1ef3231ad12c2029ee9d283660d52f2f09205299`.
+[Release / published acceptance](https://github.com/rengalaxies/agent/actions/runs/41403235118).
+Pin не менялся; target VM NOT_RUN.
 
-Это узкая проверка конфигурации, пути Jira без PR, gateway и recovery. ВМ, install,
-реальные service API reads, restart и recovery исполнителем не запускались.
-Команды ниже — диагностический сценарий оператора, не зелёный допуск к установке.
+# Проверка release292 на ВМ
 
-## Что проверено без ВМ
+#89 слит из проверенного head; исходный дефект7-дневного bootstrap устранён.
+Опубликованный архив скачан и проверен: code и manifest соответствуют SHA выше.
+Точный итог published install/recovery указан в связанном release workflow.
+Новая конфигурация остаётся dry_run/MODEL OFF; target VM, реальные credentials,
+качество анализа KAN и операторские действия NOT_RUN. Исходная проверка схемы,
+renderer и identities описана в истории #89; она не заменяет новые VM probes.
 
-- Приложенный `box.candidate.yaml` прошёл BoxConfig и генерацию ServiceConfig
-  **кодом скачанного опубликованного архива**. Renderer M2-A из release234 и из
-  reference main38 воспроизводят его, кроме согласованных installation_id и
-  listen: `agent-pilot-m3-dryrun-20261101`, `127.0.0.1:8091`.
-- `publication=dry_run`, модель отсутствует, testing overrides выключены.
-  Orders — наблюдаемые PR и источник графа; Reporting — читаемый источник графа.
-  Requirements и `https://orders.pilot.invalid` совпадают с M2-A; последний —
-  идентификатор анализа, не endpoint для проверки доступности.
-- App5515659 / installation176298402 совпадают с registry и owner UI.
-  Bot `rengalaxies-agent-pilot[bot]`, numeric349497413 подтверждён API evidence.
-  Сам App-auth не подтверждён этим аудитом: прошлый probe отказал до сети.
-- Jira gateway/cloudId/KAN и accountId `712020:8948567f-20f5-4c20-8e4c-7f9ed30b5732`
-  совпали с проверенным read-probe artifact13092343586/run41329447561.
-  SHA256 ZIP `f8844237b38bcf839be34806f67266d9c6f7ff8286677472e376f59ac8bc0a26`.
-  Все четыре GET200, active=true, права чтения и комментариев заявлены API.
-  Проверялись только разрешённые поля отчёта; Actions secret values не извлекались.
-- `bot_account_id` — техническое поле авторства комментария; здесь это аккаунт
-  владельца. Отдельный Jira bot не требуется. Модель basic+email+scoped REST API
-  token совместима с gateway; MCP agent-interface token не подходит.
-- Опубликованный HTTP client конкатенирует base URL и `/rest/api/3/...`, сохраняя
-  `/ex/jira/<cloudId>`; synthetic проверка пути и Basic header PASS.
-- Новый manager: recovery protocol1, profile `http-requests-6`, graph schema2,
-  service schema1, output2.1. Формат candidate совместим. Guard/preflight использует
-  код целевого immutable release в отдельном interpreter, не publisher. В исправлении
-  #89 новый manager сам выполняет полный Jira REST-v3 discovery; auth/fetch/version
-  остаются кодом выбранного target, включая14e/234. Дефект
-  выше касается полноты списка, а не отключения guard.
-- Недавняя Jira-задача без единого PR и без webhook на неизменённом release234
-  проанализирована настоящим core: DONE/USEFUL/preliminary_impact_found.
-  Старая30д — `enqueued=0`; отдельный recovery regression также RED.
-  На исправлении 6 новых регрессий PASS; 78 targeted service/config/recovery tests
-  PASS до добавления последнего preflight-теста. Ruff F401/F811/F841 и diff check PASS.
-  Это авторские локальные примеры, не оценка качества KAN-1..3.
-
-Цепочка по коду release234: `worker_loop → service.reconcile → synthetic event →
-step/_ingest → apply_snapshot/job → _analyze → CoreAnalyzer.analyze` (ветка без PR)
-`→ match_intent → GraphQuery.impact → jira_result → DirectorySink`.
-Ограничения: совпадение summary/description с операциями графа; ABSTAINED допустим
-при неясном намерении, он не означает отсутствия влияния. До diff всегда
-`jira_without_diff`; поломка контракта не доказана. Первый поиск —7д, последующие
-с checkpoint — прошедшее время+10мин, максимум20 страниц по100; переполнение
-отказывает без продвижения checkpoint. Read-probe/doctor не доказывают анализ.
+Путь анализа: startup worker → reconciliation → events/jobs → CoreAnalyzer
+без PR → intent/graph impact → DirectorySink. Неполная пагинация и ошибка API
+не считаются завершением. Новый manager выполняет полный discovery также для
+старых immutable targets; target сохраняет auth/fetch/version semantics.
+Предел20 страниц сохранён и явно отказывает при необходимости21-й.
 
 ## Подготовка оператором: доступ, секреты, неизменный release
 
@@ -91,22 +55,22 @@ Helper находится вне release и не меняет установле
 
 ```bash
 umask 077
-NAME=agent-service-0.1.0-g23412df5e385-linux-x86_64-cp312
+NAME=agent-service-0.1.0-g292db6b55b41-linux-x86_64-cp312
 ARCHIVE="$PWD/$NAME.tar.gz"
 CANDIDATE="$PWD/box.candidate.yaml"
 CHECK="$PWD/vm_check.py"
 NEW="/opt/agent-service/releases/$NAME"
 EVIDENCE="$PWD/vm-evidence"
 mkdir -p "$EVIDENCE"
-printf '%s  %s\n' af1cf03135628e875d7071b19033f6870254132e02fac3a0e70695d5a898b227 "$ARCHIVE" | sha256sum -c -
+printf '%s  %s\n' b49d54ef12e2e3453da9a28fb219fff003fbad6f64c5fded550e7ca9ef5971a2 "$ARCHIVE" | sha256sum -c -
 tar -xzf "$ARCHIVE"
-printf '%s  %s\n' 2e72fe9a66436aca30ff20dafdda216bb4b99d5ea5a76ff19226e23f95e9c5fb "$PWD/$NAME/manifest.json" | sha256sum -c -
+printf '%s  %s\n' 9e4287cea0db42f4e64dc23e1ef3231ad12c2029ee9d283660d52f2f09205299 "$PWD/$NAME/manifest.json" | sha256sum -c -
 python3 "$PWD/$NAME/app/tools/agent_service/box/release.py" verify "$PWD/$NAME"
 sudo ss -ltnp 'sport = :8091'
 sudo python3 "$PWD/$NAME/box" plan --config "$CANDIDATE" --json > "$EVIDENCE/plan.json"
 ```
 
-У verify: commit=полный23412df…, status=VERIFIED. У plan problems=[] и
+У verify: commit=полный292db6…, status=VERIFIED. У plan problems=[] и
 exit0. Bootstrap plan может **stage-ить** проверенный release/venv: это не service
 install и не запуск worker. Повторно проверить staged tree:
 
@@ -125,8 +89,7 @@ Helper возвращает exit0/ok=true только при active owner ident
 
 ## Install → identities/doctor → dry_run
 
-Установка release234 для полной приёмки заблокирована найденным дефектом. Если
-оператор проводит именно диагностическую проверку согласованного dry_run-контура:
+Для нового release292 первоначальный дефект исправлен. После published acceptance оператор выполняет согласованную проверку dry_run-контура:
 
 ```bash
 sudo python3 "$NEW/box" install --config "$CANDIDATE" --json > "$EVIDENCE/install.json"
@@ -139,7 +102,7 @@ sudo journalctl -u agent-service -u agent-service-sync --no-pager -n 100
 
 Exit install:0 готово;2 процесс есть, сценарий NOT_READY — разбирать причины;1 отказ.
 Status: manager/invoked_cli/release/loaded.commit/state_identity.writer соответствуют
-release234 и manifest hash; process/scenario READY; recovery.pending=null;
+release292 и manifest hash; process/scenario READY; recovery.pending=null;
 profile6/core_digest/constitution совпадают с manifest; sources CURRENT, queue без
 ошибок. ExecStart должен вести в **новый guard**, PID совпадать с loaded.json.
 Не засчитывать один /healthz. Doctor проверяет search/read, не /myself или качество.
@@ -166,13 +129,11 @@ PY
 
 Results helper открывает SQLite только `mode=ro`, не создаёт ServiceStore/worker.
 Требует KAN-1..3: текущая generation имеет job DONE, результат Jira проходит штатную contract/request validation (job_id/attempt, event, installation/environment),
-profile6/code_version release234, актуальную семантическую version из свежего GET,
+profile6/code_version release292, актуальную семантическую version из свежего GET,
 `jira_without_diff`, model=null/model_calls0 и актуальный локальный DirectorySink JSON в `dry-run/jira/`: id, marker, generation, doc digest и queue receipt совпадают.
 Также требует отсутствия GitHub PR resources. `existing_issues_missing` или
-`analysis_missing:KAN-N` — FAIL, не успех чтения API. Старая отсутствующая в БД
-задача на release234 ожидаемо не пройдёт; это нельзя исправлять изменением самой
-задачи или ручным patch релиза. В текущих KAN-1..3 может не оказаться старой задачи:
-их успешная проверка не снимает воспроизведённый30д-дефект.
+`analysis_missing:KAN-N` — FAIL, не успех чтения API. Старая отсутствующая в БД задача на новом release292 должна быть обнаружена полным обходом; пропуск — FAIL, не повод менять саму задачу. В текущих KAN-1..3 может не оказаться старой задачи:
+для проверки старых задач дополнительно использовать локальную регрессию из #89, не изменять Jira timestamps.
 
 Качество проверить **локально на ВМ** по текстам трёх задач и result/DirectorySink,
 не выгружая БД: явный orders GET /orders должен давать обоснованный путь к Reporting
@@ -235,11 +196,11 @@ sudo /usr/local/sbin/agent-service-box status --json > "$EVIDENCE/status-re-upgr
 sudo /usr/local/sbin/agent-service-box doctor --json > "$EVIDENCE/doctor-re-upgraded.json"
 ```
 
-После downgrade manager/invoked CLI/wrapper/timers/guard остаются234; loaded service
+После downgrade manager/invoked CLI/wrapper/timers/guard остаются292; loaded service
 и state writer становятся14e/profile4. Из-за несовместимых semantics нужен
-restored_backup, не code-only switch. После re-upgrade снова234/profile6,
+restored_backup, не code-only switch. После re-upgrade снова292/profile6,
 актуальные результаты, прежние resource/comment IDs. Проверку `vm_check.py results`
-выполнять на234, не на14e: helper намеренно требует234. Самостоятельный bootstrap старого immutable target не меняется. Однако исправленный
+выполнять на292, не на14e: helper намеренно требует292. Самостоятельный bootstrap старого immutable target не меняется. Однако исправленный
 manager выполняет полный Jira discovery при recovery и для старого target; архив
 не патчится, auth/fetch/semantic version принадлежат его коду.
 
@@ -262,12 +223,9 @@ Reboot только оператором после проверки автоз�
 
 ## Дополнение #89: полный обход и проверка отказов
 
-Исправление PR относится к будущему отдельно принятому выпуску. Этот runbook и
-helper намеренно закреплены на **опубликованном234**, где исходный30д-дефект остаётся.
-Они не устанавливают код ветки PR и не заменяют pin. Для будущего выпуска отдельно
-пересверяются archive/manifest/SHA и требования helper; не убирать exact checks
-ради успешного результата. Предложение к merge/release и CI окончательного head
-записываются в PR; ВМ по этим командам здесь не использовалась.
+#89 слит, новый immutable release292 выпущен из merge SHA. Команды и helper
+закреплены на новом archive/manifest; pin не менялся. Published acceptance
+зафиксирована в итогах release workflow, ВМ остаётся NOT_RUN.
 
 - Bootstrap без checkpoint читает все страницы настроенных проектов до явного
   `isLast=true`. Ошибка HTTP503 на следующей странице, неверный JSON/issue shape,
