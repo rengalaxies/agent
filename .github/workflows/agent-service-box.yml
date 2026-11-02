@@ -104,7 +104,7 @@ jobs:
         if: always()
         run: |
           [ -f "$OUT/acceptance.json" ] || exit 0
-          python - "$OUT/acceptance.json" >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          sudo /usr/bin/python3 - "$OUT/acceptance.json" >> "$GITHUB_STEP_SUMMARY" <<'EOF'
           import json, sys
           r = json.load(open(sys.argv[1], encoding="utf-8"))
           print(f"### agent-service box acceptance: {'PASS' if r['passed'] else 'FAIL'} (supervisor {r['supervisor']})")
