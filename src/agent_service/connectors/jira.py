@@ -182,10 +182,13 @@ class JiraConnector:
         return Prepared(dict(snapshot.data), {}, {}, gaps)
 
     def reconcile_candidates(self, since: float | None) -> list[tuple[str, str]]:
-        """Issues updated since the checkpoint, with the same semantic version as ``fetch``."""
-        minutes = 7 * 24 * 60 if since is None else max(int((self.clock() - since) / 60) + 10, 10)
-        # Relative JQL avoids the account time zone of absolute dates.
-        jql = f"project in ({','.join(self.project_keys)}) AND updated >= -{minutes}m ORDER BY updated ASC"
+        """List all issues for bootstrap/recovery, then changes since the checkpoint."""
+        jql = f"project in ({','.join(self.project_keys)})"
+        if since is not None:
+            # Relative JQL avoids the account time zone of absolute dates.
+            minutes = max(int((self.clock() - since) / 60) + 10, 10)
+            jql += f" AND updated >= -{minutes}m"
+        jql += " ORDER BY updated ASC"
         out, token = [], None
         for _ in range(20):
             query = {"jql": jql, "maxResults": 100, "fields": ",".join(self.fields + ("project", "updated"))}

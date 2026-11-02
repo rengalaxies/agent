@@ -266,10 +266,11 @@ class JiraStand(Stand):
             return (200, self._public(issue), {}) if issue else (404, {"errorMessages": ["not found"]}, {})
         if method == "GET" and path == "/rest/api/3/search/jql":
             jql = query["jql"][0]
-            minutes = int(re.search(r"updated >= -(\d+)m", jql).group(1))
+            window = re.search(r"updated >= -(\d+)m", jql)
+            cutoff = time.time() - int(window.group(1)) * 60 if window else float("-inf")
             projects = re.search(r"project in \(([^)]*)\)", jql).group(1).split(",")
             items = [self._public(i) for i in self.issues.values()
-                     if i["fields"]["project"]["key"] in projects and i["fields"]["_epoch"] >= time.time() - minutes * 60]
+                     if i["fields"]["project"]["key"] in projects and i["fields"]["_epoch"] >= cutoff]
             return 200, {"issues": items, "isLast": True}, {}
         if (m := re.fullmatch(r"/rest/api/3/issue/(\d+)/comment", path)):
             issue_id = m.group(1)
