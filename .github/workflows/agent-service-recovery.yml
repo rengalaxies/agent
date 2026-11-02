@@ -76,7 +76,14 @@ jobs:
           echo "NEW=$NEW" >> "$GITHUB_ENV"
           python tools/agent_service/box/release.py verify "$NEW" | tee "$OUT/new-verify.json"
           python -c 'import json,sys; assert json.load(open(sys.argv[1]))["commit"]==sys.argv[2]' "$OUT/new-verify.json" "$EXPECTED"
-      - name: Start local HTTP stands
+      - name: Qualify full Jira preflight with immutable and candidate targets
+        # The manager must fully discover Jira even when the selected immutable
+        # target's own connector still has its old seven-day bootstrap window.
+        # This step only uses local stands and does not install a service.
+        # Keep the actual systemd lifecycle acceptance below as well.
+        run: |
+          PYTHONPATH=.:src python tests/service/jira_preflight_compatibility.py --target "$OLD" --target "$NEW"
+      - name: Start local HTTP stands for lifecycle acceptance
         run: |
           sudo install -d -o "$(id -u)" -g "$(id -g)" -m 0755 "$STAND"
           nohup python tools/agent_service/box/teststand.py serve --dir "$STAND" --service-port 8090 \

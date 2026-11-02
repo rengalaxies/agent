@@ -182,25 +182,52 @@ class JiraConnector:
         return Prepared(dict(snapshot.data), {}, {}, gaps)
 
     def reconcile_candidates(self, since: float | None) -> list[tuple[str, str]]:
-        """Issues updated since the checkpoint, with the same semantic version as ``fetch``."""
-        minutes = 7 * 24 * 60 if since is None else max(int((self.clock() - since) / 60) + 10, 10)
-        # Relative JQL avoids the account time zone of absolute dates.
-        jql = f"project in ({','.join(self.project_keys)}) AND updated >= -{minutes}m ORDER BY updated ASC"
-        out, token = [], None
+        """List all issues for bootstrap/recovery, then changes since the checkpoint."""
+        jql = f"project in ({','.join(self.project_keys)})"
+        if since is not None:
+            # Relative JQL avoids the account time zone of absolute dates.
+            minutes = max(int((self.clock() - since) / 60) + 10, 10)
+            jql += f" AND updated >= -{minutes}m"
+        jql += " ORDER BY updated ASC"
+        out, token, seen_tokens = [], None, set()
         for _ in range(20):
             query = {"jql": jql, "maxResults": 100, "fields": ",".join(self.fields + ("project", "updated"))}
             if token:
                 query["nextPageToken"] = token
-            page = self._call("GET", "/rest/api/3/search/jql", query=query).json()
-            for issue in page.get("issues", []):
+            try:
+                page = self._call("GET", "/rest/api/3/search/jql", query=query).json()
+            except (ValueError, UnicodeError):
+                raise ClientError("reconcile_listing_invalid") from None
+            if not isinstance(page, dict) or not isinstance(page.get("issues"), list) \
+                    or type(page.get("isLast")) is not bool:
+                raise ClientError("reconcile_listing_invalid")
+            next_token = page.get("nextPageToken")
+            if page["isLast"]:
+                if next_token not in (None, ""):
+                    raise ClientError("reconcile_listing_incomplete")
+            elif not isinstance(next_token, str) or not next_token or next_token in seen_tokens:
+                raise ClientError("reconcile_listing_incomplete")
+            for issue in page["issues"]:
+                fields = issue.get("fields") if isinstance(issue, dict) else None
+                project = fields.get("project") if isinstance(fields, dict) else None
+                if not isinstance(project, dict) or not isinstance(project.get("key"), str) \
+                        or not PROJECT_RE.fullmatch(project["key"]) \
+                        or not RESOURCE_RE.fullmatch(f"jira:{issue.get('id', '')}") \
+                        or not isinstance(issue.get("key"), str) or not issue["key"]:
+                    # A missing requested project is not proof of an out-of-scope
+                    # issue. Skipping it would certify a truncated listing.
+                    raise ClientError("reconcile_listing_invalid")
                 try:
                     snap = self._snapshot(issue)
                 except ResourceNotAllowed:
                     continue
+                except (KeyError, TypeError, ValueError, AttributeError):
+                    raise ClientError("reconcile_listing_invalid") from None
                 out.append((snap.resource_id, snap.version))
-            token = page.get("nextPageToken")
-            if not token or page.get("isLast", False):
+            if page["isLast"]:
                 break
+            token = next_token
+            seen_tokens.add(token)
         else:
             raise ClientError("reconcile_listing_incomplete")
         return out
