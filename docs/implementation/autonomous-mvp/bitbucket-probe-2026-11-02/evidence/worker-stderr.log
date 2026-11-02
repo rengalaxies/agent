@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/change_completion/verification_worker.py", line 6, in <module>
+    resource.setrlimit(resource.RLIMIT_AS, (256*1024*1024, 256*1024*1024))
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: current limit exceeds maximum limit

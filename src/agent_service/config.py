@@ -6,13 +6,16 @@ import json
 import os
 from pathlib import Path
 import time
-from typing import Literal
+from typing import Annotated, Literal
+from urllib.parse import urlsplit
+from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .connectors.github import GitHubAppAuth, GitHubConnector, StaticToken
+from .connectors.bitbucket_read import ApiTokenAuth, BitbucketReadClient
 from .connectors.jira import DEFAULT_FIELDS, BasicAuth, BearerAuth, JiraConnector
-from .http import HttpClient
+from .http import HttpClient, validate_base_url
 from .publisher import DirectorySink
 from .queue import Limits, ServiceStore
 
@@ -37,6 +40,43 @@ class GitHubConfig(Strict):
     bot_login: str  # e.g. "my-app[bot]"; only its comments with our marker are ours
     webhook_secret_env: str
     auth: GitHubAuthConfig
+
+
+BitbucketSlug = Annotated[str, Field(pattern=r"^[a-z0-9][a-z0-9._-]{0,99}$")]
+SecretEnv = Annotated[str, Field(pattern=r"^[A-Za-z_][A-Za-z0-9_]{0,127}$")]
+RepositoryName = Annotated[str, Field(pattern=r"^[a-zA-Z0-9_.-]{1,80}$")]
+
+
+class BitbucketAuthConfig(Strict):
+    email_env: SecretEnv
+    token_env: SecretEnv
+
+
+class BitbucketRepositoryConfig(Strict):
+    uuid: UUID
+    repository_id: RepositoryName
+
+
+class BitbucketConfig(Strict):
+    """Read-only source probe configuration; not yet a registered runtime connector."""
+    api_base: str = "https://api.bitbucket.org/2.0"
+    workspace: BitbucketSlug
+    workspace_uuid: UUID
+    repositories: dict[BitbucketSlug, BitbucketRepositoryConfig] = Field(min_length=1, max_length=64)
+    auth: BitbucketAuthConfig
+
+    @model_validator(mode="after")
+    def scope(self):
+        url = validate_base_url(self.api_base, allow_loopback_http=True)
+        parts = urlsplit(url)
+        local = parts.scheme == 'http' and parts.hostname in {'127.0.0.1', 'localhost', '::1'} and parts.path == '/2.0'
+        if url != 'https://api.bitbucket.org/2.0' and not local:
+            raise ValueError('invalid_bitbucket_api_origin')
+        self.api_base = url
+        if (len({r.uuid for r in self.repositories.values()}) != len(self.repositories)
+                or len({r.repository_id for r in self.repositories.values()}) != len(self.repositories)):
+            raise ValueError('duplicate_bitbucket_repository_identity')
+        return self
 
 
 class JiraAuthConfig(Strict):
@@ -80,6 +120,7 @@ class ServiceConfig(Strict):
     publication: Literal["dry_run", "live"] = "dry_run"
     dry_run_dir: Path | None = None
     github: GitHubConfig | None = None
+    bitbucket: BitbucketConfig | None = None
     jira: JiraConfig | None = None
     analysis: dict = Field(default_factory=dict)  # graph/constitution/model ids, access scope, analysis_seconds
     core: CoreConfig | None = None
@@ -87,13 +128,30 @@ class ServiceConfig(Strict):
     reconcile_seconds: float = Field(default=900, ge=60)
     allow_loopback_http: bool = False  # test stands only
 
+    @model_validator(mode="after")
+    def bitbucket_scope(self):
+        if self.bitbucket:
+            validate_base_url(self.bitbucket.api_base, allow_loopback_http=self.allow_loopback_http)
+            if self.github:
+                gh = self.github
+                mapping = {k.lower(): v for k, v in gh.repository_ids.items()}
+                readable = {r.lower() for r in gh.repositories} | {r.lower() for r in gh.read_repositories}
+                github_ids = {mapping.get(r, r.replace('/', '.')) for r in readable}
+                if github_ids & {r.repository_id for r in self.bitbucket.repositories.values()}:
+                    raise ValueError('cross_provider_repository_id_collision')
+        return self
+
     @classmethod
     def load(cls, path: Path) -> "ServiceConfig":
         text = Path(path).read_text(encoding="utf-8")
         if str(path).endswith((".yaml", ".yml")):
             import yaml
 
-            return cls.model_validate(yaml.safe_load(text))
+            try:
+                document = yaml.safe_load(text)
+            except yaml.YAMLError:
+                raise ValueError('invalid_yaml_configuration') from None
+            return cls.model_validate(document)
         return cls.model_validate(json.loads(text))
 
 
@@ -106,12 +164,14 @@ def _secret(name: str | None) -> str:
 
 def build(config: ServiceConfig, *, clock=time.time, env_secret=_secret):
     """Return (store, connectors, backends) for the configuration."""
+    _runtime_supported(config)
     store = ServiceStore(config.state_path, clock=clock, limits=Limits(**config.limits))
     return (store, *build_connectors(config, clock=clock, env_secret=env_secret))
 
 
 def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secret):
     """Return (connectors, backends) without opening the state: source probes of a release not yet started."""
+    _runtime_supported(config)
     connectors = {}
     if config.github:
         gh = config.github
@@ -141,6 +201,22 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
         root = config.dry_run_dir or config.state_path.parent / "dry-run-comments"
         backends = {name: DirectorySink(root / name) for name in connectors}
     return connectors, backends
+
+
+def _runtime_supported(config):
+    if config.bitbucket:
+        raise ValueError('bitbucket_runtime_not_available_use_probe')
+
+
+def build_bitbucket_reader(config: ServiceConfig, *, env_secret=_secret):
+    """Build only the read probe; no other provider secrets, state or analyzer."""
+    bb = config.bitbucket
+    if bb is None:
+        raise ValueError('bitbucket_not_configured')
+    return BitbucketReadClient(
+        HttpClient(bb.api_base, allow_loopback_http=config.allow_loopback_http),
+        ApiTokenAuth(env_secret(bb.auth.email_env), env_secret(bb.auth.token_env)),
+        workspace=bb.workspace, workspace_uuid=str(bb.workspace_uuid), repositories=bb.repositories)
 
 
 def _document(path: Path):

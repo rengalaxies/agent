@@ -56,7 +56,7 @@ def doctor(service: Service) -> int:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="agent_service")
-    parser.add_argument("command", choices=["serve", "reconcile", "status", "doctor", "smoke"])
+    parser.add_argument("command", choices=["serve", "reconcile", "status", "doctor", "smoke", "bitbucket-probe"])
     parser.add_argument("--config", help="service configuration (all commands except smoke)")
     parser.add_argument("--analyzer", help="trusted module:factory returning an Analyzer")
     parser.add_argument("--host", default="127.0.0.1")
@@ -69,6 +69,19 @@ def main(argv=None) -> int:
         return smoke(args.keep)
     if not args.config:
         parser.error("--config is required")
+    if args.command == 'bitbucket-probe':
+        from .bitbucket_probe import probe
+        from .http import ConnectorError
+
+        try:
+            report = probe(ServiceConfig.load(args.config))
+        except ConnectorError as exc:
+            report = dict(status='FAILED', error=exc.code, reason=exc.detail)
+        except (ValueError, OSError):
+            # Validation inputs and arbitrary I/O messages may contain sensitive values.
+            report = dict(status='FAILED', error='bitbucket_probe_configuration_invalid')
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0 if report['status'] == 'READ_ONLY_VERIFIED' else 1
     service, config = _service(args)
     if args.command == "doctor":
         return doctor(service)

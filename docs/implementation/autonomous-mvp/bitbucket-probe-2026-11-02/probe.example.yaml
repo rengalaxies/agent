@@ -1,0 +1,19 @@
+# Synthetic example, not deployment configuration. Replace all UUID pins with
+# independently verified values; use a separate file from the live service.
+installation_id: bitbucket-probe-example
+environment: test
+state_path: /tmp/agent-bitbucket-probe-unused/state.sqlite
+publication: dry_run
+bitbucket:
+  workspace: pilot
+  workspace_uuid: 11111111-1111-1111-1111-111111111111
+  repositories:
+    orders:
+      uuid: 22222222-2222-2222-2222-222222222222
+      repository_id: bb.orders
+    reporting:
+      uuid: 33333333-3333-3333-3333-333333333333
+      repository_id: bb.reporting
+  auth:
+    email_env: BITBUCKET_EMAIL
+    token_env: BITBUCKET_API_TOKEN
