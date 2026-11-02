@@ -40,8 +40,11 @@ def main():
     from tools.agent_service.box.config import load, read_secrets
     from agent_service.connectors.github import API_VERSION, GitHubAppAuth
     from agent_service.connectors.jira import BasicAuth, JiraConnector
+    from agent_service.connectors.base import parse_marker
     from agent_service.envelope import digest
     from agent_service.http import HttpClient
+    from agent_service.publisher import doc_digest, resource_marker
+    from agent_service.analysis import view_from_result
 
     manifest, manifest_hash = verify_tree(root)
     require(manifest['code']['commit'] == SHA and manifest_hash == MANIFEST, 'wrong_release')
@@ -65,7 +68,8 @@ def main():
             db.execute('BEGIN')
             require(db.execute("SELECT count(*) FROM resources WHERE provider='github'").fetchone()[0] == 0,
                     'pr_resources_present')
-            for row in db.execute("SELECT r.*,j.state AS job_state,j.result,j.resource_version AS job_version "
+            for row in db.execute("SELECT r.*,j.state AS job_state,j.result,j.resource_version AS job_version, "
+                                  "j.job_id,j.attempts,j.event_id "
                                   "FROM resources r LEFT JOIN jobs j ON j.resource_id=r.resource_id "
                                   "AND j.generation=r.generation WHERE r.provider='jira'"):
                 snap = json.loads(row['snapshot'])
@@ -74,6 +78,11 @@ def main():
                 result = json.loads(row['result']) if row['result'] else None
                 require(result is not None, 'analysis_missing:' + snap['key'])
                 require(not row['closed'] and row['job_state'] == 'DONE', 'analysis_not_delivered:' + snap['key'])
+                request = dict(request_id=f"{row['job_id']}:{row['attempts']}", installation_id=cfg.installation_id,
+                               environment=cfg.environment, trigger_kind='jira', source_event=dict(
+                                   event_id=row['event_id'], resource_version=row['job_version']))
+                view = view_from_result(result, request)
+                require(view.compatible, 'invalid_or_mismatched_result:' + snap['key'])
                 require(result['trigger_kind'] == 'jira' and result['profile'] == 'http-requests-6', 'wrong_analysis')
                 require(result['code_version'] == manifest['release_id'], 'wrong_analysis_release')
                 require(result['status'] in {'USEFUL', 'PARTIAL', 'ABSTAINED'}, 'analysis_failed')
@@ -82,10 +91,14 @@ def main():
                 current = jira.fetch(row['resource_id'])
                 require(not current.closed and current.version == row['version'] == row['job_version']
                         == result['resource_version'], 'stale_analysis:' + snap['key'])
-                sink = Path('/var/lib/agent-service/dry-run') / (digest(row['resource_id'])[:24] + '.json')
+                sink = Path('/var/lib/agent-service/dry-run/jira') / (digest(row['resource_id'])[:24] + '.json')
                 require(sink.is_file(), 'dryrun_sink_missing:' + snap['key'])
                 local = json.loads(sink.read_text())
-                require(local['resource_id'] == row['resource_id'], 'wrong_sink')
+                marker, body_digest, generation = parse_marker(local['marker'])
+                require(local['resource_id'] == row['resource_id'] and local['id'] == row['comment_id']
+                        and marker == resource_marker(cfg.installation_id, row['resource_id'])
+                        and generation == row['published_generation'] == row['generation']
+                        and body_digest == row['comment_digest'] == doc_digest(local['doc']), 'stale_or_wrong_sink')
                 output.append(dict(key=snap['key'], resource_id=row['resource_id'], generation=row['generation'],
                                    comment_id=row['comment_id'], version=row['version'], status=result['status'],
                                    reason_code=result['reason_code'], affected=[a['service']['service']
@@ -107,16 +120,21 @@ def main():
                      query={'projectKey': 'KAN', 'permissions': ','.join(permissions)}).json()
     require(all(data.get('permissions', {}).get(p, {}).get('havePermission') is True for p in permissions),
             'jira_permissions_missing')
-    issues, token = [], None
+    issues, token, seen_tokens = [], None, set()
     for _ in range(20):
         query = dict(jql='project in (KAN) ORDER BY updated ASC', maxResults=100, fields='project,updated')
         if token:
             query['nextPageToken'] = token
         page = jira._call('GET', '/rest/api/3/search/jql', query=query).json()
+        require(isinstance(page, dict) and isinstance(page.get('issues'), list)
+                and type(page.get('isLast')) is bool, 'full_listing_invalid')
         issues.extend(page['issues'])
         token = page.get('nextPageToken')
-        if not token:
+        if page['isLast']:
+            require(token in (None, ''), 'full_listing_incomplete')
             break
+        require(isinstance(token, str) and bool(token) and token not in seen_tokens, 'full_listing_incomplete')
+        seen_tokens.add(token)
     else:
         raise CheckError('full_listing_incomplete')
     require(KEYS <= {i['key'] for i in issues}, 'expected_issues_not_accessible')

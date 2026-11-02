@@ -291,6 +291,7 @@ class Service:
         except ConnectorError as exc:
             self.store.note("graph_reconcile_failed", "github", exc.code)
             return None
+        self.store.clear_notice("graph_reconcile_failed", "github")
         failed = [r for r in results if r.get("error") or r.get("status") == "UNAVAILABLE"]
         if failed:
             self.store.note("graph_source_unavailable", None, ",".join(sorted(r["source"] for r in failed)))

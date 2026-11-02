@@ -235,6 +235,7 @@ class JiraStand(Stand):
         self.comments: dict[str, list[dict]] = {}
         self.next_comment = 5000
         self.on_comment = None  # callable(issue_id, comment) after create/update, e.g. to send webhooks
+        self.search_page_size = 100
 
     def add_issue(self, issue_id, key, project, summary, description):
         self.issues[str(issue_id)] = {"id": str(issue_id), "key": key, "fields": {
@@ -271,7 +272,14 @@ class JiraStand(Stand):
             projects = re.search(r"project in \(([^)]*)\)", jql).group(1).split(",")
             items = [self._public(i) for i in self.issues.values()
                      if i["fields"]["project"]["key"] in projects and i["fields"]["_epoch"] >= cutoff]
-            return 200, {"issues": items, "isLast": True}, {}
+            items.sort(key=lambda issue: (issue["fields"]["updated"], int(issue["id"])))
+            start = int(query.get("nextPageToken", ["0"])[0])
+            size = min(int(query.get("maxResults", ["100"])[0]), self.search_page_size)
+            end = start + size
+            page = {"issues": items[start:end], "isLast": end >= len(items)}
+            if not page["isLast"]:
+                page["nextPageToken"] = str(end)
+            return 200, page, {}
         if (m := re.fullmatch(r"/rest/api/3/issue/(\d+)/comment", path)):
             issue_id = m.group(1)
             if issue_id not in self.issues:

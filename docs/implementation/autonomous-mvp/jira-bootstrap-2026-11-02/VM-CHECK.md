@@ -163,9 +163,9 @@ PY
 ```
 
 Results helper открывает SQLite только `mode=ro`, не создаёт ServiceStore/worker.
-Требует KAN-1..3: текущая generation имеет job DONE, валидный результат Jira,
+Требует KAN-1..3: текущая generation имеет job DONE, результат Jira проходит штатную contract/request validation (job_id/attempt, event, installation/environment),
 profile6/code_version release234, актуальную семантическую version из свежего GET,
-`jira_without_diff`, model=null/model_calls0 и локальный DirectorySink JSON.
+`jira_without_diff`, model=null/model_calls0 и актуальный локальный DirectorySink JSON в `dry-run/jira/`: id, marker, generation, doc digest и queue receipt совпадают.
 Также требует отсутствия GitHub PR resources. `existing_issues_missing` или
 `analysis_missing:KAN-N` — FAIL, не успех чтения API. Старая отсутствующая в БД
 задача на release234 ожидаемо не пройдёт; это нельзя исправлять изменением самой
@@ -217,7 +217,7 @@ comment hashes прежние, локальные comment IDs прежние, р
 restart — нет. Проверить matching writer/manifest/config/schema/counts в backup,
 safety backup и guard checkpoint. Не удалять backup/config/state markers.
 
-**На fresh install предыдущего установленного service нет.** Честный downgrade
+**На fresh install предыдущего установленного service нет; rollback — NOT_APPLICABLE.** Честный downgrade
 тогда NOT_APPLICABLE/NOT_RUN: нужны staged/verified старый release, его bindings
 и valid matching pre-update backup от реальной предыдущей установки. Backup
 старого демо не является backup release14e; не устанавливать14e ради создания
@@ -255,3 +255,47 @@ API/source отказ может удержать publisher и при abort. И�
 демо: loopback80=200,8080=200,18081=401 как baseline;401 не доказывает login UI.
 Reboot только оператором после проверки автозапуска и гарантированного повторного
 входа; он этим исполнителем не выполнялся.
+
+
+## Дополнение #89: полный обход и проверка отказов
+
+Исправление PR относится к будущему отдельно принятому выпуску. Этот runbook и
+helper намеренно закреплены на **опубликованном234**, где исходный30д-дефект остаётся.
+Они не устанавливают код ветки PR и не заменяют pin. Для будущего выпуска отдельно
+пересверяются archive/manifest/SHA и требования helper; не убирать exact checks
+ради успешного результата. Предложение к merge/release и CI окончательного head
+записываются в PR; ВМ по этим командам здесь не использовалась.
+
+- Bootstrap без checkpoint читает все страницы настроенных проектов до явного
+  `isLast=true`. Ошибка HTTP503 на следующей странице, неверный JSON/issue shape,
+  пропавший/повторный token, `isLast=false` без token и противоречивый terminal
+  ответ не продвигают Jira checkpoint. Накопленный частичный список не применяется.
+- Сохраняется существующий предел20 страниц по100 запросу: двадцатая терминальная
+  страница допустима; необходимость21-й — явный отказ `reconcile_listing_incomplete`.
+  Это предел квалифицированного объёма, не бесконечный обход. Для проекта больше
+  этого объёма bootstrap/recovery остаются заблокированы; не считать их завершёнными.
+- Повтор после API repair/прерывания начинает полный обход с первой страницы.
+  При остановке после записи части synthetic events или snapshots уже записанные
+  версии coalesce-ятся; новые jobs/comment IDs для них не размножаются.
+- Recovery выполняет весь listing/fetch до применения snapshots. Ошибка также во
+  **второй** provider reconciliation или при получении актуальных Git refs/графа
+  оставляет preflight незавершённым. `box_recovery` не записывается; guard не
+  переходит к publisher. Сохранённый ранее свежий граф не маскирует новый API отказ.
+- Повтор preflight после reopen, но до completion checkpoint, не открывает ещё
+  одно поколение для уже QUEUED/RUNNING работы. При том же завершённом token
+  обычный повтор/restart также не порождает новые поколения. Комментарии не
+  публикуются из preflight; фактический worker обрабатывает очередь после guard.
+
+Проверки в `test_jira_listing_recovery.py`: настоящие HTTP pages (5 старых задач,
+3 страницы), restart/idempotence, HTTP503 в pagination/fetch/второй сверке/graph
+read, границы20/21, malformed responses, durable interruption до checkpoint и
+**4 subprocess SIGKILL** — bootstrap/preflight × pagination/первая durable запись.
+Проверки helper используют настоящие build/ServiceStore/DirectorySink producer
+и отклоняют stale/tampered sink, неполный контракт и результат другого request.
+Это локальные регрессии, не доступ к реальной Jira или целевой ВМ.
+
+Fresh install запускает worker уже внутри install. Во время работающего сервиса
+параллельный `python -m agent_service reconcile` **запрещён**: он запускает второй
+цикл обработки. Для наблюдения использовать только status/doctor/read-only helper.
+Rollback без предыдущего установленного сервиса, его bindings и matching backup
+— **NOT_APPLICABLE**, не попытка запустить старый manager и не замена restore.

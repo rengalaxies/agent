@@ -44,3 +44,37 @@ Local HTTP stands and authored examples establish code behavior, not real Jira
 intent quality, target-VM readiness or client benefit. MODEL OFF. No target VM,
 deployment pin or published release is changed. This PR does not patch immutable
 legacy release14e's connector when a manager runs that older target's code.
+
+
+## Follow-up validation before merge (PR #89)
+
+Independent agent review identified and the revision fixes:
+
+1. Missing/contradictory completion markers, token cycles and malformed issue
+   routing data could silently certify a partial listing. The pager now validates
+   each enhanced-search response, including the requested project identity.
+2. A second provider reconciliation or Git-ref read could fail after the initial
+   preflight listing succeeded. Ordinary reconciliation deliberately catches API
+   errors; preflight now checks provider notices and the current graph result
+   before its completion checkpoint. Removed-provider notices do not block a
+   configured provider, and a repaired graph read clears its stale error notice.
+3. VM checker used a path without the provider subdirectory and its original
+   hand-authored fixture reproduced that mistake. Tests now use production build,
+   queue delivery and DirectorySink, and the checker validates current sink
+   receipt plus the standard result contract/request binding.
+
+The added regression matrix covers real HTTP pagination, retry from page one,
+ordinary and preflight restart idempotence, HTTP503 during pagination/fetch/a
+second read/graph refresh, invalid pages, 20/21-page boundaries, and interruptions
+before durable checkpoints. Four cases SIGKILL a fresh interpreter during paging
+or after the first durable event/snapshot; a new service on the same SQLite state
+completes exactly once. Preflight never runs analysis or publication.
+
+The original 20-page bound is retained and explicit: an oversized project fails
+closed instead of silently becoming complete. No new state schema or model is
+introduced. Final source/review/CI provenance is recorded on PR #89; no merge,
+release publication, deployment pin update or target-VM action is performed.
+
+Final local execution: 103 targeted tests PASS in53.602s, including all final
+helper tests. Independent final agent review found no remaining blocking
+source finding in scope; details in `jira-bootstrap-2026-11-02/REVIEW.md`.

@@ -64,7 +64,17 @@ def main():
         ids.update(r["resource_id"] for r in service.store.resources(provider))
         snapshots.extend(connector.fetch(rid) for rid in sorted(ids))
     service.recover()
-    service.reconcile()
+    reconciled = service.reconcile()
+    # reconcile() deliberately keeps the ordinary worker alive on provider errors.
+    # Recovery must instead keep its guard closed, including a later failed read
+    # after the initial full listing succeeded.
+    if any(n["kind"] == "reconcile_failed" and n.get("subject") in service.connectors
+           for n in service.store.notices()):
+        raise PreflightError("recovery_provider_reconcile_failed")
+    if getattr(service.analyzer, "reconcile_graph", None) is not None and "github" in service.connectors:
+        graph = reconciled.get("graph")
+        if graph is None or any(r.get("error") or r.get("status") == "UNAVAILABLE" for r in graph):
+            raise PreflightError("recovery_source_unavailable")
     sources = service.analyzer.query().source_freshness()
     if not sources or any(s.get("status") == "UNAVAILABLE" for s in sources):
         raise PreflightError("recovery_source_unavailable")
