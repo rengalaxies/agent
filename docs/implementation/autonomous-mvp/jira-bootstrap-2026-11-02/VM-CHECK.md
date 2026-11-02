@@ -1,12 +1,14 @@
 # Принятый immutable release для оператора
 
-Code SHA: `292db6b55b4144a11080fa7813095478702c69ef`.
-Archive SHA256: `b49d54ef12e2e3453da9a28fb219fff003fbad6f64c5fded550e7ca9ef5971a2`.
-Manifest SHA256: `9e4287cea0db42f4e64dc23e1ef3231ad12c2029ee9d283660d52f2f09205299`.
-[Release / published acceptance](https://github.com/rengalaxies/agent/actions/runs/41403235118).
+Code SHA: `5fb6484fecff116d005137f0acaaa81d2d25854c`.
+Archive SHA256: `d2ef14de92736095f21e06d938b9311647f9e935fd692e982302a72c9e09706d`.
+Manifest SHA256: `49477dc1d6576008133c75b5cef761f5c73d70bf3f05971da6b0c3c6ca5c7bd7`.
+[Release / published acceptance](https://github.com/rengalaxies/agent/actions/runs/41440998605).
+[Архив](https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g5fb6484fecff/agent-service-0.1.0-g5fb6484fecff-linux-x86_64-cp312.tar.gz).
+[Published umask077 qualification](https://github.com/rengalaxies/agent/actions/runs/41441279257).
 Pin не менялся; target VM NOT_RUN.
 
-# Проверка release292 на ВМ
+# Проверка release5fb на ВМ
 
 #89 слит из проверенного head; исходный дефект7-дневного bootstrap устранён.
 Опубликованный архив скачан и проверен: code и manifest соответствуют SHA выше.
@@ -55,22 +57,22 @@ Helper находится вне release и не меняет установле
 
 ```bash
 umask 077
-NAME=agent-service-0.1.0-g292db6b55b41-linux-x86_64-cp312
+NAME=agent-service-0.1.0-g5fb6484fecff-linux-x86_64-cp312
 ARCHIVE="$PWD/$NAME.tar.gz"
 CANDIDATE="$PWD/box.candidate.yaml"
 CHECK="$PWD/vm_check.py"
 NEW="/opt/agent-service/releases/$NAME"
 EVIDENCE="$PWD/vm-evidence"
 mkdir -p "$EVIDENCE"
-printf '%s  %s\n' b49d54ef12e2e3453da9a28fb219fff003fbad6f64c5fded550e7ca9ef5971a2 "$ARCHIVE" | sha256sum -c -
+printf '%s  %s\n' d2ef14de92736095f21e06d938b9311647f9e935fd692e982302a72c9e09706d "$ARCHIVE" | sha256sum -c -
 tar -xzf "$ARCHIVE"
-printf '%s  %s\n' 9e4287cea0db42f4e64dc23e1ef3231ad12c2029ee9d283660d52f2f09205299 "$PWD/$NAME/manifest.json" | sha256sum -c -
+printf '%s  %s\n' 49477dc1d6576008133c75b5cef761f5c73d70bf3f05971da6b0c3c6ca5c7bd7 "$PWD/$NAME/manifest.json" | sha256sum -c -
 python3 "$PWD/$NAME/app/tools/agent_service/box/release.py" verify "$PWD/$NAME"
 sudo ss -ltnp 'sport = :8091'
 sudo python3 "$PWD/$NAME/box" plan --config "$CANDIDATE" --json > "$EVIDENCE/plan.json"
 ```
 
-У verify: commit=полный292db6…, status=VERIFIED. У plan problems=[] и
+У verify: commit=полный5fb648…, status=VERIFIED. У plan problems=[] и
 exit0. Bootstrap plan может **stage-ить** проверенный release/venv: это не service
 install и не запуск worker. Повторно проверить staged tree:
 
@@ -89,10 +91,10 @@ Helper возвращает exit0/ok=true только при active owner ident
 
 ## Install → identities/doctor → dry_run
 
-Для нового release292 первоначальный дефект исправлен. После published acceptance оператор выполняет согласованную проверку dry_run-контура:
+Для нового release5fb первоначальный дефект исправлен. После published acceptance оператор выполняет согласованную проверку dry_run-контура:
 
 ```bash
-sudo python3 "$NEW/box" install --config "$CANDIDATE" --json > "$EVIDENCE/install.json"
+sudo /bin/sh -c 'umask 077; exec /usr/bin/python3 "$@"' sh "$NEW/box" install --config "$CANDIDATE" --json > "$EVIDENCE/install.json"
 sudo /usr/local/sbin/agent-service-box status --json > "$EVIDENCE/status.json"
 sudo /usr/local/sbin/agent-service-box doctor --json > "$EVIDENCE/doctor.json"
 sudo systemctl cat agent-service.service
@@ -102,7 +104,7 @@ sudo journalctl -u agent-service -u agent-service-sync --no-pager -n 100
 
 Exit install:0 готово;2 процесс есть, сценарий NOT_READY — разбирать причины;1 отказ.
 Status: manager/invoked_cli/release/loaded.commit/state_identity.writer соответствуют
-release292 и manifest hash; process/scenario READY; recovery.pending=null;
+release5fb и manifest hash; process/scenario READY; recovery.pending=null;
 profile6/core_digest/constitution совпадают с manifest; sources CURRENT, queue без
 ошибок. ExecStart должен вести в **новый guard**, PID совпадать с loaded.json.
 Не засчитывать один /healthz. Doctor проверяет search/read, не /myself или качество.
@@ -129,10 +131,10 @@ PY
 
 Results helper открывает SQLite только `mode=ro`, не создаёт ServiceStore/worker.
 Требует KAN-1..3: текущая generation имеет job DONE, результат Jira проходит штатную contract/request validation (job_id/attempt, event, installation/environment),
-profile6/code_version release292, актуальную семантическую version из свежего GET,
+profile6/code_version release5fb, актуальную семантическую version из свежего GET,
 `jira_without_diff`, model=null/model_calls0 и актуальный локальный DirectorySink JSON в `dry-run/jira/`: id, marker, generation, doc digest и queue receipt совпадают.
 Также требует отсутствия GitHub PR resources. `existing_issues_missing` или
-`analysis_missing:KAN-N` — FAIL, не успех чтения API. Старая отсутствующая в БД задача на новом release292 должна быть обнаружена полным обходом; пропуск — FAIL, не повод менять саму задачу. В текущих KAN-1..3 может не оказаться старой задачи:
+`analysis_missing:KAN-N` — FAIL, не успех чтения API. Старая отсутствующая в БД задача на новом release5fb должна быть обнаружена полным обходом; пропуск — FAIL, не повод менять саму задачу. В текущих KAN-1..3 может не оказаться старой задачи:
 для проверки старых задач дополнительно использовать локальную регрессию из #89, не изменять Jira timestamps.
 
 Качество проверить **локально на ВМ** по текстам трёх задач и result/DirectorySink,
@@ -188,19 +190,19 @@ safety backup и guard checkpoint. Не удалять backup/config/state marke
 
 ```bash
 OLD=agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312
-sudo python3 "$NEW/box" rollback --to "$OLD" --json > "$EVIDENCE/rollback.json"
+sudo /bin/sh -c 'umask 077; exec /usr/bin/python3 "$@"' sh "$NEW/box" rollback --to "$OLD" --json > "$EVIDENCE/rollback.json"
 sudo /usr/local/sbin/agent-service-box status --json > "$EVIDENCE/status-old.json"
 sudo /usr/local/sbin/agent-service-box doctor --json > "$EVIDENCE/doctor-old.json"
-sudo python3 "$NEW/box" update --config "$CANDIDATE" --json > "$EVIDENCE/re-upgrade.json"
+sudo /bin/sh -c 'umask 077; exec /usr/bin/python3 "$@"' sh "$NEW/box" update --config "$CANDIDATE" --json > "$EVIDENCE/re-upgrade.json"
 sudo /usr/local/sbin/agent-service-box status --json > "$EVIDENCE/status-re-upgraded.json"
 sudo /usr/local/sbin/agent-service-box doctor --json > "$EVIDENCE/doctor-re-upgraded.json"
 ```
 
-После downgrade manager/invoked CLI/wrapper/timers/guard остаются292; loaded service
+После downgrade manager/invoked CLI/wrapper/timers/guard остаются 5fb; loaded service
 и state writer становятся14e/profile4. Из-за несовместимых semantics нужен
-restored_backup, не code-only switch. После re-upgrade снова292/profile6,
+restored_backup, не code-only switch. После re-upgrade снова 5fb/profile6,
 актуальные результаты, прежние resource/comment IDs. Проверку `vm_check.py results`
-выполнять на292, не на14e: helper намеренно требует292. Самостоятельный bootstrap старого immutable target не меняется. Однако исправленный
+выполнять на 5fb, не на14e: helper намеренно требует 5fb. Самостоятельный bootstrap старого immutable target не меняется. Однако исправленный
 manager выполняет полный Jira discovery при recovery и для старого target; архив
 не патчится, auth/fetch/semantic version принадлежат его коду.
 
@@ -223,7 +225,7 @@ Reboot только оператором после проверки автоз�
 
 ## Дополнение #89: полный обход и проверка отказов
 
-#89 слит, новый immutable release292 выпущен из merge SHA. Команды и helper
+#89 слит, новый immutable release5fb выпущен из merge SHA. Команды и helper
 закреплены на новом archive/manifest; pin не менялся. Published acceptance
 зафиксирована в итогах release workflow, ВМ остаётся NOT_RUN.
 
@@ -271,3 +273,24 @@ immutable14e и234. Module paths проверены под соответств�
 повторяет эту матрицу с published14e и exact candidate до прежнего systemd
 lifecycle acceptance. Ограничение20 страниц и точные критерии завершения
 применяются ко всем этим manager recovery targets.
+
+
+## Дополнение #91: App Git и restrictive umask
+
+Новый immutable release5fb содержит исправления App Git password (raw installation
+token без HTTP Bearer prefix) и staging/config parent traversal. Предыдущий
+release292 остаётся неизменённым. Проверка App использует реальный HTTPS Git
+clone/fetch с synthetic token exchange; LIVE App credentials этим не доказаны.
+
+После install под umask077 проверить от фактического service user:
+
+```bash
+sudo -u agent-service test -x /opt/agent-service
+sudo -u agent-service test -x /opt/agent-service/releases
+sudo -u agent-service test -x /etc/agent-service
+sudo /bin/sh -c 'test "$(stat -c %a /etc/agent-service/secrets.env)" = 600'
+```
+
+Published-asset acceptance и отдельный umask077 qualification фиксируются в итогах
+выпуска. Root-private acceptance reports читаются под root; их права не ослаблять.
+На target VM ничего не выполнялось, deployment pin не меняется этим документом.

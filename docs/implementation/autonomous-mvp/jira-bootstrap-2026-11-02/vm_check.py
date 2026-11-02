@@ -1,6 +1,6 @@
 """Read-only VM evidence. No Service/ServiceStore, worker, publisher or DB write.
 
-Use release292's staged venv with -I -B, as root. Secret values stay in memory.
+Use release5fb's staged venv with -I -B, as root. Secret values stay in memory.
 API mode exchanges/revokes its own App token; all other HTTP requests are GET.
 """
 import argparse
@@ -11,9 +11,9 @@ import sqlite3
 import sys
 import time
 
-SHA = '292db6b55b4144a11080fa7813095478702c69ef'
-MANIFEST = '9e4287cea0db42f4e64dc23e1ef3231ad12c2029ee9d283660d52f2f09205299'
-NAME = 'agent-service-0.1.0-g292db6b55b41-linux-x86_64-cp312'
+SHA = '5fb6484fecff116d005137f0acaaa81d2d25854c'
+MANIFEST = '49477dc1d6576008133c75b5cef761f5c73d70bf3f05971da6b0c3c6ca5c7bd7'
+NAME = 'agent-service-0.1.0-g5fb6484fecff-linux-x86_64-cp312'
 KEYS = {'KAN-1', 'KAN-2', 'KAN-3'}
 PERMS = {'metadata': 'read', 'contents': 'read', 'pull_requests': 'read', 'issues': 'write'}
 
