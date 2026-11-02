@@ -90,17 +90,21 @@ jobs:
           cat "$STAND/stand.json"
           sudo install -D -m 0600 -o root -g root "$STAND/secrets.env" /etc/agent-service/secrets.env
       - name: Plan (no changes) with the host Python
-        run: sudo /usr/bin/python3 "$REL_A/box" plan --config "$STAND/box.yaml"
+        run: sudo /bin/sh -c 'umask 077; exec /usr/bin/python3 "$1/box" plan --config "$2"' sh "$REL_A" "$STAND/box.yaml"
       - name: Acceptance on the installed releases (systemd)
         run: |
-          sudo /usr/bin/python3 "$REL_A/app/tools/agent_service/box/acceptance.py" --stand "$STAND/stand.json" \
-            --release "$REL_A" --update "$REL_C" --schema-update "$REL_B" --broken-update "$REL_D" \
-            --output "$OUT/acceptance.json"
+          sudo /bin/sh -c 'umask 077; exec /usr/bin/python3 "$1/app/tools/agent_service/box/acceptance.py" --stand "$2/stand.json" --release "$1" --update "$3" --schema-update "$4" --broken-update "$5" --output "$6/acceptance.json"' sh "$REL_A" "$STAND" "$REL_C" "$REL_B" "$REL_D" "$OUT"
+      - name: Service user can traverse staged parents after umask077 install
+        run: |
+          sudo -u agent-service test -x /opt/agent-service
+          sudo -u agent-service test -x /opt/agent-service/releases
+          sudo -u agent-service test -x /etc/agent-service
+          sudo /bin/sh -c 'test "$(stat -c %a /etc/agent-service/secrets.env)" = 600'
       - name: Summary
         if: always()
         run: |
           [ -f "$OUT/acceptance.json" ] || exit 0
-          python - "$OUT/acceptance.json" >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          sudo /usr/bin/python3 - "$OUT/acceptance.json" <<'EOF' | tee -a "$GITHUB_STEP_SUMMARY"
           import json, sys
           r = json.load(open(sys.argv[1], encoding="utf-8"))
           print(f"### agent-service box acceptance: {'PASS' if r['passed'] else 'FAIL'} (supervisor {r['supervisor']})")

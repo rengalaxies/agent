@@ -75,6 +75,11 @@ def _readonly(root: Path):
 def stage(source: Path, releases: Path, release, layout) -> Path:
     """Copy a verified release into ``releases/<name>`` with its own venv. Idempotent."""
     manifest, manifest_sha = release.verify_tree(source)
+    # These manager-owned ancestors must be traversable by the service user,
+    # including a cached stage first created with a restrictive root umask.
+    for directory in (releases.parent, releases):
+        directory.mkdir(parents=True, exist_ok=True)
+        os.chmod(directory, 0o755)
     final = releases / manifest["name"]
     marker = final / ".staged.json"
     if marker.is_file():
@@ -87,7 +92,6 @@ def stage(source: Path, releases: Path, release, layout) -> Path:
             pass
         broken = releases / f".broken-{manifest['name']}-{int(time.time())}"
         final.rename(broken)  # keep it for diagnosis; a verified copy replaces it
-    releases.mkdir(parents=True, exist_ok=True)
     tmp = releases / f".staging-{manifest['name']}-{os.getpid()}"
     if tmp.exists():
         shutil.rmtree(tmp)

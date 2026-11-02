@@ -244,6 +244,7 @@ class Box:
                             "--shell", "/usr/sbin/nologin", SERVICE_USER], check=True)
             changed.append("user")
         L.etc.mkdir(parents=True, exist_ok=True)
+        self.chown(L.etc, 0o750, group_only=True)
         for d in (L.generated, self.bindings):
             d.mkdir(parents=True, exist_ok=True)
             self.chown(d, 0o750, group_only=True)
