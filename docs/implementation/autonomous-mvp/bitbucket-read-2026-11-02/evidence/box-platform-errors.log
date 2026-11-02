@@ -1,0 +1,42 @@
+.E....................EE.................................................
+======================================================================
+ERROR: test_new_and_cached_stage_repair_only_manager_owned_parents (tools.agent_service.box.tests.test_bootstrap_access.StageAccess.test_new_and_cached_stage_repair_only_manager_owned_parents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/tests/test_bootstrap_access.py", line 39, in test_new_and_cached_stage_repair_only_manager_owned_parents
+    staged = bootstrap.stage(source,releases,release,layout)
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/bootstrap.py", line 104, in stage
+    python = _host_python(manifest["python"])
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/bootstrap.py", line 53, in _host_python
+    raise SystemExit(f"Нужен Python {version} (python{version} не найден). На Ubuntu 24.04 он установлен "
+                     f"по умолчанию как python3.")
+SystemExit: Нужен Python 3.12 (python3.12 не найден). На Ubuntu 24.04 он установлен по умолчанию как python3.
+
+======================================================================
+ERROR: test_killed_guard_cannot_leave_an_orphan_sqlite_writer (tools.agent_service.box.tests.test_recovery.GuardProcessLifetime.test_killed_guard_cannot_leave_an_orphan_sqlite_writer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/tests/test_recovery.py", line 280, in test_killed_guard_cannot_leave_an_orphan_sqlite_writer
+    self.check_stop(signal.SIGKILL)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/tests/test_recovery.py", line 304, in check_stop
+    before = db.execute("SELECT count(*) FROM ticks").fetchone()[0]
+             ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: ticks
+
+======================================================================
+ERROR: test_stopping_guard_stops_its_sqlite_preflight_writer_before_return (tools.agent_service.box.tests.test_recovery.GuardProcessLifetime.test_stopping_guard_stops_its_sqlite_preflight_writer_before_return)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/tests/test_recovery.py", line 277, in test_stopping_guard_stops_its_sqlite_preflight_writer_before_return
+    self.check_stop(signal.SIGTERM)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/agent_service/box/tests/test_recovery.py", line 304, in check_stop
+    before = db.execute("SELECT count(*) FROM ticks").fetchone()[0]
+             ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: ticks
+
+----------------------------------------------------------------------
+Ran 73 tests in 13.125s
+
+FAILED (errors=3)

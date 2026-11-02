@@ -1,0 +1,47 @@
+Local Python 3.13/macOS Core discovery interrupted after about seven minutes; NOT PASS.
+Last traceback excerpt (autonomous model protocol regression, outside Bitbucket):
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/autonomous_mvp/dryrun.py", line 165, in dry_run
+    states.append(runner.execute_phase(
+                  ~~~~~~~~~~~~~~~~~~~~^
+        phase, model_id, program=program, cases=cases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        manifest_digest=manifest["manifest_digest"] if manifest else "dry-run", source_sha="0" * 40,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        transport=transport, backend_for=backend_for, work=Path(work) / phase))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/autonomous_mvp/runner.py", line 168, in execute_phase
+    _, result = run_case(case, repeat, transport=transport, model=model, program=program,
+                ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         phase_deadline_epoch=led.state["deadline_epoch"], work=case_work,
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         breaker=breaker, attempts=attempts)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/autonomous_mvp/runner.py", line 83, in run_case
+    report, accounted, versions = protocol_mod.run(
+                                  ~~~~~~~~~~~~~~~~^
+        case, repos, model=model, parameters=call_parameters(program), transport=transport, work=work,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        deadline_epoch=deadline_epoch, run_id=program["run_id"], attempts=attempts, breaker=breaker)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/tools/autonomous_mvp/protocol.py", line 250, in run
+    report = run_investigation(graph, context["id"], model=accounted, deadline_epoch=deadline_epoch,
+                               request_id=case["case_id"], graph_store=gs)
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/executor.py", line 299, in run_investigation
+    graph._current(inv.context)  # stale or superseded context: the caller decides (SUPERSEDED)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/engine.py", line 106, in _current
+    if self.freshness(context)["status"] != "CURRENT":
+       ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/engine.py", line 92, in freshness
+    return pinned_freshness(self.policy, context)
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/sources.py", line 192, in pinned_freshness
+    tree = GitReader(Path(repo.root), deadline=deadline).resolve(snap["commit"], repo.allowed_refs)
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/git_sources.py", line 165, in resolve
+    raw = objects.contents(commit, "commit") if objects.info(commit) else None
+          ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/git_sources.py", line 116, in contents
+    self.reader.verify(oid, kind, data)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read/src/agent_graph/git_sources.py", line 155, in verify
+    actual = hashlib.new(self.format, f"{kind} {len(data)}\0".encode() + data).hexdigest()
+KeyboardInterrupt
