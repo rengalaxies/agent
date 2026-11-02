@@ -1,13 +1,115 @@
 name: agent-service exact release recovery
-on:
+permissions:
+  contents: read
+jobs:
+  recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      EXPECTED: ${{ inputs.expected_main_sha || github.event.pull_request.head.sha
+        || github.sha }}
+      CANDIDATE_URL: ${{ inputs.candidate_url }}
+      CANDIDATE_SHA: ${{ inputs.candidate_sha256 }}
+      STAND: /srv/box-recovery-stand
+      OUT: ${{ github.workspace }}/work/recovery
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ inputs.expected_main_sha || github.event.pull_request.head.sha ||
+          github.sha }}
+        fetch-depth: 0
+        persist-credentials: false
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: '3.12'
+    - name: Exact source and unit regressions
+      run: 'test "$(git rev-parse HEAD)" = "$EXPECTED"
+
+        mkdir -p "$OUT" /tmp/recovery-old /tmp/recovery-new
+
+        python -m pip install --disable-pip-version-check --require-hashes -r infra/agent_service/requirements.lock
+
+        PYTHONPATH=.:src python -m unittest discover -s tools/agent_service/box/tests
+        -t . -v
+
+        '
+    - name: Download real published release14e (never rebuilt or patched)
+      run: "curl --fail --silent --show-error --location --proto '=https' --retry\
+        \ 5 --max-time 300 \\\n  -o /tmp/old.tar.gz https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g14e65e8affe3/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312.tar.gz\n\
+        echo '95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013  /tmp/old.tar.gz'\
+        \ | sha256sum -c -\ntar -xzf /tmp/old.tar.gz -C /tmp/recovery-old\necho \"\
+        OLD=$(find /tmp/recovery-old -mindepth 1 -maxdepth 1 -type d)\" >> \"$GITHUB_ENV\"\
+        \npython tools/agent_service/box/release.py verify /tmp/recovery-old/agent-service-*\
+        \ | tee \"$OUT/old-verify.json\"\n"
+    - name: Build exact candidate twice or download the exact published candidate
+      run: "if [ -n \"$CANDIDATE_URL\" ]; then\n  [[ \"$CANDIDATE_URL\" == https://github.com/rengalaxies/agent/releases/download/*\
+        \ ]]\n  [[ \"$CANDIDATE_SHA\" =~ ^[0-9a-f]{64}$ ]]\n  curl --fail --silent\
+        \ --show-error --location --proto '=https' --retry 5 --max-time 300 \\\n \
+        \   -o /tmp/candidate.tar.gz \"$CANDIDATE_URL\"\n  echo \"$CANDIDATE_SHA \
+        \ /tmp/candidate.tar.gz\" | sha256sum -c -\n  sha256sum /tmp/candidate.tar.gz\
+        \ > \"$OUT/downloaded-candidate.sha256\"\n  tar -xzf /tmp/candidate.tar.gz\
+        \ -C /tmp/recovery-new\nelse\n  python tools/agent_service/box/release.py\
+        \ build --commit \"$EXPECTED\" --output dist/A > \"$OUT/build.json\"\n  python\
+        \ tools/agent_service/box/release.py build --commit \"$EXPECTED\" --output\
+        \ dist/B > /dev/null\n  cmp dist/A/*.tar.gz dist/B/*.tar.gz\n  (cd dist/A\
+        \ && sha256sum -c ./*.sha256)\n  cp dist/A/*.manifest.json dist/A/*.sha256\
+        \ \"$OUT/\"\n  tar -xzf dist/A/*.tar.gz -C /tmp/recovery-new\nfi\nNEW=$(find\
+        \ /tmp/recovery-new -mindepth 1 -maxdepth 1 -type d)\necho \"NEW=$NEW\" >>\
+        \ \"$GITHUB_ENV\"\npython tools/agent_service/box/release.py verify \"$NEW\"\
+        \ | tee \"$OUT/new-verify.json\"\npython -c 'import json,sys; assert json.load(open(sys.argv[1]))[\"\
+        commit\"]==sys.argv[2]' \"$OUT/new-verify.json\" \"$EXPECTED\"\n"
+    - name: Qualify full Jira preflight with immutable and candidate targets
+      run: 'PYTHONPATH=.:src python tests/service/jira_preflight_compatibility.py
+        --target "$OLD" --target "$NEW"
+
+        '
+    - name: Start local HTTP stands for lifecycle acceptance
+      run: "sudo install -d -o \"$(id -u)\" -g \"$(id -g)\" -m 0755 \"$STAND\"\nnohup\
+        \ python tools/agent_service/box/teststand.py serve --dir \"$STAND\" --service-port\
+        \ 8090 \\\n  > /tmp/recovery-stand.log 2>&1 &\nfor _ in $(seq 1 60); do [\
+        \ -f \"$STAND/stand.json\" ] && break; sleep 1; done\nsudo install -D -m 0600\
+        \ -o root -g root \"$STAND/secrets.env\" /etc/agent-service/secrets.env\n"
+    - name: Stage immutable targets through new bootstrap under umask077
+      run: "sudo /bin/sh -c 'umask 077; exec /usr/bin/python3 - \"$1\" \"$2\"' sh\
+        \ \"$NEW\" \"$OLD\" <<'PYCODE'\nimport sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]);\
+        \ sys.path[:0]=[str(root/'app')]\nfrom tools.agent_service.box import bootstrap,release,layout\n\
+        for source in (root,Path(sys.argv[2])):\n    bootstrap.stage(source,Path('/opt/agent-service/releases'),release,layout)\n\
+        PYCODE\n"
+    - name: Actual release14e to candidate to restored release14e to candidate (systemd)
+      run: 'sudo /bin/sh -c ''umask 077; exec /usr/bin/python3 tools/agent_service/box/recovery_acceptance.py
+        --stand "$1/stand.json" --release "$2" --candidate "$3" --output "$4/acceptance.json"''
+        sh "$STAND" "$OLD" "$NEW" "$OUT"
+
+        sudo -u agent-service test -x /opt/agent-service/releases
+
+        sudo -u agent-service test -x /etc/agent-service
+
+        '
+    - name: Stop local service
+      if: always()
+      run: sudo systemctl stop agent-service.service || true
+    - name: Collect runner-owned synthetic acceptance evidence
+      if: always()
+      run: 'sudo chown -R "$(id -u):$(id -g)" "$OUT"
+
+        '
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      if: always()
+      with:
+        name: exact-release-recovery-${{ inputs.expected_main_sha || github.event.pull_request.head.sha
+          || github.sha }}
+        retention-days: 14
+        path: work/recovery
+        if-no-files-found: warn
+'on':
   pull_request:
     paths:
-      - 'src/agent_graph/**'
-      - 'src/agent_service/**'
-      - 'tools/agent_service/box/**'
-      - 'infra/agent_service/**'
-      - '.github/workflows/agent-service-recovery.yml'
-      - '.github/workflows/agent-service-release.yml'
+    - src/agent_graph/**
+    - src/agent_service/**
+    - tools/agent_service/box/**
+    - infra/agent_service/**
+    - .github/workflows/agent-service-recovery.yml
+    - .github/workflows/agent-service-release.yml
   workflow_call:
     inputs:
       expected_main_sha:
@@ -19,88 +121,3 @@ on:
       candidate_sha256:
         required: true
         type: string
-permissions:
-  contents: read
-jobs:
-  recovery:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 40
-    env:
-      EXPECTED: ${{ inputs.expected_main_sha || github.event.pull_request.head.sha || github.sha }}
-      CANDIDATE_URL: ${{ inputs.candidate_url }}
-      CANDIDATE_SHA: ${{ inputs.candidate_sha256 }}
-      STAND: /srv/box-recovery-stand
-      OUT: ${{ github.workspace }}/work/recovery
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ inputs.expected_main_sha || github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-          persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Exact source and unit regressions
-        run: |
-          test "$(git rev-parse HEAD)" = "$EXPECTED"
-          mkdir -p "$OUT" /tmp/recovery-old /tmp/recovery-new
-          python -m pip install --disable-pip-version-check --require-hashes -r infra/agent_service/requirements.lock
-          PYTHONPATH=.:src python -m unittest discover -s tools/agent_service/box/tests -t . -v
-      - name: Download real published release14e (never rebuilt or patched)
-        run: |
-          curl --fail --silent --show-error --location --proto '=https' --retry 5 --max-time 300 \
-            -o /tmp/old.tar.gz https://github.com/rengalaxies/agent/releases/download/agent-service-0.1.0-g14e65e8affe3/agent-service-0.1.0-g14e65e8affe3-linux-x86_64-cp312.tar.gz
-          echo '95648b846da2dd8fbdfdf76942d1c9563bc4be5d3f2cbfad3987ec3eade8a013  /tmp/old.tar.gz' | sha256sum -c -
-          tar -xzf /tmp/old.tar.gz -C /tmp/recovery-old
-          echo "OLD=$(find /tmp/recovery-old -mindepth 1 -maxdepth 1 -type d)" >> "$GITHUB_ENV"
-          python tools/agent_service/box/release.py verify /tmp/recovery-old/agent-service-* | tee "$OUT/old-verify.json"
-      - name: Build exact candidate twice or download the exact published candidate
-        run: |
-          if [ -n "$CANDIDATE_URL" ]; then
-            [[ "$CANDIDATE_URL" == https://github.com/rengalaxies/agent/releases/download/* ]]
-            [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{64}$ ]]
-            curl --fail --silent --show-error --location --proto '=https' --retry 5 --max-time 300 \
-              -o /tmp/candidate.tar.gz "$CANDIDATE_URL"
-            echo "$CANDIDATE_SHA  /tmp/candidate.tar.gz" | sha256sum -c -
-            sha256sum /tmp/candidate.tar.gz > "$OUT/downloaded-candidate.sha256"
-            tar -xzf /tmp/candidate.tar.gz -C /tmp/recovery-new
-          else
-            python tools/agent_service/box/release.py build --commit "$EXPECTED" --output dist/A > "$OUT/build.json"
-            python tools/agent_service/box/release.py build --commit "$EXPECTED" --output dist/B > /dev/null
-            cmp dist/A/*.tar.gz dist/B/*.tar.gz
-            (cd dist/A && sha256sum -c ./*.sha256)
-            cp dist/A/*.manifest.json dist/A/*.sha256 "$OUT/"
-            tar -xzf dist/A/*.tar.gz -C /tmp/recovery-new
-          fi
-          NEW=$(find /tmp/recovery-new -mindepth 1 -maxdepth 1 -type d)
-          echo "NEW=$NEW" >> "$GITHUB_ENV"
-          python tools/agent_service/box/release.py verify "$NEW" | tee "$OUT/new-verify.json"
-          python -c 'import json,sys; assert json.load(open(sys.argv[1]))["commit"]==sys.argv[2]' "$OUT/new-verify.json" "$EXPECTED"
-      - name: Qualify full Jira preflight with immutable and candidate targets
-        # The manager must fully discover Jira even when the selected immutable
-        # target's own connector still has its old seven-day bootstrap window.
-        # This step only uses local stands and does not install a service.
-        # Keep the actual systemd lifecycle acceptance below as well.
-        run: |
-          PYTHONPATH=.:src python tests/service/jira_preflight_compatibility.py --target "$OLD" --target "$NEW"
-      - name: Start local HTTP stands for lifecycle acceptance
-        run: |
-          sudo install -d -o "$(id -u)" -g "$(id -g)" -m 0755 "$STAND"
-          nohup python tools/agent_service/box/teststand.py serve --dir "$STAND" --service-port 8090 \
-            > /tmp/recovery-stand.log 2>&1 &
-          for _ in $(seq 1 60); do [ -f "$STAND/stand.json" ] && break; sleep 1; done
-          sudo install -D -m 0600 -o root -g root "$STAND/secrets.env" /etc/agent-service/secrets.env
-      - name: Actual release14e to candidate to restored release14e to candidate (systemd)
-        run: |
-          sudo /usr/bin/python3 tools/agent_service/box/recovery_acceptance.py \
-            --stand "$STAND/stand.json" --release "$OLD" --candidate "$NEW" --output "$OUT/acceptance.json"
-      - name: Stop local service
-        if: always()
-        run: sudo systemctl stop agent-service.service || true
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: exact-release-recovery-${{ inputs.expected_main_sha || github.event.pull_request.head.sha || github.sha }}
-          retention-days: 14
-          path: work/recovery
-          if-no-files-found: warn
