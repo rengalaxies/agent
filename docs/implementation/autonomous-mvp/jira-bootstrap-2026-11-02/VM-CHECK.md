@@ -37,7 +37,9 @@
   `/ex/jira/<cloudId>`; synthetic проверка пути и Basic header PASS.
 - Новый manager: recovery protocol1, profile `http-requests-6`, graph schema2,
   service schema1, output2.1. Формат candidate совместим. Guard/preflight использует
-  код целевого immutable release в отдельном interpreter, не publisher. Дефект
+  код целевого immutable release в отдельном interpreter, не publisher. В исправлении
+  #89 новый manager сам выполняет полный Jira REST-v3 discovery; auth/fetch/version
+  остаются кодом выбранного target, включая14e/234. Дефект
   выше касается полноты списка, а не отключения guard.
 - Недавняя Jira-задача без единого PR и без webhook на неизменённом release234
   проанализирована настоящим core: DONE/USEFUL/preliminary_impact_found.
@@ -237,8 +239,9 @@ sudo /usr/local/sbin/agent-service-box doctor --json > "$EVIDENCE/doctor-re-upgr
 и state writer становятся14e/profile4. Из-за несовместимых semantics нужен
 restored_backup, не code-only switch. После re-upgrade снова234/profile6,
 актуальные результаты, прежние resource/comment IDs. Проверку `vm_check.py results`
-выполнять на234, не на14e: helper намеренно требует234. Исправление нового connector
-в PR не патчит поведение старого immutable target.
+выполнять на234, не на14e: helper намеренно требует234. Самостоятельный bootstrap старого immutable target не меняется. Однако исправленный
+manager выполняет полный Jira discovery при recovery и для старого target; архив
+не патчится, auth/fetch/semantic version принадлежат его коду.
 
 Если matching backup отсутствует/повреждён — отказ до stop/start, не обходить.
 При hold повторить **ту же** restore/rollback-команду. Возврат safety copy только
@@ -299,3 +302,14 @@ Fresh install запускает worker уже внутри install. Во вре
 цикл обработки. Для наблюдения использовать только status/doctor/read-only helper.
 Rollback без предыдущего установленного сервиса, его bindings и matching backup
 — **NOT_APPLICABLE**, не попытка запустить старый manager и не замена restore.
+
+
+Проверена также граница **старого target**: manager-owned Jira discovery не
+вызывает старый7д-метод для полного списка. Четыре сценария (успех+повтор,
+HTTP503 на второй странице+retry, malformed partial page+retry, отказ API во второй сверке+retry) выполнены
+в свежих interpreter с реальными модулями/SQLite queue/коннекторами скачанных
+immutable14e и234. Module paths проверены под соответствующим archive/app;
+архивы и PROFILE не менялись, worker/publisher не запускались. Новый recovery CI
+повторяет эту матрицу с published14e и exact candidate до прежнего systemd
+lifecycle acceptance. Ограничение20 страниц и точные критерии завершения
+применяются ко всем этим manager recovery targets.

@@ -6,7 +6,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from agent_service import __main__ as entry
-from agent_service.http import ClientError, Response, ServerError
+from agent_service.http import Response, ServerError
 from tools.agent_service.box import preflight
 from tests.service.helpers import Crash, ServiceCase
 
@@ -102,7 +102,8 @@ class BootstrapListingTest(FullListingCase):
                  {'issues': []}, {'isLast': True}, {'issues': {}, 'isLast': True}, [],
                  {'issues': [], 'isLast': 'true'}, {'issues': [], 'isLast': False, 'nextPageToken': 42},
                  {'issues': [None], 'isLast': True}, {'issues': [{'fields': None}], 'isLast': True},
-                 {'issues': [{'id':'10001', 'key':'ORD-1', 'fields':{}}], 'isLast': True}]
+                 {'issues': [{'id':'10001', 'key':'ORD-1', 'fields':{}}], 'isLast': True},
+                 {'issues': [{'id':'0', 'key':'ORD-1', 'fields':{'project':{'key':'ORD'}}}], 'isLast': True}]
         for page in pages:
             with self.subTest(page=page), patch.object(self.service.connectors['jira'], '_call', return_value=response(page)):
                 self.service.reconcile()
@@ -228,7 +229,7 @@ class RecoveryListingTest(FullListingCase):
                      {'issues': [], 'isLast': True, 'nextPageToken': 'more'},
                      {'issues': [], 'isLast': False, 'nextPageToken': 'same'}):
             with self.subTest(page=page), patch.object(self.service.connectors['jira'], '_call', return_value=response(page)), \
-                    self.assertRaises(ClientError):
+                    self.assertRaises(preflight.PreflightError):
                 self.preflight()
             self.assertIsNone(self.service.store.checkpoint('box_recovery'))
 
@@ -265,12 +266,18 @@ class RecoveryListingTest(FullListingCase):
             nonlocal calls
             calls += 1
             return response({'issues': [], 'isLast': False, 'nextPageToken': str(calls)})
-        with patch.object(self.service.connectors['jira'], '_call', side_effect=page), self.assertRaises(ClientError):
+        with patch.object(self.service.connectors['jira'], '_call', side_effect=page), self.assertRaises(preflight.PreflightError):
             self.preflight()
         self.assertEqual(calls, 20)
         self.assertIsNone(self.service.store.checkpoint('box_recovery'))
         self.assertIsNone(self.service.store.checkpoint('reconcile:jira'))
         self.preflight()
+        self.assert_complete_once()
+
+    def test_manager_full_discovery_does_not_trust_a_legacy_windowed_connector(self):
+        connector = self.service.connectors['jira']
+        with patch.object(connector, 'reconcile_candidates', return_value=[]):
+            self.preflight()
         self.assert_complete_once()
 
     def test_removed_provider_notice_does_not_block_current_providers(self):

@@ -75,6 +75,17 @@ closed instead of silently becoming complete. No new state schema or model is
 introduced. Final source/review/CI provenance is recorded on PR #89; no merge,
 release publication, deployment pin update or target-VM action is performed.
 
-Final local execution: 103 targeted tests PASS in53.602s, including all final
+Final local execution: 104 targeted tests PASS in54.611s, including all final
 helper tests. Independent final agent review found no remaining blocking
 source finding in scope; details in `jira-bootstrap-2026-11-02/REVIEW.md`.
+
+
+Further qualification covers old immutable targets: full Jira discovery now
+belongs to the manager, rather than assuming that every target's None means
+unwindowed search. Target auth/fetch/version semantics are retained. The explicit
+`jira_preflight_compatibility.py` subprocess matrix verifies actual downloaded
+release14e and234 modules/queues/connectors with two old issues over two pages,
+error503/invalid page refusal and repaired retry, and same-token idempotence.
+Recovery CI now runs that matrix against published14e and its exact candidate,
+in addition to the unchanged real systemd lifecycle acceptance. This changes
+neither archive, neither PROFILE nor the standalone old target bootstrap.

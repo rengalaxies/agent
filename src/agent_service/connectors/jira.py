@@ -211,7 +211,9 @@ class JiraConnector:
                 fields = issue.get("fields") if isinstance(issue, dict) else None
                 project = fields.get("project") if isinstance(fields, dict) else None
                 if not isinstance(project, dict) or not isinstance(project.get("key"), str) \
-                        or not PROJECT_RE.fullmatch(project["key"]):
+                        or not PROJECT_RE.fullmatch(project["key"]) \
+                        or not RESOURCE_RE.fullmatch(f"jira:{issue.get('id', '')}") \
+                        or not isinstance(issue.get("key"), str) or not issue["key"]:
                     # A missing requested project is not proof of an out-of-scope
                     # issue. Skipping it would certify a truncated listing.
                     raise ClientError("reconcile_listing_invalid")

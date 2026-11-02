@@ -11,11 +11,53 @@ import json
 import subprocess
 from pathlib import Path
 import uuid
+import re
 
 
 class PreflightError(Exception):
     def __init__(self, code):
         self.code = code
+
+
+def jira_full_ids(connector):
+    """Manager-owned REST-v3 discovery for both current and immutable targets.
+
+    Fetch/prepare/version semantics still belong to the target. Older targets'
+    reconcile_candidates(None) is only a seven-day search, not a full listing.
+    """
+    ids, token, seen = set(), None, set()
+    for _ in range(20):
+        query = {"jql": f"project in ({','.join(connector.project_keys)}) ORDER BY updated ASC",
+                 "maxResults": 100, "fields": "project"}
+        if token:
+            query["nextPageToken"] = token
+        try:
+            page = connector._call("GET", "/rest/api/3/search/jql", query=query).json()
+        except (ValueError, UnicodeError):
+            raise PreflightError("recovery_listing_invalid") from None
+        if not isinstance(page, dict) or not isinstance(page.get("issues"), list) \
+                or type(page.get("isLast")) is not bool:
+            raise PreflightError("recovery_listing_invalid")
+        next_token = page.get("nextPageToken")
+        if page["isLast"]:
+            if next_token not in (None, ""):
+                raise PreflightError("recovery_listing_incomplete")
+        elif not isinstance(next_token, str) or not next_token or next_token in seen:
+            raise PreflightError("recovery_listing_incomplete")
+        for issue in page["issues"]:
+            fields = issue.get("fields") if isinstance(issue, dict) else None
+            project = fields.get("project") if isinstance(fields, dict) else None
+            if not isinstance(project, dict) or not isinstance(project.get("key"), str) \
+                    or not re.fullmatch(r"[A-Z][A-Z0-9_]{1,9}", project["key"]) \
+                    or not re.fullmatch(r"[1-9][0-9]{0,15}", str(issue.get("id", ""))):
+                raise PreflightError("recovery_listing_invalid")
+            if project["key"] in connector.project_keys:
+                ids.add(f"jira:{int(issue['id'])}")
+        if page["isLast"]:
+            return ids
+        token = next_token
+        seen.add(token)
+    raise PreflightError("recovery_listing_incomplete")
 
 
 def legacy_reopen(store, providers, event):
@@ -60,7 +102,8 @@ def main():
     for provider, connector in service.connectors.items():
         if provider == "github":
             connector.pin_revisions(None)
-        ids = {rid for rid, _ in connector.reconcile_candidates(None)}
+        ids = jira_full_ids(connector) if provider == "jira" else {
+            rid for rid, _ in connector.reconcile_candidates(None)}
         ids.update(r["resource_id"] for r in service.store.resources(provider))
         snapshots.extend(connector.fetch(rid) for rid in sorted(ids))
     service.recover()
