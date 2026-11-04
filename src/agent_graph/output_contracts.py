@@ -19,7 +19,7 @@ from .contracts import GraphError, Strict, digest
 SCHEMA_ID = "agent-graph-output"
 SCHEMA_MAJOR = 2
 # 2.1 (batch 3): runtime freshness/unknown/gap codes and Claim.subject. Additive only.
-SCHEMA_MINOR = 1
+SCHEMA_MINOR = 2
 SCHEMA_VERSION = f"{SCHEMA_MAJOR}.{SCHEMA_MINOR}"
 
 Timestamp = Annotated[str, Field(
@@ -291,7 +291,7 @@ class JiraTrigger(Strict):
 
 
 class PullRequestTrigger(Strict):
-    provider: Literal["github"]
+    provider: Literal["github", "bitbucket"]
     repository: Name
     pr_id: int = Field(ge=1)
     base_sha: CommitSha
@@ -595,6 +595,8 @@ def check_version(document) -> None:
     if minor > SCHEMA_MINOR:
         # One release ships producer and reader together; a newer minor is a mixed install.
         raise ContractError("newer_schema_minor")
+    if minor < 2 and isinstance(document.get('pr'), dict) and document['pr'].get('provider') == 'bitbucket':
+        raise ContractError('provider_requires_newer_minor')
 
 
 def parse_document(document):

@@ -62,7 +62,8 @@ class Service:
             return self._ingest(event)
         eligible = {name for name, connector in self.connectors.items()
                     if getattr(connector, 'analysis_ready', True)}
-        intent = self.store.claim_intent(self.worker_id, providers=eligible)
+        publishable = {name for name in eligible if getattr(self.connectors[name], 'publication_ready', True)}
+        intent = self.store.claim_intent(self.worker_id, providers=publishable)
         if intent:
             try:
                 return "publish:" + self.publisher.publish(intent, ingest_snapshot=self._apply)

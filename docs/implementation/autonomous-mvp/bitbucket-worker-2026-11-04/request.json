@@ -1,0 +1,38 @@
+{
+  "schema": "agent-graph-output",
+  "schema_version": "2.2",
+  "kind": "analysis_request",
+  "installation_id": "bitbucket-core-local",
+  "environment": "pilot-local",
+  "request_id": "c2edb01a86f6476da5c49c23763cbeda:1",
+  "trigger_kind": "pr",
+  "source_event": {
+    "event_id": "id:7e64c5d9f55758c0e25e6cb55b621e2b0aac48b6",
+    "resource_version": "bitbucket:0c85b5e5bf1d3c4867150c737b8ffb2e"
+  },
+  "jira": null,
+  "pr": {
+    "provider": "bitbucket",
+    "repository": "bb.orders",
+    "pr_id": 1,
+    "base_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+    "head_sha": "cff5845d729cb97acb913938a1c67000c6fc662a"
+  },
+  "replay_of": null,
+  "repository_revisions": {
+    "bb.orders": "cff5845d729cb97acb913938a1c67000c6fc662a",
+    "bb.reporting": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d"
+  },
+  "graph_version": "graph-0",
+  "constitution_version": "agent-service-v1.0:100bcad3db9c",
+  "model_configuration_id": null,
+  "deadline": "2026-11-04T13:16:22.587819+00:00",
+  "access_scope": {
+    "view_id": "be7f6097eb9d6433df30307e9e01591018fe667a4d313d63311359d156260fef",
+    "repositories": [
+      "bb.orders",
+      "bb.reporting"
+    ],
+    "runtime_sources": []
+  }
+}

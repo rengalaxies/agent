@@ -79,7 +79,7 @@ def build_request(*, installation_id: str, environment: str, request_id: str, tr
                            "updated_at": jira_timestamp(subject["updated_at"]),
                            "text_fields": dict(sorted(text_fields.items())[:8])}
     else:
-        request["pr"] = {"provider": "github", "repository": subject["repository_id"], "pr_id": subject["pr_id"],
+        request["pr"] = {"provider": subject.get("provider", "github"), "repository": subject["repository_id"], "pr_id": subject["pr_id"],
                          "base_sha": subject["base_sha"], "head_sha": subject["head_sha"]}
     return dump_document(parse_document(request))
 

@@ -1,0 +1,94 @@
+{
+  "scope": "REAL_BITBUCKET_CODE_TO_PROVIDER_NEUTRAL_GRAPH_CORE_NOT_SERVICE_PR_CONTRACT",
+  "status": "VERIFIED",
+  "directory": "/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-intake-20261102/core-analysis-1ozwlfbs",
+  "model": "OFF",
+  "queue_claimed": false,
+  "comments_posted": false,
+  "sync": [
+    {
+      "source": "code",
+      "version": 1,
+      "status": "OK"
+    }
+  ],
+  "deltas": [
+    {
+      "operation_id": "b4e6c92ffaed0df2018b44a9d46a72d3c4fe0c7cff6fc53bb888a128df0c40bf",
+      "code": "PAGE_DEFAULT_CHANGED",
+      "before": 100,
+      "after": 20,
+      "evidence": [
+        {
+          "end_line": 10,
+          "quote": "def list_orders(day: str, page_size: int = 100):\n    rows = [{\"id\": i, \"day\": day} for i in range(1, 61)]\n    return {\"items\": rows[:page_size]}",
+          "source_id": "a4df7f9e1bd744b0655e58bfb14f8168df3e33a9e24f4e2c9994e8d33685a3a1",
+          "start_line": 8
+        },
+        {
+          "source_id": "0e1b87c949e5f63a0ebf54df924d626635601cb32ee9d01e7548948f35265fb6",
+          "start_line": 8,
+          "end_line": 10,
+          "quote": "def list_orders(day: str, page_size: int = 20):\n    rows = [{\"id\": i, \"day\": day} for i in range(1, 61)]\n    return {\"items\": rows[:page_size]}"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "dependency_id": "3eaa7d49fbb0a23b937e5ec434797ddc3aed820bbc5a348eb87bb26e05a0cecc",
+      "consumer": "reporting",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "callsite": {
+        "repository": "bb.reporting",
+        "path": "client.py",
+        "line": 8
+      },
+      "dependency_freshness": "CURRENT",
+      "condition": "If helper obeys page_size, result set exceeds 20, and consumer needs complete data",
+      "evidence_stage": "STATIC",
+      "evidence": [
+        {
+          "end_line": 10,
+          "quote": "def list_orders(day: str, page_size: int = 100):\n    rows = [{\"id\": i, \"day\": day} for i in range(1, 61)]\n    return {\"items\": rows[:page_size]}",
+          "source_id": "a4df7f9e1bd744b0655e58bfb14f8168df3e33a9e24f4e2c9994e8d33685a3a1",
+          "start_line": 8
+        },
+        {
+          "source_id": "0e1b87c949e5f63a0ebf54df924d626635601cb32ee9d01e7548948f35265fb6",
+          "start_line": 8,
+          "end_line": 10,
+          "quote": "def list_orders(day: str, page_size: int = 20):\n    rows = [{\"id\": i, \"day\": day} for i in range(1, 61)]\n    return {\"items\": rows[:page_size]}"
+        },
+        {
+          "source_id": "4c6576e12a9023d9d7edaba260c0245bbf182c68956020d559b11b9d41db40a3",
+          "start_line": 8,
+          "end_line": 8,
+          "quote": "    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)"
+        },
+        {
+          "source_id": "4c6576e12a9023d9d7edaba260c0245bbf182c68956020d559b11b9d41db40a3",
+          "start_line": 7,
+          "end_line": 10,
+          "quote": "def load_day(day):\n    response = requests.get(BASE_URL + \"/orders\", params={\"day\": day}, timeout=10)\n    response.raise_for_status()\n    return response.json()[\"items\"]"
+        }
+      ],
+      "requirement_ids": [
+        "R-pilot-export-all"
+      ],
+      "check": "Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits",
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "neutral_control": {
+    "deltas": 0,
+    "findings": 0
+  },
+  "pins": {
+    "orders_base": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+    "orders_head": "cff5845d729cb97acb913938a1c67000c6fc662a",
+    "reporting": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d"
+  }
+}

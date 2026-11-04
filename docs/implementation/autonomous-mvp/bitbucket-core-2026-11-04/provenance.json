@@ -1,0 +1,150 @@
+[
+  {
+    "role": "base_context_id",
+    "id": "8dce901796a3fd899f69473b5256a8190d63c9e246d1f3cb959a33fef56c0e77",
+    "snapshots": [
+      {
+        "commit": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.orders",
+        "tree": "146020818f0e0a9e88cd4c6d6cb51ce1d4652b27"
+      },
+      {
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.reporting",
+        "tree": "3a3c96be70b7914e0e4c7fe37f4805796d1f766e"
+      }
+    ],
+    "sources": [
+      {
+        "id": "07c610ed521ae9728b7243be24844d5d4134434b73a2c63dd66dc88ee4405849",
+        "repository": "bb.reporting",
+        "path": "export-requirement.md",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "d0396b457e7b5f328edba087fe6e4c8d7c3df00e",
+        "sha256": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "49b026de721fcab1f476a8b0c34dbc9606b0a8f1b884b3e28722a76c5c9bd589",
+        "repository": "bb.orders",
+        "path": "README.md",
+        "commit": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+        "blob": "3b1a732cfe080f0a96b9e3258be5963fb8f834b5",
+        "sha256": "10b1e09af2a9e571375c16058ba817e7cf408db4246622dff5335a16b0843695",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "4c6576e12a9023d9d7edaba260c0245bbf182c68956020d559b11b9d41db40a3",
+        "repository": "bb.reporting",
+        "path": "client.py",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "ed2de4e346cda6a5c1d3347311391403e97d51fb",
+        "sha256": "52da608306c414589275672d3ae4831aa5eeb9a522ff81477cf96e2b89bdec27",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "9cbdf2efdd35dd2835f6fd44a6dbc6f59cdca3e2101c99993fcd856ee3db5da1",
+        "repository": "bb.reporting",
+        "path": "README.md",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "8cf4bf0912abf49d0e937fefa9d5b191368b9c61",
+        "sha256": "ffbd753c45e1b3ca1ddb4f17adf8ac549027ea8a2b2b062ef313be11e5220637",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "a4df7f9e1bd744b0655e58bfb14f8168df3e33a9e24f4e2c9994e8d33685a3a1",
+        "repository": "bb.orders",
+        "path": "api.py",
+        "commit": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+        "blob": "373e76d89ad7989275da4d138ca30e456e4df902",
+        "sha256": "170ebfc86d3501e4474435a8f5c79d4766ee82ba2970b3563224677702a58597",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "ee056eeb30be7f2a0fe1bb6b4eac620c3dd0c2fedd35c6e9688d7cd89998b10a",
+        "repository": "bb.reporting",
+        "path": "audit_api.py",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "6f31bbcf83fc6b4ce2c69a9181708bf9f854536c",
+        "sha256": "3d8ccb0e305d601cc5e69b3fd0b20b625bbe9488afdbb918f19690a50f491170",
+        "snapshot": "GIT_COMMIT"
+      }
+    ]
+  },
+  {
+    "role": "context_used_id",
+    "id": "af16972b4849dd78dfbcb0e12a915b79285760d0b10361b80289fd2c6368f74c",
+    "snapshots": [
+      {
+        "commit": "cff5845d729cb97acb913938a1c67000c6fc662a",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.orders",
+        "tree": "6b2e964a1f7affc6f3a95f58d007a81a10a1b96f"
+      },
+      {
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.reporting",
+        "tree": "3a3c96be70b7914e0e4c7fe37f4805796d1f766e"
+      }
+    ],
+    "sources": [
+      {
+        "id": "07c610ed521ae9728b7243be24844d5d4134434b73a2c63dd66dc88ee4405849",
+        "repository": "bb.reporting",
+        "path": "export-requirement.md",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "d0396b457e7b5f328edba087fe6e4c8d7c3df00e",
+        "sha256": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "0e1b87c949e5f63a0ebf54df924d626635601cb32ee9d01e7548948f35265fb6",
+        "repository": "bb.orders",
+        "path": "api.py",
+        "commit": "cff5845d729cb97acb913938a1c67000c6fc662a",
+        "blob": "0ac70c44ad029c42aecd55df03817016bb5fdcbd",
+        "sha256": "dcc133df5d1fdd1bf42dc518995a0105a563e08da96e1c876b87fce6c3032d91",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "4c6576e12a9023d9d7edaba260c0245bbf182c68956020d559b11b9d41db40a3",
+        "repository": "bb.reporting",
+        "path": "client.py",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "ed2de4e346cda6a5c1d3347311391403e97d51fb",
+        "sha256": "52da608306c414589275672d3ae4831aa5eeb9a522ff81477cf96e2b89bdec27",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "9cbdf2efdd35dd2835f6fd44a6dbc6f59cdca3e2101c99993fcd856ee3db5da1",
+        "repository": "bb.reporting",
+        "path": "README.md",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "8cf4bf0912abf49d0e937fefa9d5b191368b9c61",
+        "sha256": "ffbd753c45e1b3ca1ddb4f17adf8ac549027ea8a2b2b062ef313be11e5220637",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "b3e8a526d92266f262a5bfe25474ed87a3e1d2ac5d6fbdca2150741ce6741158",
+        "repository": "bb.orders",
+        "path": "README.md",
+        "commit": "cff5845d729cb97acb913938a1c67000c6fc662a",
+        "blob": "3b1a732cfe080f0a96b9e3258be5963fb8f834b5",
+        "sha256": "10b1e09af2a9e571375c16058ba817e7cf408db4246622dff5335a16b0843695",
+        "snapshot": "GIT_COMMIT"
+      },
+      {
+        "id": "ee056eeb30be7f2a0fe1bb6b4eac620c3dd0c2fedd35c6e9688d7cd89998b10a",
+        "repository": "bb.reporting",
+        "path": "audit_api.py",
+        "commit": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+        "blob": "6f31bbcf83fc6b4ce2c69a9181708bf9f854536c",
+        "sha256": "3d8ccb0e305d601cc5e69b3fd0b20b625bbe9488afdbb918f19690a50f491170",
+        "snapshot": "GIT_COMMIT"
+      }
+    ]
+  }
+]

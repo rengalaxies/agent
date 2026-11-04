@@ -1,0 +1,36 @@
+{
+  "scope": "REAL_BITBUCKET_HTTPS_TO_LOCAL_BARE_GIT_NOT_VM",
+  "directory": "/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-intake-20261102/git-fetch-if2j_ddx",
+  "analysis_run": false,
+  "repositories": [
+    {
+      "slug": "agent-pilot-orders",
+      "uuid": "ce63c558-64b3-462f-9ab9-1b954c14f5d9",
+      "path": "/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-intake-20261102/git-fetch-if2j_ddx/bb.orders.git",
+      "default_branch": "main",
+      "main_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+      "prs": [
+        {
+          "number": 1,
+          "head_sha": "cff5845d729cb97acb913938a1c67000c6fc662a",
+          "destination_tip_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+          "merge_base_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+          "diff_stat": "api.py | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)"
+        }
+      ],
+      "fsck": "PASS",
+      "credential_in_git_config": false
+    },
+    {
+      "slug": "agent-pilot-reporting",
+      "uuid": "0056f8cf-dd82-4021-838f-6e984ba96e53",
+      "path": "/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-intake-20261102/git-fetch-if2j_ddx/bb.reporting.git",
+      "default_branch": "main",
+      "main_sha": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+      "prs": [],
+      "fsck": "PASS",
+      "credential_in_git_config": false
+    }
+  ],
+  "status": "VERIFIED"
+}
