@@ -1,0 +1,46 @@
+{
+  "scope": "REAL_BITBUCKET_API_GIT_TO_LOCAL_SERVICE_WORKER_NOT_VM",
+  "model": "OFF",
+  "first_reconcile": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 1,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "steps": [
+    "ingest:new_generation",
+    "analyze:done"
+  ],
+  "repeat_reconcile": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 0,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "repeat_steps": [],
+  "status": {
+    "events": {
+      "INGESTED": 1
+    },
+    "jobs": {
+      "ANALYZED": 1
+    },
+    "intents": {
+      "PENDING": 1
+    },
+    "notices": []
+  },
+  "publication_held": true,
+  "factory_enabled": false,
+  "directory": "/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-intake-20261102/worker-y0rmcqla"
+}

@@ -1,0 +1,46 @@
+{
+  "installation_id": "bitbucket-core-local",
+  "environment": "pilot-local",
+  "subject": "Bitbucket PR1 graph-core acceptance",
+  "capabilities": [
+    "read_context",
+    "maintain",
+    "propose",
+    "report_check"
+  ],
+  "repositories": [
+    {
+      "id": "bb.orders",
+      "service": "orders",
+      "root": "/Users/user/Documents/ChatGPT/\u0412\u041a\u0420/.private/bitbucket-intake-20261102/git-fetch-if2j_ddx/bb.orders.git",
+      "snapshot": "git",
+      "revision": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e"
+    },
+    {
+      "id": "bb.reporting",
+      "service": "reporting",
+      "root": "/Users/user/Documents/ChatGPT/\u0412\u041a\u0420/.private/bitbucket-intake-20261102/git-fetch-if2j_ddx/bb.reporting.git",
+      "snapshot": "git",
+      "revision": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d"
+    }
+  ],
+  "addresses": [
+    {
+      "service": "orders",
+      "base_url": "https://orders.pilot.invalid"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R-pilot-export-all",
+      "repository": "bb.reporting",
+      "path": "export-requirement.md",
+      "sha256": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718",
+      "issuer": "Authored pilot test condition only",
+      "consumer": "reporting",
+      "service": "orders",
+      "path_template": "/orders",
+      "predicate": "complete_collection"
+    }
+  ]
+}
