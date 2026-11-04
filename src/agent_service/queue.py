@@ -191,11 +191,15 @@ class ServiceStore:
                           event_kind=env.event_kind, state=state)
         return True, state
 
-    def due_event(self):
+    def due_event(self, *, providers=None):
+        if providers is not None and not providers:
+            return None
+        extra = '' if providers is None else ' AND provider IN (' + ','.join('?' for _ in providers) + ')'
+        selected = () if providers is None else tuple(sorted(providers))
         with self._connect() as c:
             return self._dict(c.execute(
-                "SELECT * FROM events WHERE state='RECEIVED' AND not_before<=? ORDER BY received_at, rowid LIMIT 1",
-                (self.clock(),)).fetchone())
+                "SELECT * FROM events WHERE state='RECEIVED' AND not_before<=?" + extra +
+                " ORDER BY received_at, rowid LIMIT 1", (self.clock(), *selected)).fetchone())
 
     def defer_event(self, event, reason: str, delay: float | None = None) -> str:
         with self._tx() as c:
@@ -351,16 +355,21 @@ class ServiceStore:
             return None
         return row["generation"], row["resource_version"], result
 
-    def claim_job(self, worker: str):
+    def claim_job(self, worker: str, *, providers=None):
+        if providers is not None and not providers:
+            return None
+        extra = '' if providers is None else (
+            "substr(j.resource_id,1,instr(j.resource_id,':')-1) IN (" + ','.join('?' for _ in providers) + ') AND ')
+        selected = () if providers is None else tuple(sorted(providers))
         now = self.clock()
         with self._tx() as c:
             while True:
                 marker = ("EXISTS (SELECT 1 FROM checkpoints m "
                           "WHERE m.name='background_job:' || j.job_id)")
-                due = "SELECT j.* FROM jobs j WHERE state='QUEUED' AND not_before<=? AND "
+                due = "SELECT j.* FROM jobs j WHERE state='QUEUED' AND not_before<=? AND " + extra
                 order = " ORDER BY not_before, created_at, j.rowid LIMIT 1"
-                foreground = c.execute(due + "NOT " + marker + order, (now,)).fetchone()
-                background = c.execute(due + marker + order, (now,)).fetchone()
+                foreground = c.execute(due + "NOT " + marker + order, (now, *selected)).fetchone()
+                background = c.execute(due + marker + order, (now, *selected)).fetchone()
                 streak_row = c.execute("SELECT value FROM checkpoints WHERE name='queue_foreground_streak'").fetchone()
                 streak = int(streak_row[0]) if streak_row else 0
                 maintenance = background is not None and (foreground is None or streak >= 4)
@@ -472,13 +481,18 @@ class ServiceStore:
             return [self._dict(r) for r in c.execute(
                 "SELECT * FROM intents WHERE resource_id=? ORDER BY created_at, rowid", (resource_id,))]
 
-    def claim_intent(self, worker: str):
+    def claim_intent(self, worker: str, *, providers=None):
+        if providers is not None and not providers:
+            return None
+        extra = '' if providers is None else (
+            "AND substr(resource_id,1,instr(resource_id,':')-1) IN (" + ','.join('?' for _ in providers) + ') ')
+        selected = () if providers is None else tuple(sorted(providers))
         now = self.clock()
         with self._tx() as c:
             row = c.execute(
                 "SELECT * FROM intents WHERE state IN ('PENDING','UNKNOWN') AND not_before<=? "
-                "AND (lease_expires IS NULL OR lease_expires<=?) ORDER BY not_before, created_at LIMIT 1",
-                (now, now)).fetchone()
+                "AND (lease_expires IS NULL OR lease_expires<=?) " + extra + "ORDER BY not_before, created_at LIMIT 1",
+                (now, now, *selected)).fetchone()
             if row is None:
                 return None
             c.execute("UPDATE intents SET lease_owner=?, lease_expires=?, attempts=attempts+1, updated_at=? "

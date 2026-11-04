@@ -12,7 +12,7 @@ from urllib.parse import parse_qsl, urlsplit
 from uuid import UUID
 
 from ..envelope import digest
-from ..http import ClientError, HttpClient, segment
+from ..http import ClientError, HttpClient, NotFound, segment
 
 
 def _invalid():
@@ -184,6 +184,25 @@ class BitbucketReadClient:
             raise _invalid()
         return value
 
+    def _commit_sha(self, repo, value, repository_uuid):
+        if isinstance(value, str) and re.fullmatch('[a-f0-9]{40}', value):
+            return value
+        if not isinstance(value, str) or not re.fullmatch('[a-f0-9]{12,39}', value):
+            raise _invalid()
+        if repository_uuid != repo.uuid:
+            raise ClientError('bitbucket_compact_fork_sha_unsupported')
+        try:
+            data = self._get(self._repo_path(repo) + '/commit/' + segment(value))
+        except NotFound:
+            raise ClientError('bitbucket_commit_unavailable') from None
+        try:
+            full = _sha(data['hash'])
+            if not full.startswith(value):
+                raise _invalid()
+            return full
+        except (KeyError, TypeError):
+            raise _invalid() from None
+
     def _pr(self, repo, data, *, number=None):
         try:
             n = self._number(data['id'])
@@ -200,9 +219,12 @@ class BitbucketReadClient:
             if not isinstance(description, str):
                 raise _invalid()
             _utf8(description)
+            source_uuid = _uuid(source['repository']['uuid'])
+            head_sha = self._commit_sha(repo, source['commit']['hash'], source_uuid)
+            base_sha = self._commit_sha(repo, dest['commit']['hash'], repo.uuid)
             return PullRequestInfo(repo, n, title, description, data['state'], data.get('draft', False),
-                _uuid(source['repository']['uuid']), _text(source['branch']['name']),
-                _text(dest['branch']['name']), _sha(source['commit']['hash']), _sha(dest['commit']['hash']))
+                source_uuid, _text(source['branch']['name']),
+                _text(dest['branch']['name']), head_sha, base_sha)
         except (KeyError, TypeError):
             raise _invalid() from None
 
@@ -232,7 +254,7 @@ class BitbucketReadClient:
 
     def open_pull_requests(self, repo: RepositoryInfo) -> tuple[PullRequestInfo, ...]:
         path = self._repo_path(repo) + '/pullrequests'
-        query = {'state': 'OPEN', 'pagelen': '100'}
+        query = {'state': 'OPEN', 'pagelen': '50'}
         seen, result = set(), {}
         for _ in range(20):
             cursor = tuple(sorted(query.items()))

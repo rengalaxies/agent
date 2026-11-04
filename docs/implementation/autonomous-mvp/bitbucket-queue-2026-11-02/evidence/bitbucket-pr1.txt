@@ -1,0 +1,171 @@
+Browser tab: 7, Title: "KAN-4 Reduce Orders default page size from 100 to 20 — agent-pilot-orders — Bitbucket", URL: "https://bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/1".
+0 AXWebArea KAN-4 Reduce Orders default page size from 100 to 20 — agent-pilot-orders — Bitbucket, URL: bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/1
+	1 container
+		2 container root
+			3 container
+				4 text Skip to:
+				5 content list
+					6 link Description: Top Bar, Value: bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/1#_r1_
+					7 link Description: Sidebar, Value: bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/1#_ri_
+					8 link Description: Main Content, Value: bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/1#_rt_
+			9 container unsafe-design-system-page-layout-root
+				10 container
+					273 button Expand sidebar
+					11 pop up button (collapsed) Switch to…, Secondary Actions: Expand
+					12 link Description: Bitbucket, Value: bitbucket.org/
+					274 button Search
+						275 text Search
+					15 button Create
+					16 container Actions
+						276 pop up button (collapsed) Show more, Secondary Actions: Expand
+				130 container
+					131 container Breadcrumbs
+						132 content list
+							133 container
+								134 link Description: rengalaxies Avatar rengalaxies, Value: bitbucket.org/rengalaxies/
+								277 text /
+							136 container
+								137 link Description: Agent Pilot, Value: bitbucket.org/rengalaxies/workspace/projects/A
+								278 text /
+							139 container
+								279 link Description: agent-pilot-orders, Value: bitbucket.org/rengalaxies/agent-pilot-orders/src
+								280 text /
+							142 link Description: Pull requests, Value: bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests
+					143 heading Edit pull request title, edit KAN-4 Reduce Orders default page size from 100 to 20, Value: 1
+						144 button Edit pull request title, edit
+						145 container
+							146 link Description: KAN-4, Value: rengalaxies.atlassian.net/browse/KAN-4
+							147 text  Reduce Orders default page size from 100 to 20
+					281 pop up button (collapsed) Description: More information about this user, Secondary Actions: Expand
+						282 image Daniil Smirnov
+					283 pop up button (collapsed) Branch: KAN-4-pilot-page-limit, Secondary Actions: Expand
+					284 image To
+					285 pop up button (collapsed) Description: Change destination branch, Secondary Actions: Expand
+					286 text Open #1 • Created 4 минуты назад • Last updated 2 минуты назад
+					287 container
+						288 checkbox Description: Approve this pull request, Value: 0
+							289 text Approve
+						290 button Merge
+						291 pop up button (collapsed) More actions, Secondary Actions: Expand
+							292 text More actions
+					160 container Pull request
+						161 tab group
+							162 tab (selected, settable, boolean) Overview, Value: 1, ID: pull-request-tabs-0
+							163 tab (selectable, settable, boolean) Files changed 1, Value: 0, ID: pull-request-tabs-1
+							164 tab (selectable, settable, boolean) Commits 1, Value: 0, ID: pull-request-tabs-2
+					165 container Description: Overview, ID: pull-request-tabs-0-tab
+						166 container Description
+							167 container
+								168 button (expanded) collapse, Secondary Actions: Collapse
+									169 image collapse
+								170 heading Description, Value: 2
+									171 text Description
+							172 container Description: Pull request description, ID: pull-request-description-panel
+								268 text entry area (settable) Pull request description, Value: Pilot linked to Jira KAN-4:
+KAN-4: orders: уменьшить page_size по умолчанию у GET /orders со 100 до 20
+To Do
+
+
+Orders GET /orders: default page_size changes from 100 to 20. Reporting calls this API without page_size; our authored test condition expects all 60 order IDs.
+
+This PR is an intake test. Automatic Bitbucket analysis and service comments are not yet qualified. Do not merge until acceptance. No Pipelines are required.
+									269 container
+										270 text Pilot linked to Jira KAN-4:
+										271 link Description: Task KAN-4: orders: уменьшить page_size по умолчанию у GET /orders со 100 до 20 To Do, Value: rengalaxies.atlassian.net/browse/KAN-4
+										272 text Orders GET /orders: default page_size changes from 100 to 20. Reporting calls this API without page_size; our authored test condition expects all 60 order IDs. This PR is an intake test. Automatic Bitbucket analysis and service comments are not yet qualified. Do not merge until acceptance. No Pipelines are required.
+						175 container Attachments
+							176 container
+								177 button (expanded) collapse, Secondary Actions: Collapse
+									178 image collapse
+								179 heading 0 attachments, Value: 2
+									180 text 0 attachments
+							181 container
+								293 text There aren't any attachments.
+								294 button Browse to upload
+						184 heading Activity, Value: 2
+							185 text Activity
+						186 container
+							187 container
+								188 text All activity
+								189 combo box (collapsed, settable) ID: react-select-15-input, Secondary Actions: Expand
+						190 container What do you want to say?
+							191 container
+								192 text field (settable)
+						193 heading Today, Value: 6
+							194 text Today
+						295 container
+							296 pop up button (collapsed) Description: More information about this user, Secondary Actions: Expand
+								297 image Daniil Smirnov
+							298 text Daniil Smirnov edited the description
+							299 text сейчас
+						300 container
+							301 pop up button (collapsed) Description: More information about this user, Secondary Actions: Expand
+								302 image Daniil Smirnov
+							303 text Daniil Smirnov Opened the pull request
+							304 text 2 минуты назад
+						200 container
+							201 container Build statuses
+								202 container
+									203 button (expanded) collapse, Secondary Actions: Collapse
+										204 image collapse
+									205 heading 0 builds, Value: 2
+										206 text 0
+										207 text builds
+								208 container
+									209 image Code emerging from a folder, with a green tick implying it's correctly working.
+									210 text It looks like you haven’t configured a build tool yet. You can use
+									211 link Description: Bitbucket Pipelines, Value: confluence.atlassian.com/bitbucket/get-started-with-bitbucket-pipelines-792298921.html
+									212 text  to build, test and deploy your code. Your existing plan already includes build minutes.
+									213 link Description: Set up a pipeline, Value: bitbucket.org/rengalaxies/agent-pilot-orders/pipelines/?from=bitbucketBuildCard
+							214 container Merge checks status
+								215 container
+									216 button (expanded) collapse, Secondary Actions: Collapse
+										217 image collapse
+									218 heading Merge checks 0 checks, Value: 2
+										219 image Merge checks
+										220 container
+											221 text 0  checks
+								222 container
+									223 image Simple workflow illustration
+									224 text It looks like you don't have merge checks set up in your target branch yet. Recommend or require that pull requests meet certain condition before merging by using what's provided or creating your own, for example, a specific number of approvals or passing builds.
+									225 link Description: Set up merge checks, Value: bitbucket.org/rengalaxies/agent-pilot-orders/admin/branch-permissions
+									226 link Description: Set up custom checks, Value: bitbucket.org/rengalaxies/agent-pilot-orders/admin/merge-checks
+							227 container Review status
+								228 container
+									229 button (expanded) collapse, Secondary Actions: Collapse
+										230 image collapse
+									231 heading 0 reviewers, Value: 2
+										232 text 0
+										233 text reviewers
+										234 image
+								235 container
+									236 image Add reviewer
+									237 text Add reviewer
+									238 container
+										239 text Add reviewer
+										240 combo box (collapsed, settable) Add reviewer , multiple selections available, , ID: react-select-BitbucketPullRequestReviewers-input, Secondary Actions: Expand
+							241 container Tasks
+								242 container
+									243 button (expanded) collapse, Secondary Actions: Collapse
+										244 image collapse
+									245 heading 0 tasks, Value: 2
+										246 container
+											247 text 0 tasks
+								248 container
+									249 image Create a task
+									250 text field (settable) Create a task, ID: createTask-_rch_
+							251 container Jira work items
+								252 container
+									253 button (collapsed) expand, Secondary Actions: Expand
+										254 image expand
+									255 heading 0 Jira work items, Value: 2
+										256 text 0
+										257 text Jira work items
+							258 container Reports
+								259 container
+									260 button (collapsed) expand, Secondary Actions: Expand
+										261 image expand
+									262 heading Reports New, Value: 2
+										263 text Reports New
+
+The focused UI element is 0 AXWebArea KAN-4 Reduce Orders default page size from 100 to 20 — agent-pilot-orders — Bitbucket, URL: bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/1

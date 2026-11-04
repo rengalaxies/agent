@@ -1,0 +1,33 @@
+{
+  "scope": "ACTUAL_BITBUCKET_API_TO_LOCAL_QUEUE_NOT_VM",
+  "reconcile": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 0,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "steps": [],
+  "status": {
+    "events": {
+      "INGESTED": 1
+    },
+    "jobs": {
+      "QUEUED": 1
+    },
+    "intents": {},
+    "notices": [
+      {
+        "kind": "analysis_not_connected",
+        "subject": "bitbucket",
+        "count": 2,
+        "last_at": 1793795855.572095,
+        "detail": "queue_only:git_core_not_connected"
+      }
+    ]
+  }
+}
