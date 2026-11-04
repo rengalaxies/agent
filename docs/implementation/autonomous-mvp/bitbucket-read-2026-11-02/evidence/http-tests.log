@@ -1,0 +1,33 @@
+test_api_origin_cannot_be_replaced_by_config (tests.service.test_bitbucket_read.ReadTest.test_api_origin_cannot_be_replaced_by_config) ... ok
+test_basic_auth_and_read_operations_never_write (tests.service.test_bitbucket_read.ReadTest.test_basic_auth_and_read_operations_never_write) ... ok
+test_branch_slash_is_encoded_as_one_segment (tests.service.test_bitbucket_read.ReadTest.test_branch_slash_is_encoded_as_one_segment) ... ok
+test_caller_cannot_replace_resolved_uuid_or_read_an_unresolved_dto (tests.service.test_bitbucket_read.ReadTest.test_caller_cannot_replace_resolved_uuid_or_read_an_unresolved_dto) ... ok
+test_conflicting_duplicate_snapshot_is_refused (tests.service.test_bitbucket_read.ReadTest.test_conflicting_duplicate_snapshot_is_refused) ... ok
+test_cycle_is_refused_without_returning_partial_results (tests.service.test_bitbucket_read.ReadTest.test_cycle_is_refused_without_returning_partial_results) ... ok
+test_empty_repository_is_metadata_not_an_auth_failure (tests.service.test_bitbucket_read.ReadTest.test_empty_repository_is_metadata_not_an_auth_failure) ... ok
+test_foreign_or_changed_next_target_never_receives_credentials (tests.service.test_bitbucket_read.ReadTest.test_foreign_or_changed_next_target_never_receives_credentials) ... ok
+test_http_auth_and_server_failures_keep_safe_classification (tests.service.test_bitbucket_read.ReadTest.test_http_auth_and_server_failures_keep_safe_classification) ... ok
+test_identical_duplicate_is_coalesced (tests.service.test_bitbucket_read.ReadTest.test_identical_duplicate_is_coalesced) ... ok
+test_invalid_pages_or_non_open_rows_do_not_pass_as_complete (tests.service.test_bitbucket_read.ReadTest.test_invalid_pages_or_non_open_rows_do_not_pass_as_complete) ... ok
+test_invalid_percent_escape_next_is_rejected_before_another_request (tests.service.test_bitbucket_read.ReadTest.test_invalid_percent_escape_next_is_rejected_before_another_request) ... ok
+test_invalid_unicode_is_rejected_before_returning_a_dto (tests.service.test_bitbucket_read.ReadTest.test_invalid_unicode_is_rejected_before_returning_a_dto) ... ok
+test_omitted_mainbranch_is_an_empty_repository (tests.service.test_bitbucket_read.ReadTest.test_omitted_mainbranch_is_an_empty_repository) ... ok
+test_opaque_pagination_reads_all_pages (tests.service.test_bitbucket_read.ReadTest.test_opaque_pagination_reads_all_pages) ... ok
+test_page_limit_accepts_terminal_twentieth_but_refuses_twenty_first (tests.service.test_bitbucket_read.ReadTest.test_page_limit_accepts_terminal_twentieth_but_refuses_twenty_first) ... ok
+test_partial_next_page_failure_is_propagated (tests.service.test_bitbucket_read.ReadTest.test_partial_next_page_failure_is_propagated) ... ok
+test_pr_destination_uuid_and_number_are_checked (tests.service.test_bitbucket_read.ReadTest.test_pr_destination_uuid_and_number_are_checked) ... ok
+test_pr_resource_ids_are_uuid_scoped_and_not_github_ids (tests.service.test_bitbucket_read.ReadTest.test_pr_resource_ids_are_uuid_scoped_and_not_github_ids) ... ok
+test_repository_allowlist_rejects_before_http (tests.service.test_bitbucket_read.ReadTest.test_repository_allowlist_rejects_before_http) ... ok
+test_repository_identity_mismatch_is_rejected (tests.service.test_bitbucket_read.ReadTest.test_repository_identity_mismatch_is_rejected) ... ok
+test_semantic_version_tracks_intent_refs_state_and_draft (tests.service.test_bitbucket_read.ReadTest.test_semantic_version_tracks_intent_refs_state_and_draft) ... ok
+test_slug_reuse_cannot_switch_a_previously_resolved_repository (tests.service.test_bitbucket_read.ReadTest.test_slug_reuse_cannot_switch_a_previously_resolved_repository) ... ok
+test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider (tests.service.test_connection.ConfigTest.test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider) ... ok
+test_missing_secret_names_the_variable_not_a_value (tests.service.test_connection.ConfigTest.test_missing_secret_names_the_variable_not_a_value) ... ok
+test_installation_token_is_exchanged_once_and_reused (tests.service.test_connection.GitHubAppAuthTest.test_installation_token_is_exchanged_once_and_reused) ... ok
+test_wrong_app_key_is_a_connection_problem (tests.service.test_connection.GitHubAppAuthTest.test_wrong_app_key_is_a_connection_problem) ... ok
+test_status_requires_the_token_and_contains_no_secrets (tests.service.test_connection.StatusEndpointTest.test_status_requires_the_token_and_contains_no_secrets) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 3.662s
+
+OK
