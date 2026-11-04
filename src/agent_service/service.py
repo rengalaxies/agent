@@ -31,6 +31,9 @@ class Service:
         self.hook = hook or (lambda phase, item: None)
         self.worker_id = worker_id or uuid.uuid4().hex
         self.publisher = Publisher(store, connectors, backends or connectors, hook=self.hook)
+        for provider, connector in connectors.items():
+            if not getattr(connector, 'analysis_ready', True):
+                store.note('analysis_not_connected', provider, 'queue_only:git_core_not_connected')
 
     # -- receive ----------------------------------------------------------
 
@@ -54,17 +57,19 @@ class Service:
 
     def step(self) -> str | None:
         self.store.unblock_due()
-        event = self.store.due_event()
+        event = self.store.due_event(providers=set(self.connectors))
         if event:
             return self._ingest(event)
-        intent = self.store.claim_intent(self.worker_id)
+        eligible = {name for name, connector in self.connectors.items()
+                    if getattr(connector, 'analysis_ready', True)}
+        intent = self.store.claim_intent(self.worker_id, providers=eligible)
         if intent:
             try:
                 return "publish:" + self.publisher.publish(intent, ingest_snapshot=self._apply)
             except ResourceNotAllowed as exc:
                 self.store.intent_final(intent, "FAILED", exc.code)
                 return "publish:failed"
-        job = self.store.claim_job(self.worker_id)
+        job = self.store.claim_job(self.worker_id, providers=eligible)
         if job:
             return self._analyze(job)
         return None
@@ -308,5 +313,5 @@ class Service:
 
 
 def _kind(job) -> str:
-    return "pr" if job["resource_id"].startswith("github:") else "jira"
+    return "pr" if job["resource_id"].startswith(("github:", "bitbucket:")) else "jira"
 

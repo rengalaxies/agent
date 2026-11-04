@@ -1,0 +1,23 @@
+{
+  "accepted_on": "2026-11-04",
+  "scope": "ACTUAL_BITBUCKET_API_TO_LOCAL_QUEUE_NOT_CLOUDRU",
+  "resource": {
+    "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+    "provider": "bitbucket",
+    "kind": "pr",
+    "generation": 1,
+    "version": "bitbucket:0c85b5e5bf1d3c4867150c737b8ffb2e",
+    "state": "QUEUED",
+    "attempts": 0,
+    "repository": "rengalaxies/agent-pilot-orders",
+    "repository_id": "bb.orders",
+    "pr_id": 1,
+    "head_sha": "cff5845d729cb97acb913938a1c67000c6fc662a",
+    "destination_tip_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+    "linked_jira_keys": []
+  },
+  "repeat_enqueued": 0,
+  "publication_intents": 0,
+  "analysis_ready": false,
+  "private_credentials_mode": "0o600"
+}

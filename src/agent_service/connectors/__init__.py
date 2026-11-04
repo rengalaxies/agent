@@ -1,1 +1,1 @@
-"""Provider connectors: GitHub pull requests and Jira Cloud issues."""
+"""Provider connectors: GitHub PRs, Jira issues, and held Bitbucket PR intake."""

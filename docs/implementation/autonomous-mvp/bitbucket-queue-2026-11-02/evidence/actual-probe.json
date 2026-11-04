@@ -1,0 +1,40 @@
+{
+  "schema": "agent-service-bitbucket-probe/1",
+  "status": "READ_ONLY_VERIFIED",
+  "runtime_ready": false,
+  "workspace": "rengalaxies",
+  "workspace_uuid": "e0b65402-98d3-432d-9ba0-8e92884d8bfb",
+  "repositories": [
+    {
+      "slug": "agent-pilot-orders",
+      "uuid": "ce63c558-64b3-462f-9ab9-1b954c14f5d9",
+      "repository_id": "bb.orders",
+      "empty": false,
+      "default_branch": "main",
+      "default_head_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e",
+      "open_pull_requests": [
+        {
+          "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+          "number": 1,
+          "version": "bitbucket:0c85b5e5bf1d3c4867150c737b8ffb2e",
+          "state": "OPEN",
+          "draft": false,
+          "source_repository_uuid": "ce63c558-64b3-462f-9ab9-1b954c14f5d9",
+          "source_branch": "KAN-4-pilot-page-limit",
+          "destination_branch": "main",
+          "head_sha": "cff5845d729cb97acb913938a1c67000c6fc662a",
+          "destination_tip_sha": "61ed1494ce9849d7fa7865b30447326e9c3f8e4e"
+        }
+      ]
+    },
+    {
+      "slug": "agent-pilot-reporting",
+      "uuid": "0056f8cf-dd82-4021-838f-6e984ba96e53",
+      "repository_id": "bb.reporting",
+      "empty": false,
+      "default_branch": "main",
+      "default_head_sha": "3a8010d70b3cc54cf08e60f68b367a71d9b38d5d",
+      "open_pull_requests": []
+    }
+  ]
+}

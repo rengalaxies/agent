@@ -47,6 +47,8 @@ class ReadTest(unittest.TestCase):
         self.failure = None
         self.raw_body = None
         self.fail_page = None
+        self.max_page_size = None
+        self.commit_responses = {'a'*12: {'hash': 'a'*40}, 'b'*12: {'hash': 'b'*40}}
         self.slug_reused = False
         self.pages = {'first': {'pagelen': 100, 'values': [self.pr]}}
         case = self
@@ -66,6 +68,9 @@ class ReadTest(unittest.TestCase):
                     status, data = 401, {'error': {'message': 'unauthorized'}}
                 elif case.failure:
                     status, data = case.failure, {'error': {'message': 'synthetic failure'}}
+                elif (parsed.path == PINNED + '/pullrequests' and case.max_page_size is not None
+                      and int(query.get('pagelen', ['10'])[0]) > case.max_page_size):
+                    status, data = 400, {'error': {'message': 'Invalid pagelen'}}
                 elif parsed.path == ROOT:
                     data = case.repo_data
                 elif parsed.path == PINNED + '/refs/branches/feature%2Fwith-slash':
@@ -73,6 +78,9 @@ class ReadTest(unittest.TestCase):
                 elif parsed.path in {ROOT + '/refs/branches/main', PINNED + '/refs/branches/main'}:
                     sha = 'd' if case.slug_reused and parsed.path.startswith(ROOT + '/') else 'b'
                     data = {'name': 'main', 'target': {'hash': sha*40}}
+                elif parsed.path.startswith(PINNED + '/commit/'):
+                    key = parsed.path.rsplit('/', 1)[1]
+                    status, data = (200, case.commit_responses[key]) if key in case.commit_responses else (404, {})
                 elif parsed.path == PINNED + '/pullrequests/7':
                     data = case.pr
                 elif parsed.path == PINNED + '/pullrequests':
@@ -240,6 +248,39 @@ class ReadTest(unittest.TestCase):
             change(self.pr)
             with self.assertRaisesRegex(ClientError, 'bitbucket_response_invalid'):
                 self.client.pull_request(repo, 7)
+
+    def test_compact_pr_hashes_resolve_to_full_commits_inside_the_pinned_repository(self):
+        repo = self.repo()
+        self.pr['source']['commit']['hash'] = 'a'*12
+        self.pr['destination']['commit']['hash'] = 'b'*12
+        pr = self.client.pull_request(repo, 7)
+        self.assertEqual((pr.head_sha, pr.base_sha), ('a'*40, 'b'*40))
+        self.assertEqual([p for _, p, _, _ in self.requests[-2:]],
+                         [PINNED+'/commit/'+'a'*12, PINNED+'/commit/'+'b'*12])
+        self.assertEqual(self.client.open_pull_requests(repo), (pr,))
+
+    def test_mismatched_compact_commit_resolution_is_refused(self):
+        self.pr['source']['commit']['hash'] = 'a'*12
+        self.commit_responses['a'*12] = {'hash': 'd'*40}
+        with self.assertRaisesRegex(ClientError, 'bitbucket_response_invalid'):
+            self.client.pull_request(self.repo(), 7)
+
+    def test_compact_fork_hash_does_not_expand_repository_read_scope(self):
+        repo = self.repo()
+        self.pr['source']['repository']['uuid'] = OTHER
+        self.pr['source']['commit']['hash'] = 'a'*12
+        before = len(self.requests)
+        with self.assertRaisesRegex(ClientError, 'bitbucket_compact_fork_sha_unsupported'):
+            self.client.pull_request(repo, 7)
+        self.assertEqual(len(self.requests), before+1)
+
+    def test_provider_rejecting_large_pr_pages_still_reads_complete_listing(self):
+        # Observed against the real API: pagelen100 is HTTP400 Invalid pagelen;
+        # pagelen50 is accepted. Keep actual HTTP behavior rather than a constant assertion.
+        self.max_page_size = 50
+        self.pages = {'first': {'values': [pull_request(7)], 'next': self.next_url('after=second&pagelen=50')},
+                      'second': {'values': [pull_request(8)]}}
+        self.assertEqual([pr.number for pr in self.client.open_pull_requests(self.repo())], [7, 8])
 
     def test_opaque_pagination_reads_all_pages(self):
         self.pages = {'first': {'values': [pull_request(7)], 'next': self.next_url()},

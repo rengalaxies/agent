@@ -14,6 +14,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .connectors.github import GitHubAppAuth, GitHubConnector, StaticToken
 from .connectors.bitbucket_read import ApiTokenAuth, BitbucketReadClient
+from .connectors.bitbucket import BitbucketQueueConnector
 from .connectors.jira import DEFAULT_FIELDS, BasicAuth, BearerAuth, JiraConnector
 from .http import HttpClient, validate_base_url
 from .publisher import DirectorySink
@@ -58,8 +59,9 @@ class BitbucketRepositoryConfig(Strict):
 
 
 class BitbucketConfig(Strict):
-    """Read-only source probe configuration; not yet a registered runtime connector."""
+    """Bitbucket source probe or held, GET-only PR queue intake; no analysis/publication."""
     api_base: str = "https://api.bitbucket.org/2.0"
+    mode: Literal['probe', 'queue_only'] = 'probe'
     workspace: BitbucketSlug
     workspace_uuid: UUID
     repositories: dict[BitbucketSlug, BitbucketRepositoryConfig] = Field(min_length=1, max_length=64)
@@ -173,6 +175,10 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
     """Return (connectors, backends) without opening the state: source probes of a release not yet started."""
     _runtime_supported(config)
     connectors = {}
+    if config.bitbucket:
+        connectors['bitbucket'] = BitbucketQueueConnector(
+            build_bitbucket_reader(config, env_secret=env_secret), config.bitbucket.repositories,
+            jira_project_keys=config.jira.project_keys if config.jira else [])
     if config.github:
         gh = config.github
         client = HttpClient(gh.api_base, allow_loopback_http=config.allow_loopback_http, clock=clock)
@@ -205,7 +211,10 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
 
 def _runtime_supported(config):
     if config.bitbucket:
-        raise ValueError('bitbucket_runtime_not_available_use_probe')
+        if config.bitbucket.mode != 'queue_only':
+            raise ValueError('bitbucket_runtime_not_available_use_probe')
+        if config.publication != 'dry_run':
+            raise ValueError('bitbucket_queue_only_requires_dry_run')
 
 
 def build_bitbucket_reader(config: ServiceConfig, *, env_secret=_secret):

@@ -16,7 +16,7 @@ from pydantic import BaseModel, ConfigDict, Field
 EVENT_SCHEMA = "agent-service-event/1"
 INTENT_SCHEMA = "agent-service-intent/1"
 
-Provider = Literal["github", "jira"]
+Provider = Literal["github", "jira", "bitbucket"]
 EventState = Literal["RECEIVED", "INGESTED", "COALESCED", "IGNORED", "FAILED"]
 JobState = Literal["QUEUED", "RUNNING", "ANALYZED", "DONE", "SUPERSEDED", "FAILED", "CLOSED"]
 IntentKind = Literal["result", "stale", "failure"]
