@@ -49,15 +49,19 @@ def _sha(value) -> str:
 
 
 class ApiTokenAuth:
-    """REST Basic auth. Git authentication is a separate future boundary."""
+    """Scoped REST and Git HTTPS authentication."""
     def __init__(self, email: str, token: str):
         if (not isinstance(email, str) or not isinstance(token, str) or '@' not in email or not token
                 or ':' in email or any(c in email + token for c in '\r\n\x00')):
             raise ValueError('invalid_bitbucket_credentials')
         self._header = 'Basic ' + base64.b64encode(f'{email}:{token}'.encode()).decode()
+        self._git_header = 'Basic ' + base64.b64encode(f'x-bitbucket-api-token-auth:{token}'.encode()).decode()
 
     def __call__(self) -> str:
         return self._header
+
+    def git_header(self) -> str:
+        return self._git_header
 
 
 @dataclass(frozen=True)

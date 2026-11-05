@@ -58,3 +58,20 @@ Use the prior code checkout to return to queue-only intake. Do not open a databa
 written with schema 2.2 analysis results in an older worker without compatibility
 qualification. No VM rollback, token revocation, repository reset or PR modification
 is needed for this iteration.
+
+## CLI mirror refresh acceptance
+
+The local candidate adds an isolated dry-run configuration with
+`bitbucket.mode: local_analysis` and opt-in `bitbucket.refresh_mirrors: true`.
+Policy roots must point to pre-created, dedicated bare mirrors. The worker
+fetches branch refs over HTTPS from the configured private repositories
+before resolving commits. A failed fetch stops analysis even when an older
+mirror already contains the requested head.
+
+Actual CLI acceptance started with two empty bare mirrors and a fresh queue.
+The first reconcile fetched the real Orders PR1 and Reporting sources and
+saved generation 1 as ANALYZED / USEFUL with POSSIBLE_TRUNCATION. A second
+process enqueued zero jobs. One intent stayed PENDING and the publication
+sink contained no JSON. 41 targeted tests passed, including the failed-fetch
+regression. The real PR head was held constant during this run. A new-head
+live check and deployment remain pending.

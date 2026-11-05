@@ -1,7 +1,4 @@
-"""Explicit local-worker adapter over pre-fetched operator-owned mirrors.
-
-Not enabled by the installation factory. Publication remains independently held.
-"""
+"""Bitbucket analysis over scoped local Git mirrors, with publication held."""
 
 from pathlib import Path
 import subprocess
@@ -18,13 +15,39 @@ class BitbucketLocalAnalysisConnector(BitbucketQueueConnector):
     analysis_ready = True
     publication_ready = False
 
-    def __init__(self, reader, repositories, *, mirrors, jira_project_keys=()):
+    def __init__(self, reader, repositories, *, mirrors, refresh_mirrors=False, jira_project_keys=()):
         super().__init__(reader, repositories, jira_project_keys=jira_project_keys)
+        self.refresh_mirrors = refresh_mirrors
         self.mirrors = {k: Path(v) for k, v in mirrors.items()}
         if set(self.mirrors) != {r.repository_id for r in repositories.values()} or any(
             not p.is_absolute() for p in self.mirrors.values()
         ):
             raise ValueError("bitbucket_mirror_scope_mismatch")
+
+    def _refresh_mirror(self, git, repo):
+        if git.dir != self.mirrors[self.repositories[repo.slug].repository_id]:
+            raise GraphError("bitbucket_bare_mirror_required")
+        settings = {
+            "protocol.allow": "never",
+            "protocol.https.allow": "always",
+            "http.followRedirects": "false",
+            "http.sslVerify": "true",
+            "credential.helper": "",
+            "http.https://bitbucket.org/.extraHeader":
+                "Authorization: " + self.reader.auth.git_header(),
+        }
+        env = dict(git.env, GIT_CONFIG_COUNT=str(len(settings)))
+        for index, (key, value) in enumerate(settings.items()):
+            env[f"GIT_CONFIG_KEY_{index}"] = key
+            env[f"GIT_CONFIG_VALUE_{index}"] = value
+        url = f"https://bitbucket.org/{repo.workspace}/{repo.slug}.git"
+        result = subprocess.run(
+            git.argv("fetch", "--atomic", "--prune", "--no-tags", "--", url,
+                     "+refs/heads/*:refs/heads/*"),
+            env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30,
+        )
+        if result.returncode:
+            raise GraphError("bitbucket_git_fetch_failed")
 
     def prepare(self, snapshot):
         current = self.fetch(snapshot.resource_id)
@@ -41,6 +64,8 @@ class BitbucketLocalAnalysisConnector(BitbucketQueueConnector):
                 git = GitReader(
                     self.mirrors[cfg.repository_id], deadline=time.monotonic() + 30
                 )
+                if self.refresh_mirrors:
+                    self._refresh_mirror(git, repo)
                 if git.resolve(sha, ["refs/heads/*"]) is None:
                     raise GraphError("revision_unavailable")
                 mainline[cfg.repository_id] = sha
