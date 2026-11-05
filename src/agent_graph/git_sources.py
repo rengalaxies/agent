@@ -171,7 +171,10 @@ class GitReader:
             objects.close()
         if raw is None:
             return None
-        refs = self._run("for-each-ref", "--format=%(refname)", "--contains", commit, *allowed_refs, check=False)
+        # Git's wildcard only matches one ref component. The heads namespace
+        # includes branch names with slashes; keep narrower allowlist patterns intact.
+        patterns = ["refs/heads/" if ref == "refs/heads/*" else ref for ref in allowed_refs]
+        refs = self._run("for-each-ref", "--format=%(refname)", "--contains", commit, *patterns, check=False)
         if not refs.strip():
             return None
         first = raw.split(b"\n", 1)[0].decode("ascii", "replace")
