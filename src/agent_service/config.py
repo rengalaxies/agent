@@ -18,7 +18,7 @@ from .connectors.bitbucket import BitbucketQueueConnector
 from .connectors.bitbucket_analysis import BitbucketLocalAnalysisConnector
 from .connectors.bitbucket_jira import BitbucketJiraBackend
 from .connectors.jira import DEFAULT_FIELDS, BasicAuth, BearerAuth, JiraConnector
-from .http import HttpClient, validate_base_url
+from .http import ClientError, HttpClient, validate_base_url
 from .publisher import DirectorySink
 from .queue import Limits, ServiceStore
 
@@ -120,6 +120,10 @@ class CoreConfig(Strict):
     model_qualification: QualificationRef | None = None
 
 
+class ConfluenceConfig(Strict):
+    site: str = Field(pattern=r"^[a-z0-9][a-z0-9-]*\.atlassian\.net$")
+
+
 class ServiceConfig(Strict):
     installation_id: str = Field(min_length=1, max_length=100)
     environment: str = Field(min_length=1, max_length=100)
@@ -129,6 +133,7 @@ class ServiceConfig(Strict):
     github: GitHubConfig | None = None
     bitbucket: BitbucketConfig | None = None
     jira: JiraConfig | None = None
+    confluence: ConfluenceConfig | None = None
     analysis: dict = Field(default_factory=dict)  # graph/constitution/model ids, access scope, analysis_seconds
     core: CoreConfig | None = None
     limits: dict = Field(default_factory=dict)
@@ -215,6 +220,34 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
                                            bot_account_id=jc.bot_account_id,
                                            webhook_secret=env_secret(jc.webhook_secret_env).encode(), clock=clock,
                                            fields=jc.semantic_fields)
+    if config.confluence:
+        from .confluence import read_linked_pages
+        jc = config.jira
+        if "/ex/jira/" in jc.base_url:
+            cf_base = jc.base_url.replace("/ex/jira/", "/ex/confluence/", 1)
+        else:
+            cf_base = jc.base_url
+        cf_http = HttpClient(cf_base, clock=clock)
+        cf_auth = BasicAuth(env_secret(jc.auth.email_env), env_secret(jc.auth.token_env)) if jc.auth.kind == "basic" else BearerAuth(env_secret(jc.auth.token_env))
+
+        class ContextClient:
+            def request(self, method, path, *, query):
+                return cf_http.request(method, path, query=query, headers={"Authorization": cf_auth()})
+
+        def documentation(snapshot):
+            keys = snapshot.data.get("linked_jira_keys", [])
+            if not keys:
+                return []
+            if len(keys) != 1:
+                raise ClientError("exactly_one_linked_jira_required")
+            target = connectors["bitbucket"].jira_context.resolve_key(keys[0])
+            description = connectors["bitbucket"].jira_context._call(
+                "GET", f"/rest/api/3/issue/{target.data['issue_id']}",
+                query={"fields": "description"}).json()["fields"]["description"]
+            return read_linked_pages(ContextClient(), description, config.confluence.site)
+
+        connectors["bitbucket"].jira_context = connectors["jira"]
+        connectors["bitbucket"].documentation = documentation
     if config.publication == "live":
         backends = connectors
     else:
@@ -222,15 +255,18 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
         backends = {name: DirectorySink(root / name) for name in connectors}
     if config.bitbucket and config.bitbucket.mode == 'jira_delivery':
         jira = connectors.pop("jira")
+        connectors["bitbucket"].publication_ready = True
         if config.publication == "live":
             backends = {"bitbucket": BitbucketJiraBackend(connectors["bitbucket"], jira)}
-            connectors["bitbucket"].publication_ready = True
         else:
             backends.pop("jira", None)
     return connectors, backends
 
 
 def _runtime_supported(config):
+    if config.confluence and (
+            not config.bitbucket or config.bitbucket.mode != "jira_delivery" or not config.jira):
+        raise ValueError("confluence_requires_bitbucket_jira_delivery")
     if config.bitbucket:
         if config.bitbucket.mode == 'probe':
             raise ValueError('bitbucket_runtime_not_available_use_probe')

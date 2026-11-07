@@ -1,0 +1,66 @@
+{
+  "sections": [
+    {
+      "items": [
+        "Поколение 1: изменение orders GET /orders/summary: OPERATION_REMOVED None -> None. В текущей версии не обнаружено.",
+        "Поколение 1: OPERATION_REMOVED у reporting. В текущей версии не обнаружено.",
+        "Это отсутствие находки в поддерживаемом профиле, а не выполненная проверка: тесты не запускались."
+      ],
+      "title": "Что изменилось с прошлого вывода"
+    },
+    {
+      "items": [
+        "Потребители не названы (no_supported_delta). Это не доказывает отсутствие влияния."
+      ],
+      "title": "Что может затронуть"
+    },
+    {
+      "items": [
+        "Путь влияния не построен."
+      ],
+      "title": "Почему и через какой путь"
+    },
+    {
+      "items": [
+        "Изменения вне поддерживаемого профиля сервис не классифицирует: их проверяет обычный review."
+      ],
+      "title": "Что проверить"
+    },
+    {
+      "items": [
+        "git:bb.orders: CURRENT, проверено 2026-11-07T10:19:29.465608Z",
+        "git:bb.reporting: CURRENT, проверено 2026-11-07T10:19:29.465608Z"
+      ],
+      "title": "Неизвестные и свежесть"
+    },
+    {
+      "items": [
+        "PR rengalaxies/agent-pilot-orders#2: base , head 16003689c9e9",
+        "Связанные задачи Jira: KAN-8",
+        "Поколение анализа: 2",
+        "code_version: local-jira-delivery-candidate",
+        "constitution_version: agent-service-v1.0:100bcad3db9c",
+        "correlation_id: 4095257c651440d7b6cdb7b5dc4f6013:1",
+        "graph_version: graph-1",
+        "model: Детерминированный результат (модельный отчёт не представлен)",
+        "profile: http-requests-6",
+        "schema_version: 2.2",
+        "снимок bb.orders (base): 5d405f22a0d9",
+        "снимок bb.orders (head): 16003689c9e9",
+        "снимок bb.reporting (consumer): 6ebf07174eb9",
+        "Статус: ABSTAINED, код: no_supported_delta"
+      ],
+      "title": "Версии"
+    },
+    {
+      "title": "Связанная документация Confluence",
+      "items": [
+        "Confluence Пилот Orders–Reporting — требования для KAN-8 — версия 1, https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725",
+        "Документированные требования; соответствие коду отдельно не подтверждено.",
+        "Пилотные требования Orders и Reporting\n\n\nАвторские условия демонстрации прототипа. Ответственный за проверку — участник пилота. Эти требования служат тестовыми данными.\n\n\nОбласть\n\nСервис Orders предоставляет GET /orders и GET /orders/summary. Reporting использует обе операции. Идентичность Orders — https://orders.pilot.invalid. Отдельная GET /orders сервиса Reporting относится к другому сервису.\n\n\nТребования\n\n\n | ID | Требование | Проверка\n\n\n | R-SUMMARY-AVAILABLE | Orders сохраняет GET /orders/summary, пока Reporting load_summary вызывает её. | Перед удалением найти Reporting client.py и согласовать миграцию вызова. Выполнить интеграционную проверку ответа.\n\n\n | R-EXPORT-COMPLETE | Reporting должен получать полный набор заказов за день. Тестовый набор содержит 60 заказов. Уменьшение страницы со 100 до 20 требует проверки пагинации. | Сравнить полученные IDs с ожидаемыми 60 IDs, проверить отсутствие пропусков и дублей.\n\n\n | R-SCOPE | Одноимённые маршруты разных сервисов различаются по идентичности сервиса. | Изменение Orders не должно приписываться Reporting audit_api.py.\n\n\n | R-DOCS-CONTROL | Правка README без изменения кода операций не создаёт API delta. | Ожидать отсутствие предупреждения об изменении операции.\n\n\nГраницы вывода\n\nСтатический анализ указывает возможное влияние. Подтверждение совместимости требует выполненной проверки. Документация может конфликтовать с кодом — такой конфликт должен быть указан. Модель в текущем пилоте выключена.\n\n\nСвязь с задачей\n\nКонтрольная задача KAN-8, Bitbucket Orders PR2. При исправлении PR восстановление операции должно приводить к пересчёту результата."
+      ]
+    }
+  ],
+  "status_line": "No supported behavior change was found; arbitrary semantic changes are not classified.",
+  "title": "Вывод о влиянии не сделан"
+}
