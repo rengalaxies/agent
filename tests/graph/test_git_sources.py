@@ -135,6 +135,21 @@ class CommitIdentityTests(StandCase):
         c = g.prepare_context(revisions=self.stand.revisions())
         self.assertEqual(len(self.orders(c)), 1)
 
+    def test_nested_branch_is_reachable_with_default_policy(self):
+        tree = self.git("orders", "rev-parse", "refs/heads/main^{tree}")
+        commit = self.git("orders", "commit-tree", tree, "-m", "nested branch")
+        ref = "refs/heads/codex/kan-7"
+        self.git("orders", "update-ref", ref, commit)
+        self.addCleanup(self.git, "orders", "update-ref", "-d", ref)
+
+        revisions = self.stand.revisions() | {"orders": commit}
+        self.assertEqual(len(self.orders(self.graph().prepare_context(revisions=revisions))), 1)
+
+        policy = self.stand.policy()
+        policy["repositories"][0]["allowed_refs"] = ["refs/heads/main"]
+        context = self.graph(policy, name="main-only").prepare_context(revisions=revisions)
+        self.assertIn(dict(code="commit_unavailable", repository="orders"), context["graph"]["gaps"])
+
     def test_revision_map_is_validated(self):
         g = self.graph()
         for revisions, code in (({"orders": "main"}, "revision_required"),
