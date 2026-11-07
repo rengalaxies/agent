@@ -122,8 +122,12 @@ class Box:
         for directory in (self.layout.state / "service", self.layout.state / "core"):
             if directory.is_dir():
                 for path in directory.iterdir():
-                    if path.name.endswith(("-wal", "-shm", "-journal")) and path.stat().st_uid == 0:
-                        shutil.chown(path, SERVICE_USER, SERVICE_USER)
+                    try:
+                        if path.name.endswith(("-wal", "-shm", "-journal")) and path.stat().st_uid == 0:
+                            shutil.chown(path, SERVICE_USER, SERVICE_USER)
+                    except FileNotFoundError:
+                        # SQLite may unlink a sidecar when its last connection closes.
+                        continue
 
     def chown(self, path: Path, mode: int | None = None, *, group_only=False):
         if mode is not None and os.name != "nt":
