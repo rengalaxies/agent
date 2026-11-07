@@ -75,3 +75,56 @@ process enqueued zero jobs. One intent stayed PENDING and the publication
 sink contained no JSON. 41 targeted tests passed, including the failed-fetch
 regression. The real PR head was held constant during this run. A new-head
 live check and deployment remain pending.
+
+## Actual corrected Bitbucket head — 2026-11-07
+
+Owner-authorized browser edit restored page_size 100 in PR1 source branch.
+Commit ef1cf9f9c54b3e549f917f4459972c671a4560f7 was fetched automatically
+by the local CLI worker on the same database. Generation 1 became SUPERSEDED.
+Generation 2 reached ANALYZED, result ABSTAINED with no findings. This establishes
+withdrawal of the prior static warning, without a runtime compatibility claim.
+The next fresh CLI process enqueued zero jobs. See corrected-head-live.json.
+Publication remains held. Repository graph expansion is pending.
+
+## Summary-removal freshness diagnosis — 2026-11-07
+
+PR2 has base 5d405f22a0d919dd395fa02339c9170de20a89f7 and head
+7645a018ff80709d685e1f70ce87ee84dd858eb7. Consumer snapshot is the expanded
+Reporting commit 6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3. Both source_freshness
+entries are CURRENT. The OPERATION_REMOVED finding retains its pre-change
+dependency and callsite client.py:14. The head context lacks the removed
+operation, so that resolved dependency cannot exist there and receives STALE.
+This behavior is explicit in engine.analyze_change: removal uses base-context
+dependencies and checks membership in head-context dependency IDs.
+
+The earlier interpretation that this STALE indicates outdated Git sources
+was incorrect. Source freshness and survival of a resolved relationship are
+separate fields. No freshness override or production code change was applied.
+A future UI should explain the retained pre-change evidence clearly.
+
+## Actual Bitbucket worker to Jira publication — 2026-11-07
+
+PR2 title now explicitly references KAN-8. A targeted local Service event
+ingested PR2, ran CoreAnalyzer and delivered via the standard Publisher and
+BitbucketJiraBackend. Result job DONE, intent DELIVERED, receipt
+jira:10022|10010. Jira API read-back confirms OPERATION_REMOVED, Reporting and
+the PR head SHA in comment10010. Repeating the target event coalesced with
+no new job or delivery. See jira-worker-live.json.
+
+This was an operator-started local worker with a fresh isolated queue, not
+an installed Cloud.ru Bitbucket process or unattended polling acceptance.
+KAN-8 also has comments from earlier manual control and the existing VM Jira
+worker. They belong to different markers/resources. The new PR publication
+uses its own resource marker. New-head update and crash/restart recovery of
+this cross-provider route remain pending.
+
+## Corrected head updates existing Jira comment — 2026-11-07
+
+Restored summary in PR2 source branch, commit
+16003689c9e99e9ba593168cc5347de090888c7f. A new local worker process reused
+the original queue, core state and delivery receipt. Standard pipeline sent
+a stale notice and then the new analysis to the same Jira comment10010.
+Generation2 DONE/ABSTAINED with no findings; generation1 USEFUL remains in
+history. All three receipts (original, stale notice, replacement) reference
+jira:10022|10010. Second target event coalesced. Jira read-back verifies
+updated head in that comment. See jira-corrected-head-live.json.

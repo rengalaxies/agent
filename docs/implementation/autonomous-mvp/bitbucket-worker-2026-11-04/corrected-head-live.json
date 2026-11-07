@@ -1,0 +1,29 @@
+{
+  "head": "ef1cf9f9c54b3e549f917f4459972c671a4560f7",
+  "jobs": [
+    {
+      "generation": 1,
+      "state": "SUPERSEDED",
+      "status": "USEFUL",
+      "findings": [
+        "POSSIBLE_TRUNCATION"
+      ]
+    },
+    {
+      "generation": 2,
+      "state": "ANALYZED",
+      "status": "ABSTAINED",
+      "findings": []
+    }
+  ],
+  "intents": [
+    [
+      "PENDING",
+      1
+    ],
+    [
+      "SUPERSEDED",
+      1
+    ]
+  ]
+}

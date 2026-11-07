@@ -30,6 +30,10 @@ class Service:
         self.analysis_settings = analysis_settings or {}
         self.hook = hook or (lambda phase, item: None)
         self.worker_id = worker_id or uuid.uuid4().hex
+        for backend in (backends or connectors).values():
+            bind = getattr(backend, "bind_store", None)
+            if bind is not None:
+                bind(store)
         self.publisher = Publisher(store, connectors, backends or connectors, hook=self.hook)
         for provider, connector in connectors.items():
             if not getattr(connector, 'analysis_ready', True):

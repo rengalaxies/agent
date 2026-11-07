@@ -1,0 +1,336 @@
+{
+  "affected": [
+    {
+      "owner": {
+        "checked_at": null,
+        "source": null,
+        "source_version": null,
+        "status": "UNKNOWN",
+        "teams": []
+      },
+      "relationship_refs": [
+        "rel:ca58244fa5fd3b61136aa8b18f37156e1ea9b3a3"
+      ],
+      "service": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "service",
+        "service": "reporting"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "claim_refs": [
+        "claim:7e3e5ec6e6ba2c5124e4250cc3e3ba9ebdac1eb6",
+        "claim:cd9e84b795549be785d9c10e6c42354853960341"
+      ],
+      "consumer": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "service",
+        "service": "reporting"
+      },
+      "text": "Exercise the changed operation against this consumer's independent expectations"
+    }
+  ],
+  "claims": [
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-6.",
+      "evidence_refs": [
+        "ev:219018f666fccbcb0329e11cc7f3a30a998afc3a",
+        "ev:2c39e4f0555b5362d9ef798485abc3d888484569",
+        "ev:9a823d70906d195c3e2a916ed2e0a7ff759c29ff"
+      ],
+      "id": "claim:cd9e84b795549be785d9c10e6c42354853960341",
+      "kind": "fact",
+      "statement": "reporting calls GET /orders/summary of orders at client.py:14; observed usage SINGLE_REQUEST_OBSERVED.",
+      "subject": null,
+      "uncertainty": "LOW",
+      "unknowns": []
+    },
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-6.",
+      "evidence_refs": [
+        "ev:219018f666fccbcb0329e11cc7f3a30a998afc3a",
+        "ev:2c39e4f0555b5362d9ef798485abc3d888484569"
+      ],
+      "id": "claim:7e3e5ec6e6ba2c5124e4250cc3e3ba9ebdac1eb6",
+      "kind": "hypothesis",
+      "statement": "OPERATION_REMOVED: If the changed declaration governs this call.",
+      "subject": null,
+      "uncertainty": "MEDIUM",
+      "unknowns": [
+        "helper_semantics_unknown",
+        "requirement_unknown"
+      ]
+    }
+  ],
+  "code_version": "agent-service",
+  "constitution_version": "agent-service-v1.0:100bcad3db9c",
+  "correlation_id": "9340565743a548b0bcc79e7f4e8d5656:1",
+  "costs": {
+    "completion_tokens": 0,
+    "currency": null,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "reserved_micro": null
+  },
+  "deltas": [
+    {
+      "after": null,
+      "before": null,
+      "code": "OPERATION_REMOVED",
+      "evidence_refs": [
+        "ev:2c39e4f0555b5362d9ef798485abc3d888484569"
+      ],
+      "operation": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders/summary",
+        "service": "orders"
+      }
+    }
+  ],
+  "environment": "pilot-local",
+  "event_id": "id:afdc83bd8c6756448fd8b7dfcf066a0831f059e0",
+  "evidence": [
+    {
+      "blob": "70a4c793a98a6a11d29ea7188f6b057374ea04cd",
+      "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+      "content_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+      "end_line": 15,
+      "freshness": {
+        "checked_at": "2026-11-07T09:55:32.752444Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:2c39e4f0555b5362d9ef798485abc3d888484569",
+      "origin": "code",
+      "path": "api.py",
+      "provenance": "AUTHENTIC",
+      "repository": "bb.orders",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 14,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "bb.orders"
+      ]
+    },
+    {
+      "blob": "d4de6895d22a99bf4fe81c69714c1454f189a2c4",
+      "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+      "content_sha256": "7718e0e9b664b76294e978467f3b288c3ef5813e07d8a68f5b428b3ea2d3b38b",
+      "end_line": 14,
+      "freshness": {
+        "checked_at": "2026-11-07T09:55:32.752444Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:219018f666fccbcb0329e11cc7f3a30a998afc3a",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "bb.reporting",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 14,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "bb.reporting"
+      ]
+    },
+    {
+      "blob": "d4de6895d22a99bf4fe81c69714c1454f189a2c4",
+      "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+      "content_sha256": "7718e0e9b664b76294e978467f3b288c3ef5813e07d8a68f5b428b3ea2d3b38b",
+      "end_line": 16,
+      "freshness": {
+        "checked_at": "2026-11-07T09:55:32.752444Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:9a823d70906d195c3e2a916ed2e0a7ff759c29ff",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "bb.reporting",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 13,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "bb.reporting"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "callsite": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "callsite",
+        "line": 14,
+        "path": "client.py",
+        "repository": "bb.reporting",
+        "service": "reporting"
+      },
+      "code": "OPERATION_REMOVED",
+      "compatibility_confirmed": false,
+      "consumer": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "service",
+        "service": "reporting"
+      },
+      "dependency_freshness": "STALE",
+      "evidence_refs": [
+        "ev:219018f666fccbcb0329e11cc7f3a30a998afc3a"
+      ],
+      "requirement_ids": [],
+      "test_executed": false,
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    }
+  ],
+  "gaps": [
+    {
+      "code": "unmapped_call",
+      "evidence_refs": [],
+      "path": "client.py",
+      "repository": "bb.reporting"
+    }
+  ],
+  "graph_version": "graph-3",
+  "impact_paths": [
+    {
+      "relationship_refs": [
+        "rel:ca58244fa5fd3b61136aa8b18f37156e1ea9b3a3"
+      ],
+      "summary": "reporting -> orders GET /orders/summary"
+    }
+  ],
+  "installation_id": "bitbucket-core-local",
+  "kind": "analysis_result",
+  "model": null,
+  "profile": "http-requests-6",
+  "reason_code": "impact_found_within_profile",
+  "relationships": [
+    {
+      "change_origin": "code_scan",
+      "evidence_refs": [
+        "ev:219018f666fccbcb0329e11cc7f3a30a998afc3a",
+        "ev:2c39e4f0555b5362d9ef798485abc3d888484569"
+      ],
+      "freshness": {
+        "checked_at": "2026-11-07T09:55:32.752444Z",
+        "reasons": [],
+        "status": "STALE",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "rel:ca58244fa5fd3b61136aa8b18f37156e1ea9b3a3",
+      "kind": "calls",
+      "origins": [
+        "code"
+      ],
+      "source": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "service",
+        "service": "reporting"
+      },
+      "status": "STALE",
+      "target": {
+        "environment": "pilot-local",
+        "installation_id": "bitbucket-core-local",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders/summary",
+        "service": "orders"
+      },
+      "visibility": [
+        "bb.orders",
+        "bb.reporting"
+      ]
+    }
+  ],
+  "request_id": "9340565743a548b0bcc79e7f4e8d5656:1",
+  "resource_version": "bitbucket:5c5a5668b687c1c6ffa6f103289d5640",
+  "schema": "agent-graph-output",
+  "schema_version": "2.2",
+  "snapshots": [
+    {
+      "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+      "mode": "GIT_COMMIT",
+      "repository": "bb.orders",
+      "role": "base",
+      "tree": "025c473e91c5fa389849d32382260db597c3ae60"
+    },
+    {
+      "commit": "7645a018ff80709d685e1f70ce87ee84dd858eb7",
+      "mode": "GIT_COMMIT",
+      "repository": "bb.orders",
+      "role": "head",
+      "tree": "146020818f0e0a9e88cd4c6d6cb51ce1d4652b27"
+    },
+    {
+      "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+      "mode": "GIT_COMMIT",
+      "repository": "bb.reporting",
+      "role": "consumer",
+      "tree": "9667ddbb093bf74a6a1b68ab3b057ef7eaf577b6"
+    }
+  ],
+  "source_freshness": [
+    {
+      "freshness": {
+        "checked_at": "2026-11-07T09:55:32.752444Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "bb.orders",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-11-07T09:55:32.752444Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "bb.reporting",
+      "source_kind": "git"
+    }
+  ],
+  "status": "USEFUL",
+  "summary": "1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
+  "superseded_by": null,
+  "timings": {
+    "finished_at": "2026-11-07T09:55:32.752044Z",
+    "seconds": {
+      "analysis": 0.8404530419938965
+    },
+    "started_at": "2026-11-07T09:55:31.911599Z"
+  },
+  "trigger_kind": "pr",
+  "unknowns": [
+    {
+      "code": "requirement_unknown",
+      "subject": "reporting"
+    },
+    {
+      "code": "owner_unknown",
+      "subject": "reporting"
+    }
+  ],
+  "usefulness_confirmed": false
+}

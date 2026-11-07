@@ -167,6 +167,13 @@ class JiraConnector:
                                         for v in semantic_fields(fields, self.fields, truncate=False).values())}
         return Snapshot(resource_id(issue["id"]), "jira", version, data)
 
+    def resolve_key(self, key: str) -> Snapshot:
+        if not re.fullmatch(r"[A-Z][A-Z0-9_]*-[1-9][0-9]*", key) or key.rsplit("-", 1)[0] not in self.project_keys:
+            raise ResourceNotAllowed("project_not_configured")
+        issue = self._call("GET", f"/rest/api/3/issue/{segment(key)}",
+                           query={"fields": ",".join(self.fields + ("project", "updated"))}).json()
+        return self._snapshot(issue)
+
     def fetch(self, rid: str) -> Snapshot:
         issue_id = self._issue_id(rid)
         try:
