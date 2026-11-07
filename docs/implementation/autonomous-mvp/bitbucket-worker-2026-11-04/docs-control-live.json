@@ -1,0 +1,93 @@
+{
+  "affected": [],
+  "checks": [],
+  "claims": [],
+  "code_version": "agent-service",
+  "constitution_version": "agent-service-v1.0:100bcad3db9c",
+  "correlation_id": "bee90f6a7bcc4f24aae91b45e1158a81:1",
+  "costs": {
+    "completion_tokens": 0,
+    "currency": null,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "reserved_micro": null
+  },
+  "deltas": [],
+  "environment": "pilot-local",
+  "event_id": "id:483ff8726c13e25c0283fb356a2713c6054afcdb",
+  "evidence": [],
+  "findings": [],
+  "gaps": [],
+  "graph_version": "graph-4",
+  "impact_paths": [],
+  "installation_id": "bitbucket-core-local",
+  "kind": "analysis_result",
+  "model": null,
+  "profile": "http-requests-6",
+  "reason_code": "no_supported_delta",
+  "relationships": [],
+  "request_id": "bee90f6a7bcc4f24aae91b45e1158a81:1",
+  "resource_version": "bitbucket:70d189188837081fe7ee83a33cd60245",
+  "schema": "agent-graph-output",
+  "schema_version": "2.2",
+  "snapshots": [
+    {
+      "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+      "mode": "GIT_COMMIT",
+      "repository": "bb.orders",
+      "role": "base",
+      "tree": "025c473e91c5fa389849d32382260db597c3ae60"
+    },
+    {
+      "commit": "3a8c4815fe9358b880f444be103f5c9417a5edc7",
+      "mode": "GIT_COMMIT",
+      "repository": "bb.orders",
+      "role": "head",
+      "tree": "9b29e0afc51fff6055332475e9ec27d1a6428cad"
+    },
+    {
+      "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+      "mode": "GIT_COMMIT",
+      "repository": "bb.reporting",
+      "role": "consumer",
+      "tree": "9667ddbb093bf74a6a1b68ab3b057ef7eaf577b6"
+    }
+  ],
+  "source_freshness": [
+    {
+      "freshness": {
+        "checked_at": "2026-11-07T10:01:44.512804Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "bb.orders",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-11-07T10:01:44.512804Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "bb.reporting",
+      "source_kind": "git"
+    }
+  ],
+  "status": "ABSTAINED",
+  "summary": "No supported behavior change was found; arbitrary semantic changes are not classified.",
+  "superseded_by": null,
+  "timings": {
+    "finished_at": "2026-11-07T10:01:44.512468Z",
+    "seconds": {
+      "analysis": 0.5879014160018414
+    },
+    "started_at": "2026-11-07T10:01:43.924570Z"
+  },
+  "trigger_kind": "pr",
+  "unknowns": [],
+  "usefulness_confirmed": false
+}
