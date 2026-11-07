@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .connectors.github import GitHubAppAuth, GitHubConnector, StaticToken
 from .connectors.bitbucket_read import ApiTokenAuth, BitbucketReadClient
 from .connectors.bitbucket import BitbucketQueueConnector
+from .connectors.bitbucket_analysis import BitbucketLocalAnalysisConnector
 from .connectors.jira import DEFAULT_FIELDS, BasicAuth, BearerAuth, JiraConnector
 from .http import HttpClient, validate_base_url
 from .publisher import DirectorySink
@@ -59,9 +60,10 @@ class BitbucketRepositoryConfig(Strict):
 
 
 class BitbucketConfig(Strict):
-    """Bitbucket source probe or held, GET-only PR queue intake; no analysis/publication."""
+    """Bitbucket probe, held queue intake, or isolated local analysis."""
     api_base: str = "https://api.bitbucket.org/2.0"
-    mode: Literal['probe', 'queue_only'] = 'probe'
+    mode: Literal['probe', 'queue_only', 'local_analysis'] = 'probe'
+    refresh_mirrors: bool = False
     workspace: BitbucketSlug
     workspace_uuid: UUID
     repositories: dict[BitbucketSlug, BitbucketRepositoryConfig] = Field(min_length=1, max_length=64)
@@ -74,6 +76,8 @@ class BitbucketConfig(Strict):
         local = parts.scheme == 'http' and parts.hostname in {'127.0.0.1', 'localhost', '::1'} and parts.path == '/2.0'
         if url != 'https://api.bitbucket.org/2.0' and not local:
             raise ValueError('invalid_bitbucket_api_origin')
+        if self.refresh_mirrors and (self.mode != "local_analysis" or local):
+            raise ValueError("bitbucket_refresh_requires_cloud_local_analysis")
         self.api_base = url
         if (len({r.uuid for r in self.repositories.values()}) != len(self.repositories)
                 or len({r.repository_id for r in self.repositories.values()}) != len(self.repositories)):
@@ -176,9 +180,17 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
     _runtime_supported(config)
     connectors = {}
     if config.bitbucket:
-        connectors['bitbucket'] = BitbucketQueueConnector(
-            build_bitbucket_reader(config, env_secret=env_secret), config.bitbucket.repositories,
-            jira_project_keys=config.jira.project_keys if config.jira else [])
+        reader = build_bitbucket_reader(config, env_secret=env_secret)
+        if config.bitbucket.mode == 'local_analysis':
+            repositories = _document(config.core.policy_path)["repositories"]
+            mirrors = {repo["id"]: Path(repo["root"]) for repo in repositories}
+            connectors['bitbucket'] = BitbucketLocalAnalysisConnector(
+                reader, config.bitbucket.repositories, mirrors=mirrors,
+                refresh_mirrors=config.bitbucket.refresh_mirrors)
+        else:
+            connectors['bitbucket'] = BitbucketQueueConnector(
+                reader, config.bitbucket.repositories,
+                jira_project_keys=config.jira.project_keys if config.jira else [])
     if config.github:
         gh = config.github
         client = HttpClient(gh.api_base, allow_loopback_http=config.allow_loopback_http, clock=clock)
@@ -211,9 +223,12 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
 
 def _runtime_supported(config):
     if config.bitbucket:
-        if config.bitbucket.mode != 'queue_only':
+        if config.bitbucket.mode == 'probe':
             raise ValueError('bitbucket_runtime_not_available_use_probe')
-        if config.publication != 'dry_run':
+        if config.bitbucket.mode == 'local_analysis':
+            if config.publication != 'dry_run' or config.github or config.jira or not config.core:
+                raise ValueError('bitbucket_local_analysis_requires_isolated_dry_run_core')
+        elif config.publication != 'dry_run':
             raise ValueError('bitbucket_queue_only_requires_dry_run')
 
 
