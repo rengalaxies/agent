@@ -202,3 +202,22 @@ class WorkerTest(unittest.TestCase):
         self.f.routes[route]["target"]["hash"] = "b" * 40
         with self.assertRaisesRegex(ClientError, "bitbucket_git_unavailable"):
             self.connector.prepare(self.connector.fetch(self.rid))
+
+    def test_documentation_change_creates_generation_without_new_git_head(self):
+        pages = [{"page_id": "123", "version": 1, "title": "Rules", "url": "https://pilot.atlassian.net/wiki/spaces/OOP/pages/123",
+                  "text": "Original requirement", "truncated": False, "unsupported_blocks": 0}]
+        self.connector.documentation = lambda snapshot: pages.copy()
+        self.service.documentation = self.connector.documentation
+        self.run_worker()
+        original_head = self.analyzer.last_request["pr"]["head_sha"]
+        self.assertEqual(self.run_worker(), [])
+        pages[0] = {**pages[0], "version": 2, "text": "Changed requirement"}
+        self.run_worker()
+        self.assertEqual(self.store.resource(self.rid)["generation"], 2)
+        self.assertEqual(self.analyzer.last_request["pr"]["head_sha"], original_head)
+        pages.clear()
+        self.run_worker()
+        self.assertEqual(self.store.resource(self.rid)["generation"], 3)
+        latest = self.store.intents(self.rid)[-1]
+        self.assertNotIn("Changed requirement", str(latest["body"]))
+        self.assertEqual(self.run_worker(), [])

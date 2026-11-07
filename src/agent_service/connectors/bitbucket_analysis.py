@@ -7,7 +7,8 @@ import time
 from agent_graph.contracts import GraphError
 from agent_graph.git_sources import GitReader
 from ..http import ClientError
-from .base import Prepared
+from .base import Prepared, Snapshot
+from ..envelope import digest
 from .bitbucket import BitbucketQueueConnector
 
 
@@ -23,6 +24,16 @@ class BitbucketLocalAnalysisConnector(BitbucketQueueConnector):
             not p.is_absolute() for p in self.mirrors.values()
         ):
             raise ValueError("bitbucket_mirror_scope_mismatch")
+
+    def _snapshot(self, pr):
+        snapshot = super()._snapshot(pr)
+        documentation = getattr(self, "documentation", None)
+        if documentation is None:
+            return snapshot
+        pages = documentation(snapshot)
+        version = "bitbucket-context:" + digest({"pr": snapshot.version, "pages": pages})
+        return Snapshot(snapshot.resource_id, snapshot.kind, version,
+                        {**snapshot.data, "_documentation": pages}, snapshot.closed)
 
     def _refresh_mirror(self, git, repo):
         if git.dir != self.mirrors[self.repositories[repo.slug].repository_id]:

@@ -33,3 +33,22 @@
 Параметры контура: Git-хостинг, Jira Cloud/Data Center, источник трасс/логов,
 идентичности сервисов, endpoint/версия модели, ресурсные/стоимостные лимиты,
 право публикации. Они задаются при установке, не постоянным оператором.
+
+## Confluence scope agreed with owner — 2026-11-07
+
+The first Confluence integration reads only pages explicitly linked in the
+Jira issue description. Supported content is page text and ordinary tables.
+It does not follow child pages, links within a page, search results or attachments.
+Images, diagrams, embedded documents and attachment text are outside this scope.
+The result must identify skipped material and gaps that affect the conclusion.
+
+Each used requirement retains its page URL, page identity, version, section
+and supporting text. Access failures, unavailable pages, unsupported content,
+truncated retrieval and conflicting requirements must remain explicit.
+A page describes a documented requirement; it does not establish runtime
+compatibility. Page content cannot expand source access or tool permissions.
+
+Acceptance requires: explicit-link selection, no link traversal, text/table
+extraction, version-bound evidence, access-denied handling, image/attachment
+exclusion and a Jira result with source references. Connector implementation
+and live qualification are pending.

@@ -24,8 +24,9 @@ TRIGGER = {"pr": "pr", "jira": "jira"}
 
 class Service:
     def __init__(self, *, store: ServiceStore, connectors: dict, analyzer, installation_id: str, environment: str,
-                 analysis_settings: dict | None = None, backends: dict | None = None, hook=None, worker_id=None):
+                 analysis_settings: dict | None = None, backends: dict | None = None, hook=None, worker_id=None, documentation=None):
         self.store, self.connectors, self.analyzer = store, connectors, analyzer
+        self.documentation = documentation or getattr(connectors.get("bitbucket"), "documentation", None)
         self.installation_id, self.environment = installation_id, environment
         self.analysis_settings = analysis_settings or {}
         self.hook = hook or (lambda phase, item: None)
@@ -218,6 +219,15 @@ class Service:
                                  view, job["resource_version"])
         doc = result_doc(view, snapshot=job["snapshot"], kind=snapshot.kind, generation=job["generation"],
                          gaps=prepared.gaps, earlier=earlier)
+        if self.documentation is not None and snapshot.kind == "pr":
+            from .confluence import with_documentation
+            try:
+                pages = snapshot.data.get("_documentation")
+                if pages is None:
+                    pages = self.documentation(snapshot)
+            except ConnectorError as exc:
+                return self._give_up_or_retry(job, exc.code, delay=exc.retry_after)
+            doc = with_documentation(doc, pages)
         intent = {"kind": "result", "result_digest": digest(result) if isinstance(result, dict) else None,
                   "body": canonical(doc), "body_digest": doc_digest(doc),
                   "marker": resource_marker(self.installation_id, job["resource_id"])}
