@@ -1,0 +1,122 @@
+{
+  "begin": {
+    "action": "begin",
+    "old_version": 4,
+    "new_version": 5,
+    "body_sha256": "e894bb9392f3bf3e36e0b922becb2a170b283b999a6a001a814ef3e9924260cd",
+    "original_sha256": "c4e1471565c655317da02703cddce213e5407c4881cba51361f8586251ba8bd5",
+    "epoch": 1794172017.0886037
+  },
+  "restore": {
+    "action": "restore",
+    "old_version": 5,
+    "new_version": 6,
+    "body_sha256": "c4e1471565c655317da02703cddce213e5407c4881cba51361f8586251ba8bd5",
+    "original_sha256": "c4e1471565c655317da02703cddce213e5407c4881cba51361f8586251ba8bd5",
+    "epoch": 1794172113.029766
+  },
+  "full_document": {
+    "generation": 11,
+    "full_document_contains_new_page_text": true,
+    "document_chars": 4409
+  },
+  "runtime": {
+    "loaded": {
+      "code_version": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+      "commit": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+      "config": "/etc/agent-bitbucket/service.json",
+      "constitution": "agent-service-v1.0:100bcad3db9c",
+      "constitution_default": "agent-service-v1.0:100bcad3db9c",
+      "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+      "core": {
+        "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-6",
+        "schema": "agent-graph-1"
+      },
+      "launcher_pid": null,
+      "listen": "127.0.0.1:8092",
+      "manifest_sha256": "6fcf7e1303185ae1f009f16b15cbaf6cf8a4fa403bbb91bdbe48b5fd35f9f0ba",
+      "pid": 60331,
+      "python": "3.12.3",
+      "release": "agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312",
+      "release_id": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+      "started_at": "2026-11-08T13:58:17.306809+00:00"
+    },
+    "status": {
+      "events": {
+        "INGESTED": 17
+      },
+      "jobs": {
+        "ANALYZED": 1,
+        "DONE": 19,
+        "SUPERSEDED": 2
+      },
+      "intents": {
+        "DELIVERED": 33,
+        "FAILED": 2
+      },
+      "notices": []
+    },
+    "uid": 995,
+    "autostart": "enabled",
+    "units": {
+      "agent-bitbucket.service": "active",
+      "agent-service": "active",
+      "nginx": "active",
+      "docker": "active"
+    }
+  },
+  "phases": {
+    "updated": {
+      "commit": {
+        "sha": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+        "date": "2026-11-08T20:32:36+00:00"
+      },
+      "source_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 11,
+        "published_generation": 11,
+        "comment_id": "jira:10023|10046"
+      },
+      "jira": {
+        "id": "10046",
+        "created": "2026-11-08T10:07:56.373+0300",
+        "updated": "2026-11-09T00:07:56.300+0300",
+        "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 5: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=51cd5188173e2367a67d1b46402a913a533a2b215012e09450586e8f68f4e49b generation=11",
+        "comment_ids": [
+          "10013",
+          "10046"
+        ]
+      },
+      "job_state": "DONE",
+      "action_to_comment_seconds": 59.211
+    },
+    "restored": {
+      "commit": {
+        "sha": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+        "date": "2026-11-08T20:32:36+00:00"
+      },
+      "source_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 12,
+        "published_generation": 12,
+        "comment_id": "jira:10023|10046"
+      },
+      "jira": {
+        "id": "10046",
+        "created": "2026-11-08T10:07:56.373+0300",
+        "updated": "2026-11-09T00:10:12.093+0300",
+        "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 6: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=1c59bf7619befa6e009ada18f03093707ed42dd0ce197ee71f6a25033329ce88 generation=12",
+        "comment_ids": [
+          "10013",
+          "10046"
+        ]
+      },
+      "job_state": "DONE",
+      "action_to_comment_seconds": 99.063
+    }
+  }
+}
