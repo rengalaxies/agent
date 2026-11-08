@@ -219,6 +219,16 @@ class Service:
                                  view, job["resource_version"])
         doc = result_doc(view, snapshot=job["snapshot"], kind=snapshot.kind, generation=job["generation"],
                          gaps=prepared.gaps, earlier=earlier)
+        from .jira_presentation import summary_doc
+        # Preserve the complete legacy model explanation until a dedicated
+        # summary covers free-form hypotheses and qualification diagnostics.
+        model_details = isinstance(result, dict) and (
+            result.get('model') or view.reason_code.startswith('model_')
+            or any(e.get('origin') == 'model_hypothesis' for e in result.get('evidence', []))
+            or any('qualification:' in str(x) for x in view.unknowns + prepared.gaps))
+        if not model_details:
+            doc["jira_summary"] = summary_doc(view, result if view.compatible else {},
+                                              kind=snapshot.kind, gaps=prepared.gaps, earlier=earlier)
         if self.documentation is not None and snapshot.kind == "pr":
             from .confluence import with_documentation
             try:

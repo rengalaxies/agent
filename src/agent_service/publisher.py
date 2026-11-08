@@ -158,10 +158,13 @@ def result_doc(view: ResultView, *, snapshot: dict, kind: str, generation: int, 
 
 
 def stale_doc(*, snapshot: dict, kind: str, generation: int) -> dict:
-    return {"title": "Предыдущий вывод устарел",
+    doc = {"title": "Предыдущий вывод устарел",
             "status_line": "Ресурс изменился после анализа. Идёт новый анализ; прежний вывод не относится к "
                            "текущей версии.",
             "sections": [{"title": "Версии", "items": _versions(snapshot, kind, generation)}]}
+
+    doc["jira_summary"] = {"title": doc["title"], "status_line": doc["status_line"], "sections": []}
+    return doc
 
 
 def failure_doc(*, reason_code: str, snapshot: dict, kind: str, generation: int) -> dict:
@@ -169,10 +172,15 @@ def failure_doc(*, reason_code: str, snapshot: dict, kind: str, generation: int)
     recovery = ("Проверьте настройки и права API; новый анализ возможен после исправления и изменения ресурса."
                 if reason_code in {"provider_rejected", "invalid_analysis_request"} else
                 "Сервис повторит его автоматически при следующей сверке или изменении.")
-    return {"title": STATUS_TITLES["FAILED"],
+    doc = {"title": STATUS_TITLES["FAILED"],
             "status_line": f"Анализ не выполнен ({reason_code}). {recovery} "
                            "Отсутствие вывода не означает отсутствие влияния.",
             "sections": [{"title": "Версии", "items": _versions(snapshot, kind, generation)}]}
+
+    doc["jira_summary"] = {"title": "Анализ не выполнен",
+                           "status_line": "Не удалось получить надёжный результат. " + recovery +
+                                          " Это не означает отсутствие влияния.", "sections": []}
+    return doc
 
 
 def doc_digest(doc: dict) -> str:
