@@ -1,5 +1,35 @@
 # MVP delivery plan — Codex as primary implementer
 
+## Актуальная сводка — 09.11.2026
+
+**Технический демо-контур Jira + Bitbucket + явно связанная Confluence проверен LIVE
+на существующей Cloud.ru dm-p1-ui. Репетиция защиты и независимая оценка пользы ещё не выполнены. MODEL OFF.**
+
+Установленный SHA: `a02ffa7854dcc38cecc7fe5c5317466059926cd9`; IP `82.202.141.50`.
+Старый `45.151.31.140` освобождён с подтверждением владельца; VPN не менялся.
+Основной demo-path использует Bitbucket polling60s и один обновляемый Jira-комментарий,
+не Bitbucket webhook. Основной GitHub-коннектор сохранён; его прежние LIVE/App/HTTPS
+ограничения не объявляются закрытыми проверками Bitbucket.
+
+[Единая приёмка и открытые пункты](../../implementation/autonomous-mvp/demo-acceptance-2026-11-09/README.md),
+[репетиция на5–7минут](../../implementation/autonomous-mvp/demo-acceptance-2026-11-09/REHEARSAL.md).
+Доказательства находятся в [PR104](https://github.com/rengalaxies/agent/pull/104),
+исторические эксплуатационные проверки и пакет участника — в отдельном открытом
+[PR102](https://github.com/rengalaxies/agent/pull/102). Пока PR открыты, не считать
+документы уже слитыми в main. Опубликованный и установленный runtime от этого не зависит.
+
+| Этап | Актуальное состояние | Что остаётся |
+|---|---|---|
+| M1 | DONE / MODEL OFF | Модельный путь не включать без отдельной квалификации |
+| M2 | PARTIAL: выбранный Jira–Bitbucket–Confluence путь LIVE PASS | Исходная GitHub App/webhook/HTTPS приёмка отдельно не закрыта |
+| M3 | PARTIAL / TARGET LIVE: install/update/restart, status, matching backup со scratch restore PASS | Reboot и production restore/downgrade именно a02ffa7 NOT_RUN; прежние проверки c405 не переносить на новый SHA |
+| M4 | Авторские сценарии и контрольные случаи LIVE PASS | Незнакомый независимый проект и независимые ожидания NOT_RUN |
+| M5 | Русский вывод улучшен, owner дал качественную обратную связь | Замер человеческих минут, FP/FN и независимая оценка пользы NOT_MEASURED |
+| M6 | Технический сценарий подготовлен | Репетиция владельцем, запись, актуальные слайды и финальное принятие PENDING |
+
+Далее сохранена датированная история. Старые BLOCKED/NOT_READY и ссылки на прежние
+SHA ниже описывают соответствующие даты и не отменяют эту актуальную сводку.
+
 Дата: 28.10.2026. Владелец: Daniil. Основной исполнитель: Codex в текущем чате.
 Это рабочий план пачек и критериев приёмки, не заявление о выполнении. Детальные изменения кода определяются после чтения соответствующих интерфейсов.
 
@@ -65,7 +95,7 @@ Connected service/Jira/HTTPS отсутствуют. Jira пока BLOCKED бе�
 - Совпадение маршрутов/адресов, stale runtime или отзыв доступа дают ложную связь: M4.
 - Качественная синтетика выдаётся за пользу, человеческая работа скрывается: M4/M5/M6.
 
-## Очередь и статусы
+## Историческая очередь и статусы — 28.10.2026
 - [x] M1 — DONE / MODEL OFF: серия 2b-r1 закрыта после transport, все три модели DISABLED. Код #68 слит как `1ef7eaca9b66256478022945eef7f8b205571dd2`, проверенный head `6d6d7d1a6f52e5eb619c7d580f577e892cfe3086`. CI: 838 основных + 152 runner-теста; HTTP-демо, evidence и systemd приёмка PASS. 55 целевых publication/qualification/result тестов прошли; повторное независимое агентное ревью без Important/Critical. Реальной модельной квалификации нового кода нет; M1 принят как обоснованный режим без модели. #66 актуализирован. Доказательства: docs/implementation/autonomous-mvp/m1-2026-10-28/README.md.
 - [ ] M2 — PARTIAL / LIVE BLOCKED: [PR #69](https://github.com/rengalaxies/agent/pull/69), код `7a624ed431ac2c3d7b8488985ca3cdc6e34147c7`; подтверждённые ошибки исправлены, 19 новых проверок и 9/9 условий LOCAL core-сценария PASS. Владелец подтвердил отсутствие установки M3, тестовых App/Jira/HTTPS/credentials. Модель OFF. Отчёт: `docs/implementation/autonomous-mvp/m2-2026-10-28/README.md`; точный handoff M3 рядом. До LIVE пачка не DONE.
 - [ ] M3 — TODO / READY FOR CONNECTION: актуальный релиз M1+M2 `agent-service-0.1.0-g14e65e8affe3` проверен после публикации с systemd, pin #70. Дальше — выбрать/обследовать хост, определить тестовые App/repositories/Jira, доставить credentials, подготовить HTTPS, установить и пройти LIVE. Нужен новый plan вместо pending f4e6ab7; без apply до конкретного плана и бюджета. Единый список в M2/HANDOFF-M3.md.
