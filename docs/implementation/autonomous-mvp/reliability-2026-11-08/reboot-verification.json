@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "host": "dm-p1-ui",
+  "reboot": "ACTUALLY_PERFORMED",
+  "boot_id_changed": true,
+  "elapsed_observation_seconds": 1.01,
+  "queue_resources_and_receipts_preserved": true,
+  "both_services_autostart": "PASS",
+  "demo_http_matches_baseline": {
+    "80": 200,
+    "8080": 200,
+    "18081": 401,
+    "8091": 200,
+    "8092": 200
+  },
+  "docker": [
+    "dmrp-ui Up 10 seconds (health: starting)",
+    "agent-graph-demo-web-1 Up 11 seconds"
+  ]
+}

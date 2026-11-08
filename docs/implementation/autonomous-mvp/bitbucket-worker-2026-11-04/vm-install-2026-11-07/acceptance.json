@@ -1,0 +1,131 @@
+{
+  "performed_on": "dm-p1-ui",
+  "publication": "dry_run",
+  "model": "OFF",
+  "before": {
+    "loaded": {
+      "code_version": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+      "commit": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+      "config": "/etc/agent-bitbucket/service.json",
+      "constitution": "agent-service-v1.0:100bcad3db9c",
+      "constitution_default": "agent-service-v1.0:100bcad3db9c",
+      "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+      "core": {
+        "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-6",
+        "schema": "agent-graph-1"
+      },
+      "launcher_pid": null,
+      "listen": "127.0.0.1:8092",
+      "manifest_sha256": "61b272693baae67aba8d91f2d618ba20297c26d94cee13facf60120ba42baaf8",
+      "pid": 2119779,
+      "python": "3.12.3",
+      "release": "agent-service-0.1.0-gc4053c6d4a95-linux-x86_64-cp312",
+      "release_id": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+      "started_at": "2026-11-07T17:32:51.020899+00:00"
+    },
+    "status": {
+      "events": {
+        "INGESTED": 3
+      },
+      "jobs": {
+        "DONE": 3
+      },
+      "intents": {
+        "DELIVERED": 3
+      },
+      "notices": []
+    },
+    "files": {
+      "dry-run-comments/bitbucket/ab047729a2df7c8434b55977.json": "bf72a8c5493800aa4a14202292cbe0afc8af25e1491bbc4bd1d46b21817269ff",
+      "dry-run-comments/bitbucket/eaaa8a5eb3f2008aa73397e1.json": "74df7daa535c28f36c61942c5026d0aae443ade37332c8d656a0df6dfd8b858a",
+      "dry-run-comments/bitbucket/6b6661afd1bdcab34d368ae4.json": "1d20bdd4edb723c9266c1a8b3ab7c09456cabf6430f240ad6eee0dafb1b2e04f"
+    }
+  },
+  "after": {
+    "loaded": {
+      "code_version": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+      "commit": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+      "config": "/etc/agent-bitbucket/service.json",
+      "constitution": "agent-service-v1.0:100bcad3db9c",
+      "constitution_default": "agent-service-v1.0:100bcad3db9c",
+      "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+      "core": {
+        "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-6",
+        "schema": "agent-graph-1"
+      },
+      "launcher_pid": null,
+      "listen": "127.0.0.1:8092",
+      "manifest_sha256": "61b272693baae67aba8d91f2d618ba20297c26d94cee13facf60120ba42baaf8",
+      "pid": 2120630,
+      "python": "3.12.3",
+      "release": "agent-service-0.1.0-gc4053c6d4a95-linux-x86_64-cp312",
+      "release_id": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+      "started_at": "2026-11-07T17:34:30.350358+00:00"
+    },
+    "status": {
+      "events": {
+        "INGESTED": 3
+      },
+      "jobs": {
+        "DONE": 3
+      },
+      "intents": {
+        "DELIVERED": 3
+      },
+      "notices": []
+    },
+    "files": {
+      "dry-run-comments/bitbucket/ab047729a2df7c8434b55977.json": "bf72a8c5493800aa4a14202292cbe0afc8af25e1491bbc4bd1d46b21817269ff",
+      "dry-run-comments/bitbucket/eaaa8a5eb3f2008aa73397e1.json": "74df7daa535c28f36c61942c5026d0aae443ade37332c8d656a0df6dfd8b858a",
+      "dry-run-comments/bitbucket/6b6661afd1bdcab34d368ae4.json": "1d20bdd4edb723c9266c1a8b3ab7c09456cabf6430f240ad6eee0dafb1b2e04f"
+    }
+  },
+  "restart": "PASS",
+  "autostart_enabled": true,
+  "process_uid": "Uid:\t995\t995\t995\t995",
+  "secrets_mode": "0600 root",
+  "health_http": 200,
+  "graph_http": 200,
+  "unauthenticated_status_http": 401,
+  "old_service_pid_unchanged": "936113",
+  "results": [
+    {
+      "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+      "document_keys": [
+        "sections",
+        "status_line",
+        "title"
+      ],
+      "confluence_page_link_present": true,
+      "confluence_poll_marker_present": true
+    },
+    {
+      "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+      "document_keys": [
+        "sections",
+        "status_line",
+        "title"
+      ],
+      "confluence_page_link_present": false,
+      "confluence_poll_marker_present": false
+    },
+    {
+      "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#3",
+      "document_keys": [
+        "sections",
+        "status_line",
+        "title"
+      ],
+      "confluence_page_link_present": false,
+      "confluence_poll_marker_present": false
+    }
+  ],
+  "reboot": "NOT_RUN",
+  "production_restore": "NOT_RUN",
+  "code_rollback": "NOT_RUN",
+  "live_publication": "NOT_RUN"
+}

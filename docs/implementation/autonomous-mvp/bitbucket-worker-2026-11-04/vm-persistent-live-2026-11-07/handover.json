@@ -1,0 +1,30 @@
+{
+  "host": "dm-p1-ui",
+  "release_sha": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+  "backup": "/var/backups/agent-bitbucket/20261107T182145Z-pre-persistent-live/snapshot.tar.gz",
+  "backup_sha256": "3aca6c77fe59de02b9e06cc35638518478bbea4f2eaa805ba2cc1007cffcd568",
+  "scratch_restore": "PASS",
+  "verified_files": 96,
+  "verified_sqlite": [
+    "/var/lib/agent-bitbucket/core/graph.sqlite3",
+    "/var/lib/agent-bitbucket/service/service.sqlite",
+    "/var/lib/agent-bitbucket/live-acceptance/core/graph.sqlite3",
+    "/var/lib/agent-bitbucket/live-acceptance/service/service.sqlite"
+  ],
+  "before_publication": "dry_run",
+  "publication": "live",
+  "state_path": "/var/lib/agent-bitbucket/live-acceptance/service/service.sqlite",
+  "core_state_dir": "/var/lib/agent-bitbucket/live-acceptance/core",
+  "preserved_resources": [
+    {
+      "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+      "comment_id": "jira:10022|10011",
+      "generation": 2,
+      "published_generation": 2
+    }
+  ],
+  "model": "OFF",
+  "handover": "STARTED",
+  "rollback_config": "/var/backups/agent-bitbucket/20261107T182145Z-pre-persistent-live/service.before.json",
+  "production_restore": "NOT_RUN"
+}
