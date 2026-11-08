@@ -1,0 +1,119 @@
+{
+  "host": "dm-p1-ui",
+  "public_ip": "82.202.141.50",
+  "activation": {
+    "activated": true,
+    "sha": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+    "backup": {
+      "archive": "/var/backups/agent-bitbucket/summary-20261108T135625Z/snapshot.tar.gz",
+      "sha256": "bfbb37d18864a9e9870b55b5b404547330b6f0748d596766103e402821e3a71e",
+      "previous_release": "/opt/agent-bitbucket/releases/agent-service-0.1.0-gc4053c6d4a95-linux-x86_64-cp312",
+      "scratch_restore": "PASS",
+      "verified_files": 114,
+      "databases": [
+        "/var/lib/agent-bitbucket/core/graph.sqlite3",
+        "/var/lib/agent-bitbucket/service/service.sqlite",
+        "/var/lib/agent-bitbucket/live-acceptance/core/graph.sqlite3",
+        "/var/lib/agent-bitbucket/live-acceptance/service/service.sqlite",
+        "/var/lib/agent-bitbucket/live-acceptance.safety-20261108T074458Z/core/graph.sqlite3",
+        "/var/lib/agent-bitbucket/live-acceptance.safety-20261108T074458Z/service/service.sqlite"
+      ]
+    },
+    "resources_reopened": 4,
+    "format": "summary_ru"
+  },
+  "runtime": {
+    "loaded": {
+      "code_version": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+      "commit": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+      "config": "/etc/agent-bitbucket/service.json",
+      "constitution": "agent-service-v1.0:100bcad3db9c",
+      "constitution_default": "agent-service-v1.0:100bcad3db9c",
+      "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+      "core": {
+        "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-6",
+        "schema": "agent-graph-1"
+      },
+      "launcher_pid": null,
+      "listen": "127.0.0.1:8092",
+      "manifest_sha256": "6fcf7e1303185ae1f009f16b15cbaf6cf8a4fa403bbb91bdbe48b5fd35f9f0ba",
+      "pid": 60331,
+      "python": "3.12.3",
+      "release": "agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312",
+      "release_id": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+      "started_at": "2026-11-08T13:58:17.306809+00:00"
+    },
+    "status": {
+      "events": {
+        "INGESTED": 9
+      },
+      "jobs": {
+        "ANALYZED": 1,
+        "DONE": 11,
+        "SUPERSEDED": 2
+      },
+      "intents": {
+        "DELIVERED": 17,
+        "FAILED": 2
+      },
+      "notices": []
+    },
+    "uid": 995,
+    "autostart": "enabled",
+    "units": {
+      "agent-bitbucket.service": "active",
+      "agent-service": "active",
+      "nginx": "active",
+      "docker": "active"
+    }
+  },
+  "jira": {
+    "issue": "KAN-9",
+    "comment_id": "10046",
+    "comment_ids_before": [
+      "10013",
+      "10046"
+    ],
+    "comment_ids_after": [
+      "10013",
+      "10046"
+    ],
+    "created_unchanged": true,
+    "author_unchanged": true,
+    "updated": "2026-11-08T16:57:29.324+0300",
+    "before_chars": 3413,
+    "after_chars": 625,
+    "body_unchanged_after_restart": true,
+    "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 4: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=74df30fbd6e43db6c2ba53c89c1e6ea3e40b3a221587f515d7214f9a24f7e0f3 generation=6"
+  },
+  "model": {
+    "reason_code": "model_not_configured",
+    "mode": "OFF"
+  },
+  "permissions": {
+    "process_uid": 995,
+    "secrets": "0600",
+    "config": "0640"
+  },
+  "outbox": {
+    "generation": 6,
+    "native_comment_id": "jira:10023|10046",
+    "chars": 4217,
+    "has_full_confluence_excerpt": true,
+    "has_jira_summary": true
+  },
+  "expected_failed_intents": {
+    "resource": "Bitbucket orders PR3, no Jira link",
+    "generations": [
+      1,
+      2
+    ],
+    "reason": "exactly_one_linked_jira_required"
+  },
+  "journal": {
+    "checked_lines": 10,
+    "traceback": false
+  }
+}

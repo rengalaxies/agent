@@ -1,4 +1,5 @@
 """Explicit update of the existing Bitbucket worker; no generic GitHub box install."""
+import tempfile, sqlite3
 import argparse, datetime, hashlib, importlib.util, json, os, pathlib, pwd, shlex, shutil, subprocess, sys, tarfile, urllib.request
 P=pathlib.Path
 SHA='a02ffa7854dcc38cecc7fe5c5317466059926cd9'
@@ -47,9 +48,24 @@ def activate():
   with tarfile.open(a,'x:gz') as t:
    for n in ['etc/agent-bitbucket','var/lib/agent-bitbucket','etc/systemd/system/agent-bitbucket.service']:t.add('/'+n,arcname=n)
   a.chmod(0o600)
-  with tarfile.open(a) as t: assert len(t.getmembers())>10
+  with tempfile.TemporaryDirectory(prefix='summary-backup-check-') as scratch:
+   with tarfile.open(a) as t:t.extractall(scratch,filter='data')
+   checked=0;dbs=[]
+   for root in ['etc/agent-bitbucket','var/lib/agent-bitbucket','etc/systemd/system/agent-bitbucket.service']:
+    origin=P('/'+root)
+    for f in (origin.rglob('*') if origin.is_dir() else [origin]):
+     if f.is_file() and not f.is_symlink():
+      restored=P(scratch)/f.relative_to('/')
+      assert hashlib.sha256(f.read_bytes()).digest()==hashlib.sha256(restored.read_bytes()).digest()
+      checked+=1
+      if f.suffix in ('.sqlite','.sqlite3'):
+       with sqlite3.connect(restored) as db:assert db.execute('pragma integrity_check').fetchone()[0]=='ok'
+       dbs.append(str(f))
+   active=json.loads(oldconfig)
+   expected={active['state_path'],str(P(active['core']['state_dir'])/'graph.sqlite3')}
+   assert expected.issubset(set(dbs)),(expected,dbs)
   (dest/'previous-release.txt').write_text(str(oldtarget)+'\n')
-  backup={'archive':str(a),'sha256':hashlib.sha256(a.read_bytes()).hexdigest(),'previous_release':str(oldtarget)}
+  backup={'archive':str(a),'sha256':hashlib.sha256(a.read_bytes()).hexdigest(),'previous_release':str(oldtarget),'scratch_restore':'PASS','verified_files':checked,'databases':dbs}
   (dest/'verification.json').write_text(json.dumps(backup));(dest/'verification.json').chmod(0o600)
   c=json.loads(oldconfig);assert c['publication']=='live';c['jira']['comment_format']='summary_ru';c['analysis']['code_version']=manifest(P(plan['new_release']))['release_id']
   tmp=CFG.with_suffix('.new');tmp.write_text(json.dumps(c,indent=2)+'\n');os.chown(tmp,meta.st_uid,meta.st_gid);tmp.chmod(meta.st_mode & 0o777);os.replace(tmp,CFG)
