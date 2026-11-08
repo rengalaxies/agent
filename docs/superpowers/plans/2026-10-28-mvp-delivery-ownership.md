@@ -1,5 +1,12 @@
 # MVP delivery plan — Codex as primary implementer
 
+## Подготовлен прогон владельца — 08.11.2026
+
+Владелец пока проходит сам: [пакет заданий и показ на5–7мин](../../implementation/autonomous-mvp/owner-rehearsal-2026-11-08/README.md).
+Задания/чек-лист разнесены, ответы и время пустые. PREPARED, human session и
+репетиция NOT_RUN, видео NOT_RECORDED. Это не независимый M4/M5 и не оценка FP/FN.
+Read-only preflight: LIVE worker active, status/graph200, notices0; внешних изменений нет.
+
 ## Текущие границы M1–M6 — 08.11.2026
 
 [Единая матрица и следующий шаг](../../implementation/autonomous-mvp/demo-mvp-2026-11-08/README.md).
