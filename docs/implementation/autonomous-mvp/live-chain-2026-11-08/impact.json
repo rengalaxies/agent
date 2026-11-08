@@ -1,0 +1,89 @@
+{
+  "observed_epoch": 1794169903.2712433,
+  "commit": {
+    "sha": "b5a401cc87127546222a12b6e6aceab7a72d4145",
+    "date": "2026-11-08T20:30:25+00:00"
+  },
+  "source_sha256": "1bd5a835d9b3d39f93a522455da8a3ef496eb0f6cbb6084341633f6180b32d0e",
+  "pr_state": "OPEN",
+  "resource": {
+    "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+    "generation": 7,
+    "published_generation": 7,
+    "comment_id": "jira:10023|10046"
+  },
+  "job": {
+    "state": "DONE",
+    "reason": "impact_found_within_profile"
+  },
+  "jira": {
+    "id": "10046",
+    "created": "2026-11-08T10:07:56.373+0300",
+    "updated": "2026-11-08T23:31:37.437+0300",
+    "text": "Возможное влияние на другие сервисы\nНайдены потребители, которые могут зависеть от изменяемой операции.\nЧто может затронуть\nreporting: ответственный не определён.\nПочему и через какой путь\nВ изменении удалена операция orders GET /orders/summary.\nПотребитель reporting: вызов в bb.reporting:client.py:14.\nСвязь: reporting → orders GET /orders/summary.\nОснование в коде: bb.reporting:client.py:14.\nОснование в коде: bb.orders:api.py:14.\nЧто проверить\nСохраните прежний маршрут или обновите вызов в reporting; затем проверьте совместимость.\nreporting: проверьте изменённую операцию на независимых ожиданиях потребителя.\nОграничения\nНе все вызовы и их поведение удалось сопоставить; часть влияния может быть пропущена.\nОжидания потребителя не подтверждены; документационный контекст сам по себе их не доказывает.\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 4: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=127bb2f4ec208bcae6b48edc4ac1abcf7009ca27563736d67372722d98434a51 generation=7",
+    "comment_ids": [
+      "10013",
+      "10046"
+    ]
+  },
+  "analysis": {
+    "status": "USEFUL",
+    "reason_code": "impact_found_within_profile",
+    "code_version": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+    "findings": [
+      {
+        "callsite": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "callsite",
+          "line": 14,
+          "path": "client.py",
+          "repository": "bb.reporting",
+          "service": "reporting"
+        },
+        "code": "OPERATION_REMOVED",
+        "compatibility_confirmed": false,
+        "consumer": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "service",
+          "service": "reporting"
+        },
+        "dependency_freshness": "STALE",
+        "evidence_refs": [
+          "ev:58742ff61739920a9c659e03426824c6f98ccf43"
+        ],
+        "requirement_ids": [],
+        "test_executed": false,
+        "usage": "SINGLE_REQUEST_OBSERVED"
+      }
+    ],
+    "source_freshness": [
+      {
+        "freshness": {
+          "checked_at": "2026-11-08T20:31:29.405464Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "source_id": "bb.orders",
+        "source_kind": "git"
+      },
+      {
+        "freshness": {
+          "checked_at": "2026-11-08T20:31:29.405464Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "source_id": "bb.reporting",
+        "source_kind": "git"
+      }
+    ],
+    "graph_version": "graph-13",
+    "profile": "http-requests-6"
+  },
+  "commit_to_comment_seconds": 72.437
+}
