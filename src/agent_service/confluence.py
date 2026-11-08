@@ -134,4 +134,7 @@ def with_documentation(doc, pages):
                          f"пропущено неподдерживаемых блоков={page['unsupported_blocks']}.")
     if items:
         result.setdefault("sections", []).append({"title": "Связанная документация Confluence", "items": items})
+    if "jira_summary" in doc:
+        from .jira_presentation import documentation_summary
+        result["jira_summary"] = documentation_summary(doc["jira_summary"], pages)
     return result

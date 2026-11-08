@@ -89,7 +89,10 @@ class JiraConnector:
     provider = "jira"
 
     def __init__(self, client: HttpClient, auth, *, project_keys: list[str], bot_account_id: str,
-                 webhook_secret: bytes, clock, fields=DEFAULT_FIELDS):
+                 webhook_secret: bytes, clock, fields=DEFAULT_FIELDS, comment_format="full"):
+        if comment_format not in {"full", "summary_ru"}:
+            raise ValueError("invalid_jira_comment_format")
+        self.comment_format = comment_format
         for key in project_keys:
             if not PROJECT_RE.match(key):
                 raise ValueError("invalid_project_key")
@@ -277,14 +280,14 @@ class JiraConnector:
     def create_comment(self, rid: str, doc: dict, marker: str) -> str:
         issue_id = self._issue_id(rid)
         resp = self._call("POST", f"/rest/api/3/issue/{segment(issue_id)}/comment",
-                          json_body={"body": to_adf(doc, marker)})
+                          json_body={"body": to_adf(doc, marker, comment_format=self.comment_format)})
         return str(resp.json()["id"])
 
     def update_comment(self, rid: str, comment_id: str, doc: dict, marker: str) -> None:
         issue_id = self._issue_id(rid)
         # Edits of the service comment are not news for watchers.
         self._call("PUT", f"/rest/api/3/issue/{segment(issue_id)}/comment/{segment(comment_id)}",
-                   query={"notifyUsers": "false"}, json_body={"body": to_adf(doc, marker)})
+                   query={"notifyUsers": "false"}, json_body={"body": to_adf(doc, marker, comment_format=self.comment_format)})
 
     @property
     def bot_identity(self) -> str:
@@ -295,8 +298,10 @@ def _text(value: str) -> dict:
     return {"type": "text", "text": " ".join(str(value).split()) or " "}
 
 
-def to_adf(doc: dict, marker: str) -> dict:
+def to_adf(doc: dict, marker: str, *, comment_format: str = "summary_ru") -> dict:
     """ADF text nodes are plain text: analysis output cannot add mentions or links."""
+    if comment_format == "summary_ru":
+        doc = doc.get("jira_summary", doc)
     content = [{"type": "heading", "attrs": {"level": 3}, "content": [_text(doc["title"])]},
                {"type": "paragraph", "content": [_text(doc["status_line"])]}]
     for section in doc["sections"]:

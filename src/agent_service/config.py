@@ -93,6 +93,7 @@ class JiraAuthConfig(Strict):
 
 
 class JiraConfig(Strict):
+    comment_format: Literal["full", "summary_ru"] = "full"
     base_url: str  # https://<site>.atlassian.net or https://api.atlassian.com/ex/jira/<cloudId>
     project_keys: list[str] = Field(min_length=1)
     semantic_fields: list[str] = Field(default_factory=lambda: list(DEFAULT_FIELDS))
@@ -219,7 +220,7 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
         connectors["jira"] = JiraConnector(client, auth, project_keys=jc.project_keys,
                                            bot_account_id=jc.bot_account_id,
                                            webhook_secret=env_secret(jc.webhook_secret_env).encode(), clock=clock,
-                                           fields=jc.semantic_fields)
+                                           fields=jc.semantic_fields, comment_format=jc.comment_format)
     if config.confluence:
         from .confluence import read_linked_pages
         jc = config.jira
