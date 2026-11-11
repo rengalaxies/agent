@@ -1,0 +1,38 @@
+{
+  "format": "agent-service-backup-1",
+  "name": "20261108T074546924841Z-reliability-pre-reboot",
+  "label": "reliability-pre-reboot",
+  "created_at": "2026-11-08T07:45:48.294074+00:00",
+  "release": {
+    "activated_at": "2026-11-02T13:43:08Z",
+    "commit": "5fb6484fecff116d005137f0acaaa81d2d25854c",
+    "manifest_sha256": "49477dc1d6576008133c75b5cef761f5c73d70bf3f05971da6b0c3c6ca5c7bd7",
+    "name": "agent-service-0.1.0-g5fb6484fecff-linux-x86_64-cp312",
+    "release_id": "0.1.0+g5fb6484fecff.linux-x86_64-cp312"
+  },
+  "schemas": {
+    "service_store": 1,
+    "graph_store": 2
+  },
+  "counts": {
+    "events": 53252,
+    "resources": 10,
+    "jobs": 14,
+    "intents": 18,
+    "history": 117871,
+    "delivered_comments": 9,
+    "graph_artifacts": 7975,
+    "graph_proposals": 0
+  },
+  "files": {
+    "state/service/service.sqlite": "885f6fe5381c7ddb186171a8ce4b2c005ce5e158b06806db2c9c3aad0950cada",
+    "state/core/graph.sqlite3": "5785e4340c78b753b1ae06e4633c12e9bbc2849ba65a9a422be5ce980ef8e14b",
+    "state/.box-state.json": "048b0fdd1ca034cff41709229f7e85df99042e2ce0a156a85e3a1d3f825d1fb5",
+    "config/box.yaml": "bd06de25f9701e2d164155c1195bf74d1b102d589a80ae22b68468fbfe3bf247",
+    "config/service.json": "5a248c5adc92ea17434931c8ed43d0ca5e8755f10982443f336ba9e4164b2f0f",
+    "config/policy.json": "a280ab80075508f48bdf79d570259cce50cd835a53d295c091d87b47ec1ff297"
+  },
+  "pruned": [
+    "20261102T211225669706Z-daily"
+  ]
+}

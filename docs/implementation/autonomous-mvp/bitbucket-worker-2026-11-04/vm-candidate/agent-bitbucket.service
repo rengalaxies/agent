@@ -1,0 +1,23 @@
+[Unit]
+Description=Pilot Bitbucket Jira analysis worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=agent-bitbucket
+Group=agent-bitbucket
+UMask=0077
+EnvironmentFile=/etc/agent-bitbucket/secrets.env
+WorkingDirectory=/var/lib/agent-bitbucket
+ExecStart=/opt/agent-bitbucket/current/venv/bin/python -I -B /opt/agent-bitbucket/current/app/tools/agent_service/box/launch.py --config /etc/agent-bitbucket/service.json --run /var/lib/agent-bitbucket/run --host 127.0.0.1 --port 8092
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/agent-bitbucket
+
+[Install]
+WantedBy=multi-user.target

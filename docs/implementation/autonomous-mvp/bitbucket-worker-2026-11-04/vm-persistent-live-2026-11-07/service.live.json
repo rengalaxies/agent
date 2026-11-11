@@ -1,0 +1,52 @@
+{
+  "installation_id": "agent-bitbucket-m3",
+  "environment": "pilot-vm",
+  "state_path": "/var/lib/agent-bitbucket/live-acceptance/service/service.sqlite",
+  "publication": "live",
+  "bitbucket": {
+    "mode": "jira_delivery",
+    "workspace": "rengalaxies",
+    "workspace_uuid": "e0b65402-98d3-432d-9ba0-8e92884d8bfb",
+    "repositories": {
+      "agent-pilot-orders": {
+        "uuid": "ce63c558-64b3-462f-9ab9-1b954c14f5d9",
+        "repository_id": "bb.orders"
+      },
+      "agent-pilot-reporting": {
+        "uuid": "0056f8cf-dd82-4021-838f-6e984ba96e53",
+        "repository_id": "bb.reporting"
+      }
+    },
+    "auth": {
+      "email_env": "BITBUCKET_EMAIL",
+      "token_env": "BITBUCKET_API_TOKEN"
+    },
+    "refresh_mirrors": true
+  },
+  "dry_run_dir": "/var/lib/agent-bitbucket/dry-run-comments",
+  "core": {
+    "policy_path": "/etc/agent-bitbucket/policy.json",
+    "state_dir": "/var/lib/agent-bitbucket/live-acceptance/core",
+    "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml"
+  },
+  "jira": {
+    "base_url": "https://api.atlassian.com/ex/jira/d0b47b8d-4655-4cb1-9f81-30573fd372c3",
+    "project_keys": [
+      "KAN"
+    ],
+    "bot_account_id": "712020:8948567f-20f5-4c20-8e4c-7f9ed30b5732",
+    "webhook_secret_env": "BITBUCKET_JIRA_UNUSED_WEBHOOK_SECRET",
+    "auth": {
+      "kind": "basic",
+      "email_env": "JIRA_EMAIL",
+      "token_env": "JIRA_API_TOKEN"
+    }
+  },
+  "reconcile_seconds": 60,
+  "confluence": {
+    "site": "rengalaxies.atlassian.net"
+  },
+  "analysis": {
+    "code_version": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312"
+  }
+}

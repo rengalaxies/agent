@@ -1,0 +1,13 @@
+{
+  "host": "dm-p1-ui",
+  "archive": "/var/backups/agent-bitbucket/20261107T181521Z/snapshot.tar.gz",
+  "sha256": "c2550f3df2926837046c846aae15a14dd6855302f37297e1ab25932d2d95ec56",
+  "verified_files": 90,
+  "scratch_restore_databases": [
+    "/var/lib/agent-bitbucket/core/graph.sqlite3",
+    "/var/lib/agent-bitbucket/service/service.sqlite"
+  ],
+  "scratch_restore": "PASS",
+  "production_restore": "NOT_RUN",
+  "release_sha": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb"
+}

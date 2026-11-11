@@ -1,0 +1,14 @@
+{
+  "agent-service": {
+    "process_credentials_match_file": true,
+    "jira": "PASS",
+    "confluence": "PASS",
+    "bitbucket_api_and_git": "NOT_CONFIGURED"
+  },
+  "agent-bitbucket": {
+    "process_credentials_match_file": true,
+    "jira": "PASS",
+    "confluence": "PASS",
+    "bitbucket_api_and_git": "PASS"
+  }
+}

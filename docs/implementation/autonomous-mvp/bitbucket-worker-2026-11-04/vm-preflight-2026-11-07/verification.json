@@ -1,0 +1,19 @@
+{
+  "backup": "/var/backups/agent-service/20261107T172857033694Z-pre-bitbucket-c405",
+  "release": {
+    "activated_at": "2026-11-02T13:43:08Z",
+    "commit": "5fb6484fecff116d005137f0acaaa81d2d25854c",
+    "manifest_sha256": "49477dc1d6576008133c75b5cef761f5c73d70bf3f05971da6b0c3c6ca5c7bd7",
+    "name": "agent-service-0.1.0-g5fb6484fecff-linux-x86_64-cp312",
+    "release_id": "0.1.0+g5fb6484fecff.linux-x86_64-cp312"
+  },
+  "file_hashes_verified": 6,
+  "sqlite_scratch_restore_integrity": "PASS",
+  "production_restore": "NOT_RUN",
+  "host_config_archive": "/var/backups/agent-service/20261107T172857033694Z-pre-bitbucket-c405/host-config.tar.gz",
+  "host_config_sha256": "1b828696c1d8cb0216058e0fb7bc841aeaef94222841fe579e9dad053814c202",
+  "host_config_members": 33,
+  "archive_mode": "0o600",
+  "service_active": "active",
+  "new_worker_installed": false
+}

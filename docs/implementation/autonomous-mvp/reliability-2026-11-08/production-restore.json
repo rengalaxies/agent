@@ -1,0 +1,112 @@
+{
+  "host": "dm-p1-ui",
+  "result": "PASS",
+  "production_restore": "ACTIVE_QUEUE_AND_CORE_REPLACED_FROM_MATCHING_BACKUP",
+  "backup": "/var/backups/agent-bitbucket/20261108T074458Z-production-restore",
+  "safety_copy": "/var/lib/agent-bitbucket/live-acceptance.safety-20261108T074458Z",
+  "verified_backup_files": 10,
+  "release_sha": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+  "before": {
+    "resources": [
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+        "generation": 1,
+        "comment_id": "jira:10018|10012",
+        "published_generation": 1
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+        "generation": 3,
+        "comment_id": "jira:10022|10011",
+        "published_generation": 3
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#3",
+        "generation": 1,
+        "comment_id": null,
+        "published_generation": null
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 5,
+        "comment_id": "jira:10023|10046",
+        "published_generation": 5
+      }
+    ],
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "checkpoint": {
+      "analysis_basis": "e9e17842ab2f3c3426d921d8016ad8543b90895f7ecd81131110fbfc3606b4e0",
+      "queue_foreground_streak": "0",
+      "queue_scheduling_history_seq": "84",
+      "reconcile:bitbucket": "1794123871.1559887"
+    }
+  },
+  "after": {
+    "resources": [
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+        "generation": 1,
+        "comment_id": "jira:10018|10012",
+        "published_generation": 1
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+        "generation": 3,
+        "comment_id": "jira:10022|10011",
+        "published_generation": 3
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#3",
+        "generation": 1,
+        "comment_id": null,
+        "published_generation": null
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 5,
+        "comment_id": "jira:10023|10046",
+        "published_generation": 5
+      }
+    ],
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "checkpoint": {
+      "analysis_basis": "e9e17842ab2f3c3426d921d8016ad8543b90895f7ecd81131110fbfc3606b4e0",
+      "queue_foreground_streak": "0",
+      "queue_scheduling_history_seq": "84",
+      "reconcile:bitbucket": "1794123900.0909827"
+    }
+  },
+  "status": {
+    "events": {
+      "INGESTED": 9
+    },
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "notices": []
+  },
+  "current_secrets_preserved": true,
+  "code_rollback": "NOT_RUN"
+}

@@ -1,0 +1,105 @@
+{
+  "boot_id": "05765ceb-b898-44c5-9575-cc2174d4be94",
+  "epoch": 1794123982.6389875,
+  "uptime": "907878.82",
+  "queue": {
+    "resources": [
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+        "generation": 1,
+        "comment_id": "jira:10018|10012",
+        "published_generation": 1
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+        "generation": 3,
+        "comment_id": "jira:10022|10011",
+        "published_generation": 3
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#3",
+        "generation": 1,
+        "comment_id": null,
+        "published_generation": null
+      },
+      {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 5,
+        "comment_id": "jira:10023|10046",
+        "published_generation": 5
+      }
+    ],
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "checkpoints": {
+      "analysis_basis": "e9e17842ab2f3c3426d921d8016ad8543b90895f7ecd81131110fbfc3606b4e0",
+      "queue_foreground_streak": "0",
+      "queue_scheduling_history_seq": "84",
+      "reconcile:bitbucket": "1794123967.5475261"
+    }
+  },
+  "publication": "live",
+  "loaded": {
+    "code_version": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+    "commit": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+    "config": "/etc/agent-bitbucket/service.json",
+    "constitution": "agent-service-v1.0:100bcad3db9c",
+    "constitution_default": "agent-service-v1.0:100bcad3db9c",
+    "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+    "core": {
+      "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+      "output_schema_version": "2.2",
+      "profile": "http-requests-6",
+      "schema": "agent-graph-1"
+    },
+    "launcher_pid": null,
+    "listen": "127.0.0.1:8092",
+    "manifest_sha256": "61b272693baae67aba8d91f2d618ba20297c26d94cee13facf60120ba42baaf8",
+    "pid": 2259010,
+    "python": "3.12.3",
+    "release": "agent-service-0.1.0-gc4053c6d4a95-linux-x86_64-cp312",
+    "release_id": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+    "started_at": "2026-11-08T07:44:59.452960+00:00"
+  },
+  "units": {
+    "agent-service": "active",
+    "agent-bitbucket": "active",
+    "nginx": "active",
+    "docker": "active",
+    "ssh.socket": "active"
+  },
+  "http": {
+    "80": 200,
+    "8080": 200,
+    "18081": 401,
+    "8091": 200,
+    "8092": 200
+  },
+  "docker": [
+    "dmrp-ui Up 6 days (healthy)",
+    "agent-graph-demo-web-1 Up 6 days"
+  ],
+  "status": {
+    "events": {
+      "INGESTED": 9
+    },
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "notices": []
+  },
+  "systemd_pid": 2259010
+}

@@ -1,0 +1,46 @@
+{
+  "installation_id": "agent-bitbucket-m3",
+  "environment": "pilot-vm",
+  "subject": "Bitbucket Orders\u2013Reporting pilot",
+  "capabilities": [
+    "read_context",
+    "maintain",
+    "propose",
+    "report_check"
+  ],
+  "repositories": [
+    {
+      "id": "bb.orders",
+      "service": "orders",
+      "root": "/var/lib/agent-bitbucket/mirrors/bb.orders.git",
+      "snapshot": "git",
+      "revision": "5d405f22a0d919dd395fa02339c9170de20a89f7"
+    },
+    {
+      "id": "bb.reporting",
+      "service": "reporting",
+      "root": "/var/lib/agent-bitbucket/mirrors/bb.reporting.git",
+      "snapshot": "git",
+      "revision": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+    }
+  ],
+  "addresses": [
+    {
+      "service": "orders",
+      "base_url": "https://orders.pilot.invalid"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R-pilot-export-all",
+      "repository": "bb.reporting",
+      "path": "export-requirement.md",
+      "sha256": "278a0bd94ddb5330b73ede137ff0924aa052fcd519ca6d0165e782af81c96718",
+      "issuer": "Authored pilot test condition only",
+      "consumer": "reporting",
+      "service": "orders",
+      "path_template": "/orders",
+      "predicate": "complete_collection"
+    }
+  ]
+}

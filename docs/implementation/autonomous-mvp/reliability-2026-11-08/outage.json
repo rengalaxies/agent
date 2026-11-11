@@ -1,0 +1,64 @@
+{
+  "host": "dm-p1-ui",
+  "fault": "temporary unit-scoped unreachable loopback HTTPS proxy, not actual provider downtime",
+  "before": {
+    "events": {
+      "INGESTED": 9
+    },
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "notices": []
+  },
+  "during": {
+    "events": {
+      "INGESTED": 9
+    },
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "notices": [
+      {
+        "kind": "reconcile_failed",
+        "subject": "bitbucket",
+        "count": 1,
+        "last_at": 1794123867.544932,
+        "detail": "bitbucket:outcome_unknown"
+      }
+    ]
+  },
+  "after": {
+    "events": {
+      "INGESTED": 9
+    },
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 8,
+      "SUPERSEDED": 1
+    },
+    "intents": {
+      "DELIVERED": 14,
+      "FAILED": 1
+    },
+    "notices": []
+  },
+  "health_during": 200,
+  "comment_id": "10046",
+  "comment_body_unchanged": true,
+  "manual_reconcile_calls": 0,
+  "fault_removed": true,
+  "original_service_pid_unchanged": "2256837",
+  "result": "PASS"
+}
