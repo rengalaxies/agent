@@ -1,5 +1,79 @@
 # MVP delivery plan — Codex as primary implementer
 
+## Подготовлен прогон владельца — 08.11.2026
+
+Владелец пока проходит сам: [пакет заданий и показ на5–7мин](../../implementation/autonomous-mvp/owner-rehearsal-2026-11-08/README.md).
+Задания/чек-лист разнесены, ответы и время пустые. PREPARED, human session и
+репетиция NOT_RUN, видео NOT_RECORDED. Это не независимый M4/M5 и не оценка FP/FN.
+Read-only preflight: LIVE worker active, status/graph200, notices0; внешних изменений нет.
+
+## Текущие границы M1–M6 — 08.11.2026
+
+[Единая матрица и следующий шаг](../../implementation/autonomous-mvp/demo-mvp-2026-11-08/README.md).
+M2/M3 LIVE-пилот технически проверен в указанном scope; M4 независимый проект,
+M5 человеческие метрики и M6 итоговая приёмка этим не закрыты.
+
+## Надёжность и годовые credentials — 08.11.2026
+
+На реальной dm-p1-ui PASS: удаление/возврат явной Confluence-ссылки; недоступная
+страница без cached текста; ограниченный API transport-fault и восстановление;
+реальное восстановление active LIVE queue+core; reboot с новым boot ID и
+автозапуском обоих сервисов/демо. SHA c4053c6, model OFF, native IDs сохранены.
+Bitbucket/Jira credentials заменены в обоих нужных сервисах и локально до08.11.2027;
+три старых токена отозваны, API/Git проверены после отзыва и reboot. Старые backups
+с revoked credentials требуют сохранения текущего secrets.env при restore.
+Ожидаемый FAILED PR3 без Jira-ключа и старый GitHub403 не выданы за успех.
+[Отчёт и границы](../../implementation/autonomous-mvp/reliability-2026-11-08/README.md).
+
+## Замкнутый цикл исправления PR4 — 08.11.2026
+
+В той же ветке восстановлен /orders/summary, head773000a306706060297eeb7f5f94582c6e57732a.
+Постоянный worker автоматически обновил тот же KAN-9 comment10046, generation2:
+USEFUL/OPERATION_REMOVED → ABSTAINED/no_supported_delta, findings0. Список Jira
+подтвердил ровно один комментарий с этим marker. Итоговый PR diff пуст, main
+не менялся. Это снятие статического предупреждения; compatibility tests NOT_RUN.
+[Доказательства](../../implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/README.md).
+
+## Новый PR, автоматическое влияние — 08.11.2026
+
+Новый Bitbucket PR4 (KAN-9): /orders/summary → /orders/statistics. Постоянный
+worker на dm-p1-ui без ручного reconcile опубликовал Jira comment10046: USEFUL,
+OPERATION_REMOVED, потребитель Reporting client.py:14. Confluence v4 включена как
+текстовый контекст. Model calls0; runtime/compatibility tests NOT_RUN. Повторное
+чтение: тот же comment, generation1, один job DONE. PR открыт, main не менялся.
+[Доказательства](../../implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/README.md).
+
+## Постоянный LIVE на Cloud.ru — 07.11.2026
+
+agent-bitbucket.service теперь publication=live с сохранённой native LIVE-очередью,
+SHA c4053c6d4a959ff4d0e159c3cb1913fae87f25fb, model OFF, loopback8092.
+Автоматический polling без ручного reconcile: Confluence v3→v4 обновила KAN-8
+comment10011 за51.88с. Restart/autostart и отсутствие дублей PASS. PR1 опубликован
+в KAN-4 comment10012. PR3 без Jira-ключа явно отклонён (FAILED intent), это не
+успешная публикация: итог4 DONE /1 ANALYZED,6 DELIVERED /1 FAILED. No notices.
+Backup перед переключением:96 файлов,4 SQLite после scratch restore PASS.
+Reboot и production restore NOT_RUN; обновление Bitbucket token нужно до11ноября.
+[Доказательства](../../implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/README.md).
+
+## Cloud.ru LIVE-проба — 07.11.2026
+
+Из отдельного состояния на dm-p1-ui реально выполнено PR2 → KAN-8, комментарий
+10011. Изменение явно связанной Confluence-страницы v2→v3 обновило тот же
+комментарий без изменения Git-head; повторная сверка без дублей. Model OFF.
+Проверен backup нового контура: 90 файлов и две SQLite после scratch restore.
+Это scoped one-shot LIVE, не постоянный LIVE-worker: штатный worker возвращён
+в dry_run. Миграция его локальных comment IDs в Jira ещё не квалифицирована.
+[Доказательства](../../implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-live-2026-11-07/README.md).
+
+## Проверено на Cloud.ru — 07.11.2026, Bitbucket dry_run
+
+На dm-p1-ui отдельно установлен agent-bitbucket c4053c6d4a959ff4d0e159c3cb1913fae87f25fb,
+UID995, model OFF, loopback8092, автозапуск. 3/3 PR обработаны в DirectorySink;
+PR2 содержит связанный Confluence-контекст. Restart и сохранение результатов PASS.
+Это dry_run, не LIVE Jira: reboot, backup/restore нового контура, code rollback и
+внешняя live-публикация этой установки пока NOT_RUN. Старый сервис/демо сохранены.
+Доказательства: [VM install](../../implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-install-2026-11-07/README.md).
+
 Дата: 28.10.2026. Владелец: Daniil. Основной исполнитель: Codex в текущем чате.
 Это рабочий план пачек и критериев приёмки, не заявление о выполнении. Детальные изменения кода определяются после чтения соответствующих интерфейсов.
 

@@ -1,0 +1,151 @@
+{
+  "as_of": "2026-11-08 Europe/Moscow",
+  "release_sha": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+  "model": "OFF",
+  "rows": [
+    {
+      "id": "Q1",
+      "trigger": "Переименование используемого API",
+      "expected": "Найти потребителя старого маршрута",
+      "observed": "USEFUL; OPERATION_REMOVED; Reporting client.py:14; comment10046",
+      "status": "PASS",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/vm-analysis.json"
+    },
+    {
+      "id": "Q2",
+      "trigger": "Исправление того же PR",
+      "expected": "Снять предупреждение в том же комментарии",
+      "observed": "ABSTAINED/no_supported_delta; findings0; generation2; тот же10046",
+      "status": "PASS",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/restored-verification.json"
+    },
+    {
+      "id": "Q3",
+      "trigger": "Правка README без API-изменения",
+      "expected": "Не выдать API delta",
+      "observed": "ABSTAINED/no_supported_delta; findings0",
+      "status": "PASS",
+      "scope": "Локальный worker с реальным Bitbucket-кодом",
+      "evidence": "../bitbucket-worker-2026-11-04/docs-control-live.json"
+    },
+    {
+      "id": "Q4",
+      "trigger": "PR без Jira-ключа",
+      "expected": "Не писать в случайную задачу",
+      "observed": "PR3: FAILED intent exactly_one_linked_jira_required; comment_id=null",
+      "status": "EXPECTED_REJECTION",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/acceptance.json"
+    },
+    {
+      "id": "D1",
+      "trigger": "Изменение явно связанной Confluence-страницы",
+      "expected": "Автоматически обновить прежний комментарий",
+      "observed": "v3→v4; comment10011; 51.88с observation; manual reconcile0",
+      "status": "PASS",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/acceptance.json"
+    },
+    {
+      "id": "D2",
+      "trigger": "Удаление ссылки из описания Jira",
+      "expected": "Убрать старый документационный контекст",
+      "observed": "Контекст удалён, старый текст не использован; тот же10046",
+      "status": "PASS",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../reliability-2026-11-08/links.json"
+    },
+    {
+      "id": "D3",
+      "trigger": "Недоступная страница Confluence",
+      "expected": "Явно сообщить недоступность без cached текста",
+      "observed": "Реальный missing-page ответ → UNAVAILABLE; старый текст отсутствует",
+      "status": "PASS",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../reliability-2026-11-08/links.json"
+    },
+    {
+      "id": "D4",
+      "trigger": "Возврат исходной ссылки",
+      "expected": "Вернуть актуальный контекст без дубля",
+      "observed": "Исходное описание восстановлено; один marker/comment10046",
+      "status": "PASS",
+      "scope": "Cloud.ru, постоянный LIVE",
+      "evidence": "../reliability-2026-11-08/links.json"
+    },
+    {
+      "id": "R1",
+      "trigger": "Контролируемый transport-fault исходящих API",
+      "expected": "Показать ошибку и восстановиться, не менять Jira старым результатом",
+      "observed": "reconcile_failed; health200 только liveness; body unchanged; fault снят",
+      "status": "PASS",
+      "scope": "Cloud.ru; unit-scoped proxy fault, не падение провайдера",
+      "evidence": "../reliability-2026-11-08/outage.json"
+    },
+    {
+      "id": "R2",
+      "trigger": "Restart LIVE-worker",
+      "expected": "Сохранить native receipts и очередь",
+      "observed": "Новый PID/checkpoint; те же ресурсы и комментарии",
+      "status": "PASS",
+      "scope": "Cloud.ru",
+      "evidence": "../bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/acceptance.json"
+    },
+    {
+      "id": "R3",
+      "trigger": "Восстановление очереди и графа",
+      "expected": "Поднять matching state из backup с сохранением идентичности",
+      "observed": "Active queue+core реально заменены из backup; counters/IDs/generations совпали",
+      "status": "PASS",
+      "scope": "Cloud.ru; same code/config, не whole-VM disaster recovery",
+      "evidence": "../reliability-2026-11-08/production-restore.json"
+    },
+    {
+      "id": "R4",
+      "trigger": "Reboot хоста",
+      "expected": "Автозапуск сервисов и демо, сохранение state",
+      "observed": "Boot ID сменился; оба сервиса/демо вернулись; очередь сохранена",
+      "status": "PASS",
+      "scope": "Cloud.ru; HTTP18081=401 ожидаем",
+      "evidence": "../reliability-2026-11-08/reboot-verification.json"
+    },
+    {
+      "id": "R5",
+      "trigger": "Ротация истекающих credentials",
+      "expected": "Пережить отзыв старых, API/Git работают с новыми",
+      "observed": "Новые токены до08.11.2027; три старых отозваны; post-reboot API/Git PASS",
+      "status": "PASS",
+      "scope": "Mac + два сервиса на Cloud.ru",
+      "evidence": "../reliability-2026-11-08/tokens-after-reboot.json"
+    },
+    {
+      "id": "N1",
+      "trigger": "Полное падение провайдера,429,неоднозначная запись",
+      "expected": "Не публиковать неподтверждённое; восстановиться без дублей",
+      "observed": "На target в этой серии не выполнялось",
+      "status": "NOT_RUN",
+      "scope": "Будущая fault acceptance",
+      "evidence": null
+    },
+    {
+      "id": "N2",
+      "trigger": "Code update/rollback отдельного Bitbucket-контура",
+      "expected": "Проверить смену release и matching state contract",
+      "observed": "На target не выполнялось; первая установка не имеет предыдущего Bitbucket-релиза",
+      "status": "NOT_RUN",
+      "scope": "CI recovery не заменяет target acceptance",
+      "evidence": null
+    },
+    {
+      "id": "N3",
+      "trigger": "Независимая оценка качества и пользы",
+      "expected": "Измерить FP/FN, понятность, действия и полный труд",
+      "observed": "Авторские кейсы; usefulness_confirmed=false; человеческие метрики отсутствуют",
+      "status": "NOT_RUN",
+      "scope": "Нужен независимый участник",
+      "evidence": null
+    }
+  ]
+}

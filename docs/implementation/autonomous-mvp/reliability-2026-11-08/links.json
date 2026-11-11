@@ -1,0 +1,34 @@
+{
+  "host": "dm-p1-ui",
+  "manual_reconcile_calls": 0,
+  "same_comment": "10046",
+  "checks": [
+    {
+      "name": "explicit_link_removed",
+      "result": "PASS",
+      "before_generation": 2,
+      "after_generation": 3,
+      "elapsed_seconds": 71.35,
+      "comment_updated": "2026-11-08T10:42:25.256+0300"
+    },
+    {
+      "name": "confluence_missing_page_no_cached_text",
+      "result": "PASS",
+      "before_generation": 3,
+      "after_generation": 4,
+      "elapsed_seconds": 31.83,
+      "comment_updated": "2026-11-08T10:42:52.200+0300"
+    },
+    {
+      "name": "original_link_restored",
+      "result": "PASS",
+      "before_generation": 4,
+      "after_generation": 5,
+      "elapsed_seconds": 57.03,
+      "comment_updated": "2026-11-08T10:43:50.203+0300"
+    }
+  ],
+  "result": "PASS",
+  "jira_description_restored": true,
+  "service_comment_count": 1
+}

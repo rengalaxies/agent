@@ -1,0 +1,67 @@
+{
+  "scope": "VM_ONE_SHOT_LIVE_FILTERED_PR2",
+  "host": "dm-p1-ui",
+  "release_sha": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+  "persistent_worker_publication": "dry_run",
+  "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+  "model": "OFF",
+  "comment_id": "10011",
+  "baseline_steps": [
+    "ingest:new_generation",
+    "analyze:done",
+    "publish:delivered"
+  ],
+  "baseline_reconcile": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 1,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "before_generation": 1,
+  "head_sha": "16003689c9e99e9ba593168cc5347de090888c7f",
+  "comment_created": "2026-11-07T21:16:59.058+0300",
+  "result": "PASS",
+  "page_id": "360725",
+  "before_page_version": 2,
+  "after_page_version": 3,
+  "after_generation": 2,
+  "update_reconcile": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 1,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "update_steps": [
+    "ingest:new_generation",
+    "publish:delivered",
+    "analyze:done",
+    "publish:delivered"
+  ],
+  "comment_updated": "2026-11-07T21:17:38.395+0300",
+  "same_comment": true,
+  "new_comments": 1,
+  "repeat_enqueued": 0,
+  "repeat_steps": [],
+  "status": {
+    "events": {
+      "INGESTED": 2
+    },
+    "jobs": {
+      "DONE": 2
+    },
+    "intents": {
+      "DELIVERED": 3
+    },
+    "notices": []
+  }
+}

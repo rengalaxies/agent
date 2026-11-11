@@ -1,0 +1,955 @@
+{
+  "host": "dm-p1-ui",
+  "scope": "PERSISTENT_LIVE_NEW_PR",
+  "manual_reconcile_calls": 0,
+  "loaded": {
+    "code_version": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+    "commit": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+    "config": "/etc/agent-bitbucket/service.json",
+    "constitution": "agent-service-v1.0:100bcad3db9c",
+    "constitution_default": "agent-service-v1.0:100bcad3db9c",
+    "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+    "core": {
+      "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+      "output_schema_version": "2.2",
+      "profile": "http-requests-6",
+      "schema": "agent-graph-1"
+    },
+    "launcher_pid": null,
+    "listen": "127.0.0.1:8092",
+    "manifest_sha256": "61b272693baae67aba8d91f2d618ba20297c26d94cee13facf60120ba42baaf8",
+    "pid": 2130319,
+    "python": "3.12.3",
+    "release": "agent-service-0.1.0-gc4053c6d4a95-linux-x86_64-cp312",
+    "release_id": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+    "started_at": "2026-11-07T18:26:50.371260+00:00"
+  },
+  "publication": "live",
+  "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+  "head_sha": "dda44a2c034536bf7902777832a406454734331e",
+  "linked_jira_keys": [
+    "KAN-9"
+  ],
+  "generation": 1,
+  "comment_id": "10046",
+  "comment_created": "2026-11-08T10:07:56.373+0300",
+  "comment_updated": "2026-11-08T10:07:56.373+0300",
+  "comment_body": {
+    "type": "doc",
+    "version": 1,
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Возможное влияние изменения"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Что может затронуть",
+            "marks": [
+              {
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "reporting: команда не определена"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Почему и через какой путь",
+            "marks": [
+              {
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Изменение orders GET /orders/summary: OPERATION_REMOVED None -> None"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Находка OPERATION_REMOVED у reporting: вызов bb.reporting:client.py:14, использование SINGLE_REQUEST_OBSERVED, связь STALE, требование не задано"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Факт в пределах профиля: reporting calls GET /orders/summary of orders at client.py:14; observed usage SINGLE_REQUEST_OBSERVED. Применимость: Pinned snapshots only; static profile http-requests-6. Неопределённость: LOW. Основания: код bb.reporting@6ebf07174eb9:client.py#L13-16; код bb.reporting@6ebf07174eb9:client.py#L14-14; код bb.orders@5d405f22a0d9:api.py#L14-15"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Гипотеза: OPERATION_REMOVED: If the changed declaration governs this call. Применимость: Pinned snapshots only; static profile http-requests-6. Неопределённость: MEDIUM. Основания: код bb.reporting@6ebf07174eb9:client.py#L14-14; код bb.orders@5d405f22a0d9:api.py#L14-15"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Путь: reporting -> orders GET /orders/summary. Основания: код bb.reporting@6ebf07174eb9:client.py#L14-14; код bb.orders@5d405f22a0d9:api.py#L14-15"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Что проверить",
+            "marks": [
+              {
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "reporting: Exercise the changed operation against this consumer's independent expectations"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Неизвестные и свежесть",
+            "marks": [
+              {
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "requirement_unknown (reporting)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "owner_unknown (reporting)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "пробел unmapped_call bb.reporting:client.py"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "git:bb.orders: CURRENT, проверено 2026-11-08T07:07:48.300609Z"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "git:bb.reporting: CURRENT, проверено 2026-11-08T07:07:48.300609Z"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Версии",
+            "marks": [
+              {
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "PR rengalaxies/agent-pilot-orders#4: base , head dda44a2c0345"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Связанные задачи Jira: KAN-9"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Поколение анализа: 1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "code_version: 0.1.0+gc4053c6d4a95.linux-x86_64-cp312"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "constitution_version: agent-service-v1.0:100bcad3db9c"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "correlation_id: 547a03c25fdc4e7d85bebec933eb2e7f:1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "graph_version: graph-5"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "model: Детерминированный результат (модельный отчёт не представлен)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "profile: http-requests-6"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "schema_version: 2.2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "снимок bb.orders (base): 5d405f22a0d9"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "снимок bb.orders (head): dda44a2c0345"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "снимок bb.reporting (consumer): 6ebf07174eb9"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Статус: USEFUL, код: impact_found_within_profile"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Связанная документация Confluence",
+            "marks": [
+              {
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Confluence Пилот Orders–Reporting — требования для KAN-8 — версия 4, https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Документированные требования; соответствие коду отдельно не подтверждено."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Пилотные требования Orders и Reporting Авторские условия демонстрации прототипа. Ответственный за проверку — участник пилота. Эти требования служат тестовыми данными. Область Сервис Orders предоставляет GET /orders и GET /orders/summary. Reporting использует обе операции. Идентичность Orders — https://orders.pilot.invalid. Отдельная GET /orders сервиса Reporting относится к другому сервису. Требования | ID | Требование | Проверка | R-SUMMARY-AVAILABLE | Orders сохраняет GET /orders/summary, пока Reporting load_summary вызывает её. | Перед удалением найти Reporting client.py и согласовать миграцию вызова. Выполнить интеграционную проверку ответа. | R-EXPORT-COMPLETE | Reporting должен получать полный набор заказов за день. Тестовый набор содержит 60 заказов. Уменьшение страницы со 100 до 20 требует проверки пагинации. | Сравнить полученные IDs с ожидаемыми 60 IDs, проверить отсутствие пропусков и дублей. | R-SCOPE | Одноимённые маршруты разных сервисов различаются по идентичности сервиса. | Изменение Orders не должно приписываться Reporting audit_api.py. | R-DOCS-CONTROL | Правка README без изменения кода операций не создаёт API delta. | Ожидать отсутствие предупреждения об изменении операции. Границы вывода Статический анализ указывает возможное влияние. Подтверждение совместимости требует выполненной проверки. Документация может конфликтовать с кодом — такой конфликт должен быть указан. Модель в текущем пилоте выключена. Связь с задачей Контрольная задача KAN-8, Bitbucket Orders PR2. При исправлении PR восстановление операции должно приводить к пересчёту результата. Контроль актуальности документа CF-POLL-ACCEPTANCE-20261107: при обновлении требования агент должен повторно прочитать связанную страницу и указать её актуальную версию. CF-VM-LIVE-20261107: контроль чтения актуальной документации агентом на Cloud.ru. CF-PERSISTENT-LIVE-20261107: автоматическая проверка актуальности через постоянный worker."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "agent-service marker=bbc3df769e4f04d5 digest=a372f216d71d3b92dba2934c02cad9272b1ff614a4a826a637d9fc1bd1db6635 generation=1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "generation": 1,
+      "state": "DONE",
+      "reason": "impact_found_within_profile",
+      "result": "{\"affected\":[{\"owner\":{\"checked_at\":null,\"source\":null,\"source_version\":null,\"status\":\"UNKNOWN\",\"teams\":[]},\"relationship_refs\":[\"rel:096ac5cf63b3772c1017a32e771f4a049cc79deb\"],\"service\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"service\",\"service\":\"reporting\"}}],\"checks\":[{\"claim_refs\":[\"claim:5ca5b00361caf34c8c1bac7788153bfdb26c9aeb\",\"claim:dae74d6b208c3a96220a9771fac48dd9db499afe\"],\"consumer\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"service\",\"service\":\"reporting\"},\"text\":\"Exercise the changed operation against this consumer's independent expectations\"}],\"claims\":[{\"applicability\":\"Pinned snapshots only; static profile http-requests-6.\",\"evidence_refs\":[\"ev:482100a750080c9385747264ca2dc541c2d1ced7\",\"ev:58742ff61739920a9c659e03426824c6f98ccf43\",\"ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad\"],\"id\":\"claim:dae74d6b208c3a96220a9771fac48dd9db499afe\",\"kind\":\"fact\",\"statement\":\"reporting calls GET /orders/summary of orders at client.py:14; observed usage SINGLE_REQUEST_OBSERVED.\",\"subject\":null,\"uncertainty\":\"LOW\",\"unknowns\":[]},{\"applicability\":\"Pinned snapshots only; static profile http-requests-6.\",\"evidence_refs\":[\"ev:58742ff61739920a9c659e03426824c6f98ccf43\",\"ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad\"],\"id\":\"claim:5ca5b00361caf34c8c1bac7788153bfdb26c9aeb\",\"kind\":\"hypothesis\",\"statement\":\"OPERATION_REMOVED: If the changed declaration governs this call.\",\"subject\":null,\"uncertainty\":\"MEDIUM\",\"unknowns\":[\"helper_semantics_unknown\",\"requirement_unknown\"]}],\"code_version\":\"0.1.0+gc4053c6d4a95.linux-x86_64-cp312\",\"constitution_version\":\"agent-service-v1.0:100bcad3db9c\",\"correlation_id\":\"547a03c25fdc4e7d85bebec933eb2e7f:1\",\"costs\":{\"completion_tokens\":0,\"currency\":null,\"model_calls\":0,\"prompt_tokens\":0,\"reserved_micro\":null},\"deltas\":[{\"after\":null,\"before\":null,\"code\":\"OPERATION_REMOVED\",\"evidence_refs\":[\"ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad\"],\"operation\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"operation\",\"method\":\"GET\",\"route\":\"/orders/summary\",\"service\":\"orders\"}}],\"environment\":\"pilot-vm\",\"event_id\":\"id:f29699d5a5c8f037fd991e69c40d9142b202ff2c\",\"evidence\":[{\"blob\":\"70a4c793a98a6a11d29ea7188f6b057374ea04cd\",\"commit\":\"5d405f22a0d919dd395fa02339c9170de20a89f7\",\"content_sha256\":\"380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89\",\"end_line\":15,\"freshness\":{\"checked_at\":\"2026-11-08T07:07:48.300609Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"id\":\"ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad\",\"origin\":\"code\",\"path\":\"api.py\",\"provenance\":\"AUTHENTIC\",\"repository\":\"bb.orders\",\"snapshot\":\"GIT_COMMIT\",\"start_line\":14,\"sufficiency\":\"SUPPORTED_WITHIN_PROFILE\",\"visibility\":[\"bb.orders\"]},{\"blob\":\"d4de6895d22a99bf4fe81c69714c1454f189a2c4\",\"commit\":\"6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3\",\"content_sha256\":\"7718e0e9b664b76294e978467f3b288c3ef5813e07d8a68f5b428b3ea2d3b38b\",\"end_line\":14,\"freshness\":{\"checked_at\":\"2026-11-08T07:07:48.300609Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"id\":\"ev:58742ff61739920a9c659e03426824c6f98ccf43\",\"origin\":\"code\",\"path\":\"client.py\",\"provenance\":\"AUTHENTIC\",\"repository\":\"bb.reporting\",\"snapshot\":\"GIT_COMMIT\",\"start_line\":14,\"sufficiency\":\"SUPPORTED_WITHIN_PROFILE\",\"visibility\":[\"bb.reporting\"]},{\"blob\":\"d4de6895d22a99bf4fe81c69714c1454f189a2c4\",\"commit\":\"6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3\",\"content_sha256\":\"7718e0e9b664b76294e978467f3b288c3ef5813e07d8a68f5b428b3ea2d3b38b\",\"end_line\":16,\"freshness\":{\"checked_at\":\"2026-11-08T07:07:48.300609Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"id\":\"ev:482100a750080c9385747264ca2dc541c2d1ced7\",\"origin\":\"code\",\"path\":\"client.py\",\"provenance\":\"AUTHENTIC\",\"repository\":\"bb.reporting\",\"snapshot\":\"GIT_COMMIT\",\"start_line\":13,\"sufficiency\":\"SUPPORTED_WITHIN_PROFILE\",\"visibility\":[\"bb.reporting\"]}],\"findings\":[{\"callsite\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"callsite\",\"line\":14,\"path\":\"client.py\",\"repository\":\"bb.reporting\",\"service\":\"reporting\"},\"code\":\"OPERATION_REMOVED\",\"compatibility_confirmed\":false,\"consumer\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"service\",\"service\":\"reporting\"},\"dependency_freshness\":\"STALE\",\"evidence_refs\":[\"ev:58742ff61739920a9c659e03426824c6f98ccf43\"],\"requirement_ids\":[],\"test_executed\":false,\"usage\":\"SINGLE_REQUEST_OBSERVED\"}],\"gaps\":[{\"code\":\"unmapped_call\",\"evidence_refs\":[],\"path\":\"client.py\",\"repository\":\"bb.reporting\"}],\"graph_version\":\"graph-5\",\"impact_paths\":[{\"relationship_refs\":[\"rel:096ac5cf63b3772c1017a32e771f4a049cc79deb\"],\"summary\":\"reporting -> orders GET /orders/summary\"}],\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"analysis_result\",\"model\":null,\"profile\":\"http-requests-6\",\"reason_code\":\"impact_found_within_profile\",\"relationships\":[{\"change_origin\":\"code_scan\",\"evidence_refs\":[\"ev:58742ff61739920a9c659e03426824c6f98ccf43\",\"ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad\"],\"freshness\":{\"checked_at\":\"2026-11-08T07:07:48.300609Z\",\"reasons\":[],\"status\":\"STALE\",\"valid_from\":null,\"valid_until\":null},\"id\":\"rel:096ac5cf63b3772c1017a32e771f4a049cc79deb\",\"kind\":\"calls\",\"origins\":[\"code\"],\"source\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"service\",\"service\":\"reporting\"},\"status\":\"STALE\",\"target\":{\"environment\":\"pilot-vm\",\"installation_id\":\"agent-bitbucket-m3\",\"kind\":\"operation\",\"method\":\"GET\",\"route\":\"/orders/summary\",\"service\":\"orders\"},\"visibility\":[\"bb.orders\",\"bb.reporting\"]}],\"request_id\":\"547a03c25fdc4e7d85bebec933eb2e7f:1\",\"resource_version\":\"bitbucket-context:d79d666523214047d212abc3b927e33e6d8305728d412f287be07095831485d2\",\"schema\":\"agent-graph-output\",\"schema_version\":\"2.2\",\"snapshots\":[{\"commit\":\"5d405f22a0d919dd395fa02339c9170de20a89f7\",\"mode\":\"GIT_COMMIT\",\"repository\":\"bb.orders\",\"role\":\"base\",\"tree\":\"025c473e91c5fa389849d32382260db597c3ae60\"},{\"commit\":\"dda44a2c034536bf7902777832a406454734331e\",\"mode\":\"GIT_COMMIT\",\"repository\":\"bb.orders\",\"role\":\"head\",\"tree\":\"5475b0a2d9c46310c6c1cc45577caa3faf1eb06f\"},{\"commit\":\"6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3\",\"mode\":\"GIT_COMMIT\",\"repository\":\"bb.reporting\",\"role\":\"consumer\",\"tree\":\"9667ddbb093bf74a6a1b68ab3b057ef7eaf577b6\"}],\"source_freshness\":[{\"freshness\":{\"checked_at\":\"2026-11-08T07:07:48.300609Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"bb.orders\",\"source_kind\":\"git\"},{\"freshness\":{\"checked_at\":\"2026-11-08T07:07:48.300609Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"bb.reporting\",\"source_kind\":\"git\"}],\"status\":\"USEFUL\",\"summary\":\"1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.\",\"superseded_by\":null,\"timings\":{\"finished_at\":\"2026-11-08T07:07:48.300266Z\",\"seconds\":{\"analysis\":0.11247362510766834},\"started_at\":\"2026-11-08T07:07:48.187794Z\"},\"trigger_kind\":\"pr\",\"unknowns\":[{\"code\":\"requirement_unknown\",\"subject\":\"reporting\"},{\"code\":\"owner_unknown\",\"subject\":\"reporting\"}],\"usefulness_confirmed\":false}",
+      "created_at": 1794121662.3122804,
+      "updated_at": 1794121676.6604152
+    }
+  ],
+  "intents": [
+    {
+      "generation": 1,
+      "state": "DELIVERED",
+      "reason": null,
+      "comment_id": "jira:10023|10046",
+      "created_at": 1794121668.3063517,
+      "updated_at": 1794121676.6604152
+    }
+  ],
+  "confluence_link_present": true,
+  "result": {
+    "affected": [
+      {
+        "owner": {
+          "checked_at": null,
+          "source": null,
+          "source_version": null,
+          "status": "UNKNOWN",
+          "teams": []
+        },
+        "relationship_refs": [
+          "rel:096ac5cf63b3772c1017a32e771f4a049cc79deb"
+        ],
+        "service": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "service",
+          "service": "reporting"
+        }
+      }
+    ],
+    "checks": [
+      {
+        "claim_refs": [
+          "claim:5ca5b00361caf34c8c1bac7788153bfdb26c9aeb",
+          "claim:dae74d6b208c3a96220a9771fac48dd9db499afe"
+        ],
+        "consumer": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "service",
+          "service": "reporting"
+        },
+        "text": "Exercise the changed operation against this consumer's independent expectations"
+      }
+    ],
+    "claims": [
+      {
+        "applicability": "Pinned snapshots only; static profile http-requests-6.",
+        "evidence_refs": [
+          "ev:482100a750080c9385747264ca2dc541c2d1ced7",
+          "ev:58742ff61739920a9c659e03426824c6f98ccf43",
+          "ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad"
+        ],
+        "id": "claim:dae74d6b208c3a96220a9771fac48dd9db499afe",
+        "kind": "fact",
+        "statement": "reporting calls GET /orders/summary of orders at client.py:14; observed usage SINGLE_REQUEST_OBSERVED.",
+        "subject": null,
+        "uncertainty": "LOW",
+        "unknowns": []
+      },
+      {
+        "applicability": "Pinned snapshots only; static profile http-requests-6.",
+        "evidence_refs": [
+          "ev:58742ff61739920a9c659e03426824c6f98ccf43",
+          "ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad"
+        ],
+        "id": "claim:5ca5b00361caf34c8c1bac7788153bfdb26c9aeb",
+        "kind": "hypothesis",
+        "statement": "OPERATION_REMOVED: If the changed declaration governs this call.",
+        "subject": null,
+        "uncertainty": "MEDIUM",
+        "unknowns": [
+          "helper_semantics_unknown",
+          "requirement_unknown"
+        ]
+      }
+    ],
+    "code_version": "0.1.0+gc4053c6d4a95.linux-x86_64-cp312",
+    "constitution_version": "agent-service-v1.0:100bcad3db9c",
+    "correlation_id": "547a03c25fdc4e7d85bebec933eb2e7f:1",
+    "costs": {
+      "completion_tokens": 0,
+      "currency": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "reserved_micro": null
+    },
+    "deltas": [
+      {
+        "after": null,
+        "before": null,
+        "code": "OPERATION_REMOVED",
+        "evidence_refs": [
+          "ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad"
+        ],
+        "operation": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "operation",
+          "method": "GET",
+          "route": "/orders/summary",
+          "service": "orders"
+        }
+      }
+    ],
+    "environment": "pilot-vm",
+    "event_id": "id:f29699d5a5c8f037fd991e69c40d9142b202ff2c",
+    "evidence": [
+      {
+        "blob": "70a4c793a98a6a11d29ea7188f6b057374ea04cd",
+        "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+        "content_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+        "end_line": 15,
+        "freshness": {
+          "checked_at": "2026-11-08T07:07:48.300609Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "id": "ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad",
+        "origin": "code",
+        "path": "api.py",
+        "provenance": "AUTHENTIC",
+        "repository": "bb.orders",
+        "snapshot": "GIT_COMMIT",
+        "start_line": 14,
+        "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+        "visibility": [
+          "bb.orders"
+        ]
+      },
+      {
+        "blob": "d4de6895d22a99bf4fe81c69714c1454f189a2c4",
+        "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+        "content_sha256": "7718e0e9b664b76294e978467f3b288c3ef5813e07d8a68f5b428b3ea2d3b38b",
+        "end_line": 14,
+        "freshness": {
+          "checked_at": "2026-11-08T07:07:48.300609Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "id": "ev:58742ff61739920a9c659e03426824c6f98ccf43",
+        "origin": "code",
+        "path": "client.py",
+        "provenance": "AUTHENTIC",
+        "repository": "bb.reporting",
+        "snapshot": "GIT_COMMIT",
+        "start_line": 14,
+        "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+        "visibility": [
+          "bb.reporting"
+        ]
+      },
+      {
+        "blob": "d4de6895d22a99bf4fe81c69714c1454f189a2c4",
+        "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+        "content_sha256": "7718e0e9b664b76294e978467f3b288c3ef5813e07d8a68f5b428b3ea2d3b38b",
+        "end_line": 16,
+        "freshness": {
+          "checked_at": "2026-11-08T07:07:48.300609Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "id": "ev:482100a750080c9385747264ca2dc541c2d1ced7",
+        "origin": "code",
+        "path": "client.py",
+        "provenance": "AUTHENTIC",
+        "repository": "bb.reporting",
+        "snapshot": "GIT_COMMIT",
+        "start_line": 13,
+        "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+        "visibility": [
+          "bb.reporting"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "callsite": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "callsite",
+          "line": 14,
+          "path": "client.py",
+          "repository": "bb.reporting",
+          "service": "reporting"
+        },
+        "code": "OPERATION_REMOVED",
+        "compatibility_confirmed": false,
+        "consumer": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "service",
+          "service": "reporting"
+        },
+        "dependency_freshness": "STALE",
+        "evidence_refs": [
+          "ev:58742ff61739920a9c659e03426824c6f98ccf43"
+        ],
+        "requirement_ids": [],
+        "test_executed": false,
+        "usage": "SINGLE_REQUEST_OBSERVED"
+      }
+    ],
+    "gaps": [
+      {
+        "code": "unmapped_call",
+        "evidence_refs": [],
+        "path": "client.py",
+        "repository": "bb.reporting"
+      }
+    ],
+    "graph_version": "graph-5",
+    "impact_paths": [
+      {
+        "relationship_refs": [
+          "rel:096ac5cf63b3772c1017a32e771f4a049cc79deb"
+        ],
+        "summary": "reporting -> orders GET /orders/summary"
+      }
+    ],
+    "installation_id": "agent-bitbucket-m3",
+    "kind": "analysis_result",
+    "model": null,
+    "profile": "http-requests-6",
+    "reason_code": "impact_found_within_profile",
+    "relationships": [
+      {
+        "change_origin": "code_scan",
+        "evidence_refs": [
+          "ev:58742ff61739920a9c659e03426824c6f98ccf43",
+          "ev:779a034b01b0a18ea49bc47cb6dabbf35b92dbad"
+        ],
+        "freshness": {
+          "checked_at": "2026-11-08T07:07:48.300609Z",
+          "reasons": [],
+          "status": "STALE",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "id": "rel:096ac5cf63b3772c1017a32e771f4a049cc79deb",
+        "kind": "calls",
+        "origins": [
+          "code"
+        ],
+        "source": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "service",
+          "service": "reporting"
+        },
+        "status": "STALE",
+        "target": {
+          "environment": "pilot-vm",
+          "installation_id": "agent-bitbucket-m3",
+          "kind": "operation",
+          "method": "GET",
+          "route": "/orders/summary",
+          "service": "orders"
+        },
+        "visibility": [
+          "bb.orders",
+          "bb.reporting"
+        ]
+      }
+    ],
+    "request_id": "547a03c25fdc4e7d85bebec933eb2e7f:1",
+    "resource_version": "bitbucket-context:d79d666523214047d212abc3b927e33e6d8305728d412f287be07095831485d2",
+    "schema": "agent-graph-output",
+    "schema_version": "2.2",
+    "snapshots": [
+      {
+        "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.orders",
+        "role": "base",
+        "tree": "025c473e91c5fa389849d32382260db597c3ae60"
+      },
+      {
+        "commit": "dda44a2c034536bf7902777832a406454734331e",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.orders",
+        "role": "head",
+        "tree": "5475b0a2d9c46310c6c1cc45577caa3faf1eb06f"
+      },
+      {
+        "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.reporting",
+        "role": "consumer",
+        "tree": "9667ddbb093bf74a6a1b68ab3b057ef7eaf577b6"
+      }
+    ],
+    "source_freshness": [
+      {
+        "freshness": {
+          "checked_at": "2026-11-08T07:07:48.300609Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "source_id": "bb.orders",
+        "source_kind": "git"
+      },
+      {
+        "freshness": {
+          "checked_at": "2026-11-08T07:07:48.300609Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "source_id": "bb.reporting",
+        "source_kind": "git"
+      }
+    ],
+    "status": "USEFUL",
+    "summary": "1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
+    "superseded_by": null,
+    "timings": {
+      "finished_at": "2026-11-08T07:07:48.300266Z",
+      "seconds": {
+        "analysis": 0.11247362510766834
+      },
+      "started_at": "2026-11-08T07:07:48.187794Z"
+    },
+    "trigger_kind": "pr",
+    "unknowns": [
+      {
+        "code": "requirement_unknown",
+        "subject": "reporting"
+      },
+      {
+        "code": "owner_unknown",
+        "subject": "reporting"
+      }
+    ],
+    "usefulness_confirmed": false
+  }
+}

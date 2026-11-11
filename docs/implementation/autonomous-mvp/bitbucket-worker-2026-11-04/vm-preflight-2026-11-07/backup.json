@@ -1,0 +1,36 @@
+{
+  "format": "agent-service-backup-1",
+  "name": "20261107T172857033694Z-pre-bitbucket-c405",
+  "label": "pre-bitbucket-c405",
+  "created_at": "2026-11-07T17:28:58.038216+00:00",
+  "release": {
+    "activated_at": "2026-11-02T13:43:08Z",
+    "commit": "5fb6484fecff116d005137f0acaaa81d2d25854c",
+    "manifest_sha256": "49477dc1d6576008133c75b5cef761f5c73d70bf3f05971da6b0c3c6ca5c7bd7",
+    "name": "agent-service-0.1.0-g5fb6484fecff-linux-x86_64-cp312",
+    "release_id": "0.1.0+g5fb6484fecff.linux-x86_64-cp312"
+  },
+  "schemas": {
+    "service_store": 1,
+    "graph_store": 2
+  },
+  "counts": {
+    "events": 45947,
+    "resources": 9,
+    "jobs": 10,
+    "intents": 11,
+    "history": 100754,
+    "delivered_comments": 8,
+    "graph_artifacts": 7146,
+    "graph_proposals": 0
+  },
+  "files": {
+    "state/service/service.sqlite": "265f8403b3866dad9dd8d4abf9e66241d99db5dba1bd6ec65dc9766955138bea",
+    "state/core/graph.sqlite3": "7d1e4267b6cd6747a1ddc9746fa96803abc6cba513cd399f092b57b1ebf91676",
+    "state/.box-state.json": "048b0fdd1ca034cff41709229f7e85df99042e2ce0a156a85e3a1d3f825d1fb5",
+    "config/box.yaml": "bd06de25f9701e2d164155c1195bf74d1b102d589a80ae22b68468fbfe3bf247",
+    "config/service.json": "5a248c5adc92ea17434931c8ed43d0ca5e8755f10982443f336ba9e4164b2f0f",
+    "config/policy.json": "a280ab80075508f48bdf79d570259cce50cd835a53d295c091d87b47ec1ff297"
+  },
+  "pruned": []
+}
