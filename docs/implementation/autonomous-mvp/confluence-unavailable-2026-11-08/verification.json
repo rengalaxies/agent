@@ -1,0 +1,87 @@
+{
+  "begin": {
+    "action": "begin",
+    "description_before_sha256": "549afd5fd12e60fc2717217ca91cb241ffff35a67f7ac115f28412bdfbab774e",
+    "description_changed_sha256": "c84c2e9a8bf17dae0c92d9613d6473bbd439248d47bd0446ac323322e076fe5c",
+    "saved": "/var/backups/agent-bitbucket/control-confluence-20261108.json",
+    "epoch": 1794171220.3553762
+  },
+  "restore": {
+    "action": "restore",
+    "exact_description_restored": true,
+    "description_sha256": "549afd5fd12e60fc2717217ca91cb241ffff35a67f7ac115f28412bdfbab774e",
+    "epoch": 1794171304.5802293
+  },
+  "code_sha": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+  "unit_active": "active",
+  "model": "OFF (unchanged)",
+  "final_status": {
+    "events": {
+      "INGESTED": 13
+    },
+    "jobs": {
+      "ANALYZED": 1,
+      "DONE": 15,
+      "SUPERSEDED": 2
+    },
+    "intents": {
+      "DELIVERED": 25,
+      "FAILED": 2
+    },
+    "notices": []
+  },
+  "phases": {
+    "unavailable": {
+      "commit": {
+        "sha": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+        "date": "2026-11-08T20:32:36+00:00"
+      },
+      "source_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 9,
+        "published_generation": 9,
+        "comment_id": "jira:10023|10046"
+      },
+      "jira": {
+        "id": "10046",
+        "created": "2026-11-08T10:07:56.373+0300",
+        "updated": "2026-11-08T23:54:11.808+0300",
+        "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nСтраница Confluence недоступна: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=9999999999. Её текст не использован.\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=5f616f957a86de93b355e5631f744b06e215d2af94093e217c6260e31da6f9d3 generation=9",
+        "comment_ids": [
+          "10013",
+          "10046"
+        ]
+      },
+      "job_state": "DONE",
+      "result_status": "ABSTAINED",
+      "action_to_comment_seconds": 31.453
+    },
+    "restored": {
+      "commit": {
+        "sha": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+        "date": "2026-11-08T20:32:36+00:00"
+      },
+      "source_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 10,
+        "published_generation": 10,
+        "comment_id": "jira:10023|10046"
+      },
+      "jira": {
+        "id": "10046",
+        "created": "2026-11-08T10:07:56.373+0300",
+        "updated": "2026-11-08T23:56:26.401+0300",
+        "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 4: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=ffa126c78097e7e43d3d24b6c986b7f5c0fd140b36986c5155fea59b7d8810f8 generation=10",
+        "comment_ids": [
+          "10013",
+          "10046"
+        ]
+      },
+      "job_state": "DONE",
+      "result_status": "ABSTAINED",
+      "action_to_comment_seconds": 81.821
+    }
+  }
+}

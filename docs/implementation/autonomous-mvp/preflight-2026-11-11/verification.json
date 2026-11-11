@@ -1,0 +1,159 @@
+{
+  "host": "dm-p1-ui",
+  "public_ip": "82.202.141.50",
+  "runtime": {
+    "boot_id": "0ed500f0-3bce-4509-8dc6-c67d806837a5",
+    "epoch": 1794420994.4257078,
+    "uptime": "296972.82",
+    "queue": {
+      "resources": [
+        {
+          "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#1",
+          "generation": 2,
+          "comment_id": "jira:10018|10012",
+          "published_generation": 2
+        },
+        {
+          "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#2",
+          "generation": 6,
+          "comment_id": "jira:10022|10011",
+          "published_generation": 6
+        },
+        {
+          "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#3",
+          "generation": 2,
+          "comment_id": null,
+          "published_generation": null
+        },
+        {
+          "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+          "generation": 12,
+          "comment_id": "jira:10023|10046",
+          "published_generation": 12
+        }
+      ],
+      "jobs": {
+        "ANALYZED": 1,
+        "DONE": 19,
+        "SUPERSEDED": 2
+      },
+      "intents": {
+        "DELIVERED": 33,
+        "FAILED": 2
+      },
+      "checkpoints": {
+        "analysis_basis": "e9e17842ab2f3c3426d921d8016ad8543b90895f7ecd81131110fbfc3606b4e0",
+        "background_job:ef1647b8567342988bead63c023bbe94": "1",
+        "background_job:08d2ab6115964a61bb16f32f8e9616c6": "1",
+        "background_job:f6d06acf4d70444b8b4ed44d75c6bb35": "1",
+        "background_job:bc4549e8f9864e6892906c499d7d2e11": "1",
+        "queue_scheduling_history_seq": "112",
+        "queue_foreground_streak": "0",
+        "reconcile:bitbucket": "1794420961.0123057"
+      }
+    },
+    "publication": "live",
+    "loaded": {
+      "code_version": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+      "commit": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+      "config": "/etc/agent-bitbucket/service.json",
+      "constitution": "agent-service-v1.0:100bcad3db9c",
+      "constitution_default": "agent-service-v1.0:100bcad3db9c",
+      "constitution_path": "/opt/agent-bitbucket/current/app/constitutions/agent-service-v1.yaml",
+      "core": {
+        "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-6",
+        "schema": "agent-graph-1"
+      },
+      "launcher_pid": null,
+      "listen": "127.0.0.1:8092",
+      "manifest_sha256": "6fcf7e1303185ae1f009f16b15cbaf6cf8a4fa403bbb91bdbe48b5fd35f9f0ba",
+      "pid": 60331,
+      "python": "3.12.3",
+      "release": "agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312",
+      "release_id": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+      "started_at": "2026-11-08T13:58:17.306809+00:00"
+    },
+    "units": {
+      "agent-service": "active",
+      "agent-bitbucket": "active",
+      "nginx": "active",
+      "docker": "active",
+      "ssh.socket": "active"
+    },
+    "http": {
+      "80": 200,
+      "8080": 200,
+      "18081": 401,
+      "8091": 200,
+      "8092": 200
+    },
+    "docker": [
+      "dmrp-ui Up 3 days (healthy)",
+      "agent-graph-demo-web-1 Up 3 days"
+    ],
+    "status": {
+      "events": {
+        "INGESTED": 17
+      },
+      "jobs": {
+        "ANALYZED": 1,
+        "DONE": 19,
+        "SUPERSEDED": 2
+      },
+      "intents": {
+        "DELIVERED": 33,
+        "FAILED": 2
+      },
+      "notices": []
+    },
+    "systemd_pid": 60331
+  },
+  "integrations": {
+    "jira_identity_expected": true,
+    "confluence": {
+      "id": "360725",
+      "version": 6,
+      "status": "current",
+      "body_sha256": "c4e1471565c655317da02703cddce213e5407c4881cba51361f8586251ba8bd5"
+    },
+    "process_credentials_match_file": true
+  },
+  "model": {
+    "reason_code": "model_not_configured",
+    "format": "summary_ru",
+    "publication": "live",
+    "uid": 995,
+    "autostart": "enabled"
+  },
+  "pilot": {
+    "commit": {
+      "sha": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+      "date": "2026-11-08T20:32:36+00:00"
+    },
+    "source_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+    "pr_state": "OPEN",
+    "resource": {
+      "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+      "generation": 12,
+      "published_generation": 12,
+      "comment_id": "jira:10023|10046"
+    },
+    "jira": {
+      "id": "10046",
+      "created": "2026-11-08T10:07:56.373+0300",
+      "updated": "2026-11-09T00:10:12.093+0300",
+      "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 6: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=1c59bf7619befa6e009ada18f03093707ed42dd0ce197ee71f6a25033329ce88 generation=12",
+      "comment_ids": [
+        "10013",
+        "10046"
+      ]
+    }
+  },
+  "token_expiry_metadata": {
+    "bitbucket": "2027-11-08",
+    "jira_confluence": "2027-11-08"
+  },
+  "scope": "fresh read-only preflight; no live mutation or timing repetition"
+}

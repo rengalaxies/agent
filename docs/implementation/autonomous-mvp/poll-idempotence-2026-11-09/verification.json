@@ -1,0 +1,90 @@
+{
+  "scope": "two autonomous Bitbucket polling cycles, not webhook replay",
+  "samples": [
+    {
+      "observed_epoch": 1794171649.7418003,
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 10,
+        "version": "bitbucket-context:5dce77b6c49f195acf4fc016517e5a15e788627a9059d33396caf23a6dc995fc",
+        "comment_id": "jira:10023|10046",
+        "comment_digest": "ffa126c78097e7e43d3d24b6c986b7f5c0fd140b36986c5155fea59b7d8810f8",
+        "published_generation": 10
+      },
+      "counts": {
+        "events": 8,
+        "jobs": 10,
+        "intents": 17,
+        "history": 88
+      },
+      "checkpoints": {
+        "reconcile:bitbucket": "1794171621.958433"
+      },
+      "notices": [],
+      "worker_pid": 60331,
+      "loaded": "a02ffa7854dcc38cecc7fe5c5317466059926cd9"
+    },
+    {
+      "observed_epoch": 1794171729.4689233,
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 10,
+        "version": "bitbucket-context:5dce77b6c49f195acf4fc016517e5a15e788627a9059d33396caf23a6dc995fc",
+        "comment_id": "jira:10023|10046",
+        "comment_digest": "ffa126c78097e7e43d3d24b6c986b7f5c0fd140b36986c5155fea59b7d8810f8",
+        "published_generation": 10
+      },
+      "counts": {
+        "events": 8,
+        "jobs": 10,
+        "intents": 17,
+        "history": 88
+      },
+      "checkpoints": {
+        "reconcile:bitbucket": "1794171689.568698"
+      },
+      "notices": [],
+      "worker_pid": 60331,
+      "loaded": "a02ffa7854dcc38cecc7fe5c5317466059926cd9"
+    },
+    {
+      "observed_epoch": 1794171807.498711,
+      "resource": {
+        "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+        "generation": 10,
+        "version": "bitbucket-context:5dce77b6c49f195acf4fc016517e5a15e788627a9059d33396caf23a6dc995fc",
+        "comment_id": "jira:10023|10046",
+        "comment_digest": "ffa126c78097e7e43d3d24b6c986b7f5c0fd140b36986c5155fea59b7d8810f8",
+        "published_generation": 10
+      },
+      "counts": {
+        "events": 8,
+        "jobs": 10,
+        "intents": 17,
+        "history": 88
+      },
+      "checkpoints": {
+        "reconcile:bitbucket": "1794171757.648074"
+      },
+      "notices": [],
+      "worker_pid": 60331,
+      "loaded": "a02ffa7854dcc38cecc7fe5c5317466059926cd9"
+    }
+  ],
+  "jira": {
+    "comment_id": "10046",
+    "comment_ids_before": [
+      "10013",
+      "10046"
+    ],
+    "comment_ids_after": [
+      "10013",
+      "10046"
+    ],
+    "body_equal": true,
+    "updated_before": "2026-11-08T23:56:26.401+0300",
+    "updated_after": "2026-11-08T23:56:26.401+0300"
+  },
+  "observation_seconds": 157.75691080093384,
+  "result": "PASS"
+}

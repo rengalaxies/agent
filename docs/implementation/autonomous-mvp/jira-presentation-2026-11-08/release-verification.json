@@ -1,0 +1,33 @@
+{
+  "release_run": 42479463480,
+  "code_sha": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+  "tree_sha": "fcea076ef74c057d95f9d21103ba15e6fd94858c",
+  "archive_sha256": "050e03668023a138d0500affa9359b4395ed3ac5595cb1edbde342e84eb267a3",
+  "manifest_sha256": "6fcf7e1303185ae1f009f16b15cbaf6cf8a4fa403bbb91bdbe48b5fd35f9f0ba",
+  "tree_and_wheels": "PASS",
+  "target_vm_install": "PASS",
+  "reason": "Archive delivered after public IP replacement; see LIVE-VERIFICATION.json for actual host acceptance.",
+  "published_acceptance": {
+    "release": "PASS",
+    "install-published": "PASS",
+    "recovery-published / recovery": "PASS"
+  },
+  "fresh_vnc_probe": {
+    "ssh.socket": "active",
+    "ssh.service": "active",
+    "agent-bitbucket": "active",
+    "nginx": "active",
+    "healthz_8092": {
+      "live": true
+    },
+    "root_disk_available": "22G",
+    "memory_available_mib": 3297
+  },
+  "target_stage": "PASS",
+  "helper_delivery": "PASS_SHA256",
+  "final_health": {
+    "live": true,
+    "unit": "active"
+  },
+  "final_report": "LIVE-ROLLOUT.md"
+}

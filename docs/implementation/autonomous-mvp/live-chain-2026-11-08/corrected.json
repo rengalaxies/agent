@@ -1,0 +1,62 @@
+{
+  "observed_epoch": 1794170054.9342828,
+  "commit": {
+    "sha": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+    "date": "2026-11-08T20:32:36+00:00"
+  },
+  "source_sha256": "380af3f400d6f261a92093649d2694a4bef55f10f8cc99091bc365bce719ba89",
+  "pr_state": "OPEN",
+  "resource": {
+    "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#4",
+    "generation": 8,
+    "published_generation": 8,
+    "comment_id": "jira:10023|10046"
+  },
+  "job": {
+    "state": "DONE",
+    "reason": "no_supported_delta"
+  },
+  "jira": {
+    "id": "10046",
+    "created": "2026-11-08T10:07:56.373+0300",
+    "updated": "2026-11-08T23:33:51.761+0300",
+    "text": "Результат анализа изменений\nВ текущей версии не найдено изменений, для которых анализатор может оценить влияние на другие сервисы.\nЧто изменилось\nЧасть прежних предупреждений в этой версии больше не обнаружена. Это не заменяет проверку совместимости.\nЧто проверить\nОбычное ревью остаётся необходимым: отсутствие находок не гарантирует совместимость.\nОграничения\nИнтеграционные тесты в рамках этого анализа не запускались.\nДокументация\nПилот Orders–Reporting — требования для KAN-8 — версия 4: https://rengalaxies.atlassian.net/wiki/pages/viewpage.action?pageId=360725\nСоответствие кода требованиям отдельно не проверялось.\nagent-service marker=bbc3df769e4f04d5 digest=d82e6859004d23c8c36cd289d86dd0677ca2c089509f73c85ce97526f395b044 generation=8",
+    "comment_ids": [
+      "10013",
+      "10046"
+    ]
+  },
+  "analysis": {
+    "status": "ABSTAINED",
+    "reason_code": "no_supported_delta",
+    "code_version": "0.1.0+ga02ffa7854dc.linux-x86_64-cp312",
+    "findings": [],
+    "source_freshness": [
+      {
+        "freshness": {
+          "checked_at": "2026-11-08T20:33:43.759288Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "source_id": "bb.orders",
+        "source_kind": "git"
+      },
+      {
+        "freshness": {
+          "checked_at": "2026-11-08T20:33:43.759288Z",
+          "reasons": [],
+          "status": "CURRENT",
+          "valid_from": null,
+          "valid_until": null
+        },
+        "source_id": "bb.reporting",
+        "source_kind": "git"
+      }
+    ],
+    "graph_version": "graph-14",
+    "profile": "http-requests-6"
+  },
+  "commit_to_comment_seconds": 75.761
+}
