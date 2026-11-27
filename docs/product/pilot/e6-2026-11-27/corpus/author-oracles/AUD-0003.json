@@ -1,0 +1,54 @@
+{
+  "attestation": {
+    "confirmed_by_human": false,
+    "conflicts_of_interest": "",
+    "independent_before_outputs": false
+  },
+  "case_id": "AUD-0003",
+  "completed_at": null,
+  "disagreements": [],
+  "expert_id": null,
+  "keys": [
+    {
+      "expectation": {
+        "artifact_ref": "../author-contracts/AUD-0003.json",
+        "artifact_sha256": "5f3ed6c39c25870127b7ecf08e9e5844a3770ea9fcbade8f8df8ac7301b01ccc",
+        "basis": "owner_requirement",
+        "description": "Endpoint must preserve required rows for this toy consumer"
+      },
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/audit/3/records"
+      },
+      "label": "AFFECTED",
+      "rationale": "Authored controlled requirement",
+      "witnesses": [
+        {
+          "commit": "cdf0857381ec131618b87fca0d2c70ea8dd075f5",
+          "line_end": 3,
+          "line_start": 3,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "abc65da09122f733ea127679170b61f76d740c43f1c2f12321f001661c8be5ec",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "lifecycle": "draft",
+  "profile": {
+    "boundary": "none",
+    "membership": "IN_PROFILE",
+    "rationale": "Authored technical diagnostic declared before outputs"
+  },
+  "schema_version": "impactmap-reference-label-1.0",
+  "scope_completeness": {
+    "inventory_sha256": "cdcb40942bb4a92cab60f06f3aa10fdafbf87bd73396ae8d417b056dea32e390",
+    "rationale": "Controlled authored toy inventory",
+    "search_complete": true
+  },
+  "source_labels": [],
+  "stage": "adjudicated"
+}

@@ -1,0 +1,139 @@
+{
+  "components": {
+    "evaluator_sha": "d29a51b24113e0660e669bf409e6708d47e3a887671ebbab4ea64a036c11453b",
+    "normalization_version": "impactmap-normalization-2",
+    "normalizer_sha": "1618bc868b381a178daffbbce4a8c1631ffec79a91330c7f990d7c53e87120f9",
+    "protocol_sha256": "25855a31525a2f22bffc117c02deff0256f97c2ed2a37046653a338a367c0bd6",
+    "schema_bundle_sha256": "9f77ef8c4d3e13b00486362897ccbd21a54e1ca09ae31f7c58f6b6c71fdbb45a",
+    "scorer_sha": "3bde79a17f357aa7bd6526a20be39bb91eeea1571117133b93e080303ceea2ca"
+  },
+  "core_identity": {
+    "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1",
+    "output_schema_version": "2.2",
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1"
+  },
+  "human_experts": 0,
+  "independent_cases": 0,
+  "inputs_sha256": {
+    "AUD-0001": "cf63c3acc54016cab0b4fdc20b7399cfe49ed3b1d1a12fe96cdcb2d071bc99c4",
+    "AUD-0002": "757e9f3dd127ca00ce68de15d3435cbadefe82af0636c32cbfd2d47c3060f28f",
+    "AUD-0003": "7934259936c8bc7304a0ac4ac02cc26114d8a90604dc4a79b8bf7baefb2ef252",
+    "AUD-0004": "4a0919388a8cf79a966a216a2071b9993cac73aa11337025ae98c3c29e5eec33",
+    "AUD-0005": "c68ec439ca05258ccf9abee70f1a342c40ec6c938912f43a2e956765d058c995",
+    "AUD-0006": "05237e7cb6aa2a49ef5f70be47d1596f1d9b9efd2e6622454798f08041fd73a9",
+    "AUD-0007": "fb32a21d7cf479a537ea807f556f5456696352d32d43379b8195fc4b6c2cf082",
+    "AUD-0008": "a76cd89ed046a29087d07c106b2e9ceef6e64c0bb0a4d076e7ae4a3eee26c6f5",
+    "AUD-0009": "d81c5f773a1c04e74082bc922fd9b704b70003b9b2c8edd02cc199adb1e19e8a",
+    "AUD-0010": "aa4f2fe9cce36bd11f246f4e9486eedecc992472015618e73dc4402d651dc968"
+  },
+  "method_case_order": [
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0005",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0005",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0001",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0006",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0003",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0009",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0007",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0006",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0007",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0010",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0004",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0002",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0008",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0001",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0010",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0003",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0008",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0009",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0004",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "AUD-0002",
+      "method": "impactmap_static"
+    }
+  ],
+  "normalization_version": "impactmap-normalization-2",
+  "post_tuning": false,
+  "protocol_ref": "research/evaluation/protocol-v2.md",
+  "seed": 20261114,
+  "source_execution": false,
+  "status": "AUTHOR_DEVELOPMENT_NOT_REGISTERED",
+  "wall_time_cap_seconds": 60
+}

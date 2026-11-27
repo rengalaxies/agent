@@ -1,0 +1,58 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/audit/1/records"
+      },
+      "notes": "All formulations retained in raw artifact; no gold-based filtering.",
+      "raw_refs": [
+        "/affected/0/rel:d64c4630c86891a25ef135d53c8d045ecd6e4ccf",
+        "/checks/0",
+        "/findings/0"
+      ],
+      "witnesses": [
+        {
+          "commit": "ad2ae6070be7864077cef77da0b690bd702128ba",
+          "line_end": 3,
+          "line_start": 3,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "7bd215a17c7027bd55122dafb7052f7916cb9ead4d9fc6d8738d698e0a0d9180",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "case_id": "AUD-0001",
+  "configuration_sha256": "27bfa1ceee01c71069a70e79393678a66ad233025e43f79ff3d64891e4185187",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "requirement_unknown",
+      "scope": "consumer"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "consumer"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "3e3863215a9110880c3fa0d8cdcadf150208dd07ff85f4cb56cade6b585af902",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "USEFUL"
+}

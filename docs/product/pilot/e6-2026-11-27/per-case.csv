@@ -1,0 +1,11 @@
+case,family,expectation,impactmap_status,impactmap_candidates,impactmap_limits,ls1_status,ls1_candidates,ls1_limits
+AUD-0001,removed,AFFECTED,USEFUL,1,"requirement_unknown,owner_unknown",USEFUL,1,
+AUD-0002,default_decrease,AFFECTED,USEFUL,1,"requirement_unknown,owner_unknown",USEFUL,1,
+AUD-0003,default_decrease,AFFECTED,USEFUL,1,"requirement_unknown,owner_unknown",USEFUL,1,
+AUD-0004,explicit_limit,UNAFFECTED,ABSTAINED,0,,USEFUL,1,
+AUD-0005,documentation_only,UNAFFECTED,ABSTAINED,0,,USEFUL,1,
+AUD-0006,no_consumer,UNAFFECTED,ABSTAINED,0,runtime_not_observed,ABSTAINED,0,
+AUD-0007,different_host,UNAFFECTED,ABSTAINED,0,"unmapped_call,runtime_not_observed",USEFUL,1,
+AUD-0008,httpx,OUT_OF_PROFILE,ABSTAINED,0,"unknown_http_client,runtime_not_observed",USEFUL,1,
+AUD-0009,dynamic_url,OUT_OF_PROFILE,ABSTAINED,0,"dynamic_or_unsupported_call,runtime_not_observed",ABSTAINED,0,
+AUD-0010,missing_provider,OUT_OF_PROFILE,FAILED,0,"commit_unavailable,unmapped_call",PARTIAL,1,"commit_unavailable,commit_unavailable"

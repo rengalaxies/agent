@@ -1,0 +1,49 @@
+{
+  "attestation": {
+    "confirmed_by_human": false,
+    "conflicts_of_interest": "",
+    "independent_before_outputs": false
+  },
+  "case_id": "AUD-0007",
+  "completed_at": null,
+  "disagreements": [],
+  "expert_id": null,
+  "keys": [
+    {
+      "expectation": null,
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/audit/7/records"
+      },
+      "label": "UNAFFECTED",
+      "rationale": "Authored controlled requirement",
+      "witnesses": [
+        {
+          "commit": "5d252dbb7a140ac1c37909c180734918e051f76a",
+          "line_end": 3,
+          "line_start": 3,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "e441a27b1b867ac10d6651d6467a5346d4a2d4365b4c9a01f4df2d6b7b21783c",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "lifecycle": "draft",
+  "profile": {
+    "boundary": "none",
+    "membership": "IN_PROFILE",
+    "rationale": "Authored technical diagnostic declared before outputs"
+  },
+  "schema_version": "impactmap-reference-label-1.0",
+  "scope_completeness": {
+    "inventory_sha256": "29b9cdbfa49c933c81c9864f5d7c451b59f189f16553d54fa7d431ea76cfd54b",
+    "rationale": "Controlled authored toy inventory",
+    "search_complete": true
+  },
+  "source_labels": [],
+  "stage": "adjudicated"
+}

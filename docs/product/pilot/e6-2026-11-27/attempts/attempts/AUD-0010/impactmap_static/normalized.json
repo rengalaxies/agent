@@ -1,0 +1,32 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [],
+  "case_id": "AUD-0010",
+  "configuration_sha256": "1306c9cc8390be33ec6b4c9ebee4e7ad6ebcacadf28669a1bcf02a1de716d99b",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "commit_unavailable",
+      "scope": "provider"
+    },
+    {
+      "code": "unmapped_call",
+      "scope": "consumer"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "df1788151f19d2df62c22afe30b7359bf1dffe4794129f06458e77fe1092c082",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "FAILED"
+}
