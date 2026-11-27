@@ -1,0 +1,259 @@
+[
+  {
+    "case_id": "AUD-0001",
+    "origin_group": "removed",
+    "expectation": "AFFECTED",
+    "input": {
+      "provider_base": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/1/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "provider_head": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n"
+      },
+      "consumer": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/1/records\").json()\n"
+    },
+    "commits": {
+      "provider": {
+        "base": "fce3d0a08d53aad56e7241edf64e8dea1bb24b52",
+        "head": "adc2ec13a18e8d4932c8fce035bbb2c08ad5910a"
+      },
+      "consumer": {
+        "base": "73d774689363846d7867402daf7623423113dea7",
+        "head": "ad2ae6070be7864077cef77da0b690bd702128ba"
+      }
+    },
+    "oracle_sha256": "0e7f7af5058308bbc552732db1dc7001070d325dafba868c43199647ca2d470a",
+    "outputs": {
+      "impactmap_static": {
+        "status": "USEFUL",
+        "summary": "1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
+        "reason_code": "impact_found_within_profile",
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 1
+        },
+        "technical_error": false,
+        "payload_sha256": "621240257691ba48692e4ad141e4cde0d28006809b9012cc9462b15ca9438a05",
+        "normalized_sha256": "c6ca10e1fc447d9bb3a46e168b18383a2e4e3483b5200bfd20efb58986a311e8"
+      },
+      "lexical_search_ls1": {
+        "status": "USEFUL",
+        "summary": null,
+        "reason_code": null,
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 1
+        },
+        "technical_error": false,
+        "payload_sha256": "d111fa6b6d15e9a8dfbe0494fd75de8647d589d205924455c9918d57ec177015",
+        "normalized_sha256": "0c2bab706512c1b55704b8df671be020dcef6243714560fbf1aad39e1c34b23f"
+      }
+    }
+  },
+  {
+    "case_id": "AUD-0002",
+    "origin_group": "default_decrease",
+    "expectation": "AFFECTED",
+    "input": {
+      "provider_base": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/2/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "provider_head": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/2/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "consumer": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/2/records\").json()\n"
+    },
+    "commits": {
+      "provider": {
+        "base": "cdcf11ab064f8f14dcaa1e1230e03550bb5a17d3",
+        "head": "f15285ecdf65ee71295f2ef152ec3595b9b34080"
+      },
+      "consumer": {
+        "base": "e6f94c64ad6d5ed5726e33d20748fd96de6bee04",
+        "head": "5db8919304567e252a1a66ecd3a7a94ca5dd86ce"
+      }
+    },
+    "oracle_sha256": "6be30a81c311c55e25e0f177a082e8b69a422433234a9b499af32991ff19a9d4",
+    "outputs": {
+      "impactmap_static": {
+        "status": "USEFUL",
+        "summary": "1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
+        "reason_code": "impact_found_within_profile",
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 1
+        },
+        "technical_error": false,
+        "payload_sha256": "b9dc692e81ec4ad5abc0149136deffb8983191a2d50a5dcf257d1da4f8587601",
+        "normalized_sha256": "acc92f28ac3d38fdffde9b9fc371ebb706dd4d7d322c2ba047c999ebce6c48fd"
+      },
+      "lexical_search_ls1": {
+        "status": "USEFUL",
+        "summary": null,
+        "reason_code": null,
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 1
+        },
+        "technical_error": false,
+        "payload_sha256": "b0197ddd4609ae59825fee66c8ad3823feed2e5f265ee7bd959ad630979467fe",
+        "normalized_sha256": "8021251bc611a95de76ddffbc930eb7e1becddab7646d470e0e276f3771e9bec"
+      }
+    }
+  },
+  {
+    "case_id": "AUD-0004",
+    "origin_group": "explicit_limit",
+    "expectation": "UNAFFECTED",
+    "input": {
+      "provider_base": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/4/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "provider_head": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/4/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "consumer": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/4/records\", params={\"page_size\": 60}).json()\n"
+    },
+    "commits": {
+      "provider": {
+        "base": "94b6452801dc4ca32b11a215d6961d95d45c6383",
+        "head": "3a39d2230c6e73c79a964dcf8b31a582f312038d"
+      },
+      "consumer": {
+        "base": "478798a18d51347773a8acda71bf7303a45535a5",
+        "head": "a704bcab0f850e76932d0b44469ae018bf5f1238"
+      }
+    },
+    "oracle_sha256": "4103dfbfbf1ce953457b5f6b403782fff53190460a05fce28c1ef0b37cf9f6e4",
+    "outputs": {
+      "impactmap_static": {
+        "status": "ABSTAINED",
+        "summary": "Default-only change: observed explicit page_size overrides need no additional consumer alert. Other compatibility is not established; tests were not executed.",
+        "reason_code": "insufficient_evidence",
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "technical_error": false,
+        "payload_sha256": "45c571c69253bac95968a8dd08c7fcd892e65ac05456e80312b1f98dd55fa30d",
+        "normalized_sha256": "6d619c37dd3843403fc17c5f81a44f5feeed8b85083aed842cf827ded96d1fdc"
+      },
+      "lexical_search_ls1": {
+        "status": "USEFUL",
+        "summary": null,
+        "reason_code": null,
+        "strict": {
+          "fn": 0,
+          "fp": 1,
+          "tp": 0
+        },
+        "technical_error": false,
+        "payload_sha256": "7bb4b8315285ea9753c51706deeee8ebae47637b22802230cc80178c3101a104",
+        "normalized_sha256": "8a1badcf699a4650852276f14833c88855664e3e11860a57fe1a5d4f3731d2f4"
+      }
+    }
+  },
+  {
+    "case_id": "AUD-0007",
+    "origin_group": "different_host",
+    "expectation": "UNAFFECTED",
+    "input": {
+      "provider_base": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/7/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "provider_head": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/7/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "consumer": "import requests\ndef consume():\n    return requests.get(\"https://another-provider.test/audit/7/records\").json()\n"
+    },
+    "commits": {
+      "provider": {
+        "base": "682b0d06395e5ffdbd26d0161b26012226ef2295",
+        "head": "2f305556cc2c5d31ba72d87fe80a6731ab140968"
+      },
+      "consumer": {
+        "base": "4193b72bb21231a7ba6eb2a33400775433d86bb9",
+        "head": "5d252dbb7a140ac1c37909c180734918e051f76a"
+      }
+    },
+    "oracle_sha256": "88fceb6cac972cee9d95e8824d9d8bab57da3061f989716e1b6d06f65d3ee8e2",
+    "outputs": {
+      "impactmap_static": {
+        "status": "ABSTAINED",
+        "summary": "The operation changed, but no consumer was found within the static profile. Absence is not proven.",
+        "reason_code": "no_consumer_found_within_profile",
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "technical_error": false,
+        "payload_sha256": "d720b386df6cb1c4df86e125f476a058263d469933587f1e27606a3767be16e1",
+        "normalized_sha256": "d53e36a1bfceeff80d451021798b7d84265f748573dbfd845f74faabc2efd8bb"
+      },
+      "lexical_search_ls1": {
+        "status": "USEFUL",
+        "summary": null,
+        "reason_code": null,
+        "strict": {
+          "fn": 0,
+          "fp": 1,
+          "tp": 0
+        },
+        "technical_error": false,
+        "payload_sha256": "b2f24e798685f5769fc629ac3a3abbae510034e7316f2539903baba101753f5c",
+        "normalized_sha256": "f55183aefb5aa86bb4a1f4c613ec2f946787697cb5f32286c1a870e0700e991a"
+      }
+    }
+  },
+  {
+    "case_id": "AUD-0010",
+    "origin_group": "missing_provider",
+    "expectation": "OUT_OF_PROFILE",
+    "input": {
+      "provider_base": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/10/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "provider_head": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/10/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "consumer": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/10/records\").json()\n"
+    },
+    "commits": {
+      "provider": {
+        "base": "6a3b5648cb11c1006d43184ac734ae252b1627fb",
+        "head": "6feb9e2870d8c22c7dcb088af79d0ad9092ee63e"
+      },
+      "consumer": {
+        "base": "f54814886ab4bb3e83e5517c7fc414746dcc9d34",
+        "head": "8a8823adedb57f1473759921f8e49826c122b961"
+      }
+    },
+    "oracle_sha256": "44f55f76609a687850a054880bafffded000cb42702082375e4a6075889265b5",
+    "outputs": {
+      "impactmap_static": {
+        "status": "FAILED",
+        "summary": "The PR base or head commit is not available from an allowed ref; nothing was analyzed.",
+        "reason_code": "commit_unavailable",
+        "strict": null,
+        "technical_error": true,
+        "payload_sha256": "d91d3dd3f30952596053eeb826f967677fbcfdc30551424a304f0868e966699b",
+        "normalized_sha256": "ffbf4121f54cd8c838ec3b01b4ece0cc670d36bc2c8306315dcedf10d6972c02"
+      },
+      "lexical_search_ls1": {
+        "status": "PARTIAL",
+        "summary": null,
+        "reason_code": null,
+        "strict": null,
+        "technical_error": false,
+        "payload_sha256": "dc889f138a060fdabe62fea677222537fe7a16e5b7eb040ddbaa27f0c2e8ffa8",
+        "normalized_sha256": "c184d2db09fcb0dc1158726da2571e7be94489b7e6505f263aadffce59030cb5"
+      }
+    }
+  }
+]
