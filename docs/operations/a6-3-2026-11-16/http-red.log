@@ -1,0 +1,24 @@
+/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+======================================================================
+FAIL: test_workbench_routes_and_view_are_authenticated_read_only_and_fail_closed (tests.service.test_ui_api.UITests.test_workbench_routes_and_view_are_authenticated_read_only_and_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_api.py", line 181, in test_workbench_routes_and_view_are_authenticated_read_only_and_fail_closed
+    self.assertEqual(r.status_code,303);self.assertEqual(r.headers['location'],'/ui/login')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 303
+
+======================================================================
+FAIL: test_authenticated_http_result_uses_trusted_scope_not_operator_document (tests.service.test_ui_api.UITests.test_authenticated_http_result_uses_trusted_scope_not_operator_document)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_api.py", line 174, in test_authenticated_http_result_uses_trusted_scope_not_operator_document
+    self.assertEqual(view.status_code,200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.728s
+
+FAILED (failures=2)

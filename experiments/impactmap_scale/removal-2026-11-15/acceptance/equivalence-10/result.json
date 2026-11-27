@@ -1,0 +1,665 @@
+{
+  "cases": [
+    {
+      "counts": {
+        "basis_sha256": "302f5410b916615b09664d8d22efdbd711639995ae77617c45e4696b382ded40",
+        "bytes_read": 2536457,
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "dependencies": 3,
+        "files_read": 220,
+        "gap_counts": {},
+        "inventory_entries": 220,
+        "operations": 8,
+        "python_files": 220,
+        "python_nonblank_noncomment_lines": 100000,
+        "python_physical_lines": 100225,
+        "repositories_available": 10,
+        "repositories_configured": 10,
+        "scan_passes": 1,
+        "snapshots": [
+          {
+            "commit": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+            "mode": "GIT_COMMIT",
+            "repository": "r00",
+            "tree": "5cb921d3de113008e6b8347d4592d02036890fda"
+          },
+          {
+            "commit": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+            "mode": "GIT_COMMIT",
+            "repository": "r01",
+            "tree": "c9e2b1bf21039f8f394f54cc5ad77b2cb296179b"
+          },
+          {
+            "commit": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+            "mode": "GIT_COMMIT",
+            "repository": "r02",
+            "tree": "206fc59315032ca7b0939608de4a88c6c2d04cfd"
+          },
+          {
+            "commit": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+            "mode": "GIT_COMMIT",
+            "repository": "r03",
+            "tree": "d4c886c109a7217c905e7cef69297571c42cb064"
+          },
+          {
+            "commit": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+            "mode": "GIT_COMMIT",
+            "repository": "r04",
+            "tree": "8345ce31d64121518be639b1748b7a04bf535d08"
+          },
+          {
+            "commit": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+            "mode": "GIT_COMMIT",
+            "repository": "r05",
+            "tree": "9f37fe6615e078647e038a895cb92d4714f812c3"
+          },
+          {
+            "commit": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+            "mode": "GIT_COMMIT",
+            "repository": "r06",
+            "tree": "c105e86b7381f816a6e8755b467d600afeb0d0ef"
+          },
+          {
+            "commit": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+            "mode": "GIT_COMMIT",
+            "repository": "r07",
+            "tree": "e3815935e495c61f13e6bd4c5ee2dfaa812dc6c4"
+          },
+          {
+            "commit": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+            "mode": "GIT_COMMIT",
+            "repository": "r08",
+            "tree": "090bcabf319786597e623246650129fb04b68639"
+          },
+          {
+            "commit": "137a0c5e279c317a47350baf195567847492376f",
+            "mode": "GIT_COMMIT",
+            "repository": "r09",
+            "tree": "4aa02b519d070eb25cb6a284daada754064b3a67"
+          }
+        ],
+        "text_lines": 100225
+      },
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "equal": true,
+      "expected_facts_count": 11,
+      "expected_gap_counts": {},
+      "facts_count": 11,
+      "full_errors": [],
+      "full_sha256": "c94eee1a30ec54d9ef85cdb66b80d7b672b3087cf9a858662e26610cb6fd551e",
+      "incremental_sha256": "c94eee1a30ec54d9ef85cdb66b80d7b672b3087cf9a858662e26610cb6fd551e",
+      "passed": true,
+      "scenario": "baseline",
+      "source_access_complete": true
+    },
+    {
+      "counts": {
+        "basis_sha256": "2b7e96a41aacca29853c5ba9d9901d433c47883ca5f495f36d9dd6bbbf78115e",
+        "bytes_read": 2536578,
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "dependencies": 4,
+        "files_read": 220,
+        "gap_counts": {},
+        "inventory_entries": 220,
+        "operations": 8,
+        "python_files": 220,
+        "python_nonblank_noncomment_lines": 100003,
+        "python_physical_lines": 100230,
+        "repositories_available": 10,
+        "repositories_configured": 10,
+        "scan_passes": 1,
+        "snapshots": [
+          {
+            "commit": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+            "mode": "GIT_COMMIT",
+            "repository": "r00",
+            "tree": "5cb921d3de113008e6b8347d4592d02036890fda"
+          },
+          {
+            "commit": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+            "mode": "GIT_COMMIT",
+            "repository": "r01",
+            "tree": "c9e2b1bf21039f8f394f54cc5ad77b2cb296179b"
+          },
+          {
+            "commit": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+            "mode": "GIT_COMMIT",
+            "repository": "r02",
+            "tree": "206fc59315032ca7b0939608de4a88c6c2d04cfd"
+          },
+          {
+            "commit": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+            "mode": "GIT_COMMIT",
+            "repository": "r03",
+            "tree": "d4c886c109a7217c905e7cef69297571c42cb064"
+          },
+          {
+            "commit": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+            "mode": "GIT_COMMIT",
+            "repository": "r04",
+            "tree": "8345ce31d64121518be639b1748b7a04bf535d08"
+          },
+          {
+            "commit": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+            "mode": "GIT_COMMIT",
+            "repository": "r05",
+            "tree": "9f37fe6615e078647e038a895cb92d4714f812c3"
+          },
+          {
+            "commit": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+            "mode": "GIT_COMMIT",
+            "repository": "r06",
+            "tree": "c105e86b7381f816a6e8755b467d600afeb0d0ef"
+          },
+          {
+            "commit": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+            "mode": "GIT_COMMIT",
+            "repository": "r07",
+            "tree": "e3815935e495c61f13e6bd4c5ee2dfaa812dc6c4"
+          },
+          {
+            "commit": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+            "mode": "GIT_COMMIT",
+            "repository": "r08",
+            "tree": "090bcabf319786597e623246650129fb04b68639"
+          },
+          {
+            "commit": "f926b330d5f6e799ff9ceeaab61989edf76efd0a",
+            "mode": "GIT_COMMIT",
+            "repository": "r09",
+            "tree": "e528f0a87aae988f913bb6f68569457826afafd1"
+          }
+        ],
+        "text_lines": 100230
+      },
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "equal": true,
+      "expected_facts_count": 12,
+      "expected_gap_counts": {},
+      "facts_count": 12,
+      "full_errors": [],
+      "full_sha256": "bf308f30bcc793bf2b0bf0f8ee8db514e79cbc90babf88d99c1bba22d942c9b8",
+      "incremental_sha256": "bf308f30bcc793bf2b0bf0f8ee8db514e79cbc90babf88d99c1bba22d942c9b8",
+      "passed": true,
+      "scenario": "new_consumer",
+      "source_access_complete": true
+    },
+    {
+      "counts": {
+        "basis_sha256": "3032ac9b6d0d1e1150bf023f3ed2fc4aa79917ead674814b6181997f65019625",
+        "bytes_read": 2536351,
+        "coverage": "COMPLETE_WITHIN_PROFILE",
+        "dependencies": 2,
+        "files_read": 220,
+        "gap_counts": {},
+        "inventory_entries": 220,
+        "operations": 8,
+        "python_files": 220,
+        "python_nonblank_noncomment_lines": 99997,
+        "python_physical_lines": 100221,
+        "repositories_available": 10,
+        "repositories_configured": 10,
+        "scan_passes": 1,
+        "snapshots": [
+          {
+            "commit": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+            "mode": "GIT_COMMIT",
+            "repository": "r00",
+            "tree": "5cb921d3de113008e6b8347d4592d02036890fda"
+          },
+          {
+            "commit": "69dfb6e1caae5294bbe24ec3e62d314ccba719dc",
+            "mode": "GIT_COMMIT",
+            "repository": "r01",
+            "tree": "78c9a5fc86f960076e8e929dba8423973d785aa2"
+          },
+          {
+            "commit": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+            "mode": "GIT_COMMIT",
+            "repository": "r02",
+            "tree": "206fc59315032ca7b0939608de4a88c6c2d04cfd"
+          },
+          {
+            "commit": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+            "mode": "GIT_COMMIT",
+            "repository": "r03",
+            "tree": "d4c886c109a7217c905e7cef69297571c42cb064"
+          },
+          {
+            "commit": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+            "mode": "GIT_COMMIT",
+            "repository": "r04",
+            "tree": "8345ce31d64121518be639b1748b7a04bf535d08"
+          },
+          {
+            "commit": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+            "mode": "GIT_COMMIT",
+            "repository": "r05",
+            "tree": "9f37fe6615e078647e038a895cb92d4714f812c3"
+          },
+          {
+            "commit": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+            "mode": "GIT_COMMIT",
+            "repository": "r06",
+            "tree": "c105e86b7381f816a6e8755b467d600afeb0d0ef"
+          },
+          {
+            "commit": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+            "mode": "GIT_COMMIT",
+            "repository": "r07",
+            "tree": "e3815935e495c61f13e6bd4c5ee2dfaa812dc6c4"
+          },
+          {
+            "commit": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+            "mode": "GIT_COMMIT",
+            "repository": "r08",
+            "tree": "090bcabf319786597e623246650129fb04b68639"
+          },
+          {
+            "commit": "137a0c5e279c317a47350baf195567847492376f",
+            "mode": "GIT_COMMIT",
+            "repository": "r09",
+            "tree": "4aa02b519d070eb25cb6a284daada754064b3a67"
+          }
+        ],
+        "text_lines": 100221
+      },
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "equal": true,
+      "expected_facts_count": 10,
+      "expected_gap_counts": {},
+      "facts_count": 10,
+      "full_errors": [],
+      "full_sha256": "7bcf050b6ccb3485b98a10beb32ba4d08e97e4b6ba86f03c67cadcab14192b14",
+      "incremental_sha256": "7bcf050b6ccb3485b98a10beb32ba4d08e97e4b6ba86f03c67cadcab14192b14",
+      "passed": true,
+      "scenario": "removed_consumer",
+      "source_access_complete": true
+    },
+    {
+      "counts": {
+        "basis_sha256": "c53232405bba738f0fa746b76b9327c22774d62acdc53748236ed21380d6c22e",
+        "bytes_read": 2536360,
+        "coverage": "PARTIAL",
+        "dependencies": 0,
+        "files_read": 220,
+        "gap_counts": {
+          "unmapped_call": 3
+        },
+        "inventory_entries": 220,
+        "operations": 7,
+        "python_files": 220,
+        "python_nonblank_noncomment_lines": 99997,
+        "python_physical_lines": 100221,
+        "repositories_available": 10,
+        "repositories_configured": 10,
+        "scan_passes": 1,
+        "snapshots": [
+          {
+            "commit": "a02ea818b55250dc407ef0c032df9da5dc48c45f",
+            "mode": "GIT_COMMIT",
+            "repository": "r00",
+            "tree": "0c0036e96e689646dc12df1fee4152cd41ededb2"
+          },
+          {
+            "commit": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+            "mode": "GIT_COMMIT",
+            "repository": "r01",
+            "tree": "c9e2b1bf21039f8f394f54cc5ad77b2cb296179b"
+          },
+          {
+            "commit": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+            "mode": "GIT_COMMIT",
+            "repository": "r02",
+            "tree": "206fc59315032ca7b0939608de4a88c6c2d04cfd"
+          },
+          {
+            "commit": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+            "mode": "GIT_COMMIT",
+            "repository": "r03",
+            "tree": "d4c886c109a7217c905e7cef69297571c42cb064"
+          },
+          {
+            "commit": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+            "mode": "GIT_COMMIT",
+            "repository": "r04",
+            "tree": "8345ce31d64121518be639b1748b7a04bf535d08"
+          },
+          {
+            "commit": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+            "mode": "GIT_COMMIT",
+            "repository": "r05",
+            "tree": "9f37fe6615e078647e038a895cb92d4714f812c3"
+          },
+          {
+            "commit": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+            "mode": "GIT_COMMIT",
+            "repository": "r06",
+            "tree": "c105e86b7381f816a6e8755b467d600afeb0d0ef"
+          },
+          {
+            "commit": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+            "mode": "GIT_COMMIT",
+            "repository": "r07",
+            "tree": "e3815935e495c61f13e6bd4c5ee2dfaa812dc6c4"
+          },
+          {
+            "commit": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+            "mode": "GIT_COMMIT",
+            "repository": "r08",
+            "tree": "090bcabf319786597e623246650129fb04b68639"
+          },
+          {
+            "commit": "137a0c5e279c317a47350baf195567847492376f",
+            "mode": "GIT_COMMIT",
+            "repository": "r09",
+            "tree": "4aa02b519d070eb25cb6a284daada754064b3a67"
+          }
+        ],
+        "text_lines": 100221
+      },
+      "coverage": "PARTIAL",
+      "equal": true,
+      "expected_facts_count": 7,
+      "expected_gap_counts": {
+        "unmapped_call": 3
+      },
+      "facts_count": 7,
+      "full_errors": [],
+      "full_sha256": "007cd99e8cffe4bae07200cf5f84bcd5a5c066436eaf66bddba375c0884b1bb7",
+      "incremental_sha256": "007cd99e8cffe4bae07200cf5f84bcd5a5c066436eaf66bddba375c0884b1bb7",
+      "passed": true,
+      "scenario": "operation_removed",
+      "source_access_complete": true
+    }
+  ],
+  "kind": "full_event_equivalence",
+  "manifest": {
+    "cache_protocol": "new worker and SQLite state per repetition; warm repeat in same worker; OS caches uncontrolled",
+    "environment": {
+      "child_cpu_scope": "RUSAGE_CHILDREN reaped descendants only",
+      "logical_cpus": 8,
+      "machine": "arm64",
+      "packages": {
+        "PyYAML": "6.0.3",
+        "pydantic": "2.14.2"
+      },
+      "platform": "macOS-15.0-arm64-arm-64bit-Mach-O",
+      "python": "3.13.9 (v3.13.9:8183fa5e3f7, Oct 14 2025, 10:27:13) [Clang 16.0.0 (clang-1600.0.26.6)]",
+      "ram_bytes": 8589934592,
+      "rss_scope": "ru_maxrss lifetime high-water mark, not stage-local or summed process-tree RSS",
+      "system": "Darwin",
+      "wall_scope": "perf_counter; includes instrumentation overhead; inventory_metrics separately visible"
+    },
+    "limits": {
+      "freshness_seconds": 3600,
+      "max_corpus_bytes": 8000000,
+      "max_file_bytes": 65536,
+      "max_files": 2048,
+      "max_model_steps": 4,
+      "max_proposals": 24,
+      "max_tool_lines": 60,
+      "scan_seconds": 60.0
+    },
+    "model": "OFF",
+    "pins": [
+      {
+        "base": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+        "head": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+        "repository": "r00",
+        "service": "provider"
+      },
+      {
+        "base": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "head": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "repository": "r01",
+        "service": "consumer_01"
+      },
+      {
+        "base": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "head": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "repository": "r02",
+        "service": "consumer_02"
+      },
+      {
+        "base": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "head": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "repository": "r03",
+        "service": "consumer_03"
+      },
+      {
+        "base": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "head": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "repository": "r04",
+        "service": "consumer_04"
+      },
+      {
+        "base": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "head": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "repository": "r05",
+        "service": "consumer_05"
+      },
+      {
+        "base": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "head": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "repository": "r06",
+        "service": "consumer_06"
+      },
+      {
+        "base": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "head": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "repository": "r07",
+        "service": "consumer_07"
+      },
+      {
+        "base": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "head": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "repository": "r08",
+        "service": "consumer_08"
+      },
+      {
+        "base": "137a0c5e279c317a47350baf195567847492376f",
+        "head": "137a0c5e279c317a47350baf195567847492376f",
+        "repository": "r09",
+        "service": "consumer_09"
+      }
+    ],
+    "policy_without_roots_sha256": "a5d258ca07e58da07f019610761d9d8c7c95639362ab2cd2eb1a7c555b3939f5",
+    "provenance": "controlled_generated",
+    "schema_version": "impactmap-benchmark-manifest-1",
+    "semantics_ignored_fields": [
+      "assessed_at",
+      "checked_at",
+      "finished_at",
+      "started_at",
+      "timings"
+    ],
+    "source": {
+      "commit": "2d13227a766ec7d8178143b005d077034e281897",
+      "core": {
+        "core_digest": "bbf94715b48f3f14c8c93d64b8e4c307ac15b19fc3c76834df6d9bd97cb6a88f",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-9",
+        "schema": "agent-graph-1"
+      },
+      "git_version": "git version 2.39.5 (Apple Git-154)",
+      "tool_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf",
+      "working_tree_dirty": false
+    }
+  },
+  "meaning": "existing persisted event memory vs fresh full reconcile at identical complete pins; event path currently rescans corpus",
+  "passed": true,
+  "spans": [
+    {
+      "child_system_s": 0.21872899999999973,
+      "child_user_s": 0.33759799999999984,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.21872899999999973,
+      "exclusive_child_user_s": 0.33759799999999984,
+      "exclusive_self_system_s": 0.15087099999999998,
+      "exclusive_self_user_s": 8.103195,
+      "exclusive_wall_s": 9.01437950000036,
+      "parent_id": null,
+      "self_peak_rss_bytes": 100679680,
+      "self_system_s": 0.15087099999999998,
+      "self_user_s": 8.103195,
+      "span_id": 0,
+      "stage": "incremental_initial",
+      "wall_s": 9.01437950000036
+    },
+    {
+      "child_system_s": 0.21195500000000056,
+      "child_user_s": 0.3361510000000001,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.21195500000000056,
+      "exclusive_child_user_s": 0.3361510000000001,
+      "exclusive_self_system_s": 0.1509290000000001,
+      "exclusive_self_user_s": 7.9382889999999975,
+      "exclusive_wall_s": 8.768720457999734,
+      "parent_id": null,
+      "self_peak_rss_bytes": 100679680,
+      "self_system_s": 0.1509290000000001,
+      "self_user_s": 7.9382889999999975,
+      "span_id": 1,
+      "stage": "event_baseline",
+      "wall_s": 8.768720457999734
+    },
+    {
+      "child_system_s": 0.2142400000000002,
+      "child_user_s": 0.3383219999999998,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.2142400000000002,
+      "exclusive_child_user_s": 0.3383219999999998,
+      "exclusive_self_system_s": 0.15609099999999998,
+      "exclusive_self_user_s": 7.927317999999985,
+      "exclusive_wall_s": 8.739423499999248,
+      "parent_id": null,
+      "self_peak_rss_bytes": 102973440,
+      "self_system_s": 0.15609099999999998,
+      "self_user_s": 7.927317999999985,
+      "span_id": 2,
+      "stage": "full_baseline",
+      "wall_s": 8.739423499999248
+    },
+    {
+      "child_system_s": 0.2154569999999998,
+      "child_user_s": 0.34073699999999985,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.2154569999999998,
+      "exclusive_child_user_s": 0.34073699999999985,
+      "exclusive_self_system_s": 0.16311399999999976,
+      "exclusive_self_user_s": 7.9356400000000065,
+      "exclusive_wall_s": 8.758926167000027,
+      "parent_id": null,
+      "self_peak_rss_bytes": 111820800,
+      "self_system_s": 0.16311399999999976,
+      "self_user_s": 7.9356400000000065,
+      "span_id": 3,
+      "stage": "event_new_consumer",
+      "wall_s": 8.758926167000027
+    },
+    {
+      "child_system_s": 0.21057199999999998,
+      "child_user_s": 0.33836699999999986,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.21057199999999998,
+      "exclusive_child_user_s": 0.33836699999999986,
+      "exclusive_self_system_s": 0.16393299999999966,
+      "exclusive_self_user_s": 7.936987000000016,
+      "exclusive_wall_s": 8.758909165999285,
+      "parent_id": null,
+      "self_peak_rss_bytes": 113295360,
+      "self_system_s": 0.16393299999999966,
+      "self_user_s": 7.936987000000016,
+      "span_id": 4,
+      "stage": "full_new_consumer",
+      "wall_s": 8.758909165999285
+    },
+    {
+      "child_system_s": 0.21126299999999976,
+      "child_user_s": 0.33748300000000064,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.21126299999999976,
+      "exclusive_child_user_s": 0.33748300000000064,
+      "exclusive_self_system_s": 0.17290899999999976,
+      "exclusive_self_user_s": 7.987343999999979,
+      "exclusive_wall_s": 8.860450374999346,
+      "parent_id": null,
+      "self_peak_rss_bytes": 113573888,
+      "self_system_s": 0.17290899999999976,
+      "self_user_s": 7.987343999999979,
+      "span_id": 5,
+      "stage": "event_removed_consumer",
+      "wall_s": 8.860450374999346
+    },
+    {
+      "child_system_s": 0.2227610000000002,
+      "child_user_s": 0.3406059999999993,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.2227610000000002,
+      "exclusive_child_user_s": 0.3406059999999993,
+      "exclusive_self_system_s": 0.1912780000000005,
+      "exclusive_self_user_s": 7.994862000000012,
+      "exclusive_wall_s": 8.989402707999034,
+      "parent_id": null,
+      "self_peak_rss_bytes": 113950720,
+      "self_system_s": 0.1912780000000005,
+      "self_user_s": 7.994862000000012,
+      "span_id": 6,
+      "stage": "full_removed_consumer",
+      "wall_s": 8.989402707999034
+    },
+    {
+      "child_system_s": 0.2148810000000001,
+      "child_user_s": 0.3401840000000007,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.2148810000000001,
+      "exclusive_child_user_s": 0.3401840000000007,
+      "exclusive_self_system_s": 0.18113199999999985,
+      "exclusive_self_user_s": 7.948192000000006,
+      "exclusive_wall_s": 8.795231791998958,
+      "parent_id": null,
+      "self_peak_rss_bytes": 117440512,
+      "self_system_s": 0.18113199999999985,
+      "self_user_s": 7.948192000000006,
+      "span_id": 7,
+      "stage": "event_operation_removed",
+      "wall_s": 8.795231791998958
+    },
+    {
+      "child_system_s": 0.21381599999999956,
+      "child_user_s": 0.34005100000000077,
+      "children_peak_rss_bytes": 7143424,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.21381599999999956,
+      "exclusive_child_user_s": 0.34005100000000077,
+      "exclusive_self_system_s": 0.1870080000000005,
+      "exclusive_self_user_s": 7.919581000000022,
+      "exclusive_wall_s": 8.769639209000161,
+      "parent_id": null,
+      "self_peak_rss_bytes": 120340480,
+      "self_system_s": 0.1870080000000005,
+      "self_user_s": 7.919581000000022,
+      "span_id": 8,
+      "stage": "full_operation_removed",
+      "wall_s": 8.769639209000161
+    }
+  ]
+}

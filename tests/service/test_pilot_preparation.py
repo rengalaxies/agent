@@ -68,8 +68,12 @@ class PilotPreparationTest(unittest.TestCase):
                              [("reporting", "POSSIBLE_TRUNCATION", False)])
             repaired = graph.analyze_change(base["id"], revisions={"orders": branches["pilot-page-limit"],
                 "reporting": prepared["repositories"]["reporting"]["commits"]["pilot-explicit-limit"]})
-            self.assertTrue(repaired["findings"])
-            self.assertNotIn("POSSIBLE_TRUNCATION", {f["code"] for f in repaired["findings"]})
+            # An explicit size makes this default-only delta irrelevant to the
+            # call; the dependency still exists and compatibility is not proven.
+            self.assertEqual(repaired["findings"], [])
+            repaired_context = graph.context(repaired["context_used_id"])
+            self.assertEqual([(d["consumer"], d["usage"]) for d in repaired_context["graph"]["dependencies"]],
+                             [("reporting", "EXPLICIT_PAGE_SIZE")])
             for branch in ("pilot-restored", "pilot-docs-only"):
                 with self.subTest(branch=branch):
                     result = graph.analyze_change(base["id"], revisions={**pins, "orders": branches[branch]})

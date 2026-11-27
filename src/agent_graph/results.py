@@ -73,6 +73,12 @@ class _Builder:
         id = "rel:" + digest(["calls", consumer, op["id"]])[:40]
         provider_repos = sorted({self.sources[s]["repository"] for s in
                                  {e["source_id"] for e in op["evidence"]} if s in self.sources})
+        previous = self.relationships.get(id)
+        if previous and previous["status"] == "ACTIVE" and not current:
+            return id  # Historical call witnesses stay in their own findings.
+        if previous and (previous["status"] == "ACTIVE") == current:
+            refs = sorted(set(refs) | set(previous["evidence_refs"]))
+            provider_repos = sorted(set(provider_repos) | set(previous["visibility"]))
         self.relationships[id] = dict(
             id=id, kind="calls", source=self.service(consumer), target=self.operation(op),
             status="ACTIVE" if current else "STALE", origins=["code"], evidence_refs=sorted(set(refs)),
@@ -80,13 +86,14 @@ class _Builder:
             change_origin="code_scan", visibility=sorted({repository, *provider_repos}))
         return id
 
-    def claim(self, kind, statement, refs, *, uncertainty, unknowns=(), applicability=None):
-        id = "claim:" + digest([kind, statement, sorted(refs)])[:40]
+    def claim(self, kind, statement, refs, *, uncertainty, unknowns=(), applicability=None, subject=None):
+        id = "claim:" + digest([kind, statement, sorted(refs)] + ([subject] if subject else []))[:40]
         if id not in {c["id"] for c in self.claims}:
             self.claims.append(dict(
                 id=id, kind=kind, statement=statement[:4000], evidence_refs=sorted(set(refs)),
                 applicability=applicability or f"Pinned snapshots only; static profile {PROFILE}.",
-                uncertainty=uncertainty, unknowns=sorted(set(unknowns))))
+                uncertainty=uncertainty, unknowns=sorted(set(unknowns)),
+                **({"subject": subject} if subject else {})))
         return id
 
     def gaps(self, gaps):
@@ -173,6 +180,7 @@ def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_versi
     ops.update({o["id"]: o for o in head["graph"]["operations"]})
     deps = {d["id"]: d for d in base["graph"]["dependencies"]}
     deps.update({d["id"]: d for d in head["graph"]["dependencies"]})
+    deps.update({d["id"]: d for d in analysis.get("removed_dependencies", [])})
     snaps = b.snapshots(analysis.get("base_snapshots"), analysis.get("head_snapshots"))
     gaps = b.gaps(analysis["gaps"])
     common = dict(snapshots=snaps, freshness=b.source_freshness(analysis.get("head_snapshots", []), analysis["gaps"]),
@@ -184,6 +192,8 @@ def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_versi
                         summary="The PR base or head commit is not available from an allowed ref; nothing was analyzed.",
                         **common)
     deltas, findings, checks, unknowns = [], [], [], []
+    if analysis.get("semantic_uncertainty"):
+        unknowns += [("unclassified_change", None), ("helper_semantics_unknown", None)]
     for delta in analysis["deltas"]:
         op = ops[delta["operation_id"]]
         refs = [b.cite(e) for e in delta["evidence"]]
@@ -193,14 +203,16 @@ def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_versi
             unknowns += [("unclassified_change", None), ("helper_semantics_unknown", None)]
     for finding in analysis["findings"]:
         dep = deps[finding["dependency_id"]]
-        op = ops[dep["operation_id"]]
+        changed_op = ops[dep["operation_id"]]
+        op = ops[finding.get("replacement_operation_id") or dep["operation_id"]]
         call_refs = [b.cite(e) for e in dep["evidence"]]
         provider_refs = [b.cite(e) for e in op["evidence"]]
         usage_refs = [b.cite(e) for e in dep["usage_evidence"]]
         current = finding["dependency_freshness"] == "CURRENT"
         b.calls(dep["consumer"], dep["repository"], op, call_refs + provider_refs, current)
         route = f"{op['method']} {normalize_route(op['path'])}"
-        fact = b.claim("fact", f"{dep['consumer']} calls {route} of {op['service']} at "
+        verb = "calls" if current else "previously called (current use unverified)"
+        fact = b.claim("fact", f"{dep['consumer']} {verb} {route} of {op['service']} at "
                                f"{dep['path']}:{dep['call_line']}; observed usage {dep['usage']}.",
                        call_refs + provider_refs + usage_refs, uncertainty="LOW")
         risk_unknowns = ["helper_semantics_unknown"]
@@ -212,9 +224,10 @@ def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_versi
         if finding["code"] == "UNCLASSIFIED_CHANGE_RECHECK":
             risk_unknowns.append("unclassified_change")
         risk = b.claim("hypothesis", f"{finding['code']}: {finding['condition']}.",
-                       [r for d in deltas if d["operation"]["route"] == normalize_route(op["path"])
-                        and d["operation"]["service"] == op["service"] for r in d["evidence_refs"]] + call_refs,
-                       uncertainty="MEDIUM" if finding["code"] in RISKS else "HIGH", unknowns=risk_unknowns)
+                       [r for d in deltas if d["operation"]["route"] == normalize_route(changed_op["path"])
+                        and d["operation"]["service"] == changed_op["service"] for r in d["evidence_refs"]] + call_refs + provider_refs,
+                       uncertainty="MEDIUM" if finding["code"] in RISKS else "HIGH", unknowns=risk_unknowns,
+                       subject=b.operation(changed_op) if finding.get("replacement_operation_id") else None)
         checks.append(dict(consumer=b.service(dep["consumer"]), text=finding["check"], claim_refs=[risk, fact]))
         findings.append(dict(
             code=finding["code"], consumer=b.service(dep["consumer"]), usage=finding["usage"],
@@ -232,6 +245,13 @@ def change_result(graph, request: AnalysisRequest, analysis: dict, *, code_versi
     elif findings:
         status, reason = "PARTIAL", "unclassified_change"
         summary = "A tracked operation changed in a way no classifier covers; its consumers need a recheck."
+    elif analysis.get("semantic_uncertainty"):
+        status, reason = "PARTIAL", "unclassified_change"
+        summary = "Provider Python or operation behavior changed outside the default-only classifier; impact is not classified."
+    elif deltas and analysis.get("default_overrides"):
+        status, reason = ("PARTIAL", "coverage_gaps") if gaps else ("ABSTAINED", "insufficient_evidence")
+        summary = ("Default-only change: observed explicit page_size overrides need no additional consumer alert. "
+                   "Other compatibility is not established; tests were not executed.")
     elif deltas:
         status, reason = "ABSTAINED", "no_consumer_found_within_profile"
         unknowns.append(("runtime_not_observed", None))
@@ -296,11 +316,11 @@ def preliminary_result(graph, request: AnalysisRequest, context: dict, operation
 
 
 def failed_result(request: AnalysisRequest, reason, *, code_version, constitution_version, correlation_id,
-                  started_at=None, finished_at=None, seconds=None, superseded_by=None) -> AnalysisResult:
+                  started_at=None, finished_at=None, seconds=None, superseded_by=None, summary=None) -> AnalysisResult:
     status = "SUPERSEDED" if superseded_by else "FAILED"
     b = _Builder(None, request, [])
     return b.finish(status=status, reason=reason, superseded_by=superseded_by,
                     summary="Superseded by a newer version of the resource." if superseded_by
-                    else "The analysis did not complete.", timings=_timings(started_at, finished_at, seconds),
+                    else summary or "The analysis did not complete.", timings=_timings(started_at, finished_at, seconds),
                     correlation_id=correlation_id, code_version=code_version,
                     constitution_version=constitution_version)

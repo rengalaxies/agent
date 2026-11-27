@@ -1,0 +1,20 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "case_id": "DEV-0031",
+  "error_code": null,
+  "finished_at": "2026-11-15T15:13:00.857303+00:00",
+  "method": "impactmap_static",
+  "payload_sha256": "a88f97ef882f0e06936b0ce8bf0b8b8c22c3724889a37afc138dc9015ac5085b",
+  "payload_utf8": "{\"affected\":[],\"checks\":[],\"claims\":[],\"code_version\":\"evaluation-static\",\"constitution_version\":\"agent-service-v1.0:100bcad3db9c\",\"correlation_id\":\"DEV-0031\",\"costs\":{\"completion_tokens\":0,\"currency\":null,\"model_calls\":0,\"prompt_tokens\":0,\"reserved_micro\":null},\"deltas\":[{\"after\":null,\"before\":20,\"code\":\"OPERATION_REMOVED\",\"evidence_refs\":[\"ev:d55b2dcba6ec55051a8776857587ad215fa4f3f0\"],\"operation\":{\"environment\":\"offline\",\"installation_id\":\"author-development\",\"kind\":\"operation\",\"method\":\"GET\",\"route\":\"/v31/items\",\"service\":\"provider\"}}],\"environment\":\"offline\",\"event_id\":\"DEV-0031\",\"evidence\":[{\"blob\":\"e8336766d9ff695c867f1d4b107b122bc1fd205b\",\"commit\":\"d71cefaa7664a4c514e1548a27e892245486a15a\",\"content_sha256\":\"73d824e518e39182d5d67c70024996df946b7e390e7f1d6a12fead7f2e3a1eaf\",\"end_line\":6,\"freshness\":{\"checked_at\":\"2026-11-15T15:13:00.819079Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"id\":\"ev:d55b2dcba6ec55051a8776857587ad215fa4f3f0\",\"origin\":\"code\",\"path\":\"api.py\",\"provenance\":\"AUTHENTIC\",\"repository\":\"provider\",\"snapshot\":\"GIT_COMMIT\",\"start_line\":5,\"sufficiency\":\"SUPPORTED_WITHIN_PROFILE\",\"visibility\":[\"provider\"]}],\"findings\":[],\"gaps\":[],\"graph_version\":\"graph-1\",\"impact_paths\":[],\"installation_id\":\"author-development\",\"kind\":\"analysis_result\",\"model\":null,\"profile\":\"http-requests-9\",\"reason_code\":\"no_consumer_found_within_profile\",\"relationships\":[],\"request_id\":\"DEV-0031\",\"resource_version\":\"fd460eb7807a974bb7cf9d106d973a454fe73b228740290e7c24d3962aa83ec4\",\"schema\":\"agent-graph-output\",\"schema_version\":\"2.2\",\"snapshots\":[{\"commit\":\"d71cefaa7664a4c514e1548a27e892245486a15a\",\"mode\":\"GIT_COMMIT\",\"repository\":\"provider\",\"role\":\"base\",\"tree\":\"7f955636b7b068c7d023df5b2c657dd02a91647b\"},{\"commit\":\"586e50e5adc537e764249ef806ae4d2d5e9380ba\",\"mode\":\"GIT_COMMIT\",\"repository\":\"provider\",\"role\":\"head\",\"tree\":\"29ebb7b50727eca5248f704346c22781a875f79e\"},{\"commit\":\"2ec8459d3184e439dff9dd01cb2a3b699f4b8b3f\",\"mode\":\"GIT_COMMIT\",\"repository\":\"consumer\",\"role\":\"consumer\",\"tree\":\"3c3644d74de1dc60f348ecdf265daf830f74ca6a\"}],\"source_freshness\":[{\"freshness\":{\"checked_at\":\"2026-11-15T15:13:00.819079Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"provider\",\"source_kind\":\"git\"},{\"freshness\":{\"checked_at\":\"2026-11-15T15:13:00.819079Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"consumer\",\"source_kind\":\"git\"}],\"status\":\"ABSTAINED\",\"summary\":\"The operation changed, but no consumer was found within the static profile. Absence is not proven.\",\"superseded_by\":null,\"timings\":{\"finished_at\":\"2026-11-15T15:13:00.818909Z\",\"seconds\":{\"analysis\":0.5775123750008788},\"started_at\":\"2026-11-15T15:13:00.241404Z\"},\"trigger_kind\":\"pr\",\"unknowns\":[{\"code\":\"runtime_not_observed\",\"subject\":null}],\"usefulness_confirmed\":false}\n",
+  "returncode": 0,
+  "started_at": "2026-11-15T15:12:59.205866+00:00",
+  "stderr": "",
+  "stderr_bytes_base64": "",
+  "stdout": "",
+  "stdout_bytes_base64": "",
+  "wall_s": 1.651469458000065,
+  "wall_time_cap_seconds": 60
+}

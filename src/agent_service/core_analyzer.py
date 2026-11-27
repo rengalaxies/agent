@@ -38,6 +38,21 @@ from .runtime_impact import add_runtime_candidates
 OWNERSHIP_SOURCES = ("installation_mapping", "codeowners", "service_catalog")
 
 
+def _collection_budget_summary(code, limits):
+    """Only known collection errors and operator-controlled numbers are public."""
+    messages = {
+        "corpus_limit": f"Объём исходников превысил установленный лимит ({limits.max_corpus_bytes:,} байт).",
+        "file_count_limit": f"Число файлов превысило установленный лимит ({limits.max_files}).",
+        "inventory_limit": f"Превышен лимит обхода каталогов ({limits.max_files * 20} элементов).",
+        "scan_timeout": f"Время сбора исходников превысило установленный лимит ({limits.scan_seconds:g} с).",
+    }
+    message = messages.get(code)
+    if message is None:
+        return None
+    return (message.replace(",", " ") + " Анализ не выполнен. "
+            "Сузьте набор анализируемых файлов или согласуйте увеличение лимита и повторите запуск.")
+
+
 class GraphOperations:
     """Operations visible to the grant-scoped graph query, in the shape ``intent`` expects."""
 
@@ -235,6 +250,9 @@ class CoreAnalyzer:
                                      started_at=started, seconds=time.monotonic() - clock)
                 result = parse_document(append_model_hypotheses(dump_document(result), graph, context, investigation))
         except GraphError as exc:
+            budget_summary = _collection_budget_summary(exc.code, self.policy.limits)
+            if budget_summary is not None:
+                return dump_document(failed_result(req, "budget_exhausted", summary=budget_summary, **meta))
             if str(exc) in ("sources_changed_during_scan", "busy"):
                 raise AnalysisUnavailable("source_unavailable") from None
             return dump_document(failed_result(req, "source_unavailable" if "commit" in str(exc)

@@ -1,0 +1,491 @@
+[
+  {
+    "case": "5x50k-defaults",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--probe-defaults",
+      "--output",
+      "work/batch05/final/5x50k-defaults"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 0.6048765829764307
+  },
+  {
+    "case": "5x50k-baseline",
+    "command": [
+      "python",
+      "-m",
+      "tools.benchmark_impactmap",
+      "--manifest",
+      "work/batch04/corpora-v1/repos5-lines50k/benchmark-input.json",
+      "--repeats",
+      "3",
+      "--output",
+      "work/batch05/final/5x50k-baseline"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 106.32484675000887
+  },
+  {
+    "case": "5x50k-equality",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--equivalence",
+      "--output",
+      "work/batch05/final/5x50k-equality"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 22.87463725003181
+  },
+  {
+    "case": "5x50k-independent_prs-burst-1",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "1",
+      "--family",
+      "independent_prs",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/5x50k-independent_prs-burst-1"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 10.407912666967604
+  },
+  {
+    "case": "5x50k-independent_prs-burst-5",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "5",
+      "--family",
+      "independent_prs",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/5x50k-independent_prs-burst-5"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 40.996787249983754
+  },
+  {
+    "case": "5x50k-independent_prs-burst-10",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "10",
+      "--family",
+      "independent_prs",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/5x50k-independent_prs-burst-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 79.5176886250265
+  },
+  {
+    "case": "5x50k-head_updates-sequential-1",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "1",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "sequential",
+      "--output",
+      "work/batch05/final/5x50k-head_updates-sequential-1"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 10.527705375046935
+  },
+  {
+    "case": "5x50k-head_updates-sequential-5",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "5",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "sequential",
+      "--output",
+      "work/batch05/final/5x50k-head_updates-sequential-5"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 40.797254500037525
+  },
+  {
+    "case": "5x50k-head_updates-sequential-10",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "10",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "sequential",
+      "--output",
+      "work/batch05/final/5x50k-head_updates-sequential-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 78.65564329200424
+  },
+  {
+    "case": "5x50k-head_updates-burst-1",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "1",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/5x50k-head_updates-burst-1"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 10.319322625000495
+  },
+  {
+    "case": "5x50k-head_updates-burst-5",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "5",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/5x50k-head_updates-burst-5"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 10.286450916028116
+  },
+  {
+    "case": "5x50k-head_updates-burst-10",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos5-lines50k",
+      "--queue-size",
+      "10",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/5x50k-head_updates-burst-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 10.590086208016146
+  },
+  {
+    "case": "10x100k-defaults",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--probe-defaults",
+      "--output",
+      "work/batch05/final/10x100k-defaults"
+    ],
+    "expected_returncode": 1,
+    "returncode": 1,
+    "wall_s": 0.6852777079911903
+  },
+  {
+    "case": "10x100k-baseline",
+    "command": [
+      "python",
+      "-m",
+      "tools.benchmark_impactmap",
+      "--manifest",
+      "work/batch04/corpora-v1/repos10-lines100k/benchmark-input.json",
+      "--repeats",
+      "3",
+      "--output",
+      "work/batch05/final/10x100k-baseline"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 211.94963475002442
+  },
+  {
+    "case": "10x100k-equality",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--equivalence",
+      "--output",
+      "work/batch05/final/10x100k-equality"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 44.79672029201174
+  },
+  {
+    "case": "10x100k-independent_prs-burst-1",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "1",
+      "--family",
+      "independent_prs",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/10x100k-independent_prs-burst-1"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 20.534026208973955
+  },
+  {
+    "case": "10x100k-independent_prs-burst-5",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "5",
+      "--family",
+      "independent_prs",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/10x100k-independent_prs-burst-5"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 81.1117283750209
+  },
+  {
+    "case": "10x100k-independent_prs-burst-10",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "10",
+      "--family",
+      "independent_prs",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/10x100k-independent_prs-burst-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 157.7808799999766
+  },
+  {
+    "case": "10x100k-head_updates-sequential-1",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "1",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "sequential",
+      "--output",
+      "work/batch05/final/10x100k-head_updates-sequential-1"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 20.29303883301327
+  },
+  {
+    "case": "10x100k-head_updates-sequential-5",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "5",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "sequential",
+      "--output",
+      "work/batch05/final/10x100k-head_updates-sequential-5"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 80.9702772499877
+  },
+  {
+    "case": "10x100k-head_updates-sequential-10",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "10",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "sequential",
+      "--output",
+      "work/batch05/final/10x100k-head_updates-sequential-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 156.17122795799514
+  },
+  {
+    "case": "10x100k-head_updates-burst-1",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "1",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/10x100k-head_updates-burst-1"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 20.297538916987833
+  },
+  {
+    "case": "10x100k-head_updates-burst-5",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "5",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/10x100k-head_updates-burst-5"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 20.404319374996703
+  },
+  {
+    "case": "10x100k-head_updates-burst-10",
+    "command": [
+      "python",
+      "-m",
+      "tools.load_impactmap",
+      "--corpus",
+      "work/batch04/corpora-v1/repos10-lines100k",
+      "--queue-size",
+      "10",
+      "--family",
+      "head_updates",
+      "--delivery",
+      "burst",
+      "--output",
+      "work/batch05/final/10x100k-head_updates-burst-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 20.3276188330492
+  },
+  {
+    "case": "5x50k-defaultqueue-10",
+    "command": [
+      "python",
+      "experiments/impactmap_scale/results/check_default_queue.py",
+      "--output",
+      "work/batch05/final/5x50k-defaultqueue-10"
+    ],
+    "expected_returncode": 0,
+    "returncode": 0,
+    "wall_s": 79.24697920901235,
+    "wall_scope": "run_queue_input elapsed including initial index; subprocess envelope not separately timed"
+  }
+]

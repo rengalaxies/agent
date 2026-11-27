@@ -1,0 +1,23 @@
+{
+  "core_identity": {
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1",
+    "output_schema_version": "2.2",
+    "core_digest": "bbf94715b48f3f14c8c93d64b8e4c307ac15b19fc3c76834df6d9bd97cb6a88f"
+  },
+  "source_sha": "2d13227a766ec7d8178143b005d077034e281897",
+  "runs": [
+    {
+      "profile": "repos5-lines50k",
+      "returncode": 0,
+      "output": "work/batch05-removal/after-profile9-repos5-lines50k"
+    },
+    {
+      "profile": "repos10-lines100k",
+      "returncode": 0,
+      "output": "work/batch05-removal/after-profile9-repos10-lines100k"
+    }
+  ],
+  "execution": "SEQUENTIAL_NOT_PARALLEL",
+  "os_caches_reset": false
+}

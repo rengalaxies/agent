@@ -1,0 +1,25 @@
+test_existing_input_is_refused_without_rewriting (__main__.BootstrapTests.test_existing_input_is_refused_without_rewriting) ... FAIL
+test_fresh_output_root_is_created (__main__.BootstrapTests.test_fresh_output_root_is_created) ... FAIL
+
+======================================================================
+FAIL: test_existing_input_is_refused_without_rewriting (__main__.BootstrapTests.test_existing_input_is_refused_without_rewriting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/test_default_recipe_bootstrap.py", line 20, in test_existing_input_is_refused_without_rewriting
+    with self.assertRaises(AssertionError):self.run_prefix(directory)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_fresh_output_root_is_created (__main__.BootstrapTests.test_fresh_output_root_is_created)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/test_default_recipe_bootstrap.py", line 16, in test_fresh_output_root_is_created
+    self.assertTrue((Path(directory)/'work/batch05-defaults').is_dir())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.285s
+
+FAILED (failures=2)

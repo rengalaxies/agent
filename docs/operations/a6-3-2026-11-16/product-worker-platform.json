@@ -1,0 +1,31 @@
+{
+  "unchanged_since_batch_base": {
+    "src/change_completion/executor.py": true,
+    "src/change_completion/sql_worker.py": true,
+    "src/change_completion/verification_worker.py": true
+  },
+  "checks": {
+    "baseline": {
+      "execute_select": {
+        "status": "error",
+        "actual": null,
+        "reason_codes": [
+          "worker_failed"
+        ]
+      },
+      "worker_returncode": 1,
+      "worker_stderr": "Traceback (most recent call last):\n  File \"/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/a6-3/baseline/sql_worker.py\", line 156, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/a6-3/baseline/sql_worker.py\", line 138, in main\n    resource.setrlimit(resource.RLIMIT_AS, (256 * 1024**2, 256 * 1024**2))\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: current limit exceeds maximum limit\n"
+    },
+    "current": {
+      "execute_select": {
+        "status": "error",
+        "actual": null,
+        "reason_codes": [
+          "worker_failed"
+        ]
+      },
+      "worker_returncode": 1,
+      "worker_stderr": "Traceback (most recent call last):\n  File \"/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/change_completion/sql_worker.py\", line 156, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/change_completion/sql_worker.py\", line 138, in main\n    resource.setrlimit(resource.RLIMIT_AS, (256 * 1024**2, 256 * 1024**2))\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: current limit exceeds maximum limit\n"
+    }
+  }
+}

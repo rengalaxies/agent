@@ -1,0 +1,12 @@
+{
+  "reason": "Important fresh-review defect: mixed CURRENT/STALE relationship aggregation; stop preliminary measurements before one fix pass",
+  "source": "21c9bbfd03ad68ca61bcd3152f59e19e9192a7bc",
+  "signal": "SIGINT",
+  "target_pids": [
+    32512,
+    32573,
+    34214,
+    35518
+  ],
+  "final_measurements_required": true
+}

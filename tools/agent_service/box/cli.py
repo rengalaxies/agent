@@ -286,6 +286,14 @@ class Box:
         if box_config.write_json(self.bindings / "service.json", service):
             changed.append("service.json")
         self.chown(self.bindings / "service.json", 0o640, group_only=True)
+        if cfg.ui:
+            # No privileged path operations inside the service-owned UI namespace.
+            # task() drops root to SERVICE_USER on system installations.
+            result = self.task('ui-configure', '--state', str(L.state), '--origin', cfg.ui.origin)
+            if not result.get('ok'):
+                raise Failed(['ui_configuration_failed'])
+            if result.get('changed'):
+                changed.append('ui.json')
         return {"changed": changed}
 
     def mirrors(self, cfg: box_config.BoxConfig) -> dict:

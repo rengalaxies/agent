@@ -1,0 +1,15 @@
+test_density_and_missing_source_inputs_keep_declared_shape (tests.performance.test_scale_corpora.CorpusTests.test_density_and_missing_source_inputs_keep_declared_shape) ... FAIL
+
+======================================================================
+FAIL: test_density_and_missing_source_inputs_keep_declared_shape (tests.performance.test_scale_corpora.CorpusTests.test_density_and_missing_source_inputs_keep_declared_shape)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_scale_corpora.py", line 105, in test_density_and_missing_source_inputs_keep_declared_shape
+    self.assertTrue(verified['removed_head_dependencies_match'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 4.387s
+
+FAILED (failures=1)

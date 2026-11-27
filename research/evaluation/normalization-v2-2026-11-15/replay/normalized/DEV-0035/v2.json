@@ -1,0 +1,32 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [],
+  "case_id": "DEV-0035",
+  "configuration_sha256": "ec66a8e278a0964e9848bf9df8acb40aeac90ed0c2c445bda5365221748a687b",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "unclassified_change",
+      "scope": "analysis"
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "scope": "analysis"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "52402e86de9e9cc3452aee66bd08a6247e29286caef75f83929a40962f9a02b2",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

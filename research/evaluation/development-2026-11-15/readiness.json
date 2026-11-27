@@ -1,0 +1,26 @@
+{
+  "missing": [
+    "access_policy_sha256",
+    "attempt_ledger_ref",
+    "case_ids",
+    "closed_catalogue_sha256",
+    "closed_reference_bundle_sha256",
+    "curator_custody_attestation",
+    "curator_input_integrity_attestation",
+    "disclosure_log_ref",
+    "freeze_dates",
+    "input_bundle_hash",
+    "input_bundle_sha256",
+    "loaded_runtime_sha",
+    "loaded_source_commit",
+    "public_case_hashes",
+    "random_seed",
+    "source_inventory_sha256",
+    "status_REGISTERED",
+    "threshold_approval",
+    "threshold_approval_date",
+    "two_real_expert_attestations"
+  ],
+  "scope": "structural integrity only; cannot authenticate people or prove physical custody/independence",
+  "status": "NOT_REGISTERED"
+}

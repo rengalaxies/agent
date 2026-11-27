@@ -1,0 +1,56 @@
+{
+  "scope": "temporary author accounts, no credentials/cookies/headers captured",
+  "idle_test_profile_seconds": 60,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/ui/api/csrf",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/ui/api/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/csrf",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/ui/api/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/ui/api/logout",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/ui/api/logout",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 401
+    }
+  ]
+}

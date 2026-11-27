@@ -1,0 +1,368 @@
+{
+  "affected": [
+    {
+      "owner": {
+        "checked_at": null,
+        "source": null,
+        "source_version": null,
+        "status": "UNKNOWN",
+        "teams": []
+      },
+      "relationship_refs": [
+        "rel:e2923c31358449b75ccbaba5b973897cb61a61b5"
+      ],
+      "service": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "service",
+        "service": "c"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "claim_refs": [
+        "claim:fa7af926c429e577206dece3fee91af11254d23d",
+        "claim:01b607fa6bbc8db2cb26a6949e984d2f7c156d1d"
+      ],
+      "consumer": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "service",
+        "service": "c"
+      },
+      "text": "Exercise the changed operation against this consumer's independent expectations"
+    }
+  ],
+  "claims": [
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-9.",
+      "evidence_refs": [
+        "ev:1f4a8cc7eb4260df22eb4da5e844a32dc6de0f04",
+        "ev:d060d0abebc3f9d9ff1ac32fe8c58f5ce65d9649",
+        "ev:ed8e75a2c59c3a1069c6b8c3f9c4433c82e828e8"
+      ],
+      "id": "claim:01b607fa6bbc8db2cb26a6949e984d2f7c156d1d",
+      "kind": "fact",
+      "statement": "c calls GET /{resource} of p at client.py:2; observed usage SINGLE_REQUEST_OBSERVED.",
+      "subject": null,
+      "uncertainty": "LOW",
+      "unknowns": []
+    },
+    {
+      "applicability": "Pinned snapshots only; static profile http-requests-9.",
+      "evidence_refs": [
+        "ev:13ee2ddbebe4a813fa26dd7888c27a527dcc6fbe",
+        "ev:d060d0abebc3f9d9ff1ac32fe8c58f5ce65d9649",
+        "ev:ed8e75a2c59c3a1069c6b8c3f9c4433c82e828e8"
+      ],
+      "id": "claim:fa7af926c429e577206dece3fee91af11254d23d",
+      "kind": "hypothesis",
+      "statement": "UNCLASSIFIED_CHANGE_RECHECK: The old declaration GET /orders was removed and this call now maps to a different declaration; compatibility is unclassified.",
+      "subject": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders",
+        "service": "p"
+      },
+      "uncertainty": "HIGH",
+      "unknowns": [
+        "helper_semantics_unknown",
+        "requirement_unknown",
+        "unclassified_change"
+      ]
+    }
+  ],
+  "code_version": "binding-fixture",
+  "constitution_version": "agent-service-v1.0:binding-test",
+  "correlation_id": "binding",
+  "costs": {
+    "completion_tokens": 0,
+    "currency": null,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "reserved_micro": null
+  },
+  "deltas": [
+    {
+      "after": null,
+      "before": null,
+      "code": "OPERATION_REMOVED",
+      "evidence_refs": [
+        "ev:13ee2ddbebe4a813fa26dd7888c27a527dcc6fbe"
+      ],
+      "operation": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/orders",
+        "service": "p"
+      }
+    }
+  ],
+  "environment": "test",
+  "event_id": "binding",
+  "evidence": [
+    {
+      "blob": "dcdfcc86e727386984ea1aee84c2cf65b68d8b49",
+      "commit": "2ca63feafe7e142a5d357f1fc4d421efc7f161b9",
+      "content_sha256": "4205589f94b3ed2d2e0aa857fad0bc018874b8483bc588460c9074c10db3c288",
+      "end_line": 5,
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:13ee2ddbebe4a813fa26dd7888c27a527dcc6fbe",
+      "origin": "code",
+      "path": "api.py",
+      "provenance": "AUTHENTIC",
+      "repository": "p",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 4,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "p"
+      ]
+    },
+    {
+      "blob": "cf4591f9032ecbe8d97ea124372bbe58343d44e7",
+      "commit": "5eecff6e6d48e5310bd8ec1e69944d5316b32d73",
+      "content_sha256": "59f1440e82eca13dae822f6cee0f52643c1abfa40645c420dfe6af34d47eff63",
+      "end_line": 2,
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:d060d0abebc3f9d9ff1ac32fe8c58f5ce65d9649",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "c",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 2,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "c"
+      ]
+    },
+    {
+      "blob": "cf916aa7532e0c0bf12e1a4ce8dbe7ab0e5b9941",
+      "commit": "c71193b559ae465a3a4d42c7ea06ebe8d315163d",
+      "content_sha256": "b69f3d702558b0485cacc3690893b70a6dbce9311fba9445edc820be74928fa6",
+      "end_line": 5,
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:ed8e75a2c59c3a1069c6b8c3f9c4433c82e828e8",
+      "origin": "code",
+      "path": "api.py",
+      "provenance": "AUTHENTIC",
+      "repository": "p",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 4,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "p"
+      ]
+    },
+    {
+      "blob": "cf4591f9032ecbe8d97ea124372bbe58343d44e7",
+      "commit": "5eecff6e6d48e5310bd8ec1e69944d5316b32d73",
+      "content_sha256": "59f1440e82eca13dae822f6cee0f52643c1abfa40645c420dfe6af34d47eff63",
+      "end_line": 1,
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "ev:1f4a8cc7eb4260df22eb4da5e844a32dc6de0f04",
+      "origin": "code",
+      "path": "client.py",
+      "provenance": "AUTHENTIC",
+      "repository": "c",
+      "snapshot": "GIT_COMMIT",
+      "start_line": 1,
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "visibility": [
+        "c"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "callsite": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "callsite",
+        "line": 2,
+        "path": "client.py",
+        "repository": "c",
+        "service": "c"
+      },
+      "code": "UNCLASSIFIED_CHANGE_RECHECK",
+      "compatibility_confirmed": false,
+      "consumer": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "service",
+        "service": "c"
+      },
+      "dependency_freshness": "CURRENT",
+      "evidence_refs": [
+        "ev:d060d0abebc3f9d9ff1ac32fe8c58f5ce65d9649"
+      ],
+      "requirement_ids": [],
+      "test_executed": false,
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    }
+  ],
+  "gaps": [],
+  "graph_version": "graph-1",
+  "impact_paths": [
+    {
+      "relationship_refs": [
+        "rel:e2923c31358449b75ccbaba5b973897cb61a61b5"
+      ],
+      "summary": "c -> p GET /{resource}"
+    }
+  ],
+  "installation_id": "binding-test",
+  "kind": "analysis_result",
+  "model": null,
+  "profile": "http-requests-9",
+  "reason_code": "unclassified_change",
+  "relationships": [
+    {
+      "change_origin": "code_scan",
+      "evidence_refs": [
+        "ev:d060d0abebc3f9d9ff1ac32fe8c58f5ce65d9649",
+        "ev:ed8e75a2c59c3a1069c6b8c3f9c4433c82e828e8"
+      ],
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "id": "rel:e2923c31358449b75ccbaba5b973897cb61a61b5",
+      "kind": "calls",
+      "origins": [
+        "code"
+      ],
+      "source": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "service",
+        "service": "c"
+      },
+      "status": "ACTIVE",
+      "target": {
+        "environment": "test",
+        "installation_id": "binding-test",
+        "kind": "operation",
+        "method": "GET",
+        "route": "/{resource}",
+        "service": "p"
+      },
+      "visibility": [
+        "c",
+        "p"
+      ]
+    }
+  ],
+  "request_id": "binding",
+  "resource_version": "v1",
+  "schema": "agent-graph-output",
+  "schema_version": "2.2",
+  "snapshots": [
+    {
+      "commit": "2ca63feafe7e142a5d357f1fc4d421efc7f161b9",
+      "mode": "GIT_COMMIT",
+      "repository": "p",
+      "role": "base",
+      "tree": "b83f229cf19342869d6f87e55741933b59790b94"
+    },
+    {
+      "commit": "c71193b559ae465a3a4d42c7ea06ebe8d315163d",
+      "mode": "GIT_COMMIT",
+      "repository": "p",
+      "role": "head",
+      "tree": "f1578133e4fb71a9f8aac7d503593b898742ed43"
+    },
+    {
+      "commit": "5eecff6e6d48e5310bd8ec1e69944d5316b32d73",
+      "mode": "GIT_COMMIT",
+      "repository": "c",
+      "role": "consumer",
+      "tree": "0689bba4038513f0df8eeb39e005a365994ae460"
+    }
+  ],
+  "source_freshness": [
+    {
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "p",
+      "source_kind": "git"
+    },
+    {
+      "freshness": {
+        "checked_at": "2026-11-15T17:20:49.824549Z",
+        "reasons": [],
+        "status": "CURRENT",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "source_id": "c",
+      "source_kind": "git"
+    }
+  ],
+  "status": "PARTIAL",
+  "summary": "A tracked operation changed in a way no classifier covers; its consumers need a recheck.",
+  "superseded_by": null,
+  "timings": {
+    "finished_at": "2026-11-15T17:20:49.824572Z",
+    "seconds": {},
+    "started_at": "2026-11-15T17:20:49.824570Z"
+  },
+  "trigger_kind": "pr",
+  "unknowns": [
+    {
+      "code": "unclassified_change",
+      "subject": null
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "subject": null
+    },
+    {
+      "code": "requirement_unknown",
+      "subject": "c"
+    },
+    {
+      "code": "owner_unknown",
+      "subject": "c"
+    }
+  ],
+  "usefulness_confirmed": false
+}

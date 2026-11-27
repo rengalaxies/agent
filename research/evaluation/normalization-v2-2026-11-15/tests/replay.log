@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/research/evaluation/normalization-v2-2026-11-15/reproduce/evidence.py", line 137, in <module>
+    if args.mode=='replay':replay(args.target)
+                           ~~~~~~^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/research/evaluation/normalization-v2-2026-11-15/reproduce/evidence.py", line 61, in replay
+    historical_diagnostic(target/'historical-diagnostic',first)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/research/evaluation/normalization-v2-2026-11-15/reproduce/evidence.py", line 94, in historical_diagnostic
+    raw=read(path);assert 'schema_' in raw and 'schema' not in raw
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

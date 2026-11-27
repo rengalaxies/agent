@@ -1,0 +1,294 @@
+test_constitution_cannot_drop_rules_or_add_tools (test_action_diagnostics.AgreementTests.test_constitution_cannot_drop_rules_or_add_tools) ... ok
+test_every_template_example_passes_the_executor_parser (test_action_diagnostics.AgreementTests.test_every_template_example_passes_the_executor_parser) ... ok
+test_portable_schema_is_strict_and_has_no_unsupported_keywords (test_action_diagnostics.AgreementTests.test_portable_schema_is_strict_and_has_no_unsupported_keywords) ... ok
+test_template_schema_executor_and_constitution_name_the_same_actions (test_action_diagnostics.AgreementTests.test_template_schema_executor_and_constitution_name_the_same_actions) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_hypothesis_outside_the_grammar_stays_unverified (test_action_diagnostics.ExecutorTests.test_hypothesis_outside_the_grammar_stays_unverified) ... ok
+test_injection_text_cannot_add_tools (test_action_diagnostics.ExecutorTests.test_injection_text_cannot_add_tools) ... ok
+test_invented_or_foreign_receipts_are_evidence_rejections (test_action_diagnostics.ExecutorTests.test_invented_or_foreign_receipts_are_evidence_rejections) ... ok
+test_quote_from_same_route_of_another_service_does_not_support_the_claim (test_action_diagnostics.ExecutorTests.test_quote_from_same_route_of_another_service_does_not_support_the_claim) ... ok
+test_rejected_action_gets_safe_feedback_and_the_run_can_continue (test_action_diagnostics.ExecutorTests.test_rejected_action_gets_safe_feedback_and_the_run_can_continue) ... ok
+test_secret_in_replies_never_reaches_report_logs_or_store (test_action_diagnostics.ExecutorTests.test_secret_in_replies_never_reaches_report_logs_or_store) ... ok
+test_supported_dependency_cycle_is_useful_but_unapproved (test_action_diagnostics.ExecutorTests.test_supported_dependency_cycle_is_useful_but_unapproved) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_real_http_path_sends_the_v3_schema_and_parses_in_layers (test_action_diagnostics.HttpTransportTests.test_real_http_path_sends_the_v3_schema_and_parses_in_layers) ... ERROR
+test_schema_invalid_reply_over_http_is_not_a_transport_failure (test_action_diagnostics.HttpTransportTests.test_schema_invalid_reply_over_http_is_not_a_transport_failure) ... ERROR
+test_each_layer_has_its_own_reason (test_action_diagnostics.LayerTests.test_each_layer_has_its_own_reason) ... ok
+test_flat_legacy_reply_is_a_schema_error_not_an_opaque_failure (test_action_diagnostics.LayerTests.test_flat_legacy_reply_is_a_schema_error_not_an_opaque_failure) ... ok
+test_unknown_keys_and_values_never_reach_the_record (test_action_diagnostics.LayerTests.test_unknown_keys_and_values_never_reach_the_record) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_budget_cap_stops_before_the_next_call (test_action_diagnostics.StopTests.test_budget_cap_stops_before_the_next_call) ... ok
+test_cancel_during_a_call_discards_its_reply_and_makes_no_further_calls (test_action_diagnostics.StopTests.test_cancel_during_a_call_discards_its_reply_and_makes_no_further_calls) ... ok
+test_cli_investigate_entry_point_uses_actions_v3 (test_action_diagnostics.StopTests.test_cli_investigate_entry_point_uses_actions_v3) ... ok
+test_deadline_before_the_first_call_makes_no_call (test_action_diagnostics.StopTests.test_deadline_before_the_first_call_makes_no_call) ... ok
+test_step_limit_stops_calls_and_releases_reservations (test_action_diagnostics.StopTests.test_step_limit_stops_calls_and_releases_reservations) ... ok
+test_transport_failure_is_partial_with_a_transport_diagnostic (test_action_diagnostics.StopTests.test_transport_failure_is_partial_with_a_transport_diagnostic) ... ok
+test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route (test_candidate_mutation.MutableDeclarationTest.test_setattr_on_the_app_is_unknown_but_mutating_another_object_keeps_the_route) ... ok
+test_real_unsupported_http_calls_stay_visible (test_coverage_noise.CoverageNoiseTests.test_real_unsupported_http_calls_stay_visible) ... ok
+test_route_decorators_and_mapping_lookups_are_not_unsupported_clients (test_coverage_noise.CoverageNoiseTests.test_route_decorators_and_mapping_lookups_are_not_unsupported_clients) ... ok
+test_supported_call_is_extracted_and_counted (test_coverage_noise.CoverageNoiseTests.test_supported_call_is_extracted_and_counted) ... ok
+test_comment_only_helper_edit_does_not_invent_semantic_change (test_default_change_scope.DefaultChangeScopeTests.test_comment_only_helper_edit_does_not_invent_semantic_change) ... ok
+test_default_and_body_change_still_requires_explicit_consumer_review (test_default_change_scope.DefaultChangeScopeTests.test_default_and_body_change_still_requires_explicit_consumer_review) ... ok
+test_default_plus_opaque_change_does_not_exempt_explicit_call (test_default_change_scope.DefaultChangeScopeTests.test_default_plus_opaque_change_does_not_exempt_explicit_call) ... ok
+test_empty_dict_and_url_query_values_both_keep_alert (test_default_change_scope.DefaultChangeScopeTests.test_empty_dict_and_url_query_values_both_keep_alert) ... ok
+test_exempted_default_does_not_hide_unclassified_delta_without_callers (test_default_change_scope.DefaultChangeScopeTests.test_exempted_default_does_not_hide_unclassified_delta_without_callers) ... ok
+test_explicit_size_exempts_only_the_default_delta_including_loop (test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) ... ok
+test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) ... ok
+test_mixed_callsites_keep_only_implicit_call_alert (test_default_change_scope.DefaultChangeScopeTests.test_mixed_callsites_keep_only_implicit_call_alert) ... ok
+test_multiple_provider_declarations_all_constrain_default_exemption (test_default_change_scope.DefaultChangeScopeTests.test_multiple_provider_declarations_all_constrain_default_exemption) ... ok
+test_none_dynamic_and_loop_without_override_keep_alerts (test_default_change_scope.DefaultChangeScopeTests.test_none_dynamic_and_loop_without_override_keep_alerts) ... ok
+test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer (test_default_change_scope.DefaultChangeScopeTests.test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer) ... ok
+test_openapi_default_override_does_not_hide_response_contract_change (test_default_change_scope.DefaultChangeScopeTests.test_openapi_default_override_does_not_hide_response_contract_change) ... ok
+test_other_handler_used_as_helper_disqualifies_default_only_exemption (test_default_change_scope.DefaultChangeScopeTests.test_other_handler_used_as_helper_disqualifies_default_only_exemption) ... ok
+test_referenced_response_schema_change_prevents_default_only_exemption (test_default_change_scope.DefaultChangeScopeTests.test_referenced_response_schema_change_prevents_default_only_exemption) ... ok
+test_removal_alerts_even_when_consumer_sends_size (test_default_change_scope.DefaultChangeScopeTests.test_removal_alerts_even_when_consumer_sends_size) ... ok
+test_same_line_calls_keep_the_implicit_size_alert_in_either_order (test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) ... ok
+test_selected_operation_ignores_opaque_edit_in_other_provider_repository (test_default_change_scope.DefaultChangeScopeTests.test_selected_operation_ignores_opaque_edit_in_other_provider_repository) ... ok
+test_extractor_upgrade_invalidates_prior_basis (test_discovery_regressions.DiscoveryRegressions.test_extractor_upgrade_invalidates_prior_basis) ... ok
+test_r2_operation_parameter_overrides_path_and_change_is_found (test_discovery_regressions.DiscoveryRegressions.test_r2_operation_parameter_overrides_path_and_change_is_found) ... ok
+test_r2_override_without_default_and_parameter_location (test_discovery_regressions.DiscoveryRegressions.test_r2_override_without_default_and_parameter_location) ... ok
+test_r3_aliases_and_unshadowed_constants_still_work (test_discovery_regressions.DiscoveryRegressions.test_r3_aliases_and_unshadowed_constants_still_work) ... ok
+test_r3_shadowed_imports_never_become_resolved_edges (test_discovery_regressions.DiscoveryRegressions.test_r3_shadowed_imports_never_become_resolved_edges) ... ok
+test_r4_dynamic_values_and_duplicate_bindings_are_unknown (test_discovery_regressions.DiscoveryRegressions.test_r4_dynamic_values_and_duplicate_bindings_are_unknown) ... ok
+test_r4_get_positional_params_and_post_body_are_distinct (test_discovery_regressions.DiscoveryRegressions.test_r4_get_positional_params_and_post_body_are_distinct) ... ok
+test_r4_none_or_empty_values_use_default (test_discovery_regressions.DiscoveryRegressions.test_r4_none_or_empty_values_use_default) ... ok
+test_r5_module_constant_page_default_change_is_classified (test_discovery_regressions.DiscoveryRegressions.test_r5_module_constant_page_default_change_is_classified) ... ok
+test_r5_unresolved_page_default_change_requires_recheck_not_silence (test_discovery_regressions.DiscoveryRegressions.test_r5_unresolved_page_default_change_requires_recheck_not_silence) ... ok
+test_r6_referenced_openapi_page_default_change_requires_recheck_not_silence (test_discovery_regressions.DiscoveryRegressions.test_r6_referenced_openapi_page_default_change_requires_recheck_not_silence) ... ok
+test_batch_is_bounded_and_shaped (test_evidence_batch.EvidenceBatchTests.test_batch_is_bounded_and_shaped) ... ok
+test_only_not_found_falls_through_to_the_next_context (test_evidence_batch.EvidenceBatchTests.test_only_not_found_falls_through_to_the_next_context) ... ok
+test_binding_tampering_rejected (test_evidence_refs.ReferenceTests.test_binding_tampering_rejected) ... ok
+test_changed_subject_or_scope_denied (test_evidence_refs.ReferenceTests.test_changed_subject_or_scope_denied) ... ok
+test_exact_but_irrelevant_evidence_is_not_sufficient (test_evidence_refs.ReferenceTests.test_exact_but_irrelevant_evidence_is_not_sufficient) ... ok
+test_expired_snapshot (test_evidence_refs.ReferenceTests.test_expired_snapshot) ... ok
+test_fabricated_reference (test_evidence_refs.ReferenceTests.test_fabricated_reference) ... ok
+test_forged_or_cross_session_assessment_does_not_assess_semantics (test_evidence_refs.ReferenceTests.test_forged_or_cross_session_assessment_does_not_assess_semantics) ... ok
+test_full_evidence_wrong_direction_service_method_or_path_rejected (test_evidence_refs.ReferenceTests.test_full_evidence_wrong_direction_service_method_or_path_rejected) ... ok
+test_invalid_ranges_issue_no_receipt (test_evidence_refs.ReferenceTests.test_invalid_ranges_issue_no_receipt) ... ok
+test_missing_callsite_or_provider_is_insufficient (test_evidence_refs.ReferenceTests.test_missing_callsite_or_provider_is_insufficient) ... ok
+test_new_snapshot_same_bytes_supersedes_session (test_evidence_refs.ReferenceTests.test_new_snapshot_same_bytes_supersedes_session) ... ok
+test_other_session_same_scope_and_snapshot_is_denied (test_evidence_refs.ReferenceTests.test_other_session_same_scope_and_snapshot_is_denied) ... ok
+test_quotes_v1_not_repaired_and_v2_rejects_quote_fields (test_evidence_refs.ReferenceTests.test_quotes_v1_not_repaired_and_v2_rejects_quote_fields) ... ok
+test_read_receipt_does_not_grant_propose (test_evidence_refs.ReferenceTests.test_read_receipt_does_not_grant_propose) ... ok
+test_revoked_read_capability (test_evidence_refs.ReferenceTests.test_revoked_read_capability) ... ok
+test_scripted_investigate_v2_no_network (test_evidence_refs.ReferenceTests.test_scripted_investigate_v2_no_network) ... ok
+test_snapshot_changed_even_with_same_revision (test_evidence_refs.ReferenceTests.test_snapshot_changed_even_with_same_revision) ... ok
+test_unavailable_current_corpus (test_evidence_refs.ReferenceTests.test_unavailable_current_corpus) ... ok
+test_valid_reference_reuses_exact_validator_and_candidate_remains_unapproved (test_evidence_refs.ReferenceTests.test_valid_reference_reuses_exact_validator_and_candidate_remains_unapproved) ... ok
+test_v2_schema_over_local_http_stub_no_real_model (test_evidence_refs.ReferenceTransportTests.test_v2_schema_over_local_http_stub_no_real_model) ... ERROR
+test_v2_transport_rejects_legacy_proposal_without_repair (test_evidence_refs.ReferenceTransportTests.test_v2_transport_rejects_legacy_proposal_without_repair) ... ERROR
+test_historical_proposals_remain_rejected_without_conversion (test_evidence_refs.SavedSeriesTests.test_historical_proposals_remain_rejected_without_conversion) ... ok
+test_saved_files_are_byte_identical (test_evidence_refs.SavedSeriesTests.test_saved_files_are_byte_identical) ... ok
+test_scripted_reporting_export_status_and_decoys (test_evidence_refs.SavedSeriesTests.test_scripted_reporting_export_status_and_decoys) ... ok
+test_byte_identical_exact_decoy_provider_does_not_establish_identity (test_evidence_refs_review.RenamedControls.test_byte_identical_exact_decoy_provider_does_not_establish_identity) ... ok
+test_exact_unrelated_span_in_correct_file_is_not_enough (test_evidence_refs_review.RenamedControls.test_exact_unrelated_span_in_correct_file_is_not_enough) ... ok
+test_other_names_method_port_and_base_path_are_supported (test_evidence_refs_review.RenamedControls.test_other_names_method_port_and_base_path_are_supported) ... ok
+test_source_changes_after_read_before_proposal (test_evidence_refs_review.RenamedControls.test_source_changes_after_read_before_proposal) ... ok
+test_unsupported_wrapper_does_not_prove_absence (test_evidence_refs_review.RenamedControls.test_unsupported_wrapper_does_not_prove_absence) ... ok
+test_absolute_remaining_time_bounds_body_not_fresh_full_timeout (test_evidence_refs_runner.DeadlineTransportTests.test_absolute_remaining_time_bounds_body_not_fresh_full_timeout) ... ERROR
+test_cloud_token_parameter_opt_in_and_v1_default_preserved (test_evidence_refs_runner.DeadlineTransportTests.test_cloud_token_parameter_opt_in_and_v1_default_preserved) ... ERROR
+test_deadline_at_admission_rolls_back_candidate (test_evidence_refs_runner.DeadlineTransportTests.test_deadline_at_admission_rolls_back_candidate) ... ok
+test_expired_absolute_deadline_sends_nothing (test_evidence_refs_runner.DeadlineTransportTests.test_expired_absolute_deadline_sends_nothing) ... ERROR
+test_valid_usage_preserved_even_when_action_schema_is_invalid (test_evidence_refs_runner.DeadlineTransportTests.test_valid_usage_preserved_even_when_action_schema_is_invalid) ... ERROR
+test_budget_is_reserved_before_transport_and_error_not_refunded (test_evidence_refs_runner.LedgerTests.test_budget_is_reserved_before_transport_and_error_not_refunded) ... ok
+test_caps_survive_restart_and_do_not_refund_unknown (test_evidence_refs_runner.LedgerTests.test_caps_survive_restart_and_do_not_refund_unknown) ... ok
+test_cas_rejects_concurrent_initialization (test_evidence_refs_runner.LedgerTests.test_cas_rejects_concurrent_initialization) ... ok
+test_expiration_is_durable_and_clock_cannot_reopen_case (test_evidence_refs_runner.LedgerTests.test_expiration_is_durable_and_clock_cannot_reopen_case) ... ok
+test_failed_reservation_or_elapsed_ledger_wait_prevents_transport (test_evidence_refs_runner.LedgerTests.test_failed_reservation_or_elapsed_ledger_wait_prevents_transport) ... ok
+test_github_backend_uses_single_fixed_ref_and_non_force_parent_commit (test_evidence_refs_runner.LedgerTests.test_github_backend_uses_single_fixed_ref_and_non_force_parent_commit) ... ok
+test_github_redirect_and_error_body_cannot_expose_credentials (test_evidence_refs_runner.LedgerTests.test_github_redirect_and_error_body_cannot_expose_credentials) ... ok
+test_history_unknown_usage_and_new_results_are_separate (test_evidence_refs_runner.LedgerTests.test_history_unknown_usage_and_new_results_are_separate) ... ok
+test_low_money_cap_prevents_transport (test_evidence_refs_runner.LedgerTests.test_low_money_cap_prevents_transport) ... ok
+test_missing_execute_never_initializes_and_repeat_initialize_never_resets (test_evidence_refs_runner.LedgerTests.test_missing_execute_never_initializes_and_repeat_initialize_never_resets) ... ok
+test_original_rehearsal_expiration_rollback_regression (test_evidence_refs_runner.LedgerTests.test_original_rehearsal_expiration_rollback_regression) ... ok
+test_restart_or_other_run_cannot_reclaim_or_clear_pending_attempt (test_evidence_refs_runner.LedgerTests.test_restart_or_other_run_cannot_reclaim_or_clear_pending_attempt) ... ok
+test_secret_canary_cannot_enter_ledger_or_artifact (test_evidence_refs_runner.LedgerTests.test_secret_canary_cannot_enter_ledger_or_artifact) ... ok
+test_source_or_manifest_change_is_rejected (test_evidence_refs_runner.LedgerTests.test_source_or_manifest_change_is_rejected) ... ok
+test_rejected_false_claim_counts_even_when_a_correct_candidate_exists (test_evidence_refs_runner.ScoreTests.test_rejected_false_claim_counts_even_when_a_correct_candidate_exists) ... ok
+test_exhausted_budget_or_cancel_stops_before_other_cases (test_evidence_refs_runner.StopTests.test_exhausted_budget_or_cancel_stops_before_other_cases) ... ok
+test_transport_failure_stops_series_without_spending_on_other_cases (test_evidence_refs_runner.StopTests.test_transport_failure_stops_series_without_spending_on_other_cases) ... ok
+test_six_scripted_cases_reserve_26_attempts_before_transport_and_finish (test_evidence_refs_runner.WholeRunnerTests.test_six_scripted_cases_reserve_26_attempts_before_transport_and_finish) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_pr_default_change_finds_reporting_and_not_lookalikes (test_git_sources.ChangeTests.test_pr_default_change_finds_reporting_and_not_lookalikes) ... ok
+test_readme_edit_has_no_delta_and_removal_is_reported (test_git_sources.ChangeTests.test_readme_edit_has_no_delta_and_removal_is_reported) ... ok
+test_tracked_operation_change_outside_known_deltas_is_unclassified (test_git_sources.ChangeTests.test_tracked_operation_change_outside_known_deltas_is_unclassified) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_commit_must_be_reachable_from_an_allowed_ref (test_git_sources.CommitIdentityTests.test_commit_must_be_reachable_from_an_allowed_ref) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_missing_or_foreign_commit_is_a_gap_not_the_current_branch (test_git_sources.CommitIdentityTests.test_missing_or_foreign_commit_is_a_gap_not_the_current_branch) ... ok
+test_nested_branch_is_reachable_with_default_policy (test_git_sources.CommitIdentityTests.test_nested_branch_is_reachable_with_default_policy) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_revision_map_is_validated (test_git_sources.CommitIdentityTests.test_revision_map_is_validated) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_pinned_context_stays_current_without_rescanning (test_git_sources.ReproducibilityTests.test_pinned_context_stays_current_without_rescanning) ... ok
+test_repository_lost_after_prepare_is_not_current (test_git_sources.ReproducibilityTests.test_repository_lost_after_prepare_is_not_current) ... ok
+test_repository_unavailable_since_prepare_keeps_the_context_current (test_git_sources.ReproducibilityTests.test_repository_unavailable_since_prepare_keeps_the_context_current) ... ok
+test_same_commit_map_gives_same_facts_in_separate_stands_and_stores (test_git_sources.ReproducibilityTests.test_same_commit_map_gives_same_facts_in_separate_stands_and_stores) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_worktree_edit_does_not_change_a_pinned_snapshot (test_git_sources.ReproducibilityTests.test_worktree_edit_does_not_change_a_pinned_snapshot) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_links_submodules_lfs_binary_and_large_files_are_visible_gaps (test_git_sources.SafeReadTests.test_links_submodules_lfs_binary_and_large_files_are_visible_gaps) ... ok
+test_object_whose_content_does_not_match_its_id_is_rejected (test_git_sources.SafeReadTests.test_object_whose_content_does_not_match_its_id_is_rejected) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_partial_fetch_missing_blob_is_a_gap (test_git_sources.SafeReadTests.test_partial_fetch_missing_blob_is_a_gap) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_repository_hooks_filters_and_fsmonitor_never_run (test_git_sources.SafeReadTests.test_repository_hooks_filters_and_fsmonitor_never_run) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_compare_and_swap_prevents_late_publication (test_graph.GraphTests.test_compare_and_swap_prevents_late_publication) ... ok
+test_conflicting_approved_requirements_kept_and_changed_basis_not_promoted (test_graph.GraphTests.test_conflicting_approved_requirements_kept_and_changed_basis_not_promoted) ... ok
+test_discovery_without_edges_and_decoy_identity (test_graph.GraphTests.test_discovery_without_edges_and_decoy_identity) ... ok
+test_dynamic_provider_decorator_is_not_removed_operation (test_graph.GraphTests.test_dynamic_provider_decorator_is_not_removed_operation) ... ok
+test_dynamic_wrapper_and_parameter_shadow_remain_unknown (test_graph.GraphTests.test_dynamic_wrapper_and_parameter_shadow_remain_unknown) ... ok
+test_exact_route_beats_template_and_explicit_query_not_default_risk (test_graph.GraphTests.test_exact_route_beats_template_and_explicit_query_not_default_risk) ... ok
+test_forged_approval_actor_or_execution_fields_rejected (test_graph.GraphTests.test_forged_approval_actor_or_execution_fields_rejected) ... ok
+test_missing_source_partial_and_does_not_hide_known_dependencies (test_graph.GraphTests.test_missing_source_partial_and_does_not_hide_known_dependencies) ... ok
+test_new_file_in_decoy_invalidates_negative_scope_and_finds_new_consumer (test_graph.GraphTests.test_new_file_in_decoy_invalidates_negative_scope_and_finds_new_consumer) ... ok
+test_notes_and_tests_do_not_approve_requirements_or_execute (test_graph.GraphTests.test_notes_and_tests_do_not_approve_requirements_or_execute) ... ok
+test_page_size_diff_cites_both_sides_and_never_executes_test (test_graph.GraphTests.test_page_size_diff_cites_both_sides_and_never_executes_test) ... ok
+test_permission_denied_directory_never_reports_complete_empty_graph (test_graph.GraphTests.test_permission_denied_directory_never_reports_complete_empty_graph) ... ok
+test_proposal_duplicates_conflicts_and_human_correction (test_graph.GraphTests.test_proposal_duplicates_conflicts_and_human_correction) ... ok
+test_repair_invalidates_old_usage_immutable_history (test_graph.GraphTests.test_repair_invalidates_old_usage_immutable_history) ... ok
+test_revoked_access_cannot_read_cached_sources_summaries_or_checks (test_graph.GraphTests.test_revoked_access_cannot_read_cached_sources_summaries_or_checks) ... ok
+test_scope_installation_and_environment_separate_contexts (test_graph.GraphTests.test_scope_installation_and_environment_separate_contexts) ... ok
+test_stale_and_aged_proposals_cannot_be_written (test_graph.GraphTests.test_stale_and_aged_proposals_cannot_be_written) ... ok
+test_symlink_and_sensitive_source_are_not_read (test_graph.GraphTests.test_symlink_and_sensitive_source_are_not_read) ... ok
+test_unavailable_provider_is_unknown_not_operation_removed (test_graph.GraphTests.test_unavailable_provider_is_unknown_not_operation_removed) ... ok
+test_verified_status_is_not_derived_from_external_exit_zero (test_graph.GraphTests.test_verified_status_is_not_derived_from_external_exit_zero) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_real_http_calls_become_a_directed_runtime_edge_next_to_code (test_graph_query.HttpStandTests.test_real_http_calls_become_a_directed_runtime_edge_next_to_code) ... ERROR
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_impact_feeds_a_valid_analysis_result (test_graph_query.QueryToolTests.test_impact_feeds_a_valid_analysis_result)
+The pieces mvp-4 copies into AnalysisResult pass the 2A reader as they are. ... /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/re/_parser.py:260: ResourceWarning: unclosed file <_io.FileIO name='/private/var/folders/m6/fk466gnd6wb26l62nm7xj2dm0000gp/T/tmpooxpaxoj/http/access-logs/orders-7f9c-0001.jsonl' mode='ab' closefd=True>
+  def get(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/re/_parser.py:260: ResourceWarning: unclosed file <_io.FileIO name='/private/var/folders/m6/fk466gnd6wb26l62nm7xj2dm0000gp/T/tmpooxpaxoj/http/access-logs/inventory-2b1d-0001.jsonl' mode='ab' closefd=True>
+  def get(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_tool_calls_are_validated_and_bounded (test_graph_query.QueryToolTests.test_tool_calls_are_validated_and_bounded) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_runtime_on_another_route_of_the_pair_is_a_visible_conflict (test_graph_query.RuntimeNextToCodeTests.test_runtime_on_another_route_of_the_pair_is_a_visible_conflict) ... ok
+test_runtime_source_without_grant_is_invisible (test_graph_query.RuntimeNextToCodeTests.test_runtime_source_without_grant_is_invisible) ... ok
+test_same_path_of_another_service_is_a_separate_operation (test_graph_query.RuntimeNextToCodeTests.test_same_path_of_another_service_is_a_separate_operation) ... Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/__main__.py", line 18, in <module>
+    main(module=None)
+    ~~~~^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/main.py", line 104, in __init__
+    self.runTests()
+    ~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/main.py", line 270, in runTests
+    self.result = testRunner.run(self.test)
+                  ~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/runner.py", line 240, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 122, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 122, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 122, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/case.py", line 707, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/case.py", line 647, in run
+    self._callSetUp()
+    ~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/case.py", line 603, in _callSetUp
+    self.setUp()
+    ~~~~~~~~~~^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_graph_query.py", line 24, in setUp
+    self.gs.sync_code(self.context(self.graph))
+                      ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_graph_store.py", line 76, in context
+    return graph.prepare_context(revisions=self.revisions(repositories, **branches))
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/engine.py", line 65, in prepare_context
+    c = collect(self.policy, revisions)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/sources.py", line 107, in collect
+    _collect_git(policy, repo, pinned[repo.id], started + policy.limits.scan_seconds,
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 sources, gaps, inventory, snapshots, budget)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/sources.py", line 56, in _collect_git
+    tree = reader.resolve(commit, repo.allowed_refs)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/git_sources.py", line 165, in resolve
+    raw = objects.contents(commit, "commit") if objects.info(commit) else None
+                                                ~~~~~~~~~~~~^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/git_sources.py", line 103, in info
+    return self._command("info", oid)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/git_sources.py", line 90, in _command
+    header = self.proc.stdout.readline()
+KeyboardInterrupt

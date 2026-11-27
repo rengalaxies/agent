@@ -21,6 +21,7 @@ never opens a half-restored state or creates an empty queue in its place.
 
 from __future__ import annotations
 
+from contextlib import closing
 import datetime
 import hashlib
 import json
@@ -32,7 +33,8 @@ import sqlite3
 
 from .layout import Layout
 
-DATABASES = {"service": Path("service") / "service.sqlite", "graph": Path("core") / "graph.sqlite3"}
+DATABASES = {"service": Path("service") / "service.sqlite", "graph": Path("core") / "graph.sqlite3",
+             "ui_auth": Path("ui") / "auth.sqlite"}
 SIDECARS = ("", "-wal", "-shm", "-journal")  # a WAL file can hold committed rows: it moves with its database
 FORMAT = "agent-service-backup-1"
 MARKER = ".restore.json"
@@ -96,6 +98,15 @@ def counts(state: Path) -> dict:
         try:
             for table in ("artifacts", "proposals"):
                 out[f"graph_{table}"] = c.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
+        finally:
+            c.close()
+    auth = state / DATABASES['ui_auth']
+    if auth.is_file():
+        c = _ro(auth)
+        try:
+            if c.execute('SELECT version FROM ui_auth_meta').fetchone() != (1,):
+                raise BackupError('unsupported_ui_auth_schema')
+            out['ui_users'] = c.execute('SELECT count(*) FROM users').fetchone()[0]
         finally:
             c.close()
     return out
@@ -303,6 +314,20 @@ def restore(layout: Layout, name: str, *, chown=None, fault=None) -> dict:
                 _fsync(tmp)
                 if _sha(tmp) != meta["files"][f"state/{rel.as_posix()}"] or not _integrity(tmp):
                     raise BackupError("restore_copy_differs", rel.as_posix())
+                if rel == DATABASES['ui_auth']:
+                    # Sanitize the verified staged copy BEFORE any swap. Old
+                    # backup passwords/roles never grant access automatically.
+                    with closing(sqlite3.connect(tmp)) as c:
+                        if c.execute('SELECT version FROM ui_auth_meta').fetchone() != (1,):
+                            raise BackupError('unsupported_ui_auth_schema')
+                        c.execute('UPDATE users SET disabled=1,version=version+1')
+                        c.execute('DELETE FROM sessions')
+                        c.execute('DELETE FROM challenges')
+                        c.execute("INSERT INTO audit(at,actor,action,outcome) VALUES(?,?,?,?)",
+                                  (datetime.datetime.now().timestamp(), 'local-restore',
+                                   'restore', 'all_accounts_disabled_sessions_revoked'))
+                        c.commit()
+                    _fsync(tmp)
         identity = root / "state/.box-state.json"
         if identity.is_file():
             tmp = state / ".box-state.json.restore"

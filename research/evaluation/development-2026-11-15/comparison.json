@@ -1,0 +1,244 @@
+{
+  "after": {
+    "impactmap_static": {
+      "counts": {
+        "fn": 0,
+        "fp": 0,
+        "tp": 20
+      },
+      "false_alert_case_rate": 0.0,
+      "outside_boundary_success": 5,
+      "outside_cases": 6,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "lexical_search_ls1": {
+      "counts": {
+        "fn": 0,
+        "fp": 8,
+        "tp": 20
+      },
+      "false_alert_case_rate": 0.5714285714285714,
+      "outside_boundary_success": 2,
+      "outside_cases": 6,
+      "precision": 0.7142857142857143,
+      "recall": 1.0
+    }
+  },
+  "before": {
+    "impactmap_static": {
+      "counts": {
+        "fn": 0,
+        "fp": 6,
+        "tp": 20
+      },
+      "false_alert_case_rate": 0.42857142857142855,
+      "outside_boundary_success": 4,
+      "outside_cases": 6,
+      "precision": 0.7692307692307693,
+      "recall": 1.0
+    },
+    "lexical_search_ls1": {
+      "counts": {
+        "fn": 0,
+        "fp": 8,
+        "tp": 20
+      },
+      "false_alert_case_rate": 0.5714285714285714,
+      "outside_boundary_success": 2,
+      "outside_cases": 6,
+      "precision": 0.7142857142857143,
+      "recall": 1.0
+    }
+  },
+  "changed_cases": {
+    "impactmap_static": [
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "case_id": "DEV-0025"
+      },
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "case_id": "DEV-0026"
+      },
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "case_id": "DEV-0027"
+      },
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "case_id": "DEV-0028"
+      },
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "case_id": "DEV-0029"
+      },
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false
+        },
+        "case_id": "DEV-0030"
+      },
+      {
+        "after": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": true,
+          "status": "PARTIAL",
+          "strict": null,
+          "technical_error": false
+        },
+        "before": {
+          "access_leak": false,
+          "false_certainty": false,
+          "limited_result_success": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false
+        },
+        "case_id": "DEV-0035"
+      }
+    ],
+    "lexical_search_ls1": []
+  },
+  "same_case_bytes": true,
+  "same_order_seed_budget": true,
+  "scorer_and_normalizer_unchanged": true,
+  "status": "POST_TUNING_AUTHOR_DEVELOPMENT_ONLY"
+}

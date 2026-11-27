@@ -101,10 +101,10 @@ class ApprovedRequirement(Strict):
 
 
 class Limits(Strict):
-    max_files: int = Field(default=256, ge=1, le=10000)
+    max_files: int = Field(default=2048, ge=1, le=10000)
     max_file_bytes: int = Field(default=65536, ge=1, le=262144)
-    max_corpus_bytes: int = Field(default=2_000_000, ge=1, le=20_000_000)
-    scan_seconds: float = Field(default=15.0, gt=0, le=120)
+    max_corpus_bytes: int = Field(default=8_000_000, ge=1, le=20_000_000)
+    scan_seconds: float = Field(default=60.0, gt=0, le=120)
     freshness_seconds: int = Field(default=3600, ge=1, le=86400)
     max_model_steps: int = Field(default=4, ge=1, le=12)
     max_tool_lines: int = Field(default=60, ge=1, le=200)

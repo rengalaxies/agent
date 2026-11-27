@@ -1,0 +1,16 @@
+test_explicit_file_and_time_budgets_remain_effective (tests.graph.test_working_limits.WorkingLimitsTests.test_explicit_file_and_time_budgets_remain_effective) ... ok
+test_explicit_lower_byte_budget_aborts_without_saving_partial_context (tests.graph.test_working_limits.WorkingLimitsTests.test_explicit_lower_byte_budget_aborts_without_saving_partial_context) ... ok
+test_omitted_limits_accept_more_than_256_selected_files (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_256_selected_files) ... ok
+test_omitted_limits_accept_more_than_two_megabytes_across_repositories (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_two_megabytes_across_repositories) ... ok
+test_pinned_git_collection_keeps_cumulative_byte_guard (tests.graph.test_working_limits.WorkingLimitsTests.test_pinned_git_collection_keeps_cumulative_byte_guard) ... ok
+test_single_file_limit_stays_visible_as_partial_coverage (tests.graph.test_working_limits.WorkingLimitsTests.test_single_file_limit_stays_visible_as_partial_coverage) ... ok
+test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment (tests.service.test_resource_limits.ResourceLimitsTests.test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment) ... ok
+test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) ... ok
+test_old_explicit_profile_is_preserved (tests.service.test_resource_limits.ResourceLimitsTests.test_old_explicit_profile_is_preserved) ... ok
+test_service_materializes_the_expanded_working_profile_from_omitted_limits (tests.service.test_resource_limits.ResourceLimitsTests.test_service_materializes_the_expanded_working_profile_from_omitted_limits) ... ok
+test_unknown_exception_code_is_not_echoed (tests.service.test_resource_limits.ResourceLimitsTests.test_unknown_exception_code_is_not_echoed) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.486s
+
+OK

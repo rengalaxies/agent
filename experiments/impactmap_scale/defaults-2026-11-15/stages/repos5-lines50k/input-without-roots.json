@@ -1,0 +1,104 @@
+{
+  "schema_version": "impactmap-benchmark-input-1",
+  "provenance": "controlled_generated",
+  "policy": {
+    "addresses": [
+      {
+        "base_url": "https://scale-provider.test",
+        "service": "provider"
+      }
+    ],
+    "capabilities": [
+      "read_context",
+      "maintain",
+      "propose",
+      "report_check"
+    ],
+    "environment": "offline",
+    "installation_id": "scale-controlled",
+    "repositories": [
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r00",
+        "include": [
+          "*.py"
+        ],
+        "revision": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "root": "<local-repository:r00>",
+        "service": "provider",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r01",
+        "include": [
+          "*.py"
+        ],
+        "revision": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "root": "<local-repository:r01>",
+        "service": "consumer_01",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r02",
+        "include": [
+          "*.py"
+        ],
+        "revision": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "root": "<local-repository:r02>",
+        "service": "consumer_02",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r03",
+        "include": [
+          "*.py"
+        ],
+        "revision": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "root": "<local-repository:r03>",
+        "service": "consumer_03",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r04",
+        "include": [
+          "*.py"
+        ],
+        "revision": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "root": "<local-repository:r04>",
+        "service": "consumer_04",
+        "snapshot": "git"
+      }
+    ],
+    "subject": "scale-verifier"
+  },
+  "base_revisions": {
+    "r00": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "r01": "a8c0d8622e6ee775897896d3f9acab6001575378",
+    "r02": "80e242834649a454530e28f1dd315d78d0915e3f",
+    "r03": "3d47621f7036e02f4fee6538abd944f75556f188",
+    "r04": "7fbd28fd55002cd3dc7f018654f664727789fbfa"
+  },
+  "head_revisions": {
+    "r00": "5cb6fef43044c73d8aaa46ef23049efa78f2b587",
+    "r01": "a8c0d8622e6ee775897896d3f9acab6001575378",
+    "r02": "80e242834649a454530e28f1dd315d78d0915e3f",
+    "r03": "3d47621f7036e02f4fee6538abd944f75556f188",
+    "r04": "7fbd28fd55002cd3dc7f018654f664727789fbfa"
+  },
+  "provider_repository": "r00",
+  "pr_id": 1
+}

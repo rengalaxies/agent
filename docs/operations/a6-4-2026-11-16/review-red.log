@@ -1,0 +1,63 @@
+======================================================================
+ERROR: test_jira_multiple_links_conflict_only_inside_configured_project (tests.service.test_ui_operator.OperatorTests.test_jira_multiple_links_conflict_only_inside_configured_project)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 117, in test_jira_multiple_links_conflict_only_inside_configured_project
+    b=self.store.ui_operator(self.scope,meta,'connections')['bindings'][0]
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_notice_details_and_unattributed_resource_notices_never_leak (tests.service.test_ui_operator.OperatorTests.test_notice_details_and_unattributed_resource_notices_never_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 48, in test_notice_details_and_unattributed_resource_notices_never_leak
+    self.finish();self.store.note('connection_unauthorized','bitbucket','PRIVATE_HEADER',ui_scope=self.scope)
+                  ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ServiceStore.note() got an unexpected keyword argument 'ui_scope'
+
+======================================================================
+FAIL: test_legacy_and_old_scope_notices_do_not_authorize_current_counts (tests.service.test_ui_operator.OperatorTests.test_legacy_and_old_scope_notices_do_not_authorize_current_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 126, in test_legacy_and_old_scope_notices_do_not_authorize_current_counts
+    self.assertEqual(self.get()['notices'],[])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'kind': 'connection_unauthorized', 'subj[56 chars]548}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'kind': 'connection_unauthorized', 'subject': 'bitbucket', 'count': 1, 'last_at': 1794860833.616548}
+
++ []
+- [{'count': 1,
+-   'kind': 'connection_unauthorized',
+-   'last_at': 1794860833.616548,
+-   'subject': 'bitbucket'}]
+
+======================================================================
+FAIL: test_outbox_limit_is_applied_after_generation_scope_and_published_pin_is_hidden (tests.service.test_ui_operator.OperatorTests.test_outbox_limit_is_applied_after_generation_scope_and_published_pin_is_hidden)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 144, in test_outbox_limit_is_applied_after_generation_scope_and_published_pin_is_hidden
+    self.assertEqual(row['outbox'],before)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [{'generation': 1, 'kind': 'result', 'stat[93 chars]415}]
+
+Second list contains 1 additional elements.
+First extra element 0:
+{'generation': 1, 'kind': 'result', 'state': 'PENDING', 'reason': None, 'operation': None, 'attempts': 0, 'updated_at': 1794860833.656415}
+
+- []
++ [{'attempts': 0,
++   'generation': 1,
++   'kind': 'result',
++   'operation': None,
++   'reason': None,
++   'state': 'PENDING',
++   'updated_at': 1794860833.656415}]
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.247s
+
+FAILED (failures=2, errors=2)

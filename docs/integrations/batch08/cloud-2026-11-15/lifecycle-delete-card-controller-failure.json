@@ -1,0 +1,12 @@
+{
+  "provenance": "RECORDED_CONTROL_ATTEMPT_AND_FOLLOWUP_READ",
+  "action": "delete-card",
+  "card_id": "74807549",
+  "initial_status": "FAIL",
+  "remote_returncode": 1,
+  "readback_http_status": 403,
+  "expected_readback": "404_or_condition3_or_deleted_or_archived",
+  "delete_retried": false,
+  "safe_followup": "unavailable-card-service.json",
+  "exact_deleted_condition_observed": false
+}

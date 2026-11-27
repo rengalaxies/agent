@@ -1,0 +1,468 @@
+{
+  "provider": "kaiten",
+  "origin": "AUTHORED_LOCAL_HTTP_STAND",
+  "real_provider_requests": 0,
+  "scenario": "4 unrelated comments / applied page size2 / create / update / resume",
+  "result": {
+    "schema": 1,
+    "config_sha256": "164223ddd2c3aa5c1f3fe4b52d49f74873d23c37a2596d2184897b3e0663a690",
+    "environment": "LOCAL_HTTP",
+    "task": [
+      "kaiten",
+      "https://demo.kaiten.ru",
+      "12"
+    ],
+    "marker": "1e57585db252ce45",
+    "phase": "verified",
+    "comment_id": "5",
+    "status": "PASS",
+    "events": [
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "POST",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "PATCH",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      }
+    ],
+    "comment_identity": "tracker-comment:v1:[\"kaiten\",\"https://demo.kaiten.ru\",\"12\",\"5\"]"
+  },
+  "requests_without_headers": [
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/cards/12/comments",
+      "query": {},
+      "json": {
+        "text": "ImpactMap API probe: created. Dedicated test target.\n\nagent-service marker=1e57585db252ce45 digest=0d8a7c6e689dac255bb32b6e02b8060541947df665309562240c24121c48ea9c generation=1"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/cards/12/comments/5",
+      "query": {},
+      "json": {
+        "text": "ImpactMap API probe: updated. Dedicated test target.\n\nagent-service marker=1e57585db252ce45 digest=e6b50dfa47a79b27c2367e920edeeae98effdb5cee28ba5d9eb4515a0d320532 generation=2"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "0"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12/comments",
+      "query": {
+        "limit": [
+          "100"
+        ],
+        "offset": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cards/12",
+      "query": {},
+      "json": null
+    }
+  ],
+  "writes": 2,
+  "owned_comments": 1
+}

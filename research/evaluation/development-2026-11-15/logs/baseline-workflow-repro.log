@@ -1,0 +1,20 @@
+/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_prepare_never_sends_even_enabled_gateway (tests.product.test_workflow_api.WorkflowAPITest.test_prepare_never_sends_even_enabled_gateway) ... FAIL
+
+======================================================================
+FAIL: test_prepare_never_sends_even_enabled_gateway (tests.product.test_workflow_api.WorkflowAPITest.test_prepare_never_sends_even_enabled_gateway)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '42a093cbfc6746d2a7db6c3fba390bdc', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.489s
+
+FAILED (failures=1)

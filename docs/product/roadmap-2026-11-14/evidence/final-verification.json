@@ -1,0 +1,33 @@
+{
+  "observed_utc": "2026-11-14T09:59:21.861894+00:00",
+  "result": "PASS",
+  "batch": "00",
+  "base": "ed6369f6ff4854ba4f2f3461eaf8b37a828754d9",
+  "review": "artifact and AC self-review; no product code changed",
+  "checks": [
+    "backup artifact checksums match original snapshot",
+    "scratch restoration passed for all three original checkouts",
+    "original contents and patches preserved",
+    "all local Markdown links resolve and both checkpoint copies equal",
+    "evidence JSON parses",
+    "installed 50 source files and core identity match chosen base",
+    "graph 28/28; service 339 passed plus 4 Linux-only skips",
+    "product source/tests/tools/infra unchanged"
+  ],
+  "evidence_sha256": {
+    "evidence/backup-summary.json": "72d391eb266f854be713685f5b6e500dfe8100791c3f18ab048bb6f339ad23cf",
+    "evidence/core-identity.json": "26f6eb35c6dced661b26814d36488ee8099f64055b28b55a8258305155b457ca",
+    "evidence/git-source-runtime-docs.json": "6df1ba30d8a6c03364a08b90af68a7c572f58b1d95b7be1eb40fe873737bb2bd",
+    "evidence/installed-to-main.diff-names.txt": "e9bd536ce15b291e3bf310e063e72e1bbef73aa1b19f8de51983bd44853e5813",
+    "evidence/local-checkouts.json": "eaf70b4644536d4ec5a44e89afadeb3e6f9a245839dae0178f2b64cee5d5a9da",
+    "evidence/local-environment.json": "aecb7dd98f0b7f356db0d179eded18158eb069223673a69721e7cd8fbcea5c8e",
+    "evidence/path-map.json": "8a3dff060a10a168ea02be7565569bacc2bb66d08317b5ddd5c2bb4a2b867e7b",
+    "evidence/preservation-verification.json": "33777dcb109634e6cdfc95010a28aef674c8a8322b8160e12e2094798336f42c",
+    "evidence/runtime-readonly.json": "9da99ca928d6974299853eabd222ff334533f374d556c69c26615c92d7296b8a",
+    "evidence/runtime-source-comparison.json": "836c305d7aa9a28ccbf7463aa9c42923b30c49c2eba28e5a5fde71b1962b339f",
+    "evidence/runtime_readonly.py": "ba4c2bd0dd1d4c8715173775a7cf587ac79986ed9e2e71dcbd3a6287766b0d60",
+    "evidence/scratch-restore-verification.json": "92c157a87bfb993894a7a21ca46963f16bdb2d9f8b37cc2e3a79e8f34b98705a",
+    "evidence/tests-graph.log": "46d2f070599d1b25458fcc98a3f2739bbe957fba90a1c9af92ce6d771553e398",
+    "evidence/tests-service.log": "7e7f73fad6565ac7faa62397ddc7f8e202f4722d19d8b2bb97be9b6d7a9e1a0b"
+  }
+}

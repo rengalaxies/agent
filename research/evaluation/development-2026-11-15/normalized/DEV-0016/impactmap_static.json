@@ -1,0 +1,67 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/v16/items"
+      },
+      "notes": "All formulations retained in raw artifact; no gold-based filtering.",
+      "raw_refs": [
+        "/affected/0/rel:3bb9b55ee9c17cc1668aaa16212b6122e73ee63c",
+        "/checks/0",
+        "/findings/0"
+      ],
+      "witnesses": [
+        {
+          "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+          "line_end": 4,
+          "line_start": 4,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "d9ceb687837b799418b9e391a8a20b2eef83be2e353ea47c8c143c0dbb8eb48e",
+          "repository": "consumer"
+        },
+        {
+          "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+          "line_end": 4,
+          "line_start": 3,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "9025218e5b06c5482a0f05d0463b17daa95e1dc1f7621cc1bc3f429d914e5085",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "case_id": "DEV-0016",
+  "configuration_sha256": "6fd3e92a0d4af293d437da54aafb1165080955e3902e4f2a2252cf12f2b5c540",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "requirement_unknown",
+      "scope": "consumer"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "consumer"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "fca152b03e95fae4ce1e211d9e1d838eac19247ab2e751e083d149526355bf99",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "USEFUL"
+}

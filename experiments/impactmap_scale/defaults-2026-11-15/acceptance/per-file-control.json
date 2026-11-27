@@ -1,0 +1,76 @@
+{
+  "provenance": "authored_resource_control_not_quality_case",
+  "source_sha": "fd3dbc37dd0a8452264989008214fc1ef01f8640",
+  "core_identity": {
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1",
+    "output_schema_version": "2.2",
+    "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1"
+  },
+  "oversize_bytes": 65537,
+  "cases": [
+    {
+      "mode": "worktree",
+      "coverage": "PARTIAL",
+      "gap_counts": {
+        "file_limit": 1
+      },
+      "gaps": [
+        {
+          "code": "file_limit",
+          "repository": "orders",
+          "path": "oversize.md"
+        }
+      ],
+      "files_read": 6,
+      "inventory_entries": 7,
+      "accepted_source_bytes": 1300,
+      "repositories_with_read_sources": 4,
+      "operations": 1,
+      "dependencies": 2,
+      "oversize_retained": false,
+      "effective_limits": {
+        "max_files": 2048,
+        "max_file_bytes": 65536,
+        "max_corpus_bytes": 8000000,
+        "scan_seconds": 60.0,
+        "freshness_seconds": 3600,
+        "max_model_steps": 4,
+        "max_tool_lines": 60,
+        "max_proposals": 24
+      }
+    },
+    {
+      "mode": "git",
+      "coverage": "PARTIAL",
+      "gap_counts": {
+        "file_limit": 1
+      },
+      "gaps": [
+        {
+          "code": "file_limit",
+          "repository": "orders",
+          "path": "oversize.md"
+        }
+      ],
+      "files_read": 6,
+      "inventory_entries": 6,
+      "accepted_source_bytes": 1300,
+      "repositories_with_read_sources": 4,
+      "operations": 1,
+      "dependencies": 2,
+      "oversize_retained": false,
+      "effective_limits": {
+        "max_files": 2048,
+        "max_file_bytes": 65536,
+        "max_corpus_bytes": 8000000,
+        "scan_seconds": 60.0,
+        "freshness_seconds": 3600,
+        "max_model_steps": 4,
+        "max_tool_lines": 60,
+        "max_proposals": 24
+      }
+    }
+  ],
+  "passed": true
+}

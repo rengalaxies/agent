@@ -1,7 +1,7 @@
 .PHONY: test pilot business-pilot evaluation-check clean
 
 test:
-	PYTHONPATH=src python -m unittest discover -s tests -v
+	PYTHONPATH=src:.:tests:tools python -m unittest discover -s tests -v
 
 pilot:
 	PYTHONPATH=src python -m datamesh_release_protocol.cli run-catalog \

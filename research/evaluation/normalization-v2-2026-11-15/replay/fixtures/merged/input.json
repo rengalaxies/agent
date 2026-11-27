@@ -1,0 +1,115 @@
+{
+  "case": {
+    "case_id": "DEV-BINDING",
+    "repositories": [
+      {
+        "base_sha": "5f1822efe9a8893806ea8050f67888db0c49b896",
+        "head_sha": "d86a6a474ab28098eee25e401c52732e19d9ecac",
+        "read_authorized": true,
+        "repository_id": "p",
+        "role": "provider",
+        "service": "p",
+        "source_ref": "p"
+      },
+      {
+        "base_sha": "d006a537239c4ba1be987d1c06aab27b9dfd4076",
+        "head_sha": "d006a537239c4ba1be987d1c06aab27b9dfd4076",
+        "read_authorized": true,
+        "repository_id": "c",
+        "role": "consumer",
+        "service": "c",
+        "source_ref": "c"
+      }
+    ]
+  },
+  "policy": {
+    "addresses": [
+      {
+        "base_url": "https://provider.test",
+        "service": "p"
+      }
+    ],
+    "capabilities": [
+      "maintain",
+      "read_context"
+    ],
+    "constitution": null,
+    "environment": "test",
+    "installation_id": "binding-test",
+    "limits": {
+      "freshness_seconds": 3600,
+      "max_corpus_bytes": 8000000,
+      "max_file_bytes": 65536,
+      "max_files": 2048,
+      "max_model_steps": 4,
+      "max_proposals": 24,
+      "max_tool_lines": 60,
+      "scan_seconds": 60.0
+    },
+    "model": null,
+    "repositories": [
+      {
+        "allowed_refs": [
+          "refs/heads/*",
+          "refs/tags/*",
+          "refs/pull/*/head"
+        ],
+        "id": "p",
+        "include": [
+          "*.py",
+          "*.json",
+          "*.md"
+        ],
+        "revision": "d86a6a474ab28098eee25e401c52732e19d9ecac",
+        "root": "/var/folders/m6/fk466gnd6wb26l62nm7xj2dm0000gp/T/tmp2nrinwj0/p",
+        "service": "p",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*",
+          "refs/tags/*",
+          "refs/pull/*/head"
+        ],
+        "id": "c",
+        "include": [
+          "*.py",
+          "*.json",
+          "*.md"
+        ],
+        "revision": "d006a537239c4ba1be987d1c06aab27b9dfd4076",
+        "root": "/var/folders/m6/fk466gnd6wb26l62nm7xj2dm0000gp/T/tmp2nrinwj0/c",
+        "service": "c",
+        "snapshot": "git"
+      }
+    ],
+    "requirements": [],
+    "subject": "operator"
+  },
+  "sources": [
+    {
+      "commit": "5f1822efe9a8893806ea8050f67888db0c49b896",
+      "path": "api.py",
+      "phase": "base",
+      "repository": "p",
+      "sha256": "7edb0d581194ae513d250e8985e51b0d2100eea0ea4252bd92248a1881645472",
+      "text": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/orders\")\ndef handler_0():\n    return []\n@app.get(\"/invoices\")\ndef handler_1():\n    return []\n"
+    },
+    {
+      "commit": "d86a6a474ab28098eee25e401c52732e19d9ecac",
+      "path": "api.py",
+      "phase": "head",
+      "repository": "p",
+      "sha256": "b69f3d702558b0485cacc3690893b70a6dbce9311fba9445edc820be74928fa6",
+      "text": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/{resource}\")\ndef generic():\n    return []\n"
+    },
+    {
+      "commit": "d006a537239c4ba1be987d1c06aab27b9dfd4076",
+      "path": "client.py",
+      "phase": "head",
+      "repository": "c",
+      "sha256": "0089f5d5a0384df930a4f7a6bbeb551a973dc763ae03e975620917c3b36d57a8",
+      "text": "import requests\nrequests.get(\"https://provider.test/orders\")\nrequests.get(\"https://provider.test/invoices\")\n"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 import hashlib
 import hmac
 import re
+from typing import Protocol, runtime_checkable
 
 MAX_WEBHOOK_BYTES = 5 * 1024 * 1024
 MARKER_RE = re.compile(r"agent-service marker=([0-9a-f]{16}) digest=([0-9a-f]{64}) generation=(\d+)")
@@ -41,6 +42,24 @@ class Comment:
     marker: str | None
     digest: str | None
     generation: int | None
+
+
+@runtime_checkable
+class PublicationBackend(Protocol):
+    """Publisher's existing structural boundary; IDs are backend-scoped opaque strings.
+
+    Listing must be complete or raise. Implementations enforce target/author
+    ownership; write timeouts have unknown outcomes, never implicit retries.
+    See docs/adr/001-tracker-publication.md for the behavioral contract.
+    """
+
+    @property
+    def bot_identity(self) -> str: ...
+
+    def list_comments(self, rid: str) -> list[Comment]: ...
+    def get_comment(self, rid: str, comment_id: str) -> Comment | None: ...
+    def create_comment(self, rid: str, doc: dict, marker: str) -> str: ...
+    def update_comment(self, rid: str, comment_id: str, doc: dict, marker: str) -> None: ...
 
 
 @dataclass

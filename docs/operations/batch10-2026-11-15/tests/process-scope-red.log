@@ -1,0 +1,45 @@
+test_missing_conflicting_or_other_run_arguments_do_not_match (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_missing_conflicting_or_other_run_arguments_do_not_match) ... ERROR
+test_other_installations_do_not_break_own_reinstall (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_other_installations_do_not_break_own_reinstall) ... ERROR
+test_two_processes_in_the_selected_installation_are_still_detected (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_two_processes_in_the_selected_installation_are_still_detected) ... ERROR
+test_unscoped_global_inventory_remains_available (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_unscoped_global_inventory_remains_available) ... ERROR
+
+======================================================================
+ERROR: test_missing_conflicting_or_other_run_arguments_do_not_match (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_missing_conflicting_or_other_run_arguments_do_not_match)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/agent_service/box/tests/test_acceptance_scope.py", line 26, in test_missing_conflicting_or_other_run_arguments_do_not_match
+    self.assertEqual(_service_processes(self.run,proc_root=self.proc),[])
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _service_processes() got an unexpected keyword argument 'proc_root'
+
+======================================================================
+ERROR: test_other_installations_do_not_break_own_reinstall (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_other_installations_do_not_break_own_reinstall)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/agent_service/box/tests/test_acceptance_scope.py", line 17, in test_other_installations_do_not_break_own_reinstall
+    self.assertEqual(_service_processes(self.run,proc_root=self.proc),[101])
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _service_processes() got an unexpected keyword argument 'proc_root'
+
+======================================================================
+ERROR: test_two_processes_in_the_selected_installation_are_still_detected (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_two_processes_in_the_selected_installation_are_still_detected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/agent_service/box/tests/test_acceptance_scope.py", line 20, in test_two_processes_in_the_selected_installation_are_still_detected
+    self.assertEqual(sorted(_service_processes(self.run,proc_root=self.proc)),[101,104])
+                            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _service_processes() got an unexpected keyword argument 'proc_root'
+
+======================================================================
+ERROR: test_unscoped_global_inventory_remains_available (tools.agent_service.box.tests.test_acceptance_scope.ProcessScopeTests.test_unscoped_global_inventory_remains_available)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/agent_service/box/tests/test_acceptance_scope.py", line 23, in test_unscoped_global_inventory_remains_available
+    self.assertEqual(sorted(_service_processes(proc_root=self.proc)),[101,102])
+                            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+TypeError: _service_processes() got an unexpected keyword argument 'proc_root'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.008s
+
+FAILED (errors=4)

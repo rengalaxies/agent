@@ -1,0 +1,600 @@
+{
+  "final_core_commit": "6bc5ca2",
+  "graph_final": {
+    "log": "review-graph-tests.log",
+    "complete": true,
+    "run": 269,
+    "seconds": 191.064,
+    "success": true,
+    "counts": {},
+    "failures_by_name": [],
+    "skips_by_name": []
+  },
+  "service_final_code_with_one_outdated_test_assertion": {
+    "log": "review-service-tests.log",
+    "complete": true,
+    "run": 404,
+    "seconds": 565.695,
+    "success": false,
+    "counts": {
+      "failures": 1,
+      "skipped": 4
+    },
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "tests.service.test_pilot_preparation.PilotPreparationTest.test_authored_git_scenario_has_supported_static_evidence_and_negative_controls",
+        "method": "test_authored_git_scenario_has_supported_static_evidence_and_negative_controls"
+      }
+    ],
+    "skips_by_name": [
+      "test_sigkill_bootstrap_after_durable_event (tests.service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_bootstrap_after_durable_event)",
+      "test_sigkill_bootstrap_during_pagination (tests.service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_bootstrap_during_pagination)",
+      "test_sigkill_preflight_after_durable_snapshot (tests.service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_preflight_after_durable_snapshot)",
+      "test_sigkill_preflight_during_pagination (tests.service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_preflight_during_pagination)"
+    ]
+  },
+  "corrected_pilot_module_recheck": {
+    "log": "final-pilot-tests.log",
+    "complete": true,
+    "run": 3,
+    "seconds": 2.985,
+    "success": true,
+    "counts": {},
+    "failures_by_name": [],
+    "skips_by_name": []
+  },
+  "evaluation_and_stable_source_qualification": {
+    "log": "final-evaluation-qualification.log",
+    "complete": true,
+    "run": 39,
+    "seconds": 232.25,
+    "success": true,
+    "counts": {},
+    "failures_by_name": [],
+    "skips_by_name": []
+  },
+  "pr_assistant_with_tools_in_pythonpath": {
+    "log": "pr-assistant-path-recheck.log",
+    "complete": true,
+    "run": 16,
+    "seconds": 0.238,
+    "success": true,
+    "counts": {},
+    "failures_by_name": [],
+    "skips_by_name": []
+  },
+  "review_red": {
+    "log": "review-red.log",
+    "complete": true,
+    "run": 17,
+    "seconds": 0.512,
+    "success": false,
+    "counts": {
+      "failures": 10
+    },
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_empty_dict_and_url_query_values_both_keep_alert) (call='requests.get(\"https://orders.test/orders\", params={\"page_size\": \"\"})'",
+        "method": "test_empty_dict_and_url_query_values_both_keep_alert"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_exempted_default_does_not_hide_unclassified_delta_without_callers",
+        "method": "test_exempted_default_does_not_hide_unclassified_delta_without_callers"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation=\"Annotated[int, Query(alias='limit')]\"",
+        "method": "test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation='Annotated[int, Body()]'",
+        "method": "test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation='list[int]'",
+        "method": "test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_other_handler_used_as_helper_disqualifies_default_only_exemption",
+        "method": "test_other_handler_used_as_helper_disqualifies_default_only_exemption"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_referenced_response_schema_change_prevents_default_only_exemption",
+        "method": "test_referenced_response_schema_change_prevents_default_only_exemption"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) (calls='requests.get(\"https://orders.test/orders\"); requests.get(\"https://orders.test/orders\", params={\"page_size\": 40})'",
+        "method": "test_same_line_calls_keep_the_implicit_size_alert_in_either_order"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) (calls='requests.get(\"https://orders.test/orders\", params={\"page_size\": 40}); requests.get(\"https://orders.test/orders\")'",
+        "method": "test_same_line_calls_keep_the_implicit_size_alert_in_either_order"
+      },
+      {
+        "kind": "FAIL",
+        "name": "tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_selected_operation_ignores_opaque_edit_in_other_provider_repository",
+        "method": "test_selected_operation_ignores_opaque_edit_in_other_provider_repository"
+      }
+    ],
+    "skips_by_name": []
+  },
+  "review_green": {
+    "log": "review-green.log",
+    "complete": true,
+    "run": 28,
+    "seconds": 1.185,
+    "success": true,
+    "counts": {},
+    "failures_by_name": [],
+    "skips_by_name": []
+  },
+  "full_project_attempt": {
+    "log": "final-tests.log",
+    "complete": true,
+    "run": 1190,
+    "seconds": 869.272,
+    "success": false,
+    "counts": {
+      "failures": 46,
+      "errors": 40,
+      "skipped": 4
+    },
+    "failures_by_name": [
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_aggregate_capture_limit",
+        "method": "test_aggregate_capture_limit"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_arbitrary_python_is_never_executed",
+        "method": "test_arbitrary_python_is_never_executed"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_blanket_adaptation_breaks_unchanged_audit",
+        "method": "test_blanket_adaptation_breaks_unchanged_audit"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_candidate_cannot_replace_pinned_suite",
+        "method": "test_candidate_cannot_replace_pinned_suite"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_comparator_stop_stays_stop",
+        "method": "test_comparator_stop_stays_stop"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_float_input_and_overflow_fail_closed",
+        "method": "test_float_input_and_overflow_fail_closed"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_generation_does_not_overwrite_source_or_existing_output",
+        "method": "test_generation_does_not_overwrite_source_or_existing_output"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_manifest_contract_snapshot_change_is_not_accepted",
+        "method": "test_manifest_contract_snapshot_change_is_not_accepted"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_missing_consumer_expectation_and_duplicate_cases_stop",
+        "method": "test_missing_consumer_expectation_and_duplicate_cases_stop"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_real_transform_passes_different_consumer_requirements",
+        "method": "test_real_transform_passes_different_consumer_requirements"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_sql_cannot_write_or_read_host_file",
+        "method": "test_sql_cannot_write_or_read_host_file"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_contract_profile.ContractProfileTests.test_symlink_consumer_and_traversal_rejected",
+        "method": "test_symlink_consumer_and_traversal_rejected"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ContractIntentQueueTests.test_worker_generates_candidate_from_pinned_intent_and_checks_independently",
+        "method": "test_worker_generates_candidate_from_pinned_intent_and_checks_independently"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_audit_append_only_and_no_tokens_stored",
+        "method": "test_audit_append_only_and_no_tokens_stored"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_cli_has_no_secret_in_output",
+        "method": "test_cli_has_no_secret_in_output"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_concurrent_workers_claim_only_once",
+        "method": "test_concurrent_workers_claim_only_once"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_controls_must_be_outside_candidate_repository",
+        "method": "test_controls_must_be_outside_candidate_repository"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_cross_department_and_parent_membership_do_not_leak",
+        "method": "test_cross_department_and_parent_membership_do_not_leak"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_expired_lease_is_unknown_not_automatically_retried",
+        "method": "test_expired_lease_is_unknown_not_automatically_retried"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_explicit_retry_is_operator_scoped_idempotent_and_passes_runtime_attempt",
+        "method": "test_explicit_retry_is_operator_scoped_idempotent_and_passes_runtime_attempt"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_fencing_prevents_completion_after_lease_expiry",
+        "method": "test_fencing_prevents_completion_after_lease_expiry"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_no_transition_or_state_namespace_reuse_across_departments",
+        "method": "test_no_transition_or_state_namespace_reuse_across_departments"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_real_contract_python_sql_profile_uses_queue_and_independent_pin",
+        "method": "test_real_contract_python_sql_profile_uses_queue_and_independent_pin"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_real_execution_and_restart_idempotency",
+        "method": "test_real_execution_and_restart_idempotency"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_registration_pin_does_not_approve_modified_expectations",
+        "method": "test_registration_pin_does_not_approve_modified_expectations"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_revocation_and_grant_expiry_take_effect_without_restart",
+        "method": "test_revocation_and_grant_expiry_take_effect_without_restart"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_revocation_during_execution_redacts_completion",
+        "method": "test_revocation_during_execution_redacts_completion"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_revoked_runtime_grant_cannot_be_bypassed_by_queue_membership",
+        "method": "test_revoked_runtime_grant_cannot_be_bypassed_by_queue_membership"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_scope_hierarchy_cannot_skip_or_cycle",
+        "method": "test_scope_hierarchy_cannot_skip_or_cycle"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.ControlPlaneTests.test_unknown_attempt_cannot_be_retried_even_by_operator",
+        "method": "test_unknown_attempt_cannot_be_retried_even_by_operator"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.RebindTests.test_rebinding_preserves_pins_and_requires_fresh_scope_and_review",
+        "method": "test_rebinding_preserves_pins_and_requires_fresh_scope_and_review"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.RebindTests.test_rebinding_rejects_inflight_task",
+        "method": "test_rebinding_rejects_inflight_task"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.RestoreAuthorityTests.test_actual_snapshot_restore_does_not_resurrect_old_authority",
+        "method": "test_actual_snapshot_restore_does_not_resurrect_old_authority"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_control_plane.RestoreAuthorityTests.test_recovery_requires_marker_attestation_and_fresh_identity",
+        "method": "test_recovery_requires_marker_attestation_and_fresh_identity"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_git_bundle.GitBundleTests.test_bundle_is_cloneable_and_patch_matches",
+        "method": "test_bundle_is_cloneable_and_patch_matches"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_git_bundle.GitBundleTests.test_hostile_inherited_git_config_cannot_execute_hook",
+        "method": "test_hostile_inherited_git_config_cannot_execute_hook"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_runtime.RuntimeTest.test_cached_patch_tamper_is_not_released",
+        "method": "test_cached_patch_tamper_is_not_released"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_state_transfer.StateTransferTest.test_restart_restore_and_corruption",
+        "method": "test_restart_restore_and_corruption"
+      },
+      {
+        "kind": "ERROR",
+        "name": "product.test_state_transfer.StateTransferTest.test_restore_invalidates_old_review",
+        "method": "test_restore_invalidates_old_review"
+      },
+      {
+        "kind": "ERROR",
+        "name": "unittest.loader._FailedTest.test_pr_assistant",
+        "method": "test_pr_assistant"
+      },
+      {
+        "kind": "FAIL",
+        "name": "graph_demo.test_graph_cli.CLITests.test_invalid_output_overflow_deadline_and_cancel_safe",
+        "method": "test_invalid_output_overflow_deadline_and_cancel_safe"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_contract_profile.ContractProfileTests.test_baseline_does_not_meet_new_finance_requirement",
+        "method": "test_baseline_does_not_meet_new_finance_requirement"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_contract_profile.ContractProfileTests.test_cli_generate_check_and_independent_pin_exit_codes",
+        "method": "test_cli_generate_check_and_independent_pin_exit_codes"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_actual_types_are_captured_not_expected",
+        "method": "test_actual_types_are_captured_not_expected"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_clean_worker_environment",
+        "method": "test_clean_worker_environment"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_duplicates_and_null_values_retained",
+        "method": "test_duplicates_and_null_values_retained"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_fixture_validation",
+        "method": "test_fixture_validation"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DELETE FROM events'",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DROP TABLE events'",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='UPDATE events SET amount=0'",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"ATTACH DATABASE '/tmp/must-not-open' AS other\"",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='PRAGMA database_list'",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT readfile('/etc/passwd')\"",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT load_extension('/tmp/a')\"",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT writefile('/tmp/a','x')\"",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT system('id')\"",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='SELECT name FROM sqlite_master'",
+        "method": "test_read_only_and_no_external_functions"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_result_and_instruction_budgets",
+        "method": "test_result_and_instruction_budgets"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT amount FROM events WHERE 0'",
+        "method": "test_unknown_and_heterogeneous_types_fail_closed"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT NULL AS a'",
+        "method": "test_unknown_and_heterogeneous_types_fail_closed"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql=\"SELECT CASE WHEN age_days<30 THEN 1 ELSE 'x' END AS a FROM events\"",
+        "method": "test_unknown_and_heterogeneous_types_fail_closed"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1e999 AS a'",
+        "method": "test_unknown_and_heterogeneous_types_fail_closed"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql=\"SELECT x'4142' AS a\"",
+        "method": "test_unknown_and_heterogeneous_types_fail_closed"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1 AS a, 2 AS a'",
+        "method": "test_unknown_and_heterogeneous_types_fail_closed"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_reliability.ReliabilityTest.test_operator_retry_is_distinct_idempotent_and_retains_history",
+        "method": "test_operator_retry_is_distinct_idempotent_and_retains_history"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_reliability.ReliabilityTest.test_success_cannot_be_retried_as_failure",
+        "method": "test_success_cannot_be_retried_as_failure"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_run_cli.RunCLITest.test_real_run_restart_and_history",
+        "method": "test_real_run_restart_and_history"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_runtime.RuntimeTest.test_bad_candidate_not_exported_or_marked_ready",
+        "method": "test_bad_candidate_not_exported_or_marked_ready"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_runtime.RuntimeTest.test_cache_cannot_bypass_expiry_or_revoke",
+        "method": "test_cache_cannot_bypass_expiry_or_revoke"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_runtime.RuntimeTest.test_cached_export_revoke_is_redacted",
+        "method": "test_cached_export_revoke_is_redacted"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_runtime.RuntimeTest.test_real_patch_and_results_preserve_other_consumer",
+        "method": "test_real_patch_and_results_preserve_other_consumer"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_runtime.RuntimeTest.test_restart_reuses_same_result_and_history",
+        "method": "test_restart_reuses_same_result_and_history"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_background_tick_without_api_event",
+        "method": "test_background_tick_without_api_event"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_c3_proposal_does_not_require_production_approval",
+        "method": "test_c3_proposal_does_not_require_production_approval"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_cross_project_and_cross_origin_and_body_limit",
+        "method": "test_cross_project_and_cross_origin_and_body_limit"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_declined_owner_blocks_send",
+        "method": "test_declined_owner_blocks_send"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_explicit_send_links_package_and_is_idempotent",
+        "method": "test_explicit_send_links_package_and_is_idempotent"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_no_publish_grant_or_destination_no_send",
+        "method": "test_no_publish_grant_or_destination_no_send"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_owners_then_acceptor_and_digest_binding",
+        "method": "test_owners_then_acceptor_and_digest_binding"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_prepare_never_sends_even_enabled_gateway",
+        "method": "test_prepare_never_sends_even_enabled_gateway"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_shell_public_data_auth_and_actor_spoof",
+        "method": "test_shell_public_data_auth_and_actor_spoof"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_source_tamper_reject_and_explicit_reopen",
+        "method": "test_source_tamper_reject_and_explicit_reopen"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_stale_read_and_timer_redact_cancel_and_clear_review",
+        "method": "test_stale_read_and_timer_redact_cancel_and_clear_review"
+      },
+      {
+        "kind": "FAIL",
+        "name": "product.test_workflow_api.WorkflowAPITest.test_unknown_outcome_is_not_retried",
+        "method": "test_unknown_outcome_is_not_retried"
+      },
+      {
+        "kind": "FAIL",
+        "name": "service.test_pilot_preparation.PilotPreparationTest.test_authored_git_scenario_has_supported_static_evidence_and_negative_controls",
+        "method": "test_authored_git_scenario_has_supported_static_evidence_and_negative_controls"
+      },
+      {
+        "kind": "FAIL",
+        "name": "service.test_qualification.RunnerAgreementTest.test_dry_run_artifact_is_accepted_for_the_configuration_it_ran",
+        "method": "test_dry_run_artifact_is_accepted_for_the_configuration_it_ran"
+      }
+    ],
+    "skips_by_name": [
+      "test_sigkill_bootstrap_after_durable_event (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_bootstrap_after_durable_event)",
+      "test_sigkill_bootstrap_during_pagination (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_bootstrap_during_pagination)",
+      "test_sigkill_preflight_after_durable_snapshot (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_preflight_after_durable_snapshot)",
+      "test_sigkill_preflight_during_pagination (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_preflight_during_pagination)"
+    ]
+  },
+  "full_project_attempt_source_note": "Started before the review fix pass; source changed04fcbec→6bc5ca2 while it ran. This is a preserved project-wide failure observation, not a final-candidate green certificate.",
+  "full_project_failure_disposition": {
+    "off_scope_product_modules": "82 failures/errors in unchanged change_completion/product modules: macOS RLIMIT_AS rejection and symlinked temporary-parent guards. Exact names and traces retained; do not weaken protections merely to green this batch.",
+    "graph_demo_cli": "Known before source changes; deadline test expects cli_invalid_json within0.4s but sees deadline_exceeded; unchanged by venv PATH recheck.",
+    "missing_tools_path": "test_pr_assistant import failed in whole-project invocation without tools in PYTHONPATH. Corrected environment recheck16/16 passes; no source patch.",
+    "pilot_expectation": "Old expectation required a RECHECK after explicit override. Updated to the intended no-alert + preserved dependency; entire pilot module3/3 passes on final core.",
+    "qualification_code_mismatch": "Full process observed changing source bytes during the fix pass; source fingerprint correctly rejected stale qualification. Stable final recheck passes together with38 evaluator regressions."
+  },
+  "full_project_green": false,
+  "verification_note": "Final source graph269 PASS; service399 PASS +4 Linux-only skips +1 deliberately superseded pilot assertion, corrected exact module3 PASS. No application/source changes after those final-core runs; test assertion update does not alter core identity."
+}

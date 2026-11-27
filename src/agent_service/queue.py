@@ -105,7 +105,15 @@ class ServiceStore:
                 key TEXT PRIMARY KEY, kind TEXT NOT NULL, subject TEXT, count INTEGER NOT NULL,
                 first_at REAL NOT NULL, last_at REAL NOT NULL, detail TEXT NOT NULL);
               CREATE TABLE IF NOT EXISTS checkpoints(name TEXT PRIMARY KEY, value TEXT NOT NULL);
+              CREATE TABLE IF NOT EXISTS ui_notice_observations(
+                scope TEXT NOT NULL,key TEXT NOT NULL,kind TEXT NOT NULL,subject TEXT,
+                count INTEGER NOT NULL,first_at REAL NOT NULL,last_at REAL NOT NULL,
+                PRIMARY KEY(scope,key));
               CREATE INDEX IF NOT EXISTS jobs_due ON jobs(state, not_before, created_at);
+              CREATE TABLE IF NOT EXISTS ui_scope_receipts(
+                job_id TEXT PRIMARY KEY REFERENCES jobs(job_id), scope TEXT NOT NULL,
+                request_id TEXT NOT NULL, event_id TEXT NOT NULL,
+                resource_version TEXT NOT NULL, trigger_kind TEXT NOT NULL);
             """)
             row = c.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
             if row is None:
@@ -664,11 +672,15 @@ class ServiceStore:
         with self._tx() as c:
             c.execute("UPDATE intents SET state='PENDING' WHERE state='BLOCKED' AND not_before<=?", (now,))
 
-    def note(self, kind: str, subject: str | None, detail: str) -> int:
+    def note(self, kind: str, subject: str | None, detail: str, *,ui_scope=None) -> int:
         """Count a repeated problem once per kind/subject (provider or resource) instead of one record each."""
         now = self.clock()
         key = f"{kind}:{subject or '-'}"
         with self._tx() as c:
+            if ui_scope is not None:
+                c.execute('INSERT INTO ui_notice_observations VALUES(?,?,?,?,1,?,?) ON CONFLICT(scope,key) DO UPDATE SET count=count+1,last_at=excluded.last_at',
+                          (canonical(ui_scope.receipt()),key,kind,subject,now,now))
+                c.execute('DELETE FROM ui_notice_observations WHERE rowid IN (SELECT rowid FROM ui_notice_observations ORDER BY last_at DESC,rowid DESC LIMIT -1 OFFSET 10000)')
             row = c.execute("SELECT count FROM notices WHERE key=?", (key,)).fetchone()
             if row:
                 c.execute("UPDATE notices SET count=count+1, last_at=?, detail=? WHERE key=?", (now, detail, key))
@@ -677,9 +689,12 @@ class ServiceStore:
             self._history(c, None, "notice", notice=kind, subject=subject, detail=detail)
             return 1
 
-    def clear_notice(self, kind: str, subject: str | None):
+    def clear_notice(self, kind: str, subject: str | None, *,ui_scope=None):
         with self._tx() as c:
             c.execute("DELETE FROM notices WHERE key=?", (f"{kind}:{subject or '-'}",))
+            if ui_scope is not None:
+                c.execute('DELETE FROM ui_notice_observations WHERE scope=? AND key=?',
+                          (canonical(ui_scope.receipt()),f"{kind}:{subject or '-'}"))
 
     def notices(self):
         with self._connect() as c:
@@ -709,3 +724,51 @@ class ServiceStore:
             out["notices"] = [{k: r[k] for k in ("kind", "subject", "count", "last_at", "detail")}
                               for r in c.execute("SELECT * FROM notices ORDER BY key")]
             return out
+
+    def resource_listing(self,limit=50):
+        from .diagnostics import resource_listing
+        if type(limit) is not int or not 1<=limit<=100:raise ValueError('invalid_limit')
+        with self._connect() as c:
+            c.execute('BEGIN')
+            return resource_listing(c,limit)
+
+    def resource_diagnostics(self,resource_id):
+        from .diagnostics import resource_diagnostics
+        with self._connect() as c:
+            c.execute('BEGIN')
+            return resource_diagnostics(c,resource_id)
+
+    def stamp_ui_scope(self,job,request):
+        """Trusted built request, never raw analyzer output; only a current lease may stamp it."""
+        from .ui_scope import request_receipt
+        scope=request_receipt(request)
+        with self._tx() as c:
+            if not self._owns_job(c,job):return False
+            c.execute('INSERT OR REPLACE INTO ui_scope_receipts VALUES(?,?,?,?,?,?)',
+                      (job['job_id'],scope,request['request_id'],request['source_event']['event_id'],
+                       request['source_event']['resource_version'],request['trigger_kind']))
+        return True
+
+    def ui_listing(self,scope,limit=50):
+        from .ui_scope import ui_listing
+        with self._connect() as c:
+            c.execute('BEGIN')
+            return ui_listing(c,scope,limit)
+
+    def ui_result(self,scope,resource_id):
+        from .ui_scope import ui_result
+        with self._connect() as c:
+            c.execute('BEGIN')
+            return ui_result(c,scope,resource_id)
+
+    def ui_workspace(self,scope,resource_id=None):
+        from .ui_scope import ui_workspace
+        with self._connect() as c:
+            c.execute('BEGIN')
+            return ui_workspace(c,scope,resource_id)
+
+    def ui_operator(self,scope,metadata,section):
+        from .ui_operator import operator_projection
+        with self._connect() as c:
+            c.execute('BEGIN')
+            return operator_projection(c,scope,metadata,section)

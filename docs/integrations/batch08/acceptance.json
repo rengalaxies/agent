@@ -1,0 +1,62 @@
+{
+  "batch": "08",
+  "status": "AC_MET_ISOLATED_CLOUD_WITH_DOCUMENTED_LIMITS",
+  "date": "2026-11-15",
+  "base_commit": "0bcde4e",
+  "tests": {
+    "run": 157,
+    "passed": 157,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "api": {
+    "kaiten": "REAL_API_PASS",
+    "yandex_tracker": "NOT_RUN_OWNER_DEFERRED"
+  },
+  "hybrid": {
+    "source": "AUTHORED_LOCAL_BITBUCKET_HTTP_AND_GIT",
+    "core": "REAL_CORE_ANALYZER_MODEL_OFF",
+    "target": "REAL_KAITEN",
+    "same_result_comment_id": "93785713",
+    "same_marker_count": 1,
+    "result_transition": [
+      "USEFUL/POSSIBLE_TRUNCATION",
+      "ABSTAINED/no_supported_delta"
+    ],
+    "store_reconstruction": "PASS",
+    "os_worker_process_restart": "NOT_RUN"
+  },
+  "full_ac_remaining": [],
+  "installed_vm_runtime_changed": false,
+  "new_dependencies": false,
+  "secret_scan": "PASS_NO_TOKEN_IN_DELIVERED_FILES",
+  "historical_acceptance": "acceptance-2026-11-14.json",
+  "cloud": "cloud-2026-11-15/acceptance.json",
+  "limitations": [
+    "One authored pilot cloud cycle; not independent evaluation or three tracker release acceptance cycles",
+    "No idle result-deletion monitor; recreation used an explicit semantic card-context update",
+    "403 cannot distinguish target deletion from lost access; visible refusal then explicit rebind",
+    "No observed404 or condition3 after card DELETE; no proof of server erasure",
+    "No production install/reboot/restore or new live Jira cycle",
+    "Full result remains protected outbox; report URL and compact base presentation belong to10"
+  ],
+  "sha256": {
+    "CHECKPOINT.md": "2730b2bee5fb867fc0d66a4864912e6f55e2f8f5004249154a2a314ab9bf97e0",
+    "docs/integrations/batch08/README.md": "201a186319ae1d3646db213ab337313e8cc8a0e31accf93581b476d9a63d477f",
+    "docs/integrations/batch08/api-probe-receipt.json": "4144fe989d09733bc641044621c7d5a67890ae6dc74fd903ebedb832321f5062",
+    "docs/integrations/batch08/hybrid-driver-used.py": "de5947478c681b838255f13cac572b5bba1a98c42dc8ceccadbd2e6e92ae023b",
+    "docs/integrations/batch08/hybrid-receipt.json": "0a2727123e31770f23de079fe4a5d4800f1ab481cdb4f262437812c68131de8c",
+    "docs/integrations/batch08/review.md": "09e5488a52a00655029b1af111bc0e8a929a283eb78fd2664ca672f1422b4c24",
+    "docs/integrations/batch08/tests.log": "1c1c30806b8463ec2ec4610b18dc2afca28ab8975e2f9e286252dbe932b8622b",
+    "docs/superpowers/plans/2026-11-14-impactmap-batch08-kaiten.md": "4f3cad1ddec824fccd4df872aec9e12b675ad933cda64a26b6f4d868e0d01a8e",
+    "src/agent_service/config.py": "d0f420afe7f197622d47d295213744b23c249622d3b9a84c062a26c7423744a5",
+    "src/agent_service/connectors/bitbucket_kaiten.py": "8d615286e94ea91490c71e4181a98bba399efb5fca68bb4a1e74fc06f83988f8",
+    "src/agent_service/connectors/kaiten.py": "83216ebcb4f32cc1717f124c6d35f16e357cd3ed3e9d06a36cefcd500fbacf2f",
+    "src/agent_service/publisher.py": "78091ceaefd1794446f583de64f6c673d3b71783ca1bf5bbd222bc100d0851eb",
+    "tests/service/test_kaiten.py": "28cfd5a13d980899ff60870477d69cf0aa9b58a673ce0ff66741e9cc521c5d30",
+    "tests/service/test_kaiten_delivery.py": "df5fce3f81a2e2a92c521acf6abc477a2f6c15724a502e486a4b03f35c79de60",
+    "tests/service/test_tracker_api_probe.py": "954a6b1fcfc416ee538d55e8e3cafee204f7a05822433f5b60a63e434412696d",
+    "docs/integrations/batch08/cloud-2026-11-15/acceptance.json": "88e036c6914ebcf98c77de1c8f53d9b6808c16a6116d8e7719c566116a475e2e"
+  }
+}

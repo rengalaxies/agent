@@ -1,0 +1,90 @@
+[
+  {
+    "event_id": "head-update-01",
+    "expected_provider_base": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+    "expected_provider_head": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#1",
+    "resource_version": "93cca1a12606a22b517c7c6937c9c9f98469f476b6a6bee496a0954fa6b7f8b6",
+    "snapshots": [
+      {
+        "commit": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "8c8cb92a9e87ab7643c9b1ca6b981c66363c535b"
+      },
+      {
+        "commit": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "5cb921d3de113008e6b8347d4592d02036890fda"
+      },
+      {
+        "commit": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "c9e2b1bf21039f8f394f54cc5ad77b2cb296179b"
+      },
+      {
+        "commit": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "206fc59315032ca7b0939608de4a88c6c2d04cfd"
+      },
+      {
+        "commit": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "d4c886c109a7217c905e7cef69297571c42cb064"
+      },
+      {
+        "commit": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8345ce31d64121518be639b1748b7a04bf535d08"
+      },
+      {
+        "commit": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "mode": "GIT_COMMIT",
+        "repository": "r05",
+        "role": "consumer",
+        "tree": "9f37fe6615e078647e038a895cb92d4714f812c3"
+      },
+      {
+        "commit": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "mode": "GIT_COMMIT",
+        "repository": "r06",
+        "role": "consumer",
+        "tree": "c105e86b7381f816a6e8755b467d600afeb0d0ef"
+      },
+      {
+        "commit": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "mode": "GIT_COMMIT",
+        "repository": "r07",
+        "role": "consumer",
+        "tree": "e3815935e495c61f13e6bd4c5ee2dfaa812dc6c4"
+      },
+      {
+        "commit": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "mode": "GIT_COMMIT",
+        "repository": "r08",
+        "role": "consumer",
+        "tree": "090bcabf319786597e623246650129fb04b68639"
+      },
+      {
+        "commit": "137a0c5e279c317a47350baf195567847492376f",
+        "mode": "GIT_COMMIT",
+        "repository": "r09",
+        "role": "consumer",
+        "tree": "4aa02b519d070eb25cb6a284daada754064b3a67"
+      }
+    ]
+  }
+]

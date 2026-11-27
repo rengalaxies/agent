@@ -1,0 +1,22 @@
+{"phase": "after-profile8", "profile": "repos5-lines50k", "state": "START"}
+{"profile": "repos5-lines50k", "returncode": 0, "output": "work/batch05-removal/after-profile8-repos5-lines50k"}
+{"phase": "after-profile8", "profile": "repos10-lines100k", "state": "START"}
+Traceback (most recent call last):
+  File "/tmp/run_removal_stages.py", line 15, in <module>
+    result=subprocess.run([sys.executable,'-m','tools.benchmark_impactmap','--manifest',str(inp),'--output',str(target),'--repeats','3'],stdout=output,stderr=subprocess.STDOUT,env=os.environ.copy(),cwd=root)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 556, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1214, in communicate
+    self.wait()
+    ~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1280, in wait
+    return self._wait(timeout=timeout)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 2066, in _wait
+    (pid, sts) = self._try_wait(0)
+                 ~~~~~~~~~~~~~~^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 2024, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

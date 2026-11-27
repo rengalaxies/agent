@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-16",
+  "runtime_source_commit": "f3c38e6",
+  "source_base": "383c66b",
+  "service_wide": {
+    "run": 456,
+    "skipped": 4,
+    "result": "OK; before final UI-only fixes"
+  },
+  "final_focused": {
+    "run": 47,
+    "skipped": 0,
+    "result": "OK"
+  },
+  "box": {
+    "run": 78,
+    "passed": 75,
+    "environment_errors": 3,
+    "linux_candidate_run": "NOT_RUN"
+  },
+  "production_deployed": false,
+  "real_accounts_created": false,
+  "auth_browser_stand_stopped": true,
+  "files": {
+    "README.md": {
+      "bytes": 8774,
+      "sha256": "7c8625bff350ea419c55ab9bc6b4c8d761c1189407522038cd971e43b8e33396"
+    },
+    "box.log": {
+      "bytes": 3267,
+      "sha256": "1f425368e5a23d18abeba5308ebf0321d48c92013643b20d49bc9d4d56400f34"
+    },
+    "browser-rotation-statuses.json": {
+      "bytes": 1001,
+      "sha256": "79d5614dca8a6cc3f934c88b9b6fa951bcb4fb0bf4630fc98ca77441fb3d08cf"
+    },
+    "expiry-after-fix.jpg": {
+      "bytes": 23920,
+      "sha256": "78db88c14d811c5a71f8a3841022648a3ba72c9a8f53937c081d6004eddd78b0"
+    },
+    "expiry-before-fix.jpg": {
+      "bytes": 28775,
+      "sha256": "b77330273206e534626b3d5c4ac906c2717be5cb8787932a6e17cdc66e909d4e"
+    },
+    "final-focused.log": {
+      "bytes": 399,
+      "sha256": "522eadfa23d838b57757ec036ef41141a4033217fe34bef49c239e36ee72b212"
+    },
+    "prototype-compact-desktop.jpg": {
+      "bytes": 125651,
+      "sha256": "7fff718fdb82e559ec1ff83d563a244e218f78f0f66669b3702557bb84d0dd59"
+    },
+    "prototype-compact-mobile.jpg": {
+      "bytes": 110362,
+      "sha256": "936635c3767a13927aac698604b9668f4803a79766f4f9f6d4eb6a94a60fcdfc"
+    },
+    "reproduce/auth_stand.py": {
+      "bytes": 2566,
+      "sha256": "c1580817cf132d7ef35727f39b893a3aa6ec3243004f4061ed0f37f38b377fc3"
+    },
+    "reviewer-operator-denied.jpg": {
+      "bytes": 10809,
+      "sha256": "129d5703e7102fbbf71cff3ab93dbdc9847d6efb410a1f0f5aea1485aa73e08e"
+    },
+    "service.log": {
+      "bytes": 413,
+      "sha256": "b1fdd243b5fa532ee24e054b115f189f8f2c852ee99ee287eb72e48396da5b62"
+    },
+    "session-reader.jpg": {
+      "bytes": 28775,
+      "sha256": "b77330273206e534626b3d5c4ac906c2717be5cb8787932a6e17cdc66e909d4e"
+    },
+    "wheel-check.json": {
+      "bytes": 583,
+      "sha256": "921ecad0a65432311590c66aba3b4dbf42e40b8cc382ef1dbb3b94f22b8c1e87"
+    },
+    "wheel.log": {
+      "bytes": 1115,
+      "sha256": "e1bdb6e533cef9c3bc9b4b1393f013de9886f03a0e3882983a9ab3fccadec56d"
+    }
+  }
+}

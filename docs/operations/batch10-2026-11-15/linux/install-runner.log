@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-runner.py", line 30, in <module>
+    assert {r['scenario'] for r in report['scenarios']}==set(scenarios.split(',')) and len(report['scenarios'])==5,'incomplete_scenarios'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: incomplete_scenarios

@@ -1,0 +1,58 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [],
+  "case_id": "DEV-BINDING",
+  "configuration_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [
+    {
+      "candidate_id": "15a016d29e9418606f391cb77295969a69999847cb3c9ae635cc958d605b2671",
+      "consumer_designation": "service:c",
+      "raw_refs": [
+        "/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5",
+        "/findings/0"
+      ],
+      "reason": "target_not_uniquely_bound"
+    }
+  ],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "manual_claim_audit_required",
+      "scope": "/findings/0"
+    },
+    {
+      "code": "manual_claim_audit_required",
+      "scope": "/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5"
+    },
+    {
+      "code": "unclassified_change",
+      "scope": "analysis"
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "scope": "analysis"
+    },
+    {
+      "code": "requirement_unknown",
+      "scope": "c"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "c"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "1ffd7f449e413264e1cd31fa317c55cb9fa1195c8c09661a5c9feaf200b01afc",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

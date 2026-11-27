@@ -1,0 +1,17 @@
+test_density_and_missing_source_inputs_keep_declared_shape (tests.performance.test_scale_corpora.CorpusTests.test_density_and_missing_source_inputs_keep_declared_shape) ... ok
+test_existing_output_and_invalid_size_are_refused (tests.performance.test_scale_corpora.CorpusTests.test_existing_output_and_invalid_size_are_refused) ... ok
+test_manifest_file_hash_mismatch_cannot_pass_on_counts_alone (tests.performance.test_scale_corpora.CorpusTests.test_manifest_file_hash_mismatch_cannot_pass_on_counts_alone) ... ok
+test_missing_existing_findings_cannot_pass_on_new_consumer_alone (tests.performance.test_scale_corpora.CorpusTests.test_missing_existing_findings_cannot_pass_on_new_consumer_alone) ... ok
+test_noise_does_not_change_located_findings (tests.performance.test_scale_corpora.CorpusTests.test_noise_does_not_change_located_findings) ... ok
+test_pinned_counts_equal_real_code_not_comments_and_oracle_stays_separate (tests.performance.test_scale_corpora.CorpusTests.test_pinned_counts_equal_real_code_not_comments_and_oracle_stays_separate) ... ok
+test_portable_root_cannot_escape_corpus (tests.performance.test_scale_corpora.CorpusTests.test_portable_root_cannot_escape_corpus) ... ok
+test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale) ... ok
+test_returned_manifest_does_not_mutate_global_limits (tests.performance.test_scale_corpora.CorpusTests.test_returned_manifest_does_not_mutate_global_limits) ... ok
+test_same_seed_is_path_independent_and_different_seed_changes_sources (tests.performance.test_scale_corpora.CorpusTests.test_same_seed_is_path_independent_and_different_seed_changes_sources) ... ok
+test_streams_pin_one_pr_head_updates_and_distinct_pr_ids (tests.performance.test_scale_corpora.CorpusTests.test_streams_pin_one_pr_head_updates_and_distinct_pr_ids) ... ok
+test_suite_axes_hold_topology_and_non_target_dimension_fixed (tests.performance.test_scale_corpora.CorpusTests.test_suite_axes_hold_topology_and_non_target_dimension_fixed) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 28.173s
+
+OK

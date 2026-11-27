@@ -1,0 +1,29 @@
+test_cli_writes_consistent_raw_artifacts_and_does_not_overwrite (tests.performance.test_benchmark_impactmap.CLITests.test_cli_writes_consistent_raw_artifacts_and_does_not_overwrite) ... ok
+test_invalid_manifest_never_exports_input_or_exception_text (tests.performance.test_benchmark_impactmap.CLITests.test_invalid_manifest_never_exports_input_or_exception_text) ... ok
+test_timeout_launch_and_invalid_json_preserve_failure_rows_and_summary (tests.performance.test_benchmark_impactmap.CLITests.test_timeout_launch_and_invalid_json_preserve_failure_rows_and_summary) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_instrumented_pipeline_preserves_results_facts_and_restores_functions (tests.performance.test_benchmark_impactmap.PipelineTests.test_instrumented_pipeline_preserves_results_facts_and_restores_functions) ... ok
+test_model_configuration_is_refused_before_analysis (tests.performance.test_benchmark_impactmap.PipelineTests.test_model_configuration_is_refused_before_analysis) ... ok
+test_partial_access_stays_visible_and_wrappers_restore_on_exception (tests.performance.test_benchmark_impactmap.PipelineTests.test_partial_access_stays_visible_and_wrappers_restore_on_exception) ... ok
+test_provenance_cannot_export_arbitrary_input (tests.performance.test_benchmark_impactmap.PipelineTests.test_provenance_cannot_export_arbitrary_input) ... ok
+test_sensitive_source_content_is_omitted_and_never_exported (tests.performance.test_benchmark_impactmap.PipelineTests.test_sensitive_source_content_is_omitted_and_never_exported) ... ok
+test_error_records_no_exception_message (tests.performance.test_benchmark_impactmap.SpanTests.test_error_records_no_exception_message) ... ok
+test_nested_spans_exclude_children_without_double_counting (tests.performance.test_benchmark_impactmap.SpanTests.test_nested_spans_exclude_children_without_double_counting) ... ok
+test_peak_rss_units_are_platform_specific (tests.performance.test_benchmark_impactmap.SpanTests.test_peak_rss_units_are_platform_specific) ... ok
+test_changing_pins_cannot_silently_form_one_series (tests.performance.test_benchmark_vm.VMRunnerTests.test_changing_pins_cannot_silently_form_one_series) ... ok
+test_failed_remote_attempts_preserve_rows_without_stderr_contents (tests.performance.test_benchmark_vm.VMRunnerTests.test_failed_remote_attempts_preserve_rows_without_stderr_contents) ... ok
+test_frozen_pins_are_forwarded_to_remote_instead_of_following_live_pr (tests.performance.test_benchmark_vm.VMRunnerTests.test_frozen_pins_are_forwarded_to_remote_instead_of_following_live_pr) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 14.310s
+
+OK

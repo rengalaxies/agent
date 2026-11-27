@@ -1,0 +1,15 @@
+test_outside_does_not_invent_zero_false_negatives (tests.performance.test_evaluation_tooling.OutsideAccountingTests.test_outside_does_not_invent_zero_false_negatives) ... FAIL
+
+======================================================================
+FAIL: test_outside_does_not_invent_zero_false_negatives (tests.performance.test_evaluation_tooling.OutsideAccountingTests.test_outside_does_not_invent_zero_false_negatives)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 160, in test_outside_does_not_invent_zero_false_negatives
+    self.assertIsNone(r['strict']);self.assertFalse(r['primary_eligible'])
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: {'tp': 0, 'fp': 0, 'fn': 1} is not None
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

@@ -1,0 +1,549 @@
+{
+  "provider": "yandex_tracker",
+  "origin": "AUTHORED_LOCAL_HTTP_STAND",
+  "real_provider_requests": 0,
+  "scenario": "4 unrelated comments / applied page size2 / create / update / resume",
+  "result": {
+    "schema": 1,
+    "config_sha256": "57bd0f2ae3c55f12f491050c80a5011038580039eb4c7a18931cb5b0cdb12514",
+    "environment": "LOCAL_HTTP",
+    "task": [
+      "yandex_tracker",
+      "X-Cloud-Org-ID:org1",
+      "12"
+    ],
+    "marker": "e18b9e0f21a43cf4",
+    "phase": "verified",
+    "comment_id": "opaque-5",
+    "status": "PASS",
+    "events": [
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "POST",
+        "status": 201
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "PATCH",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      },
+      {
+        "operation": "GET",
+        "status": 200
+      }
+    ],
+    "comment_identity": "tracker-comment:v1:[\"yandex_tracker\",\"X-Cloud-Org-ID:org1\",\"12\",\"opaque-5\"]"
+  },
+  "requests_without_headers": [
+    {
+      "method": "GET",
+      "path": "/v3/issues/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "POST",
+      "path": "/v3/issues/12/comments",
+      "query": {},
+      "json": {
+        "text": "ImpactMap API probe: created. Dedicated test target.\n\nagent-service marker=e18b9e0f21a43cf4 digest=0d8a7c6e689dac255bb32b6e02b8060541947df665309562240c24121c48ea9c generation=1"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "5"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/v3/issues/12/comments/opaque-5",
+      "query": {},
+      "json": {
+        "text": "ImpactMap API probe: updated. Dedicated test target.\n\nagent-service marker=e18b9e0f21a43cf4 digest=e6b50dfa47a79b27c2367e920edeeae98effdb5cee28ba5d9eb4515a0d320532 generation=2"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "5"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "5"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12",
+      "query": {},
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "5"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "5"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "50"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "2"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "4"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12/comments",
+      "query": {
+        "perPage": [
+          "2"
+        ],
+        "id": [
+          "5"
+        ]
+      },
+      "json": null
+    },
+    {
+      "method": "GET",
+      "path": "/v3/issues/12",
+      "query": {},
+      "json": null
+    }
+  ],
+  "writes": 2,
+  "owned_comments": 1
+}

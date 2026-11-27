@@ -1,0 +1,13 @@
+{
+  "observed_utc": "2026-11-14T10:45:11.620068+00:00",
+  "independent_worker_processes": 1,
+  "all_semantics_equal": true,
+  "worker_errors": 0,
+  "performance_observations": 2,
+  "source_transfer": "NOT_PERFORMED",
+  "network": "SSH transport roundtrip recorded separately; includes remote execution, not HTTP latency",
+  "polling": "NOT_RUN_OFFLINE",
+  "live_publication": "NOT_RUN",
+  "p95": null,
+  "state": "temporary isolated state removed after each worker; production state untouched"
+}

@@ -1,4 +1,5 @@
 import time
+import sys
 
 from agent_graph_demo.contracts import DemoError
 from agent_graph_demo.graph_cli import GraphCLI
@@ -172,14 +173,15 @@ class CLITests(DemoCase):
             ),
         ]:
             path = self.root / "fake-python"
-            path.write_text("#!/usr/bin/env python3\n" + script + "\n")
-            path.chmod(0o755)
+            path.write_text(script + "\n")
             cli = GraphCLI(self.settings.core_root, path)
             with self.assertRaisesRegex(DemoError, expected):
-                cli.invoke(
-                    self.snap.session_root(self.sid),
-                    "prepare_context",
-                    deadline=time.monotonic() + 0.4,
+                # Test the transport with this environment's interpreter. A
+                # shebang resolves system python through the scrubbed PATH and
+                # can spend the entire parser-test budget in launcher startup.
+                cli._run(
+                    [sys.executable,str(path)],self.snap.session_root(self.sid),
+                    deadline=time.monotonic() + (0.4 if expected=='deadline_exceeded' else 10),
                     cancelled=lambda: False,
                 )
         with self.assertRaisesRegex(DemoError, "cancelled"):

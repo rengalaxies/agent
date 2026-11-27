@@ -1,0 +1,61 @@
+[
+  {
+    "name": "single",
+    "provenance": "AUTHORED_REGRESSION_NOT_ADDITIONAL_EVALUATION_CASE",
+    "v1_routes": [
+      "/{resource}"
+    ],
+    "v2_routes": [
+      "/orders"
+    ],
+    "v2_unbound": 0,
+    "v2_witnesses": 1
+  },
+  {
+    "name": "merged",
+    "provenance": "AUTHORED_REGRESSION_NOT_ADDITIONAL_EVALUATION_CASE",
+    "v1_routes": [
+      "/{resource}"
+    ],
+    "v2_routes": [
+      "/invoices",
+      "/orders"
+    ],
+    "v2_unbound": 0,
+    "v2_witnesses": 2
+  },
+  {
+    "name": "self-service",
+    "provenance": "AUTHORED_REGRESSION_NOT_ADDITIONAL_EVALUATION_CASE",
+    "v1_routes": [
+      "/{resource}"
+    ],
+    "v2_routes": [
+      "/orders"
+    ],
+    "v2_unbound": 0,
+    "v2_witnesses": 1
+  },
+  {
+    "name": "no-proof",
+    "provenance": "AUTHORED_REGRESSION_NOT_ADDITIONAL_EVALUATION_CASE",
+    "v1_routes": [
+      "/{resource}"
+    ],
+    "v2_routes": [],
+    "v2_unbound": 1,
+    "v2_witnesses": 0
+  },
+  {
+    "name": "bad-blob",
+    "provenance": "AUTHORED_REGRESSION_NOT_ADDITIONAL_EVALUATION_CASE",
+    "v1_routes": [
+      "/{resource}"
+    ],
+    "v2_routes": [
+      "/orders"
+    ],
+    "v2_unbound": 0,
+    "v2_witnesses": 0
+  }
+]

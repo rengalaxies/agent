@@ -1,0 +1,13 @@
+======================================================================
+FAIL: test_queue_failures_stale_and_unknown_delivery_remain_independent (tests.service.test_ui_operator.OperatorTests.test_queue_failures_stale_and_unknown_delivery_remain_independent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 32, in test_queue_failures_stale_and_unknown_delivery_remain_independent
+    self.assertTrue(row['analysis']['compatible'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.026s
+
+FAILED (failures=1)

@@ -7,6 +7,7 @@ import re
 from urllib.parse import parse_qs, urlsplit
 
 from .contracts import Policy, digest, load_json
+from .change_scope import contract_without_page_default, handler_without_page_default, scalar_query_annotation
 
 METHODS = {"get", "post", "put", "patch", "delete", "head", "options"}
 
@@ -116,9 +117,10 @@ def providers(policy, sources):
                             continue
                         op = dict(id=operation_id(policy, source["service"], method, path),
                                   service=source["service"], method=method.upper(), path=path,
-                                  evidence=[evidence(source)], default_known=False,
+                                  evidence=[evidence(source)], default_known=False, default_override_supported=False,
                                   # Tracked basis: the operation object and path-level parameters.
-                                  tracked_basis=[digest([item.get("parameters"), operation])])
+                                  tracked_basis=[digest([item.get("parameters"), operation])],
+                                  non_default_basis=[contract_without_page_default(item, method, data)])
                         effective, referenced = {}, False
                         for level in (item, operation):
                             parameters = level.get("parameters", [])
@@ -141,7 +143,7 @@ def providers(policy, sources):
                             value = page["schema"].get("default", UNRESOLVED) if (
                                 page is not None and isinstance(page.get("schema"), dict)) else UNRESOLVED
                             if not referenced and (value is None or type(value) is int):
-                                op.update(default_known=True, page_size_default=value)
+                                op.update(default_known=True, page_size_default=value, default_override_supported=True)
                             else:
                                 gaps.append(dict(code="page_size_default_unresolved", operation_id=op["id"],
                                                  source_id=source["id"]))
@@ -169,6 +171,17 @@ def providers(policy, sources):
         # Same conservative binding guard as consumers: relative imports,
         # reassignment or method mutation do not establish a FastAPI app.
         apps = {name for name, factory in candidates.items() if factory in fastapi and counts[name] == 1}
+        # Imperative/attached routing is outside decorator extraction. Keep
+        # this boundary visible even when registration is unchanged across PRs.
+        for node in ast.walk(tree):
+            if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                    and node.func.attr in {"add_api_route", "add_route", "include_router", "mount"}):
+                continue
+            receiver = node.func.value
+            while isinstance(receiver, ast.Attribute):
+                receiver = receiver.value
+            if isinstance(receiver, ast.Name) and receiver.id in candidates:
+                gaps.append(dict(code="provider_route_unsupported", source_id=source["id"]))
         for fn in [n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]:
             for d in fn.decorator_list:
                 if (isinstance(d, ast.Call) and isinstance(d.func, ast.Attribute)
@@ -191,9 +204,10 @@ def providers(policy, sources):
                 lines = source["text"].splitlines()[first - 1:fn.end_lineno]
                 op = dict(id=operation_id(policy, source["service"], method, path),
                           service=source["service"], method=method, path=path,
-                          evidence=[evidence(source, fn)], default_known=False,
+                          evidence=[evidence(source, fn)], default_known=False, default_override_supported=False,
                           # Tracked basis: decorators, signature and body text, not position.
-                          tracked_basis=[digest(lines)])
+                          tracked_basis=[digest(lines)],
+                          non_default_basis=[handler_without_page_default(fn)])
                 args = fn.args.posonlyargs + fn.args.args
                 defaults = dict(zip([a.arg for a in args][-len(fn.args.defaults):], fn.args.defaults)) if fn.args.defaults else {}
                 defaults.update({a.arg: value for a, value in zip(fn.args.kwonlyargs, fn.args.kw_defaults) if value is not None})
@@ -201,8 +215,9 @@ def providers(policy, sources):
                     op.update(page_size_declared=True, declarations=[op["evidence"][0]["quote"]])
                 if "page_size" in defaults:
                     value = constant(defaults["page_size"], constants)
-                    if value is None or type(value) is int:
-                        op.update(default_known=True, page_size_default=value)
+                    parameter = next(a for a in args + fn.args.kwonlyargs if a.arg == "page_size")
+                    if (value is None or type(value) is int) and scalar_query_annotation(parameter.annotation, counts):
+                        op.update(default_known=True, page_size_default=value, default_override_supported=True)
                     else:
                         # Query(...), names and calls are outside this grammar. Record it so an
                         # unresolved default never reads as "declaration unchanged".
@@ -217,6 +232,8 @@ def providers(policy, sources):
         old = grouped[op["id"]]
         old["evidence"].extend(op["evidence"])
         old["tracked_basis"] = sorted(old["tracked_basis"] + op["tracked_basis"])
+        old["non_default_basis"] = sorted(old["non_default_basis"] + op["non_default_basis"])
+        old["default_override_supported"] &= op["default_override_supported"]
         if op.get("page_size_declared"):
             old["page_size_declared"] = True
             old["declarations"] = old.get("declarations", []) + op["declarations"]
@@ -283,7 +300,7 @@ def parameter_keys(call, method, constants, *, cursor_loop):
                     sent = True
                     continue
                 return None
-            sent |= resolved is not None
+            sent |= resolved is not None and resolved != ""
         if sent:
             keys.add(key)
     return keys
@@ -388,7 +405,7 @@ def consumers(policy: Policy, sources, operations):
                 # to enumerate every possible Python call mechanism.
                 if (isinstance(call.func, ast.Attribute) and call.func.attr in METHODS | {"request"}
                         and possible_http_call(call, libraries, clients, constants)):
-                    gaps.append(dict(code="unknown_http_client", evidence=evidence(source, call)))
+                    gaps.append(dict(code="unknown_http_client", call_column=call.col_offset, evidence=evidence(source, call)))
                 continue
             if name not in METHODS | {"request", "unsupported"}:
                 continue  # requests.Session(), requests.exceptions...: not a request itself
@@ -401,11 +418,11 @@ def consumers(policy: Policy, sources, operations):
                 url_node = call.args[1] if len(call.args) > 1 else next((k.value for k in call.keywords if k.arg == "url"), None)
             url = constant(url_node, constants)
             if name not in METHODS | {"request"} or not isinstance(url, str) or method.lower() not in METHODS:
-                gaps.append(dict(code="dynamic_or_unsupported_call", evidence=evidence(source, call)))
+                gaps.append(dict(code="dynamic_or_unsupported_call", call_column=call.col_offset, evidence=evidence(source, call)))
                 continue
             matches, reason = match_url(policy, operations, method, url)
             if len(matches) != 1:
-                gaps.append(dict(code=reason, evidence=evidence(source, call)))
+                gaps.append(dict(code=reason, call_column=call.col_offset, evidence=evidence(source, call)))
                 continue
             fn = call
             in_loop = False
@@ -419,7 +436,7 @@ def consumers(policy: Policy, sources, operations):
             usage = "SINGLE_REQUEST_OBSERVED"
             if keys is None:
                 usage = "UNKNOWN_USAGE"
-                gaps.append(dict(code="dynamic_parameters", evidence=evidence(source, call)))
+                gaps.append(dict(code="dynamic_parameters", call_column=call.col_offset, evidence=evidence(source, call)))
             elif in_loop and "cursor" in keys and has_cursor_read:
                 usage = "CURSOR_LOOP_OBSERVED"
             elif in_loop:
@@ -427,9 +444,11 @@ def consumers(policy: Policy, sources, operations):
             elif "page_size" in keys or "page_size" in parse_qs(urlsplit(url).query):
                 usage = "EXPLICIT_PAGE_SIZE"
             op = matches[0]
-            dep = dict(id=digest([op["id"], source["repository"], source["path"], call.lineno]),
+            dep = dict(id=digest([op["id"], source["repository"], source["path"], call.lineno, call.col_offset]),
                        operation_id=op["id"], consumer=source["service"], repository=source["repository"],
-                       path=source["path"], call_line=call.lineno, status="STATIC_RESOLVED", usage=usage,
+                       path=source["path"], call_line=call.lineno, call_column=call.col_offset, status="STATIC_RESOLVED", usage=usage,
+                       explicit_page_size=keys is not None and (
+                           "page_size" in keys or "page_size" in parse_qs(urlsplit(url).query)),
                        environment=policy.environment, evidence=[evidence(source, call)],
                        usage_evidence=[evidence(source, fn)])
             dependencies.append(dep)

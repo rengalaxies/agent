@@ -1,0 +1,82 @@
+{
+  "desktop": {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "bodyFont": 14,
+    "h1": 28,
+    "sidebarHidden": true,
+    "secretCanary": false
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390,
+    "h1": 23
+  },
+  "bindingToStaleResult": true,
+  "staleCompatible": true,
+  "reviewerDirectDenied": true,
+  "reviewerOperatorLinks": 0,
+  "poll": [
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/operations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/operations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/operations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/operations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/operations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/operations",
+      "status": 200
+    }
+  ],
+  "authorFixture": true
+}

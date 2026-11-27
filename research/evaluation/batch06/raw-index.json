@@ -1,0 +1,562 @@
+[
+  {
+    "case_id": "DEV-0001",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0001/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "f954948d638a16e012413bba503df39bbba6d7ee52f540ad851d1bafe591d635",
+    "public_exact": "raw-core/DEV-0001.json"
+  },
+  {
+    "case_id": "DEV-0001",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0001/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "136aa3283138eb5d6023cb0ada5e8397c3ed169d4f7c0a3b5018a097e9a2f0aa",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0002",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0002/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "ee679b5e07d2f4a09dbe2be8523b7cb26e4412bfd35b50e9548467f6f8ac6258",
+    "public_exact": "raw-core/DEV-0002.json"
+  },
+  {
+    "case_id": "DEV-0002",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0002/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "27f85913bd4ae1af7357a09656da265a0dceebb77e0fa9f99f30e357d8ca37f0",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0003",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0003/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "2d6ea7679357a2ef80e5dd43bf30e19d83588a7d72e992a2968a77b2c51f0d89",
+    "public_exact": "raw-core/DEV-0003.json"
+  },
+  {
+    "case_id": "DEV-0003",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0003/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "d08b09e8df54da2e22dc903fcc531df4b5456cb0b509833be5433333f49d4cbe",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0004",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0004/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "a508c60b43f4c429f9dcd71787943188db98d75ff399a298244d7ccee4683006",
+    "public_exact": "raw-core/DEV-0004.json"
+  },
+  {
+    "case_id": "DEV-0004",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0004/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "0e776c0b049e4c7f6be27cad445abeb6295a5cf000c6276944c0bddb86a3b31f",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0005",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0005/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "160e0416a15fe93a52a5689a67916ff2b23953edcee471a63eba576f5c29bc7d",
+    "public_exact": "raw-core/DEV-0005.json"
+  },
+  {
+    "case_id": "DEV-0005",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0005/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "d42c86420f25831ffa3709bf0262afbe0f6ffdc0614a177115a1511ddabde8f4",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0006",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0006/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "29759e22fcc9e0fe1689ce3ba418f08ecbe99f9488d09620c9f2e0730e9ed569",
+    "public_exact": "raw-core/DEV-0006.json"
+  },
+  {
+    "case_id": "DEV-0006",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0006/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "843e0ca4fcc6c3874b8413dd322cb08f4488e5d9ac3a7a4659e13f2430013f9f",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0007",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0007/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "1b842bb2ba2ba65a66393f850120ecb034bba44a34f03e1026ccc179314518b7",
+    "public_exact": "raw-core/DEV-0007.json"
+  },
+  {
+    "case_id": "DEV-0007",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0007/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "b00ee88c83bf8925662024b7de9dea001ab1902f38cc7f9c9d6f53f0159cc202",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0008",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0008/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "0659140e07e0b21386db4b9c619423e0b5a0a300d349da2560fdc2eddfa0be58",
+    "public_exact": "raw-core/DEV-0008.json"
+  },
+  {
+    "case_id": "DEV-0008",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0008/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "f59038f175f2db5d0c7fa08c208a40851341046c4b2aab2989e7ccbd16ed6523",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0009",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0009/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "773018cc2c99ab392b1a583a6aa1253065a522af2a3faa4eaf70953ed56e641d",
+    "public_exact": "raw-core/DEV-0009.json"
+  },
+  {
+    "case_id": "DEV-0009",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0009/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "aacca434aeb22e47c25a01fcb90523726adbd56a3e395ecb81973c8e831c5c4c",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0010",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0010/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "0090a1e6ea24af69912c9959e8b8ad52fc6f6821fb719c3991f4c8fd2f881a40",
+    "public_exact": "raw-core/DEV-0010.json"
+  },
+  {
+    "case_id": "DEV-0010",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0010/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "dcf4aa44ef835d8ddd7022bcee9b9ff2425ab01a55237f605642ea94870822fa",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0011",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0011/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "d00ffabfd5ab386768922e00565f407a6855b198cfd692074de4d9dae7d3b008",
+    "public_exact": "raw-core/DEV-0011.json"
+  },
+  {
+    "case_id": "DEV-0011",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0011/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "8b1b48749fe9face4d6f675df4d192c27d58916fa5fff691e1a679673e40b084",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0012",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0012/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "db04c991b723582a08efd66413ca717ef8e4357d05132abe0e230e9dcb438f12",
+    "public_exact": "raw-core/DEV-0012.json"
+  },
+  {
+    "case_id": "DEV-0012",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0012/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "70db27737ab2ce0953e5a94f9884b66fc925cc95080657c58c7b286501b8ea5e",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0013",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0013/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "2ba0af81dd2c01cdc24abba71011e805b34a44df5ff88f0eaf63b459b2f1a59c",
+    "public_exact": "raw-core/DEV-0013.json"
+  },
+  {
+    "case_id": "DEV-0013",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0013/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "27013263ab7b303cab821c4d75823dd7bb2889928595eaeae2641bff2fb1710c",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0014",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0014/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "474dfa529a61e9240b58f890b3e6917a18bd0e4525d1d552c4df680a469373d1",
+    "public_exact": "raw-core/DEV-0014.json"
+  },
+  {
+    "case_id": "DEV-0014",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0014/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "d8a678e5317c4e112d6b4ed8690df54a8589dbe73e5377495a91a00851b0600d",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0015",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0015/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "e233713ae3390020d9b8931e507b5721e3d2650ec0098c31a25d6311626e2a28",
+    "public_exact": "raw-core/DEV-0015.json"
+  },
+  {
+    "case_id": "DEV-0015",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0015/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "9f17e1f7089d4ae34e120d4a42cd8ccff8956021e0e566335989b026e9838700",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0016",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0016/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "3b64d237d419330940f4e10c0ceadb9574ed0812569467f3afdd438b713bbc21",
+    "public_exact": "raw-core/DEV-0016.json"
+  },
+  {
+    "case_id": "DEV-0016",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0016/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "ca910f26aecb9efb0c5cc19cd13cdd2955d2a32276f6b1f9b503d40a8002caec",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0017",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0017/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "8a912bc78b8dc485e59bedb3f1da63cccf8bebdef502601a45d9e6cbe5d20fbe",
+    "public_exact": "raw-core/DEV-0017.json"
+  },
+  {
+    "case_id": "DEV-0017",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0017/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "6992786777ff21a25df3001f78d44468155dd564b4f60af23f9607d173f0ff9d",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0018",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0018/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "f8ac727901f777ec44a70fa08e6cb341eab36edc7e816153816a9cf3f1ecf72d",
+    "public_exact": "raw-core/DEV-0018.json"
+  },
+  {
+    "case_id": "DEV-0018",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0018/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "2da262facfd8b72e5f0e3ede20157701911807df4f9952ceeff7fe7cdb1fd9ab",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0019",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0019/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "c52a4fd6a89d6ed021b3a3c8646b675c47f31f86964e0bef11aabcd8efc03bbf",
+    "public_exact": "raw-core/DEV-0019.json"
+  },
+  {
+    "case_id": "DEV-0019",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0019/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "a1df74118347e5123bad2b60260c30f4a4d0c392f8b50a698bbad6b11ab6bddf",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0020",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0020/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "a2c251023aebb1df98e27e55c6e99b75fb3d943255b6f5cc7a73728afe6f18a0",
+    "public_exact": "raw-core/DEV-0020.json"
+  },
+  {
+    "case_id": "DEV-0020",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0020/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "2e7a71d8cf65a5894f52f4acb0ee6b9dcb4d2f969bfe41d9b6bc10aa04b3bfdf",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0021",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0021/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "40caf12d6d7035b7ad6e3d40ac6295dec2be7c74bc9fa7d3365b822923b02bba",
+    "public_exact": "raw-core/DEV-0021.json"
+  },
+  {
+    "case_id": "DEV-0021",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0021/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "7ba0f352b3ecde046f9217b236b8a9059fcc600318ad8d8b9a444d0492f59c38",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0022",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0022/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "853e9f96de9e13c1112a1c492c01c3229f2f0779972af4af17951be578730ec2",
+    "public_exact": "raw-core/DEV-0022.json"
+  },
+  {
+    "case_id": "DEV-0022",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0022/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "f1b47a96befabe4ac6ebac0d1b25b2c799ca892d01310c72e26d977f05b7ca9a",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0023",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0023/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "5f9c4c4d6fcd0b11b82f8c6d3c7966f54728a5e6bd19a56ca59db8620aadf273",
+    "public_exact": "raw-core/DEV-0023.json"
+  },
+  {
+    "case_id": "DEV-0023",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0023/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "0caed7a035e345849ee9f3a5dcf0726af0ca99d9e1036ebd5e7ec5a799dee7ec",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0024",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0024/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "70ebf9229b4767f04573c89e55d9e3989513b504df9d280af2929b99d091ccd8",
+    "public_exact": "raw-core/DEV-0024.json"
+  },
+  {
+    "case_id": "DEV-0024",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0024/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "8a0b0dd811fa14bb947ce60561ccfe73dd37c282fd8d78f0c86a52b48a6e366e",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0025",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0025/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "407593b8adaac046ef908514deae12f18fcd0f6720bcfa0bd415b540c55c92a9",
+    "public_exact": "raw-core/DEV-0025.json"
+  },
+  {
+    "case_id": "DEV-0025",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0025/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "98bad55c7f8bac9ee65ebada8e437b8cd1cc7da81d1d4f5bf58b14fe4c59bc76",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0026",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0026/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "806a160bef25fcc2cee21c7b2bbe48cd7bc6f7f9a962b783d231c57c085ed985",
+    "public_exact": "raw-core/DEV-0026.json"
+  },
+  {
+    "case_id": "DEV-0026",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0026/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "d950ffdb05535cfe8b20cd7b92be952bc96eb8991d8157ece4b8a168b05f5b2f",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0027",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0027/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "98c05e750602a7c2571630e6165d77ffd4e7cf475b27e895607f7249514af8af",
+    "public_exact": "raw-core/DEV-0027.json"
+  },
+  {
+    "case_id": "DEV-0027",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0027/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "226b38b5db9bcf601491a66a0c90afee36e2ef91611427527d84ccf70ca490b6",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0028",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0028/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "a383f264e8a54e64815a624da8f86e057cd2af2c18c38b644000214fee73bde3",
+    "public_exact": "raw-core/DEV-0028.json"
+  },
+  {
+    "case_id": "DEV-0028",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0028/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "201836c8bb543e831d6054ca146cd01cbc167930c8c83d21fddd705ea621f16a",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0029",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0029/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "740dc5a7f25c305fd2df8dd49417ab6c778f069d2c01ab51240b5fd47fcb9a9d",
+    "public_exact": "raw-core/DEV-0029.json"
+  },
+  {
+    "case_id": "DEV-0029",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0029/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "3209e65bb1b9e262521242727df207b0402cffbddc2f0cf3cf5ecdacaafe9544",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0030",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0030/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "ae54bb4522ea40fe5bc82169856396fff7108afad0374fbc246e8fa3fa1d210b",
+    "public_exact": "raw-core/DEV-0030.json"
+  },
+  {
+    "case_id": "DEV-0030",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0030/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "c67d991ea85e877a333339c6be160c24ea0667a0d1fe4f5c978faded86d8d883",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0031",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0031/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "628f889b1b8eab1f25c223373cf9ee23b372c076abde364cd03296b34f0590ff",
+    "public_exact": "raw-core/DEV-0031.json"
+  },
+  {
+    "case_id": "DEV-0031",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0031/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "bf9e2a2506140ee24daa0dda0b5fa99e2c8dfcf82cf6e481fb9218b8e2d025dc",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0032",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0032/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "07913baf8e529de69e911c4d25a6de9b67b7c054f43df55dea8566d41739fd32",
+    "public_exact": "raw-core/DEV-0032.json"
+  },
+  {
+    "case_id": "DEV-0032",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0032/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "c709e05bbc0c41d62241870b36f98680c159bf13bead815b2f86fd2e59a3cb0c",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0033",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0033/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "952877ce21c0d54c03289d044ec286dc85282af0f381b46381f9cd92cd2114a4",
+    "public_exact": "raw-core/DEV-0033.json"
+  },
+  {
+    "case_id": "DEV-0033",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0033/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "50c2853a2dbc96d27de23e102071f3f6c64efd4839777ec2e6ece57ffb36fb88",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0034",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0034/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "b41f42332a013c44e49c269bc62bb9276a33f71ad9d1d83ab6c0b8db0d007193",
+    "public_exact": "raw-core/DEV-0034.json"
+  },
+  {
+    "case_id": "DEV-0034",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0034/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "e101de7423a1e566232e0cddd5976b8aac16d434eb2f23c11300495c4c64948a",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0035",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0035/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "da040acc82966fd47aa63fe50e12fc61e98397cde30933f42effae92fe2a3652",
+    "public_exact": "raw-core/DEV-0035.json"
+  },
+  {
+    "case_id": "DEV-0035",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0035/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "dc54765e42cc1e771f45207e72aaf8af46caf5d594ff8f605e18ad9594f0918d",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0036",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0036/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "4c24bbb5ff2d9645a5d020e5385b90f80adce84994334d769f8dc473c244a746",
+    "public_exact": "raw-core/DEV-0036.json"
+  },
+  {
+    "case_id": "DEV-0036",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0036/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "6824e382df97ed0f150fc13a00f956105479da3fff18d4cc7ee30985ebe7d6af",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0037",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0037/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "6e0086ffdeea453a51729a56bb453ca4ae87995f3afae607cc0eb39d36b0e388",
+    "public_exact": "raw-core/DEV-0037.json"
+  },
+  {
+    "case_id": "DEV-0037",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0037/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "c09d586bea57d5180e9d2a90ffc7bc339e05d484aa9a477a080f0ec4810c332a",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0038",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0038/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "43c467d80a56a4f1b78f0d9c62898fd9d327e07856898216b05c553b7fbaaf52",
+    "public_exact": "raw-core/DEV-0038.json"
+  },
+  {
+    "case_id": "DEV-0038",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0038/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "54c4a3882a08605aee79db6401be90c513147147b2d0741501fc2127ba418e8e",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0039",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0039/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "3d08afcbfd95b4a2a7d72dcb73cd3ace518f44f612c8ad1b0792954385d1ecb8",
+    "public_exact": "raw-core/DEV-0039.json"
+  },
+  {
+    "case_id": "DEV-0039",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0039/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "706459bf4a453d5aff60205afe8d2a4e80531ae906ff4bcd3ed290dd34cfd717",
+    "public_derivative": "search-observations.jsonl"
+  },
+  {
+    "case_id": "DEV-0040",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0040/impactmap_static/raw.json",
+    "method": "impactmap_static",
+    "original_sha256": "7b6d6ad28c325d25ea25646b1cbe5ccffc0d784544a8a911d4234accc17d0999",
+    "public_exact": "raw-core/DEV-0040.json"
+  },
+  {
+    "case_id": "DEV-0040",
+    "local_original": "work/batch06/author-run-release/attempts/DEV-0040/lexical_search_ls1/raw.json",
+    "method": "lexical_search_ls1",
+    "original_sha256": "e9366c54f5fba63cfe7374475819be47263d1fad784d08b5c95244ff9226425c",
+    "public_derivative": "search-observations.jsonl"
+  }
+]

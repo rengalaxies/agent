@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-16",
+  "tool": "built-in image_gen",
+  "requested_dimensions": [
+    1440,
+    1024
+  ],
+  "reference": "screenshots/03-demo-change-evidence.jpg",
+  "selection": {
+    "display_number": 2,
+    "path": "visuals/workbench.png",
+    "confirmed": "2026-11-16"
+  },
+  "images": [
+    {
+      "display_number": 1,
+      "path": "visuals/result-first.png",
+      "bytes": 1381482,
+      "width": 1487,
+      "height": 1058,
+      "sha256": "0211fd00e5c6de1b769f9d04444f94a831bb0971fd29a915d954d3060d47e6e1"
+    },
+    {
+      "display_number": 2,
+      "path": "visuals/workbench.png",
+      "bytes": 1416581,
+      "width": 1487,
+      "height": 1058,
+      "sha256": "30708c7d11d250e9c8c4f3a8802a54be12f7e4c00323a7db3bdc00337b036d19"
+    },
+    {
+      "display_number": 3,
+      "path": "visuals/evidence-first.png",
+      "bytes": 1636139,
+      "width": 1487,
+      "height": 1058,
+      "sha256": "dba93c8fae9711398a88ce13bb2729edf99eabf66057fce0560af78955520c43"
+    }
+  ]
+}

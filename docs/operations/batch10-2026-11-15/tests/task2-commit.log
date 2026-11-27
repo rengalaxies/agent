@@ -1,0 +1,18 @@
+[codex/impactmap-batch-00 5d508a2] feat(service): expose authenticated read-only result diagnostics
+ Committer: sugeki <user@MacBook-Pro---Daniil.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 5 files changed, 225 insertions(+), 1 deletion(-)
+ create mode 100644 docs/operations/impactmap-diagnostics.md
+ create mode 100644 src/agent_service/diagnostics.py
+ create mode 100644 tests/service/test_diagnostics.py

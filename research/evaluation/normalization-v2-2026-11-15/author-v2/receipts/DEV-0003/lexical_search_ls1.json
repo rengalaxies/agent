@@ -1,0 +1,23 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "case_id": "DEV-0003",
+  "development": true,
+  "error_code": null,
+  "finished_at": "2026-11-15T17:21:43.438810+00:00",
+  "gold_received": false,
+  "input_case_sha256": "a37f8ffa4bbeb23c3adef241c4fa89a5a0533d7338140e2718bd2238c9e2b714",
+  "input_validated": true,
+  "method": "lexical_search_ls1",
+  "normalized_sha256": "8b4d70265ac29f9b8448fa18a88b8e96c627acc3b306e21ac090e103ad62b242",
+  "policy_sha256": "59cd858ae1f01a4bfec773572aa043eb9bba03ef528c4c11390c488108a31d0f",
+  "raw_artifact_sha256": "06fabf8541d3068d743e51468a53c092a6b51ab8e131a67ecc68d16f95cd761d",
+  "returncode": 0,
+  "started_at": "2026-11-15T17:21:42.678363+00:00",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "wall_s": 0.761135374999867,
+  "wall_time_cap_seconds": 60
+}

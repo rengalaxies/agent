@@ -1,0 +1,377 @@
+{
+  "expected_dependencies": [
+    {
+      "consumer": "consumer_01",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 9,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/1",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 13,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/2",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 17,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/3",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 21,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/4",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 25,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/5",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 29,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/6",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 33,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/7",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 9,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/1",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 13,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/2",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 17,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/3",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 21,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/4",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 25,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/5",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 29,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/6",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_02",
+      "line": 33,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/7",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 9,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/1",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 13,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/2",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 17,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/3",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 21,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/4",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 25,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/5",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 29,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/6",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_03",
+      "line": 33,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/7",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    }
+  ],
+  "new_consumer_dependencies": [
+    {
+      "consumer": "consumer_04",
+      "line": 5,
+      "method": "GET",
+      "path": "extension.py",
+      "provider": "provider",
+      "repository": "r04",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    }
+  ],
+  "note": "Generation records for topology checks; not human TP/FP/FN labels or proof of runtime compatibility.",
+  "operations": [
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/0"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/1"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/2"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/3"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/4"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/5"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/6"
+    },
+    {
+      "method": "GET",
+      "provider": "provider",
+      "route": "/items/7"
+    }
+  ],
+  "provenance": "controlled_generated_not_independent",
+  "removed_consumer_key": {
+    "consumer": "consumer_01",
+    "route": "/items/0"
+  },
+  "removed_consumer_remaining_dependencies": [
+    {
+      "consumer": "consumer_01",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/1",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 9,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/2",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 13,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/3",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 17,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/4",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 21,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/5",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 25,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/6",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    },
+    {
+      "consumer": "consumer_01",
+      "line": 29,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/7",
+      "usage": "SINGLE_REQUEST_OBSERVED"
+    }
+  ],
+  "schema_version": "impactmap-controlled-oracle-1"
+}

@@ -1,0 +1,576 @@
+{
+  "schema": "impactmap-diagnostics-1",
+  "resource": {
+    "resource_id": "jira:10012",
+    "provider": "jira",
+    "kind": "jira",
+    "generation": 1,
+    "version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+    "closed": 0,
+    "updated_at": 1794818862.4850922,
+    "published_generation": 1,
+    "comment_id": "5001"
+  },
+  "current_job": {
+    "generation": 1,
+    "state": "DONE",
+    "reason": "preliminary_impact_found",
+    "attempts": 1,
+    "updated_at": 1794818862.7684212
+  },
+  "analysis": {
+    "generation": 1,
+    "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+    "job_state": "DONE",
+    "reason": "preliminary_impact_found",
+    "freshness": "CURRENT",
+    "compatible": true,
+    "raw": {
+      "affected": [
+        {
+          "owner": {
+            "checked_at": "2026-11-16T08:47:42.467Z",
+            "source": "installation_mapping",
+            "source_version": "ownership-1",
+            "status": "KNOWN",
+            "teams": [
+              {
+                "installation_id": "acme",
+                "kind": "team",
+                "team": "team-data"
+              }
+            ]
+          },
+          "relationship_refs": [
+            "0ba36c8b64f6510c2879bd3c5c5c42d708804a13523f2e4d3ea934d5a90804d0"
+          ],
+          "service": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "service",
+            "service": "archive"
+          }
+        },
+        {
+          "owner": {
+            "checked_at": "2026-11-16T08:47:42.467Z",
+            "source": "installation_mapping",
+            "source_version": "ownership-1",
+            "status": "KNOWN",
+            "teams": [
+              {
+                "installation_id": "acme",
+                "kind": "team",
+                "team": "team-reporting"
+              }
+            ]
+          },
+          "relationship_refs": [
+            "d56b30644ee171deef9f6852e5d01c570e8869847d0f77df3c4ae6df6a0120bd"
+          ],
+          "service": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "service",
+            "service": "reporting"
+          }
+        }
+      ],
+      "checks": [
+        {
+          "claim_refs": [
+            "claim:623a373b75f0e1fca7a76807c0aa4a5310eb8561",
+            "claim:ee83e1530ec2ab37ca9a2fe38430810c705c7f38"
+          ],
+          "consumer": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "service",
+            "service": "archive"
+          },
+          "text": "Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known."
+        },
+        {
+          "claim_refs": [
+            "claim:5258d65e1d8c88a0ee9814115008bbc1f4efb0c1",
+            "claim:7866c34436ea5374baa0cbb574225dff74f1c385"
+          ],
+          "consumer": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "service",
+            "service": "reporting"
+          },
+          "text": "Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection)."
+        }
+      ],
+      "claims": [
+        {
+          "applicability": "Graph graph-3; static profile http-requests-9.",
+          "evidence_refs": [
+            "7b7eea056a8947d7ab1349b5c64d9dba44e6d3cc1e1d57783d5075b4b49ed098"
+          ],
+          "id": "claim:ee83e1530ec2ab37ca9a2fe38430810c705c7f38",
+          "kind": "fact",
+          "statement": "archive calls GET /orders of orders at archive:client.py:9.",
+          "subject": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "operation",
+            "method": "GET",
+            "route": "/orders",
+            "service": "orders"
+          },
+          "uncertainty": "LOW",
+          "unknowns": []
+        },
+        {
+          "applicability": "Before any diff; graph query only.",
+          "evidence_refs": [
+            "7b7eea056a8947d7ab1349b5c64d9dba44e6d3cc1e1d57783d5075b4b49ed098"
+          ],
+          "id": "claim:623a373b75f0e1fca7a76807c0aa4a5310eb8561",
+          "kind": "hypothesis",
+          "statement": "The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists.",
+          "subject": null,
+          "uncertainty": "HIGH",
+          "unknowns": [
+            "jira_without_diff",
+            "requirement_unknown"
+          ]
+        },
+        {
+          "applicability": "Graph graph-3; static profile http-requests-9.",
+          "evidence_refs": [
+            "6d19442399b9e044cb1db7c645cee02476c7639a63a883ec1f8f33e963669548"
+          ],
+          "id": "claim:7866c34436ea5374baa0cbb574225dff74f1c385",
+          "kind": "fact",
+          "statement": "reporting calls GET /orders of orders at reporting:client.py:7.",
+          "subject": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "operation",
+            "method": "GET",
+            "route": "/orders",
+            "service": "orders"
+          },
+          "uncertainty": "LOW",
+          "unknowns": []
+        },
+        {
+          "applicability": "Before any diff; graph query only.",
+          "evidence_refs": [
+            "6d19442399b9e044cb1db7c645cee02476c7639a63a883ec1f8f33e963669548"
+          ],
+          "id": "claim:5258d65e1d8c88a0ee9814115008bbc1f4efb0c1",
+          "kind": "hypothesis",
+          "statement": "The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists.",
+          "subject": null,
+          "uncertainty": "HIGH",
+          "unknowns": [
+            "jira_without_diff"
+          ]
+        }
+      ],
+      "code_version": "agent-service-smoke",
+      "constitution_version": "agent-service-v1.0:100bcad3db9c",
+      "correlation_id": "5fcba493cce2404abd3501aa63d90352:1",
+      "costs": {
+        "completion_tokens": 0,
+        "currency": null,
+        "model_calls": 0,
+        "prompt_tokens": 0,
+        "reserved_micro": null
+      },
+      "deltas": [],
+      "environment": "prod",
+      "event_id": "61536fb793f74628acd5db303eb66d91",
+      "evidence": [
+        {
+          "blob": "41353c78be9a41f12bcd537c8e8b131d121f0703",
+          "commit": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+          "content_sha256": "8783229e2338430e67b430f02cdc2f22678913e6161d3dc8cf6ec0d79e7a010e",
+          "end_line": 9,
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.746Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "id": "7b7eea056a8947d7ab1349b5c64d9dba44e6d3cc1e1d57783d5075b4b49ed098",
+          "origin": "code",
+          "path": "client.py",
+          "provenance": "AUTHENTIC",
+          "repository": "archive",
+          "snapshot": "GIT_COMMIT",
+          "start_line": 9,
+          "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+          "visibility": [
+            "archive"
+          ]
+        },
+        {
+          "blob": "f399a9a0cbbb2ec5a29a358c703caf6d923abe0e",
+          "commit": "2cba012ba20430d7fde630b24c480a254e909971",
+          "content_sha256": "63610b76ce4de03f065873a28941061c270f91c32d3cd30244fd0bda40828cf3",
+          "end_line": 7,
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.746Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "id": "6d19442399b9e044cb1db7c645cee02476c7639a63a883ec1f8f33e963669548",
+          "origin": "code",
+          "path": "client.py",
+          "provenance": "AUTHENTIC",
+          "repository": "reporting",
+          "snapshot": "GIT_COMMIT",
+          "start_line": 7,
+          "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+          "visibility": [
+            "reporting"
+          ]
+        }
+      ],
+      "findings": [],
+      "gaps": [],
+      "graph_version": "graph-3",
+      "impact_paths": [
+        {
+          "relationship_refs": [
+            "0ba36c8b64f6510c2879bd3c5c5c42d708804a13523f2e4d3ea934d5a90804d0"
+          ],
+          "summary": "archive -> orders GET /orders"
+        },
+        {
+          "relationship_refs": [
+            "d56b30644ee171deef9f6852e5d01c570e8869847d0f77df3c4ae6df6a0120bd"
+          ],
+          "summary": "reporting -> orders GET /orders"
+        }
+      ],
+      "installation_id": "acme",
+      "kind": "analysis_result",
+      "model": null,
+      "profile": "http-requests-9",
+      "reason_code": "preliminary_impact_found",
+      "relationships": [
+        {
+          "change_origin": "code_scan",
+          "evidence_refs": [
+            "7b7eea056a8947d7ab1349b5c64d9dba44e6d3cc1e1d57783d5075b4b49ed098"
+          ],
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.746Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "id": "0ba36c8b64f6510c2879bd3c5c5c42d708804a13523f2e4d3ea934d5a90804d0",
+          "kind": "calls",
+          "origins": [
+            "code"
+          ],
+          "source": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "service",
+            "service": "archive"
+          },
+          "status": "ACTIVE",
+          "target": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "operation",
+            "method": "GET",
+            "route": "/orders",
+            "service": "orders"
+          },
+          "visibility": [
+            "archive"
+          ]
+        },
+        {
+          "change_origin": "code_scan",
+          "evidence_refs": [
+            "6d19442399b9e044cb1db7c645cee02476c7639a63a883ec1f8f33e963669548"
+          ],
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.746Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "id": "d56b30644ee171deef9f6852e5d01c570e8869847d0f77df3c4ae6df6a0120bd",
+          "kind": "calls",
+          "origins": [
+            "code"
+          ],
+          "source": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "service",
+            "service": "reporting"
+          },
+          "status": "ACTIVE",
+          "target": {
+            "environment": "prod",
+            "installation_id": "acme",
+            "kind": "operation",
+            "method": "GET",
+            "route": "/orders",
+            "service": "orders"
+          },
+          "visibility": [
+            "reporting"
+          ]
+        }
+      ],
+      "request_id": "5fcba493cce2404abd3501aa63d90352:1",
+      "resource_version": "jira:7c4bf84cdfe6ff65100bf83c5d2fb6d5",
+      "schema": "agent-graph-output",
+      "schema_version": "2.2",
+      "snapshots": [
+        {
+          "commit": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549",
+          "mode": "GIT_COMMIT",
+          "repository": "orders",
+          "role": "consumer",
+          "tree": "7f009a27f955f0b172f350fc5e9ba254b3077b2c"
+        },
+        {
+          "commit": "2cba012ba20430d7fde630b24c480a254e909971",
+          "mode": "GIT_COMMIT",
+          "repository": "reporting",
+          "role": "consumer",
+          "tree": "efbfea36608b9ca90ace50ffb31397bec6b51fe9"
+        },
+        {
+          "commit": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+          "mode": "GIT_COMMIT",
+          "repository": "archive",
+          "role": "consumer",
+          "tree": "9f7908f7849316bacecefc83e3ca2d538cc62a57"
+        },
+        {
+          "commit": "46a72606b6f05cb92999cbaf529869611bb0c01f",
+          "mode": "GIT_COMMIT",
+          "repository": "billing",
+          "role": "consumer",
+          "tree": "4e9ea6f94b429d135c3b8f72bdd81201957d47e6"
+        },
+        {
+          "commit": "89e053921b37ec5c0ae5f6ffca5d2936b6e0e89b",
+          "mode": "GIT_COMMIT",
+          "repository": "audit",
+          "role": "consumer",
+          "tree": "58525dc2cc9ce9ea2672ce7d203b975ff347a466"
+        }
+      ],
+      "source_freshness": [
+        {
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.748Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "source_id": "archive",
+          "source_kind": "git"
+        },
+        {
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.748Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "source_id": "audit",
+          "source_kind": "git"
+        },
+        {
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.748Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "source_id": "billing",
+          "source_kind": "git"
+        },
+        {
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.748Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "source_id": "orders",
+          "source_kind": "git"
+        },
+        {
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.748Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "source_id": "reporting",
+          "source_kind": "git"
+        },
+        {
+          "freshness": {
+            "checked_at": "2026-11-16T08:47:42.467Z",
+            "reasons": [],
+            "status": "CURRENT",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "source_id": "installation_mapping",
+          "source_kind": "ownership"
+        }
+      ],
+      "status": "USEFUL",
+      "summary": "2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break.",
+      "superseded_by": null,
+      "timings": {
+        "finished_at": "2026-11-16T08:47:42.751428Z",
+        "seconds": {
+          "analysis": 0.24966620799386874
+        },
+        "started_at": "2026-11-16T08:47:42.501687Z"
+      },
+      "trigger_kind": "jira",
+      "unknowns": [
+        {
+          "code": "jira_without_diff",
+          "subject": null
+        },
+        {
+          "code": "requirement_unknown",
+          "subject": "archive"
+        }
+      ],
+      "usefulness_confirmed": false
+    }
+  },
+  "publication": {
+    "generation": 1,
+    "kind": "result",
+    "state": "DELIVERED",
+    "reason": null,
+    "operation": "create",
+    "comment_id": "5001"
+  },
+  "document": {
+    "jira_summary": {
+      "sections": [
+        {
+          "items": [
+            "archive: команда team-data.",
+            "reporting: команда team-reporting."
+          ],
+          "title": "Что может затронуть"
+        },
+        {
+          "items": [
+            "Связь: archive → orders GET /orders.",
+            "Основание в коде: archive:client.py:9.",
+            "Связь: reporting → orders GET /orders.",
+            "Основание в коде: reporting:client.py:7."
+          ],
+          "title": "Почему и через какой путь"
+        },
+        {
+          "items": [
+            "До изменения проверьте, как archive использует GET /orders. Неизвестно, нужен ли потребителю полный набор данных.",
+            "До изменения проверьте, как reporting использует GET /orders. Сверьте требование reporting-complete (полнота набора данных)."
+          ],
+          "title": "Что проверить"
+        },
+        {
+          "items": [
+            "Ожидания потребителя не подтверждены; документационный контекст сам по себе их не доказывает.",
+            "Интеграционные тесты в рамках этого анализа не запускались."
+          ],
+          "title": "Ограничения"
+        }
+      ],
+      "status_line": "Найдены потребители, которые могут зависеть от изменяемой операции. Это предварительный вывод по задаче, до проверки изменения кода.",
+      "title": "Возможное влияние на другие сервисы"
+    },
+    "sections": [
+      {
+        "items": [
+          "archive: команда team-data (источник: installation_mapping@ownership-1)",
+          "reporting: команда team-reporting (источник: installation_mapping@ownership-1)"
+        ],
+        "title": "Что может затронуть"
+      },
+      {
+        "items": [
+          "Факт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-9. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9",
+          "Гипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9",
+          "Факт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-9. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7",
+          "Гипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7",
+          "Путь: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9",
+          "Путь: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7"
+        ],
+        "title": "Почему и через какой путь"
+      },
+      {
+        "items": [
+          "archive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.",
+          "reporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection)."
+        ],
+        "title": "Что проверить"
+      },
+      {
+        "items": [
+          "jira_without_diff",
+          "requirement_unknown (archive)",
+          "git:archive: CURRENT, проверено 2026-11-16T08:47:42.748Z",
+          "git:audit: CURRENT, проверено 2026-11-16T08:47:42.748Z",
+          "git:billing: CURRENT, проверено 2026-11-16T08:47:42.748Z",
+          "git:orders: CURRENT, проверено 2026-11-16T08:47:42.748Z",
+          "git:reporting: CURRENT, проверено 2026-11-16T08:47:42.748Z",
+          "ownership:installation_mapping: CURRENT, проверено 2026-11-16T08:47:42.467Z"
+        ],
+        "title": "Неизвестные и свежесть"
+      },
+      {
+        "items": [
+          "Jira ORD-12: версия полей 7c4bf84cdfe6",
+          "Поколение анализа: 1",
+          "code_version: agent-service-smoke",
+          "constitution_version: agent-service-v1.0:100bcad3db9c",
+          "correlation_id: 5fcba493cce2404abd3501aa63d90352:1",
+          "graph_version: graph-3",
+          "model: Детерминированный результат (модельный отчёт не представлен)",
+          "profile: http-requests-9",
+          "schema_version: 2.2",
+          "снимок archive (consumer): 49405f4a048e",
+          "снимок audit (consumer): 89e053921b37",
+          "снимок billing (consumer): 46a72606b6f0",
+          "снимок orders (consumer): 99aaceb50e06",
+          "снимок reporting (consumer): 2cba012ba204",
+          "Статус: USEFUL, код: preliminary_impact_found"
+        ],
+        "title": "Версии"
+      }
+    ],
+    "status_line": "2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.",
+    "title": "Возможное влияние изменения"
+  }
+}

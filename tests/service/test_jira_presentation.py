@@ -7,6 +7,19 @@ from agent_service.publisher import result_doc
 
 
 class JiraPresentationTest(unittest.TestCase):
+    def test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base(self):
+        for snapshot,expected in [
+            ({'destination_tip_sha':'d'*40},'destination tip dddddddddddd'),
+            ({},'base неизвестен'),
+            ({'base_sha':'b'*40,'destination_tip_sha':'d'*40},'base bbbbbbbbbbbb'),
+        ]:
+            with self.subTest(snapshot=snapshot):
+                doc=result_doc(ResultView('FAILED','commit_unavailable','Unavailable'),
+                    snapshot={'repository':'pilot/orders','pr_id':4,'head_sha':'a'*40,**snapshot},kind='pr',generation=1,gaps=[])
+                versions=next(s['items'] for s in doc['sections'] if s['title']=='Версии')
+                self.assertIn(expected,versions[0])
+                self.assertNotIn('base ,',versions[0])
+
     def doc(self, status="ABSTAINED", reason="no_supported_delta", raw=None, **kwargs):
         from agent_service.jira_presentation import summary_doc
 

@@ -1,0 +1,20 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "case_id": "DEV-0024",
+  "error_code": null,
+  "finished_at": "2026-11-15T15:13:18.322326+00:00",
+  "method": "impactmap_static",
+  "payload_sha256": "d2314a6ab44891d1992f63585ba7fd9df695cbc3c068edd251bafaeee01b0a49",
+  "payload_utf8": "{\"affected\":[],\"checks\":[],\"claims\":[],\"code_version\":\"evaluation-static\",\"constitution_version\":\"agent-service-v1.0:100bcad3db9c\",\"correlation_id\":\"DEV-0024\",\"costs\":{\"completion_tokens\":0,\"currency\":null,\"model_calls\":0,\"prompt_tokens\":0,\"reserved_micro\":null},\"deltas\":[],\"environment\":\"offline\",\"event_id\":\"DEV-0024\",\"evidence\":[],\"findings\":[],\"gaps\":[],\"graph_version\":\"graph-1\",\"impact_paths\":[],\"installation_id\":\"author-development\",\"kind\":\"analysis_result\",\"model\":null,\"profile\":\"http-requests-9\",\"reason_code\":\"no_supported_delta\",\"relationships\":[],\"request_id\":\"DEV-0024\",\"resource_version\":\"61553534208d8b62e773600aadde36fe7e6b308ea252b13ac41c4f01c714f1c6\",\"schema\":\"agent-graph-output\",\"schema_version\":\"2.2\",\"snapshots\":[{\"commit\":\"6a7340fb7b5d5e216e086cb7c53f7579afbd7fe6\",\"mode\":\"GIT_COMMIT\",\"repository\":\"provider\",\"role\":\"base\",\"tree\":\"d4a487f593cc8580cbb507ca2f320b5c38ec9796\"},{\"commit\":\"47fc6b0720254b9fd1b164b3d5dc44725960b0bb\",\"mode\":\"GIT_COMMIT\",\"repository\":\"provider\",\"role\":\"head\",\"tree\":\"77235e12d79d020932b08e6f57ca835c3aefdfca\"},{\"commit\":\"22247adf806e0824f09423ff3ec28ab1927d8e23\",\"mode\":\"GIT_COMMIT\",\"repository\":\"consumer\",\"role\":\"consumer\",\"tree\":\"4608491b536d66d1f44095c431fb46c83415b18a\"}],\"source_freshness\":[{\"freshness\":{\"checked_at\":\"2026-11-15T15:13:18.288426Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"provider\",\"source_kind\":\"git\"},{\"freshness\":{\"checked_at\":\"2026-11-15T15:13:18.288426Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"consumer\",\"source_kind\":\"git\"}],\"status\":\"ABSTAINED\",\"summary\":\"No supported behavior change was found; arbitrary semantic changes are not classified.\",\"superseded_by\":null,\"timings\":{\"finished_at\":\"2026-11-15T15:13:18.288211Z\",\"seconds\":{\"analysis\":0.6051417919989035},\"started_at\":\"2026-11-15T15:13:17.683079Z\"},\"trigger_kind\":\"pr\",\"unknowns\":[],\"usefulness_confirmed\":false}\n",
+  "returncode": 0,
+  "started_at": "2026-11-15T15:13:16.613982+00:00",
+  "stderr": "",
+  "stderr_bytes_base64": "",
+  "stdout": "",
+  "stdout_bytes_base64": "",
+  "wall_s": 1.7083796250008163,
+  "wall_time_cap_seconds": 60
+}

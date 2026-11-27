@@ -1,0 +1,62 @@
+test_failed_and_superseded_outputs_never_primary_tp (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_failed_and_superseded_outputs_never_primary_tp) ... FAIL
+test_leak_cannot_also_receive_boundary_success (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_leak_cannot_also_receive_boundary_success) ... FAIL
+test_malformed_entry_does_not_erase_later_addressed_candidate (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_malformed_entry_does_not_erase_later_addressed_candidate) ... ERROR
+test_one_frozen_ledger_rejects_primary_reset_and_out_of_order (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_one_frozen_ledger_rejects_primary_reset_and_out_of_order) ... ERROR
+test_unused_raw_evidence_outside_rights_is_a_leak (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_unused_raw_evidence_outside_rights_is_a_leak) ... FAIL
+
+======================================================================
+ERROR: test_malformed_entry_does_not_erase_later_addressed_candidate (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_malformed_entry_does_not_erase_later_addressed_candidate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 182, in test_malformed_entry_does_not_erase_later_addressed_candidate
+    p=normalize_core(raw,{'case_id':'DEV'},Source(),configuration='1'*64)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/impactmap_eval/normalizer.py", line 72, in normalize_core
+    consumer=f.get('consumer',{}).get('service');refs=f.get('evidence_refs',[])
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+
+======================================================================
+ERROR: test_one_frozen_ledger_rejects_primary_reset_and_out_of_order (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_one_frozen_ledger_rejects_primary_reset_and_out_of_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 185, in test_one_frozen_ledger_rejects_primary_reset_and_out_of_order
+    from tools.impactmap_eval.registration import claim_attempt
+ImportError: cannot import name 'claim_attempt' from 'tools.impactmap_eval.registration' (/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/impactmap_eval/registration.py)
+
+======================================================================
+FAIL: test_failed_and_superseded_outputs_never_primary_tp (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_failed_and_superseded_outputs_never_primary_tp)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 166, in test_failed_and_superseded_outputs_never_primary_tp
+    self.assertEqual(scoring.score_case(p,reference(),Source(),development=True)['strict'],dict(tp=0,fp=1,fn=1))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'tp': 1, 'fp': 0, 'fn': 0} != {'tp': 0, 'fp': 1, 'fn': 1}
+- {'fn': 0, 'fp': 0, 'tp': 1}
+?        ^        ^        ^
+
++ {'fn': 1, 'fp': 1, 'tp': 0}
+?        ^        ^        ^
+
+
+======================================================================
+FAIL: test_leak_cannot_also_receive_boundary_success (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_leak_cannot_also_receive_boundary_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 171, in test_leak_cannot_also_receive_boundary_success
+    self.assertTrue(r['access_leak']);self.assertFalse(r['limited_result_success'])
+                                      ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unused_raw_evidence_outside_rights_is_a_leak (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_unused_raw_evidence_outside_rights_is_a_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 176, in test_unused_raw_evidence_outside_rights_is_a_leak
+    self.assertTrue(any(l['code']=='access_leak_detected' for l in p['limitations']))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.010s
+
+FAILED (failures=3, errors=2)

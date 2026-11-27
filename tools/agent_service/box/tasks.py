@@ -156,15 +156,25 @@ def task_smoke(args) -> dict:
     return report
 
 
+def task_ui_configure(args) -> dict:
+    from agent_service.ui_auth import configure_private_ui
+    try:
+        return configure_private_ui(Path(args.state), args.origin)
+    except (ValueError, OSError):
+        return {'ok': False, 'error': {'code': 'ui_private_configuration_invalid'}}
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("task", choices=["mirrors", "graph", "probes", "readiness", "smoke"])
+    parser.add_argument("task", choices=["mirrors", "graph", "probes", "readiness", "smoke", "ui-configure"])
+    parser.add_argument("--state", type=Path, help="fixed durable state root (UI bootstrap)")
+    parser.add_argument("--origin", help="validated public HTTPS UI origin")
     parser.add_argument("--config", type=Path, help="generated service.json")
     parser.add_argument("--box-config", type=Path, help="box.yaml (mirrors)")
     parser.add_argument("--mirrors", help="mirror directory (mirrors)")
     parser.add_argument("--tmp", help="scratch directory (smoke)")
     args = parser.parse_args(argv)
-    result = globals()[f"task_{args.task}"](args)
+    result = globals()["task_" + args.task.replace("-", "_")](args)
     sys.stdout.write(json.dumps(result, ensure_ascii=True, sort_keys=True, default=str) + "\n")
     return 0 if result.get("ok", True) else 3
 

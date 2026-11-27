@@ -1,0 +1,24 @@
+F
+======================================================================
+FAIL: test_kaiten_config_binding_requires_matching_workspace_and_repository (tests.service.test_ui_operator.OperatorTests.test_kaiten_config_binding_requires_matching_workspace_and_repository)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 155, in test_kaiten_config_binding_requires_matching_workspace_and_repository
+    self.assertEqual(metadata_for_config(c).bindings,())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (('bitbucket:33333333-3333-4333-8333-33333[71 chars]0'),) != ()
+
+First tuple contains 1 additional elements.
+First extra element 0:
+('bitbucket:33333333-3333-4333-8333-333333333333/22222222-2222-4222-8222-222222222222#1', 'orders', 'kaiten', '20')
+
++ ()
+- (('bitbucket:33333333-3333-4333-8333-333333333333/22222222-2222-4222-8222-222222222222#1',
+-   'orders',
+-   'kaiten',
+-   '20'),)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.013s
+
+FAILED (failures=1)

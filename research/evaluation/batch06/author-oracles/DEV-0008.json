@@ -1,0 +1,54 @@
+{
+  "attestation": {
+    "confirmed_by_human": false,
+    "conflicts_of_interest": "",
+    "independent_before_outputs": false
+  },
+  "case_id": "DEV-0008",
+  "completed_at": null,
+  "disagreements": [],
+  "expert_id": null,
+  "keys": [
+    {
+      "expectation": {
+        "artifact_ref": "../author-contracts/DEV-0008.json",
+        "artifact_sha256": "7090b5e7e30d2ea345826c25e312ac6a9c95f6b19cec558d62a9f57cf0d1f9f7",
+        "basis": "owner_requirement",
+        "description": "Toy consumer requires endpoint and complete twenty-item response under specified parameters"
+      },
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/v8/items"
+      },
+      "label": "AFFECTED",
+      "rationale": "Authored contract expectation; not independent evidence",
+      "witnesses": [
+        {
+          "commit": "3ee588d34b22fe73fa1f5eb9d3f2d83b067b144b",
+          "line_end": 4,
+          "line_start": 4,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "bd5cce50eedb29278a1cacef0c5121a9bb8f1c1244f4da29e9d7332c9f908d39",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "lifecycle": "draft",
+  "profile": {
+    "boundary": "none",
+    "membership": "IN_PROFILE",
+    "rationale": "Authored synthetic development fixture, not expert judgment"
+  },
+  "schema_version": "impactmap-reference-label-1.0",
+  "scope_completeness": {
+    "inventory_sha256": "b6f7be72185dc1c3d004a3faa2b1d1117afbe2f2431609554a00d5900a2202f6",
+    "rationale": "Known generated toy inventory; not an independent search",
+    "search_complete": true
+  },
+  "source_labels": [],
+  "stage": "adjudicated"
+}

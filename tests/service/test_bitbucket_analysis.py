@@ -110,6 +110,15 @@ class WorkerTest(unittest.TestCase):
         self.service.reconcile()
         return self.service.run_until_idle()
 
+    def test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip(self):
+        self.run_worker()
+        self.assertNotIn('base_sha',self.store.resource(self.rid)['snapshot'])
+        intent=next(i for i in self.store.intents(self.rid) if i['kind']=='result')
+        doc=json.loads(intent['body'])
+        versions=next(s['items'] for s in doc['sections'] if s['title']=='Версии')
+        self.assertIn('base '+self.analyzer.last_request['pr']['base_sha'][:12],versions[0])
+        self.assertIn('head '+self.head[:12],versions[0])
+
     def test_queue_runs_real_core_with_bitbucket_identity_and_holds_publication(self):
         self.run_worker()
         [job] = self.store.jobs(self.rid)

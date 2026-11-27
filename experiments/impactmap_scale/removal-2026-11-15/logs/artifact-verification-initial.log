@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/experiments/impactmap_scale/removal-2026-11-15/verify_artifacts.py", line 66, in <module>
+    p=argparse.ArgumentParser();p.add_argument('--private',action='store_true');p.add_argument('--current-core',action='store_true');a=p.parse_args();print(json.dumps(verify(a.private,a.current_core)))
+                                                                                                                                                                       ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/experiments/impactmap_scale/removal-2026-11-15/verify_artifacts.py", line 25, in verify
+    assert not manifests[0]['source']['working_tree_dirty'] and not manifests[1]['source']['working_tree_dirty']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

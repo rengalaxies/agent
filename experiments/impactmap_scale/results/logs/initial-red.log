@@ -1,0 +1,18 @@
+test_load_impactmap (unittest.loader._FailedTest.test_load_impactmap) ... ERROR
+
+======================================================================
+ERROR: test_load_impactmap (unittest.loader._FailedTest.test_load_impactmap)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_load_impactmap
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_load_impactmap.py", line 8, in <module>
+    from tools import load_impactmap as load
+ImportError: cannot import name 'load_impactmap' from 'tools' (unknown location)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

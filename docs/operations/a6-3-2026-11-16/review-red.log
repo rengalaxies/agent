@@ -1,0 +1,70 @@
+======================================================================
+ERROR: test_finding_keeps_its_own_evidence_anchor (tests.service.test_ui_views.ViewTests.test_finding_keeps_its_own_evidence_anchor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 91, in test_finding_keeps_its_own_evidence_anchor
+    finding=html.split('id="finding-0"')[1].split('</li>')[0]
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_known_owner_and_real_preliminary_output_render_without_losing_team_names (tests.service.test_ui_views.ViewTests.test_known_owner_and_real_preliminary_output_render_without_losing_team_names)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 55, in test_known_owner_and_real_preliminary_output_render_without_losing_team_names
+    archive=html.split('id="consumer-0"')[1].split('</li>')[0]
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_nullable_gap_repository_remains_partial_but_foreign_repository_is_denied (tests.service.test_ui_views.ViewTests.test_nullable_gap_repository_remains_partial_but_foreign_repository_is_denied)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 69, in test_nullable_gap_repository_remains_partial_but_foreign_repository_is_denied
+    html=self.view(self.rid)['result_html'];self.assertIn('Неполные данные',html)
+         ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 19, in view
+    return workspace_view(data)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_service/ui_views.py", line 128, in workspace_view
+    listing=data['listing'];selected=data['selected'];rid=selected['resource']['resource_id'] if selected else None
+            ~~~~^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+
+======================================================================
+FAIL: test_list_exposes_authorized_publication_source_and_observation (tests.service.test_ui_views.ViewTests.test_list_exposes_authorized_publication_source_and_observation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 64, in test_list_exposes_authorized_publication_source_and_observation
+    for value in ['UNKNOWN','Публикация','bitbucket','pr','UTC']:self.assertIn(value,html)
+                                                                 ~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 'UNKNOWN' not found in '<a class="change-row" href="/ui/result?resource_id=bitbucket%3Afixture%231" data-resource="bitbucket:fixture#1"><strong>bitbucket:fixture#1</strong><span>Поколение 1</span><span>Анализ: анализ завершён <code>ANALYZED</code></span><span>Основание: CURRENT</span></a>'
+
+======================================================================
+FAIL: test_many_withheld_candidates_do_not_reveal_hidden_existence (tests.service.test_ui_views.ViewTests.test_many_withheld_candidates_do_not_reveal_hidden_existence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 86, in test_many_withheld_candidates_do_not_reveal_hidden_existence
+    self.assertEqual(hidden,empty)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: {'sch[57 chars]re': True, 'coverage': 'STAMPED_SCOPE_ONLY', '[15 chars]True} != {'sch[57 chars]re': False, 'coverage': 'STAMPED_SCOPE_ONLY', [17 chars]alse}
+  {'coverage': 'STAMPED_SCOPE_ONLY',
+-  'has_more': True,
+?              ^^^
+
++  'has_more': False,
+?              ^^^^
+
+   'items': [],
+   'limit': 50,
+-  'scan_limited': True,
+?                  ^^^
+
++  'scan_limited': False,
+?                  ^^^^
+
+   'schema': 'impactmap-ui-1'}
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.629s
+
+FAILED (failures=2, errors=3)

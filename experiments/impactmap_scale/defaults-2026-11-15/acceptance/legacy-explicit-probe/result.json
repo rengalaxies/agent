@@ -1,0 +1,47 @@
+{
+  "accepted": {
+    "bytes": 1995087,
+    "files": 173,
+    "python_lines": 78654
+  },
+  "analyzed_fraction": 0,
+  "collection_fraction": 0.7865641772897481,
+  "error_code": "corpus_limit",
+  "expected_bytes": 2536458,
+  "expected_python_lines": 100000,
+  "fraction_scope": "accepted bytes before collector abort; no returned partial context or analysis",
+  "gap_codes": [],
+  "kind": "collection_limit_probe",
+  "limits": {
+    "freshness_seconds": 3600,
+    "max_corpus_bytes": 2000000,
+    "max_file_bytes": 65536,
+    "max_files": 256,
+    "max_model_steps": 4,
+    "max_proposals": 24,
+    "max_tool_lines": 60,
+    "scan_seconds": 15.0
+  },
+  "passed": false,
+  "spans": [
+    {
+      "child_system_s": 0.11432399999999987,
+      "child_user_s": 0.16407599999999434,
+      "children_peak_rss_bytes": 112607232,
+      "depth": 0,
+      "error_type": "GraphError",
+      "exclusive_child_system_s": 0.11432399999999987,
+      "exclusive_child_user_s": 0.16407599999999434,
+      "exclusive_self_system_s": 0.05997600000000003,
+      "exclusive_self_user_s": 0.08221400000000045,
+      "exclusive_wall_s": 0.4845249589998275,
+      "parent_id": null,
+      "self_peak_rss_bytes": 104235008,
+      "self_system_s": 0.05997600000000003,
+      "self_user_s": 0.08221400000000045,
+      "span_id": 0,
+      "stage": "default_collection",
+      "wall_s": 0.4845249589998275
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "provenance": "REAL_BITBUCKET_CLOUD_REAL_GIT_REAL_CORE_REAL_KAITEN",
+  "pid": 1629721,
+  "observed_utc": "2026-11-15T08:21:27.825618+00:00",
+  "candidate_manifest_sha256": "36daddf030fcca3d33db71af00a86213cb05a2a8d1c445da20e2d17b4b2d82a1",
+  "code_version": "e22413a+cloud-helper:15ce937239ac",
+  "run_id": "restored-secondary",
+  "resource_id": "bitbucket:e0b65402-98d3-432d-9ba0-8e92884d8bfb/ce63c558-64b3-462f-9ab9-1b954c14f5d9#5",
+  "head": "3883320d4725479f944298c322fa493dfc836457",
+  "destination_tip": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+  "closed": false,
+  "generation": 5,
+  "resource_version": "bitbucket-kaiten:40313366458b907876445ba45bc9c5667261695e3ba477aa597ff1f1f3ff9a51",
+  "target_card_id": "74807549",
+  "expected_card_id": "74807549",
+  "stored_closed": false,
+  "published_generation": 5,
+  "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817131\"]",
+  "comment_digest": "40870f3ace5f61ac8395bca6c0389661617906b04854d6e477bdd9dfc8dd87f9",
+  "provider_repository": "bb.orders",
+  "expected_consumer_pins": {
+    "bb.reporting": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+  },
+  "history_failures": [],
+  "reconcile_errors": [],
+  "marker": "50f72df743af8977",
+  "owned_comments": [
+    {
+      "id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817131\"]",
+      "digest": "40870f3ace5f61ac8395bca6c0389661617906b04854d6e477bdd9dfc8dd87f9",
+      "generation": 5
+    }
+  ],
+  "jobs": [
+    {
+      "generation": 1,
+      "state": "DONE",
+      "status": "USEFUL",
+      "reason": "impact_found_within_profile",
+      "findings": [
+        "POSSIBLE_TRUNCATION"
+      ],
+      "snapshots": [
+        {
+          "repository": "bb.orders",
+          "role": "base",
+          "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7"
+        },
+        {
+          "repository": "bb.orders",
+          "role": "head",
+          "commit": "3386e00625bbed290957f7e384f8c5858ee56fe6"
+        },
+        {
+          "repository": "bb.reporting",
+          "role": "consumer",
+          "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+        }
+      ]
+    },
+    {
+      "generation": 2,
+      "state": "DONE",
+      "status": "ABSTAINED",
+      "reason": "no_supported_delta",
+      "findings": [],
+      "snapshots": [
+        {
+          "repository": "bb.orders",
+          "role": "base",
+          "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7"
+        },
+        {
+          "repository": "bb.orders",
+          "role": "head",
+          "commit": "3883320d4725479f944298c322fa493dfc836457"
+        },
+        {
+          "repository": "bb.reporting",
+          "role": "consumer",
+          "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+        }
+      ]
+    },
+    {
+      "generation": 3,
+      "state": "DONE",
+      "status": "ABSTAINED",
+      "reason": "no_supported_delta",
+      "findings": [],
+      "snapshots": [
+        {
+          "repository": "bb.orders",
+          "role": "base",
+          "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7"
+        },
+        {
+          "repository": "bb.orders",
+          "role": "head",
+          "commit": "3883320d4725479f944298c322fa493dfc836457"
+        },
+        {
+          "repository": "bb.reporting",
+          "role": "consumer",
+          "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+        }
+      ]
+    },
+    {
+      "generation": 4,
+      "state": "DONE",
+      "status": "ABSTAINED",
+      "reason": "no_supported_delta",
+      "findings": [],
+      "snapshots": [
+        {
+          "repository": "bb.orders",
+          "role": "base",
+          "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7"
+        },
+        {
+          "repository": "bb.orders",
+          "role": "head",
+          "commit": "3883320d4725479f944298c322fa493dfc836457"
+        },
+        {
+          "repository": "bb.reporting",
+          "role": "consumer",
+          "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+        }
+      ]
+    },
+    {
+      "generation": 5,
+      "state": "DONE",
+      "status": "ABSTAINED",
+      "reason": "no_supported_delta",
+      "findings": [],
+      "snapshots": [
+        {
+          "repository": "bb.orders",
+          "role": "base",
+          "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7"
+        },
+        {
+          "repository": "bb.orders",
+          "role": "head",
+          "commit": "3883320d4725479f944298c322fa493dfc836457"
+        },
+        {
+          "repository": "bb.reporting",
+          "role": "consumer",
+          "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3"
+        }
+      ]
+    }
+  ],
+  "intents": [
+    {
+      "generation": 1,
+      "state": "DELIVERED",
+      "kind": "result",
+      "reason": "interrupted_during_send",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "2408fae09db0d660738c442fcc1bf3b38dab7f0d7955c827c01a4b8d1c434eca",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": false
+      }
+    },
+    {
+      "generation": 2,
+      "state": "DELIVERED",
+      "kind": "stale",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "7922eb17871859cab5c304dfb7c1a00a7ce7ca18fb253a1ff12dea57930a7d14",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 2,
+      "state": "DELIVERED",
+      "kind": "result",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "e19a812e619e7bd59435d1c0ff3d81a31c682ac7de936ccf047df6cf5a8c5403",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 3,
+      "state": "DELIVERED",
+      "kind": "stale",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817124\"]",
+      "body_digest": "af356baaf890c6b2dc72897528ecc1d4539ffee0a904ee8237c47fbe1cae19ce",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 3,
+      "state": "DELIVERED",
+      "kind": "result",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817124\"]",
+      "body_digest": "9c93bc2a8b9f1574565706eac3251e32c01a7804d6baee6db9c90b46d891eda6",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 4,
+      "state": "DELIVERED",
+      "kind": "stale",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817131\"]",
+      "body_digest": "cd3cd3860fb0cba724947b2c29260b4c6e6696e5bc8e9015995b8bca7b0e520c",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 4,
+      "state": "DELIVERED",
+      "kind": "result",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817131\"]",
+      "body_digest": "a8c35fae983dd42a8008fdcd632204591ccef10e9d901619980c089f84f0cbd2",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 5,
+      "state": "DELIVERED",
+      "kind": "stale",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817131\"]",
+      "body_digest": "fb5dea1b5e239a7db26ffa34751ae99e3b3b3fda702472fa87a29d2baf1d0337",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    },
+    {
+      "generation": 5,
+      "state": "DELIVERED",
+      "kind": "result",
+      "reason": null,
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74807549\",\"93817131\"]",
+      "body_digest": "40870f3ace5f61ac8395bca6c0389661617906b04854d6e477bdd9dfc8dd87f9",
+      "receipt": {
+        "current_at_delivery": true,
+        "wrote": true
+      }
+    }
+  ],
+  "recovered": {
+    "jobs": 0,
+    "sending": 0,
+    "released": 0
+  },
+  "reconciled": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 1,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "steps": [
+    "ingest:new_generation",
+    "publish:delivered",
+    "analyze:done",
+    "publish:delivered"
+  ],
+  "model": "OFF",
+  "db_device": 64770,
+  "db_inode": 787490,
+  "errors": [],
+  "status": "PASS"
+}

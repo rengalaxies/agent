@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "config_sha256": "78ec76e7b32567db52ab8d2540d43a3ca0511e6995c8ca762591d3bb4c76a004",
+  "environment": "REAL_API",
+  "task": [
+    "kaiten",
+    "https://rengalaxies.kaiten.ru",
+    "74759475"
+  ],
+  "marker": "282ad8632f241c6a",
+  "phase": "verified",
+  "comment_id": "93785697",
+  "status": "PASS",
+  "events": [
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "POST",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "PATCH",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    },
+    {
+      "operation": "GET",
+      "status": 200
+    }
+  ],
+  "comment_identity": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93785697\"]"
+}

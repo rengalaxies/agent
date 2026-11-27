@@ -1,0 +1,529 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Human independent labels or adjudicated gold; never runner input",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "impactmap-reference-label-1.0"
+    },
+    "lifecycle": {
+      "enum": [
+        "draft",
+        "complete"
+      ]
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "stage": {
+      "enum": [
+        "independent",
+        "adjudicated"
+      ]
+    },
+    "expert_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "membership": {
+          "enum": [
+            "IN_PROFILE",
+            "OUT_OF_PROFILE",
+            "UNRESOLVED"
+          ]
+        },
+        "boundary": {
+          "enum": [
+            "none",
+            "grammar",
+            "semantics",
+            "access",
+            "unresolved"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "membership",
+        "boundary",
+        "rationale"
+      ]
+    },
+    "keys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "$ref": "#/$defs/pair"
+          },
+          "label": {
+            "enum": [
+              "AFFECTED",
+              "UNAFFECTED",
+              "UNRESOLVED"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "expectation": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "artifact_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "artifact_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "basis": {
+                    "enum": [
+                      "existing_consumer_test",
+                      "owner_requirement",
+                      "expert_contract_witness"
+                    ]
+                  }
+                },
+                "required": [
+                  "description",
+                  "artifact_ref",
+                  "artifact_sha256",
+                  "basis"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "witnesses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/witness"
+            }
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "rationale",
+          "expectation",
+          "witnesses"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "label": {
+                  "const": "AFFECTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "expectation": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "artifact_ref": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "artifact_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "basis": {
+                      "enum": [
+                        "existing_consumer_test",
+                        "owner_requirement",
+                        "expert_contract_witness"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "description",
+                    "artifact_ref",
+                    "artifact_sha256",
+                    "basis"
+                  ]
+                },
+                "witnesses": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "scope_completeness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "search_complete": {
+          "type": "boolean"
+        },
+        "inventory_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "search_complete",
+        "inventory_sha256",
+        "rationale"
+      ]
+    },
+    "source_labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expert_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "artifact_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "expert_id",
+          "artifact_ref",
+          "artifact_sha256"
+        ]
+      }
+    },
+    "disagreements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "topic": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "original_a": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "original_b": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "resolution": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "resolved_by": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "topic",
+          "original_a",
+          "original_b",
+          "resolution",
+          "rationale",
+          "resolved_by"
+        ]
+      }
+    },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "confirmed_by_human": {
+          "type": "boolean"
+        },
+        "independent_before_outputs": {
+          "type": "boolean"
+        },
+        "conflicts_of_interest": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "confirmed_by_human",
+        "independent_before_outputs",
+        "conflicts_of_interest"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "lifecycle",
+    "case_id",
+    "stage",
+    "expert_id",
+    "completed_at",
+    "profile",
+    "keys",
+    "scope_completeness",
+    "source_labels",
+    "disagreements",
+    "attestation"
+  ],
+  "$defs": {
+    "pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider_service": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "method": {
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "HEAD",
+            "OPTIONS"
+          ]
+        },
+        "route": {
+          "type": "string",
+          "pattern": "^/[^?#]*$"
+        },
+        "consumer_service": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "provider_service",
+        "method",
+        "route",
+        "consumer_service"
+      ]
+    },
+    "witness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "phase": {
+          "enum": [
+            "base",
+            "head"
+          ]
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "line_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quote_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "repository",
+        "phase",
+        "commit",
+        "path",
+        "line_start",
+        "line_end",
+        "quote_sha256"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "const": "complete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "expert_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attestation": {
+            "properties": {
+              "confirmed_by_human": {
+                "const": true
+              },
+              "independent_before_outputs": {
+                "const": true
+              }
+            }
+          },
+          "profile": {
+            "properties": {
+              "rationale": {
+                "minLength": 1
+              }
+            }
+          },
+          "scope_completeness": {
+            "properties": {
+              "rationale": {
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "const": "complete"
+          },
+          "stage": {
+            "const": "adjudicated"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_labels": {
+            "minItems": 2
+          },
+          "profile": {
+            "properties": {
+              "membership": {
+                "enum": [
+                  "IN_PROFILE",
+                  "OUT_OF_PROFILE"
+                ]
+              },
+              "boundary": {
+                "enum": [
+                  "none",
+                  "grammar",
+                  "semantics",
+                  "access"
+                ]
+              }
+            }
+          },
+          "keys": {
+            "items": {
+              "properties": {
+                "label": {
+                  "enum": [
+                    "AFFECTED",
+                    "UNAFFECTED"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

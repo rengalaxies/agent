@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/benchmark_impactmap.py", line 382, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/benchmark_impactmap.py", line 360, in main
+    value = execute(manifest, args.output, args.repeats)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/benchmark_impactmap.py", line 307, in execute
+    proc = subprocess.run([sys.executable, '-m', 'tools.benchmark_impactmap', '--worker',
+                           '--manifest', str(input_path), '--output', str(private / f'worker-{index}')],
+                          env=env, cwd=ROOT, capture_output=True, text=True, timeout=1800)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 556, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1222, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 2128, in _communicate
+    ready = selector.select(timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/selectors.py", line 398, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt

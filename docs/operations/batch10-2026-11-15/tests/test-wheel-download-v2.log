@@ -1,0 +1,26 @@
+Collecting attrs==26.1.0 (from -r work/batch10/test-requirements.txt (line 1))
+  File was already downloaded /Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/test-wheels/attrs-26.1.0-py3-none-any.whl
+Collecting jsonschema-specifications==2025.9.1 (from -r work/batch10/test-requirements.txt (line 2))
+  File was already downloaded /Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/test-wheels/jsonschema_specifications-2025.9.1-py3-none-any.whl
+Collecting jsonschema==4.26.0 (from -r work/batch10/test-requirements.txt (line 3))
+  File was already downloaded /Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/test-wheels/jsonschema-4.26.0-py3-none-any.whl
+Collecting referencing==0.37.0 (from -r work/batch10/test-requirements.txt (line 4))
+  File was already downloaded /Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/test-wheels/referencing-0.37.0-py3-none-any.whl
+Collecting rpds-py==2026.9.1 (from -r work/batch10/test-requirements.txt (line 5))
+  File was already downloaded /Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/test-wheels/rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Collecting httpx==0.28.1 (from -r work/batch10/test-requirements.txt (line 6))
+  Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting httpcore==1.0.9 (from -r work/batch10/test-requirements.txt (line 7))
+  Using cached httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting certifi==2026.10.23 (from -r work/batch10/test-requirements.txt (line 8))
+  Using cached certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+Using cached certifi-2026.10.23-py3-none-any.whl (135 kB)
+Saved ./work/batch10/test-wheels/httpx-0.28.1-py3-none-any.whl
+Saved ./work/batch10/test-wheels/httpcore-1.0.9-py3-none-any.whl
+Saved ./work/batch10/test-wheels/certifi-2026.10.23-py3-none-any.whl
+Successfully downloaded attrs jsonschema-specifications jsonschema referencing rpds-py httpx httpcore certifi
+
+[notice] A new release of pip is available: 25.2 -> 26.3
+[notice] To update, run: /Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/bin/python -m pip install --upgrade pip

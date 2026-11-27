@@ -1,0 +1,31 @@
+test_duplicate_generation_cannot_replace_another_job (__main__.CompletenessTests.test_duplicate_generation_cannot_replace_another_job) ... FAIL
+test_missing_all_verdicts_is_not_success (__main__.CompletenessTests.test_missing_all_verdicts_is_not_success) ... FAIL
+
+======================================================================
+FAIL: test_duplicate_generation_cannot_replace_another_job (__main__.CompletenessTests.test_duplicate_generation_cannot_replace_another_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/test_default_report_completeness.py", line 16, in test_duplicate_generation_cannot_replace_another_job
+    def test_duplicate_generation_cannot_replace_another_job(self):self.check_rejected(lambda r:r['result_verdicts'].__setitem__(1,r['result_verdicts'][0]))
+                                                                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/test_default_report_completeness.py", line 14, in check_rejected
+    with self.assertRaises(AssertionError):module.verify()
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_missing_all_verdicts_is_not_success (__main__.CompletenessTests.test_missing_all_verdicts_is_not_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/test_default_report_completeness.py", line 15, in test_missing_all_verdicts_is_not_success
+    def test_missing_all_verdicts_is_not_success(self):self.check_rejected(lambda r:r.update(result_verdicts=[]))
+                                                       ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/test_default_report_completeness.py", line 14, in check_rejected
+    with self.assertRaises(AssertionError):module.verify()
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: AssertionError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.204s
+
+FAILED (failures=2)

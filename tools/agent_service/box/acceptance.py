@@ -33,9 +33,9 @@ class Check(Exception):
     pass
 
 
-def _service_processes() -> list[int] | None:
-    """PIDs running the box's service entry (Linux /proc only)."""
-    proc = Path("/proc")
+def _service_processes(run_dir: Path | None = None, *, proc_root: Path = Path('/proc')) -> list[int] | None:
+    """PIDs for one installation's service entry (or a global inventory)."""
+    proc = proc_root
     if not proc.is_dir():
         return None
     found = []
@@ -45,8 +45,16 @@ def _service_processes() -> list[int] | None:
                 cmdline = (entry / "cmdline").read_bytes().split(b"\0")
             except OSError:
                 continue
-            if any(part.endswith(b"/box/launch.py") for part in cmdline):
-                found.append(int(entry.name))
+            if not any(part.endswith(b"/box/launch.py") for part in cmdline):
+                continue
+            if run_dir is not None:
+                runs=[cmdline[i+1] for i,arg in enumerate(cmdline[:-1]) if arg==b'--run']
+                try:
+                    if len(runs)!=1 or Path(os.fsdecode(runs[0])).resolve()!=run_dir.resolve():
+                        continue
+                except (OSError,ValueError):
+                    continue
+            found.append(int(entry.name))
     return found
 
 
@@ -223,7 +231,7 @@ class Driver:
         after = self.ready(A)
         if after["process"]["loaded"]["pid"] != before["process"]["loaded"]["pid"]:
             raise Check("service process replaced by a no-change install")
-        services = _service_processes()
+        services = _service_processes(Path(self.args.prefix or '/')/'var/lib/agent-service/run')
         if services is not None and len(services) != 1:
             raise Check(f"expected one service process, found {len(services)}")
         mirrors = next(p for p in out["phases"] if p["phase"] == "mirrors")["detail"]["repositories"]

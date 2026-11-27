@@ -1,0 +1,19 @@
+test_raw_unused_excluded_path_inside_allowed_repository_is_detected (tests.performance.test_evaluation_tooling.HumanAuditGateTests.test_raw_unused_excluded_path_inside_allowed_repository_is_detected) ... ok
+test_structural_registration_alone_cannot_certify_gold_and_prose (tests.performance.test_evaluation_tooling.HumanAuditGateTests.test_structural_registration_alone_cannot_certify_gold_and_prose) ... FAIL
+
+======================================================================
+FAIL: test_structural_registration_alone_cannot_certify_gold_and_prose (tests.performance.test_evaluation_tooling.HumanAuditGateTests.test_structural_registration_alone_cannot_certify_gold_and_prose)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 273, in test_structural_registration_alone_cannot_certify_gold_and_prose
+    self.assertEqual(decision(r,{'status':'REGISTERED_READY'},t),'INDETERMINATE')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CRITERIA_MET_ON_CATALOGUE' != 'INDETERMINATE'
+- CRITERIA_MET_ON_CATALOGUE
++ INDETERMINATE
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.008s
+
+FAILED (failures=1)

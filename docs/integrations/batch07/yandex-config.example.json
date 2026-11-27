@@ -1,0 +1,11 @@
+{
+  "provider": "yandex_tracker",
+  "base_url": "https://api.tracker.yandex.net",
+  "task_id": "IMMUTABLE_ISSUE_ID",
+  "scope_id": "QUEUE_NATIVE_ID",
+  "bot_id": "BOT_NATIVE_ID",
+  "token_env": "IM_YANDEX_TOKEN",
+  "org_id": "ORGANIZATION_ID",
+  "org_header": "X-Cloud-Org-ID",
+  "auth_scheme": "OAuth"
+}

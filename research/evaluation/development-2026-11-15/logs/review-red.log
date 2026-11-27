@@ -1,0 +1,135 @@
+test_comment_only_helper_edit_does_not_invent_semantic_change (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_comment_only_helper_edit_does_not_invent_semantic_change) ... ok
+test_default_and_body_change_still_requires_explicit_consumer_review (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_default_and_body_change_still_requires_explicit_consumer_review) ... ok
+test_default_plus_opaque_change_does_not_exempt_explicit_call (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_default_plus_opaque_change_does_not_exempt_explicit_call) ... ok
+test_empty_dict_and_url_query_values_both_keep_alert (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_empty_dict_and_url_query_values_both_keep_alert) ... 
+  test_empty_dict_and_url_query_values_both_keep_alert (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_empty_dict_and_url_query_values_both_keep_alert) (call='requests.get("https://orders.test/orders", params={"page_size": ""})') ... FAIL
+test_exempted_default_does_not_hide_unclassified_delta_without_callers (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_exempted_default_does_not_hide_unclassified_delta_without_callers) ... FAIL
+test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) ... ok
+test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) ... 
+  test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation="Annotated[int, Query(alias='limit')]") ... FAIL
+  test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation='Annotated[int, Body()]') ... FAIL
+  test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation='list[int]') ... FAIL
+test_mixed_callsites_keep_only_implicit_call_alert (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_mixed_callsites_keep_only_implicit_call_alert) ... ok
+test_multiple_provider_declarations_all_constrain_default_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_multiple_provider_declarations_all_constrain_default_exemption) ... ok
+test_none_dynamic_and_loop_without_override_keep_alerts (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_none_dynamic_and_loop_without_override_keep_alerts) ... ok
+test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer) ... ok
+test_openapi_default_override_does_not_hide_response_contract_change (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_openapi_default_override_does_not_hide_response_contract_change) ... ok
+test_other_handler_used_as_helper_disqualifies_default_only_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_other_handler_used_as_helper_disqualifies_default_only_exemption) ... FAIL
+test_referenced_response_schema_change_prevents_default_only_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_referenced_response_schema_change_prevents_default_only_exemption) ... FAIL
+test_removal_alerts_even_when_consumer_sends_size (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_removal_alerts_even_when_consumer_sends_size) ... ok
+test_same_line_calls_keep_the_implicit_size_alert_in_either_order (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) ... 
+  test_same_line_calls_keep_the_implicit_size_alert_in_either_order (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) (calls='requests.get("https://orders.test/orders"); requests.get("https://orders.test/orders", params={"page_size": 40})') ... FAIL
+  test_same_line_calls_keep_the_implicit_size_alert_in_either_order (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) (calls='requests.get("https://orders.test/orders", params={"page_size": 40}); requests.get("https://orders.test/orders")') ... FAIL
+test_selected_operation_ignores_opaque_edit_in_other_provider_repository (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_selected_operation_ignores_opaque_edit_in_other_provider_repository) ... FAIL
+
+======================================================================
+FAIL: test_empty_dict_and_url_query_values_both_keep_alert (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_empty_dict_and_url_query_values_both_keep_alert) (call='requests.get("https://orders.test/orders", params={"page_size": ""})')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 227, in test_empty_dict_and_url_query_values_both_keep_alert
+    self.assertTrue(self.analyze('import requests\n' + call + '\n')['findings'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_exempted_default_does_not_hide_unclassified_delta_without_callers (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_exempted_default_does_not_hide_unclassified_delta_without_callers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 237, in test_exempted_default_does_not_hide_unclassified_delta_without_callers
+    self.assertEqual(result.status, 'PARTIAL')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ABSTAINED' != 'PARTIAL'
+- ABSTAINED
++ PARTIAL
+
+
+======================================================================
+FAIL: test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation="Annotated[int, Query(alias='limit')]")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 195, in test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override
+    self.assertTrue(analysis['findings'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation='Annotated[int, Body()]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 195, in test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override
+    self.assertTrue(analysis['findings'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override) (annotation='list[int]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 195, in test_fastapi_alias_body_and_non_scalar_annotations_cannot_prove_query_override
+    self.assertTrue(analysis['findings'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_other_handler_used_as_helper_disqualifies_default_only_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_other_handler_used_as_helper_disqualifies_default_only_exemption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 220, in test_other_handler_used_as_helper_disqualifies_default_only_exemption
+    self.assertTrue(result.findings)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_referenced_response_schema_change_prevents_default_only_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_referenced_response_schema_change_prevents_default_only_exemption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 212, in test_referenced_response_schema_change_prevents_default_only_exemption
+    self.assertTrue(result.findings)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_same_line_calls_keep_the_implicit_size_alert_in_either_order (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) (calls='requests.get("https://orders.test/orders"); requests.get("https://orders.test/orders", params={"page_size": 40})')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 185, in test_same_line_calls_keep_the_implicit_size_alert_in_either_order
+    self.assertEqual([f['code'] for f in analysis['findings']], ['POSSIBLE_TRUNCATION'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['POSSIBLE_TRUNCATION']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'POSSIBLE_TRUNCATION'
+
+- []
++ ['POSSIBLE_TRUNCATION']
+
+======================================================================
+FAIL: test_same_line_calls_keep_the_implicit_size_alert_in_either_order (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_same_line_calls_keep_the_implicit_size_alert_in_either_order) (calls='requests.get("https://orders.test/orders", params={"page_size": 40}); requests.get("https://orders.test/orders")')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 187, in test_same_line_calls_keep_the_implicit_size_alert_in_either_order
+    self.assertEqual(len({d['id'] for d in head['graph']['dependencies']}), 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2
+
+======================================================================
+FAIL: test_selected_operation_ignores_opaque_edit_in_other_provider_repository (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_selected_operation_ignores_opaque_edit_in_other_provider_repository)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 249, in test_selected_operation_ignores_opaque_edit_in_other_provider_repository
+    self.assertEqual((result.status, result.reason_code), ('ABSTAINED', 'no_supported_delta'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('PARTIAL', 'unclassified_change') != ('ABSTAINED', 'no_supported_delta')
+
+First differing element 0:
+'PARTIAL'
+'ABSTAINED'
+
+- ('PARTIAL', 'unclassified_change')
++ ('ABSTAINED', 'no_supported_delta')
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.512s
+
+FAILED (failures=10)

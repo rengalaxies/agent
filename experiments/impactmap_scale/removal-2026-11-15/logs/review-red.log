@@ -1,0 +1,173 @@
+test_ambiguous_current_mapping_does_not_become_a_verified_removed_call (tests.graph.test_removal_mapping.RemovalMappingTests.test_ambiguous_current_mapping_does_not_become_a_verified_removed_call) ... ok
+test_current_replacement_route_is_not_forced_back_to_removed_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_current_replacement_route_is_not_forced_back_to_removed_declaration) ... ok
+test_deleted_call_is_not_warned_about_as_a_current_consumer (tests.graph.test_removal_mapping.RemovalMappingTests.test_deleted_call_is_not_warned_about_as_a_current_consumer) ... ok
+test_deleted_caller_file_is_not_kept_as_stale (tests.graph.test_removal_mapping.RemovalMappingTests.test_deleted_caller_file_is_not_kept_as_stale) ... ok
+test_deleting_a_complete_provider_file_still_proves_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_deleting_a_complete_provider_file_still_proves_removal) ... ok
+test_dynamic_head_registration_cannot_be_called_a_proven_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_head_registration_cannot_be_called_a_proven_removal) ... FAIL
+test_dynamic_parameters_revealed_during_remap_remain_visible (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_parameters_revealed_during_remap_remain_visible) ... ok
+test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial (tests.graph.test_removal_mapping.RemovalMappingTests.test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial) ... ok
+test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target) ... FAIL
+test_missing_head_repository_of_same_provider_service_prevents_proven_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_missing_head_repository_of_same_provider_service_prevents_proven_removal) ... FAIL
+test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses (tests.graph.test_removal_mapping.RemovalMappingTests.test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses) ... FAIL
+test_moved_call_uses_its_head_location_and_source_quote (tests.graph.test_removal_mapping.RemovalMappingTests.test_moved_call_uses_its_head_location_and_source_quote) ... ok
+test_multiple_current_calls_aggregate_all_live_relationship_witnesses (tests.graph.test_removal_mapping.RemovalMappingTests.test_multiple_current_calls_aggregate_all_live_relationship_witnesses) ... FAIL
+test_new_consumer_in_another_repository_is_found_at_head (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_consumer_in_another_repository_is_found_at_head) ... ok
+test_new_head_consumer_of_removed_operation_is_not_omitted (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_head_consumer_of_removed_operation_is_not_omitted) ... ok
+test_opaque_caller_keeps_stale_base_evidence_and_visible_boundary (tests.graph.test_removal_mapping.RemovalMappingTests.test_opaque_caller_keeps_stale_base_evidence_and_visible_boundary) ... ok
+test_replacement_hypothesis_explicitly_names_old_changed_operation (tests.graph.test_removal_mapping.RemovalMappingTests.test_replacement_hypothesis_explicitly_names_old_changed_operation) ... FAIL
+test_retained_exact_base_route_prevents_false_removed_template_mapping (tests.graph.test_removal_mapping.RemovalMappingTests.test_retained_exact_base_route_prevents_false_removed_template_mapping) ... ok
+test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) ... ok
+test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target) ... ok
+test_selected_scope_does_not_clear_other_removed_operation_gap (tests.graph.test_removal_mapping.RemovalMappingTests.test_selected_scope_does_not_clear_other_removed_operation_gap) ... ok
+test_stale_public_fact_is_explicitly_historical (tests.graph.test_removal_mapping.RemovalMappingTests.test_stale_public_fact_is_explicitly_historical) ... ok
+test_template_call_can_be_verified_against_removed_base_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_template_call_can_be_verified_against_removed_base_declaration) ... ok
+test_unavailable_caller_keeps_stale_base_evidence (tests.graph.test_removal_mapping.RemovalMappingTests.test_unavailable_caller_keeps_stale_base_evidence) ... ok
+test_unchanged_opaque_base_registration_keeps_catalogue_uncertain (tests.graph.test_removal_mapping.RemovalMappingTests.test_unchanged_opaque_base_registration_keeps_catalogue_uncertain) ... FAIL
+test_unparseable_provider_cannot_prove_operation_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_unparseable_provider_cannot_prove_operation_removal) ... ok
+test_unsupported_head_route_in_same_service_repository_prevents_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_unsupported_head_route_in_same_service_repository_prevents_removal) ... FAIL
+
+======================================================================
+FAIL: test_dynamic_head_registration_cannot_be_called_a_proven_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_head_registration_cannot_be_called_a_proven_removal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 278, in test_dynamic_head_registration_cannot_be_called_a_proven_removal
+    self.assertEqual(analysis['deltas'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'operation_id': '713e56418f02097e42e0cd3[269 chars]4}]}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'operation_id': '713e56418f02097e42e0cd333c45c5e6024191e53771f54b1a82820738a1b412', 'code': 'OPERATION_REMOVED', 'before': None, 'after': None, 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63', 'start_line': 4}]}
+
++ []
+- [{'after': None,
+-   'before': None,
+-   'code': 'OPERATION_REMOVED',
+-   'evidence': [{'end_line': 5,
+-                 'quote': 'def orders():\n    return []',
+-                 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63',
+-                 'start_line': 4}],
+-   'operation_id': '713e56418f02097e42e0cd333c45c5e6024191e53771f54b1a82820738a1b412'}]
+
+======================================================================
+FAIL: test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 270, in test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'OPERATION_REMOVED', 'dependency[1017 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'OPERATION_REMOVED', 'dependency_id': '66f869fc7b1b0baa092f31a3997c148bd0a6c482411a14990c7113fd30284478', 'consumer': 'reporting', 'usage': 'SINGLE_REQUEST_OBSERVED', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'CURRENT', 'replacement_operation_id': None, 'condition': 'If the changed declaration governs this call', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'ea4633528241908d81552c65bec39b33c5ff783109e5c29167d2668cddebdbb0', 'start_line': 4}, {'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 2, 'end_line': 2, 'quote': 'requests.get("https://orders.test/orders")'}, {'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': [], 'check': "Exercise the changed operation against this consumer's independent expectations", 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1336 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_missing_head_repository_of_same_provider_service_prevents_proven_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_missing_head_repository_of_same_provider_service_prevents_proven_removal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 247, in test_missing_head_repository_of_same_provider_service_prevents_proven_removal
+    self.assertEqual(analysis['deltas'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'operation_id': '713e56418f02097e42e0cd3[269 chars]4}]}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'operation_id': '713e56418f02097e42e0cd333c45c5e6024191e53771f54b1a82820738a1b412', 'code': 'OPERATION_REMOVED', 'before': None, 'after': None, 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63', 'start_line': 4}]}
+
++ []
+- [{'after': None,
+-   'before': None,
+-   'code': 'OPERATION_REMOVED',
+-   'evidence': [{'end_line': 5,
+-                 'quote': 'def orders():\n    return []',
+-                 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63',
+-                 'start_line': 4}],
+-   'operation_id': '713e56418f02097e42e0cd333c45c5e6024191e53771f54b1a82820738a1b412'}]
+
+======================================================================
+FAIL: test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses (tests.graph.test_removal_mapping.RemovalMappingTests.test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 213, in test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses
+    self.assertEqual([r.status for r in result.relationships], ['ACTIVE'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['STALE'] != ['ACTIVE']
+
+First differing element 0:
+'STALE'
+'ACTIVE'
+
+- ['STALE']
++ ['ACTIVE']
+
+======================================================================
+FAIL: test_multiple_current_calls_aggregate_all_live_relationship_witnesses (tests.graph.test_removal_mapping.RemovalMappingTests.test_multiple_current_calls_aggregate_all_live_relationship_witnesses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 228, in test_multiple_current_calls_aggregate_all_live_relationship_witnesses
+    self.assertEqual(paths, {'client.py', 'second.py'})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'client.py'
+
+======================================================================
+FAIL: test_replacement_hypothesis_explicitly_names_old_changed_operation (tests.graph.test_removal_mapping.RemovalMappingTests.test_replacement_hypothesis_explicitly_names_old_changed_operation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 303, in test_replacement_hypothesis_explicitly_names_old_changed_operation
+    self.assertEqual([c.subject.route if c.subject else None for c in risks], ['/orders'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [None] != ['/orders']
+
+First differing element 0:
+None
+'/orders'
+
+- [None]
++ ['/orders']
+
+======================================================================
+FAIL: test_unchanged_opaque_base_registration_keeps_catalogue_uncertain (tests.graph.test_removal_mapping.RemovalMappingTests.test_unchanged_opaque_base_registration_keeps_catalogue_uncertain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 288, in test_unchanged_opaque_base_registration_keeps_catalogue_uncertain
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'OPERATION_REMOVED', 'dependency[1017 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'OPERATION_REMOVED', 'dependency_id': '66f869fc7b1b0baa092f31a3997c148bd0a6c482411a14990c7113fd30284478', 'consumer': 'reporting', 'usage': 'SINGLE_REQUEST_OBSERVED', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'CURRENT', 'replacement_operation_id': None, 'condition': 'If the changed declaration governs this call', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'c6ec5d652765ed4dd58665ee01ec170dd69ea5cf4edab8eaacd656403d098848', 'start_line': 4}, {'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 2, 'end_line': 2, 'quote': 'requests.get("https://orders.test/orders")'}, {'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': [], 'check': "Exercise the changed operation against this consumer's independent expectations", 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1336 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_unsupported_head_route_in_same_service_repository_prevents_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_unsupported_head_route_in_same_service_repository_prevents_removal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 257, in test_unsupported_head_route_in_same_service_repository_prevents_removal
+    self.assertEqual(analysis['deltas'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'operation_id': '713e56418f02097e42e0cd3[269 chars]4}]}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'operation_id': '713e56418f02097e42e0cd333c45c5e6024191e53771f54b1a82820738a1b412', 'code': 'OPERATION_REMOVED', 'before': None, 'after': None, 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63', 'start_line': 4}]}
+
++ []
+- [{'after': None,
+-   'before': None,
+-   'code': 'OPERATION_REMOVED',
+-   'evidence': [{'end_line': 5,
+-                 'quote': 'def orders():\n    return []',
+-                 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63',
+-                 'start_line': 4}],
+-   'operation_id': '713e56418f02097e42e0cd333c45c5e6024191e53771f54b1a82820738a1b412'}]
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.543s
+
+FAILED (failures=8)

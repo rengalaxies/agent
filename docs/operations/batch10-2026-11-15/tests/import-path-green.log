@@ -1,0 +1,11 @@
+test_cycle_and_diamond_have_deterministic_equal_retrieval (tests.test_pr_assistant.ImportTests.test_cycle_and_diamond_have_deterministic_equal_retrieval) ... ok
+test_independently_declared_import_examples (tests.test_pr_assistant.ImportTests.test_independently_declared_import_examples) ... ok
+test_manifest_mapping_multihop_and_orphan (tests.test_pr_assistant.ImportTests.test_manifest_mapping_multihop_and_orphan) ... ok
+test_source_and_schema_changes_change_evidence (tests.test_pr_assistant.ImportTests.test_source_and_schema_changes_change_evidence) ... ok
+test_unknown_manifest_version_never_claims_supported (tests.test_pr_assistant.ImportTests.test_unknown_manifest_version_never_claims_supported) ... ok
+test_write_attach_and_multiple_statements_are_not_supported (tests.test_pr_assistant.ImportTests.test_write_attach_and_multiple_statements_are_not_supported) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.012s
+
+OK

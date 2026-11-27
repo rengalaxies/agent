@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "unauthorized": 401,
+  "no_store": true,
+  "results": [
+    {
+      "resource_id": "github:acme/orders#7",
+      "generation": 3,
+      "freshness": "CURRENT",
+      "schema": "impactmap-diagnostics-1",
+      "document_present": true,
+      "raw_sha256": "89b8cf36e67c3234b2af14bd457cbf9268d94e0ce1c73a924baa6a12c89109c9"
+    },
+    {
+      "resource_id": "jira:10012",
+      "generation": 2,
+      "freshness": "CURRENT",
+      "schema": "impactmap-diagnostics-1",
+      "document_present": true,
+      "raw_sha256": "7605f34beadcb84ba290fb3b63f11f6f531c1ee6cae7b31ad4645aa157b8ab93"
+    }
+  ]
+}

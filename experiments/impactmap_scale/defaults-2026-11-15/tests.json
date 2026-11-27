@@ -1,0 +1,183 @@
+{
+  "performance.log": {
+    "run": 75,
+    "seconds": 67.647,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  },
+  "green-fixture-errors.log": {
+    "run": 11,
+    "seconds": 0.462,
+    "success": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_omitted_limits_accept_more_than_256_selected_files (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_256_selected_files)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_omitted_limits_accept_more_than_two_megabytes_across_repositories (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_two_megabytes_across_repositories)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment (tests.service.test_resource_limits.ResourceLimitsTests.test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment)"
+      }
+    ],
+    "skips": []
+  },
+  "red.log": {
+    "run": 11,
+    "seconds": 0.341,
+    "success": false,
+    "failures_by_name": [
+      {
+        "kind": "ERROR",
+        "name": "test_omitted_limits_accept_more_than_256_selected_files (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_256_selected_files)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_omitted_limits_accept_more_than_two_megabytes_across_repositories (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_two_megabytes_across_repositories)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment (tests.service.test_resource_limits.ResourceLimitsTests.test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='file_count_limit')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='scan_timeout')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='inventory_limit')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_service_materializes_the_expanded_working_profile_from_omitted_limits (tests.service.test_resource_limits.ResourceLimitsTests.test_service_materializes_the_expanded_working_profile_from_omitted_limits)"
+      }
+    ],
+    "skips": []
+  },
+  "graph.log": {
+    "run": 302,
+    "seconds": 118.256,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  },
+  "red-corrected-git-fixture.log": {
+    "run": 2,
+    "seconds": 0.48,
+    "success": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment (tests.service.test_resource_limits.ResourceLimitsTests.test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='file_count_limit')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='scan_timeout')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='inventory_limit')"
+      }
+    ],
+    "skips": []
+  },
+  "focused-final.log": {
+    "run": 12,
+    "seconds": 2.154,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  },
+  "green.log": {
+    "run": 11,
+    "seconds": 1.486,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  },
+  "service.log": {
+    "run": 104,
+    "seconds": 203.32,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  },
+  "red-import.log": {
+    "run": 7,
+    "seconds": 0.278,
+    "success": false,
+    "failures_by_name": [
+      {
+        "kind": "ERROR",
+        "name": "test_omitted_limits_accept_more_than_256_selected_files (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_256_selected_files)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_omitted_limits_accept_more_than_two_megabytes_across_repositories (tests.graph.test_working_limits.WorkingLimitsTests.test_omitted_limits_accept_more_than_two_megabytes_across_repositories)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_resource_limits (unittest.loader._FailedTest.test_resource_limits)"
+      }
+    ],
+    "skips": []
+  },
+  "completeness-red.log": {
+    "run": 2,
+    "seconds": 0.204,
+    "success": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_duplicate_generation_cannot_replace_another_job (__main__.CompletenessTests.test_duplicate_generation_cannot_replace_another_job)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_missing_all_verdicts_is_not_success (__main__.CompletenessTests.test_missing_all_verdicts_is_not_success)"
+      }
+    ],
+    "skips": []
+  },
+  "completeness-green.log": {
+    "run": 2,
+    "seconds": 0.209,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  },
+  "bootstrap-red.log": {
+    "run": 2,
+    "seconds": 0.285,
+    "success": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_existing_input_is_refused_without_rewriting (__main__.BootstrapTests.test_existing_input_is_refused_without_rewriting)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_fresh_output_root_is_created (__main__.BootstrapTests.test_fresh_output_root_is_created)"
+      }
+    ],
+    "skips": []
+  },
+  "bootstrap-green.log": {
+    "run": 2,
+    "seconds": 0.144,
+    "success": true,
+    "failures_by_name": [],
+    "skips": []
+  }
+}

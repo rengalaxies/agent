@@ -1,0 +1,281 @@
+{
+  "graph-final.log": {
+    "complete": true,
+    "run": 296,
+    "seconds": 179.587,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "graph-native.log": {
+    "complete": true,
+    "run": 284,
+    "seconds": 188.965,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "graph.log": {
+    "complete": false,
+    "run": null,
+    "seconds": null,
+    "success": false,
+    "interrupted": true,
+    "failures_by_name": [
+      {
+        "kind": "ERROR",
+        "name": "test_real_http_path_sends_the_v3_schema_and_parses_in_layers (test_action_diagnostics.HttpTransportTests.test_real_http_path_sends_the_v3_schema_and_parses_in_layers)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_schema_invalid_reply_over_http_is_not_a_transport_failure (test_action_diagnostics.HttpTransportTests.test_schema_invalid_reply_over_http_is_not_a_transport_failure)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_v2_schema_over_local_http_stub_no_real_model (test_evidence_refs.ReferenceTransportTests.test_v2_schema_over_local_http_stub_no_real_model)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_v2_transport_rejects_legacy_proposal_without_repair (test_evidence_refs.ReferenceTransportTests.test_v2_transport_rejects_legacy_proposal_without_repair)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_absolute_remaining_time_bounds_body_not_fresh_full_timeout (test_evidence_refs_runner.DeadlineTransportTests.test_absolute_remaining_time_bounds_body_not_fresh_full_timeout)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_cloud_token_parameter_opt_in_and_v1_default_preserved (test_evidence_refs_runner.DeadlineTransportTests.test_cloud_token_parameter_opt_in_and_v1_default_preserved)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_expired_absolute_deadline_sends_nothing (test_evidence_refs_runner.DeadlineTransportTests.test_expired_absolute_deadline_sends_nothing)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_valid_usage_preserved_even_when_action_schema_is_invalid (test_evidence_refs_runner.DeadlineTransportTests.test_valid_usage_preserved_even_when_action_schema_is_invalid)"
+      },
+      {
+        "kind": "ERROR",
+        "name": "test_real_http_calls_become_a_directed_runtime_edge_next_to_code (test_graph_query.HttpStandTests.test_real_http_calls_become_a_directed_runtime_edge_next_to_code)"
+      }
+    ],
+    "skipped": []
+  },
+  "performance-final.log": {
+    "complete": true,
+    "run": 75,
+    "seconds": 118.98,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "performance-stable.log": {
+    "complete": true,
+    "run": 75,
+    "seconds": 100.796,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "performance-tests.log": {
+    "complete": true,
+    "run": 75,
+    "seconds": 129.17,
+    "success": false,
+    "interrupted": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_same_seed_is_path_independent_and_different_seed_changes_sources (test_scale_corpora.CorpusTests.test_same_seed_is_path_independent_and_different_seed_changes_sources)"
+      }
+    ],
+    "skipped": []
+  },
+  "project-failfast.log": {
+    "complete": true,
+    "run": 305,
+    "seconds": 183.263,
+    "success": false,
+    "interrupted": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_invalid_output_overflow_deadline_and_cancel_safe (graph_demo.test_graph_cli.CLITests.test_invalid_output_overflow_deadline_and_cancel_safe)"
+      }
+    ],
+    "skipped": []
+  },
+  "proof-green.log": {
+    "complete": true,
+    "run": 12,
+    "seconds": 28.173,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "proof-red.log": {
+    "complete": true,
+    "run": 1,
+    "seconds": 7.114,
+    "success": false,
+    "interrupted": false,
+    "failures_by_name": [
+      {
+        "kind": "ERROR",
+        "name": "test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale)"
+      }
+    ],
+    "skipped": []
+  },
+  "removal-green-final.log": {
+    "complete": true,
+    "run": 18,
+    "seconds": 0.539,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "removal-green.log": {
+    "complete": true,
+    "run": 15,
+    "seconds": 0.297,
+    "success": false,
+    "interrupted": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_new_head_consumer_of_removed_operation_is_not_omitted (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_head_consumer_of_removed_operation_is_not_omitted)"
+      }
+    ],
+    "skipped": []
+  },
+  "removal-red.log": {
+    "complete": true,
+    "run": 15,
+    "seconds": 0.296,
+    "success": false,
+    "interrupted": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_current_replacement_route_is_not_forced_back_to_removed_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_current_replacement_route_is_not_forced_back_to_removed_declaration)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_deleted_call_is_not_warned_about_as_a_current_consumer (tests.graph.test_removal_mapping.RemovalMappingTests.test_deleted_call_is_not_warned_about_as_a_current_consumer)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_dynamic_parameters_revealed_during_remap_remain_visible (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_parameters_revealed_during_remap_remain_visible)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial (tests.graph.test_removal_mapping.RemovalMappingTests.test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_moved_call_uses_its_head_location_and_source_quote (tests.graph.test_removal_mapping.RemovalMappingTests.test_moved_call_uses_its_head_location_and_source_quote)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_new_consumer_in_another_repository_is_found_at_head (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_consumer_in_another_repository_is_found_at_head)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_new_head_consumer_of_removed_operation_is_not_omitted (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_head_consumer_of_removed_operation_is_not_omitted)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) (call='requests.get(\"https://unknown.test/other\")')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) (call='requests.post(\"https://orders.test/orders\")')"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_template_call_can_be_verified_against_removed_base_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_template_call_can_be_verified_against_removed_base_declaration)"
+      }
+    ],
+    "skipped": []
+  },
+  "review-green.log": {
+    "complete": true,
+    "run": 27,
+    "seconds": 0.531,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "review-red.log": {
+    "complete": true,
+    "run": 27,
+    "seconds": 0.543,
+    "success": false,
+    "interrupted": false,
+    "failures_by_name": [
+      {
+        "kind": "FAIL",
+        "name": "test_dynamic_head_registration_cannot_be_called_a_proven_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_head_registration_cannot_be_called_a_proven_removal)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_incomplete_base_provider_catalogue_does_not_prove_unique_template_target)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_missing_head_repository_of_same_provider_service_prevents_proven_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_missing_head_repository_of_same_provider_service_prevents_proven_removal)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses (tests.graph.test_removal_mapping.RemovalMappingTests.test_mixed_current_and_stale_calls_keep_live_edge_and_separate_witnesses)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_multiple_current_calls_aggregate_all_live_relationship_witnesses (tests.graph.test_removal_mapping.RemovalMappingTests.test_multiple_current_calls_aggregate_all_live_relationship_witnesses)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_replacement_hypothesis_explicitly_names_old_changed_operation (tests.graph.test_removal_mapping.RemovalMappingTests.test_replacement_hypothesis_explicitly_names_old_changed_operation)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_unchanged_opaque_base_registration_keeps_catalogue_uncertain (tests.graph.test_removal_mapping.RemovalMappingTests.test_unchanged_opaque_base_registration_keeps_catalogue_uncertain)"
+      },
+      {
+        "kind": "FAIL",
+        "name": "test_unsupported_head_route_in_same_service_repository_prevents_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_unsupported_head_route_in_same_service_repository_prevents_removal)"
+      }
+    ],
+    "skipped": []
+  },
+  "service-final.log": {
+    "complete": true,
+    "run": 56,
+    "seconds": 81.782,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  },
+  "service-focused.log": {
+    "complete": true,
+    "run": 56,
+    "seconds": 91.051,
+    "success": true,
+    "interrupted": false,
+    "failures_by_name": [],
+    "skipped": []
+  }
+}

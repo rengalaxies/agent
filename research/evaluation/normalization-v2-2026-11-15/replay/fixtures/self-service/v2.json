@@ -1,0 +1,66 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "p",
+        "method": "GET",
+        "provider_service": "p",
+        "route": "/orders"
+      },
+      "notes": "All formulations retained in raw artifact; no gold-based filtering.",
+      "raw_refs": [
+        "/affected/0/rel:79623847e08f170fa6cab009767f9e6a09123c36",
+        "/checks/0",
+        "/findings/0"
+      ],
+      "witnesses": [
+        {
+          "commit": "17cc54e7bb5cc30663f4d1e83ebb204215ed33fc",
+          "line_end": 2,
+          "line_start": 2,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12",
+          "repository": "c"
+        }
+      ]
+    }
+  ],
+  "case_id": "DEV-BINDING",
+  "configuration_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "unclassified_change",
+      "scope": "analysis"
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "scope": "analysis"
+    },
+    {
+      "code": "requirement_unknown",
+      "scope": "p"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "p"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "7d6a297b027b4dfbc8cd424692c73c7dbd7f1a20d1cb5607659dfea2c4ca69b7",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

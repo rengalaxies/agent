@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "source_commit": "8153bd1110dd1342329d88b91528d414219d1b4f",
+  "supervisor": "process",
+  "external_live": false,
+  "returncode": 0,
+  "scenarios": [
+    {
+      "name": "fresh_install",
+      "result": "PASS"
+    },
+    {
+      "name": "end_to_end_on_installed_release",
+      "result": "PASS"
+    },
+    {
+      "name": "reinstall_is_idempotent",
+      "result": "PASS"
+    },
+    {
+      "name": "service_killed_comes_back",
+      "result": "PASS"
+    },
+    {
+      "name": "backup_restore",
+      "result": "PASS"
+    }
+  ],
+  "isolated_service_stopped": true
+}

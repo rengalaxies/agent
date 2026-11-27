@@ -37,8 +37,13 @@ def resource_marker(installation_id: str, resource_id: str) -> str:
 
 def _versions(snapshot: dict, kind: str, generation: int) -> list[str]:
     if kind == "pr":
-        lines = [f"PR {snapshot.get('repository')}#{snapshot.get('pr_id')}: base {snapshot.get('base_sha', '')[:12]}, "
-                 f"head {snapshot.get('head_sha', '')[:12]}"]
+        def short(value):
+            return value[:12] if isinstance(value,str) and value else 'неизвестен'
+        base='base '+short(snapshot.get('base_sha'))
+        if not snapshot.get('base_sha') and snapshot.get('destination_tip_sha'):
+            base+='; destination tip '+short(snapshot['destination_tip_sha'])+' (merge-base не установлен)'
+        lines = [f"PR {snapshot.get('repository')}#{snapshot.get('pr_id')}: {base}, "
+                 f"head {short(snapshot.get('head_sha'))}"]
         if snapshot.get("linked_jira_keys"):
             lines.append("Связанные задачи Jira: " + ", ".join(snapshot["linked_jira_keys"]))
     else:
@@ -225,7 +230,8 @@ class DirectorySink:
 
 
 class Publisher:
-    def __init__(self, store, connectors: dict, backends: dict, *, hook=None):
+    def __init__(self, store, connectors: dict, backends: dict, *, hook=None,notice_scope=None):
+        self.notice_scope=notice_scope or (lambda:None)
         self.store, self.connectors, self.backends = store, connectors, backends
         self.hook = hook or (lambda phase, item: None)
 
@@ -238,18 +244,18 @@ class Publisher:
             self.store.forget_comment(resource["resource_id"], resource["comment_id"])
         found = [c for c in backend.list_comments(resource["resource_id"]) if mine(c)]
         if len(found) > 1:
-            self.store.note("duplicate_service_comments", resource["resource_id"], f"count={len(found)}")
+            self._note("duplicate_service_comments", resource["resource_id"], f"count={len(found)}")
         return found[0] if found else None
 
     def _failed(self, intent, exc, *, writing: bool) -> str:
         rid = intent["resource_id"]
         if isinstance(exc, AuthError):
             provider = intent["resource_id"].split(":")[0]
-            self.store.note("connection_unauthorized", provider, f"{provider}:{exc.status}")
+            self._note("connection_unauthorized", provider, f"{provider}:{exc.status}")
             self.store.block_intent(intent, "connection_unauthorized", AUTH_RETRY_SECONDS)
             return "blocked"
         if isinstance(exc, RateLimited):
-            self.store.note("rate_limited", rid.split(":")[0], f"retry_after={exc.retry_after}")
+            self._note("rate_limited", rid.split(":")[0], f"retry_after={exc.retry_after}")
             # 429 is an answer: this write did not happen.
             return self.store.intent_retry(intent, "rate_limited", delay=exc.retry_after,
                                            state="UNKNOWN" if intent["state"] == "UNKNOWN" else "PENDING")
@@ -262,9 +268,15 @@ class Publisher:
             return "failed"
         if isinstance(exc, ClientError):
             self.store.intent_final(intent, "FAILED", "provider_rejected")
-            self.store.note("provider_rejected", rid, str(exc.status))
+            self._note("provider_rejected", rid, str(exc.status))
             return "failed"
         raise exc
+
+    def _note(self,kind,subject,detail):
+        return self.store.note(kind,subject,detail,ui_scope=self.notice_scope())
+
+    def _clear_notice(self,kind,subject):
+        return self.store.clear_notice(kind,subject,ui_scope=self.notice_scope())
 
     def publish(self, intent, *, ingest_snapshot) -> str:
         """Run one publication attempt. ``ingest_snapshot(snapshot, event_id)`` opens a generation."""
@@ -311,11 +323,12 @@ class Publisher:
         sending = {**intent, "state": "SENDING"}
         try:
             self.hook("sending", sending)
+            write_options = {"expected_intent": sending} if getattr(backend, "requires_publication_intent", False) else {}
             if existing:
-                backend.update_comment(rid, existing.comment_id, doc, marker)
+                backend.update_comment(rid, existing.comment_id, doc, marker, **write_options)
                 comment_id = existing.comment_id
             else:
-                comment_id = backend.create_comment(rid, doc, marker)
+                comment_id = backend.create_comment(rid, doc, marker, **write_options)
         except NotFound:
             # Our comment was deleted between lookup and update: look again next attempt.
             self.store.forget_comment(rid, existing.comment_id if existing else "")
@@ -323,7 +336,7 @@ class Publisher:
         except (AuthError, RateLimited, ServerError, TransportError, ClientError) as exc:
             return self._failed(sending, exc, writing=True)
         self.hook("after_send", sending)
-        self.store.clear_notice("connection_unauthorized", provider)
+        self._clear_notice("connection_unauthorized", provider)
         current_at_delivery = self.store.intent_delivered(sending, comment_id=comment_id,
                                                           comment_digest=intent["body_digest"], wrote=True)
         return self._postsend(intent, connector, ingest_snapshot,
@@ -337,13 +350,13 @@ class Publisher:
         try:
             after = connector.fetch(rid)
         except (AuthError, RateLimited, ServerError, TransportError, ClientError, NotFound) as exc:
-            self.store.note("postsend_check_failed", rid, exc.code)
+            self._note("postsend_check_failed", rid, exc.code)
             event_id = f"postsend:{intent['intent_id']}"
             self.store.add_event(EventEnvelope(provider=connector.provider, source="postsend", event_id=event_id,
                                               event_kind="reconcile", resource_id=rid,
                                               payload_digest=digest(event_id), received_at=self.store.clock()))
             return outcome
-        self.store.clear_notice("postsend_check_failed", rid)
+        self._clear_notice("postsend_check_failed", rid)
         if after.closed or after.version != intent["resource_version"]:
             ingest_snapshot(after, f"postsend:{intent['intent_id']}")
             return "delivered_stale"

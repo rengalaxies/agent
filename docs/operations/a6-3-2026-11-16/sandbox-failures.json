@@ -1,0 +1,2037 @@
+{
+  "run": 1273,
+  "failures": 46,
+  "errors": 360,
+  "items": [
+    {
+      "status": "ERROR",
+      "test": "test_real_http_path_sends_the_v3_schema_and_parses_in_layers (graph.test_action_diagnostics.HttpTransportTests.test_real_http_path_sends_the_v3_schema_and_parses_in_layers)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_schema_invalid_reply_over_http_is_not_a_transport_failure (graph.test_action_diagnostics.HttpTransportTests.test_schema_invalid_reply_over_http_is_not_a_transport_failure)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_v2_schema_over_local_http_stub_no_real_model (graph.test_evidence_refs.ReferenceTransportTests.test_v2_schema_over_local_http_stub_no_real_model)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_v2_transport_rejects_legacy_proposal_without_repair (graph.test_evidence_refs.ReferenceTransportTests.test_v2_transport_rejects_legacy_proposal_without_repair)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_absolute_remaining_time_bounds_body_not_fresh_full_timeout (graph.test_evidence_refs_runner.DeadlineTransportTests.test_absolute_remaining_time_bounds_body_not_fresh_full_timeout)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cloud_token_parameter_opt_in_and_v1_default_preserved (graph.test_evidence_refs_runner.DeadlineTransportTests.test_cloud_token_parameter_opt_in_and_v1_default_preserved)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_expired_absolute_deadline_sends_nothing (graph.test_evidence_refs_runner.DeadlineTransportTests.test_expired_absolute_deadline_sends_nothing)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_valid_usage_preserved_even_when_action_schema_is_invalid (graph.test_evidence_refs_runner.DeadlineTransportTests.test_valid_usage_preserved_even_when_action_schema_is_invalid)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_http_calls_become_a_directed_runtime_edge_next_to_code (graph.test_graph_query.HttpStandTests.test_real_http_calls_become_a_directed_runtime_edge_next_to_code)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_http_failure_charges_budget_and_returns_partial_without_secret_log (graph.test_inference.LoopTests.test_http_failure_charges_budget_and_returns_partial_without_secret_log)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_body_deadline_with_http10_closed_connection (graph.test_inference.TransportTests.test_body_deadline_with_http10_closed_connection)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_no_redirect_fallback_or_automatic_retry (graph.test_inference.TransportTests.test_no_redirect_fallback_or_automatic_retry)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_http_and_schema_request_but_no_real_model (graph.test_inference.TransportTests.test_real_http_and_schema_request_but_no_real_model)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_timeout_and_pre_cancel_are_bounded (graph.test_inference.TransportTests.test_timeout_and_pre_cancel_are_bounded)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_invalid_and_privilege_escalating_replies_rejected (graph.test_inference.TransportTests.test_truncated_invalid_and_privilege_escalating_replies_rejected) (kwargs=['finish_reason'])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_invalid_and_privilege_escalating_replies_rejected (graph.test_inference.TransportTests.test_truncated_invalid_and_privilege_escalating_replies_rejected) (kwargs=['raw'])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_invalid_and_privilege_escalating_replies_rejected (graph.test_inference.TransportTests.test_truncated_invalid_and_privilege_escalating_replies_rejected) (kwargs=['reply'])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_invalid_and_privilege_escalating_replies_rejected (graph.test_inference.TransportTests.test_truncated_invalid_and_privilege_escalating_replies_rejected) (kwargs=['reply'])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_invalid_and_privilege_escalating_replies_rejected (graph.test_inference.TransportTests.test_truncated_invalid_and_privilege_escalating_replies_rejected) (kwargs=['raw'])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_invalid_and_privilege_escalating_replies_rejected (graph.test_inference.TransportTests.test_truncated_invalid_and_privilege_escalating_replies_rejected) (kwargs=['raw'])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_method_port_prefix_and_lifecycle_with_separate_expectations (graph.test_pilot_review.PilotReviewTest.test_method_port_prefix_and_lifecycle_with_separate_expectations)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_http_calls_produce_the_expected_directed_edges (graph.test_runtime_observations.RuntimeStandTests.test_real_http_calls_produce_the_expected_directed_edges)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_cancel_interrupts_body (graph.test_transport_regressions.TransportRegressions.test_r1_cancel_interrupts_body)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_cancel_interrupts_dns_without_late_connection (graph.test_transport_regressions.TransportRegressions.test_r1_cancel_interrupts_dns_without_late_connection)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_cancel_interrupts_headers (graph.test_transport_regressions.TransportRegressions.test_r1_cancel_interrupts_headers)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_connect_tls_and_send_obey_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_connect_tls_and_send_obey_deadline) (phase='connect', cancelled=False)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_connect_tls_and_send_obey_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_connect_tls_and_send_obey_deadline) (phase='connect', cancelled=True)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_connect_tls_and_send_obey_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_connect_tls_and_send_obey_deadline) (phase='do_handshake', cancelled=False)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_connect_tls_and_send_obey_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_connect_tls_and_send_obey_deadline) (phase='do_handshake', cancelled=True)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_connect_tls_and_send_obey_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_connect_tls_and_send_obey_deadline) (phase='send', cancelled=False)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_connect_tls_and_send_obey_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_connect_tls_and_send_obey_deadline) (phase='send', cancelled=True)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_dns_wait_is_bounded_and_no_late_request (graph.test_transport_regressions.TransportRegressions.test_r1_dns_wait_is_bounded_and_no_late_request)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_headers_obey_wall_deadline (graph.test_transport_regressions.TransportRegressions.test_r1_headers_obey_wall_deadline)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_pending_resolver_keeps_lock_after_partial_and_store_close (graph.test_transport_regressions.TransportRegressions.test_r1_pending_resolver_keeps_lock_after_partial_and_store_close)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r1_process_crash_releases_owner_without_refunding_charge (graph.test_transport_regressions.TransportRegressions.test_r1_process_crash_releases_owner_without_refunding_charge)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_cli_partial_preserves_candidates_and_budget (graph.test_transport_regressions.TransportRegressions.test_r5_cli_partial_preserves_candidates_and_budget)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value=None)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value=[])",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value={'choices': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20}})",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value={'choices': [None], 'usage': {'prompt_tokens': 20, 'completion_tokens': 20}})",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value={'choices': [{'finish_reason': 'stop', 'message': None}], 'usage': {'prompt_tokens': 20, 'completion_tokens': 20}})",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value={'choices': [{'finish_reason': 'stop', 'message': 'bad'}], 'usage': {'prompt_tokens': 20, 'completion_tokens': 20}})",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value={'choices': [{'finish_reason': 'stop', 'message': {'content': '{\"action\": \"finish\", \"source_id\": null, \"start_line\": null, \"end_line\": null, \"proposals\": []}'}}], 'usage': None})",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_r5_envelope_shapes_are_structured_errors (graph.test_transport_regressions.TransportRegressions.test_r5_envelope_shapes_are_structured_errors) (value={'choices': [{'finish_reason': 'stop', 'message': {'content': '{\"action\": \"finish\", \"source_id\": null, \"start_line\": null, \"end_line\": null, \"proposals\": []}'}}], 'usage': []})",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "performance.test_evaluation_tooling (unittest.loader._FailedTest.performance.test_evaluation_tooling)",
+      "exception": "ModuleNotFoundError: No module named 'jsonschema'"
+    },
+    {
+      "status": "ERROR",
+      "test": "performance.test_normalization_binding (unittest.loader._FailedTest.performance.test_normalization_binding)",
+      "exception": "ModuleNotFoundError: No module named 'jsonschema'"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_aggregate_capture_limit (product.test_contract_profile.ContractProfileTests.test_aggregate_capture_limit)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_arbitrary_python_is_never_executed (product.test_contract_profile.ContractProfileTests.test_arbitrary_python_is_never_executed)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_blanket_adaptation_breaks_unchanged_audit (product.test_contract_profile.ContractProfileTests.test_blanket_adaptation_breaks_unchanged_audit)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_candidate_cannot_replace_pinned_suite (product.test_contract_profile.ContractProfileTests.test_candidate_cannot_replace_pinned_suite)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_comparator_stop_stays_stop (product.test_contract_profile.ContractProfileTests.test_comparator_stop_stays_stop)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_float_input_and_overflow_fail_closed (product.test_contract_profile.ContractProfileTests.test_float_input_and_overflow_fail_closed)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_generation_does_not_overwrite_source_or_existing_output (product.test_contract_profile.ContractProfileTests.test_generation_does_not_overwrite_source_or_existing_output)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_manifest_contract_snapshot_change_is_not_accepted (product.test_contract_profile.ContractProfileTests.test_manifest_contract_snapshot_change_is_not_accepted)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_consumer_expectation_and_duplicate_cases_stop (product.test_contract_profile.ContractProfileTests.test_missing_consumer_expectation_and_duplicate_cases_stop)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_transform_passes_different_consumer_requirements (product.test_contract_profile.ContractProfileTests.test_real_transform_passes_different_consumer_requirements)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_sql_cannot_write_or_read_host_file (product.test_contract_profile.ContractProfileTests.test_sql_cannot_write_or_read_host_file)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_symlink_consumer_and_traversal_rejected (product.test_contract_profile.ContractProfileTests.test_symlink_consumer_and_traversal_rejected)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_worker_generates_candidate_from_pinned_intent_and_checks_independently (product.test_control_plane.ContractIntentQueueTests.test_worker_generates_candidate_from_pinned_intent_and_checks_independently)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_audit_append_only_and_no_tokens_stored (product.test_control_plane.ControlPlaneTests.test_audit_append_only_and_no_tokens_stored)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cli_has_no_secret_in_output (product.test_control_plane.ControlPlaneTests.test_cli_has_no_secret_in_output)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_concurrent_workers_claim_only_once (product.test_control_plane.ControlPlaneTests.test_concurrent_workers_claim_only_once)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_controls_must_be_outside_candidate_repository (product.test_control_plane.ControlPlaneTests.test_controls_must_be_outside_candidate_repository)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cross_department_and_parent_membership_do_not_leak (product.test_control_plane.ControlPlaneTests.test_cross_department_and_parent_membership_do_not_leak)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_expired_lease_is_unknown_not_automatically_retried (product.test_control_plane.ControlPlaneTests.test_expired_lease_is_unknown_not_automatically_retried)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_explicit_retry_is_operator_scoped_idempotent_and_passes_runtime_attempt (product.test_control_plane.ControlPlaneTests.test_explicit_retry_is_operator_scoped_idempotent_and_passes_runtime_attempt)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_fencing_prevents_completion_after_lease_expiry (product.test_control_plane.ControlPlaneTests.test_fencing_prevents_completion_after_lease_expiry)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_no_transition_or_state_namespace_reuse_across_departments (product.test_control_plane.ControlPlaneTests.test_no_transition_or_state_namespace_reuse_across_departments)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_contract_python_sql_profile_uses_queue_and_independent_pin (product.test_control_plane.ControlPlaneTests.test_real_contract_python_sql_profile_uses_queue_and_independent_pin)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_execution_and_restart_idempotency (product.test_control_plane.ControlPlaneTests.test_real_execution_and_restart_idempotency)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_registration_pin_does_not_approve_modified_expectations (product.test_control_plane.ControlPlaneTests.test_registration_pin_does_not_approve_modified_expectations)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_revocation_and_grant_expiry_take_effect_without_restart (product.test_control_plane.ControlPlaneTests.test_revocation_and_grant_expiry_take_effect_without_restart)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_revocation_during_execution_redacts_completion (product.test_control_plane.ControlPlaneTests.test_revocation_during_execution_redacts_completion)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_revoked_runtime_grant_cannot_be_bypassed_by_queue_membership (product.test_control_plane.ControlPlaneTests.test_revoked_runtime_grant_cannot_be_bypassed_by_queue_membership)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_scope_hierarchy_cannot_skip_or_cycle (product.test_control_plane.ControlPlaneTests.test_scope_hierarchy_cannot_skip_or_cycle)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unknown_attempt_cannot_be_retried_even_by_operator (product.test_control_plane.ControlPlaneTests.test_unknown_attempt_cannot_be_retried_even_by_operator)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_rebinding_preserves_pins_and_requires_fresh_scope_and_review (product.test_control_plane.RebindTests.test_rebinding_preserves_pins_and_requires_fresh_scope_and_review)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_rebinding_rejects_inflight_task (product.test_control_plane.RebindTests.test_rebinding_rejects_inflight_task)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_actual_snapshot_restore_does_not_resurrect_old_authority (product.test_control_plane.RestoreAuthorityTests.test_actual_snapshot_restore_does_not_resurrect_old_authority)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_recovery_requires_marker_attestation_and_fresh_identity (product.test_control_plane.RestoreAuthorityTests.test_recovery_requires_marker_attestation_and_fresh_identity)",
+      "exception": "ValueError: operator_path_symlink"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_bad_inputs_block_before_network (product.test_delivery.DeliveryTest.test_bad_inputs_block_before_network)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_default_is_draft_without_network (product.test_delivery.DeliveryTest.test_default_is_draft_without_network)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_endpoint_scope_and_https_required (product.test_delivery.DeliveryTest.test_endpoint_scope_and_https_required)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_explicit_send_preserves_key_and_payload (product.test_delivery.DeliveryTest.test_explicit_send_preserves_key_and_payload)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_no_ambient_proxy_or_credentials (product.test_delivery.DeliveryTest.test_no_ambient_proxy_or_credentials)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_receipts_and_redirects_are_unknown_without_retry (product.test_delivery.DeliveryTest.test_receipts_and_redirects_are_unknown_without_retry)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_timeout_is_unknown_not_retried (product.test_delivery.DeliveryTest.test_timeout_is_unknown_not_retried)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_bundle_is_cloneable_and_patch_matches (product.test_git_bundle.GitBundleTests.test_bundle_is_cloneable_and_patch_matches)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_hostile_inherited_git_config_cannot_execute_hook (product.test_git_bundle.GitBundleTests.test_hostile_inherited_git_config_cannot_execute_hook)",
+      "exception": "ValueError: symlink_output_parent"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_forged_observation_or_expected_payload_rejected (product.test_providers.ProviderTest.test_forged_observation_or_expected_payload_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_only_source_and_intent_leave_process (product.test_providers.ProviderTest.test_only_source_and_intent_leave_process)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_redirect_not_followed (product.test_providers.ProviderTest.test_redirect_not_followed)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_route_requires_consent_and_allowlist (product.test_providers.ProviderTest.test_route_requires_consent_and_allowlist)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cached_patch_tamper_is_not_released (product.test_runtime.RuntimeTest.test_cached_patch_tamper_is_not_released)",
+      "exception": "KeyError: 'patches'"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_restore_and_corruption (product.test_state_transfer.StateTransferTest.test_restart_restore_and_corruption)",
+      "exception": "ValueError: symlink path"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restore_invalidates_old_review (product.test_state_transfer.StateTransferTest.test_restore_invalidates_old_review)",
+      "exception": "ValueError: symlink path"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_corrected_head_is_fetched_and_replaces_the_warning (service.test_bitbucket_analysis.WorkerTest.test_corrected_head_is_fetched_and_replaces_the_warning)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_documentation_change_creates_generation_without_new_git_head (service.test_bitbucket_analysis.WorkerTest.test_documentation_change_creates_generation_without_new_git_head)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip (service.test_bitbucket_analysis.WorkerTest.test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_git_objects_fail_without_publication (service.test_bitbucket_analysis.WorkerTest.test_missing_git_objects_fail_without_publication)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_secondary_mainline_is_refused (service.test_bitbucket_analysis.WorkerTest.test_missing_secondary_mainline_is_refused)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_pr_version_revokes_old_result (service.test_bitbucket_analysis.WorkerTest.test_new_pr_version_revokes_old_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_queue_runs_real_core_with_bitbucket_identity_and_holds_publication (service.test_bitbucket_analysis.WorkerTest.test_queue_runs_real_core_with_bitbucket_identity_and_holds_publication)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_refresh_failure_refuses_preloaded_head (service.test_bitbucket_analysis.WorkerTest.test_refresh_failure_refuses_preloaded_head)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_stale_snapshot_is_refused_before_analysis (service.test_bitbucket_analysis.WorkerTest.test_stale_snapshot_is_refused_before_analysis)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_api_errors_keep_safe_classification (service.test_bitbucket_probe.ProbeTest.test_api_errors_keep_safe_classification)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cli_failure_prints_only_safe_reason_and_nonzero (service.test_bitbucket_probe.ProbeTest.test_cli_failure_prints_only_safe_reason_and_nonzero)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cli_malformed_yaml_returns_safe_json_without_traceback_content (service.test_bitbucket_probe.ProbeTest.test_cli_malformed_yaml_returns_safe_json_without_traceback_content)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cli_probe_skips_other_provider_credentials_and_invalid_core_paths (service.test_bitbucket_probe.ProbeTest.test_cli_probe_skips_other_provider_credentials_and_invalid_core_paths)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cli_validation_error_does_not_echo_inline_secret (service.test_bitbucket_probe.ProbeTest.test_cli_validation_error_does_not_echo_inline_secret)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cli_without_bitbucket_is_explicit_configuration_failure (service.test_bitbucket_probe.ProbeTest.test_cli_without_bitbucket_is_explicit_configuration_failure)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_complete_probe_exposes_identity_refs_and_pr_version_without_state (service.test_bitbucket_probe.ProbeTest.test_complete_probe_exposes_identity_refs_and_pr_version_without_state)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_duplicate_uuid_or_graph_id_is_rejected (service.test_bitbucket_probe.ProbeTest.test_duplicate_uuid_or_graph_id_is_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_empty_repository_is_reported_without_branch_or_pr_fetch (service.test_bitbucket_probe.ProbeTest.test_empty_repository_is_reported_without_branch_or_pr_fetch)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_github_explicit_and_default_graph_id_collisions_are_rejected (service.test_bitbucket_probe.ProbeTest.test_github_explicit_and_default_graph_id_collisions_are_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_invalid_scope_and_inline_credentials_are_rejected_before_http (service.test_bitbucket_probe.ProbeTest.test_invalid_scope_and_inline_credentials_are_rejected_before_http)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_later_repository_failure_cannot_return_partial_success (service.test_bitbucket_probe.ProbeTest.test_later_repository_failure_cannot_return_partial_success)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_loopback_needs_existing_explicit_test_opt_in (service.test_bitbucket_probe.ProbeTest.test_loopback_needs_existing_explicit_test_opt_in)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_secret_reports_name_without_opening_state (service.test_bitbucket_probe.ProbeTest.test_missing_secret_reports_name_without_opening_state)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_partial_pr_listing_is_not_a_success_report (service.test_bitbucket_probe.ProbeTest.test_partial_pr_listing_is_not_a_success_report)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_public_repository_is_refused_for_private_pilot (service.test_bitbucket_probe.ProbeTest.test_public_repository_is_refused_for_private_pilot)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_runtime_commands_refuse_before_state_or_secret_loading (service.test_bitbucket_probe.ProbeTest.test_runtime_commands_refuse_before_state_or_secret_loading)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_wrong_pinned_repository_uuid_refuses_before_followup_reads (service.test_bitbucket_probe.ProbeTest.test_wrong_pinned_repository_uuid_refuses_before_followup_reads)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_wrong_workspace_uuid_is_refused (service.test_bitbucket_probe.ProbeTest.test_wrong_workspace_uuid_is_refused)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_closure_is_refetched_and_stops_open_job (service.test_bitbucket_queue.QueueTest.test_closure_is_refetched_and_stops_open_job)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_commit_resolution_404_does_not_close_an_existing_pr (service.test_bitbucket_queue.QueueTest.test_commit_resolution_404_does_not_close_an_existing_pr)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_foreign_resource_id_is_rejected_before_http (service.test_bitbucket_queue.QueueTest.test_foreign_resource_id_is_rejected_before_http)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_incomplete_listing_does_not_advance_checkpoint_or_close_absent_pr (service.test_bitbucket_queue.QueueTest.test_incomplete_listing_does_not_advance_checkpoint_or_close_absent_pr)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_and_github_are_processed_while_bitbucket_is_held (service.test_bitbucket_queue.QueueTest.test_jira_and_github_are_processed_while_bitbucket_is_held)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_keys_are_project_scoped_and_queue_snapshot_keeps_source_identity (service.test_bitbucket_queue.QueueTest.test_jira_keys_are_project_scoped_and_queue_snapshot_keeps_source_identity)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_live_queue_only_refuses_before_state_or_secrets (service.test_bitbucket_queue.QueueTest.test_live_queue_only_refuses_before_state_or_secrets)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_pr_closes_only_that_known_resource (service.test_bitbucket_queue.QueueTest.test_missing_pr_closes_only_that_known_resource)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_enters_durable_queue_and_is_not_analysed_or_published (service.test_bitbucket_queue.QueueTest.test_pr_enters_durable_queue_and_is_not_analysed_or_published)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_provider_filter_never_claims_held_job_or_intent (service.test_bitbucket_queue.QueueTest.test_provider_filter_never_claims_held_job_or_intent)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_removing_bitbucket_config_preserves_pending_events_jobs_and_intents (service.test_bitbucket_queue.QueueTest.test_removing_bitbucket_config_preserves_pending_events_jobs_and_intents)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_repeat_and_restart_do_not_duplicate_same_generation (service.test_bitbucket_queue.QueueTest.test_repeat_and_restart_do_not_duplicate_same_generation)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_title_edit_and_force_push_back_create_new_generations (service.test_bitbucket_queue.QueueTest.test_title_edit_and_force_push_back_create_new_generations)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_untrusted_webhooks_do_not_enqueue (service.test_bitbucket_queue.QueueTest.test_untrusted_webhooks_do_not_enqueue)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_wrong_uuid_or_auth_refusal_does_not_make_candidates (service.test_bitbucket_queue.QueueTest.test_wrong_uuid_or_auth_refusal_does_not_make_candidates)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_api_origin_cannot_be_replaced_by_config (service.test_bitbucket_read.ReadTest.test_api_origin_cannot_be_replaced_by_config)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_basic_auth_and_read_operations_never_write (service.test_bitbucket_read.ReadTest.test_basic_auth_and_read_operations_never_write)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_branch_slash_is_encoded_as_one_segment (service.test_bitbucket_read.ReadTest.test_branch_slash_is_encoded_as_one_segment)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_caller_cannot_replace_resolved_uuid_or_read_an_unresolved_dto (service.test_bitbucket_read.ReadTest.test_caller_cannot_replace_resolved_uuid_or_read_an_unresolved_dto)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_compact_fork_hash_does_not_expand_repository_read_scope (service.test_bitbucket_read.ReadTest.test_compact_fork_hash_does_not_expand_repository_read_scope)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_compact_pr_hashes_resolve_to_full_commits_inside_the_pinned_repository (service.test_bitbucket_read.ReadTest.test_compact_pr_hashes_resolve_to_full_commits_inside_the_pinned_repository)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_conflicting_duplicate_snapshot_is_refused (service.test_bitbucket_read.ReadTest.test_conflicting_duplicate_snapshot_is_refused)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_cycle_is_refused_without_returning_partial_results (service.test_bitbucket_read.ReadTest.test_cycle_is_refused_without_returning_partial_results)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_empty_repository_is_metadata_not_an_auth_failure (service.test_bitbucket_read.ReadTest.test_empty_repository_is_metadata_not_an_auth_failure)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_foreign_or_changed_next_target_never_receives_credentials (service.test_bitbucket_read.ReadTest.test_foreign_or_changed_next_target_never_receives_credentials)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_http_auth_and_server_failures_keep_safe_classification (service.test_bitbucket_read.ReadTest.test_http_auth_and_server_failures_keep_safe_classification)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_identical_duplicate_is_coalesced (service.test_bitbucket_read.ReadTest.test_identical_duplicate_is_coalesced)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_invalid_pages_or_non_open_rows_do_not_pass_as_complete (service.test_bitbucket_read.ReadTest.test_invalid_pages_or_non_open_rows_do_not_pass_as_complete)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_invalid_percent_escape_next_is_rejected_before_another_request (service.test_bitbucket_read.ReadTest.test_invalid_percent_escape_next_is_rejected_before_another_request)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_invalid_unicode_is_rejected_before_returning_a_dto (service.test_bitbucket_read.ReadTest.test_invalid_unicode_is_rejected_before_returning_a_dto)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_mismatched_compact_commit_resolution_is_refused (service.test_bitbucket_read.ReadTest.test_mismatched_compact_commit_resolution_is_refused)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_omitted_mainbranch_is_an_empty_repository (service.test_bitbucket_read.ReadTest.test_omitted_mainbranch_is_an_empty_repository)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_opaque_pagination_reads_all_pages (service.test_bitbucket_read.ReadTest.test_opaque_pagination_reads_all_pages)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_page_limit_accepts_terminal_twentieth_but_refuses_twenty_first (service.test_bitbucket_read.ReadTest.test_page_limit_accepts_terminal_twentieth_but_refuses_twenty_first)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_partial_next_page_failure_is_propagated (service.test_bitbucket_read.ReadTest.test_partial_next_page_failure_is_propagated)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_destination_uuid_and_number_are_checked (service.test_bitbucket_read.ReadTest.test_pr_destination_uuid_and_number_are_checked)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_resource_ids_are_uuid_scoped_and_not_github_ids (service.test_bitbucket_read.ReadTest.test_pr_resource_ids_are_uuid_scoped_and_not_github_ids)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_provider_rejecting_large_pr_pages_still_reads_complete_listing (service.test_bitbucket_read.ReadTest.test_provider_rejecting_large_pr_pages_still_reads_complete_listing)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_repository_allowlist_rejects_before_http (service.test_bitbucket_read.ReadTest.test_repository_allowlist_rejects_before_http)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_repository_identity_mismatch_is_rejected (service.test_bitbucket_read.ReadTest.test_repository_identity_mismatch_is_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_semantic_version_tracks_intent_refs_state_and_draft (service.test_bitbucket_read.ReadTest.test_semantic_version_tracks_intent_refs_state_and_draft)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_slug_reuse_cannot_switch_a_previously_resolved_repository (service.test_bitbucket_read.ReadTest.test_slug_reuse_cannot_switch_a_previously_resolved_repository)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments (service.test_candidate_source_upgrade.SourceUpgradeTest.test_missing_git_source_does_not_commit_a_new_basis_then_recovery_reanalyses_same_comments)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider (service.test_connection.ConfigTest.test_dry_run_publishes_to_the_sink_and_never_writes_to_the_provider)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_secret_names_the_variable_not_a_value (service.test_connection.ConfigTest.test_missing_secret_names_the_variable_not_a_value)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_installation_token_is_exchanged_once_and_reused (service.test_connection.GitHubAppAuthTest.test_installation_token_is_exchanged_once_and_reused)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_wrong_app_key_is_a_connection_problem (service.test_connection.GitHubAppAuthTest.test_wrong_app_key_is_a_connection_problem)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_status_requires_the_token_and_contains_no_secrets (service.test_connection.StatusEndpointTest.test_status_requires_the_token_and_contains_no_secrets)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_task_naming_only_the_route_abstains_instead_of_guessing_the_service (service.test_core.AmbiguousJiraTest.test_task_naming_only_the_route_abstains_instead_of_guessing_the_service)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unknown_completeness_requirement_is_stated_not_assumed (service.test_core.JiraWithoutRequirementTest.test_unknown_completeness_requirement_is_stated_not_assumed)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_offline_smoke_passes_every_check (service.test_core.SmokeTest.test_offline_smoke_passes_every_check)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_head_missing_from_the_mirror_fails_visibly_instead_of_using_another_commit (service.test_core.UnavailableCommitTest.test_head_missing_from_the_mirror_fails_visibly_instead_of_using_another_commit)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_payload_urls_are_never_fetched (service.test_delivery.DeliveryTest.test_payload_urls_are_never_fetched)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_repeated_and_reordered_deliveries_produce_one_current_result (service.test_delivery.DeliveryTest.test_repeated_and_reordered_deliveries_produce_one_current_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unconfigured_repository_is_ignored_without_any_fetch (service.test_delivery.DeliveryTest.test_unconfigured_repository_is_ignored_without_any_fetch)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_wrong_secret_is_rejected_and_nothing_is_queued (service.test_delivery.DeliveryTest.test_wrong_secret_is_rejected_and_nothing_is_queued)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_github_comment_events_are_ignored (service.test_delivery.OwnCommentLoopTest.test_github_comment_events_are_ignored)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_events_caused_by_our_comment_do_not_start_analysis_again (service.test_delivery.OwnCommentLoopTest.test_jira_events_caused_by_our_comment_do_not_start_analysis_again)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_semantic_jira_change_does_open_a_new_generation (service.test_delivery.OwnCommentLoopTest.test_semantic_jira_change_does_open_a_new_generation)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_analysis_recovering_after_failure_replaces_the_failure_comment (service.test_errors.AnalysisFailureTest.test_analysis_recovering_after_failure_replaces_the_failure_comment)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unavailable_analysis_retries_bounded_then_one_failure_comment_without_repeats (service.test_errors.AnalysisFailureTest.test_unavailable_analysis_retries_bounded_then_one_failure_comment_without_repeats)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unknown_result_major_version_is_shown_as_incompatible_not_as_a_finding (service.test_errors.AnalysisFailureTest.test_unknown_result_major_version_is_shown_as_incompatible_not_as_a_finding)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unknown_status_is_not_rendered_as_useful (service.test_errors.AnalysisFailureTest.test_unknown_status_is_not_rendered_as_useful)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_untrusted_result_text_cannot_mention_people_or_add_links (service.test_errors.AnalysisFailureTest.test_untrusted_result_text_cannot_mention_people_or_add_links)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_valid_result_for_another_resource_version_is_not_shown_as_current (service.test_errors.AnalysisFailureTest.test_valid_result_for_another_resource_version_is_not_shown_as_current)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_403_blocks_publication_as_a_connection_problem_without_burning_retries (service.test_errors.AuthTest.test_403_blocks_publication_as_a_connection_problem_without_burning_retries)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_revoked_credentials_on_read_defer_the_event_and_show_the_problem (service.test_errors.AuthTest.test_revoked_credentials_on_read_defer_the_event_and_show_the_problem)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_comment_with_our_marker_by_someone_else_is_not_adopted (service.test_errors.DeletedCommentTest.test_comment_with_our_marker_by_someone_else_is_not_adopted)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_deleted_service_comment_is_recreated_once_on_the_next_update (service.test_errors.DeletedCommentTest.test_deleted_service_comment_is_recreated_once_on_the_next_update)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_429_waits_for_retry_after_and_then_delivers_once (service.test_errors.RateLimitTest.test_429_waits_for_retry_after_and_then_delivers_once)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_permanent_429_stops_after_the_bounded_attempts (service.test_errors.RateLimitTest.test_permanent_429_stops_after_the_bounded_attempts)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_secondary_rate_limit_403_is_a_rate_limit_not_an_auth_problem (service.test_errors.RateLimitTest.test_secondary_rate_limit_403_is_a_rate_limit_not_an_auth_problem)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_5xx_on_create_is_treated_as_unknown_and_listed_before_retry (service.test_errors.ServerErrorTest.test_5xx_on_create_is_treated_as_unknown_and_listed_before_retry)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_persistent_5xx_fails_bounded_and_reconciliation_revives_it_once (service.test_errors.ServerErrorTest.test_persistent_5xx_fails_bounded_and_reconciliation_revives_it_once)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_event_gives_preliminary_comment_and_pr_refines_it_with_its_shas (service.test_flow.JiraThenPullRequestTest.test_jira_event_gives_preliminary_comment_and_pr_refines_it_with_its_shas)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_sources_stay_read_only_except_the_service_comment (service.test_flow.JiraThenPullRequestTest.test_sources_stay_read_only_except_the_service_comment)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_default_branch_push_moves_the_graph_without_reanalysing_open_resources (service.test_graph_memory.MainLineMemoryTest.test_default_branch_push_moves_the_graph_without_reanalysing_open_resources)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_head_never_becomes_graph_memory (service.test_graph_memory.MainLineMemoryTest.test_pr_head_never_becomes_graph_memory)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_readme_change_on_the_default_branch_keeps_the_relationships_and_their_bases (service.test_graph_memory.MainLineMemoryTest.test_readme_change_on_the_default_branch_keeps_the_relationships_and_their_bases)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_owner_change_is_addressed_on_the_next_analysis_and_conflicts_are_shown_as_is (service.test_graph_memory.OwnershipTest.test_owner_change_is_addressed_on_the_next_analysis_and_conflicts_are_shown_as_is)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unreadable_ownership_keeps_the_last_owners_and_is_visible (service.test_graph_memory.OwnershipTest.test_unreadable_ownership_keeps_the_last_owners_and_is_visible)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unavailable_runtime_source_keeps_the_code_relationship_and_marks_freshness (service.test_graph_memory.RuntimeSourceTest.test_unavailable_runtime_source_keeps_the_code_relationship_and_marks_freshness)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_records_of_another_environment_add_no_consumer (service.test_impact_regressions.ForeignEnvironmentSourceTest.test_records_of_another_environment_add_no_consumer)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_fresh_runtime_consumer_of_the_changed_operation_is_a_hypothesis_on_the_pr (service.test_impact_regressions.RuntimeOnlyConsumerOnPrTest.test_fresh_runtime_consumer_of_the_changed_operation_is_a_hypothesis_on_the_pr)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unchanged_operation_of_the_same_provider_and_same_route_of_another_provider_are_not_added (service.test_impact_regressions.RuntimeOnlyConsumerOnPrTest.test_unchanged_operation_of_the_same_provider_and_same_route_of_another_provider_are_not_added)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_removed_operation_with_current_traffic_is_a_medium_hypothesis_not_a_fact (service.test_impact_regressions.RuntimeOnlyConsumerWithoutCodeConsumersTest.test_removed_operation_with_current_traffic_is_a_medium_hypothesis_not_a_fact)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_runtime_only_consumer_makes_the_pr_partial_instead_of_abstained (service.test_impact_regressions.RuntimeOnlyConsumerWithoutCodeConsumersTest.test_runtime_only_consumer_makes_the_pr_partial_instead_of_abstained)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_contract_change_named_without_an_operation_is_partial_with_hypotheses_only (service.test_impact_regressions.ServiceOnlyJiraTest.test_contract_change_named_without_an_operation_is_partial_with_hypotheses_only)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_route_named_only_as_unchanged_abstains_and_names_no_consumer (service.test_impact_regressions.ServiceOnlyJiraTest.test_route_named_only_as_unchanged_abstains_and_names_no_consumer)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_route_named_task_keeps_its_preliminary_answer (service.test_impact_regressions.ServiceOnlyJiraTest.test_route_named_task_keeps_its_preliminary_answer)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_service_named_and_api_stated_unchanged_abstains_and_names_no_consumer (service.test_impact_regressions.ServiceOnlyJiraTest.test_service_named_and_api_stated_unchanged_abstains_and_names_no_consumer)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_service_wide_contract_change_is_an_answer_for_every_operation (service.test_impact_regressions.ServiceOnlyJiraTest.test_service_wide_contract_change_is_an_answer_for_every_operation)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_stale_runtime_consumer_is_shown_stale_and_never_as_current (service.test_impact_regressions.StaleRuntimeConsumerTest.test_stale_runtime_consumer_is_shown_stale_and_never_as_current)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_existing_issue_is_analyzed_by_real_core_without_a_pr (service.test_jira_bootstrap.JiraCoreWithoutPRTest.test_existing_issue_is_analyzed_by_real_core_without_a_pr)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_bootstrap_enqueues_old_issue_without_a_pr_or_webhook (service.test_jira_bootstrap.JiraDiscoveryTest.test_bootstrap_enqueues_old_issue_without_a_pr_or_webhook)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_full_listing_paginates_and_keeps_the_project_scope (service.test_jira_bootstrap.JiraDiscoveryTest.test_full_listing_paginates_and_keeps_the_project_scope)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_incomplete_bootstrap_does_not_advance_checkpoint (service.test_jira_bootstrap.JiraDiscoveryTest.test_incomplete_bootstrap_does_not_advance_checkpoint)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_recovery_full_listing_finds_old_issue_absent_from_restored_state (service.test_jira_bootstrap.JiraDiscoveryTest.test_recovery_full_listing_finds_old_issue_absent_from_restored_state)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_recovery_preflight_applies_old_unknown_issue_without_publishing (service.test_jira_bootstrap.JiraDiscoveryTest.test_recovery_preflight_applies_old_unknown_issue_without_publishing)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_interrupt_after_durable_first_event_retries_without_duplicates (service.test_jira_listing_recovery.BootstrapListingTest.test_interrupt_after_durable_first_event_retries_without_duplicates)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_invalid_json_does_not_advance_checkpoint (service.test_jira_listing_recovery.BootstrapListingTest.test_invalid_json_does_not_advance_checkpoint)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_invalid_or_incomplete_page_never_advances_checkpoint (service.test_jira_listing_recovery.BootstrapListingTest.test_invalid_or_incomplete_page_never_advances_checkpoint)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_http_pages_and_restart_have_no_duplicate_jobs_or_comments (service.test_jira_listing_recovery.BootstrapListingTest.test_real_http_pages_and_restart_have_no_duplicate_jobs_or_comments)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_repeated_cursor_and_page_bound_fail_closed (service.test_jira_listing_recovery.BootstrapListingTest.test_repeated_cursor_and_page_bound_fail_closed)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_second_page_api_error_does_not_commit_partial_listing_and_retry_starts_from_page_one (service.test_jira_listing_recovery.BootstrapListingTest.test_second_page_api_error_does_not_commit_partial_listing_and_retry_starts_from_page_one)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_twentieth_page_can_complete_when_explicitly_terminal (service.test_jira_listing_recovery.BootstrapListingTest.test_twentieth_page_can_complete_when_explicitly_terminal)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_sigkill_bootstrap_after_durable_event (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_bootstrap_after_durable_event)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_sigkill_bootstrap_during_pagination (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_bootstrap_during_pagination)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_sigkill_preflight_after_durable_snapshot (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_preflight_after_durable_snapshot)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_sigkill_preflight_during_pagination (service.test_jira_listing_recovery.ProcessInterruptionTest.test_sigkill_preflight_during_pagination)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_error_in_second_reconcile_pass_cannot_be_swallowed (service.test_jira_listing_recovery.RecoveryListingTest.test_error_in_second_reconcile_pass_cannot_be_swallowed)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_fetch_error_after_full_listing_keeps_recovery_incomplete (service.test_jira_listing_recovery.RecoveryListingTest.test_fetch_error_after_full_listing_keeps_recovery_incomplete)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_graph_api_failure_then_repair_cannot_use_a_previous_fresh_graph (service.test_jira_listing_recovery.RecoveryListingTest.test_graph_api_failure_then_repair_cannot_use_a_previous_fresh_graph)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_incomplete_page_or_limit_never_sets_recovery_completion (service.test_jira_listing_recovery.RecoveryListingTest.test_incomplete_page_or_limit_never_sets_recovery_completion)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_interrupt_before_completion_checkpoint_does_not_reopen_twice (service.test_jira_listing_recovery.RecoveryListingTest.test_interrupt_before_completion_checkpoint_does_not_reopen_twice)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_manager_full_discovery_does_not_trust_a_legacy_windowed_connector (service.test_jira_listing_recovery.RecoveryListingTest.test_manager_full_discovery_does_not_trust_a_legacy_windowed_connector)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_partial_snapshot_apply_is_safe_to_repeat_after_interruption (service.test_jira_listing_recovery.RecoveryListingTest.test_partial_snapshot_apply_is_safe_to_repeat_after_interruption)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_http_full_scan_repeated_preflight_and_restart_are_idempotent (service.test_jira_listing_recovery.RecoveryListingTest.test_real_http_full_scan_repeated_preflight_and_restart_are_idempotent)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_removed_provider_notice_does_not_block_current_providers (service.test_jira_listing_recovery.RecoveryListingTest.test_removed_provider_notice_does_not_block_current_providers)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_second_page_error_and_retry_do_not_mark_partial_preflight_complete (service.test_jira_listing_recovery.RecoveryListingTest.test_second_page_error_and_retry_do_not_mark_partial_preflight_complete)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_twenty_first_page_is_refused_and_a_fresh_retry_can_complete (service.test_jira_listing_recovery.RecoveryListingTest.test_twenty_first_page_is_refused_and_a_fresh_retry_can_complete)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_model_hypothesis_keeps_full_explanation_even_in_summary_mode (service.test_jira_presentation.JiraPresentationConfigurationTest.test_model_hypothesis_keeps_full_explanation_even_in_summary_mode)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_http_publication_is_compact_but_outbox_keeps_full_document (service.test_jira_presentation.JiraPresentationIntegrationTest.test_http_publication_is_compact_but_outbox_keeps_full_document)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_lost_response_after_create_reconciles_on_restarted_store (service.test_kaiten_delivery.ReviewRegressionTest.test_lost_response_after_create_reconciles_on_restarted_store)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_token_fails_during_build (service.test_kaiten_delivery.ReviewRegressionTest.test_missing_token_fails_during_build)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_generation_during_sending_does_not_write_old_body (service.test_kaiten_delivery.ReviewRegressionTest.test_new_generation_during_sending_does_not_write_old_body)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_ambiguous_config_rejected (service.test_kaiten_delivery.RuntimeTest.test_ambiguous_config_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_dry_run_never_posts_to_kaiten (service.test_kaiten_delivery.RuntimeTest.test_dry_run_never_posts_to_kaiten)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_real_core_to_http_same_comment_after_change_and_restart (service.test_kaiten_delivery.RuntimeTest.test_real_core_to_http_same_comment_after_change_and_restart)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_base_moves_between_analysis_and_publication (service.test_m2_regressions.M2RegressionTest.test_base_moves_between_analysis_and_publication)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_comment_scan_limit_does_not_allow_a_duplicate_create (service.test_m2_regressions.M2RegressionTest.test_comment_scan_limit_does_not_allow_a_duplicate_create)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_correct_installation_and_setup_ping_are_accepted (service.test_m2_regressions.M2RegressionTest.test_correct_installation_and_setup_ping_are_accepted)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_failed_postsend_read_is_visible_and_durably_rechecked (service.test_m2_regressions.M2RegressionTest.test_failed_postsend_read_is_visible_and_durably_rechecked)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_change_beyond_the_display_limit_invalidates_the_result (service.test_m2_regressions.M2RegressionTest.test_jira_change_beyond_the_display_limit_invalidates_the_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_comment_scan_limit_fails_closed (service.test_m2_regressions.M2RegressionTest.test_jira_comment_scan_limit_fails_closed)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_downtime_over_seven_days_is_not_clamped (service.test_m2_regressions.M2RegressionTest.test_jira_downtime_over_seven_days_is_not_clamped)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_scan_limit_does_not_advance_checkpoint (service.test_m2_regressions.M2RegressionTest.test_jira_scan_limit_does_not_advance_checkpoint)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_known_jira_issue_deleted_without_delivery_is_reconciled (service.test_m2_regressions.M2RegressionTest.test_known_jira_issue_deleted_without_delivery_is_reconciled)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_malformed_signed_payload_returns_400 (service.test_m2_regressions.M2RegressionTest.test_malformed_signed_payload_returns_400)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_base_without_new_head_replaces_result (service.test_m2_regressions.M2RegressionTest.test_new_base_without_new_head_replaces_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_noop_adoption_still_checks_for_a_racing_head (service.test_m2_regressions.M2RegressionTest.test_noop_adoption_still_checks_for_a_racing_head)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_permanent_ingest_error_is_not_retried (service.test_m2_regressions.M2RegressionTest.test_permanent_ingest_error_is_not_retried)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_permanent_prepare_error_is_not_retried (service.test_m2_regressions.M2RegressionTest.test_permanent_prepare_error_is_not_retried)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_reconciliation_recovers_force_push_back_to_a_previous_head (service.test_m2_regressions.M2RegressionTest.test_reconciliation_recovers_force_push_back_to_a_previous_head)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_revoked_auth_during_prepare_pauses_instead_of_spinning (service.test_m2_regressions.M2RegressionTest.test_revoked_auth_during_prepare_pauses_instead_of_spinning)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor (service.test_m2_regressions.M2RegressionTest.test_truncated_github_scan_does_not_close_unseen_pr_or_advance_cursor)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_wrong_app_installation_is_rejected_before_enqueue (service.test_m2_regressions.M2RegressionTest.test_wrong_app_installation_is_rejected_before_enqueue)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_linked_pr_fix_duplicates_api_failure_and_abstention (service.test_m2_scenario.M2ScenarioTest.test_jira_linked_pr_fix_duplicates_api_failure_and_abstention)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_absent_model_report_is_explicit_in_the_user_comment (service.test_model_publication.ModelPublicationTest.test_absent_model_report_is_explicit_in_the_user_comment)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_bad_candidate_does_not_hide_an_authorized_candidate (service.test_model_publication.ModelPublicationTest.test_bad_candidate_does_not_hide_an_authorized_candidate)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_external_proposal_cannot_be_labeled_as_model_evidence (service.test_model_publication.ModelPublicationTest.test_external_proposal_cannot_be_labeled_as_model_evidence)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_full_deterministic_result_survives_extra_hypothesis (service.test_model_publication.ModelPublicationTest.test_full_deterministic_result_survives_extra_hypothesis)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_full_evidence_capacity_preserves_static_result (service.test_model_publication.ModelPublicationTest.test_full_evidence_capacity_preserves_static_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_investigation_for_another_context_is_not_published (service.test_model_publication.ModelPublicationTest.test_investigation_for_another_context_is_not_published)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_publishes_candidate_as_hypothesis_with_source_reference (service.test_model_publication.ModelPublicationTest.test_jira_publishes_candidate_as_hypothesis_with_source_reference)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missing_completion_usage_stays_unknown (service.test_model_publication.ModelPublicationTest.test_missing_completion_usage_stays_unknown)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_foreign_context_candidate_is_not_published (service.test_model_publication.ModelPublicationTest.test_pr_foreign_context_candidate_is_not_published)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_partial_usage_does_not_lose_result (service.test_model_publication.ModelPublicationTest.test_pr_partial_usage_does_not_lose_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_renders_hypothesis_and_supporting_source (service.test_model_publication.ModelPublicationTest.test_pr_renders_hypothesis_and_supporting_source)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pr_transport_failure_keeps_usage_unknown (service.test_model_publication.ModelPublicationTest.test_pr_transport_failure_keeps_usage_unknown)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_superseded_hypothesis_is_not_published (service.test_model_publication.ModelPublicationTest.test_superseded_hypothesis_is_not_published)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_supporting_references_are_checked_at_contract_boundary (service.test_model_publication.ModelPublicationTest.test_supporting_references_are_checked_at_contract_boundary)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_transport_failure_without_reply_does_not_claim_zero_usage (service.test_model_publication.ModelPublicationTest.test_transport_failure_without_reply_does_not_claim_zero_usage)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unclear_intent_is_not_promoted_by_a_model_hypothesis (service.test_model_publication.ModelPublicationTest.test_unclear_intent_is_not_promoted_by_a_model_hypothesis)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unknown_candidate_id_is_not_published (service.test_model_publication.ModelPublicationTest.test_unknown_candidate_id_is_not_published)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_change_fix_control_and_restart_keep_one_truthful_comment_each (service.test_pilot_demo.PilotDemoTest.test_change_fix_control_and_restart_keep_one_truthful_comment_each)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_loaded_profile_is_what_chat_model_sends (service.test_qualification.ChatModelProfileTest.test_loaded_profile_is_what_chat_model_sends)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_report_for_another_constitution_keeps_the_model_off_and_the_answer_partial (service.test_qualification.ConstitutionMismatchTest.test_report_for_another_constitution_keeps_the_model_off_and_the_answer_partial)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_matching_qualified_report_runs_the_model_with_the_persistent_graph (service.test_qualification.MatchingReportTest.test_matching_qualified_report_runs_the_model_with_the_persistent_graph)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_configured_model_without_a_report_reference_is_never_called (service.test_qualification.NotQualifiedTest.test_configured_model_without_a_report_reference_is_never_called)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_experimental_verdict_never_calls_the_model (service.test_qualification.NotQualifiedTest.test_experimental_verdict_never_calls_the_model)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_loaded_output_limit_other_than_the_qualified_one_keeps_the_model_off (service.test_qualification.NotQualifiedTest.test_loaded_output_limit_other_than_the_qualified_one_keeps_the_model_off)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_closed_pull_request_revokes_pending_publication (service.test_races.NewHeadTest.test_closed_pull_request_revokes_pending_publication)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_head_during_analysis_never_publishes_the_old_head (service.test_races.NewHeadTest.test_new_head_during_analysis_never_publishes_the_old_head)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_head_during_send_is_replaced_by_a_stale_notice_and_then_the_new_result (service.test_races.NewHeadTest.test_new_head_during_send_is_replaced_by_a_stale_notice_and_then_the_new_result)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_head_without_webhook_during_analysis_is_caught_by_the_check_before_send (service.test_races.NewHeadTest.test_new_head_without_webhook_during_analysis_is_caught_by_the_check_before_send)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_closed_pull_request_is_not_reanalysed_on_a_new_basis (service.test_reconcile.ReconcileTest.test_closed_pull_request_is_not_reanalysed_on_a_new_basis)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_failed_reconciliation_is_a_notice_and_does_not_move_the_checkpoint (service.test_reconcile.ReconcileTest.test_failed_reconciliation_is_a_notice_and_does_not_move_the_checkpoint)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missed_pr_delivery_is_found_by_reconciliation (service.test_reconcile.ReconcileTest.test_missed_pr_delivery_is_found_by_reconciliation)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_missed_push_is_reanalyzed_and_old_result_marked_stale (service.test_reconcile.ReconcileTest.test_missed_push_is_reanalyzed_and_old_result_marked_stale)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_analysis_basis_updates_the_existing_comment_of_an_unchanged_pr (service.test_reconcile.ReconcileTest.test_new_analysis_basis_updates_the_existing_comment_of_an_unchanged_pr)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_new_basis_keeps_a_queued_new_version_and_its_stale_notice (service.test_reconcile.ReconcileTest.test_new_basis_keeps_a_queued_new_version_and_its_stale_notice)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_pull_request_closed_without_delivery_is_closed_by_reconciliation (service.test_reconcile.ReconcileTest.test_pull_request_closed_without_delivery_is_closed_by_reconciliation)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_reconciliation_of_unchanged_resources_does_nothing (service.test_reconcile.ReconcileTest.test_reconciliation_of_unchanged_resources_does_nothing)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_resource_of_a_removed_provider_is_not_reopened (service.test_reconcile.ReconcileTest.test_resource_of_a_removed_provider_is_not_reopened)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_same_analysis_basis_is_reanalysed_only_once (service.test_reconcile.ReconcileTest.test_same_analysis_basis_is_reanalysed_only_once)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_jira_lost_response_after_write_is_reconciled_by_marker (service.test_restart.RestartTest.test_jira_lost_response_after_write_is_reconciled_by_marker)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_lost_response_after_write_is_reconciled_by_marker (service.test_restart.RestartTest.test_lost_response_after_write_is_reconciled_by_marker)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_after_analysis_before_result_is_stored_reanalyzes_once (service.test_restart.RestartTest.test_restart_after_analysis_before_result_is_stored_reanalyzes_once)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_after_claim_returns_the_job (service.test_restart.RestartTest.test_restart_after_claim_returns_the_job)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_after_receive (service.test_restart.RestartTest.test_restart_after_receive)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_after_sending_was_recorded_but_before_the_write (service.test_restart.RestartTest.test_restart_after_sending_was_recorded_but_before_the_write)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_after_the_external_write_does_not_create_again (service.test_restart.RestartTest.test_restart_after_the_external_write_does_not_create_again)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_restart_with_claimed_intent_before_send (service.test_restart.RestartTest.test_restart_with_claimed_intent_before_send)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_abstention_explains_itself_instead_of_empty_sections (service.test_result_transitions.ResultTransitionTest.test_abstention_explains_itself_instead_of_empty_sections)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_failed_analysis_does_not_claim_the_earlier_risk_is_gone (service.test_result_transitions.ResultTransitionTest.test_failed_analysis_does_not_claim_the_earlier_risk_is_gone)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_fix_in_the_same_pr_names_the_risk_that_is_no_longer_found (service.test_result_transitions.ResultTransitionTest.test_fix_in_the_same_pr_names_the_risk_that_is_no_longer_found)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_foreign_request_was_not_a_previously_displayed_risk (service.test_result_transitions.ResultTransitionTest.test_foreign_request_was_not_a_previously_displayed_risk)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_incompatible_schema_was_not_a_previously_displayed_risk (service.test_result_transitions.ResultTransitionTest.test_incompatible_schema_was_not_a_previously_displayed_risk)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_risk_that_persists_after_a_push_adds_no_transition (service.test_result_transitions.ResultTransitionTest.test_risk_that_persists_after_a_push_adds_no_transition)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_applied_but_timed_out_create_is_reconciled_without_second_post (service.test_tracker_api_probe.ProbeTest.test_applied_but_timed_out_create_is_reconciled_without_second_post)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_bad_cursor_and_missing_applied_limit_prevent_any_write (service.test_tracker_api_probe.ProbeTest.test_bad_cursor_and_missing_applied_limit_prevent_any_write) (provider='kaiten')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_bad_cursor_and_missing_applied_limit_prevent_any_write (service.test_tracker_api_probe.ProbeTest.test_bad_cursor_and_missing_applied_limit_prevent_any_write) (provider='yandex_tracker')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_both_providers_create_update_same_comment_and_resume_without_duplicate (service.test_tracker_api_probe.ProbeTest.test_both_providers_create_update_same_comment_and_resume_without_duplicate) (provider='kaiten')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_both_providers_create_update_same_comment_and_resume_without_duplicate (service.test_tracker_api_probe.ProbeTest.test_both_providers_create_update_same_comment_and_resume_without_duplicate) (provider='yandex_tracker')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_deep_invalid_json_is_stable_failure (service.test_tracker_api_probe.ProbeTest.test_deep_invalid_json_is_stable_failure)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_directory_entry_is_durable_before_post (service.test_tracker_api_probe.ProbeTest.test_directory_entry_is_durable_before_post)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_duplicate_own_marker_or_manual_edit_stops_future_writes (service.test_tracker_api_probe.ProbeTest.test_duplicate_own_marker_or_manual_edit_stops_future_writes) (wrong='duplicate')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_duplicate_own_marker_or_manual_edit_stops_future_writes (service.test_tracker_api_probe.ProbeTest.test_duplicate_own_marker_or_manual_edit_stops_future_writes) (wrong='manual_edit')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_errors_and_malformed_pages_never_become_empty_success (service.test_tracker_api_probe.ProbeTest.test_errors_and_malformed_pages_never_become_empty_success) (error='AuthError')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_errors_and_malformed_pages_never_become_empty_success (service.test_tracker_api_probe.ProbeTest.test_errors_and_malformed_pages_never_become_empty_success) (error='AuthError')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_errors_and_malformed_pages_never_become_empty_success (service.test_tracker_api_probe.ProbeTest.test_errors_and_malformed_pages_never_become_empty_success) (error='RateLimited')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_errors_and_malformed_pages_never_become_empty_success (service.test_tracker_api_probe.ProbeTest.test_errors_and_malformed_pages_never_become_empty_success) (error='ServerError')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_errors_and_malformed_pages_never_become_empty_success (service.test_tracker_api_probe.ProbeTest.test_errors_and_malformed_pages_never_become_empty_success) (error='NoneType')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_foreign_comment_self_and_deleted_write_reply_are_rejected (service.test_tracker_api_probe.ProbeTest.test_foreign_comment_self_and_deleted_write_reply_are_rejected) (condition='foreign_self')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_foreign_comment_self_and_deleted_write_reply_are_rejected (service.test_tracker_api_probe.ProbeTest.test_foreign_comment_self_and_deleted_write_reply_are_rejected) (condition='deleted')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_foreign_comment_self_and_deleted_write_reply_are_rejected (service.test_tracker_api_probe.ProbeTest.test_foreign_comment_self_and_deleted_write_reply_are_rejected) (condition='deleted_wrong_type')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_hostile_or_non_progressing_pagination_never_writes (service.test_tracker_api_probe.ProbeTest.test_hostile_or_non_progressing_pagination_never_writes) (provider='yandex_tracker')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_hostile_or_non_progressing_pagination_never_writes (service.test_tracker_api_probe.ProbeTest.test_hostile_or_non_progressing_pagination_never_writes) (provider='kaiten')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_journal_rejects_new_configuration_and_is_exclusively_locked (service.test_tracker_api_probe.ProbeTest.test_journal_rejects_new_configuration_and_is_exclusively_locked)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_malformed_nested_response_invalidates_previous_pass (service.test_tracker_api_probe.ProbeTest.test_malformed_nested_response_invalidates_previous_pass) (target='queue')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_malformed_nested_response_invalidates_previous_pass (service.test_tracker_api_probe.ProbeTest.test_malformed_nested_response_invalidates_previous_pass) (target='createdBy')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_page_budget_exhaustion_and_long_marker_body_fail_before_write (service.test_tracker_api_probe.ProbeTest.test_page_budget_exhaustion_and_long_marker_body_fail_before_write)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_partial_page_status_is_not_complete (service.test_tracker_api_probe.ProbeTest.test_partial_page_status_is_not_complete)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_post_write_scope_drift_is_not_pass (service.test_tracker_api_probe.ProbeTest.test_post_write_scope_drift_is_not_pass)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_read_only_default_has_no_writes (service.test_tracker_api_probe.ProbeTest.test_read_only_default_has_no_writes)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_read_only_resume_preserves_unresolved_write_outcome (service.test_tracker_api_probe.ProbeTest.test_read_only_resume_preserves_unresolved_write_outcome)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_resume_clears_old_error_after_success (service.test_tracker_api_probe.ProbeTest.test_resume_clears_old_error_after_success)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_scope_mismatch_and_wrong_author_do_not_update (service.test_tracker_api_probe.ProbeTest.test_scope_mismatch_and_wrong_author_do_not_update) (wrong='scope')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_scope_mismatch_and_wrong_author_do_not_update (service.test_tracker_api_probe.ProbeTest.test_scope_mismatch_and_wrong_author_do_not_update) (wrong='author')",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unearned_updated_readback_cannot_skip_patch (service.test_tracker_api_probe.ProbeTest.test_unearned_updated_readback_cannot_skip_patch)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_unknown_absent_create_does_not_post_on_resume (service.test_tracker_api_probe.ProbeTest.test_unknown_absent_create_does_not_post_on_resume)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_valid_yandex_current_key_links_are_scoped_and_dispatched_by_id (service.test_tracker_api_probe.ProbeTest.test_valid_yandex_current_key_links_are_scoped_and_dispatched_by_id)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_yandex_missing_link_is_explicitly_exhausted_and_overfull_rejected (service.test_tracker_api_probe.ProbeTest.test_yandex_missing_link_is_explicitly_exhausted_and_overfull_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_yandex_overfull_unique_page_is_rejected (service.test_tracker_api_probe.ProbeTest.test_yandex_overfull_unique_page_is_rejected)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "ERROR",
+      "test": "test_loopback_interface_and_http_restart_flow (test_evidence_pilot.PilotTests.test_loopback_interface_and_http_restart_flow)",
+      "exception": "PermissionError: [Errno 1] Operation not permitted"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_baseline_does_not_meet_new_finance_requirement (product.test_contract_profile.ContractProfileTests.test_baseline_does_not_meet_new_finance_requirement)",
+      "exception": "AssertionError: 'STOP' != 'FAIL'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cli_generate_check_and_independent_pin_exit_codes (product.test_contract_profile.ContractProfileTests.test_cli_generate_check_and_independent_pin_exit_codes)",
+      "exception": "AssertionError: 1 != 0"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_actual_types_are_captured_not_expected (product.test_executor.ExecutorTests.test_actual_types_are_captured_not_expected)",
+      "exception": "AssertionError: 'error' != 'executed'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_clean_worker_environment (product.test_executor.ExecutorTests.test_clean_worker_environment)",
+      "exception": "AssertionError: 'error' != 'executed'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_duplicates_and_null_values_retained (product.test_executor.ExecutorTests.test_duplicates_and_null_values_retained)",
+      "exception": "AssertionError: 'error' != 'executed'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_fixture_validation (product.test_executor.ExecutorTests.test_fixture_validation)",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DELETE FROM events')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DROP TABLE events')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='UPDATE events SET amount=0')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"ATTACH DATABASE '/tmp/must-not-open' AS other\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='PRAGMA database_list')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT readfile('/etc/passwd')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT load_extension('/tmp/a')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT writefile('/tmp/a','x')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT system('id')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='SELECT name FROM sqlite_master')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_result_and_instruction_budgets (product.test_executor.ExecutorTests.test_result_and_instruction_budgets)",
+      "exception": "AssertionError: 'result_row_limit' not found in ['worker_failed']"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT amount FROM events WHERE 0')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT NULL AS a')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql=\"SELECT CASE WHEN age_days<30 THEN 1 ELSE 'x' END AS a FROM events\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1e999 AS a')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql=\"SELECT x'4142' AS a\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1 AS a, 2 AS a')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_operator_retry_is_distinct_idempotent_and_retains_history (product.test_reliability.ReliabilityTest.test_operator_retry_is_distinct_idempotent_and_retains_history)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_success_cannot_be_retried_as_failure (product.test_reliability.ReliabilityTest.test_success_cannot_be_retried_as_failure)",
+      "exception": "AssertionError: 'retry_requires_terminal_failure' not found in ['verification_stop']"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_run_restart_and_history (product.test_run_cli.RunCLITest.test_real_run_restart_and_history)",
+      "exception": "AssertionError: 2 != 0 : {'status': 'STOP', 'reason_codes': ['invalid_or_unavailable_operator_input'], 'effects_authorized': False}"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_bad_candidate_not_exported_or_marked_ready (product.test_runtime.RuntimeTest.test_bad_candidate_not_exported_or_marked_ready)",
+      "exception": "AssertionError: 'STOP' != 'FAIL'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cache_cannot_bypass_expiry_or_revoke (product.test_runtime.RuntimeTest.test_cache_cannot_bypass_expiry_or_revoke)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cached_export_revoke_is_redacted (product.test_runtime.RuntimeTest.test_cached_export_revoke_is_redacted)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_patch_and_results_preserve_other_consumer (product.test_runtime.RuntimeTest.test_real_patch_and_results_preserve_other_consumer)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_restart_reuses_same_result_and_history (product.test_runtime.RuntimeTest.test_restart_reuses_same_result_and_history)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_background_tick_without_api_event (product.test_workflow_api.WorkflowAPITest.test_background_tick_without_api_event)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_c3_proposal_does_not_require_production_approval (product.test_workflow_api.WorkflowAPITest.test_c3_proposal_does_not_require_production_approval)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cross_project_and_cross_origin_and_body_limit (product.test_workflow_api.WorkflowAPITest.test_cross_project_and_cross_origin_and_body_limit)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_declined_owner_blocks_send (product.test_workflow_api.WorkflowAPITest.test_declined_owner_blocks_send)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_explicit_send_links_package_and_is_idempotent (product.test_workflow_api.WorkflowAPITest.test_explicit_send_links_package_and_is_idempotent)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_no_publish_grant_or_destination_no_send (product.test_workflow_api.WorkflowAPITest.test_no_publish_grant_or_destination_no_send)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_owners_then_acceptor_and_digest_binding (product.test_workflow_api.WorkflowAPITest.test_owners_then_acceptor_and_digest_binding)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_prepare_never_sends_even_enabled_gateway (product.test_workflow_api.WorkflowAPITest.test_prepare_never_sends_even_enabled_gateway)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_shell_public_data_auth_and_actor_spoof (product.test_workflow_api.WorkflowAPITest.test_shell_public_data_auth_and_actor_spoof)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_source_tamper_reject_and_explicit_reopen (product.test_workflow_api.WorkflowAPITest.test_source_tamper_reject_and_explicit_reopen)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_stale_read_and_timer_redact_cancel_and_clear_review (product.test_workflow_api.WorkflowAPITest.test_stale_read_and_timer_redact_cancel_and_clear_review)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_outcome_is_not_retried (product.test_workflow_api.WorkflowAPITest.test_unknown_outcome_is_not_retried)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_live_three_process_e4 (test_demo_api.DemoApiTest.test_live_three_process_e4) (expected='ACCEPT')",
+      "exception": "AssertionError: 503 != 200 : {\"detail\":\"E4 demo run unavailable\"}"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_live_three_process_e4 (test_demo_api.DemoApiTest.test_live_three_process_e4) (expected='REJECT')",
+      "exception": "AssertionError: 503 != 200 : {\"detail\":\"E4 demo run unavailable\"}"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_live_three_process_e4 (test_demo_api.DemoApiTest.test_live_three_process_e4) (expected='NEEDS_REVIEW')",
+      "exception": "AssertionError: 503 != 200 : {\"detail\":\"E4 demo run unavailable\"}"
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "run": 1342,
+  "seconds": 900.18,
+  "failures": 49,
+  "errors": 1,
+  "skipped": 4,
+  "all_unsuccessful_prefix": "product",
+  "items": [
+    {
+      "status": "ERROR",
+      "test": "test_cached_patch_tamper_is_not_released (product.test_runtime.RuntimeTest.test_cached_patch_tamper_is_not_released)",
+      "exception": "KeyError: 'patches'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_baseline_does_not_meet_new_finance_requirement (product.test_contract_profile.ContractProfileTests.test_baseline_does_not_meet_new_finance_requirement)",
+      "exception": "AssertionError: 'STOP' != 'FAIL'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_blanket_adaptation_breaks_unchanged_audit (product.test_contract_profile.ContractProfileTests.test_blanket_adaptation_breaks_unchanged_audit)",
+      "exception": "AssertionError: 'STOP' != 'FAIL'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cli_generate_check_and_independent_pin_exit_codes (product.test_contract_profile.ContractProfileTests.test_cli_generate_check_and_independent_pin_exit_codes)",
+      "exception": "AssertionError: 1 != 0"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_manifest_contract_snapshot_change_is_not_accepted (product.test_contract_profile.ContractProfileTests.test_manifest_contract_snapshot_change_is_not_accepted)",
+      "exception": "AssertionError: Lists differ: ['sql_execution_error'] != ['snapshot_changed']"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_transform_passes_different_consumer_requirements (product.test_contract_profile.ContractProfileTests.test_real_transform_passes_different_consumer_requirements)",
+      "exception": "AssertionError: 'STOP' != 'PASS'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_worker_generates_candidate_from_pinned_intent_and_checks_independently (product.test_control_plane.ContractIntentQueueTests.test_worker_generates_candidate_from_pinned_intent_and_checks_independently)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_contract_python_sql_profile_uses_queue_and_independent_pin (product.test_control_plane.ControlPlaneTests.test_real_contract_python_sql_profile_uses_queue_and_independent_pin)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_execution_and_restart_idempotency (product.test_control_plane.ControlPlaneTests.test_real_execution_and_restart_idempotency)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_actual_types_are_captured_not_expected (product.test_executor.ExecutorTests.test_actual_types_are_captured_not_expected)",
+      "exception": "AssertionError: 'error' != 'executed'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_clean_worker_environment (product.test_executor.ExecutorTests.test_clean_worker_environment)",
+      "exception": "AssertionError: 'error' != 'executed'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_duplicates_and_null_values_retained (product.test_executor.ExecutorTests.test_duplicates_and_null_values_retained)",
+      "exception": "AssertionError: 'error' != 'executed'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_fixture_validation (product.test_executor.ExecutorTests.test_fixture_validation)",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DELETE FROM events')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DROP TABLE events')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='UPDATE events SET amount=0')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"ATTACH DATABASE '/tmp/must-not-open' AS other\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='PRAGMA database_list')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT readfile('/etc/passwd')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT load_extension('/tmp/a')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT writefile('/tmp/a','x')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql=\"SELECT system('id')\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='SELECT name FROM sqlite_master')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_result_and_instruction_budgets (product.test_executor.ExecutorTests.test_result_and_instruction_budgets)",
+      "exception": "AssertionError: 'result_row_limit' not found in ['worker_failed']"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT amount FROM events WHERE 0')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT NULL AS a')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql=\"SELECT CASE WHEN age_days<30 THEN 1 ELSE 'x' END AS a FROM events\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1e999 AS a')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql=\"SELECT x'4142' AS a\")",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1 AS a, 2 AS a')",
+      "exception": "AssertionError: 'error' != 'unsupported'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_operator_retry_is_distinct_idempotent_and_retains_history (product.test_reliability.ReliabilityTest.test_operator_retry_is_distinct_idempotent_and_retains_history)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_success_cannot_be_retried_as_failure (product.test_reliability.ReliabilityTest.test_success_cannot_be_retried_as_failure)",
+      "exception": "AssertionError: 'retry_requires_terminal_failure' not found in ['verification_stop']"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_run_restart_and_history (product.test_run_cli.RunCLITest.test_real_run_restart_and_history)",
+      "exception": "AssertionError: 2 != 0 : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '971806ea83004002b1bcfb404be03aa1', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '814cc145f4236b52417b6f9e44a7d3f14103bd92323d5a72c2a908779dfbd893', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_bad_candidate_not_exported_or_marked_ready (product.test_runtime.RuntimeTest.test_bad_candidate_not_exported_or_marked_ready)",
+      "exception": "AssertionError: 'STOP' != 'FAIL'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cache_cannot_bypass_expiry_or_revoke (product.test_runtime.RuntimeTest.test_cache_cannot_bypass_expiry_or_revoke)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cached_export_revoke_is_redacted (product.test_runtime.RuntimeTest.test_cached_export_revoke_is_redacted)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_real_patch_and_results_preserve_other_consumer (product.test_runtime.RuntimeTest.test_real_patch_and_results_preserve_other_consumer)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_restart_reuses_same_result_and_history (product.test_runtime.RuntimeTest.test_restart_reuses_same_result_and_history)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_background_tick_without_api_event (product.test_workflow_api.WorkflowAPITest.test_background_tick_without_api_event)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_c3_proposal_does_not_require_production_approval (product.test_workflow_api.WorkflowAPITest.test_c3_proposal_does_not_require_production_approval)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_cross_project_and_cross_origin_and_body_limit (product.test_workflow_api.WorkflowAPITest.test_cross_project_and_cross_origin_and_body_limit)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_declined_owner_blocks_send (product.test_workflow_api.WorkflowAPITest.test_declined_owner_blocks_send)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_explicit_send_links_package_and_is_idempotent (product.test_workflow_api.WorkflowAPITest.test_explicit_send_links_package_and_is_idempotent)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_no_publish_grant_or_destination_no_send (product.test_workflow_api.WorkflowAPITest.test_no_publish_grant_or_destination_no_send)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_owners_then_acceptor_and_digest_binding (product.test_workflow_api.WorkflowAPITest.test_owners_then_acceptor_and_digest_binding)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_prepare_never_sends_even_enabled_gateway (product.test_workflow_api.WorkflowAPITest.test_prepare_never_sends_even_enabled_gateway)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_shell_public_data_auth_and_actor_spoof (product.test_workflow_api.WorkflowAPITest.test_shell_public_data_auth_and_actor_spoof)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_source_tamper_reject_and_explicit_reopen (product.test_workflow_api.WorkflowAPITest.test_source_tamper_reject_and_explicit_reopen)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_stale_read_and_timer_redact_cancel_and_clear_review (product.test_workflow_api.WorkflowAPITest.test_stale_read_and_timer_redact_cancel_and_clear_review)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    },
+    {
+      "status": "FAIL",
+      "test": "test_unknown_outcome_is_not_retried (product.test_workflow_api.WorkflowAPITest.test_unknown_outcome_is_not_retried)",
+      "exception": "AssertionError: 'STOP' != 'READY_FOR_REVIEW'"
+    }
+  ]
+}

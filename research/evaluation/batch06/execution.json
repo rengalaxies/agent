@@ -1,0 +1,31 @@
+{
+  "all_release_components_match_method_run": true,
+  "core_changed": false,
+  "data": "40 authored cases;13 correlated groups;0 real experts;0 independent heldout cases",
+  "environment": {
+    "hardware": "arm64 / 8 logical CPUs",
+    "os": "macOS-15.0-arm64-arm-64bit-Mach-O",
+    "python": "3.13.9"
+  },
+  "final_campaign": "author-run-release; all80 first assigned method attempts repeated after tooling fixes; same author cases, not new independent observations",
+  "metadata_discovery": "Drive metadata-only ImpactMap search returned two old presentations; their contents were not fetched. This is not an exhaustive absence claim.",
+  "method_run_components": {
+    "evaluator_sha": "d9ea63e0f7fe70b90bf2bf32fba7606597eeb384633097d7ff1c49e720d03290",
+    "normalizer_sha": "af768216a22c0c4d3444d05e2a7b7fffe2e258ec433ccbc1c826a7124b248368",
+    "protocol_sha256": "8ebe7174d5ce6c117de3b3bb89f364729685204ca2f0a3b1302e0c31831bf2d6",
+    "schema_bundle_sha256": "9f77ef8c4d3e13b00486362897ccbd21a54e1ca09ae31f7c58f6b6c71fdbb45a",
+    "scorer_sha": "3bde79a17f357aa7bd6526a20be39bb91eeea1571117133b93e080303ceea2ca"
+  },
+  "model": "OFF",
+  "network": "NOT_RUN",
+  "privacy": "No real gold read; source-bearing packets/absolute policies/Git/SQLite/private LS1 originals remain ignored. Core exact envelopes and path-redacted lexical derivatives are separately identified.",
+  "release_candidate_components": {
+    "evaluator_sha": "d9ea63e0f7fe70b90bf2bf32fba7606597eeb384633097d7ff1c49e720d03290",
+    "normalizer_sha": "af768216a22c0c4d3444d05e2a7b7fffe2e258ec433ccbc1c826a7124b248368",
+    "protocol_sha256": "8ebe7174d5ce6c117de3b3bb89f364729685204ca2f0a3b1302e0c31831bf2d6",
+    "schema_bundle_sha256": "9f77ef8c4d3e13b00486362897ccbd21a54e1ca09ae31f7c58f6b6c71fdbb45a",
+    "scorer_sha": "3bde79a17f357aa7bd6526a20be39bb91eeea1571117133b93e080303ceea2ca"
+  },
+  "source_anchor": "8d45b0f5c22fc652c704bc38a787b88d94663d7f",
+  "source_execution": false
+}

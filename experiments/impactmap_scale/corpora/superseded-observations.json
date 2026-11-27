@@ -1,0 +1,220 @@
+[
+  {
+    "local_directory": "work/batch04/final-corpora",
+    "observed_suite": [
+      {
+        "name": "repos5-lines50k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 50000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 1268477,
+          "files": 110,
+          "python_nonblank_noncomment_lines": 50000,
+          "python_physical_lines": 50120
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos10-lines100k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 100000,
+          "repositories": 10
+        },
+        "totals": {
+          "bytes": 2536458,
+          "files": 220,
+          "python_nonblank_noncomment_lines": 100000,
+          "python_physical_lines": 100225
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos10-lines50k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 50000,
+          "repositories": 10
+        },
+        "totals": {
+          "bytes": 1268632,
+          "files": 120,
+          "python_nonblank_noncomment_lines": 50000,
+          "python_physical_lines": 50125
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos5-lines100k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 100000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 2536598,
+          "files": 215,
+          "python_nonblank_noncomment_lines": 100000,
+          "python_physical_lines": 100225
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos5-lines50k-dense",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 8,
+          "operations": 8,
+          "python_lines": 50000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 1269122,
+          "files": 110,
+          "python_nonblank_noncomment_lines": 50000,
+          "python_physical_lines": 50141
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos5-lines1k-anchor",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 1000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 25777,
+          "files": 10,
+          "python_nonblank_noncomment_lines": 1000,
+          "python_physical_lines": 1020
+        },
+        "verification_passed": true
+      }
+    ],
+    "reason": "Superseded verifier did not require all old findings / head dependencies.",
+    "status": "SUPERSEDED_NOT_ACCEPTANCE"
+  },
+  {
+    "local_directory": "work/batch04/reviewed-corpora",
+    "observed_suite": [
+      {
+        "name": "repos5-lines50k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 50000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 1268477,
+          "files": 110,
+          "python_nonblank_noncomment_lines": 50000,
+          "python_physical_lines": 50120
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos10-lines100k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 100000,
+          "repositories": 10
+        },
+        "totals": {
+          "bytes": 2536458,
+          "files": 220,
+          "python_nonblank_noncomment_lines": 100000,
+          "python_physical_lines": 100225
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos10-lines50k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 50000,
+          "repositories": 10
+        },
+        "totals": {
+          "bytes": 1268632,
+          "files": 120,
+          "python_nonblank_noncomment_lines": 50000,
+          "python_physical_lines": 50125
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos5-lines100k",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 100000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 2536598,
+          "files": 215,
+          "python_nonblank_noncomment_lines": 100000,
+          "python_physical_lines": 100225
+        },
+        "verification_passed": true
+      },
+      {
+        "name": "repos5-lines50k-dense",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 8,
+          "operations": 8,
+          "python_lines": 50000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 1269122,
+          "files": 110,
+          "python_nonblank_noncomment_lines": 50000,
+          "python_physical_lines": 50141
+        },
+        "verification_passed": false
+      },
+      {
+        "name": "repos5-lines1k-anchor",
+        "parameters": {
+          "active_consumers": 3,
+          "calls_per_consumer": 1,
+          "operations": 8,
+          "python_lines": 1000,
+          "repositories": 5
+        },
+        "totals": {
+          "bytes": 25777,
+          "files": 10,
+          "python_nonblank_noncomment_lines": 1000,
+          "python_physical_lines": 1020
+        },
+        "verification_passed": true
+      }
+    ],
+    "reason": "Strict verification exposed wrong line positions in removed-consumer dense oracle; fixed by recording re-rendered head callsites.",
+    "status": "SUPERSEDED_NOT_ACCEPTANCE"
+  }
+]

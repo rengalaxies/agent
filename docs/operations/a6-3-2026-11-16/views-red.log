@@ -1,0 +1,89 @@
+======================================================================
+ERROR: test_current_failure_keeps_previous_result_stale_and_unknown_publication_separate (tests.service.test_ui_views.ViewTests.test_current_failure_keeps_previous_result_stale_and_unknown_publication_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 36, in test_current_failure_keeps_previous_result_stale_and_unknown_publication_separate
+    html=self.view(self.rid)['result_html']
+         ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_current_result_preserves_pins_checks_and_three_independent_states (tests.service.test_ui_views.ViewTests.test_current_result_preserves_pins_checks_and_three_independent_states)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 22, in test_current_result_preserves_pins_checks_and_three_independent_states
+    view=self.view(self.rid);html=view['result_html']
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_empty_and_queued_do_not_claim_safety (tests.service.test_ui_views.ViewTests.test_empty_and_queued_do_not_claim_safety)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 41, in test_empty_and_queued_do_not_claim_safety
+    view=self.view()
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_filtered_bounded_list_does_not_disclose_unstamped_rows (tests.service.test_ui_views.ViewTests.test_filtered_bounded_list_does_not_disclose_unstamped_rows)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 86, in test_filtered_bounded_list_does_not_disclose_unstamped_rows
+    view=self.view()
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_incompatible_and_unknown_codes_are_not_rendered_as_useful (tests.service.test_ui_views.ViewTests.test_incompatible_and_unknown_codes_are_not_rendered_as_useful)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 61, in test_incompatible_and_unknown_codes_are_not_rendered_as_useful
+    html=self.view(self.rid)['result_html']
+         ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_partial_and_closed_are_not_general_success (tests.service.test_ui_views.ViewTests.test_partial_and_closed_are_not_general_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 52, in test_partial_and_closed_are_not_general_success
+    html=self.view(self.rid)['result_html']
+         ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_reads_and_refresh_leave_service_database_unchanged (tests.service.test_ui_views.ViewTests.test_reads_and_refresh_leave_service_database_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 80, in test_reads_and_refresh_leave_service_database_unchanged
+    for _ in range(3):self.view(self.rid)
+                      ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+======================================================================
+ERROR: test_stored_html_and_paths_are_inert_and_direct_unknown_id_does_not_fall_back (tests.service.test_ui_views.ViewTests.test_stored_html_and_paths_are_inert_and_direct_unknown_id_does_not_fall_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 70, in test_stored_html_and_paths_are_inert_and_direct_unknown_id_does_not_fall_back
+    html=self.view(self.rid)['result_html']
+         ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 16, in view
+    from agent_service.ui_views import workspace_view
+ModuleNotFoundError: No module named 'agent_service.ui_views'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.120s
+
+FAILED (errors=8)

@@ -1,0 +1,102 @@
+F401 [*] `sys` imported but unused
+  --> tools/agent_service/kaiten_live_acceptance.py:17:8
+   |
+15 | import re
+16 | import signal
+17 | import sys
+   |        ^^^
+help: Remove unused import: `sys`
+   |
+16 | import signal
+   - import sys
+17 |
+   |
+
+F841 Local variable `initial` is assigned to but never used
+   --> tools/agent_service/kaiten_live_acceptance.py:137:5
+    |
+135 |         return current
+136 |     connector.fetch=pinned_fetch
+137 |     initial=connector.fetch(rid)
+    |     ^^^^^^^
+138 |     analyzer=core_analyzer(cfg.core,code_version=cfg.analysis.get('code_version','candidate'))
+139 |     def hook(phase,intent):
+    |
+help: Remove assignment to unused variable `initial`
+    |
+136 |     connector.fetch=pinned_fetch
+    -     initial=connector.fetch(rid)
+137 +     connector.fetch(rid)
+138 |     analyzer=core_analyzer(cfg.core,code_version=cfg.analysis.get('code_version','candidate'))
+    |
+note: This is an unsafe fix and may change runtime behavior
+
+F401 [*] `.common.packet_hash` imported but unused
+ --> tools/impactmap_eval/author_cases.py:9:52
+  |
+7 | from examples.orders_reporting.stand import _git,_tree,git_env
+8 | from .packets import curator_manifest,write_packet
+9 | from .common import EVAL,Registry,canonical,digest,packet_hash,read,sha,validate,write
+  |                                                    ^^^^^^^^^^^
+help: Remove unused import: `.common.packet_hash`
+   |
+8  | from .packets import curator_manifest,write_packet
+   - from .common import EVAL,Registry,canonical,digest,packet_hash,read,sha,validate,write
+9  + from .common import EVAL,Registry,canonical,digest,read,sha,validate,write
+10 |
+   |
+
+F401 [*] `.common.digest` imported but unused
+  --> tools/impactmap_eval/calibrate.py:8:31
+   |
+ 6 | import random
+ 7 | from agent_graph import core_identity
+ 8 | from .common import canonical,digest,load_input,read,sha,write
+   |                               ^^^^^^
+ 9 | from .registration import candidate_freeze,components,readiness
+10 | from .runner import run_method
+   |
+help: Remove unused import: `.common.digest`
+  |
+7 | from agent_graph import core_identity
+  - from .common import canonical,digest,load_input,read,sha,write
+8 + from .common import canonical,load_input,read,sha,write
+9 | from .registration import candidate_freeze,components,readiness
+  |
+
+F401 [*] `copy` imported but unused
+ --> tools/impactmap_eval/common.py:3:8
+  |
+1 | """Shared public-input contracts. No reference/catalogue is read by method workers."""
+2 | from __future__ import annotations
+3 | import copy
+  |        ^^^^
+4 | import hashlib
+5 | import json
+  |
+help: Remove unused import: `copy`
+  |
+2 | from __future__ import annotations
+  - import copy
+3 | import hashlib
+  |
+
+F401 [*] `.common.ROOT` imported but unused
+  --> tools/impactmap_eval/registration.py:13:26
+   |
+11 | import sqlite3
+12 | from agent_graph import core_identity
+13 | from .common import EVAL,ROOT,digest,read,sha
+   |                          ^^^^
+14 | from .normalizer import NORMALIZATION_VERSION
+   |
+help: Remove unused import: `.common.ROOT`
+   |
+12 | from agent_graph import core_identity
+   - from .common import EVAL,ROOT,digest,read,sha
+13 + from .common import EVAL,digest,read,sha
+14 | from .normalizer import NORMALIZATION_VERSION
+   |
+
+Found 6 errors.
+[*] 5 fixable with `--fix` (1 unsafe fix available with `--fix --unsafe-fixes`).

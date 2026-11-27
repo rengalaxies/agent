@@ -1,0 +1,47 @@
+{
+  "accepted": {
+    "bytes": 1268477,
+    "files": 110,
+    "python_lines": 50000
+  },
+  "analyzed_fraction": 0,
+  "collection_fraction": 1.0,
+  "error_code": null,
+  "expected_bytes": 1268477,
+  "expected_python_lines": 50000,
+  "fraction_scope": "accepted bytes before collector abort; no returned partial context or analysis",
+  "gap_codes": [],
+  "kind": "collection_limit_probe",
+  "limits": {
+    "freshness_seconds": 3600,
+    "max_corpus_bytes": 2000000,
+    "max_file_bytes": 65536,
+    "max_files": 256,
+    "max_model_steps": 4,
+    "max_proposals": 24,
+    "max_tool_lines": 60,
+    "scan_seconds": 15.0
+  },
+  "passed": true,
+  "spans": [
+    {
+      "child_system_s": 0.07781199999999999,
+      "child_user_s": 0.10214,
+      "children_peak_rss_bytes": 4980736,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.07781199999999999,
+      "exclusive_child_user_s": 0.10214,
+      "exclusive_self_system_s": 0.025972999999999996,
+      "exclusive_self_user_s": 0.05196099999999998,
+      "exclusive_wall_s": 0.3220244580297731,
+      "parent_id": null,
+      "self_peak_rss_bytes": 49315840,
+      "self_system_s": 0.025972999999999996,
+      "self_user_s": 0.05196099999999998,
+      "span_id": 0,
+      "stage": "default_collection",
+      "wall_s": 0.3220244580297731
+    }
+  ]
+}
