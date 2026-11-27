@@ -1,0 +1,84 @@
+{
+  "analysis_type": "SECONDARY_ANALYSIS_OF_SAVED_AUTHOR_RUNS",
+  "new_product_runs": 0,
+  "independent_cases_added": 0,
+  "input_hashes": {
+    "E3_summary": "16b0bad29cc5a1b81020526ad24ff41b69f3e40553e4065a14ed6762d9d5b4f8",
+    "E3_index": "92f10ed4270bd6e148d4d25dc0f442e277157f3a913191dcde9fd4e90624cc7a",
+    "E6_summary": "39ac097bebe0653f09dac6267f8499eda71d49c51dbfdf6c873f2bd814828ba5",
+    "E6_plan": "97f8c6a315fc1d29c7b46c5535b4e5e5b28d478534fe4d6899f598a0c7811954"
+  },
+  "verified": {
+    "E3_normalized": 80,
+    "E6_first_attempt_receipts": 20,
+    "worked_input_snapshots": 15
+  },
+  "series": {
+    "E3": {
+      "impactmap_static": {
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 20
+        },
+        "supported_cases": 34,
+        "false_alert_cases": 0,
+        "negative_cases": 14,
+        "outside_cases": 6,
+        "outside_boundary_success": 5,
+        "technical_errors_all": 1
+      },
+      "lexical_search_ls1": {
+        "strict": {
+          "fn": 0,
+          "fp": 8,
+          "tp": 20
+        },
+        "supported_cases": 34,
+        "false_alert_cases": 8,
+        "negative_cases": 14,
+        "outside_cases": 6,
+        "outside_boundary_success": 2,
+        "technical_errors_all": 0
+      }
+    },
+    "E6": {
+      "impactmap_static": {
+        "strict": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 3
+        },
+        "supported_cases": 7,
+        "false_alert_cases": 0,
+        "negative_cases": 4,
+        "outside_cases": 3,
+        "outside_boundary_success": 2,
+        "technical_errors_all": 1
+      },
+      "lexical_search_ls1": {
+        "strict": {
+          "fn": 0,
+          "fp": 3,
+          "tp": 3
+        },
+        "supported_cases": 7,
+        "false_alert_cases": 3,
+        "negative_cases": 4,
+        "outside_cases": 3,
+        "outside_boundary_success": 1,
+        "technical_errors_all": 0
+      }
+    }
+  },
+  "E3_false_candidates_by_group": {
+    "irrelevant_change": 2,
+    "explicit_page_size": 3,
+    "paginated_explicit_size": 3
+  },
+  "E6_false_candidate_cases": [
+    "AUD-0004",
+    "AUD-0005",
+    "AUD-0007"
+  ]
+}
