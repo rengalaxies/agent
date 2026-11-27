@@ -4,21 +4,20 @@
 
 | ID | Материал | Подтверждённая область | Ограничение |
 |---|---|---|---|
-| E1 | [Kaiten, 22 ноября](https://drive.google.com/file/d/16uVxiqm_Rawa5JtaMZ4d5e9jor4co181/view) | `100 → 20 → 100`, Reporting, обновление comment 93817019, выбранный restart/replay | Авторский цикл; исходный `29ed2ad` пока не найден через GitHub API |
-| E2 | [Jira/Kaiten UI, 22 ноября](https://drive.google.com/file/d/1wjHKMwPNMl5PhjisIGYmhBdIvoj4Z-oN/view) | Jira: исправленный снимок, publication/readback, защищённый UI; сохранённый Kaiten; выбранные PR fences | `177c2b2` пока не найден через GitHub API; разные сценарии не равны общей приёмке |
+| E1 | [Kaiten, 22 ноября](https://drive.google.com/file/d/16uVxiqm_Rawa5JtaMZ4d5e9jor4co181/view) | `100 → 20 → 100`, Reporting, обновление comment 93817019, выбранный restart/replay | Авторский цикл; [E1 · Kaiten](https://github.com/rengalaxies/agent/tree/3973cd664a9f438d643c640cf2719c0a4e1153be) |
+| E2 | [Jira/Kaiten UI, 22 ноября](https://drive.google.com/file/d/1wjHKMwPNMl5PhjisIGYmhBdIvoj4Z-oN/view) | Jira: исправленный снимок, publication/readback, защищённый UI; сохранённый Kaiten; выбранные PR fences | [E2 · Jira/Kaiten](https://github.com/rengalaxies/agent/tree/f50cdf255c5da36fcfc5882ffb1638c1348e190c); результаты ограничены выбранными сценариями |
 | E3 | [Диагностика, 15 ноября](https://drive.google.com/file/d/1a9cL-pKjRmT4zZjiYHY3NId5uEVPlGZ5/view) | 40 development-кейсов, 13 семейств; внутри профиля TP/FP/FN 20/0/0 против LS1 20/8/0 | Использованы в разработке, не независимая серия; вне профиля граница 5/6 и один commit_unavailable |
 | E4 | [Confluence и постоянный контур 7–8 ноября](../../implementation/autonomous-mvp/demo-mvp-2026-11-08/README.md) | Смена версии явно связанной страницы, пересчёт, выбранная актуализация | Историческая версия; не семантика любых требований |
 | E5 | [Восстановления 8 ноября](../../implementation/autonomous-mvp/reliability-2026-11-08/README.md) | Выбранные отказы, очередь, граф и reboot по исходному отчёту | Не переносить PASS на любой последующий релиз |
 
 ## Доступность исходного кода
 
-Проверка GitHub 27.11: `main` — `ed6369f6ff4854ba4f2f3461eaf8b37a828754d9`, интеграция документов 11.11. Запросы commits для `29ed2ad` и `177c2b2` вернули «No commit found». Полный идентификатор E2: `177c2b2da4df70e1847b8ccf4eaf538fa6b39ab5`.
+Опубликованы точные деревья исходников [E1 · Kaiten](https://github.com/rengalaxies/agent/tree/3973cd664a9f438d643c640cf2719c0a4e1153be) и [E2 · Jira/Kaiten](https://github.com/rengalaxies/agent/tree/f50cdf255c5da36fcfc5882ffb1638c1348e190c). [Идентификаторы и воспроизведение](SOURCE-AUDIT-2026-11-27.md).
 
-PDF и первичные приложения сохранены в [пакете НИР 3](https://drive.google.com/drive/folders/15LG8MYLfJEQrshx2tJ5ADn03dl-T-7wO). Это обеспечивает чтение отчётов, но не заменяет публикацию соответствующего дерева исходников, manifest и воспроизводимой поставки. Эти версии нельзя указывать как доступный checkout `main`.
+PDF и первичные приложения сохранены в [пакете НИР 3](https://drive.google.com/drive/folders/15LG8MYLfJEQrshx2tJ5ADn03dl-T-7wO).
 
 [Открытый PR №71](https://github.com/rengalaxies/agent/pull/71) на момент аудита имеет head `5ac9dbb291e9784f02fb4ccc266f459bdca52c0b` и не является указанной версией 22 ноября. Обновление документации не объединяет его с `main` и не квалифицирует поставку.
 
-Исходный коммит E2 найден в локальной Git-базе: `177c2b2da4df70e1847b8ccf4eaf538fa6b39ab5`, дерево `43040f3654d12703815c96a6383ceaaf5eb5bb1d`. Проверены новые объекты истории и выполнены выбранные локальные тесты: 37 прошли, 1 пропущен из-за отсутствия Node в PATH. Публикация полного дерева прервана потерей связи с рабочей средой; опубликованной версии для checkout пока нет. Подробности и порядок завершения — в [отчёте аудита](SOURCE-AUDIT-2026-11-27.md).
 
 ## Что не доказано
 
