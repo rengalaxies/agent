@@ -1,0 +1,20 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "case_id": "AUD-0010",
+  "error_code": null,
+  "finished_at": "2026-11-27T13:59:02.948226+00:00",
+  "method": "lexical_search_ls1",
+  "payload_sha256": "dc889f138a060fdabe62fea677222537fe7a16e5b7eb040ddbaa27f0c2e8ffa8",
+  "payload_utf8": "{\"reason\":\"literal_search_only_not_absence_proof\",\"rg_version\":\"ripgrep 15.2.0 (rev e89fff89ac)\",\"runs\":[{\"argv\":[\"rg\",\"--fixed-strings\",\"--line-number\",\"--no-heading\",\"--json\",\"-e\",\"/audit/10/records\",\"--\",\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0010/lexical_search_ls1/snapshots/0/source.txt\"],\"exit_code\":0,\"stderr\":\"\",\"stdout\":\"{\\\"type\\\":\\\"begin\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0010/lexical_search_ls1/snapshots/0/source.txt\\\"}}}\\n{\\\"type\\\":\\\"match\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0010/lexical_search_ls1/snapshots/0/source.txt\\\"},\\\"lines\\\":{\\\"text\\\":\\\"    return requests.get(\\\\\\\"https://dev-provider.test/audit/10/records\\\\\\\").json()\\\\n\\\"},\\\"line_number\\\":3,\\\"absolute_offset\\\":31,\\\"submatches\\\":[{\\\"match\\\":{\\\"text\\\":\\\"/audit/10/records\\\"},\\\"start\\\":50,\\\"end\\\":67}]}}\\n{\\\"type\\\":\\\"end\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0010/lexical_search_ls1/snapshots/0/source.txt\\\"},\\\"binary_offset\\\":null,\\\"stats\\\":{\\\"elapsed\\\":{\\\"secs\\\":0,\\\"nanos\\\":228125,\\\"human\\\":\\\"0.000228s\\\"},\\\"searches\\\":1,\\\"searches_with_match\\\":1,\\\"bytes_searched\\\":108,\\\"bytes_printed\\\":501,\\\"matched_lines\\\":1,\\\"matches\\\":1}}}\\n{\\\"data\\\":{\\\"elapsed_total\\\":{\\\"human\\\":\\\"0.001033s\\\",\\\"nanos\\\":1032541,\\\"secs\\\":0},\\\"stats\\\":{\\\"bytes_printed\\\":501,\\\"bytes_searched\\\":108,\\\"elapsed\\\":{\\\"human\\\":\\\"0.000228s\\\",\\\"nanos\\\":228125,\\\"secs\\\":0},\\\"matched_lines\\\":1,\\\"matches\\\":1,\\\"searches\\\":1,\\\"searches_with_match\\\":1}},\\\"type\\\":\\\"summary\\\"}\\n\"}]}\n",
+  "returncode": 0,
+  "started_at": "2026-11-27T13:59:02.679485+00:00",
+  "stderr": "",
+  "stderr_bytes_base64": "",
+  "stdout": "",
+  "stdout_bytes_base64": "",
+  "wall_s": 0.26875074999406934,
+  "wall_time_cap_seconds": 60
+}

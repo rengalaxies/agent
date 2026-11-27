@@ -1,0 +1,20 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "case_id": "AUD-0006",
+  "error_code": null,
+  "finished_at": "2026-11-27T13:58:58.960540+00:00",
+  "method": "lexical_search_ls1",
+  "payload_sha256": "6d2390d278f3b5c29a05d0424ccbe5563c3e7c8d6f6b458d8d9c7966cc03b371",
+  "payload_utf8": "{\"reason\":\"literal_search_only_not_absence_proof\",\"rg_version\":\"ripgrep 15.2.0 (rev e89fff89ac)\",\"runs\":[{\"argv\":[\"rg\",\"--fixed-strings\",\"--line-number\",\"--no-heading\",\"--json\",\"-e\",\"/audit/6/records\",\"--\",\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/0/source.txt\",\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/1/source.txt\",\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/2/source.txt\"],\"exit_code\":0,\"stderr\":\"\",\"stdout\":\"{\\\"type\\\":\\\"begin\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/0/source.txt\\\"}}}\\n{\\\"type\\\":\\\"match\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/0/source.txt\\\"},\\\"lines\\\":{\\\"text\\\":\\\"@app.get(\\\\\\\"/audit/6/records\\\\\\\")\\\\n\\\"},\\\"line_number\\\":3,\\\"absolute_offset\\\":44,\\\"submatches\\\":[{\\\"match\\\":{\\\"text\\\":\\\"/audit/6/records\\\"},\\\"start\\\":10,\\\"end\\\":26}]}}\\n{\\\"type\\\":\\\"end\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/0/source.txt\\\"},\\\"binary_offset\\\":null,\\\"stats\\\":{\\\"elapsed\\\":{\\\"secs\\\":0,\\\"nanos\\\":9041,\\\"human\\\":\\\"0.000009s\\\"},\\\"searches\\\":1,\\\"searches_with_match\\\":1,\\\"bytes_searched\\\":184,\\\"bytes_printed\\\":452,\\\"matched_lines\\\":1,\\\"matches\\\":1}}}\\n{\\\"type\\\":\\\"begin\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/1/source.txt\\\"}}}\\n{\\\"type\\\":\\\"match\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/1/source.txt\\\"},\\\"lines\\\":{\\\"text\\\":\\\"@app.get(\\\\\\\"/audit/6/records\\\\\\\")\\\\n\\\"},\\\"line_number\\\":3,\\\"absolute_offset\\\":44,\\\"submatches\\\":[{\\\"match\\\":{\\\"text\\\":\\\"/audit/6/records\\\"},\\\"start\\\":10,\\\"end\\\":26}]}}\\n{\\\"type\\\":\\\"end\\\",\\\"data\\\":{\\\"path\\\":{\\\"text\\\":\\\"/private/tmp/impactmap-auditfix/attempts/attempts/AUD-0006/lexical_search_ls1/snapshots/1/source.txt\\\"},\\\"binary_offset\\\":null,\\\"stats\\\":{\\\"elapsed\\\":{\\\"secs\\\":0,\\\"nanos\\\":26708,\\\"human\\\":\\\"0.000027s\\\"},\\\"searches\\\":1,\\\"searches_with_match\\\":1,\\\"bytes_searched\\\":184,\\\"bytes_printed\\\":452,\\\"matched_lines\\\":1,\\\"matches\\\":1}}}\\n{\\\"data\\\":{\\\"elapsed_total\\\":{\\\"human\\\":\\\"0.003777s\\\",\\\"nanos\\\":3777125,\\\"secs\\\":0},\\\"stats\\\":{\\\"bytes_printed\\\":904,\\\"bytes_searched\\\":400,\\\"elapsed\\\":{\\\"human\\\":\\\"0.000043s\\\",\\\"nanos\\\":42540,\\\"secs\\\":0},\\\"matched_lines\\\":2,\\\"matches\\\":2,\\\"searches\\\":3,\\\"searches_with_match\\\":2}},\\\"type\\\":\\\"summary\\\"}\\n\"}]}\n",
+  "returncode": 0,
+  "started_at": "2026-11-27T13:58:58.491972+00:00",
+  "stderr": "",
+  "stderr_bytes_base64": "",
+  "stdout": "",
+  "stdout_bytes_base64": "",
+  "wall_s": 0.4685768749914132,
+  "wall_time_cap_seconds": 60
+}
