@@ -1,0 +1,10 @@
+[FAIL] fresh_install (1.6 s): box install --config /var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand/box.yaml --json exit 1, expected 0:
+{
+  "command": "install",
+  "finished_at": "2026-11-15T21:12:36Z",
+  "id": "54af4e6af9d5",
+  "machine_seconds": 0.0,
+  "phases": [
+    {
+      "phase": "validate",
+      "seconds":

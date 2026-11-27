@@ -1,0 +1,28 @@
+{
+  "observed_utc": "2026-11-14T09:58:25.127080+00:00",
+  "result": "PASS",
+  "repositories": [
+    {
+      "repository": "/Users/user/Documents/ChatGPT/ВКР/agent",
+      "files_content_and_modes_checked": 1778,
+      "head_unchanged": true,
+      "staged_patch_unchanged": true,
+      "unstaged_patch_unchanged": true
+    },
+    {
+      "repository": "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read",
+      "files_content_and_modes_checked": 2025,
+      "head_unchanged": true,
+      "staged_patch_unchanged": true,
+      "unstaged_patch_unchanged": true
+    },
+    {
+      "repository": "/Users/user/.codex/worktrees/jira-comment-summary/agent-bitbucket-read",
+      "files_content_and_modes_checked": 1990,
+      "head_unchanged": true,
+      "staged_patch_unchanged": true,
+      "unstaged_patch_unchanged": true
+    }
+  ],
+  "scope": "tracked and non-ignored untracked files; ignored credentials/environments/runtime artifacts left in place and excluded from archives"
+}

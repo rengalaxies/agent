@@ -1,0 +1,780 @@
+[
+  {
+    "repository": "/Users/user/Documents/ChatGPT/ВКР/agent",
+    "branch": "m3/dm-p1-ui-install",
+    "head": "5ee21dc2582c0ab26d1d44c6dff1f8d7257af5cc",
+    "original_origin_main": "5974c1fa277b9eed861ca4b2c95b8be879c4ea9c",
+    "commits_only_local_head": 8,
+    "commits_only_main": 133,
+    "tracked_changes": 0,
+    "untracked_files": 13,
+    "comparison_counts": {
+      "absent_on_main": 13
+    },
+    "wip_files": [
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/ACCESS-CHECKPOINT.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/HANDOFF-M3.snapshot.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/LIVE-JIRA-GITHUB-2026-11-05.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/box-plan.target.txt",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/evidence.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/release.manifest.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/target-final-baseline-and-backup-hashes.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/target-final-permissions.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/target-smoke-resources.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/deployment-evidence-2026-11-01/target-status-and-smoke.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/superpowers/plans/2026-10-24-autonomous-mvp-continuation-prompt.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/superpowers/plans/2026-10-24-autonomous-mvp-master-prompt.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      }
+    ]
+  },
+  {
+    "repository": "/Users/user/Documents/ChatGPT/ВКР/agent-bitbucket-read",
+    "branch": "codex/bitbucket-local-worker",
+    "head": "9a69a72bd388ca647f87983082f0f79a930c01b5",
+    "original_origin_main": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+    "commits_only_local_head": 3,
+    "commits_only_main": 29,
+    "tracked_changes": 14,
+    "untracked_files": 83,
+    "comparison_counts": {
+      "differs_from_main": 7,
+      "absent_on_main": 2,
+      "identical_to_main": 88
+    },
+    "wip_files": [
+      {
+        "path": "docs/implementation/autonomous-mvp/READINESS.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/STATUS.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/NEXT-ITERATION.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/README.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/corrected-head-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/docs-control-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/expanded-graph.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/jira-corrected-head-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/jira-delivery-control.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/jira-worker-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/post-guard-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/summary-removal-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-candidate/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-candidate/RELEASE-CHECKPOINT.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-candidate/agent-bitbucket.service",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-candidate/policy.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-candidate/service.dryrun.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-install-2026-11-07/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-install-2026-11-07/acceptance.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-install-2026-11-07/status.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-live-2026-11-07/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-live-2026-11-07/backup.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-live-2026-11-07/backup_check.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-live-2026-11-07/live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-live-2026-11-07/live_check.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/bitbucket-pr4-restored.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/bitbucket-pr4.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/jira-created.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/repeat-readback.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/restored-analysis.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/restored-verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-new-pr-2026-11-07/vm-analysis.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/acceptance.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/acceptance.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/handover.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/handover.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-persistent-live-2026-11-07/service.live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-preflight-2026-11-07/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-preflight-2026-11-07/backup.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/bitbucket-worker-2026-11-04/vm-preflight-2026-11-07/verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/configured-worker-dryrun.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/extracted-page.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/jira-documentation-preview.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/linked-page-verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/live-publication.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/page-change-polling-live.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-2026-11-07/page-created.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/demo-mvp-2026-11-08/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/demo-mvp-2026-11-08/matrix.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/CASE-A.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/CASE-B.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/REVIEWER.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/RUNBOOK.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/TASKS.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/packet.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/preflight.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/owner-rehearsal-2026-11-08/responses.template.csv",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/TOKENS.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/demo-final-health.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/links.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/original-service-backup.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/outage.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/production-restore.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reboot-after.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reboot-before.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reboot-probe.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reboot-request.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reboot-verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reliability-links.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reliability-outage.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/reliability-production-restore.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/tokens-after-reboot.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/tokens-after-revocation.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/tokens-renewed.png",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/tokens-vm-rotation.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/reliability-2026-11-08/tokens-vm-verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/product/pilot/DECISIONS.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/superpowers/plans/2026-10-28-mvp-delivery-ownership.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "src/agent_graph/git_sources.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/config.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "src/agent_service/confluence.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "src/agent_service/connectors/bitbucket_analysis.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/connectors/bitbucket_jira.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/connectors/bitbucket_read.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/connectors/jira.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "src/agent_service/service.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "differs_from_main"
+      },
+      {
+        "path": "tests/graph/test_git_sources.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "tests/service/test_bitbucket_analysis.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "tests/service/test_bitbucket_jira.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "tests/service/test_confluence.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "tools/agent_service/box/cli.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "tools/agent_service/box/tests/test_sidecar_race.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      }
+    ]
+  },
+  {
+    "repository": "/Users/user/.codex/worktrees/jira-comment-summary/agent-bitbucket-read",
+    "branch": "(detached)",
+    "head": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+    "original_origin_main": "c4053c6d4a959ff4d0e159c3cb1913fae87f25fb",
+    "commits_only_local_head": 0,
+    "commits_only_main": 14,
+    "tracked_changes": 8,
+    "untracked_files": 28,
+    "comparison_counts": {
+      "absent_on_main": 3,
+      "identical_to_main": 33
+    },
+    "wip_files": [
+      {
+        "path": "artifacts/Паспорт проекта Agent.docx",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "artifacts/Паспорт проекта ImpactMap.docx",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/READINESS.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/STATUS.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-unavailable-2026-11-08/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-unavailable-2026-11-08/verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-version-2026-11-09/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/confluence-version-2026-11-09/verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/demo-acceptance-2026-11-09/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/demo-acceptance-2026-11-09/REHEARSAL.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/IP-REPLACEMENT.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/LIVE-ROLLOUT.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/LIVE-VERIFICATION.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/PREVIEW.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/ROLLOUT.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/ip-change-runtime.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "absent_on_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/preview-sizes.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/release-verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/jira-presentation-2026-11-08/vm_rollout.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/live-chain-2026-11-08/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/live-chain-2026-11-08/corrected.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/live-chain-2026-11-08/impact.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/poll-idempotence-2026-11-09/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/poll-idempotence-2026-11-09/verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/preflight-2026-11-11/README.md",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/implementation/autonomous-mvp/preflight-2026-11-11/verification.json",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "docs/superpowers/plans/2026-10-28-mvp-delivery-ownership.md",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/config.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/confluence.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/connectors/jira.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/jira_presentation.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/publisher.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "src/agent_service/service.py",
+        "local_kind": "tracked_change",
+        "comparison_to_main": "identical_to_main"
+      },
+      {
+        "path": "tests/service/test_jira_presentation.py",
+        "local_kind": "untracked",
+        "comparison_to_main": "identical_to_main"
+      }
+    ]
+  }
+]

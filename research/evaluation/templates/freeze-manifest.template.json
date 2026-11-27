@@ -1,0 +1,57 @@
+{
+  "schema_version": "impactmap-freeze-design-1.0",
+  "status": "NOT_REGISTERED",
+  "protocol_version": "v1",
+  "protocol_sha256": null,
+  "schema_bundle_sha256": null,
+  "source_sha": null,
+  "loaded_runtime_sha": null,
+  "core_identity": null,
+  "dependency_lock_sha256": null,
+  "environment": {
+    "os": null,
+    "python": null,
+    "hardware": null
+  },
+  "model_mode": "OFF",
+  "input_bundle_sha256": null,
+  "closed_reference_bundle_sha256": null,
+  "closed_catalogue_sha256": null,
+  "source_inventory_sha256": null,
+  "access_policy_sha256": null,
+  "evaluator_sha": null,
+  "normalizer_sha": null,
+  "scorer_sha": null,
+  "baseline": {
+    "id": "LS1",
+    "implementation_sha": null,
+    "rg_version": null,
+    "argv_policy_sha256": null
+  },
+  "budgets": {
+    "wall_time_cap_seconds": null,
+    "retry_policy_sha256": null
+  },
+  "primary_attempt_rule": "first_assigned_attempt",
+  "case_ids": [],
+  "method_case_order": [],
+  "random_seed": null,
+  "thresholds": {
+    "status": "PROPOSED_NOT_APPROVED",
+    "strict_recall_min": 0.9,
+    "strict_precision_min": 0.85,
+    "negative_case_far_max": 0.1,
+    "supported_technical_errors_max": 0,
+    "outside_profile_boundary_success_required": 6,
+    "access_leaks_max": 0,
+    "false_certainty_max": 0,
+    "approved_by": null,
+    "approved_at": null,
+    "rationale_ref": null
+  },
+  "experts": [],
+  "curator": null,
+  "gold_frozen_at": null,
+  "registered_at": null,
+  "disclosure_log_ref": null
+}

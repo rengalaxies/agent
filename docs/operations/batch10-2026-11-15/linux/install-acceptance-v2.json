@@ -1,0 +1,255 @@
+{
+  "supervisor": "process",
+  "scenarios": [
+    {
+      "scenario": "fresh_install",
+      "detail": {
+        "install_wall_seconds": 9.1,
+        "machine_seconds": 7.6,
+        "phase_seconds": {
+          "validate": 0.05,
+          "release": 0.04,
+          "configure": 0.01,
+          "mirrors": 0.47,
+          "probes": 0.47,
+          "graph": 0.75,
+          "start": 2.09,
+          "smoke": 3.18,
+          "report": 0.55
+        },
+        "release": {
+          "name": "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+          "release_id": "0.1.0+g5d508a2e301d.linux-x86_64-cp312",
+          "commit": "5d508a2e301dc8991672903f978c8c377ba8041d",
+          "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1"
+        },
+        "loaded": {
+          "code_version": "0.1.0+g5d508a2e301d.linux-x86_64-cp312",
+          "commit": "5d508a2e301dc8991672903f978c8c377ba8041d",
+          "config": "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-prefix-v2/etc/agent-service/generated/agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312/service.json",
+          "constitution": "agent-service-v1.0:100bcad3db9c",
+          "constitution_default": "agent-service-v1.0:100bcad3db9c",
+          "constitution_path": "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-prefix-v2/opt/agent-service/releases/agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+          "core": {
+            "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1",
+            "output_schema_version": "2.2",
+            "profile": "http-requests-9",
+            "schema": "agent-graph-1"
+          },
+          "launcher_pid": null,
+          "listen": "127.0.0.1:60631",
+          "manifest_sha256": "696af80c6205853318a543ff291c66e30c73f8b7e3fb3c4a9c4a98be9efcd40b",
+          "pid": 1880902,
+          "python": "3.12.3",
+          "release": "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+          "release_id": "0.1.0+g5d508a2e301d.linux-x86_64-cp312",
+          "started_at": "2026-11-15T21:17:43.562158+00:00"
+        },
+        "graph": {
+          "active_bases": 9,
+          "by_origin": {
+            "code": 5,
+            "ownership": 4,
+            "runtime": 0
+          },
+          "closed_bases": 0,
+          "graph_version": "graph-6",
+          "relationships": 9,
+          "services": [
+            "archive",
+            "audit",
+            "billing",
+            "orders",
+            "reporting"
+          ]
+        },
+        "service_rss_kib": 68368
+      },
+      "result": "PASS",
+      "seconds": 10.4
+    },
+    {
+      "scenario": "end_to_end_on_installed_release",
+      "detail": {
+        "pr_first_line": "### Возможное влияние изменения",
+        "jira_delivery": 202,
+        "updates": {
+          "github": 2,
+          "jira": 0
+        }
+      },
+      "result": "PASS",
+      "seconds": 1.0
+    },
+    {
+      "scenario": "reinstall_is_idempotent",
+      "result": "FAIL",
+      "error": "expected one service process, found 3",
+      "trace": "Traceback (most recent call last):\n  File \"/var/tmp/impactmap-batch10-5d508a2e301d-20261115/app/tools/agent_service/box/acceptance.py\", line 168, in scenario\n    entry[\"detail\"] = fn() or {}\n                      ^^^^\n  File \"/var/tmp/impactmap-batch10-5d508a2e301d-20261115/app/tools/agent_service/box/acceptance.py\", line 228, in reinstall\n    raise Check(f\"expected one service process, found {len(services)}\")\nCheck: expected one service process, found 3\n",
+      "seconds": 9.5
+    },
+    {
+      "scenario": "service_killed_comes_back",
+      "detail": {
+        "killed_pid": 1880902,
+        "new_pid": 1882792,
+        "restarted_by": "box install (process supervisor has no restart)"
+      },
+      "result": "PASS",
+      "seconds": 12.1
+    },
+    {
+      "scenario": "backup_restore",
+      "detail": {
+        "backup": "20261115T211813182729Z-acceptance",
+        "backup_counts": {
+          "events": 4,
+          "resources": 2,
+          "jobs": 3,
+          "intents": 4,
+          "history": 26,
+          "delivered_comments": 2,
+          "graph_artifacts": 14,
+          "graph_proposals": 0
+        },
+        "restored": "20261115T211813182729Z-acceptance",
+        "safety_backup": "20261115T211815062422Z-pre-rollback",
+        "queue_after": {
+          "events": {
+            "COALESCED": 2,
+            "INGESTED": 3
+          },
+          "jobs": {
+            "DONE": 5
+          },
+          "intents": {
+            "DELIVERED": 7
+          }
+        }
+      },
+      "result": "PASS",
+      "seconds": 6.7
+    }
+  ],
+  "box_calls": [
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand-v2/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 9.14
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.22
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.12
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.22
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand-v2/box.yaml",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 5.99
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.17
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.12
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand-v2/box.yaml"
+      ],
+      "exit": 0,
+      "seconds": 7.89
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.12
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "backup",
+        "--label",
+        "acceptance",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 0.57
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "restore",
+        "20261115T211813182729Z-acceptance",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 3.98
+    },
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "status",
+        "--json"
+      ],
+      "exit": 0,
+      "seconds": 1.17
+    }
+  ],
+  "started_at": "2026-11-15T21:17:39Z",
+  "finished_at": "2026-11-15T21:18:19Z",
+  "passed": false
+}

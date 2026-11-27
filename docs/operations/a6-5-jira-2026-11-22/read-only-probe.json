@@ -1,0 +1,20 @@
+{
+  "legacy_pid": "60331",
+  "namespace": [
+    "agent-bitbucket-m3",
+    "pilot-vm"
+  ],
+  "jira": {
+    "base_url": "https://api.atlassian.com/ex/jira/d0b47b8d-4655-4cb1-9f81-30573fd372c3",
+    "project_keys": [
+      "KAN"
+    ],
+    "bot_id": "712020:8948567f-20f5-4c20-8e4c-7f9ed30b5732",
+    "comment_format": "summary_ru"
+  },
+  "bitbucket_mode": "jira_delivery",
+  "read_only_jira": "PASS",
+  "resource": "jira:10023",
+  "version": "jira:e70a9d725e4388296d6b3782ba0293c1",
+  "closed": false
+}

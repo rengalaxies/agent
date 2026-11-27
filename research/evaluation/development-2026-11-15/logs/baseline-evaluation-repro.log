@@ -1,0 +1,20 @@
+======================================================================
+ERROR: test_evaluation_tooling (unittest.loader._FailedTest.test_evaluation_tooling)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_evaluation_tooling
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_evaluation_tooling.py", line 6, in <module>
+    from tools.impactmap_eval import scoring
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/impactmap_eval/scoring.py", line 5, in <module>
+    from .common import canonical,pair,validate
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tools/impactmap_eval/common.py", line 7, in <module>
+    from jsonschema import Draft202012Validator, FormatChecker
+ModuleNotFoundError: No module named 'jsonschema'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

@@ -1,0 +1,78 @@
+{
+  "impactmap_static": {
+    "strict": {
+      "before": {
+        "fn": 0,
+        "fp": 0,
+        "tp": 20
+      },
+      "after": {
+        "fn": 0,
+        "fp": 0,
+        "tp": 20
+      }
+    },
+    "supported_cases": {
+      "before": 34,
+      "after": 34
+    },
+    "outside_cases": {
+      "before": 6,
+      "after": 6
+    },
+    "outside_boundary_success": {
+      "before": 5,
+      "after": 5
+    },
+    "false_alert_cases": {
+      "before": 0,
+      "after": 0
+    },
+    "negative_cases": {
+      "before": 14,
+      "after": 14
+    },
+    "technical_errors_all": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "lexical_search_ls1": {
+    "strict": {
+      "before": {
+        "fn": 0,
+        "fp": 8,
+        "tp": 20
+      },
+      "after": {
+        "fn": 0,
+        "fp": 8,
+        "tp": 20
+      }
+    },
+    "supported_cases": {
+      "before": 34,
+      "after": 34
+    },
+    "outside_cases": {
+      "before": 6,
+      "after": 6
+    },
+    "outside_boundary_success": {
+      "before": 2,
+      "after": 2
+    },
+    "false_alert_cases": {
+      "before": 8,
+      "after": 8
+    },
+    "negative_cases": {
+      "before": 14,
+      "after": 14
+    },
+    "technical_errors_all": {
+      "before": 0,
+      "after": 0
+    }
+  }
+}

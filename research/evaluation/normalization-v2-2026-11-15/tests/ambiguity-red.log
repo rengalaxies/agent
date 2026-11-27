@@ -1,0 +1,15 @@
+test_off_delta_alternative_cannot_be_pruned_to_force_finding_binding (tests.performance.test_normalization_binding.BindingTests.test_off_delta_alternative_cannot_be_pruned_to_force_finding_binding) ... FAIL
+
+======================================================================
+FAIL: test_off_delta_alternative_cannot_be_pruned_to_force_finding_binding (tests.performance.test_normalization_binding.BindingTests.test_off_delta_alternative_cannot_be_pruned_to_force_finding_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 124, in test_off_delta_alternative_cannot_be_pruned_to_force_finding_binding
+    self.assertTrue(any('/findings/0' in c['raw_refs'] for c in p['invalid_candidates']))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 1.690s
+
+FAILED (failures=1)

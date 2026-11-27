@@ -1,0 +1,113 @@
+{
+  "schema_version": "impactmap-benchmark-manifest-1",
+  "policy_without_roots_sha256": "a5d258ca07e58da07f019610761d9d8c7c95639362ab2cd2eb1a7c555b3939f5",
+  "limits": {
+    "max_files": 2048,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 8000000,
+    "scan_seconds": 60.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 4,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "pins": [
+    {
+      "repository": "r00",
+      "service": "provider",
+      "base": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+      "head": "5756163991acd2015fc03c15f10af4f5d3ee2b14"
+    },
+    {
+      "repository": "r01",
+      "service": "consumer_01",
+      "base": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+      "head": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3"
+    },
+    {
+      "repository": "r02",
+      "service": "consumer_02",
+      "base": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+      "head": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31"
+    },
+    {
+      "repository": "r03",
+      "service": "consumer_03",
+      "base": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+      "head": "b5ea9dc7c7753e82c6da97078ec17877901a5720"
+    },
+    {
+      "repository": "r04",
+      "service": "consumer_04",
+      "base": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+      "head": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877"
+    },
+    {
+      "repository": "r05",
+      "service": "consumer_05",
+      "base": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+      "head": "71e24f1027b860b06c52addd36d2cedbd78ada66"
+    },
+    {
+      "repository": "r06",
+      "service": "consumer_06",
+      "base": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+      "head": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f"
+    },
+    {
+      "repository": "r07",
+      "service": "consumer_07",
+      "base": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+      "head": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585"
+    },
+    {
+      "repository": "r08",
+      "service": "consumer_08",
+      "base": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+      "head": "09355bfa16a27d4f6fef2435580c7f2e08fee020"
+    },
+    {
+      "repository": "r09",
+      "service": "consumer_09",
+      "base": "137a0c5e279c317a47350baf195567847492376f",
+      "head": "137a0c5e279c317a47350baf195567847492376f"
+    }
+  ],
+  "provenance": "controlled_generated",
+  "source": {
+    "commit": "fd3dbc37dd0a8452264989008214fc1ef01f8640",
+    "working_tree_dirty": false,
+    "tool_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf",
+    "core": {
+      "profile": "http-requests-9",
+      "schema": "agent-graph-1",
+      "output_schema_version": "2.2",
+      "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1"
+    },
+    "git_version": "git version 2.39.5 (Apple Git-154)"
+  },
+  "environment": {
+    "python": "3.13.9 (v3.13.9:8183fa5e3f7, Oct 14 2025, 10:27:13) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "system": "Darwin",
+    "machine": "arm64",
+    "platform": "macOS-15.0-arm64-arm-64bit-Mach-O",
+    "logical_cpus": 8,
+    "ram_bytes": 8589934592,
+    "packages": {
+      "pydantic": "2.14.2",
+      "PyYAML": "6.0.3"
+    },
+    "rss_scope": "ru_maxrss lifetime high-water mark, not stage-local or summed process-tree RSS",
+    "child_cpu_scope": "RUSAGE_CHILDREN reaped descendants only",
+    "wall_scope": "perf_counter; includes instrumentation overhead; inventory_metrics separately visible"
+  },
+  "model": "OFF",
+  "cache_protocol": "new worker and SQLite state per repetition; warm repeat in same worker; OS caches uncontrolled",
+  "semantics_ignored_fields": [
+    "assessed_at",
+    "checked_at",
+    "finished_at",
+    "started_at",
+    "timings"
+  ]
+}

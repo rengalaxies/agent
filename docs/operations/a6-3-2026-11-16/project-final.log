@@ -1,0 +1,858 @@
+/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/pydantic/main.py:520: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x108c97a60>
+  return self.__pydantic_serializer__.to_python(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/change_completion/adapters.py:69: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887b2e0>
+  match = _TOKEN.match(sql, offset)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887b2e0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887b880>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887a4d0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x108226020>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x108225e40>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887b2e0>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887aa70>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887a980>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887bf10>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887ba60>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887bc40>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py:274: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10887bd30>
+  parsed = [sys.intern(str(x)) for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"passed": false, "error_code": "remote_load_failed"}
+/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/output_contracts.py:133: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x108a455d0>
+  @model_validator(mode="after")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_graph/output_contracts.py:133: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x108a47a60>
+  @model_validator(mode="after")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+======================================================================
+ERROR: test_cached_patch_tamper_is_not_released (product.test_runtime.RuntimeTest.test_cached_patch_tamper_is_not_released)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_runtime.py", line 142, in test_cached_patch_tamper_is_not_released
+    altered["patches"]["analytics"]["candidate"] = "SELECT 999 AS total;"
+    ~~~~~~~^^^^^^^^^^^
+KeyError: 'patches'
+
+======================================================================
+FAIL: test_baseline_does_not_meet_new_finance_requirement (product.test_contract_profile.ContractProfileTests.test_baseline_does_not_meet_new_finance_requirement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_contract_profile.py", line 48, in test_baseline_does_not_meet_new_finance_requirement
+    self.assertEqual(result['status'], 'FAIL')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'FAIL'
+- STOP
++ FAIL
+
+
+======================================================================
+FAIL: test_blanket_adaptation_breaks_unchanged_audit (product.test_contract_profile.ContractProfileTests.test_blanket_adaptation_breaks_unchanged_audit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_contract_profile.py", line 54, in test_blanket_adaptation_breaks_unchanged_audit
+    self.assertEqual(result['status'], 'FAIL')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'FAIL'
+- STOP
++ FAIL
+
+
+======================================================================
+FAIL: test_cli_generate_check_and_independent_pin_exit_codes (product.test_contract_profile.ContractProfileTests.test_cli_generate_check_and_independent_pin_exit_codes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_contract_profile.py", line 124, in test_cli_generate_check_and_independent_pin_exit_codes
+    self.assertEqual(main(common + [self.digest]), 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_manifest_contract_snapshot_change_is_not_accepted (product.test_contract_profile.ContractProfileTests.test_manifest_contract_snapshot_change_is_not_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_contract_profile.py", line 159, in test_manifest_contract_snapshot_change_is_not_accepted
+    self.assertEqual(result["reason_codes"], ["snapshot_changed"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['sql_execution_error'] != ['snapshot_changed']
+
+First differing element 0:
+'sql_execution_error'
+'snapshot_changed'
+
+- ['sql_execution_error']
++ ['snapshot_changed']
+
+======================================================================
+FAIL: test_real_transform_passes_different_consumer_requirements (product.test_contract_profile.ContractProfileTests.test_real_transform_passes_different_consumer_requirements)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_contract_profile.py", line 40, in test_real_transform_passes_different_consumer_requirements
+    self.assertEqual(result["status"], "PASS", result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'PASS'
+- STOP
++ PASS
+ : {'profile': 'contract-python-sql/1', 'status': 'STOP', 'checks': [], 'effects_authorized': False, 'coverage_limits': ['declared_consumers_only', 'canonical_integer_mapping_only', 'bounded_sqlite_select', 'no_production_cutover'], 'reason_codes': ['sql_execution_error']}
+
+======================================================================
+FAIL: test_worker_generates_candidate_from_pinned_intent_and_checks_independently (product.test_control_plane.ContractIntentQueueTests.test_worker_generates_candidate_from_pinned_intent_and_checks_independently)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_control_plane.py", line 360, in test_worker_generates_candidate_from_pinned_intent_and_checks_independently
+    self.assertEqual(result['status'], 'READY_FOR_REVIEW', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'id': 'faa873dae7304972b8a553a7f8a3caee', 'status': 'STOP', 'result': {'profile': 'contract-python-sql/1', 'status': 'STOP', 'checks': [], 'effects_authorized': False, 'coverage_limits': ['declared_consumers_only', 'canonical_integer_mapping_only', 'bounded_sqlite_select', 'no_production_cutover'], 'reason_codes': ['sql_execution_error'], 'candidate_path': '/private/tmp/tmpo4jpwrzl/intent-state/candidates/faa873dae7304972b8a553a7f8a3caee', 'intent_sha256': '4f30af2cde8e978de025e91faabf4e49e69da47f0de07fec70f8db8102cfa775', 'verification_status': 'STOP', 'transition_id': 'contract:intent-contract'}}
+
+======================================================================
+FAIL: test_real_contract_python_sql_profile_uses_queue_and_independent_pin (product.test_control_plane.ControlPlaneTests.test_real_contract_python_sql_profile_uses_queue_and_independent_pin)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_control_plane.py", line 213, in test_real_contract_python_sql_profile_uses_queue_and_independent_pin
+    self.assertEqual(result['status'], 'READY_FOR_REVIEW', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'id': '1861db2d17b64d9f8f53263e152e04b7', 'status': 'STOP', 'result': {'profile': 'contract-python-sql/1', 'status': 'STOP', 'checks': [], 'effects_authorized': False, 'coverage_limits': ['declared_consumers_only', 'canonical_integer_mapping_only', 'bounded_sqlite_select', 'no_production_cutover'], 'reason_codes': ['sql_execution_error'], 'verification_status': 'STOP', 'transition_id': 'contract:contract'}}
+
+======================================================================
+FAIL: test_real_execution_and_restart_idempotency (product.test_control_plane.ControlPlaneTests.test_real_execution_and_restart_idempotency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_control_plane.py", line 57, in test_real_execution_and_restart_idempotency
+    self.assertEqual(completed['status'], 'READY_FOR_REVIEW', completed)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'id': '7c9982fddd314f86a759f936faa52820', 'status': 'STOP', 'result': {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '74ae0cd6d4d94652a956a71f9f2dcff7', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '814cc145f4236b52417b6f9e44a7d3f14103bd92323d5a72c2a908779dfbd893', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-17T00:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}}
+
+======================================================================
+FAIL: test_actual_types_are_captured_not_expected (product.test_executor.ExecutorTests.test_actual_types_are_captured_not_expected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 18, in test_actual_types_are_captured_not_expected
+    self.assertEqual(result["status"], "executed")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'executed'
+- error
++ executed
+
+
+======================================================================
+FAIL: test_clean_worker_environment (product.test_executor.ExecutorTests.test_clean_worker_environment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 80, in test_clean_worker_environment
+    self.assertEqual(execute_select("SELECT count(*) AS n FROM events", FIXTURE)["status"], "executed")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'executed'
+- error
++ executed
+
+
+======================================================================
+FAIL: test_duplicates_and_null_values_retained (product.test_executor.ExecutorTests.test_duplicates_and_null_values_retained)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 50, in test_duplicates_and_null_values_retained
+    self.assertEqual(result["status"], "executed")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'executed'
+- error
++ executed
+
+
+======================================================================
+FAIL: test_fixture_validation (product.test_executor.ExecutorTests.test_fixture_validation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 62, in test_fixture_validation
+    self.assertEqual(execute_select("SELECT 1", fixture)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DELETE FROM events')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='DROP TABLE events')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='UPDATE events SET amount=0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql="ATTACH DATABASE '/tmp/must-not-open' AS other")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='PRAGMA database_list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql="SELECT readfile('/etc/passwd')")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql="SELECT load_extension('/tmp/a')")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql="SELECT writefile('/tmp/a','x')")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql="SELECT system('id')")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_read_only_and_no_external_functions (product.test_executor.ExecutorTests.test_read_only_and_no_external_functions) (sql='SELECT name FROM sqlite_master')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 34, in test_read_only_and_no_external_functions
+    self.assertEqual(result["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_result_and_instruction_budgets (product.test_executor.ExecutorTests.test_result_and_instruction_budgets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 67, in test_result_and_instruction_budgets
+    self.assertIn("result_row_limit", execute_select("SELECT amount FROM events", fixture)["reason_codes"])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'result_row_limit' not found in ['worker_failed']
+
+======================================================================
+FAIL: test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT amount FROM events WHERE 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 46, in test_unknown_and_heterogeneous_types_fail_closed
+    self.assertEqual(execute_select(sql, FIXTURE)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT NULL AS a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 46, in test_unknown_and_heterogeneous_types_fail_closed
+    self.assertEqual(execute_select(sql, FIXTURE)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql="SELECT CASE WHEN age_days<30 THEN 1 ELSE 'x' END AS a FROM events")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 46, in test_unknown_and_heterogeneous_types_fail_closed
+    self.assertEqual(execute_select(sql, FIXTURE)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1e999 AS a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 46, in test_unknown_and_heterogeneous_types_fail_closed
+    self.assertEqual(execute_select(sql, FIXTURE)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql="SELECT x'4142' AS a")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 46, in test_unknown_and_heterogeneous_types_fail_closed
+    self.assertEqual(execute_select(sql, FIXTURE)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_unknown_and_heterogeneous_types_fail_closed (product.test_executor.ExecutorTests.test_unknown_and_heterogeneous_types_fail_closed) (sql='SELECT 1 AS a, 2 AS a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_executor.py", line 46, in test_unknown_and_heterogeneous_types_fail_closed
+    self.assertEqual(execute_select(sql, FIXTURE)["status"], "unsupported")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'error' != 'unsupported'
+- error
++ unsupported
+
+
+======================================================================
+FAIL: test_operator_retry_is_distinct_idempotent_and_retains_history (product.test_reliability.ReliabilityTest.test_operator_retry_is_distinct_idempotent_and_retains_history)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_reliability.py", line 26, in test_operator_retry_is_distinct_idempotent_and_retains_history
+    self.assertEqual(recovered['status'], 'READY_FOR_REVIEW', recovered)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '6f4d72b4124d40119ae4c0522472145e', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '814cc145f4236b52417b6f9e44a7d3f14103bd92323d5a72c2a908779dfbd893', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_success_cannot_be_retried_as_failure (product.test_reliability.ReliabilityTest.test_success_cannot_be_retried_as_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_reliability.py", line 35, in test_success_cannot_be_retried_as_failure
+    self.assertIn('retry_requires_terminal_failure', retry['reason_codes'])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'retry_requires_terminal_failure' not found in ['verification_stop']
+
+======================================================================
+FAIL: test_real_run_restart_and_history (product.test_run_cli.RunCLITest.test_real_run_restart_and_history)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_run_cli.py", line 32, in test_real_run_restart_and_history
+    self.assertEqual(code, 0, first)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '971806ea83004002b1bcfb404be03aa1', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '814cc145f4236b52417b6f9e44a7d3f14103bd92323d5a72c2a908779dfbd893', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_bad_candidate_not_exported_or_marked_ready (product.test_runtime.RuntimeTest.test_bad_candidate_not_exported_or_marked_ready)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_runtime.py", line 74, in test_bad_candidate_not_exported_or_marked_ready
+    self.assertEqual(result["status"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'FAIL'
+- STOP
++ FAIL
+
+
+======================================================================
+FAIL: test_cache_cannot_bypass_expiry_or_revoke (product.test_runtime.RuntimeTest.test_cache_cannot_bypass_expiry_or_revoke)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_runtime.py", line 97, in test_cache_cannot_bypass_expiry_or_revoke
+    self.assertEqual(self.run_case()["status"], "READY_FOR_REVIEW")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+
+
+======================================================================
+FAIL: test_cached_export_revoke_is_redacted (product.test_runtime.RuntimeTest.test_cached_export_revoke_is_redacted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_runtime.py", line 156, in test_cached_export_revoke_is_redacted
+    self.assertEqual(self.run_case()["status"], "READY_FOR_REVIEW")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+
+
+======================================================================
+FAIL: test_real_patch_and_results_preserve_other_consumer (product.test_runtime.RuntimeTest.test_real_patch_and_results_preserve_other_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_runtime.py", line 53, in test_real_patch_and_results_preserve_other_consumer
+    self.assertEqual(result["status"], "READY_FOR_REVIEW", result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '902abf959f3549238c774cc262d1b06c', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '814cc145f4236b52417b6f9e44a7d3f14103bd92323d5a72c2a908779dfbd893', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '7a03e383c88ab4bb895095a2b9d1d119d7ba91ecc8f534d73a6c14a46e5f3293', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_restart_reuses_same_result_and_history (product.test_runtime.RuntimeTest.test_restart_reuses_same_result_and_history)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_runtime.py", line 67, in test_restart_reuses_same_result_and_history
+    self.assertEqual(second["status"], "READY_FOR_REVIEW")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+
+
+======================================================================
+FAIL: test_background_tick_without_api_event (product.test_workflow_api.WorkflowAPITest.test_background_tick_without_api_event)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': 'f7e92245c2af445fb89ea6fc8cb247ed', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_c3_proposal_does_not_require_production_approval (product.test_workflow_api.WorkflowAPITest.test_c3_proposal_does_not_require_production_approval)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '8d0f7022156e4e2391bc223c3fa1ff9a', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_cross_project_and_cross_origin_and_body_limit (product.test_workflow_api.WorkflowAPITest.test_cross_project_and_cross_origin_and_body_limit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': 'a7661a3f6a674f31a8ff94b80c173337', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_declined_owner_blocks_send (product.test_workflow_api.WorkflowAPITest.test_declined_owner_blocks_send)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '9b3d8e74f3d24a928ea27d7b673abd9e', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_explicit_send_links_package_and_is_idempotent (product.test_workflow_api.WorkflowAPITest.test_explicit_send_links_package_and_is_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': 'fe6be81ecb4a443ab83fd8e58c4dac9c', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_no_publish_grant_or_destination_no_send (product.test_workflow_api.WorkflowAPITest.test_no_publish_grant_or_destination_no_send)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '594be5be19474a0bb71f735715ca1c22', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_owners_then_acceptor_and_digest_binding (product.test_workflow_api.WorkflowAPITest.test_owners_then_acceptor_and_digest_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': 'c207dec0d42641d19301cea5e936dadb', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_prepare_never_sends_even_enabled_gateway (product.test_workflow_api.WorkflowAPITest.test_prepare_never_sends_even_enabled_gateway)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': 'cec8be3d673749a387a7b4ea542c8455', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_shell_public_data_auth_and_actor_spoof (product.test_workflow_api.WorkflowAPITest.test_shell_public_data_auth_and_actor_spoof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '4540779376484e4ea80ca7e80b18298a', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_source_tamper_reject_and_explicit_reopen (product.test_workflow_api.WorkflowAPITest.test_source_tamper_reject_and_explicit_reopen)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '0eb0f16653394f3d8608222abf8c83bb', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_stale_read_and_timer_redact_cancel_and_clear_review (product.test_workflow_api.WorkflowAPITest.test_stale_read_and_timer_redact_cancel_and_clear_review)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': '7f3f1b79b01b42dda26ed415e27aeb4a', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+======================================================================
+FAIL: test_unknown_outcome_is_not_retried (product.test_workflow_api.WorkflowAPITest.test_unknown_outcome_is_not_retried)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/product/test_workflow_api.py", line 47, in setUp
+    self.assertEqual(run["status"], "READY_FOR_REVIEW", run)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STOP' != 'READY_FOR_REVIEW'
+- STOP
++ READY_FOR_REVIEW
+ : {'runtime': 'sql-window-runtime/1', 'transition_id': 'two-consumer-window-change', 'status': 'STOP', 'effects_authorized': False, 'reason_codes': ['verification_stop'], 'scope': 'declared_local_snapshot_and_restricted_sql', 'coverage_limits': ['static_snapshot_only_runtime_consumers_unknown'], 'run_id': 'fef1eb7304484de49e08269727840847', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'runtime_revision': 'e2c04a51321d62e00e19fe1e80ec7eaad3d8dae6867f5b8d3b3b844ac4af131f', 'authority_sha256': '19300ddd3bea1ee26dd7df0a610194feaf0b1071f9391bf2a430c14b44c6e16e', 'reused': False, 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'receipts': [{'case_id': 'analytics-normal', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'analytics-boundary', 'component_id': 'analytics', 'sql_sha256': 'ccea065049672de20e6ae68d4d53e073e6e13ad292b581775360bbd8f4107ba9', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-normal', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': 'aeee40d2774e4844c90fe8e2f36d2c677ed21b9c456bc7e3a6f1fcec8f58def9', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}, {'case_id': 'audit-boundary', 'component_id': 'audit', 'sql_sha256': '534696b951700d5049d1ca33cfccf27e3291e913e8a8ed5fca3e45def9f401aa', 'fixture_sha256': '1f8089178002840d044f7408d10b572bda78f9d3602e370f5074084d5ef5e41e', 'output_sha256': '843470a79751d1a038a7eed0fe9609a63a9d634ce9a656be272dd350672b381b', 'executor': 'sqlite-readonly-subprocess/1'}], 'verification': {'verifier': 'tabular-observations/1', 'scope': 'provided_observations_only', 'transition_id': 'two-consumer-window-change', 'candidate_sha256': '03def93a7661e4eb39dbe5439c523830e532411d7353a252cb91c9eeaf56f6f5', 'context_sha256': '37c67438fdd6268b4f18d5800ae103769fabed6051eb38e124ce57afc3f2b185', 'suite_sha256': None, 'observations_sha256': None, 'checked_at': '2026-10-16T16:00:00Z', 'status': 'STOP', 'reason_codes': ['VERIFIER_WORKER_FAILED'], 'cases': [], 'effects_authorized': False}, 'completion_conditions': ['acceptor reviews patch and known coverage limits', 'production switch/retirement requires separate mandate']}
+
+----------------------------------------------------------------------
+Ran 1342 tests in 900.180s
+
+FAILED (failures=49, errors=1, skipped=4)
+{
+  "V0": {
+    "total": 20,
+    "scored": false
+  },
+  "V1-ind": {
+    "total": 20,
+    "scored": false
+  },
+  "V2": {
+    "total": 20,
+    "scored": false
+  }
+}
+{
+  "purpose": "development_regression",
+  "analysis_plan_id": "h1-analysis-0.3.1",
+  "by_mode": {
+    "V0": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 0.5,
+      "dangerous_safe_detection_rate": 0.0,
+      "dangerous_strict_reject_rate": 0.0,
+      "unsafe_accept_rate": 1.0,
+      "admissible_accept_rate": 1.0,
+      "false_block_rate": 0.0,
+      "admissible_reject_rate": 0.0,
+      "admissible_review_rate": 0.0,
+      "dangerous_review_rate": 0.0,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 0.6,
+      "median_latency_ms": 0.048938,
+      "p95_latency_ms": 0.104125,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
+    },
+    "V1-ind": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 0.8,
+      "dangerous_safe_detection_rate": 0.7,
+      "dangerous_strict_reject_rate": 0.7,
+      "unsafe_accept_rate": 0.3,
+      "admissible_accept_rate": 0.9,
+      "false_block_rate": 0.1,
+      "admissible_reject_rate": 0.1,
+      "admissible_review_rate": 0.0,
+      "dangerous_review_rate": 0.0,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 0.84,
+      "median_latency_ms": 0.049917,
+      "p95_latency_ms": 0.066417,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.396778,
+          "upper": 0.892209,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.017876,
+          "upper": 0.40415,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
+    },
+    "V2": {
+      "scenario_count": 20,
+      "exact_decision_accuracy": 1.0,
+      "dangerous_safe_detection_rate": 1.0,
+      "dangerous_strict_reject_rate": 1.0,
+      "unsafe_accept_rate": 0.0,
+      "admissible_accept_rate": 1.0,
+      "false_block_rate": 0.0,
+      "admissible_reject_rate": 0.0,
+      "admissible_review_rate": 0.0,
+      "dangerous_review_rate": 0.0,
+      "needs_review_rate": 0.0,
+      "consumer_decision_accuracy": 1.0,
+      "median_latency_ms": 0.060625,
+      "p95_latency_ms": 0.085083,
+      "confidence_intervals_95": {
+        "dangerous_safe_detection_rate": {
+          "lower": 0.722467,
+          "upper": 1.0,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "false_block_rate": {
+          "lower": 0.0,
+          "upper": 0.277533,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 10
+        },
+        "needs_review_rate": {
+          "lower": 0.0,
+          "upper": 0.161125,
+          "confidence_level": 0.95,
+          "method": "wilson_score",
+          "observation_count": 20
+        }
+      }
+    }
+  },
+  "primary_comparison_v2_vs_v1_ind": {
+    "dangerous_scenario_count": 10,
+    "dangerous_cluster_count": 6,
+    "safe_detection_rate_delta": 0.3,
+    "safe_detection_rate_delta_ci95": {
+      "lower": 0.0,
+      "upper": 0.714286,
+      "confidence_level": 0.95,
+      "method": "percentile_cluster_bootstrap",
+      "cluster_count": 6,
+      "resamples": 10000
+    },
+    "paired_improvements": 3,
+    "paired_regressions": 0,
+    "exact_cluster_sign_flip_pvalue": 0.5,
+    "unadjusted_exact_mcnemar_pvalue": 0.25,
+    "admissible_scenario_count": 10,
+    "admissible_cluster_count": 6,
+    "false_block_rate_delta": -0.1,
+    "false_block_rate_delta_ci95": {
+      "lower": -0.3,
+      "upper": 0.0,
+      "confidence_level": 0.95,
+      "method": "percentile_cluster_bootstrap",
+      "cluster_count": 6,
+      "resamples": 10000
+    },
+    "cluster_adjustment": "semantic-family cluster_id from the scoring-only catalog manifest"
+  },
+  "h1_assessment": {
+    "eligible_for_confirmatory_claim": false,
+    "status": "not_assessed_development_only",
+    "all_criteria_met": false,
+    "criteria": {
+      "no_paired_dangerous_regressions": true,
+      "minimum_effect_met": true,
+      "ci_excludes_zero": false,
+      "cluster_adjusted_pvalue_met": false,
+      "false_block_bound_met": true,
+      "needs_review_bound_met": true
+    },
+    "thresholds": {
+      "minimum_safe_detection_rate_delta": 0.15,
+      "maximum_false_block_rate": 0.1,
+      "maximum_needs_review_rate": 0.1
+    },
+    "alpha": 0.05
+  },
+  "interpretation": "development regression only; not confirmatory evidence for H1"
+}
+{
+  "V0": {
+    "total": 20,
+    "scored": false
+  },
+  "V1-ind": {
+    "total": 20,
+    "scored": false
+  },
+  "V2": {
+    "total": 20,
+    "scored": false
+  }
+}
+{
+  "V0": {
+    "total": 20,
+    "scored": false
+  },
+  "V1-ind": {
+    "total": 20,
+    "scored": false
+  },
+  "V2": {
+    "total": 20,
+    "scored": false
+  }
+}

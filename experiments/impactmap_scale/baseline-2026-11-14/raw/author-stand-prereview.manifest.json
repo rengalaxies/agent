@@ -1,0 +1,83 @@
+{
+  "schema_version": "impactmap-benchmark-manifest-1",
+  "policy_without_roots_sha256": "2767d4be6cc2e6a96899dc801b8bbff3c281ef2cfddb79b2678cac565592181d",
+  "limits": {
+    "max_files": 256,
+    "max_file_bytes": 65536,
+    "max_corpus_bytes": 2000000,
+    "scan_seconds": 15.0,
+    "freshness_seconds": 3600,
+    "max_model_steps": 4,
+    "max_tool_lines": 60,
+    "max_proposals": 24
+  },
+  "pins": [
+    {
+      "repository": "orders",
+      "service": "orders",
+      "base": "99aaceb50e06e52cae2aeab04b2e0892ca1e4549",
+      "head": "98675b17099a9485c4d26a0ec5bb47de1a10c7ef"
+    },
+    {
+      "repository": "reporting",
+      "service": "reporting",
+      "base": "2cba012ba20430d7fde630b24c480a254e909971",
+      "head": "2cba012ba20430d7fde630b24c480a254e909971"
+    },
+    {
+      "repository": "archive",
+      "service": "archive",
+      "base": "49405f4a048e5d5aa213b14b571c6bae6d0723f9",
+      "head": "49405f4a048e5d5aa213b14b571c6bae6d0723f9"
+    },
+    {
+      "repository": "billing",
+      "service": "billing",
+      "base": "46a72606b6f05cb92999cbaf529869611bb0c01f",
+      "head": "46a72606b6f05cb92999cbaf529869611bb0c01f"
+    },
+    {
+      "repository": "audit",
+      "service": "audit",
+      "base": "89e053921b37ec5c0ae5f6ffca5d2936b6e0e89b",
+      "head": "89e053921b37ec5c0ae5f6ffca5d2936b6e0e89b"
+    }
+  ],
+  "provenance": "author_fixture",
+  "source": {
+    "commit": "48cd1fba1365fe6e2e4c34e3cb9a185b47d0e5dd",
+    "working_tree_dirty": true,
+    "tool_sha256": "15196552e1303d5062211e432861586c6a7befd37abcd247c92cfb1a009c0d95",
+    "core": {
+      "profile": "http-requests-6",
+      "schema": "agent-graph-1",
+      "output_schema_version": "2.2",
+      "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c"
+    },
+    "git_version": "git version 2.39.5 (Apple Git-154)"
+  },
+  "environment": {
+    "python": "3.13.9 (v3.13.9:8183fa5e3f7, Oct 14 2025, 10:27:13) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "system": "Darwin",
+    "machine": "arm64",
+    "platform": "macOS-15.0-arm64-arm-64bit-Mach-O",
+    "logical_cpus": 8,
+    "ram_bytes": 8589934592,
+    "packages": {
+      "pydantic": "2.14.2",
+      "PyYAML": "6.0.3"
+    },
+    "rss_scope": "ru_maxrss lifetime high-water mark, not stage-local or summed process-tree RSS",
+    "child_cpu_scope": "RUSAGE_CHILDREN reaped descendants only",
+    "wall_scope": "perf_counter; includes instrumentation overhead; inventory_metrics separately visible"
+  },
+  "model": "OFF",
+  "cache_protocol": "new worker and SQLite state per repetition; warm repeat in same worker; OS caches uncontrolled",
+  "semantics_ignored_fields": [
+    "assessed_at",
+    "checked_at",
+    "finished_at",
+    "started_at",
+    "timings"
+  ]
+}

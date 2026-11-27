@@ -1,0 +1,10 @@
+{
+  "baseline_commit": "0582cd8798a7c4ce3b7a2f38e753f600bd65ef9a",
+  "recomputed_git_core_digest": "5da058fd79a61384a9ff2b6ae0f130fb3cab078b0671e4e48e49089d90baab7e",
+  "benchmark_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf",
+  "core_matches_both_baseline_manifests": true,
+  "current_service_sources_equal_baseline_git": true,
+  "dirty_manifest": "before-profile7-repos10-lines100k",
+  "explanation": "Untracked tests/spec/plan were created while baseline ran; production core and benchmark remained unchanged, controller checked core identity after each profile. No whole-tree-clean claim.",
+  "evidence_strength": "author execution record plus loaded core/benchmark fingerprints; not a signed historical whole-process snapshot"
+}

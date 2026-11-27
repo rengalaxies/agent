@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "final_result_equals_before_restart_and_after_polling": true,
+  "legacy_config_matches_15Nov": true,
+  "pr4_matches_15Nov": true,
+  "main_refs_match_15Nov_and_current_assertions": true,
+  "product_source_changed": false,
+  "full_suite_repeated": false,
+  "browser": {
+    "kaiten_comment_actual_native_id": "93817019",
+    "ui_change_owner_login": "PASS_AUTHOR",
+    "real_kaiten_link_native_browser": "PASS",
+    "unauthenticated_link_returned_login_with_local_next": "PASS",
+    "owner_completed_login_confirmed_by_user": true,
+    "post_login_return": "same PR5 result / generation9 / ABSTAINED / CURRENT / DELIVERED",
+    "iab_click_limitation": "Own comment entered editor; cancelled without saving. Actual link verified using already authenticated native Yandex browser; no DOM or security bypass.",
+    "personal_five_scenario_acceptance": "NOT_RUN"
+  },
+  "research": "Author-run technical scenario only; not independent evaluation or time-saving measurement"
+}

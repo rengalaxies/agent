@@ -1,0 +1,110 @@
+{
+  "request": {
+    "schema": "agent-graph-output",
+    "schema_version": "2.0",
+    "kind": "analysis_request",
+    "installation_id": "synthetic-demo",
+    "environment": "test",
+    "request_id": "limit-request",
+    "trigger_kind": "pr",
+    "source_event": {
+      "event_id": "limit-event",
+      "resource_version": "v1"
+    },
+    "repository_revisions": {
+      "orders": "ab48780377d5dc01525d08301dabb3b0680bf2c4",
+      "reporting": "048cae996958282700280986a664f981808b553e",
+      "export": "32af0ebbbb433603cb18504000f335a445b6287c",
+      "health": "deb654939183e8fb221dcd82b6bc6ccf87484132"
+    },
+    "graph_version": "graph-1",
+    "constitution_version": "agent-service-v1.0:100bcad3db9c",
+    "model_configuration_id": null,
+    "deadline": "2026-11-16T12:00:00Z",
+    "access_scope": {
+      "view_id": "e0ddc98abd9bd714d06e8d28542850588218ae8b7fb665dc8f8fbe5b7800a08a",
+      "repositories": [
+        "orders",
+        "reporting",
+        "export",
+        "health"
+      ]
+    },
+    "pr": {
+      "provider": "github",
+      "repository": "orders",
+      "pr_id": 1,
+      "base_sha": "ab48780377d5dc01525d08301dabb3b0680bf2c4",
+      "head_sha": "ab48780377d5dc01525d08301dabb3b0680bf2c4"
+    }
+  },
+  "result": {
+    "schema": "agent-graph-output",
+    "schema_version": "2.2",
+    "kind": "analysis_result",
+    "profile": "http-requests-9",
+    "code_version": "limits-test",
+    "constitution_version": "agent-service-v1.0:100bcad3db9c",
+    "installation_id": "synthetic-demo",
+    "environment": "test",
+    "request_id": "limit-request",
+    "event_id": "limit-event",
+    "resource_version": "v1",
+    "correlation_id": "limit-request",
+    "trigger_kind": "pr",
+    "snapshots": [],
+    "graph_version": "graph-1",
+    "status": "FAILED",
+    "reason_code": "budget_exhausted",
+    "superseded_by": null,
+    "usefulness_confirmed": false,
+    "summary": "\u041e\u0431\u044a\u0451\u043c \u0438\u0441\u0445\u043e\u0434\u043d\u0438\u043a\u043e\u0432 \u043f\u0440\u0435\u0432\u044b\u0441\u0438\u043b \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044b\u0439 \u043b\u0438\u043c\u0438\u0442 (8 000 000 \u0431\u0430\u0439\u0442). \u0410\u043d\u0430\u043b\u0438\u0437 \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d. \u0421\u0443\u0437\u044c\u0442\u0435 \u043d\u0430\u0431\u043e\u0440 \u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0435\u043c\u044b\u0445 \u0444\u0430\u0439\u043b\u043e\u0432 \u0438\u043b\u0438 \u0441\u043e\u0433\u043b\u0430\u0441\u0443\u0439\u0442\u0435 \u0443\u0432\u0435\u043b\u0438\u0447\u0435\u043d\u0438\u0435 \u043b\u0438\u043c\u0438\u0442\u0430 \u0438 \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0435 \u0437\u0430\u043f\u0443\u0441\u043a.",
+    "affected": [],
+    "impact_paths": [],
+    "checks": [],
+    "claims": [],
+    "deltas": [],
+    "findings": [],
+    "gaps": [],
+    "unknowns": [],
+    "source_freshness": [],
+    "evidence": [],
+    "relationships": [],
+    "model": null,
+    "costs": {
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "reserved_micro": null,
+      "currency": null
+    },
+    "timings": {
+      "started_at": "2026-11-15T15:55:17.553227Z",
+      "finished_at": "2026-11-15T15:55:17.553230Z",
+      "seconds": {}
+    }
+  },
+  "provenance": "authored_resource_refusal_fixture_not_quality_case",
+  "short_comment": {
+    "title": "\u0410\u043d\u0430\u043b\u0438\u0437 \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d",
+    "status_line": "\u041e\u0431\u044a\u0451\u043c \u0438\u0441\u0445\u043e\u0434\u043d\u0438\u043a\u043e\u0432 \u043f\u0440\u0435\u0432\u044b\u0441\u0438\u043b \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044b\u0439 \u043b\u0438\u043c\u0438\u0442 (8 000 000 \u0431\u0430\u0439\u0442). \u0410\u043d\u0430\u043b\u0438\u0437 \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d. \u0421\u0443\u0437\u044c\u0442\u0435 \u043d\u0430\u0431\u043e\u0440 \u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0435\u043c\u044b\u0445 \u0444\u0430\u0439\u043b\u043e\u0432 \u0438\u043b\u0438 \u0441\u043e\u0433\u043b\u0430\u0441\u0443\u0439\u0442\u0435 \u0443\u0432\u0435\u043b\u0438\u0447\u0435\u043d\u0438\u0435 \u043b\u0438\u043c\u0438\u0442\u0430 \u0438 \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0435 \u0437\u0430\u043f\u0443\u0441\u043a.",
+    "sections": [
+      {
+        "title": "\u041e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u0438\u044f",
+        "items": [
+          "\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0435 \u0442\u0435\u0441\u0442\u044b \u0432 \u0440\u0430\u043c\u043a\u0430\u0445 \u044d\u0442\u043e\u0433\u043e \u0430\u043d\u0430\u043b\u0438\u0437\u0430 \u043d\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u043b\u0438\u0441\u044c."
+        ]
+      }
+    ]
+  },
+  "selected_added_files": 140,
+  "added_bytes": 8400000,
+  "core_identity": {
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1",
+    "output_schema_version": "2.2",
+    "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1"
+  },
+  "source_sha": "fd3dbc37dd0a8452264989008214fc1ef01f8640",
+  "partial_context_saved": false
+}

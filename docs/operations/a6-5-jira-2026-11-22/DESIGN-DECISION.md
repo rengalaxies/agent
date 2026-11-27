@@ -1,0 +1,13 @@
+# Jira UI: решение перед live-приёмкой22.11
+
+Статус: GET-only preflight PASS; новая live-публикация и смена публичного UI NOT_RUN. Основной worker PID60331, namespace agent-bitbucket-m3/pilot-vm; Jira KAN-9 открыта и доступна, jira:10023. Пробный helper сначала использовал неверное имя bot_id, исправлен на bot_account_id; API до исправления не вызывался. Секреты не переносились/не выводились.
+
+Ограничения подтверждены source29ed2ad: ServiceConfig bitbucket.mode выбирает jira_delivery либо kaiten_delivery, kaiten+Jira одновременно запрещены; scope_for_config привязывает UI к одному ServiceStore/namespace/policy. Сейчас публичный origin обслуживает live Kaiten, scope14683aa9d8fc. Подмена upstream ломает его ссылки. Jira intake допускает все PR разрешённых repositories и не имеет точного PR allowlist; автоматический второй worker нельзя считать ограниченным PR4 лишь по намерению оператора.
+
+Вариант1 — узкая временная Jira-приёмка: отдельные state/auth, точечный one-shot PR4 без общего polling, короткое переключение публичного UI с последующим возвратом Kaiten. Не менять main, PR4 source или основной worker. Закрывает лишь публикацию/readback/login-return фиксированного состояния; не постоянную одновременную работу двух трекеров. На время переключения Kaiten-ссылки недоступны.
+
+Вариант2 — рекомендуемая продуктовая пачка: общее приложение результатов/оператора с явным выбором подключённой области, отдельными grants и URL для каждой области. API/resources/result/logout должны сохранять область; одинаковый RID в двух installations не пересекается. Добавить точный opt-in PR allowlist до чтения/обработки и до публикации, с проверкой fetch и reconcile; defaults прежние. Старые /ui/result ссылки Kaiten сохраняют свою однозначную привязку. Никакого объединения чужих grants или backfill старых raw. После code/test/review/Linux delivery — Jira live-приёмка на выделенной цели, текущий Kaiten продолжает работать. Это новая продуктовая функциональность, не изменение одного nginx upstream.
+
+Критерии варианта2: Jira и Kaiten видны через одно приложение одновременно; контекст/доступ явно указан; перекрёстный доступ403; несовпадающие grants закрыты; alias старой ссылки не расширяет права; anonymous login возвращает в ту же область; source allowlist отвергает чужой PR до intake/publication; оба реальных tracker deep links работают; primary worker не заменён. Число поколений/доставок/дублей проверяется отдельно. Owner acceptance, Яндекс и независимая06 не засчитываются автоматически.
+
+Вариант2 утверждён пользователем22.11 («Подтверждаю»). Реализация по docs/superpowers/plans/2026-11-22-impactmap-multi-scope-ui.md; runtime менять после source/security verification.

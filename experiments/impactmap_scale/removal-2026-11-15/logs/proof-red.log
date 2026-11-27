@@ -1,0 +1,15 @@
+test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale) ... ERROR
+
+======================================================================
+ERROR: test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_scale_corpora.py", line 89, in test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale
+    self.assertEqual(result['removed_comparative_coverage'], 'COMPLETE_WITHIN_PROFILE')
+                     ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'removed_comparative_coverage'
+
+----------------------------------------------------------------------
+Ran 1 test in 7.114s
+
+FAILED (errors=1)

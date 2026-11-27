@@ -1,0 +1,163 @@
+{
+  "status": "RESTART_PRESERVES_DELIVERED_RESULT",
+  "before_pid": "3569007",
+  "after_pid": "3572398",
+  "before": {
+    "generation": 9,
+    "job": {
+      "generation": 9,
+      "state": "DONE",
+      "reason": "no_supported_delta",
+      "attempts": 1,
+      "updated_at": 1795343044.2205386
+    },
+    "analysis": {
+      "status": "ABSTAINED",
+      "reason_code": "no_supported_delta",
+      "code_version": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312"
+    },
+    "publication": {
+      "generation": 9,
+      "kind": "result",
+      "state": "DELIVERED",
+      "reason": null,
+      "operation": "update",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]"
+    },
+    "head": "5759f4d415b3fa9c65ae4684cab9772d5ce88dd0",
+    "intents": [
+      {
+        "generation": 9,
+        "state": "DELIVERED",
+        "kind": "result",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "c87a673dbd62cdf5395d5318adf771f448031dc30dc5f68703a8d6c77e49a0f4"
+      },
+      {
+        "generation": 9,
+        "state": "DELIVERED",
+        "kind": "stale",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "d30f74a7e49d1bee7acb33ca178ff4b1441ce4145d42c5f422f0fe2125f0bd4a"
+      },
+      {
+        "generation": 8,
+        "state": "DELIVERED",
+        "kind": "result",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "44f7010d1a7dfb2806d1a09c2b27268a63e8809b411c1ea471b06fa19966ea7a"
+      },
+      {
+        "generation": 8,
+        "state": "DELIVERED",
+        "kind": "stale",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "1cc42f1cb2e7af94d9a8bdeac7680bc5813a0cdb911bbc120a3d5507eeaf8f11"
+      }
+    ],
+    "scope_receipts": 3,
+    "owned_marker_count": 1,
+    "owned": [
+      {
+        "id": "93817019",
+        "generation": 9,
+        "digest": "c87a673dbd62cdf5395d5318adf771f448031dc30dc5f68703a8d6c77e49a0f4",
+        "protected_link": true,
+        "text_sha256": "8cc8822cf1e443ae7a508c9c261a97779c1c4db09d45065fe838606bf1563e7e"
+      }
+    ],
+    "ui_link": "https://82.202.141.50/ui/result?resource_id=bitbucket%3Ae0b65402-98d3-432d-9ba0-8e92884d8bfb%2Fce63c558-64b3-462f-9ab9-1b954c14f5d9%235",
+    "live_unit": "active",
+    "legacy_pid": "60331"
+  },
+  "after": {
+    "generation": 9,
+    "job": {
+      "generation": 9,
+      "state": "DONE",
+      "reason": "no_supported_delta",
+      "attempts": 1,
+      "updated_at": 1795343044.2205386
+    },
+    "analysis": {
+      "status": "ABSTAINED",
+      "reason_code": "no_supported_delta",
+      "code_version": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312"
+    },
+    "publication": {
+      "generation": 9,
+      "kind": "result",
+      "state": "DELIVERED",
+      "reason": null,
+      "operation": "update",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]"
+    },
+    "head": "5759f4d415b3fa9c65ae4684cab9772d5ce88dd0",
+    "intents": [
+      {
+        "generation": 9,
+        "state": "DELIVERED",
+        "kind": "result",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "c87a673dbd62cdf5395d5318adf771f448031dc30dc5f68703a8d6c77e49a0f4"
+      },
+      {
+        "generation": 9,
+        "state": "DELIVERED",
+        "kind": "stale",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "d30f74a7e49d1bee7acb33ca178ff4b1441ce4145d42c5f422f0fe2125f0bd4a"
+      },
+      {
+        "generation": 8,
+        "state": "DELIVERED",
+        "kind": "result",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "44f7010d1a7dfb2806d1a09c2b27268a63e8809b411c1ea471b06fa19966ea7a"
+      },
+      {
+        "generation": 8,
+        "state": "DELIVERED",
+        "kind": "stale",
+        "operation": "update",
+        "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+        "body_digest": "1cc42f1cb2e7af94d9a8bdeac7680bc5813a0cdb911bbc120a3d5507eeaf8f11"
+      }
+    ],
+    "scope_receipts": 3,
+    "owned_marker_count": 1,
+    "owned": [
+      {
+        "id": "93817019",
+        "generation": 9,
+        "digest": "c87a673dbd62cdf5395d5318adf771f448031dc30dc5f68703a8d6c77e49a0f4",
+        "protected_link": true,
+        "text_sha256": "8cc8822cf1e443ae7a508c9c261a97779c1c4db09d45065fe838606bf1563e7e"
+      }
+    ],
+    "ui_link": "https://82.202.141.50/ui/result?resource_id=bitbucket%3Ae0b65402-98d3-432d-9ba0-8e92884d8bfb%2Fce63c558-64b3-462f-9ab9-1b954c14f5d9%235",
+    "live_unit": "active",
+    "legacy_pid": "60331"
+  },
+  "refs": {
+    "orders_main": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+    "reporting_main": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+    "pr4_head": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+    "pr4_state": "OPEN",
+    "pr5_head": "5759f4d415b3fa9c65ae4684cab9772d5ce88dd0",
+    "pr5_state": "OPEN"
+  },
+  "live_enabled": "enabled",
+  "secret_mode": "0600",
+  "secret_uid": 0,
+  "legacy_release": "/opt/agent-bitbucket/releases/agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312",
+  "legacy_config_sha256": "71dd9a7bb44f2eac5cf494ec981c9b6888d5a939da587102935d41f25e367d93",
+  "checked_at": 1795343166.153678
+}

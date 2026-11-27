@@ -1,0 +1,809 @@
+{
+  "all_results_expected": true,
+  "analyzed_jobs": 1,
+  "clock": "real wall time",
+  "contexts": [
+    {
+      "basis_sha256": "1389f1fd8472051eec5aa680035d432ddd17fdcedc47c572ddc64e5a98bfad43",
+      "bytes_read": 1268477,
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "dependencies": 3,
+      "files_read": 110,
+      "gap_counts": {},
+      "inventory_entries": 110,
+      "operations": 8,
+      "python_files": 110,
+      "python_nonblank_noncomment_lines": 50000,
+      "python_physical_lines": 50120,
+      "repositories_available": 5,
+      "repositories_configured": 5,
+      "scan_passes": 1,
+      "snapshots": [
+        {
+          "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+          "mode": "GIT_COMMIT",
+          "repository": "r00",
+          "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+        },
+        {
+          "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+          "mode": "GIT_COMMIT",
+          "repository": "r01",
+          "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+        },
+        {
+          "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+          "mode": "GIT_COMMIT",
+          "repository": "r02",
+          "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+        },
+        {
+          "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+          "mode": "GIT_COMMIT",
+          "repository": "r03",
+          "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+        },
+        {
+          "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+          "mode": "GIT_COMMIT",
+          "repository": "r04",
+          "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+        }
+      ],
+      "text_lines": 50120
+    },
+    {
+      "basis_sha256": "1389f1fd8472051eec5aa680035d432ddd17fdcedc47c572ddc64e5a98bfad43",
+      "bytes_read": 1268477,
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "dependencies": 3,
+      "files_read": 110,
+      "gap_counts": {},
+      "inventory_entries": 110,
+      "operations": 8,
+      "python_files": 110,
+      "python_nonblank_noncomment_lines": 50000,
+      "python_physical_lines": 50120,
+      "repositories_available": 5,
+      "repositories_configured": 5,
+      "scan_passes": 1,
+      "snapshots": [
+        {
+          "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+          "mode": "GIT_COMMIT",
+          "repository": "r00",
+          "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+        },
+        {
+          "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+          "mode": "GIT_COMMIT",
+          "repository": "r01",
+          "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+        },
+        {
+          "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+          "mode": "GIT_COMMIT",
+          "repository": "r02",
+          "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+        },
+        {
+          "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+          "mode": "GIT_COMMIT",
+          "repository": "r03",
+          "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+        },
+        {
+          "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+          "mode": "GIT_COMMIT",
+          "repository": "r04",
+          "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+        }
+      ],
+      "text_lines": 50120
+    },
+    {
+      "basis_sha256": "1389f1fd8472051eec5aa680035d432ddd17fdcedc47c572ddc64e5a98bfad43",
+      "bytes_read": 1268477,
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "dependencies": 3,
+      "files_read": 110,
+      "gap_counts": {},
+      "inventory_entries": 110,
+      "operations": 8,
+      "python_files": 110,
+      "python_nonblank_noncomment_lines": 50000,
+      "python_physical_lines": 50120,
+      "repositories_available": 5,
+      "repositories_configured": 5,
+      "scan_passes": 1,
+      "snapshots": [
+        {
+          "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+          "mode": "GIT_COMMIT",
+          "repository": "r00",
+          "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+        },
+        {
+          "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+          "mode": "GIT_COMMIT",
+          "repository": "r01",
+          "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+        },
+        {
+          "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+          "mode": "GIT_COMMIT",
+          "repository": "r02",
+          "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+        },
+        {
+          "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+          "mode": "GIT_COMMIT",
+          "repository": "r03",
+          "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+        },
+        {
+          "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+          "mode": "GIT_COMMIT",
+          "repository": "r04",
+          "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+        }
+      ],
+      "text_lines": 50120
+    },
+    {
+      "basis_sha256": "fb5f521654d1d835f7cecddafe59bc8c99682b5de6f0dcc7a1cba3ef3b9cd813",
+      "bytes_read": 1268476,
+      "coverage": "COMPLETE_WITHIN_PROFILE",
+      "dependencies": 3,
+      "files_read": 110,
+      "gap_counts": {},
+      "inventory_entries": 110,
+      "operations": 8,
+      "python_files": 110,
+      "python_nonblank_noncomment_lines": 50000,
+      "python_physical_lines": 50120,
+      "repositories_available": 5,
+      "repositories_configured": 5,
+      "scan_passes": 1,
+      "snapshots": [
+        {
+          "commit": "5cb6fef43044c73d8aaa46ef23049efa78f2b587",
+          "mode": "GIT_COMMIT",
+          "repository": "r00",
+          "tree": "40e2aa09bac80f81e1fb8ebf6acf20e98e219607"
+        },
+        {
+          "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+          "mode": "GIT_COMMIT",
+          "repository": "r01",
+          "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+        },
+        {
+          "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+          "mode": "GIT_COMMIT",
+          "repository": "r02",
+          "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+        },
+        {
+          "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+          "mode": "GIT_COMMIT",
+          "repository": "r03",
+          "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+        },
+        {
+          "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+          "mode": "GIT_COMMIT",
+          "repository": "r04",
+          "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+        }
+      ],
+      "text_lines": 50120
+    }
+  ],
+  "creates": 1,
+  "delivery": "sequential",
+  "duplicates_ignored": 1,
+  "expectation": {
+    "findings": 3,
+    "reason": "impact_found_within_profile",
+    "status": "USEFUL"
+  },
+  "family": "head_updates",
+  "fraction_scope": "expected complete successful job results / expected analyses; collector fraction reported separately by default probe",
+  "history_counts": {
+    "event_duplicate": 1,
+    "event_received": 1,
+    "generation_opened": 1,
+    "intent_created": 1,
+    "intent_delivered": 1,
+    "intent_sending": 1,
+    "job_analyzed": 1,
+    "job_claimed": 1
+  },
+  "idle": true,
+  "initial_index": [
+    {
+      "source": "code",
+      "status": "OK",
+      "version": 1
+    }
+  ],
+  "kind": "service_queue",
+  "manifest": {
+    "cache_protocol": "new worker and SQLite state per repetition; warm repeat in same worker; OS caches uncontrolled",
+    "environment": {
+      "child_cpu_scope": "RUSAGE_CHILDREN reaped descendants only",
+      "logical_cpus": 8,
+      "machine": "arm64",
+      "packages": {
+        "PyYAML": "6.0.3",
+        "pydantic": "2.14.2"
+      },
+      "platform": "macOS-15.0-arm64-arm-64bit-Mach-O",
+      "python": "3.13.9 (v3.13.9:8183fa5e3f7, Oct 14 2025, 10:27:13) [Clang 16.0.0 (clang-1600.0.26.6)]",
+      "ram_bytes": 8589934592,
+      "rss_scope": "ru_maxrss lifetime high-water mark, not stage-local or summed process-tree RSS",
+      "system": "Darwin",
+      "wall_scope": "perf_counter; includes instrumentation overhead; inventory_metrics separately visible"
+    },
+    "limits": {
+      "freshness_seconds": 3600,
+      "max_corpus_bytes": 8000000,
+      "max_file_bytes": 65536,
+      "max_files": 2048,
+      "max_model_steps": 4,
+      "max_proposals": 24,
+      "max_tool_lines": 60,
+      "scan_seconds": 60.0
+    },
+    "model": "OFF",
+    "pins": [
+      {
+        "base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "head": "5cb6fef43044c73d8aaa46ef23049efa78f2b587",
+        "repository": "r00",
+        "service": "provider"
+      },
+      {
+        "base": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "head": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "repository": "r01",
+        "service": "consumer_01"
+      },
+      {
+        "base": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "head": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "repository": "r02",
+        "service": "consumer_02"
+      },
+      {
+        "base": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "head": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "repository": "r03",
+        "service": "consumer_03"
+      },
+      {
+        "base": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "head": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "repository": "r04",
+        "service": "consumer_04"
+      }
+    ],
+    "policy_without_roots_sha256": "e33d2907e5d8abe30774c2b009a5f47735f1b18b3d0df19837d073fd09acf582",
+    "provenance": "controlled_generated",
+    "schema_version": "impactmap-benchmark-manifest-1",
+    "semantics_ignored_fields": [
+      "assessed_at",
+      "checked_at",
+      "finished_at",
+      "started_at",
+      "timings"
+    ],
+    "source": {
+      "commit": "b0f5bd1398145c890bba970bbec7fc598f2ce2fc",
+      "core": {
+        "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+        "output_schema_version": "2.2",
+        "profile": "http-requests-6",
+        "schema": "agent-graph-1"
+      },
+      "git_version": "git version 2.39.5 (Apple Git-154)",
+      "tool_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf",
+      "working_tree_dirty": true
+    }
+  },
+  "network": "NOT_RUN_LOCAL_PINNED_TRANSPORT",
+  "offered_events": 1,
+  "passed": true,
+  "polling": "NOT_RUN",
+  "processed_fraction": 1.0,
+  "queue_limits": {
+    "backoff_base": 5.0,
+    "backoff_cap": 900.0,
+    "create_settle_seconds": 30.0,
+    "job_deadline_seconds": 3600.0,
+    "lease_seconds": 300.0,
+    "max_analysis_attempts": 4,
+    "max_publish_attempts": 6
+  },
+  "queue_wait_seconds": [
+    0.0042018890380859375
+  ],
+  "resources": [
+    {
+      "comments": 1,
+      "findings": 3,
+      "gaps": {},
+      "generation": 1,
+      "head_sha": "5cb6fef43044c73d8aaa46ef23049efa78f2b587",
+      "job_states": {
+        "DONE": 1
+      },
+      "latest_published": true,
+      "reason_code": "impact_found_within_profile",
+      "resource_id": "bitbucket:scale/r00#1",
+      "result_status": "USEFUL"
+    }
+  ],
+  "restart_checked": true,
+  "result_verdicts": [
+    {
+      "expected": true,
+      "findings": 3,
+      "gap_counts": {},
+      "generation": 1,
+      "reason_code": "impact_found_within_profile",
+      "resource_id": "bitbucket:scale/r00#1",
+      "status": "USEFUL"
+    }
+  ],
+  "spans": [
+    {
+      "child_system_s": 0.074179,
+      "child_user_s": 0.10200999999999999,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.003910999999999998,
+      "exclusive_self_user_s": 0.008274999999999366,
+      "exclusive_wall_s": 0.013253666053060442,
+      "parent_id": null,
+      "self_peak_rss_bytes": 59441152,
+      "self_system_s": 0.042366,
+      "self_user_s": 2.191938,
+      "span_id": 0,
+      "stage": "initial_index",
+      "wall_s": 2.450942750030663
+    },
+    {
+      "child_system_s": 0.074179,
+      "child_user_s": 0.10200999999999999,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.074179,
+      "exclusive_child_user_s": 0.10200999999999999,
+      "exclusive_self_system_s": 0.025997,
+      "exclusive_self_user_s": 0.046313999999999994,
+      "exclusive_wall_s": 0.28633912501391023,
+      "parent_id": 0,
+      "self_peak_rss_bytes": 52117504,
+      "self_system_s": 0.025997,
+      "self_user_s": 0.046313999999999994,
+      "span_id": 1,
+      "stage": "collect",
+      "wall_s": 0.28633912501391023
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.011766000000000006,
+      "exclusive_self_user_s": 2.123362,
+      "exclusive_wall_s": 2.1359689999953844,
+      "parent_id": 0,
+      "self_peak_rss_bytes": 55066624,
+      "self_system_s": 0.011766000000000006,
+      "self_user_s": 2.123362,
+      "span_id": 2,
+      "stage": "extract",
+      "wall_s": 2.1359689999953844
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 1.5000000000001124e-05,
+      "exclusive_self_user_s": 0.007724000000000064,
+      "exclusive_wall_s": 0.0077386669581756,
+      "parent_id": 0,
+      "self_peak_rss_bytes": 59375616,
+      "self_system_s": 1.5000000000001124e-05,
+      "self_user_s": 0.007724000000000064,
+      "span_id": 3,
+      "stage": "inventory_metrics",
+      "wall_s": 0.0077386669581756
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.000676999999999997,
+      "exclusive_self_user_s": 0.00626300000000013,
+      "exclusive_wall_s": 0.007642292010132223,
+      "parent_id": 0,
+      "self_peak_rss_bytes": 59441152,
+      "self_system_s": 0.000676999999999997,
+      "self_user_s": 0.00626300000000013,
+      "span_id": 4,
+      "stage": "graph_sync",
+      "wall_s": 0.007642292010132223
+    },
+    {
+      "child_system_s": 0.27460799999999996,
+      "child_user_s": 0.385837,
+      "children_peak_rss_bytes": 5259264,
+      "depth": 0,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 1.3000000000013001e-05,
+      "exclusive_self_user_s": 9.000000000014552e-05,
+      "exclusive_wall_s": 0.00010458298493176699,
+      "parent_id": null,
+      "self_peak_rss_bytes": 66322432,
+      "self_system_s": 0.186419,
+      "self_user_s": 6.678054999999999,
+      "span_id": 5,
+      "stage": "workload",
+      "wall_s": 7.747708624985535
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.0011319999999999941,
+      "exclusive_self_user_s": 0.0004140000000001365,
+      "exclusive_wall_s": 0.0017245420021936297,
+      "parent_id": 5,
+      "self_peak_rss_bytes": 59506688,
+      "self_system_s": 0.0011319999999999941,
+      "self_user_s": 0.0004140000000001365,
+      "span_id": 6,
+      "stage": "receive",
+      "wall_s": 0.0017245420021936297
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.003137000000000001,
+      "exclusive_self_user_s": 0.0009250000000000647,
+      "exclusive_wall_s": 0.004395791969727725,
+      "parent_id": 5,
+      "self_peak_rss_bytes": 59506688,
+      "self_system_s": 0.003137000000000001,
+      "self_user_s": 0.0009250000000000647,
+      "span_id": 7,
+      "stage": "service_step",
+      "wall_s": 0.004395791969727725
+    },
+    {
+      "child_system_s": 0.27460799999999996,
+      "child_user_s": 0.385837,
+      "children_peak_rss_bytes": 5259264,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.05470999999999998,
+      "exclusive_child_user_s": 0.080961,
+      "exclusive_self_system_s": 0.03612700000000005,
+      "exclusive_self_user_s": 0.048449999999998106,
+      "exclusive_wall_s": 0.2500519989989698,
+      "parent_id": 5,
+      "self_peak_rss_bytes": 66207744,
+      "self_system_s": 0.176595,
+      "self_user_s": 6.674883999999999,
+      "span_id": 8,
+      "stage": "service_step",
+      "wall_s": 7.733450500003528
+    },
+    {
+      "child_system_s": 0.07259399999999999,
+      "child_user_s": 0.101077,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.07259399999999999,
+      "exclusive_child_user_s": 0.101077,
+      "exclusive_self_system_s": 0.026367,
+      "exclusive_self_user_s": 0.04588499999999973,
+      "exclusive_wall_s": 0.28332991601200774,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 59850752,
+      "self_system_s": 0.026367,
+      "self_user_s": 0.04588499999999973,
+      "span_id": 9,
+      "stage": "collect",
+      "wall_s": 0.28332991601200774
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.01929399999999999,
+      "exclusive_self_user_s": 2.145288,
+      "exclusive_wall_s": 2.167249041958712,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 61210624,
+      "self_system_s": 0.01929399999999999,
+      "self_user_s": 2.145288,
+      "span_id": 10,
+      "stage": "extract",
+      "wall_s": 2.167249041958712
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 9.999999999982245e-06,
+      "exclusive_self_user_s": 0.007900999999999492,
+      "exclusive_wall_s": 0.007915458991192281,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 62636032,
+      "self_system_s": 9.999999999982245e-06,
+      "self_user_s": 0.007900999999999492,
+      "span_id": 11,
+      "stage": "inventory_metrics",
+      "wall_s": 0.007915458991192281
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.0005529999999999979,
+      "exclusive_self_user_s": 0.006117999999999846,
+      "exclusive_wall_s": 0.006762165983673185,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 62701568,
+      "self_system_s": 0.0005529999999999979,
+      "self_user_s": 0.006117999999999846,
+      "span_id": 12,
+      "stage": "graph_sync",
+      "wall_s": 0.006762165983673185
+    },
+    {
+      "child_system_s": 0.07163,
+      "child_user_s": 0.100195,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.07163,
+      "exclusive_child_user_s": 0.100195,
+      "exclusive_self_system_s": 0.026812000000000002,
+      "exclusive_self_user_s": 0.04548400000000008,
+      "exclusive_wall_s": 0.28024233400356025,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 62734336,
+      "self_system_s": 0.026812000000000002,
+      "self_user_s": 0.04548400000000008,
+      "span_id": 13,
+      "stage": "collect",
+      "wall_s": 0.28024233400356025
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.018247000000000013,
+      "exclusive_self_user_s": 2.172232,
+      "exclusive_wall_s": 2.26200162502937,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 63520768,
+      "self_system_s": 0.018247000000000013,
+      "self_user_s": 2.172232,
+      "span_id": 14,
+      "stage": "extract",
+      "wall_s": 2.26200162502937
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 3.999999999998449e-05,
+      "exclusive_self_user_s": 0.007835000000000036,
+      "exclusive_wall_s": 0.007881957979407161,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 63520768,
+      "self_system_s": 3.999999999998449e-05,
+      "self_user_s": 0.007835000000000036,
+      "span_id": 15,
+      "stage": "inventory_metrics",
+      "wall_s": 0.007881957979407161
+    },
+    {
+      "child_system_s": 0.07567399999999999,
+      "child_user_s": 0.10360399999999997,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.07567399999999999,
+      "exclusive_child_user_s": 0.10360399999999997,
+      "exclusive_self_system_s": 0.02909600000000001,
+      "exclusive_self_user_s": 0.04619899999999966,
+      "exclusive_wall_s": 0.2924018340418115,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 63520768,
+      "self_system_s": 0.02909600000000001,
+      "self_user_s": 0.04619899999999966,
+      "span_id": 16,
+      "stage": "collect",
+      "wall_s": 0.2924018340418115
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.019947999999999994,
+      "exclusive_self_user_s": 2.1415370000000005,
+      "exclusive_wall_s": 2.1675550839863718,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 65110016,
+      "self_system_s": 0.019947999999999994,
+      "self_user_s": 2.1415370000000005,
+      "span_id": 17,
+      "stage": "extract",
+      "wall_s": 2.1675550839863718
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 4833280,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.00010099999999998999,
+      "exclusive_self_user_s": 0.007955000000000823,
+      "exclusive_wall_s": 0.008059083018451929,
+      "parent_id": 8,
+      "self_peak_rss_bytes": 65110016,
+      "self_system_s": 0.00010099999999998999,
+      "self_user_s": 0.007955000000000823,
+      "span_id": 18,
+      "stage": "inventory_metrics",
+      "wall_s": 0.008059083018451929
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 5259264,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.0038549999999999973,
+      "exclusive_self_user_s": 0.0012300000000013966,
+      "exclusive_wall_s": 0.005714791011996567,
+      "parent_id": 5,
+      "self_peak_rss_bytes": 66240512,
+      "self_system_s": 0.004027999999999976,
+      "self_user_s": 0.0013100000000001444,
+      "span_id": 19,
+      "stage": "service_step",
+      "wall_s": 0.005968165991362184
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 5259264,
+      "depth": 2,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.00017299999999997873,
+      "exclusive_self_user_s": 7.999999999874774e-05,
+      "exclusive_wall_s": 0.00025337497936561704,
+      "parent_id": 19,
+      "self_peak_rss_bytes": 66240512,
+      "self_system_s": 0.00017299999999997873,
+      "self_user_s": 7.999999999874774e-05,
+      "span_id": 20,
+      "stage": "local_create",
+      "wall_s": 0.00025337497936561704
+    },
+    {
+      "child_system_s": 0.0,
+      "child_user_s": 0.0,
+      "children_peak_rss_bytes": 5259264,
+      "depth": 1,
+      "error_type": null,
+      "exclusive_child_system_s": 0.0,
+      "exclusive_child_user_s": 0.0,
+      "exclusive_self_system_s": 0.0015140000000000153,
+      "exclusive_self_user_s": 0.00043199999999998795,
+      "exclusive_wall_s": 0.002065042033791542,
+      "parent_id": 5,
+      "self_peak_rss_bytes": 66322432,
+      "self_system_s": 0.0015140000000000153,
+      "self_user_s": 0.00043199999999998795,
+      "span_id": 21,
+      "stage": "service_step",
+      "wall_s": 0.002065042033791542
+    }
+  ],
+  "status": {
+    "events": {
+      "INGESTED": 1
+    },
+    "intents": {
+      "DELIVERED": 1
+    },
+    "jobs": {
+      "DONE": 1
+    },
+    "notices": []
+  },
+  "steps": [
+    {
+      "outcome": "ingest:new_generation",
+      "wall_s": 0.004405457992106676
+    },
+    {
+      "outcome": "analyze:done",
+      "wall_s": 7.733473000000231
+    },
+    {
+      "outcome": "publish:delivered",
+      "wall_s": 0.005978667002636939
+    }
+  ],
+  "updates": 0,
+  "wall_s": 10.20394437504001,
+  "worker_count": 1
+}

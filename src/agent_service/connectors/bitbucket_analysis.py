@@ -16,8 +16,9 @@ class BitbucketLocalAnalysisConnector(BitbucketQueueConnector):
     analysis_ready = True
     publication_ready = False
 
-    def __init__(self, reader, repositories, *, mirrors, refresh_mirrors=False, jira_project_keys=()):
-        super().__init__(reader, repositories, jira_project_keys=jira_project_keys)
+    def __init__(self, reader, repositories, *, mirrors, refresh_mirrors=False, jira_project_keys=(), pull_request_ids=None):
+        super().__init__(reader, repositories, jira_project_keys=jira_project_keys,
+                         pull_request_ids=pull_request_ids)
         self.refresh_mirrors = refresh_mirrors
         self.mirrors = {k: Path(v) for k, v in mirrors.items()}
         if set(self.mirrors) != {r.repository_id for r in repositories.values()} or any(

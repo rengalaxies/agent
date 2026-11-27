@@ -1,0 +1,72 @@
+{
+  "generation": 8,
+  "job": {
+    "generation": 8,
+    "state": "DONE",
+    "reason": "impact_found_within_profile",
+    "attempts": 1,
+    "updated_at": 1795342566.554458
+  },
+  "analysis": {
+    "status": "USEFUL",
+    "reason_code": "impact_found_within_profile",
+    "code_version": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312"
+  },
+  "publication": {
+    "generation": 8,
+    "kind": "result",
+    "state": "DELIVERED",
+    "reason": null,
+    "operation": "update",
+    "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]"
+  },
+  "head": "241600aaba9fcdafc7687dc8b896eff392ef17cc",
+  "intents": [
+    {
+      "generation": 8,
+      "state": "DELIVERED",
+      "kind": "result",
+      "operation": "update",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "44f7010d1a7dfb2806d1a09c2b27268a63e8809b411c1ea471b06fa19966ea7a"
+    },
+    {
+      "generation": 8,
+      "state": "DELIVERED",
+      "kind": "stale",
+      "operation": "update",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "1cc42f1cb2e7af94d9a8bdeac7680bc5813a0cdb911bbc120a3d5507eeaf8f11"
+    },
+    {
+      "generation": 7,
+      "state": "DELIVERED",
+      "kind": "result",
+      "operation": "update",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "9d7f6d591fa28571463335f3e079c7deba65398d5e532f3a87d552d3c1b92ca0"
+    },
+    {
+      "generation": 6,
+      "state": "DELIVERED",
+      "kind": "result",
+      "operation": "update",
+      "comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93817019\"]",
+      "body_digest": "e017d61080dbf9f0440ef0dd88d2af144d3a50bb4fe7c51e5ef48ed7ccc1da52"
+    }
+  ],
+  "scope_receipts": 2,
+  "owned_marker_count": 1,
+  "owned": [
+    {
+      "id": "93817019",
+      "generation": 8,
+      "digest": "44f7010d1a7dfb2806d1a09c2b27268a63e8809b411c1ea471b06fa19966ea7a",
+      "protected_link": true,
+      "text_sha256": "28209b7a9ef9212e402b0de8381e0ba00f2ea1449c0b990c0a3392ebdb0e9c48"
+    }
+  ],
+  "ui_link": "https://82.202.141.50/ui/result?resource_id=bitbucket%3Ae0b65402-98d3-432d-9ba0-8e92884d8bfb%2Fce63c558-64b3-462f-9ab9-1b954c14f5d9%235",
+  "live_unit": "active",
+  "legacy_pid": "60331"
+}

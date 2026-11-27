@@ -1,0 +1,770 @@
+{
+  "base_revisions": {
+    "r00": "330566af8aa134f20b8f4845349fbda47f968ade",
+    "r01": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+    "r02": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+    "r03": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+    "r04": "4be75998dd63cbcc12f92b68ed439a9250056ee6"
+  },
+  "effective_limits": {
+    "max_corpus_bytes": 8000000,
+    "max_file_bytes": 65536,
+    "max_files": 2048,
+    "scan_seconds": 60.0
+  },
+  "generator": {
+    "seed": 20261114,
+    "sha256": "532f4c895f2f30efb779854aac5e9a833db7447a490b3a8c3e5bf14faf90c630",
+    "version": "1.0"
+  },
+  "known_dependency_callsites": 3,
+  "oracle_sha256": "401183a2be44cdcdf2458bf53c4e1aa96942e59af7b39647b424f0fd28df9434",
+  "parameters": {
+    "active_consumers": 3,
+    "calls_per_consumer": 1,
+    "operations": 8,
+    "python_lines": 1000,
+    "repositories": 5
+  },
+  "policy": {
+    "addresses": [
+      {
+        "base_url": "https://scale-provider.test",
+        "service": "provider"
+      }
+    ],
+    "capabilities": [
+      "read_context",
+      "maintain",
+      "propose",
+      "report_check"
+    ],
+    "environment": "offline",
+    "installation_id": "scale-controlled",
+    "limits": {
+      "max_corpus_bytes": 8000000,
+      "max_file_bytes": 65536,
+      "max_files": 2048,
+      "scan_seconds": 60.0
+    },
+    "repositories": [
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r00",
+        "include": [
+          "*.py"
+        ],
+        "revision": "330566af8aa134f20b8f4845349fbda47f968ade",
+        "root": "repositories/r00",
+        "service": "provider",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r01",
+        "include": [
+          "*.py"
+        ],
+        "revision": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+        "root": "repositories/r01",
+        "service": "consumer_01",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r02",
+        "include": [
+          "*.py"
+        ],
+        "revision": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "root": "repositories/r02",
+        "service": "consumer_02",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r03",
+        "include": [
+          "*.py"
+        ],
+        "revision": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "root": "repositories/r03",
+        "service": "consumer_03",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r04",
+        "include": [
+          "*.py"
+        ],
+        "revision": "4be75998dd63cbcc12f92b68ed439a9250056ee6",
+        "root": "repositories/r04",
+        "service": "consumer_04",
+        "snapshot": "git"
+      }
+    ],
+    "subject": "scale-verifier"
+  },
+  "product_default_limits": {
+    "freshness_seconds": 3600,
+    "max_corpus_bytes": 2000000,
+    "max_file_bytes": 65536,
+    "max_files": 256,
+    "max_model_steps": 4,
+    "max_proposals": 24,
+    "max_tool_lines": 60,
+    "scan_seconds": 15.0
+  },
+  "profile": "http-requests-6",
+  "provenance": "controlled_generated",
+  "repositories": [
+    {
+      "bytes": 5734,
+      "files": 2,
+      "inventory": [
+        {
+          "bytes": 829,
+          "path": "api.py",
+          "python_nonblank_noncomment_lines": 26,
+          "python_physical_lines": 35,
+          "sha256": "92898e6b59b8d76d0de1adbf6ebe3410011dcda6061aec710d65b5af4f55a6f5"
+        },
+        {
+          "bytes": 4905,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 192,
+          "python_physical_lines": 193,
+          "sha256": "877402356a1eaac4cc0f39dce4a77b6e3b69616ec2d19e574ef0fe441ede8d33"
+        }
+      ],
+      "main_commit": "330566af8aa134f20b8f4845349fbda47f968ade",
+      "main_tree": "78f865887c43f6f932d704971add6f689a31129b",
+      "python_nonblank_noncomment_lines": 218,
+      "python_physical_lines": 228,
+      "repository": "r00",
+      "root": "repositories/r00",
+      "service": "provider"
+    },
+    {
+      "bytes": 5074,
+      "files": 2,
+      "inventory": [
+        {
+          "bytes": 164,
+          "path": "client.py",
+          "python_nonblank_noncomment_lines": 5,
+          "python_physical_lines": 7,
+          "sha256": "de2fa0cfbcff3595bfd43b8c9102837aa500d4f841686cf655a8173a260820a9"
+        },
+        {
+          "bytes": 4910,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 192,
+          "python_physical_lines": 193,
+          "sha256": "56ccd1d50de09d31aa76920cce06a48ed48840169c9f6ef94b50343af7375f47"
+        }
+      ],
+      "main_commit": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+      "main_tree": "f01e524fd712a47ee0e05a073804b56ddceceb39",
+      "python_nonblank_noncomment_lines": 197,
+      "python_physical_lines": 200,
+      "repository": "r01",
+      "root": "repositories/r01",
+      "service": "consumer_01"
+    },
+    {
+      "bytes": 5035,
+      "files": 2,
+      "inventory": [
+        {
+          "bytes": 164,
+          "path": "client.py",
+          "python_nonblank_noncomment_lines": 5,
+          "python_physical_lines": 7,
+          "sha256": "de2fa0cfbcff3595bfd43b8c9102837aa500d4f841686cf655a8173a260820a9"
+        },
+        {
+          "bytes": 4871,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 191,
+          "python_physical_lines": 192,
+          "sha256": "062bf634fa554c0d06c09ffeadcce75e9b5c21f15efa4cd8ae20d825de72a726"
+        }
+      ],
+      "main_commit": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+      "main_tree": "4b5eed1077d27952e58c5b2db600f14f23a570a8",
+      "python_nonblank_noncomment_lines": 196,
+      "python_physical_lines": 199,
+      "repository": "r02",
+      "root": "repositories/r02",
+      "service": "consumer_02"
+    },
+    {
+      "bytes": 5028,
+      "files": 2,
+      "inventory": [
+        {
+          "bytes": 164,
+          "path": "client.py",
+          "python_nonblank_noncomment_lines": 5,
+          "python_physical_lines": 7,
+          "sha256": "de2fa0cfbcff3595bfd43b8c9102837aa500d4f841686cf655a8173a260820a9"
+        },
+        {
+          "bytes": 4864,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 191,
+          "python_physical_lines": 192,
+          "sha256": "5a4d26ef49d65823892018f34d16a64d64621c05c663838536e4344010637c69"
+        }
+      ],
+      "main_commit": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+      "main_tree": "984e98c31c8162d4e2a697055ac80d8c40a8419e",
+      "python_nonblank_noncomment_lines": 196,
+      "python_physical_lines": 199,
+      "repository": "r03",
+      "root": "repositories/r03",
+      "service": "consumer_03"
+    },
+    {
+      "bytes": 4906,
+      "files": 2,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 4863,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 191,
+          "python_physical_lines": 192,
+          "sha256": "d664e91f28b69e7e182606ecf3e6f20bde16014a9299c3ea143d88c151c356b3"
+        }
+      ],
+      "main_commit": "4be75998dd63cbcc12f92b68ed439a9250056ee6",
+      "main_tree": "7dc234ed3124acac915fbe9d68b5bc076c563776",
+      "python_nonblank_noncomment_lines": 193,
+      "python_physical_lines": 194,
+      "repository": "r04",
+      "root": "repositories/r04",
+      "service": "consumer_04"
+    }
+  ],
+  "scenarios": {
+    "baseline": {
+      "head_revisions": {
+        "r00": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+        "r01": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+        "r02": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "r03": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "r04": "4be75998dd63cbcc12f92b68ed439a9250056ee6"
+      }
+    },
+    "new_consumer": {
+      "head_revisions": {
+        "r00": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+        "r01": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+        "r02": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "r03": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "r04": "7dfaf6b9c6e7009d6b336e25e92f33279ef5634d"
+      }
+    },
+    "operation_removed": {
+      "head_revisions": {
+        "r00": "6e248148311d325f97b7bd2b0da94be73a8be0c3",
+        "r01": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+        "r02": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "r03": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "r04": "4be75998dd63cbcc12f92b68ed439a9250056ee6"
+      }
+    },
+    "partial_access": {
+      "fault": "configured source absent; not a credential revocation test",
+      "head_revisions": {
+        "r00": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+        "r01": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+        "r02": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "r03": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "r04": "4be75998dd63cbcc12f92b68ed439a9250056ee6"
+      },
+      "unavailable_repository": "r01"
+    },
+    "removed_consumer": {
+      "head_revisions": {
+        "r00": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+        "r01": "593b4b5cf5d61693a889ea72e14e7c2d03966d92",
+        "r02": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "r03": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "r04": "4be75998dd63cbcc12f92b68ed439a9250056ee6"
+      }
+    }
+  },
+  "schema_version": "impactmap-scale-corpus-1",
+  "streams": {
+    "head_updates": {
+      "1": [
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-01",
+          "head_sha": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        }
+      ],
+      "10": [
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-01",
+          "head_sha": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-02",
+          "head_sha": "e55d2f287814299b05dbcbe11818f4620b282a95",
+          "parent_sha": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-03",
+          "head_sha": "ccf999175c805a6eb8527440682fd280b8a7beaa",
+          "parent_sha": "e55d2f287814299b05dbcbe11818f4620b282a95",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-04",
+          "head_sha": "36dd31fb10cfcdf3f0c1e2a4076f4b88a5266351",
+          "parent_sha": "ccf999175c805a6eb8527440682fd280b8a7beaa",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-05",
+          "head_sha": "4f38285075573a41ddbf003121c78a687cb107f6",
+          "parent_sha": "36dd31fb10cfcdf3f0c1e2a4076f4b88a5266351",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 5
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-06",
+          "head_sha": "91d3a3576e63400b41d8431c075b3d60218e786b",
+          "parent_sha": "4f38285075573a41ddbf003121c78a687cb107f6",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 6
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-07",
+          "head_sha": "b993bbd435925f6daffc6c3b045e64e8e114a43c",
+          "parent_sha": "91d3a3576e63400b41d8431c075b3d60218e786b",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 7
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-08",
+          "head_sha": "f02c4c8308e3c613df184c112f5516c3a902532b",
+          "parent_sha": "b993bbd435925f6daffc6c3b045e64e8e114a43c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 8
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-09",
+          "head_sha": "269e53d3af309f150f6c6dceddc9ab2a196bffdb",
+          "parent_sha": "f02c4c8308e3c613df184c112f5516c3a902532b",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 9
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-10",
+          "head_sha": "a075388aed6d11539a348daca2a0b0fd531a3cb5",
+          "parent_sha": "269e53d3af309f150f6c6dceddc9ab2a196bffdb",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 10
+        }
+      ],
+      "5": [
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-01",
+          "head_sha": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-02",
+          "head_sha": "e55d2f287814299b05dbcbe11818f4620b282a95",
+          "parent_sha": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-03",
+          "head_sha": "ccf999175c805a6eb8527440682fd280b8a7beaa",
+          "parent_sha": "e55d2f287814299b05dbcbe11818f4620b282a95",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-04",
+          "head_sha": "36dd31fb10cfcdf3f0c1e2a4076f4b88a5266351",
+          "parent_sha": "ccf999175c805a6eb8527440682fd280b8a7beaa",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "head-update-05",
+          "head_sha": "4f38285075573a41ddbf003121c78a687cb107f6",
+          "parent_sha": "36dd31fb10cfcdf3f0c1e2a4076f4b88a5266351",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 5
+        }
+      ]
+    },
+    "independent_prs": {
+      "1": [
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-01",
+          "head_sha": "a74efff0f57613dfc5f3492fd26dd5c110d4278c",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        }
+      ],
+      "10": [
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-01",
+          "head_sha": "a74efff0f57613dfc5f3492fd26dd5c110d4278c",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-02",
+          "head_sha": "2d176af35f5a5d3bcbf14de1f1c4af797b952a78",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 2,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-03",
+          "head_sha": "0cf072de59b42805661da9cfe204f468cc595f78",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 3,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-04",
+          "head_sha": "101f7f34b61bb8caf2418c2e5136b780623496d0",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 4,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-05",
+          "head_sha": "8c8c7a5063cde58ff5be5bda5dff8419c45a9b0f",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 5,
+          "provider_repository": "r00",
+          "sequence": 5
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-06",
+          "head_sha": "664f47722a9e4ab33e5c4b9da3083c7e836d101f",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 6,
+          "provider_repository": "r00",
+          "sequence": 6
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-07",
+          "head_sha": "b93e1996df23bd76abdbd63b94d69f742d8c2515",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 7,
+          "provider_repository": "r00",
+          "sequence": 7
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-08",
+          "head_sha": "676af0592275cc0b0c752808046bb3f5ab234ed5",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 8,
+          "provider_repository": "r00",
+          "sequence": 8
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-09",
+          "head_sha": "91ab7a74b93c9c89b5c04e8c1034c5654f77d373",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 9,
+          "provider_repository": "r00",
+          "sequence": 9
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-10",
+          "head_sha": "6fd11401f775ab120c5f33aee7e10ad5e2e71708",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 10,
+          "provider_repository": "r00",
+          "sequence": 10
+        }
+      ],
+      "5": [
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-01",
+          "head_sha": "a74efff0f57613dfc5f3492fd26dd5c110d4278c",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-02",
+          "head_sha": "2d176af35f5a5d3bcbf14de1f1c4af797b952a78",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 2,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-03",
+          "head_sha": "0cf072de59b42805661da9cfe204f468cc595f78",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 3,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-04",
+          "head_sha": "101f7f34b61bb8caf2418c2e5136b780623496d0",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 4,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "event_id": "independent-pr-05",
+          "head_sha": "8c8c7a5063cde58ff5be5bda5dff8419c45a9b0f",
+          "parent_sha": "330566af8aa134f20b8f4845349fbda47f968ade",
+          "pr_id": 5,
+          "provider_repository": "r00",
+          "sequence": 5
+        }
+      ]
+    }
+  },
+  "totals": {
+    "bytes": 25777,
+    "files": 10,
+    "python_nonblank_noncomment_lines": 1000,
+    "python_physical_lines": 1020
+  },
+  "versions": [
+    {
+      "branch": "change-01",
+      "commit": "ef1e30fdbf628c869eb7899f521c8469fc652baa",
+      "repository": "r00",
+      "tree": "b9f301fddb2d7f312f7381cecf4b596a50f686c6"
+    },
+    {
+      "branch": "pr-01",
+      "commit": "a74efff0f57613dfc5f3492fd26dd5c110d4278c",
+      "repository": "r00",
+      "tree": "b9f301fddb2d7f312f7381cecf4b596a50f686c6"
+    },
+    {
+      "branch": "change-02",
+      "commit": "e55d2f287814299b05dbcbe11818f4620b282a95",
+      "repository": "r00",
+      "tree": "5c2c22dcc26ed18f4b8f3d9953357a9b9b9b25b7"
+    },
+    {
+      "branch": "pr-02",
+      "commit": "2d176af35f5a5d3bcbf14de1f1c4af797b952a78",
+      "repository": "r00",
+      "tree": "5c2c22dcc26ed18f4b8f3d9953357a9b9b9b25b7"
+    },
+    {
+      "branch": "change-03",
+      "commit": "ccf999175c805a6eb8527440682fd280b8a7beaa",
+      "repository": "r00",
+      "tree": "795f5674517fd16c21a1cdae4e7d3f406836f7ee"
+    },
+    {
+      "branch": "pr-03",
+      "commit": "0cf072de59b42805661da9cfe204f468cc595f78",
+      "repository": "r00",
+      "tree": "795f5674517fd16c21a1cdae4e7d3f406836f7ee"
+    },
+    {
+      "branch": "change-04",
+      "commit": "36dd31fb10cfcdf3f0c1e2a4076f4b88a5266351",
+      "repository": "r00",
+      "tree": "1e13873eee945623b646b1a4f088374f5467249b"
+    },
+    {
+      "branch": "pr-04",
+      "commit": "101f7f34b61bb8caf2418c2e5136b780623496d0",
+      "repository": "r00",
+      "tree": "1e13873eee945623b646b1a4f088374f5467249b"
+    },
+    {
+      "branch": "change-05",
+      "commit": "4f38285075573a41ddbf003121c78a687cb107f6",
+      "repository": "r00",
+      "tree": "dc62e2416d53aa33a392785f5fac4201c14f76a9"
+    },
+    {
+      "branch": "pr-05",
+      "commit": "8c8c7a5063cde58ff5be5bda5dff8419c45a9b0f",
+      "repository": "r00",
+      "tree": "dc62e2416d53aa33a392785f5fac4201c14f76a9"
+    },
+    {
+      "branch": "change-06",
+      "commit": "91d3a3576e63400b41d8431c075b3d60218e786b",
+      "repository": "r00",
+      "tree": "fc2a991048230fcf1cd880e012a444fa230132f2"
+    },
+    {
+      "branch": "pr-06",
+      "commit": "664f47722a9e4ab33e5c4b9da3083c7e836d101f",
+      "repository": "r00",
+      "tree": "fc2a991048230fcf1cd880e012a444fa230132f2"
+    },
+    {
+      "branch": "change-07",
+      "commit": "b993bbd435925f6daffc6c3b045e64e8e114a43c",
+      "repository": "r00",
+      "tree": "6e115fb18a888b8fcf35a4c6734da86d9dad1ed6"
+    },
+    {
+      "branch": "pr-07",
+      "commit": "b93e1996df23bd76abdbd63b94d69f742d8c2515",
+      "repository": "r00",
+      "tree": "6e115fb18a888b8fcf35a4c6734da86d9dad1ed6"
+    },
+    {
+      "branch": "change-08",
+      "commit": "f02c4c8308e3c613df184c112f5516c3a902532b",
+      "repository": "r00",
+      "tree": "ed45eeacb6b754012f03f4676d02c1c6b1054d89"
+    },
+    {
+      "branch": "pr-08",
+      "commit": "676af0592275cc0b0c752808046bb3f5ab234ed5",
+      "repository": "r00",
+      "tree": "ed45eeacb6b754012f03f4676d02c1c6b1054d89"
+    },
+    {
+      "branch": "change-09",
+      "commit": "269e53d3af309f150f6c6dceddc9ab2a196bffdb",
+      "repository": "r00",
+      "tree": "ff27a63b10fbe51af3ae65d52cb0aa1c6614d1ec"
+    },
+    {
+      "branch": "pr-09",
+      "commit": "91ab7a74b93c9c89b5c04e8c1034c5654f77d373",
+      "repository": "r00",
+      "tree": "ff27a63b10fbe51af3ae65d52cb0aa1c6614d1ec"
+    },
+    {
+      "branch": "change-10",
+      "commit": "a075388aed6d11539a348daca2a0b0fd531a3cb5",
+      "repository": "r00",
+      "tree": "afb516ee264e7175bea2dade734c0a08d8e6f8ad"
+    },
+    {
+      "branch": "pr-10",
+      "commit": "6fd11401f775ab120c5f33aee7e10ad5e2e71708",
+      "repository": "r00",
+      "tree": "afb516ee264e7175bea2dade734c0a08d8e6f8ad"
+    },
+    {
+      "branch": "consumer-added",
+      "commit": "7dfaf6b9c6e7009d6b336e25e92f33279ef5634d",
+      "repository": "r04",
+      "tree": "c763e58804edc3e752dbd15c8308d81a10d8ca48"
+    },
+    {
+      "branch": "consumer-removed",
+      "commit": "593b4b5cf5d61693a889ea72e14e7c2d03966d92",
+      "repository": "r01",
+      "tree": "4665810401b6603a752ddb96b5b67aab563ce533"
+    },
+    {
+      "branch": "operation-removed",
+      "commit": "6e248148311d325f97b7bd2b0da94be73a8be0c3",
+      "repository": "r00",
+      "tree": "c2c756e7691b5804d6c06736144e65792c15425f"
+    }
+  ]
+}

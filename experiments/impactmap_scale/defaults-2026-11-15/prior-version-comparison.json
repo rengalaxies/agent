@@ -1,0 +1,32 @@
+{
+  "prior_source": "2d13227",
+  "scope": "same positive pinned pilot inputs; budget refusals intentionally changed",
+  "comparisons": [
+    {
+      "corpus": "repos5-lines50k",
+      "repetition": 1,
+      "semantic_hashes_equal": true,
+      "facts_equal": true
+    },
+    {
+      "corpus": "repos10-lines100k",
+      "repetition": 1,
+      "semantic_hashes_equal": true,
+      "facts_equal": true
+    },
+    {
+      "corpus": "repos10-lines100k",
+      "repetition": 2,
+      "semantic_hashes_equal": true,
+      "facts_equal": true
+    },
+    {
+      "corpus": "repos10-lines100k",
+      "repetition": 3,
+      "semantic_hashes_equal": true,
+      "facts_equal": true
+    }
+  ],
+  "all_happy_semantic_hashes_equal": true,
+  "all_canonical_facts_equal": true
+}

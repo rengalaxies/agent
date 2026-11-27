@@ -1,0 +1,49 @@
+{
+  "compared_fields": "provider,method,route,consumer,code,usage,repository,path,line,dependency_freshness,witness repository/path/phase/start_line/end_line/quote_sha256; citations individually resolved against pinned sources by verifier",
+  "comparisons": [
+    {
+      "actual_finding_count": 3,
+      "anchor": "repos5-lines1k-anchor",
+      "anchor_verification_passed": true,
+      "expected_finding_count": 3,
+      "passed": true,
+      "profile": "repos5-lines50k",
+      "profile_verification_passed": true,
+      "same_located_findings": true
+    },
+    {
+      "actual_finding_count": 3,
+      "anchor": "repos5-lines1k-anchor",
+      "anchor_verification_passed": true,
+      "expected_finding_count": 3,
+      "passed": true,
+      "profile": "repos10-lines100k",
+      "profile_verification_passed": true,
+      "same_located_findings": true
+    },
+    {
+      "actual_finding_count": 3,
+      "anchor": "repos5-lines1k-anchor",
+      "anchor_verification_passed": true,
+      "expected_finding_count": 3,
+      "passed": true,
+      "profile": "repos10-lines50k",
+      "profile_verification_passed": true,
+      "same_located_findings": true
+    },
+    {
+      "actual_finding_count": 3,
+      "anchor": "repos5-lines1k-anchor",
+      "anchor_verification_passed": true,
+      "expected_finding_count": 3,
+      "passed": true,
+      "profile": "repos5-lines100k",
+      "profile_verification_passed": true,
+      "same_located_findings": true
+    }
+  ],
+  "excluded": "commit/source/receipt identifiers change with unrelated content; no equal-provenance claim",
+  "method": "Compare complete located_baseline_findings from the six-profile core verification run, gated on both full oracle verifications and exactly three findings; no second core run.",
+  "passed": true,
+  "schema_version": "impactmap-noise-comparison-1"
+}

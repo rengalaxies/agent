@@ -1,0 +1,74 @@
+Возможное влияние изменения
+2 service(s) use the operation named by the task. No diff yet: this is a preliminary impact area, not a proven break. Это предварительный вывод по задаче до появления кода; он не доказывает поломку.
+Что может затронуть
+archive: команда team-data (источник: installation_mapping@ownership-1)
+
+reporting: команда team-reporting (источник: installation_mapping@ownership-1)
+
+Почему и через какой путь
+Факт в пределах профиля: archive calls GET /orders of orders at archive:client.py:9. Применимость: Graph graph-3; static profile http-requests-9. Неопределённость: LOW. Основания: код archive@49405f4a048e:client.py#L9-9
+
+Гипотеза: The task may change GET /orders of orders, which archive uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код archive@49405f4a048e:client.py#L9-9
+
+Факт в пределах профиля: reporting calls GET /orders of orders at reporting:client.py:7. Применимость: Graph graph-3; static profile http-requests-9. Неопределённость: LOW. Основания: код reporting@2cba012ba204:client.py#L7-7
+
+Гипотеза: The task may change GET /orders of orders, which reporting uses; the actual effect is unknown until a diff exists. Применимость: Before any diff; graph query only. Неопределённость: HIGH. Основания: код reporting@2cba012ba204:client.py#L7-7
+
+Путь: archive -> orders GET /orders. Основания: код archive@49405f4a048e:client.py#L9-9
+
+Путь: reporting -> orders GET /orders. Основания: код reporting@2cba012ba204:client.py#L7-7
+
+Что проверить
+archive: Before the change lands, check how archive uses GET /orders; whether it needs the complete collection is not known.
+
+reporting: Before the change lands, check how reporting uses GET /orders against requirement reporting-complete (complete_collection).
+
+Неизвестные и свежесть
+jira_without_diff
+
+requirement_unknown (archive)
+
+git:archive: CURRENT, проверено 2026-11-16T08:47:42.748Z
+
+git:audit: CURRENT, проверено 2026-11-16T08:47:42.748Z
+
+git:billing: CURRENT, проверено 2026-11-16T08:47:42.748Z
+
+git:orders: CURRENT, проверено 2026-11-16T08:47:42.748Z
+
+git:reporting: CURRENT, проверено 2026-11-16T08:47:42.748Z
+
+ownership:installation_mapping: CURRENT, проверено 2026-11-16T08:47:42.467Z
+
+Версии
+Jira ORD-12: версия полей 7c4bf84cdfe6
+
+Поколение анализа: 1
+
+code_version: agent-service-smoke
+
+constitution_version: agent-service-v1.0:100bcad3db9c
+
+correlation_id: 5fcba493cce2404abd3501aa63d90352:1
+
+graph_version: graph-3
+
+model: Детерминированный результат (модельный отчёт не представлен)
+
+profile: http-requests-9
+
+schema_version: 2.2
+
+снимок archive (consumer): 49405f4a048e
+
+снимок audit (consumer): 89e053921b37
+
+снимок billing (consumer): 46a72606b6f0
+
+снимок orders (consumer): 99aaceb50e06
+
+снимок reporting (consumer): 2cba012ba204
+
+Статус: USEFUL, код: preliminary_impact_found
+
+agent-service marker=c4af9ac73f615c9e digest=8b7c9f00b0cf5e73904f94be2a741d98de4876f80e87f917d1ff3a27a67f93cd generation=1

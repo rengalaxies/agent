@@ -1,0 +1,26 @@
+======================================================================
+ERROR: test_known_owner_and_real_preliminary_output_render_without_losing_team_names (tests.service.test_ui_views.ViewTests.test_known_owner_and_real_preliminary_output_render_without_losing_team_names)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 50, in test_known_owner_and_real_preliminary_output_render_without_losing_team_names
+    html=self.view(self.rid)['result_html']
+         ~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_views.py", line 18, in view
+    return workspace_view(data)
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_service/ui_views.py", line 140, in workspace_view
+    return {'list_html':''.join(rows) or empty,'list_note_html':note+more+scan,'result_html':result_view(selected)}
+                                                                                             ~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_service/ui_views.py", line 100, in result_view
+    out.append('<section><h2>Затронутые потребители</h2><ul>'+''.join(
+                                                              ~~~~~~~^
+        f'<li><strong>{e(a["service"]["service"])}</strong> · Владелец: {e(a["owner"]["status"])} {e(", ".join(a["owner"]["teams"]))}</li>' for a in affected)+'</ul></section>')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/src/agent_service/ui_views.py", line 101, in <genexpr>
+    f'<li><strong>{e(a["service"]["service"])}</strong> · Владелец: {e(a["owner"]["status"])} {e(", ".join(a["owner"]["teams"]))}</li>' for a in affected)+'</ul></section>')
+                                                                                                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+TypeError: sequence item 0: expected str instance, dict found
+
+----------------------------------------------------------------------
+Ran 1 test in 0.026s
+
+FAILED (errors=1)

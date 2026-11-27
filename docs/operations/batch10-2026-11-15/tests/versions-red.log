@@ -1,0 +1,36 @@
+test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip (tests.service.test_bitbucket_analysis.WorkerTest.test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip) ... FAIL
+test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base (tests.service.test_jira_presentation.JiraPresentationTest.test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base) ... 
+  test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base (tests.service.test_jira_presentation.JiraPresentationTest.test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base) (snapshot={'destination_tip_sha': 'dddddddddddddddddddddddddddddddddddddddd'}) ... FAIL
+  test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base (tests.service.test_jira_presentation.JiraPresentationTest.test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base) (snapshot={}) ... FAIL
+
+======================================================================
+FAIL: test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip (tests.service.test_bitbucket_analysis.WorkerTest.test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_bitbucket_analysis.py", line 119, in test_full_document_names_analyzed_base_even_when_snapshot_has_only_destination_tip
+    self.assertIn('base '+self.analyzer.last_request['pr']['base_sha'][:12],versions[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'base c444814cf5a9' not found in 'PR pilot/orders#7: base , head c2a7f1b742d5'
+
+======================================================================
+FAIL: test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base (tests.service.test_jira_presentation.JiraPresentationTest.test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base) (snapshot={'destination_tip_sha': 'dddddddddddddddddddddddddddddddddddddddd'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_jira_presentation.py", line 20, in test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base
+    self.assertIn(expected,versions[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'destination tip dddddddddddd' not found in 'PR pilot/orders#4: base , head aaaaaaaaaaaa'
+
+======================================================================
+FAIL: test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base (tests.service.test_jira_presentation.JiraPresentationTest.test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base) (snapshot={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_jira_presentation.py", line 20, in test_missing_base_is_explicit_and_destination_tip_is_not_a_merge_base
+    self.assertIn(expected,versions[0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'base неизвестен' not found in 'PR pilot/orders#4: base , head aaaaaaaaaaaa'
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.561s
+
+FAILED (failures=3)

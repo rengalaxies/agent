@@ -1,0 +1,237 @@
+test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) ... 
+  test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) (channel='checks') ... FAIL
+  test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) (channel='claims') ... FAIL
+  test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) (channel='affected') ... FAIL
+test_finding_without_explicit_old_proof_retains_unbound_instead_of_new_route (tests.performance.test_normalization_binding.BindingTests.test_finding_without_explicit_old_proof_retains_unbound_instead_of_new_route) ... FAIL
+test_historical_or_wrong_hash_call_is_never_upgraded_to_head_witness (tests.performance.test_normalization_binding.BindingTests.test_historical_or_wrong_hash_call_is_never_upgraded_to_head_witness) ... ok
+test_invalid_provider_hash_cannot_bless_an_explicit_old_target (tests.performance.test_normalization_binding.BindingTests.test_invalid_provider_hash_cannot_bless_an_explicit_old_target) ... FAIL
+test_malformed_first_entry_does_not_erase_later_warning (tests.performance.test_normalization_binding.BindingTests.test_malformed_first_entry_does_not_erase_later_warning) ... FAIL
+test_merged_current_edge_keeps_two_old_targets_and_isolated_call_lines (tests.performance.test_normalization_binding.BindingTests.test_merged_current_edge_keeps_two_old_targets_and_isolated_call_lines) ... FAIL
+test_no_delta_pr_does_not_invent_a_changed_target (tests.performance.test_normalization_binding.BindingTests.test_no_delta_pr_does_not_invent_a_changed_target) ... FAIL
+test_off_delta_calls_are_unbound_in_actual_pr (tests.performance.test_normalization_binding.BindingTests.test_off_delta_calls_are_unbound_in_actual_pr) ... FAIL
+test_real_replacement_uses_old_delta_in_every_formulation (tests.performance.test_normalization_binding.BindingTests.test_real_replacement_uses_old_delta_in_every_formulation) ... FAIL
+test_regular_removed_target_still_binds_without_subject (tests.performance.test_normalization_binding.BindingTests.test_regular_removed_target_still_binds_without_subject) ... ok
+test_unlinked_typed_subject_cannot_borrow_another_callsite_witness (tests.performance.test_normalization_binding.BindingTests.test_unlinked_typed_subject_cannot_borrow_another_callsite_witness) ... FAIL
+test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) ... 
+  test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) (field='service') ... FAIL
+  test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) (field='method') ... FAIL
+  test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) (field='environment') ... FAIL
+
+======================================================================
+FAIL: test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) (channel='checks')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 63, in test_each_addressed_channel_works_without_findings
+    p=self.prediction(raw);self.assertEqual(self.routes(p),['/orders'])
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/{resource}'] != ['/orders']
+
+First differing element 0:
+'/{resource}'
+'/orders'
+
+- ['/{resource}']
++ ['/orders']
+
+======================================================================
+FAIL: test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) (channel='claims')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 63, in test_each_addressed_channel_works_without_findings
+    p=self.prediction(raw);self.assertEqual(self.routes(p),['/orders'])
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/{resource}'] != ['/orders']
+
+First differing element 0:
+'/{resource}'
+'/orders'
+
+- ['/{resource}']
++ ['/orders']
+
+======================================================================
+FAIL: test_each_addressed_channel_works_without_findings (tests.performance.test_normalization_binding.BindingTests.test_each_addressed_channel_works_without_findings) (channel='affected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 63, in test_each_addressed_channel_works_without_findings
+    p=self.prediction(raw);self.assertEqual(self.routes(p),['/orders'])
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/{resource}'] != ['/orders']
+
+First differing element 0:
+'/{resource}'
+'/orders'
+
+- ['/{resource}']
++ ['/orders']
+
+======================================================================
+FAIL: test_finding_without_explicit_old_proof_retains_unbound_instead_of_new_route (tests.performance.test_normalization_binding.BindingTests.test_finding_without_explicit_old_proof_retains_unbound_instead_of_new_route)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 30, in test_finding_without_explicit_old_proof_retains_unbound_instead_of_new_route
+    p=self.prediction(raw);self.assertEqual(p['candidates'],[]);self.assertEqual(len(p['invalid_candidates']),1)
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[468 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/{resource}', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}], 'raw_refs': ['/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 718 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_invalid_provider_hash_cannot_bless_an_explicit_old_target (tests.performance.test_normalization_binding.BindingTests.test_invalid_provider_hash_cannot_bless_an_explicit_old_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 44, in test_invalid_provider_hash_cannot_bless_an_explicit_old_target
+    p=self.prediction(raw);self.assertEqual(p['candidates'],[]);self.assertEqual(len(p['invalid_candidates']),1)
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[706 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/orders', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}, {'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 1, 'line_end': 1, 'quote_sha256': '06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d'}], 'raw_refs': ['/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5', '/checks/0', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 1105 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_malformed_first_entry_does_not_erase_later_warning (tests.performance.test_normalization_binding.BindingTests.test_malformed_first_entry_does_not_erase_later_warning)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 77, in test_malformed_first_entry_does_not_erase_later_warning
+    p=self.prediction(raw);self.assertFalse(p['output_valid']);self.assertEqual(self.routes(p),['/orders'])
+                                                               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/{resource}'] != ['/orders']
+
+First differing element 0:
+'/{resource}'
+'/orders'
+
+- ['/{resource}']
++ ['/orders']
+
+======================================================================
+FAIL: test_merged_current_edge_keeps_two_old_targets_and_isolated_call_lines (tests.performance.test_normalization_binding.BindingTests.test_merged_current_edge_keeps_two_old_targets_and_isolated_call_lines)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 24, in test_merged_current_edge_keeps_two_old_targets_and_isolated_call_lines
+    self.assertEqual(self.routes(p),['/invoices','/orders']);self.assertEqual(p['invalid_candidates'],[])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/{resource}'] != ['/invoices', '/orders']
+
+First differing element 0:
+'/{resource}'
+'/invoices'
+
+Second list contains 1 additional elements.
+First extra element 1:
+'/orders'
+
+- ['/{resource}']
++ ['/invoices', '/orders']
+
+======================================================================
+FAIL: test_no_delta_pr_does_not_invent_a_changed_target (tests.performance.test_normalization_binding.BindingTests.test_no_delta_pr_does_not_invent_a_changed_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 72, in test_no_delta_pr_does_not_invent_a_changed_target
+    p=self.prediction(raw,fixture=self.removed);self.assertEqual(p['candidates'],[]);self.assertTrue(p['invalid_candidates'])
+                                                ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[706 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/orders', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'cd1b2076818e107490f5ef7f7011172fde8c0660', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}, {'repository': 'c', 'phase': 'head', 'commit': 'cd1b2076818e107490f5ef7f7011172fde8c0660', 'path': 'client.py', 'line_start': 1, 'line_end': 1, 'quote_sha256': '06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d'}], 'raw_refs': ['/affected/0/rel:dcadee359ca39cf892325496d9b768a053dd8552', '/checks/0', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 1105 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_off_delta_calls_are_unbound_in_actual_pr (tests.performance.test_normalization_binding.BindingTests.test_off_delta_calls_are_unbound_in_actual_pr)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 69, in test_off_delta_calls_are_unbound_in_actual_pr
+    self.assertEqual(p['candidates'],[]);self.assertEqual(len(p['invalid_candidates']),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[706 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/orders', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'cd1b2076818e107490f5ef7f7011172fde8c0660', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}, {'repository': 'c', 'phase': 'head', 'commit': 'cd1b2076818e107490f5ef7f7011172fde8c0660', 'path': 'client.py', 'line_start': 1, 'line_end': 1, 'quote_sha256': '06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d'}], 'raw_refs': ['/affected/0/rel:dcadee359ca39cf892325496d9b768a053dd8552', '/checks/0', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 1105 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_real_replacement_uses_old_delta_in_every_formulation (tests.performance.test_normalization_binding.BindingTests.test_real_replacement_uses_old_delta_in_every_formulation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 20, in test_real_replacement_uses_old_delta_in_every_formulation
+    self.assertEqual(self.routes(p),['/orders']);self.assertEqual(p['invalid_candidates'],[])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/{resource}'] != ['/orders']
+
+First differing element 0:
+'/{resource}'
+'/orders'
+
+- ['/{resource}']
++ ['/orders']
+
+======================================================================
+FAIL: test_unlinked_typed_subject_cannot_borrow_another_callsite_witness (tests.performance.test_normalization_binding.BindingTests.test_unlinked_typed_subject_cannot_borrow_another_callsite_witness)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 55, in test_unlinked_typed_subject_cannot_borrow_another_callsite_witness
+    self.assertTrue(p['invalid_candidates'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) (field='service')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 37, in test_wrong_service_method_or_scope_subject_is_not_guessed
+    p=self.prediction(raw);self.assertEqual(p['candidates'],[]);self.assertEqual(len(p['invalid_candidates']),1)
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[710 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/{resource}', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}, {'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 1, 'line_end': 1, 'quote_sha256': '06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d'}], 'raw_refs': ['/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5', '/checks/0', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 1109 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) (field='method')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 37, in test_wrong_service_method_or_scope_subject_is_not_guessed
+    p=self.prediction(raw);self.assertEqual(p['candidates'],[]);self.assertEqual(len(p['invalid_candidates']),1)
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[710 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/{resource}', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}, {'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 1, 'line_end': 1, 'quote_sha256': '06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d'}], 'raw_refs': ['/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5', '/checks/0', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 1109 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_wrong_service_method_or_scope_subject_is_not_guessed (tests.performance.test_normalization_binding.BindingTests.test_wrong_service_method_or_scope_subject_is_not_guessed) (field='environment')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 37, in test_wrong_service_method_or_scope_subject_is_not_guessed
+    p=self.prediction(raw);self.assertEqual(p['candidates'],[]);self.assertEqual(len(p['invalid_candidates']),1)
+                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'key': {'provider_service': 'p', 'method[710 chars]g.'}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'key': {'provider_service': 'p', 'method': 'GET', 'route': '/{resource}', 'consumer_service': 'c'}, 'witnesses': [{'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 2, 'line_end': 2, 'quote_sha256': '41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12'}, {'repository': 'c', 'phase': 'head', 'commit': 'd6b32b65bff8158d559961f2f5591386c5cc77a1', 'path': 'client.py', 'line_start': 1, 'line_end': 1, 'quote_sha256': '06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d'}], 'raw_refs': ['/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5', '/checks/0', '/findings/0'], 'notes': 'All formulations retained in raw artifact; no gold-based filtering.'}
+
+Diff is 1109 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.785s
+
+FAILED (failures=14)

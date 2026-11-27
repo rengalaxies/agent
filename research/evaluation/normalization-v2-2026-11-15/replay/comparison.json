@@ -1,0 +1,5959 @@
+{
+  "cases": [
+    {
+      "case_id": "DEV-0001",
+      "payload_sha256": "9df24afd05bc25cf49fad6508380cd9b3ed82149a1a8a93373c918475f750c7c",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0001.json",
+      "raw_sha256": "7e93e2e4d628365d8f23e87c65d33bc7a194727207e2f77e1180eeea5f9ef649",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0002",
+      "payload_sha256": "b6f92a7dd46aa8d853471e1e15e57916ae0777a53dc8bf6abe883904ac1e5450",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0002.json",
+      "raw_sha256": "a6a95ea01fd42c37d4069bf850327b9b4a2882e2b42083418c9131a24439d3d5",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0003",
+      "payload_sha256": "5b0f621c26c7c10f695fcbb148598e0a9df9c3c841d323d2abe8de5b391b6af4",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0003.json",
+      "raw_sha256": "1d0cb92c8f1a9ee4bed4a0b9af328e0e73d79515b822c30e4bb57f84280a1521",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0004",
+      "payload_sha256": "b30658195bf6589bc6cdc024f0b063110756242bb2700247f438a60faf0c06a3",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0004.json",
+      "raw_sha256": "a9b1419a4d6859878f6b7fbf54da10166cfe51bb3982cdd67355b54e6e42c592",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0005",
+      "payload_sha256": "05ecc72ba3323a3fc33161df610a9a587541b439e88e93f27f8c82cbdba82aa3",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0005.json",
+      "raw_sha256": "ab8d156056123ebec2314a935de366608746b1126b2d250e80a2dcd07e009cde",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0006",
+      "payload_sha256": "e55bd80199dbff1bb57fa5458449582d68a6711dc409a9766b6005dc0acd5c17",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0006.json",
+      "raw_sha256": "f248f12d759660890cb4c9f467b0c7564a54810431dc76622bf4abee79193120",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0007",
+      "payload_sha256": "5e919cb7f3c6283a3a773f30e55084cf876a32bfbae4af98f9254fe895b6d064",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0007.json",
+      "raw_sha256": "8d2c2e5fba8e42ee82df30878f99f3a1e578fe99ac1442542ba9206b4e2cbfe5",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0008",
+      "payload_sha256": "f5ce88c41cf9f9167dd15ca016ab710188b9302d8d6c074ad52cfb5acc9853a4",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0008.json",
+      "raw_sha256": "157e008f1faaa48b72c8b5e02bfeb306c3129125ba50ac2f106558f4bf622971",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0009",
+      "payload_sha256": "df515625d1d99e3fd99be57928c6b77e0009bb4424ac496541565991f39955bc",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0009.json",
+      "raw_sha256": "5a3918d6dc73cd1019ae5b421b45dfee02592ec06ba277559ad9007fe14baae7",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0010",
+      "payload_sha256": "9e8b73a7252a383056af5d237a0b2f569d1aac3cbd2a8915cefca9b87a4ce030",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0010.json",
+      "raw_sha256": "932909f484e26be60e5ea16796f74451e5b775466977afd1162821951701971f",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0011",
+      "payload_sha256": "881856565175099737312cadeae26765376cf44ca56ffb5eb1996463a21a7e0c",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0011.json",
+      "raw_sha256": "16ad81d0156765dbb48b61d281146469450eea58abd5b8878ae6944d169c7799",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0012",
+      "payload_sha256": "70334b73f913f40896f4c72f1bacec959a8e672f10794c70f243da5000f7bcfe",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0012.json",
+      "raw_sha256": "87d4fa77a2d57101b66a1fe8edcac2ed004e53592587e993a6937beb0e9452aa",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0013",
+      "payload_sha256": "308775e30f4f2f990307723513af110b5e2afceaca3bcfb3303d698161f049f2",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0013.json",
+      "raw_sha256": "e2fe4b13c95209a124478167121c7b17f2de594b905ea8603a1ab9b3be8a2153",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0014",
+      "payload_sha256": "d95fc0cb52dab56857a20b366a6410da670a59bff951a6473e2d2a5f6faede84",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0014.json",
+      "raw_sha256": "351683651e2294696e76762778f8071395db4271cf42e3639c755f89571443d4",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0015",
+      "payload_sha256": "097c02a7d618b542eb7180ee7b516f5b2e4dcb3a928b35d8e6cee2572038c72f",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0015.json",
+      "raw_sha256": "f796bf2079c2be7796aba06c4b33a784b0e8205d16fbc56dca75712a689a616f",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0016",
+      "payload_sha256": "31c93ce25c5ae5dd67af0f5c2f17be9b29976ce5a7997fc9e55adec247f92a07",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0016.json",
+      "raw_sha256": "2e1161a4ad92a360ecbaef74ba4bbc6162430fb607b40785b0290f3ad132efb3",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0017",
+      "payload_sha256": "8480760977a0f8543160be6371c79003b1013faea806aeecc6b995ad0af8ae27",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0017.json",
+      "raw_sha256": "afee62ed5e733d97d207cd0e3dc4eba746403819aa998c8bb85f939c8288f921",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0018",
+      "payload_sha256": "dfdecbd7a85dbf6edca1f9ab411c9dba3f15339ef86824a4110689192743bc96",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0018.json",
+      "raw_sha256": "06e710ea389d88f275fb7a9b83b28c8aad17cae845d321e85c6b073a4461b969",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0019",
+      "payload_sha256": "5d7b75c31fee2186718daea6c7f37957d3f502ba746cc6e42c696769d2b7a10d",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0019.json",
+      "raw_sha256": "5528d54539c5a3f3959bcb1edf110fc57a0698d48c85acad30096670bb3927ff",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0020",
+      "payload_sha256": "70db0621279b901613a4e7b7fb745a7398621b8a3b829e8da7cf37d9143e14f5",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0020.json",
+      "raw_sha256": "55a8717364337186326224be7641617fa8755b3ac162d3a8fe4f0947c7ab5fcd",
+      "semantic_changed": true,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0021",
+      "payload_sha256": "76356982196bbcf946fd9c4598f113ec61a62fa31be133a370616d910d60cd1e",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0021.json",
+      "raw_sha256": "4cf303eccbf5356edab9338958e64fa5449f5d74b54fb20add07e67f0206a30a",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0022",
+      "payload_sha256": "3ad79cb6e060e36235daee8bce52e5352b4df6840e7a67e3e8d15a0447182dc5",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0022.json",
+      "raw_sha256": "3f53e28859733d99592f9f3682671ac3f787e0d8710a26f60b792611be230e02",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0023",
+      "payload_sha256": "1f845c31e10c9545db16f2ccce1595c64c21e2b27980a38203cffda04fbbf41e",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0023.json",
+      "raw_sha256": "201a10a1ba15f0299350543ff955a236eac1f9f0499baee78072484de8cf9f80",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0024",
+      "payload_sha256": "d2314a6ab44891d1992f63585ba7fd9df695cbc3c068edd251bafaeee01b0a49",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0024.json",
+      "raw_sha256": "a63ad12d172a41e95f5d70b4687b5e6f0eea5265b834b82e205e2fb612e4b3a7",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0025",
+      "payload_sha256": "046a3ede4f21abc3f2a5d9f7e369052f9c491c679093d68abd83e04381c15c5a",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0025.json",
+      "raw_sha256": "18d35eba7bb649dc183e049b2880fd6cff8aa8794ff27db3a724b8e1cf429d0a",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0026",
+      "payload_sha256": "05d310c4b6b3efc02839b2ed38daa55175dc729c482a15944335c7c2156280aa",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0026.json",
+      "raw_sha256": "8c6f85efb94502eca90461062c1ca6b53052dd91d22b0e3c8ee80c15c3f38ed9",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0027",
+      "payload_sha256": "5bfd0cdb01009afc2402917dce48a856164f28cbd5934292f5f2a516aed52851",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0027.json",
+      "raw_sha256": "11f5076f2a9a52833e333acb4f9cda790587fb96a19e8ae8f21dfde8af388758",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0028",
+      "payload_sha256": "ed534bf6978870e0903ce8c12efc351fd189124fe5de48f37b1e6337e0a3feee",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0028.json",
+      "raw_sha256": "3bceefa6d9964b723abc1bc62f5c828ba441ad96f6bafeb3ccd57576db6073ad",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0029",
+      "payload_sha256": "e1377608fe3e0b0656950469fa41174ec1ba5a7038538fcd475cc21773fe6aee",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0029.json",
+      "raw_sha256": "8db626d5956e273c960fa34100d1eed25f3f7ff80afd9612a863c42e022e07ba",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0030",
+      "payload_sha256": "cb0fa3f7188aa97b7403e0907d673afc8aeba9fd771d4c32c1d68a652befe3e6",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0030.json",
+      "raw_sha256": "354ac02b691fa3e285cd7e84db6887de138d137f3ff0e6fd7bdb378798a24554",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0031",
+      "payload_sha256": "a88f97ef882f0e06936b0ce8bf0b8b8c22c3724889a37afc138dc9015ac5085b",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0031.json",
+      "raw_sha256": "b4341a29b43ca51e73b2b3e6cc42798aecaee22f72dfe9c8de8674d66b7548aa",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0032",
+      "payload_sha256": "769aa750be20fa587fb199542f26f889acb6c22f96a6ee4f5bf3c8be90ece139",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0032.json",
+      "raw_sha256": "ad7f6afa8e66b61139185e1febfb99c4048e865cb4dabfb9766149add541f18e",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0033",
+      "payload_sha256": "350922b063365a0e584c3694c182418211ff84612a62997c20ad32b98becf2ca",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0033.json",
+      "raw_sha256": "42a0eb99ec54d2ba3b20b0485d6aca85d4344073cd261975067132c93ac357d2",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0034",
+      "payload_sha256": "42353faa5889bd34b5e502db7356436313eb252d281223d7252497621ba4c6d9",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0034.json",
+      "raw_sha256": "4e45920075a11ebc05e80aab47c056f1c7d249f98e4607a18d564200ea9f9fe3",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0035",
+      "payload_sha256": "462a31929dc07a221d7018db3162ec57810777558e427d68d5de7a5d80a46fc5",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0035.json",
+      "raw_sha256": "52402e86de9e9cc3452aee66bd08a6247e29286caef75f83929a40962f9a02b2",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0036",
+      "payload_sha256": "abad220a8db4e8e064b54cdba4709b720f1522615285ae083539ca5ad2b35d11",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0036.json",
+      "raw_sha256": "e18bbc185a090862f8df9978ce79c149d5d93a3e1d5f2a311c422e1056992ef9",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0037",
+      "payload_sha256": "f2a09fcae4abfa407fbe440dfac97123f9a19bc98bbf9daad286189fa75a6dd7",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0037.json",
+      "raw_sha256": "1091a566b6c5a6cd902595a5f07fdf3a7d4f99b0e223098b1e852b038c6d58c7",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0038",
+      "payload_sha256": "5cbc87443b1c3f55ed5748125ec72a1a552515b69db4e3c684bfcd1c0bf7ac21",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0038.json",
+      "raw_sha256": "0446ab6b9436cacbf911ee39becae9d746689b2594fee64ed948269c148ce89b",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0039",
+      "payload_sha256": "00852a0307b4bb981a0486b2ef765f01ae665dd62220c85fc707420ffe733516",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0039.json",
+      "raw_sha256": "f219f8f457168d6ceb6fc2057f407f9712cf6c99bea5bb82a407b99974066334",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    },
+    {
+      "case_id": "DEV-0040",
+      "payload_sha256": "a5612936577a99a2abcdd2aaf51a0273763d4aaab07f86b28d5318d1190fd51c",
+      "raw_ref": "experiments/impactmap_scale/removal-2026-11-15/quality/raw-core/DEV-0040.json",
+      "raw_sha256": "5ab6819ec735f3b0fb48359b741546aa7c31a5744d446623121f4166b46f7ddb",
+      "semantic_changed": false,
+      "v1_matches_saved": true
+    }
+  ],
+  "kind": "SAME_FROZEN_RAW_RENORMALIZATION_NOT_NEW_ATTEMPTS",
+  "methods": {
+    "v1": {
+      "access_leaks": 0,
+      "by_provenance": {
+        "controlled_author": {
+          "cases": 40,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 20
+          }
+        }
+      },
+      "by_stratum": {
+        "BREAKING_IN_PROFILE": {
+          "cases": 20,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 20
+          }
+        },
+        "COMPATIBLE_IN_PROFILE": {
+          "cases": 10,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          }
+        },
+        "NO_CONSUMERS_IN_PROFILE": {
+          "cases": 4,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          }
+        },
+        "OUT_OF_PROFILE": {
+          "cases": 6,
+          "counts": null
+        }
+      },
+      "case_count": 40,
+      "complete_positive_case": {
+        "denominator": 20,
+        "numerator": 20
+      },
+      "decision": "NOT_REGISTERED",
+      "decision_reason": "Registration and human custody/approval are separate; author diagnostics never establish independent criteria.",
+      "f1": 1.0,
+      "false_alert_case_rate": 0.0,
+      "false_alert_cases": 0,
+      "false_certainty": 0,
+      "full_abstentions": 20,
+      "gold_audits": 0,
+      "human_output_audit": "NOT_PERFORMED_BY_TOOL",
+      "identity": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 20
+        },
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "leave_one_origin_group_out": [
+        {
+          "excluded_origin_group": "delete_operation",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "decrease_default",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "irrelevant_change",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "explicit_page_size",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "paginated_explicit_size",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "no_consumer_delete",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "no_consumer_default",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "external_helper",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "httpx",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "dynamic_url",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "openapi_ref",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "unavailable_provider",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "unavailable_consumer",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      ],
+      "macro_recall_defined_cases": 20,
+      "macro_recall_positive": 1.0,
+      "manual_audits": 0,
+      "negative_cases": 14,
+      "origin_groups": 13,
+      "outside_boundary_success": 5,
+      "outside_cases": 6,
+      "partial": 2,
+      "per_case": [
+        {
+          "access_leak": false,
+          "case_id": "DEV-0001",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "f362efc109e6fb9f50d5ed0cd43c3e0938364ff8",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "365894580641914037dc5b173c9ce400dd514b6d371297d16c97d26bc288fba5",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "f362efc109e6fb9f50d5ed0cd43c3e0938364ff8",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "242eeca7f35d1d4048cc36d10f8b87cf3f8a506421665a921d12e0ec5bd3cdcf",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v1/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:95fb0d6f81a7d7732d32d3a21de1cdcb4434896c",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "f362efc109e6fb9f50d5ed0cd43c3e0938364ff8",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "365894580641914037dc5b173c9ce400dd514b6d371297d16c97d26bc288fba5",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0002",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "046af13f28da55af967b3248183e3943636d391c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d5be4cec67d23d2f9f7880f1eaa9412921802cbf57990e0bd6150ff90c8b027c",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "046af13f28da55af967b3248183e3943636d391c",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d272445f3d01d5ae6c1fbfc0a37dde7bbe120c479133d9bb51b89e8ce91bce52",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v2/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:432283ad1d32ea38b8acb074a029d08df379192a",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "046af13f28da55af967b3248183e3943636d391c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d5be4cec67d23d2f9f7880f1eaa9412921802cbf57990e0bd6150ff90c8b027c",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0003",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "dbe9cf1a8cc62c6eb35e62d31775cd27f53dc80b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "df45bfe9fd677785f40bd480320b61f3b269e89d81ef7a36ce3275b6c85f5967",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "dbe9cf1a8cc62c6eb35e62d31775cd27f53dc80b",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "674b420e142a5a98be34baf4b177ef8c2685b365a27d7d7b21ad7c64159395d3",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v3/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:a182fd967cc0d3fd616da114a286fb81e5a770b5",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "dbe9cf1a8cc62c6eb35e62d31775cd27f53dc80b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "df45bfe9fd677785f40bd480320b61f3b269e89d81ef7a36ce3275b6c85f5967",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0004",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3e97fc95cef14dfaec3c8adc149e297630aafb0c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "cde6bc806d7427c3480b1ac16465c9e11584f01fbf15d3b1c52494622c076d1f",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "3e97fc95cef14dfaec3c8adc149e297630aafb0c",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "665abf8de5bad91174a614ac9f5feae96221cb65761cc46d453758591594aef5",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v4/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:89616a724796f3127670d606a687b63f0c83b16b",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3e97fc95cef14dfaec3c8adc149e297630aafb0c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "cde6bc806d7427c3480b1ac16465c9e11584f01fbf15d3b1c52494622c076d1f",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0005",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "813641e1c54df9d7ff68125a8299a8bd70eca058",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "1ad14c2accb1ab54b826a5afabbb62d8141113c7ca5b6e205177e87152eab9ee",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "813641e1c54df9d7ff68125a8299a8bd70eca058",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "408268d76ea330377ea90d727eebb1e42a40bd083bd676ca796d3ee2c9adf84b",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v5/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:9b05cbc8ddbc17cc43ecbf929fc8f72b9f9213db",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "813641e1c54df9d7ff68125a8299a8bd70eca058",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "1ad14c2accb1ab54b826a5afabbb62d8141113c7ca5b6e205177e87152eab9ee",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0006",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "d9e4473b02c446dfbb57b530863671e06d2b3fb6",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "db3d06a4ede7f12f70d24bb579b665af08918bf22bd8f8c812b64bcef805633d",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "d9e4473b02c446dfbb57b530863671e06d2b3fb6",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "8e97b4f63608743e30221f2bc64fe1701609cfd1981aab5eae898d564aa24b2f",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v6/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:d74f2bbe94d7e6c89d9a1e8e1049412eafaf7318",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "d9e4473b02c446dfbb57b530863671e06d2b3fb6",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "db3d06a4ede7f12f70d24bb579b665af08918bf22bd8f8c812b64bcef805633d",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0007",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "7c06b2a46b2c304642aba2f7164e62b5a48fad9f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "8e8dcfd58971bedb62823a01b801f7f00d4de4f206708e4dba490e6b28e865db",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "7c06b2a46b2c304642aba2f7164e62b5a48fad9f",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "5906ade61859fb58c815ec7ddbfdd0e7dd2c9a46d830db574b5d95f9e1511514",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v7/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:fbac98e5c9af1f0ac51077f8bce8dc5924c9a994",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "7c06b2a46b2c304642aba2f7164e62b5a48fad9f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "8e8dcfd58971bedb62823a01b801f7f00d4de4f206708e4dba490e6b28e865db",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0008",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3ee588d34b22fe73fa1f5eb9d3f2d83b067b144b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "bd5cce50eedb29278a1cacef0c5121a9bb8f1c1244f4da29e9d7332c9f908d39",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "3ee588d34b22fe73fa1f5eb9d3f2d83b067b144b",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "b8261c6fc71448e437acefa907defd3294bff0fe8a6c40a44a93e165e69e21d2",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v8/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:751e11fa29a0d0d9df2ebf460f5e799b2013de1b",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3ee588d34b22fe73fa1f5eb9d3f2d83b067b144b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "bd5cce50eedb29278a1cacef0c5121a9bb8f1c1244f4da29e9d7332c9f908d39",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0009",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "aa08b890626264eb4f52664a8e9fe9eab848c92d",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "542964fd850c04ea8b717e1502a06aab6ccf929adc3355cad773e62407b3a34a",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "aa08b890626264eb4f52664a8e9fe9eab848c92d",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "b40f6266a65e14d907e976748a62f1aaea55b51c3c5bfaa183384955930a5a94",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v9/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:12133e36d8e97b6528872d5e5ffb718ddf6db19f",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "aa08b890626264eb4f52664a8e9fe9eab848c92d",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "542964fd850c04ea8b717e1502a06aab6ccf929adc3355cad773e62407b3a34a",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0010",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3254d94350a2c06b2693918b7228e91f976f2304",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "2bac1c758eeb04fe04eec352d4abf8b6e20ff511905019f39eb48eeecc9fea45",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "3254d94350a2c06b2693918b7228e91f976f2304",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "b4ac094f9bb7a79f0adf7b6331e8551805084d3de801a97c2c6919fdbd53c737",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v10/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:a53735ecd65f0052017ddee312f6cdd2571730af",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3254d94350a2c06b2693918b7228e91f976f2304",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "2bac1c758eeb04fe04eec352d4abf8b6e20ff511905019f39eb48eeecc9fea45",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0011",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "30e267ea80559e843f5e45655b4c2ac8d4263e09",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "9247be3608414bd53badb8cb872aa50e8dac170ad41f67b7efe49900f8bf1f78",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "30e267ea80559e843f5e45655b4c2ac8d4263e09",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "96269af02f6a72b68b93600271d6b637d8970cdcc0157c8b0fc59ad0c4bb7ce0",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v11/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:4a3cc5d5b4a993179a56d8ef7640f4d09c5488fe",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "30e267ea80559e843f5e45655b4c2ac8d4263e09",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "9247be3608414bd53badb8cb872aa50e8dac170ad41f67b7efe49900f8bf1f78",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0012",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3142a943edb4b0a3f33082ae4c383f09d56c07b7",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "e6fda9c9ee51f421de2862f0858d478fe37579d53f8d8bab8737506346c72457",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "3142a943edb4b0a3f33082ae4c383f09d56c07b7",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "cbec0e20e4c44a0e69388b57891240b478a78016829f7a4d220322ef9b591884",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v12/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:1b5bed9c442d5c42f6c05dbf4f2c0e3b63e362b5",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3142a943edb4b0a3f33082ae4c383f09d56c07b7",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "e6fda9c9ee51f421de2862f0858d478fe37579d53f8d8bab8737506346c72457",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0013",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "33ee4c577e87588939124ad3846f66570e2b543f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "720f38288167d391a2c2b494a09e3702f396c7890bd20598731c726f2ccf6c49",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "33ee4c577e87588939124ad3846f66570e2b543f",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "466cf35a10e6328f824fa263da4cbe36d1f67d20a1a0474229bee0737ad7ed26",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v13/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:ca10ab208ee306db6edb92d971fc05e6b7194b83",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "33ee4c577e87588939124ad3846f66570e2b543f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "720f38288167d391a2c2b494a09e3702f396c7890bd20598731c726f2ccf6c49",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0014",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "a781ce2c8b751acf8d263ff79a2a4a365c9655f5",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "54327fc9924a625b9e5a8f2b6df9e853537cdf93c23ea79f5204c91e695b57f6",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "a781ce2c8b751acf8d263ff79a2a4a365c9655f5",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "b8d1881007a5de65143a4de1ce0aefd91606489cad625abd7cea23524d8a02f2",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v14/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:8d1b4a03a1c38127e6a90304cc025f3140ac4518",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "a781ce2c8b751acf8d263ff79a2a4a365c9655f5",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "54327fc9924a625b9e5a8f2b6df9e853537cdf93c23ea79f5204c91e695b57f6",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0015",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "8f3236303d4048fef2fb5f99a74180cf1d393360",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "c69a79c36b60fbea458b762bc084c3b371520ab6d9626e87be3f6719434ce08b",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "8f3236303d4048fef2fb5f99a74180cf1d393360",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "4b3ee2bb09b609e9cbfd1582a85acb13bbf666bac97f74bd1392efe7cfbc86d4",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v15/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:1a5ebdb2fa892df655e0d84df369ccc384d65e20",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "8f3236303d4048fef2fb5f99a74180cf1d393360",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "c69a79c36b60fbea458b762bc084c3b371520ab6d9626e87be3f6719434ce08b",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0016",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d9ceb687837b799418b9e391a8a20b2eef83be2e353ea47c8c143c0dbb8eb48e",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "9025218e5b06c5482a0f05d0463b17daa95e1dc1f7621cc1bc3f429d914e5085",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v16/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:3bb9b55ee9c17cc1668aaa16212b6122e73ee63c",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d9ceb687837b799418b9e391a8a20b2eef83be2e353ea47c8c143c0dbb8eb48e",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0017",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "5bdbc8bd4571f5252691dae5185646f423860b6b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "6e67964393f50fafb1ef830dbdef1dd026012b614964ba9a05eb5bc087732309",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "5bdbc8bd4571f5252691dae5185646f423860b6b",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "64531edb3dcebb043ae647e40cf3c1c44dfa1c9bf4cdb32c9fd510a8bc107766",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v17/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:42d1053fe8768d311e3a48a37543abfdfac52ed4",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "5bdbc8bd4571f5252691dae5185646f423860b6b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "6e67964393f50fafb1ef830dbdef1dd026012b614964ba9a05eb5bc087732309",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0018",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "585ec80ffdeb7abc90c80cd6af3b423227f64c67",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "66649d9c1dd4192d0af0487a976aa1ffa800086afa5fbcf06419d2968326f3e2",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "585ec80ffdeb7abc90c80cd6af3b423227f64c67",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "c6e032663441103057920651489f4f7955e04aabc4e0931cd6aabe0765e57161",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v18/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:615056e50fbb38b65273e3f49bf323da41eb7116",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "585ec80ffdeb7abc90c80cd6af3b423227f64c67",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "66649d9c1dd4192d0af0487a976aa1ffa800086afa5fbcf06419d2968326f3e2",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0019",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "75727a598211b5695e79ee4eaf650736e111f6ec",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "4fbed565f816b8dbe3f164a0a4e932c39862e245013521bfc4c2e8d29a438b49",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "75727a598211b5695e79ee4eaf650736e111f6ec",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d592c325eefcf5d7867b1f7bb2973de6817b01a66a05718b9d5f8d783b07b585",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v19/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:808e948511b96d16659f70816f4d3371b4ff3fe2",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "75727a598211b5695e79ee4eaf650736e111f6ec",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "4fbed565f816b8dbe3f164a0a4e932c39862e245013521bfc4c2e8d29a438b49",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0020",
+          "citation_validity": {
+            "denominator": 2,
+            "numerator": 2
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "b5a0e60344a62807f86ab19bd5b124c05a78e9eb",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "0079b2177e1e3e3dc0223404017e60131e480c9f70318ce49076ef20b4496dee",
+                  "repository": "consumer"
+                },
+                {
+                  "commit": "b5a0e60344a62807f86ab19bd5b124c05a78e9eb",
+                  "line_end": 4,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "cb1dd461e65ec13d8cfc5f2f478fa05fa6ddfeec625c3088279c3630299d5a55",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v20/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:5c5a22f34cb0780c9af0db3870f3201dba566312",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "b5a0e60344a62807f86ab19bd5b124c05a78e9eb",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "0079b2177e1e3e3dc0223404017e60131e480c9f70318ce49076ef20b4496dee",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0021",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0022",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0023",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0024",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0025",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0026",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0027",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0028",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0029",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0030",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0031",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0032",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0033",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0034",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0035",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "semantics",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "PARTIAL",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0036",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0037",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0038",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "PARTIAL",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0039",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "access",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "FAILED",
+          "strict": null,
+          "technical_error": true,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0040",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "access",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        }
+      ],
+      "population_ci": null,
+      "positive_case_hit": {
+        "denominator": 20,
+        "numerator": 20
+      },
+      "precision": 1.0,
+      "proposed_numeric_gates": true,
+      "protocol_issues": [],
+      "recall": 1.0,
+      "strict": {
+        "fn": 0,
+        "fp": 0,
+        "tp": 20
+      },
+      "supported_cases": 34,
+      "technical_errors_all": 1,
+      "technical_errors_supported": 0
+    },
+    "v2": {
+      "access_leaks": 0,
+      "by_provenance": {
+        "controlled_author": {
+          "cases": 40,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 20
+          }
+        }
+      },
+      "by_stratum": {
+        "BREAKING_IN_PROFILE": {
+          "cases": 20,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 20
+          }
+        },
+        "COMPATIBLE_IN_PROFILE": {
+          "cases": 10,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          }
+        },
+        "NO_CONSUMERS_IN_PROFILE": {
+          "cases": 4,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          }
+        },
+        "OUT_OF_PROFILE": {
+          "cases": 6,
+          "counts": null
+        }
+      },
+      "case_count": 40,
+      "complete_positive_case": {
+        "denominator": 20,
+        "numerator": 20
+      },
+      "decision": "NOT_REGISTERED",
+      "decision_reason": "Registration and human custody/approval are separate; author diagnostics never establish independent criteria.",
+      "f1": 1.0,
+      "false_alert_case_rate": 0.0,
+      "false_alert_cases": 0,
+      "false_certainty": 0,
+      "full_abstentions": 20,
+      "gold_audits": 0,
+      "human_output_audit": "NOT_PERFORMED_BY_TOOL",
+      "identity": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 20
+        },
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "leave_one_origin_group_out": [
+        {
+          "excluded_origin_group": "delete_operation",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "decrease_default",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "irrelevant_change",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "explicit_page_size",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "paginated_explicit_size",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "no_consumer_delete",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "no_consumer_default",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "external_helper",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "httpx",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "dynamic_url",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "openapi_ref",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "unavailable_provider",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "unavailable_consumer",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      ],
+      "macro_recall_defined_cases": 20,
+      "macro_recall_positive": 1.0,
+      "manual_audits": 0,
+      "negative_cases": 14,
+      "origin_groups": 13,
+      "outside_boundary_success": 5,
+      "outside_cases": 6,
+      "partial": 2,
+      "per_case": [
+        {
+          "access_leak": false,
+          "case_id": "DEV-0001",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "f362efc109e6fb9f50d5ed0cd43c3e0938364ff8",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "365894580641914037dc5b173c9ce400dd514b6d371297d16c97d26bc288fba5",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v1/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:95fb0d6f81a7d7732d32d3a21de1cdcb4434896c",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "f362efc109e6fb9f50d5ed0cd43c3e0938364ff8",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "365894580641914037dc5b173c9ce400dd514b6d371297d16c97d26bc288fba5",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0002",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "046af13f28da55af967b3248183e3943636d391c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d5be4cec67d23d2f9f7880f1eaa9412921802cbf57990e0bd6150ff90c8b027c",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v2/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:432283ad1d32ea38b8acb074a029d08df379192a",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "046af13f28da55af967b3248183e3943636d391c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d5be4cec67d23d2f9f7880f1eaa9412921802cbf57990e0bd6150ff90c8b027c",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0003",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "dbe9cf1a8cc62c6eb35e62d31775cd27f53dc80b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "df45bfe9fd677785f40bd480320b61f3b269e89d81ef7a36ce3275b6c85f5967",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v3/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:a182fd967cc0d3fd616da114a286fb81e5a770b5",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "dbe9cf1a8cc62c6eb35e62d31775cd27f53dc80b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "df45bfe9fd677785f40bd480320b61f3b269e89d81ef7a36ce3275b6c85f5967",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0004",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3e97fc95cef14dfaec3c8adc149e297630aafb0c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "cde6bc806d7427c3480b1ac16465c9e11584f01fbf15d3b1c52494622c076d1f",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v4/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:89616a724796f3127670d606a687b63f0c83b16b",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3e97fc95cef14dfaec3c8adc149e297630aafb0c",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "cde6bc806d7427c3480b1ac16465c9e11584f01fbf15d3b1c52494622c076d1f",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0005",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "813641e1c54df9d7ff68125a8299a8bd70eca058",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "1ad14c2accb1ab54b826a5afabbb62d8141113c7ca5b6e205177e87152eab9ee",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v5/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:9b05cbc8ddbc17cc43ecbf929fc8f72b9f9213db",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "813641e1c54df9d7ff68125a8299a8bd70eca058",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "1ad14c2accb1ab54b826a5afabbb62d8141113c7ca5b6e205177e87152eab9ee",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0006",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "d9e4473b02c446dfbb57b530863671e06d2b3fb6",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "db3d06a4ede7f12f70d24bb579b665af08918bf22bd8f8c812b64bcef805633d",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v6/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:d74f2bbe94d7e6c89d9a1e8e1049412eafaf7318",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "d9e4473b02c446dfbb57b530863671e06d2b3fb6",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "db3d06a4ede7f12f70d24bb579b665af08918bf22bd8f8c812b64bcef805633d",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0007",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "7c06b2a46b2c304642aba2f7164e62b5a48fad9f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "8e8dcfd58971bedb62823a01b801f7f00d4de4f206708e4dba490e6b28e865db",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v7/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:fbac98e5c9af1f0ac51077f8bce8dc5924c9a994",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "7c06b2a46b2c304642aba2f7164e62b5a48fad9f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "8e8dcfd58971bedb62823a01b801f7f00d4de4f206708e4dba490e6b28e865db",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0008",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3ee588d34b22fe73fa1f5eb9d3f2d83b067b144b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "bd5cce50eedb29278a1cacef0c5121a9bb8f1c1244f4da29e9d7332c9f908d39",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v8/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:751e11fa29a0d0d9df2ebf460f5e799b2013de1b",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3ee588d34b22fe73fa1f5eb9d3f2d83b067b144b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "bd5cce50eedb29278a1cacef0c5121a9bb8f1c1244f4da29e9d7332c9f908d39",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0009",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "aa08b890626264eb4f52664a8e9fe9eab848c92d",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "542964fd850c04ea8b717e1502a06aab6ccf929adc3355cad773e62407b3a34a",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v9/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:12133e36d8e97b6528872d5e5ffb718ddf6db19f",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "aa08b890626264eb4f52664a8e9fe9eab848c92d",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "542964fd850c04ea8b717e1502a06aab6ccf929adc3355cad773e62407b3a34a",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0010",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3254d94350a2c06b2693918b7228e91f976f2304",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "2bac1c758eeb04fe04eec352d4abf8b6e20ff511905019f39eb48eeecc9fea45",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v10/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:a53735ecd65f0052017ddee312f6cdd2571730af",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3254d94350a2c06b2693918b7228e91f976f2304",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "2bac1c758eeb04fe04eec352d4abf8b6e20ff511905019f39eb48eeecc9fea45",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0011",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "30e267ea80559e843f5e45655b4c2ac8d4263e09",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "9247be3608414bd53badb8cb872aa50e8dac170ad41f67b7efe49900f8bf1f78",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v11/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:4a3cc5d5b4a993179a56d8ef7640f4d09c5488fe",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "30e267ea80559e843f5e45655b4c2ac8d4263e09",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "9247be3608414bd53badb8cb872aa50e8dac170ad41f67b7efe49900f8bf1f78",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0012",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "3142a943edb4b0a3f33082ae4c383f09d56c07b7",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "e6fda9c9ee51f421de2862f0858d478fe37579d53f8d8bab8737506346c72457",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v12/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:1b5bed9c442d5c42f6c05dbf4f2c0e3b63e362b5",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "3142a943edb4b0a3f33082ae4c383f09d56c07b7",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "e6fda9c9ee51f421de2862f0858d478fe37579d53f8d8bab8737506346c72457",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0013",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "33ee4c577e87588939124ad3846f66570e2b543f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "720f38288167d391a2c2b494a09e3702f396c7890bd20598731c726f2ccf6c49",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v13/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:ca10ab208ee306db6edb92d971fc05e6b7194b83",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "33ee4c577e87588939124ad3846f66570e2b543f",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "720f38288167d391a2c2b494a09e3702f396c7890bd20598731c726f2ccf6c49",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0014",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "a781ce2c8b751acf8d263ff79a2a4a365c9655f5",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "54327fc9924a625b9e5a8f2b6df9e853537cdf93c23ea79f5204c91e695b57f6",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v14/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:8d1b4a03a1c38127e6a90304cc025f3140ac4518",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "a781ce2c8b751acf8d263ff79a2a4a365c9655f5",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "54327fc9924a625b9e5a8f2b6df9e853537cdf93c23ea79f5204c91e695b57f6",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0015",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "8f3236303d4048fef2fb5f99a74180cf1d393360",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "c69a79c36b60fbea458b762bc084c3b371520ab6d9626e87be3f6719434ce08b",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v15/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:1a5ebdb2fa892df655e0d84df369ccc384d65e20",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "8f3236303d4048fef2fb5f99a74180cf1d393360",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "c69a79c36b60fbea458b762bc084c3b371520ab6d9626e87be3f6719434ce08b",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0016",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d9ceb687837b799418b9e391a8a20b2eef83be2e353ea47c8c143c0dbb8eb48e",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v16/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:3bb9b55ee9c17cc1668aaa16212b6122e73ee63c",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "92becfcf183e03fba2b3f30577a2f8a9ee6bd124",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d9ceb687837b799418b9e391a8a20b2eef83be2e353ea47c8c143c0dbb8eb48e",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0017",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "5bdbc8bd4571f5252691dae5185646f423860b6b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "6e67964393f50fafb1ef830dbdef1dd026012b614964ba9a05eb5bc087732309",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v17/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:42d1053fe8768d311e3a48a37543abfdfac52ed4",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "5bdbc8bd4571f5252691dae5185646f423860b6b",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "6e67964393f50fafb1ef830dbdef1dd026012b614964ba9a05eb5bc087732309",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0018",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "585ec80ffdeb7abc90c80cd6af3b423227f64c67",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "66649d9c1dd4192d0af0487a976aa1ffa800086afa5fbcf06419d2968326f3e2",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v18/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:615056e50fbb38b65273e3f49bf323da41eb7116",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "585ec80ffdeb7abc90c80cd6af3b423227f64c67",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "66649d9c1dd4192d0af0487a976aa1ffa800086afa5fbcf06419d2968326f3e2",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0019",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "75727a598211b5695e79ee4eaf650736e111f6ec",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "4fbed565f816b8dbe3f164a0a4e932c39862e245013521bfc4c2e8d29a438b49",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v19/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:808e948511b96d16659f70816f4d3371b4ff3fe2",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "75727a598211b5695e79ee4eaf650736e111f6ec",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "4fbed565f816b8dbe3f164a0a4e932c39862e245013521bfc4c2e8d29a438b49",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0020",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "b5a0e60344a62807f86ab19bd5b124c05a78e9eb",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "0079b2177e1e3e3dc0223404017e60131e480c9f70318ce49076ef20b4496dee",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/v20/items",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:5c5a22f34cb0780c9af0db3870f3201dba566312",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "b5a0e60344a62807f86ab19bd5b124c05a78e9eb",
+                  "line_end": 4,
+                  "line_start": 4,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "0079b2177e1e3e3dc0223404017e60131e480c9f70318ce49076ef20b4496dee",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0021",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0022",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0023",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0024",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0025",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0026",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0027",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0028",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0029",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0030",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0031",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0032",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0033",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0034",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0035",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "semantics",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "PARTIAL",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0036",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0037",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0038",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "PARTIAL",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0039",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "access",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "FAILED",
+          "strict": null,
+          "technical_error": true,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "DEV-0040",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "access",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored synthetic development fixture, not expert judgment"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        }
+      ],
+      "population_ci": null,
+      "positive_case_hit": {
+        "denominator": 20,
+        "numerator": 20
+      },
+      "precision": 1.0,
+      "proposed_numeric_gates": true,
+      "protocol_issues": [],
+      "recall": 1.0,
+      "strict": {
+        "fn": 0,
+        "fp": 0,
+        "tp": 20
+      },
+      "supported_cases": 34,
+      "technical_errors_all": 1,
+      "technical_errors_supported": 0
+    }
+  }
+}

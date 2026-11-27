@@ -1,0 +1,26 @@
+{
+  "attestation": {
+    "confirmed_by_human": false,
+    "conflicts_of_interest": "",
+    "independent_before_outputs": false
+  },
+  "case_id": "DEV-0040",
+  "completed_at": null,
+  "disagreements": [],
+  "expert_id": null,
+  "keys": [],
+  "lifecycle": "draft",
+  "profile": {
+    "boundary": "access",
+    "membership": "OUT_OF_PROFILE",
+    "rationale": "Authored synthetic development fixture, not expert judgment"
+  },
+  "schema_version": "impactmap-reference-label-1.0",
+  "scope_completeness": {
+    "inventory_sha256": "697a92141adee4efa431b452c0e252bfa999c674e6e64bf9b5b84ef2e8441e12",
+    "rationale": "Known generated toy inventory; not an independent search",
+    "search_complete": false
+  },
+  "source_labels": [],
+  "stage": "adjudicated"
+}

@@ -1,0 +1,64 @@
+{
+  "profile": "ISOLATED_OFFLINE_UI_NOT_LIVE",
+  "checks": {
+    "public_api_allowlist": true,
+    "anonymous_deep_link_redirect": true,
+    "operator_results": 2,
+    "reviewer_operator403": true,
+    "secure_cookie_flags": true,
+    "restart_persisted_session": {
+      "before": "2349619",
+      "after": "2354132"
+    },
+    "verified_backup_scratch_restore": {
+      "name": "20261117T090011203032Z-a65-pilot",
+      "counts": {
+        "events": 0,
+        "resources": 2,
+        "jobs": 2,
+        "intents": 0,
+        "history": 6,
+        "delivered_comments": 0,
+        "graph_artifacts": 6,
+        "graph_proposals": 0,
+        "ui_users": 3
+      },
+      "files": [
+        "state/service/service.sqlite",
+        "state/core/graph.sqlite3",
+        "state/ui/auth.sqlite",
+        "config/box.yaml",
+        "config/service.json",
+        "config/policy.json"
+      ],
+      "restored_accounts_disabled": true
+    },
+    "legacy_worker": {
+      "pid": "60331",
+      "release": "/opt/agent-bitbucket/releases/agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312"
+    }
+  },
+  "loaded": {
+    "code_version": "0.1.0+g659185fa2ed9.linux-x86_64-cp312",
+    "commit": "659185fa2ed9b9831759fc8cfdea83a839cc8c20",
+    "config": "/etc/impactmap-ui-pilot/service.json",
+    "constitution": "agent-service-v1.0:100bcad3db9c",
+    "constitution_default": "agent-service-v1.0:100bcad3db9c",
+    "constitution_path": "/opt/impactmap-ui-pilot/releases/agent-service-0.1.0-g659185fa2ed9-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+    "core": {
+      "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1",
+      "output_schema_version": "2.2",
+      "profile": "http-requests-9",
+      "schema": "agent-graph-1"
+    },
+    "launcher_pid": null,
+    "listen": "127.0.0.1:18092",
+    "manifest_sha256": "1a1eec68ed938ea599b82951e6f98bdff494f71bbf49f8a53ab4f2656fe020bc",
+    "pid": 2354132,
+    "python": "3.12.3",
+    "release": "agent-service-0.1.0-g659185fa2ed9-linux-x86_64-cp312",
+    "release_id": "0.1.0+g659185fa2ed9.linux-x86_64-cp312",
+    "started_at": "2026-11-17T09:00:10.508293+00:00"
+  },
+  "status": "PASS"
+}

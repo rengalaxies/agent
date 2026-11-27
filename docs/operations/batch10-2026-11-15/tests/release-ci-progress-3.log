@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "complete": true,
+  "source_commit": "8153bd1110dd1342329d88b91528d414219d1b4f",
+  "root": "/var/tmp/impactmap-batch10-5d508a2e301d-20261115",
+  "uid": 1000,
+  "gid": 1002,
+  "stages": [
+    {
+      "name": "verify-package-release",
+      "returncode": 0,
+      "wall_s": 0.11529607197735459
+    },
+    {
+      "name": "full-tests-release",
+      "returncode": 0,
+      "wall_s": 390.4611905789934,
+      "tests": 1291
+    },
+    {
+      "name": "box-tests-release",
+      "returncode": 0,
+      "wall_s": 4.03295265592169,
+      "tests": 78
+    },
+    {
+      "name": "artifact-smoke-release",
+      "returncode": 0,
+      "wall_s": 2.5738993249833584
+    },
+    {
+      "name": "artifact-core-release",
+      "returncode": 0,
+      "wall_s": 0.26429730793461204
+    },
+    {
+      "name": "install-acceptance-release",
+      "returncode": 0,
+      "wall_s": 40.42037990805693
+    }
+  ],
+  "previous": "status-source5d.json",
+  "package": "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/release-final/agent-service-0.1.0-g8153bd1110dd-linux-x86_64-cp312",
+  "stage": "install-acceptance-release"
+}
+

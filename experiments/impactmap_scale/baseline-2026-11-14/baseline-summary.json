@@ -1,0 +1,94 @@
+{
+  "status": "MEASURED_AUTHOR_BASELINE",
+  "source_input_commit": "48cd1fba1365fe6e2e4c34e3cb9a185b47d0e5dd",
+  "observed_utc": "2026-11-14T10:53:00.322239+00:00",
+  "tool_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf",
+  "vm_runner_sha256": "87156d9dbc0daabc5bc0bc596af7b0bd89a9549929257f6ed48ac105fd305ba9",
+  "primary_repetitions": 3,
+  "primary_analysis_observations": 6,
+  "additional_frozen_reproduction": 1,
+  "pins": [
+    {
+      "base": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+      "head": "01b6ebfa4cefb633f9606b2bded4f2e00c3be96d",
+      "repository": "bb.orders",
+      "service": "orders"
+    },
+    {
+      "base": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+      "head": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+      "repository": "bb.reporting",
+      "service": "reporting"
+    }
+  ],
+  "environment": {
+    "child_cpu_scope": "RUSAGE_CHILDREN reaped descendants only",
+    "logical_cpus": 2,
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3",
+      "pydantic": "2.13.4"
+    },
+    "platform": "Linux-6.8.0-139-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "ram_bytes": 4106104832,
+    "rss_scope": "ru_maxrss lifetime high-water mark, not stage-local or summed process-tree RSS",
+    "system": "Linux",
+    "wall_scope": "perf_counter; includes instrumentation overhead; inventory_metrics separately visible"
+  },
+  "corpus_per_context": {
+    "basis_sha256": "f8bff81ce3f6ac695b3b06181d4af1d52e8df4752473bca0e2097a89132449f6",
+    "bytes_read": 2412,
+    "coverage": "COMPLETE_WITHIN_PROFILE",
+    "dependencies": 2,
+    "files_read": 6,
+    "gap_counts": {},
+    "inventory_entries": 6,
+    "operations": 3,
+    "python_files": 3,
+    "python_nonblank_noncomment_lines": 27,
+    "python_physical_lines": 40,
+    "repositories_available": 2,
+    "repositories_configured": 2,
+    "scan_passes": 1,
+    "snapshots": [
+      {
+        "commit": "5d405f22a0d919dd395fa02339c9170de20a89f7",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.orders",
+        "tree": "025c473e91c5fa389849d32382260db597c3ae60"
+      },
+      {
+        "commit": "6ebf07174eb9ef4018a98ccf14da1cb94b6a69e3",
+        "mode": "GIT_COMMIT",
+        "repository": "bb.reporting",
+        "tree": "9667ddbb093bf74a6a1b68ab3b057ef7eaf577b6"
+      }
+    ],
+    "text_lines": 64
+  },
+  "canonical_relationships": {
+    "calls": 2,
+    "declares": 3
+  },
+  "semantics_equal_all_primary": true,
+  "semantics_equal_frozen_reproduction": true,
+  "performance_source": "isolated process on existing pilot VM, installed core, fresh temporary SQLite/local sink",
+  "limitations": [
+    "no independent quality evaluation",
+    "no 50k/100k scale claim",
+    "no HTTP/polling/queue/live publication measurements",
+    "OS caches and co-tenant VM load uncontrolled",
+    "RSS lifetime peak including imports/instrumentation, not stage-local or full process-tree RAM"
+  ],
+  "deployed_process_health": {
+    "loaded_commit": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+    "pid": 60331,
+    "started_at": "2026-11-08T13:58:17.306809+00:00",
+    "worker_state": "active",
+    "current": "/opt/agent-bitbucket/releases/agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312",
+    "health": {
+      "live": true
+    }
+  }
+}

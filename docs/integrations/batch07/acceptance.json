@@ -1,0 +1,44 @@
+{
+  "batch": "07",
+  "date": "2026-11-14",
+  "status": "TECHNICAL_PREPARATION_VERIFIED_LIVE_INCOMPLETE",
+  "base_commit": "ea31bbb4587e6ca1f18e20d1ccd72cea1616736e",
+  "tests": {
+    "run": 115,
+    "passed": 111,
+    "skipped": 4,
+    "reason": "Linux-only SIGKILL recovery tests",
+    "errors": 0,
+    "failures": 0
+  },
+  "live": {
+    "kaiten": "NOT_RUN",
+    "yandex_tracker": "NOT_RUN",
+    "reason": "Owner confirms no accounts or credentials yet",
+    "real_tracker_requests": 0
+  },
+  "local_proof": {
+    "kaiten": "LOCAL_HTTP_PASS",
+    "yandex_tracker": "LOCAL_HTTP_PASS"
+  },
+  "production_runtime_changed": false,
+  "runtime_provider_wiring_added": false,
+  "hashes": {
+    "CHECKPOINT.md": "548ea98672d1bb3ff059f6c5db29bb9308d00beaff837b1b9d858c53da77fdc3",
+    "docs/adr/001-tracker-publication.md": "10d903f3651cae4ee52cc39da69546688a0bcaf047a8969698e6c90543e4e185",
+    "docs/integrations/batch07/README.md": "f9da97e782e236edd50c3345ef6682dc927471bedaf504e4d5c24c084acdcfd1",
+    "docs/integrations/batch07/api-map.md": "7b4c34a95e62c13526e5c042ba5696048a24b9041c63b0f173febc026bf3b7ba",
+    "docs/integrations/batch07/kaiten-config.example.json": "28aed1aa2d021e61266e5016016f785302e22684a58f075358d7589cfe7c5211",
+    "docs/integrations/batch07/kaiten-local-proof.json": "1161234458cee9c4f13586f570fdda27a27e3a3fcefe31e43a9c822d5e7ee8f3",
+    "docs/integrations/batch07/review.md": "cc1b7b2baebf3f152bc8ecad0333a2dd371b37ebca0e42554fddb3093b24c056",
+    "docs/integrations/batch07/tests.log": "ec947e9c167efe6546ccd9a2539f7fa4160eee270816b9b8e2d57af43e92d586",
+    "docs/integrations/batch07/yandex-config.example.json": "c0ac579d4c72f558af1619f756dcadc862a792fc2fcae596374221d6942f068b",
+    "docs/integrations/batch07/yandex_tracker-local-proof.json": "95ca2ac9671c9120f3be40c24a8d0748fa2ed99830c07479ce743cd0dbcf34cb",
+    "docs/superpowers/plans/2026-11-14-impactmap-batch07-trackers.md": "309887940a4a632b4443e1367d6be5bf9392a20d95539e16dd8857b76df774e2",
+    "src/agent_service/connectors/base.py": "1b7a1920c743f08509d37192ef29772abbbcc8243b952e66d2876bc8e4e49f5f",
+    "src/agent_service/connectors/tracker_contract.py": "4d4349304a0890d4114d82744462cb62c26b8208799cc53cdd89f1a1ceb01ecf",
+    "tests/service/test_tracker_api_probe.py": "108ec2b714831c778e4044a195a337806fad098bf70df24dffe1471d6a2e09ce",
+    "tests/service/test_tracker_contract.py": "dfd8a95c5c71f5e3ddb8b5521642166c52179fd3744c28b0b092b25df6baa50c",
+    "tools/agent_service/tracker_api_probe.py": "be93e0eaf8a0a2186acbcd325e05a628d8aa0976cdb05bca80bb7401025c7143"
+  }
+}

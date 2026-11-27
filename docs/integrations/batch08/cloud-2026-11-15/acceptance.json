@@ -1,0 +1,39 @@
+{
+  "batch": "08",
+  "date": "2026-11-15",
+  "status": "AC_MET_ISOLATED_CLOUD_WITH_DOCUMENTED_LIMITS",
+  "candidate_base_commit": "e22413a",
+  "adapter_commit": "c44a3c6",
+  "provenance": "REAL_BITBUCKET_CLOUD_REAL_GIT_REAL_CORE_REAL_KAITEN",
+  "primary_card": "74759475",
+  "result_comment": "93817019",
+  "pr": "https://bitbucket.org/rengalaxies/agent-pilot-orders/pull-requests/5",
+  "change_head": "3386e00625bbed290957f7e384f8c5858ee56fe6",
+  "fix_head": "3883320d4725479f944298c322fa493dfc836457",
+  "tests": {
+    "linux_run": 157,
+    "linux_passed": 157,
+    "skipped": 0,
+    "linux_sigkill": 4,
+    "helper": 12
+  },
+  "change_fix_replay": "PASS_SAME_NATIVE_COMMENT_IDLE_REPLAY",
+  "process_recovery": "PASS_SIGKILL_SAME_DB_NEW_PID_WROTE_FALSE",
+  "relink_comment_recreation_archive_restore": "PASS",
+  "target_delete_followup": "403_SAFE_REFUSAL_NOT_404_OR_DELETION_PROOF",
+  "target_delete_initial_controller_expectation": "FAIL_PRESERVED_NO_DELETE_RETRY",
+  "return_to_primary": "PASS_SAME_NATIVE_COMMENT",
+  "auth_401": "REAL_API_PASS",
+  "rate_429_server_5xx_offboard": "LOCAL_OR_INJECTED_ONLY",
+  "installed_runtime_changed": false,
+  "temporary_remote_secret_removed": true,
+  "remaining_original_ac": [],
+  "limitations": [
+    "One authored pilot cloud cycle; not independent evaluation or three tracker release acceptance cycles",
+    "No idle result-deletion monitor; recreation used an explicit semantic card-context update",
+    "403 cannot distinguish target deletion from lost access; visible refusal then explicit rebind",
+    "No observed404 or condition3 after card DELETE; no proof of server erasure",
+    "No production install/reboot/restore or new live Jira cycle",
+    "Full result remains protected outbox; report URL and compact base presentation belong to10"
+  ]
+}

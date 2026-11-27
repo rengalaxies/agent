@@ -300,6 +300,8 @@ def _text(value: str) -> dict:
 
 def to_adf(doc: dict, marker: str, *, comment_format: str = "summary_ru") -> dict:
     """ADF text nodes are plain text: analysis output cannot add mentions or links."""
+    from ..ui_links import LABEL, validated_url
+    full_result = validated_url(doc.get("ui_result_url"))
     if comment_format == "summary_ru":
         doc = doc.get("jira_summary", doc)
     content = [{"type": "heading", "attrs": {"level": 3}, "content": [_text(doc["title"])]},
@@ -310,6 +312,9 @@ def to_adf(doc: dict, marker: str, *, comment_format: str = "summary_ru") -> dic
         content.append({"type": "bulletList", "content": [
             {"type": "listItem", "content": [{"type": "paragraph", "content": [_text(item)]}]}
             for item in section["items"] or ["нет данных"]]})
+    if full_result:
+        content.append({"type": "paragraph", "content": [{**_text(LABEL),
+                        "marks": [{"type": "link", "attrs": {"href": full_result}}]}]})
     content.append({"type": "paragraph", "content": [{**_text(marker), "marks": [{"type": "code"}]}]})
     return {"type": "doc", "version": 1, "content": content}
 

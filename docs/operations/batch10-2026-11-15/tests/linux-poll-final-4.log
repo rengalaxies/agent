@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "root": "/var/tmp/impactmap-batch10-5d508a2e301d-20261115",
+  "platform": "Linux-6.8.0-139-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "stages": [
+    {
+      "name": "venv",
+      "returncode": 0,
+      "wall_s": 2.821455196943134
+    },
+    {
+      "name": "install-runtime",
+      "returncode": 0,
+      "wall_s": 1.8687433899613097
+    },
+    {
+      "name": "install-test-deps",
+      "returncode": 0,
+      "wall_s": 0.6155955389840528
+    },
+    {
+      "name": "verify-package",
+      "returncode": 0,
+      "wall_s": 0.11400763201527297
+    },
+    {
+      "name": "box-tests",
+      "returncode": 0,
+      "wall_s": 4.0730916280299425,
+      "tests": 74
+    },
+    {
+      "name": "artifact-smoke",
+      "returncode": 0,
+      "wall_s": 2.8225001899991184
+    },
+    {
+      "name": "artifact-core",
+      "returncode": 0,
+      "wall_s": 0.2142103360965848
+    },
+    {
+      "name": "full-tests-final",
+      "returncode": 0,
+      "wall_s": 389.65976118005347,
+      "tests": 1291
+    }
+  ],
+  "source_commit": "5d508a2e301dc8991672903f978c8c377ba8041d",
+  "package": "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/release/agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+  "stage": "full-tests-final",
+  "uid": 1000,
+  "gid": 1002,
+  "superseded_infrastructure_run": "status-infra-v1.json",
+  "discovery": {
+    "cases": 1291,
+    "loader_errors": []
+  }
+}
+

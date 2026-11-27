@@ -1,0 +1,52 @@
+{
+  "batch10_status": "PARTIAL",
+  "technical_preparation": "VERIFIED",
+  "independent06": "NOT_REGISTERED / NOT_RUN",
+  "fresh_live_cycles": {
+    "jira": 0,
+    "kaiten": 0,
+    "yandex_tracker": 0
+  },
+  "gates": [
+    {
+      "name": "source_artifact_locks_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "linux_full_tests",
+      "status": "PASS",
+      "tests": 1291
+    },
+    {
+      "name": "installer_unit_tests",
+      "status": "PASS",
+      "tests": 78
+    },
+    {
+      "name": "isolated_install_process_supervisor",
+      "status": "PASS",
+      "scenarios": 5
+    },
+    {
+      "name": "installed_operator_result_api",
+      "status": "PASS"
+    },
+    {
+      "name": "three_fresh_live_cycles_each_tracker",
+      "status": "NOT_RUN",
+      "reason": "Yandex07/09 absent; common three-tracker release not available"
+    },
+    {
+      "name": "candidate_production_update_systemd_reboot_restore_downgrade",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "hosted_github_actions_on_this_branch",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "A6_UI_admin_discussion",
+      "status": "PLANNED"
+    }
+  ]
+}

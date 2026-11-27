@@ -1,0 +1,516 @@
+{
+  "added_head_dependencies_match": true,
+  "base_oracle_match": true,
+  "baseline_findings_oracle_match": true,
+  "counts": {
+    "basis_sha256": "5ecb29990448d522b1dc4fa9139b19ca9935640af352eb1af04915b56ef45ee4",
+    "bytes_read": 25777,
+    "coverage": "COMPLETE_WITHIN_PROFILE",
+    "dependencies": 3,
+    "files_read": 10,
+    "gap_counts": {},
+    "inventory_entries": 10,
+    "operations": 8,
+    "python_files": 10,
+    "python_nonblank_noncomment_lines": 1000,
+    "python_physical_lines": 1020,
+    "repositories_available": 5,
+    "repositories_configured": 5,
+    "scan_passes": 1,
+    "snapshots": [
+      {
+        "commit": "330566af8aa134f20b8f4845349fbda47f968ade",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "tree": "78f865887c43f6f932d704971add6f689a31129b"
+      },
+      {
+        "commit": "c328d6b0f9454e12b031228171c56e9045e7c7c9",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "tree": "f01e524fd712a47ee0e05a073804b56ddceceb39"
+      },
+      {
+        "commit": "59d2da7fd065199eae847e00e6fae128b5d3e8e4",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "tree": "4b5eed1077d27952e58c5b2db600f14f23a570a8"
+      },
+      {
+        "commit": "32bde7c7a74899e086beb23b9674a7769b00bed4",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "tree": "984e98c31c8162d4e2a697055ac80d8c40a8419e"
+      },
+      {
+        "commit": "4be75998dd63cbcc12f92b68ed439a9250056ee6",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "tree": "7dc234ed3124acac915fbe9d68b5bc076c563776"
+      }
+    ],
+    "text_lines": 1020
+  },
+  "counts_match_manifest": true,
+  "located_baseline_findings": [
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_01",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r01",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r01",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_02",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r02",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r02",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_03",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r03",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r03",
+          "start_line": 4
+        }
+      ]
+    }
+  ],
+  "new_consumer_detected": true,
+  "new_consumer_findings": [
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_01",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r01",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r01",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_02",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r02",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r02",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_03",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r03",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r03",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "POSSIBLE_TRUNCATION",
+      "consumer": "consumer_04",
+      "dependency_freshness": "CURRENT",
+      "line": 5,
+      "method": "GET",
+      "path": "extension.py",
+      "provider": "provider",
+      "repository": "r04",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "extension.py",
+          "phase": "head",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r04",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "e8d00bc6d7c099a9ed516ee252f970a93ac82a76b77d74d25c15e0bc6a9e36d6",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "extension.py",
+          "phase": "head",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r04",
+          "start_line": 4
+        }
+      ]
+    }
+  ],
+  "new_consumer_findings_oracle_match": true,
+  "operation_removed_verified": true,
+  "operations_oracle_match": true,
+  "partial_access_visible": true,
+  "partial_available_repositories": 4,
+  "partial_gap_codes": [
+    "commit_unavailable"
+  ],
+  "provenance": "controlled_not_independent_quality",
+  "remaining_persistent_calls_match": true,
+  "removed_call_retracted": true,
+  "removed_head_dependencies_match": true,
+  "removed_operation_findings": [
+    {
+      "code": "OPERATION_REMOVED",
+      "consumer": "consumer_01",
+      "dependency_freshness": "STALE",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r01",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r01",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r01",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "OPERATION_REMOVED",
+      "consumer": "consumer_02",
+      "dependency_freshness": "STALE",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r02",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r02",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r02",
+          "start_line": 4
+        }
+      ]
+    },
+    {
+      "code": "OPERATION_REMOVED",
+      "consumer": "consumer_03",
+      "dependency_freshness": "STALE",
+      "line": 5,
+      "method": "GET",
+      "path": "client.py",
+      "provider": "provider",
+      "repository": "r03",
+      "route": "/items/0",
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "witnesses": [
+        {
+          "end_line": 5,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "c35a66f47b9a05223c4cfa599374790f383208582d0a060d789b1cb8e2ae4842",
+          "repository": "r03",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "68abb4de68d7b5a28ed076ce48c24998c757e92db91fc7335fedd56ce80f99d7",
+          "repository": "r00",
+          "start_line": 5
+        },
+        {
+          "end_line": 6,
+          "path": "client.py",
+          "phase": "base",
+          "quote_sha256": "db91a58da8b31ee464f865564a1a3f3307fbcf049a1072016ca52b73cd32d923",
+          "repository": "r03",
+          "start_line": 4
+        }
+      ]
+    }
+  ],
+  "removed_status": "RETRACTED",
+  "schema_version": "impactmap-corpus-verification-1",
+  "source_inventory_match": true,
+  "stale_preserved": true,
+  "stale_status": "STALE",
+  "verification_passed": true
+}

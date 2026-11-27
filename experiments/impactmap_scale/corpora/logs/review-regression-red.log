@@ -1,0 +1,25 @@
+test_missing_existing_findings_cannot_pass_on_new_consumer_alone (tests.performance.test_scale_corpora.CorpusTests.test_missing_existing_findings_cannot_pass_on_new_consumer_alone) ... FAIL
+test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale) ... ERROR
+
+======================================================================
+ERROR: test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_scale_corpora.py", line 84, in test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale
+    self.assertTrue(result['baseline_findings_oracle_match'])
+                    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'baseline_findings_oracle_match'
+
+======================================================================
+FAIL: test_missing_existing_findings_cannot_pass_on_new_consumer_alone (tests.performance.test_scale_corpora.CorpusTests.test_missing_existing_findings_cannot_pass_on_new_consumer_alone)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_scale_corpora.py", line 151, in test_missing_existing_findings_cannot_pass_on_new_consumer_alone
+    self.assertFalse(result['verification_passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 4.488s
+
+FAILED (failures=1, errors=1)

@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ImpactMap evaluation runner input, no labels or strata",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "impactmap-eval-input-1.0"
+    },
+    "lifecycle": {
+      "enum": [
+        "draft",
+        "ready"
+      ]
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "task": {
+      "type": "string"
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "repository_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "role": {
+            "enum": [
+              "provider",
+              "consumer"
+            ]
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "base_sha": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "head_sha": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tree_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "read_authorized": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "repository_id",
+          "service",
+          "role",
+          "source_ref",
+          "base_sha",
+          "head_sha",
+          "tree_sha256",
+          "read_authorized"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "role": {
+                  "const": "provider"
+                }
+              }
+            },
+            "then": {
+              "description": "Before ready freeze, a provider requires pinned base and head; enforced in ready branch."
+            }
+          }
+        ]
+      }
+    },
+    "operation_hints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "provider_service": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "method": {
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "HEAD",
+              "OPTIONS"
+            ]
+          },
+          "route": {
+            "type": "string",
+            "pattern": "^/[^?#]*$"
+          },
+          "basis_kind": {
+            "enum": [
+              "task_text",
+              "provider_diff"
+            ]
+          },
+          "basis_artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "provider_service",
+          "method",
+          "route",
+          "basis_kind",
+          "basis_artifact_sha256"
+        ]
+      },
+      "description": "Neutral review hints derived from task text or provider diff before labels. May be empty; does not assert that an API changed."
+    },
+    "policy_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "input_packet_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wall_time_cap_seconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "freeze_manifest_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "wall_time_cap_seconds",
+        "freeze_manifest_ref"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "lifecycle",
+    "case_id",
+    "task",
+    "repositories",
+    "operation_hints",
+    "policy_sha256",
+    "input_packet_sha256",
+    "budget"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "const": "ready"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "task": {
+            "minLength": 1
+          },
+          "repositories": {
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "head_sha": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$"
+                },
+                "tree_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "role": {
+                        "const": "provider"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "base_sha": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{40}$"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "operation_hints": {},
+          "policy_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "input_packet_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "budget": {
+            "properties": {
+              "wall_time_cap_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "freeze_manifest_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>ImpactMap · Изменения</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">К результату</a>
+  <header class="topbar">
+    <a class="brand" href="#/changes/pr5">ImpactMap</a>
+    <span class="prototype-label">Прототип · авторские данные</span>
+    <label class="role-picker"><span class="sr-only">Роль в прототипе — имитация доступа</span><select id="role"><option value="operator">Оператор</option><option value="reviewer">Ревьюер</option></select></label>
+    <time datetime="2026-11-16">16 ноября 2026</time>
+  </header>
+  <div class="shell">
+    <nav class="global-nav" aria-label="Разделы">
+      <a href="#/changes/pr5" data-nav="changes"><img src="assets/icons/git-pull-request.svg" alt="">Изменения</a>
+      <a href="#/operations" data-nav="operations" data-operator><img src="assets/icons/player-play.svg" alt="">Операции</a>
+      <a href="#/connections" data-nav="connections" data-operator><img src="assets/icons/stack-2.svg" alt="">Подключения</a>
+      <p class="nav-footnote">Просмотр состояния.<br>Действия с сервисом<br>в этом прототипе не выполняются.</p>
+    </nav>
+    <aside class="changes-panel" aria-label="Список изменений">
+      <h2>Изменения</h2>
+      <label class="generation-picker"><span class="sr-only">Авторский пример поколения PR5</span><select id="generation"><option value="pr5">Поколение 2 · риск</option><option value="pr5-fixed">Поколение 3 · исправление</option></select></label>
+      <label class="search"><img src="assets/icons/search.svg" alt=""><span class="sr-only">Найти изменение</span><input id="search" type="search" placeholder="Найти изменение" autocomplete="off"></label>
+      <div id="change-list"></div>
+      <p class="list-limit">Последние 100 изменений максимум.<br>В примере — 3 изменения.</p>
+      <details class="fixture-picker"><summary>Дополнительные состояния</summary><label>Авторский пример<select id="fixture"><option value="">Выберите состояние</option><option value="empty">Ещё нет анализа</option><option value="closed">Закрытый ресурс</option><option value="incompatible">Несовместимый результат</option><option value="unknown">Неизвестный код</option></select></label><p>Переключатели меняют только локальные примеры, а не данные сервиса. Роли здесь имитируются.</p></details>
+    </aside>
+    <main id="workspace" tabindex="-1"></main>
+  </div>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>

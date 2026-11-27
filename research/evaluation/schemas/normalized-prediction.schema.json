@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normalized outputs before gold matching; no TP/FP verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "impactmap-normalized-prediction-1.0"
+    },
+    "lifecycle": {
+      "enum": [
+        "draft",
+        "complete"
+      ]
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "method": {
+      "enum": [
+        "impactmap_static",
+        "lexical_search_ls1"
+      ]
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "enum": [
+            "primary",
+            "diagnostic"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ]
+    },
+    "configuration_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "raw_artifact_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "output_valid": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "anyOf": [
+        {
+          "enum": [
+            "USEFUL",
+            "PARTIAL",
+            "ABSTAINED",
+            "FAILED",
+            "SUPERSEDED"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "$ref": "#/$defs/pair"
+          },
+          "witnesses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/witness"
+            }
+          },
+          "raw_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "minItems": 1
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "witnesses",
+          "raw_refs",
+          "notes"
+        ]
+      }
+    },
+    "invalid_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "consumer_designation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "raw_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "candidate_id",
+          "consumer_designation",
+          "raw_refs",
+          "reason"
+        ],
+        "description": "One UNBOUND bucket per case and normalized consumer designation. candidate_id is SHA256 of canonical UTF-8 JSON [case_id, consumer_designation, UNBOUND]; retain all raw refs."
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "code",
+          "scope"
+        ]
+      }
+    },
+    "explicit_claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "compatibility_confirmed": {
+          "type": "boolean"
+        },
+        "tests_executed": {
+          "type": "boolean"
+        },
+        "no_consumers": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "compatibility_confirmed",
+        "tests_executed",
+        "no_consumers"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "lifecycle",
+    "case_id",
+    "method",
+    "attempt",
+    "configuration_sha256",
+    "raw_artifact_sha256",
+    "output_valid",
+    "status",
+    "error_code",
+    "candidates",
+    "invalid_candidates",
+    "limitations",
+    "explicit_claims"
+  ],
+  "$defs": {
+    "pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider_service": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "method": {
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "HEAD",
+            "OPTIONS"
+          ]
+        },
+        "route": {
+          "type": "string",
+          "pattern": "^/[^?#]*$"
+        },
+        "consumer_service": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "provider_service",
+        "method",
+        "route",
+        "consumer_service"
+      ]
+    },
+    "witness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "phase": {
+          "enum": [
+            "base",
+            "head"
+          ]
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "line_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quote_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "repository",
+        "phase",
+        "commit",
+        "path",
+        "line_start",
+        "line_end",
+        "quote_sha256"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle": {
+            "const": "complete"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "configuration_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "raw_artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "output_valid": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "USEFUL",
+              "PARTIAL",
+              "ABSTAINED",
+              "FAILED",
+              "SUPERSEDED"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

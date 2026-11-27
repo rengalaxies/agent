@@ -10,13 +10,15 @@ from typing import Annotated, Literal
 from urllib.parse import urlsplit
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .connectors.github import GitHubAppAuth, GitHubConnector, StaticToken
 from .connectors.bitbucket_read import ApiTokenAuth, BitbucketReadClient
 from .connectors.bitbucket import BitbucketQueueConnector
 from .connectors.bitbucket_analysis import BitbucketLocalAnalysisConnector
 from .connectors.bitbucket_jira import BitbucketJiraBackend
+from .connectors.kaiten import KaitenConnector, numeric_id
+from .connectors.bitbucket_kaiten import BitbucketKaitenConnector, BitbucketKaitenBackend
 from .connectors.jira import DEFAULT_FIELDS, BasicAuth, BearerAuth, JiraConnector
 from .http import ClientError, HttpClient, validate_base_url
 from .publisher import DirectorySink
@@ -60,15 +62,27 @@ class BitbucketRepositoryConfig(Strict):
     repository_id: RepositoryName
 
 
+BitbucketPullRequestId = Annotated[int, Field(strict=True, gt=0, lt=2**63)]
+BitbucketPullRequestIds = Annotated[list[BitbucketPullRequestId], Field(strict=True, min_length=1)]
+
+
 class BitbucketConfig(Strict):
     """Bitbucket probe, held queue intake, or isolated local analysis."""
     api_base: str = "https://api.bitbucket.org/2.0"
-    mode: Literal['probe', 'queue_only', 'local_analysis', 'jira_delivery'] = 'probe'
+    mode: Literal['probe', 'queue_only', 'local_analysis', 'jira_delivery', 'kaiten_delivery'] = 'probe'
     refresh_mirrors: bool = False
     workspace: BitbucketSlug
     workspace_uuid: UUID
     repositories: dict[BitbucketSlug, BitbucketRepositoryConfig] = Field(min_length=1, max_length=64)
     auth: BitbucketAuthConfig
+    pull_request_ids: dict[BitbucketSlug, BitbucketPullRequestIds] | None = None
+
+    @field_validator("pull_request_ids", mode="before")
+    @classmethod
+    def explicit_pr_scope(cls, value):
+        if value is not None and (not isinstance(value, dict) or not value):
+            raise ValueError("invalid_bitbucket_pull_request_scope")
+        return value
 
     @model_validator(mode="after")
     def scope(self):
@@ -77,9 +91,14 @@ class BitbucketConfig(Strict):
         local = parts.scheme == 'http' and parts.hostname in {'127.0.0.1', 'localhost', '::1'} and parts.path == '/2.0'
         if url != 'https://api.bitbucket.org/2.0' and not local:
             raise ValueError('invalid_bitbucket_api_origin')
-        if self.refresh_mirrors and (self.mode not in ("local_analysis", "jira_delivery") or local):
+        if self.refresh_mirrors and (self.mode not in ("local_analysis", "jira_delivery", "kaiten_delivery") or local):
             raise ValueError("bitbucket_refresh_requires_cloud_local_analysis")
         self.api_base = url
+        if self.pull_request_ids is not None:
+            if set(self.pull_request_ids) - set(self.repositories):
+                raise ValueError("unknown_bitbucket_pull_request_repository")
+            if any(len(ids) != len(set(ids)) for ids in self.pull_request_ids.values()):
+                raise ValueError("duplicate_bitbucket_pull_request_id")
         if (len({r.uuid for r in self.repositories.values()}) != len(self.repositories)
                 or len({r.repository_id for r in self.repositories.values()}) != len(self.repositories)):
             raise ValueError('duplicate_bitbucket_repository_identity')
@@ -100,6 +119,25 @@ class JiraConfig(Strict):
     bot_account_id: str
     webhook_secret_env: str
     auth: JiraAuthConfig
+
+
+class KaitenConfig(Strict):
+    base_url: str
+    board_ids: list[str] = Field(min_length=1)
+    bot_id: str
+    token_env: SecretEnv
+    bindings: dict[str, str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_ids(self):
+        import re
+        numeric_id(self.bot_id)
+        for board in self.board_ids: numeric_id(board)
+        for rid, card in self.bindings.items():
+            numeric_id(card)
+            if not re.fullmatch(r'bitbucket:[0-9a-f-]{36}/[0-9a-f-]{36}#[1-9][0-9]{0,18}',rid):
+                raise ValueError('invalid_kaiten_pr_binding')
+        return self
 
 
 class QualificationRef(Strict):
@@ -129,11 +167,14 @@ class ServiceConfig(Strict):
     installation_id: str = Field(min_length=1, max_length=100)
     environment: str = Field(min_length=1, max_length=100)
     state_path: Path
+    ui_origin_fingerprint: str | None = Field(default=None, pattern=r'^[a-f0-9]{64}$')
+    ui_config_path: Path | None = None  # explicit opt-in; private configuration, never browser metadata
     publication: Literal["dry_run", "live"] = "dry_run"
     dry_run_dir: Path | None = None
     github: GitHubConfig | None = None
     bitbucket: BitbucketConfig | None = None
     jira: JiraConfig | None = None
+    kaiten: KaitenConfig | None = None
     confluence: ConfluenceConfig | None = None
     analysis: dict = Field(default_factory=dict)  # graph/constitution/model ids, access scope, analysis_seconds
     core: CoreConfig | None = None
@@ -188,16 +229,18 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
     connectors = {}
     if config.bitbucket:
         reader = build_bitbucket_reader(config, env_secret=env_secret)
-        if config.bitbucket.mode in ('local_analysis', 'jira_delivery'):
+        if config.bitbucket.mode in ('local_analysis', 'jira_delivery', 'kaiten_delivery'):
             repositories = _document(config.core.policy_path)["repositories"]
             mirrors = {repo["id"]: Path(repo["root"]) for repo in repositories}
             connectors['bitbucket'] = BitbucketLocalAnalysisConnector(
                 reader, config.bitbucket.repositories, mirrors=mirrors,
+                pull_request_ids=config.bitbucket.pull_request_ids,
                 refresh_mirrors=config.bitbucket.refresh_mirrors,
                 jira_project_keys=config.jira.project_keys if config.jira else [])
         else:
             connectors['bitbucket'] = BitbucketQueueConnector(
                 reader, config.bitbucket.repositories,
+                pull_request_ids=config.bitbucket.pull_request_ids,
                 jira_project_keys=config.jira.project_keys if config.jira else [])
     if config.github:
         gh = config.github
@@ -261,10 +304,20 @@ def build_connectors(config: ServiceConfig, *, clock=time.time, env_secret=_secr
             backends = {"bitbucket": BitbucketJiraBackend(connectors["bitbucket"], jira)}
         else:
             backends.pop("jira", None)
+    if config.bitbucket and config.bitbucket.mode == 'kaiten_delivery':
+        kc = config.kaiten
+        kaiten_token = env_secret(kc.token_env)
+        kaiten = KaitenConnector(HttpClient(kc.base_url, allow_loopback_http=config.allow_loopback_http, clock=clock),
+                                 lambda: "Bearer " + kaiten_token, board_ids=kc.board_ids, bot_id=kc.bot_id)
+        connectors["bitbucket"] = BitbucketKaitenConnector(connectors["bitbucket"], kaiten, bindings=kc.bindings)
+        if config.publication == "live":
+            backends = {"bitbucket": BitbucketKaitenBackend(connectors["bitbucket"], kaiten)}
     return connectors, backends
 
 
 def _runtime_supported(config):
+    if config.kaiten and (not config.bitbucket or config.bitbucket.mode != 'kaiten_delivery'):
+        raise ValueError('kaiten_requires_bitbucket_kaiten_delivery')
     if config.confluence and (
             not config.bitbucket or config.bitbucket.mode != "jira_delivery" or not config.jira):
         raise ValueError("confluence_requires_bitbucket_jira_delivery")
@@ -277,6 +330,9 @@ def _runtime_supported(config):
         elif config.bitbucket.mode == 'jira_delivery':
             if config.github or not config.jira or not config.core:
                 raise ValueError('bitbucket_jira_delivery_requires_core_and_jira')
+        elif config.bitbucket.mode == 'kaiten_delivery':
+            if config.github or config.jira or not config.kaiten or not config.core:
+                raise ValueError('bitbucket_kaiten_delivery_requires_isolated_core_and_kaiten')
         elif config.publication != 'dry_run':
             raise ValueError('bitbucket_queue_only_requires_dry_run')
 

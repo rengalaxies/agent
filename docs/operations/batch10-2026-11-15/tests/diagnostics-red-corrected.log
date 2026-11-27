@@ -1,0 +1,107 @@
+/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_auth_precedes_input_validation_and_missing_token_fails_closed (tests.service.test_diagnostics.DiagnosticTests.test_auth_precedes_input_validation_and_missing_token_fails_closed) ... FAIL
+test_closed_and_same_version_rebuild_are_explicit (tests.service.test_diagnostics.DiagnosticTests.test_closed_and_same_version_rebuild_are_explicit) ... ERROR
+test_current_failed_analysis_is_visible_instead_of_older_useful (tests.service.test_diagnostics.DiagnosticTests.test_current_failed_analysis_is_visible_instead_of_older_useful) ... ERROR
+test_delivered_analysis_is_selected_with_safe_metadata_and_no_store (tests.service.test_diagnostics.DiagnosticTests.test_delivered_analysis_is_selected_with_safe_metadata_and_no_store) ... FAIL
+test_failed_current_job_does_not_present_old_success_as_current (tests.service.test_diagnostics.DiagnosticTests.test_failed_current_job_does_not_present_old_success_as_current) ... ERROR
+test_new_generation_marks_previous_output_stale_with_current_job (tests.service.test_diagnostics.DiagnosticTests.test_new_generation_marks_previous_output_stale_with_current_job) ... ERROR
+test_no_result_and_unknown_or_traversal_ids_never_read_a_file (tests.service.test_diagnostics.DiagnosticTests.test_no_result_and_unknown_or_traversal_ids_never_read_a_file) ... ERROR
+test_other_resources_cannot_change_a_selected_result (tests.service.test_diagnostics.DiagnosticTests.test_other_resources_cannot_change_a_selected_result) ... ERROR
+test_resource_listing_is_bounded_and_does_not_include_snapshot (tests.service.test_diagnostics.DiagnosticTests.test_resource_listing_is_bounded_and_does_not_include_snapshot) ... FAIL
+test_untrusted_incompatible_raw_is_not_exposed_as_analysis (tests.service.test_diagnostics.DiagnosticTests.test_untrusted_incompatible_raw_is_not_exposed_as_analysis) ... ERROR
+
+======================================================================
+ERROR: test_closed_and_same_version_rebuild_are_explicit (tests.service.test_diagnostics.DiagnosticTests.test_closed_and_same_version_rebuild_are_explicit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 68, in test_closed_and_same_version_rebuild_are_explicit
+    self.assertEqual(self.get().json()['analysis']['freshness'],'STALE')
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'analysis'
+
+======================================================================
+ERROR: test_current_failed_analysis_is_visible_instead_of_older_useful (tests.service.test_diagnostics.DiagnosticTests.test_current_failed_analysis_is_visible_instead_of_older_useful)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 64, in test_current_failed_analysis_is_visible_instead_of_older_useful
+    self.assertEqual(data['analysis']['generation'],2);self.assertEqual(data['analysis']['raw']['status'],'FAILED')
+                     ~~~~^^^^^^^^^^^^
+KeyError: 'analysis'
+
+======================================================================
+ERROR: test_failed_current_job_does_not_present_old_success_as_current (tests.service.test_diagnostics.DiagnosticTests.test_failed_current_job_does_not_present_old_success_as_current)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 59, in test_failed_current_job_does_not_present_old_success_as_current
+    data=self.get().json();self.assertEqual(data['current_job']['reason'],'commit_unavailable')
+                                            ~~~~^^^^^^^^^^^^^^^
+KeyError: 'current_job'
+
+======================================================================
+ERROR: test_new_generation_marks_previous_output_stale_with_current_job (tests.service.test_diagnostics.DiagnosticTests.test_new_generation_marks_previous_output_stale_with_current_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 54, in test_new_generation_marks_previous_output_stale_with_current_job
+    self.assertEqual(data['resource']['generation'],2);self.assertEqual(data['current_job']['state'],'QUEUED')
+                     ~~~~^^^^^^^^^^^^
+KeyError: 'resource'
+
+======================================================================
+ERROR: test_no_result_and_unknown_or_traversal_ids_never_read_a_file (tests.service.test_diagnostics.DiagnosticTests.test_no_result_and_unknown_or_traversal_ids_never_read_a_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 72, in test_no_result_and_unknown_or_traversal_ids_never_read_a_file
+    data=self.get().json();self.assertIsNone(data['analysis']);self.assertEqual(data['current_job']['state'],'QUEUED')
+                                             ~~~~^^^^^^^^^^^^
+KeyError: 'analysis'
+
+======================================================================
+ERROR: test_other_resources_cannot_change_a_selected_result (tests.service.test_diagnostics.DiagnosticTests.test_other_resources_cannot_change_a_selected_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 90, in test_other_resources_cannot_change_a_selected_result
+    self.assertEqual(data['resource']['resource_id'],self.rid);self.assertEqual(data['analysis']['generation'],1)
+                     ~~~~^^^^^^^^^^^^
+KeyError: 'resource'
+
+======================================================================
+ERROR: test_untrusted_incompatible_raw_is_not_exposed_as_analysis (tests.service.test_diagnostics.DiagnosticTests.test_untrusted_incompatible_raw_is_not_exposed_as_analysis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 79, in test_untrusted_incompatible_raw_is_not_exposed_as_analysis
+    data=self.get().json();self.assertFalse(data['analysis']['compatible']);self.assertIsNone(data['analysis']['raw'])
+                                            ~~~~^^^^^^^^^^^^
+KeyError: 'analysis'
+
+======================================================================
+FAIL: test_auth_precedes_input_validation_and_missing_token_fails_closed (tests.service.test_diagnostics.DiagnosticTests.test_auth_precedes_input_validation_and_missing_token_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 37, in test_auth_precedes_input_validation_and_missing_token_fails_closed
+    self.assertEqual(self.client.get(path,headers=headers).status_code,401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 401
+
+======================================================================
+FAIL: test_delivered_analysis_is_selected_with_safe_metadata_and_no_store (tests.service.test_diagnostics.DiagnosticTests.test_delivered_analysis_is_selected_with_safe_metadata_and_no_store)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 45, in test_delivered_analysis_is_selected_with_safe_metadata_and_no_store
+    before=self.dump();response=self.get();self.assertEqual(response.status_code,200);data=response.json()
+                                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: test_resource_listing_is_bounded_and_does_not_include_snapshot (tests.service.test_diagnostics.DiagnosticTests.test_resource_listing_is_bounded_and_does_not_include_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 84, in test_resource_listing_is_bounded_and_does_not_include_snapshot
+    self.assertEqual(response.status_code,200);data=response.json();self.assertEqual(len(data['items']),2);self.assertTrue(data['has_more'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 200
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.212s
+
+FAILED (failures=3, errors=7)

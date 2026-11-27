@@ -1,0 +1,101 @@
+test_generic_limitation_does_not_pass_outside_profile_boundary (tests.performance.test_evaluation_tooling.BoundaryTests.test_generic_limitation_does_not_pass_outside_profile_boundary) ... ok
+test_invalid_gold_is_detected_even_for_empty_output (tests.performance.test_evaluation_tooling.BoundaryTests.test_invalid_gold_is_detected_even_for_empty_output) ... ok
+test_known_access_gap_can_pass_boundary_without_success_claims (tests.performance.test_evaluation_tooling.BoundaryTests.test_known_access_gap_can_pass_boundary_without_success_claims) ... ok
+test_missing_mandatory_freeze_controls_are_reported (tests.performance.test_evaluation_tooling.FreezeCompletenessTests.test_missing_mandatory_freeze_controls_are_reported) ... ok
+test_raw_unused_excluded_path_inside_allowed_repository_is_detected (tests.performance.test_evaluation_tooling.HumanAuditGateTests.test_raw_unused_excluded_path_inside_allowed_repository_is_detected) ... ok
+test_structural_registration_alone_cannot_certify_gold_and_prose (tests.performance.test_evaluation_tooling.HumanAuditGateTests.test_structural_registration_alone_cannot_certify_gold_and_prose) ... ok
+test_affected_without_finding_is_still_a_candidate (tests.performance.test_evaluation_tooling.NormalizerTests.test_affected_without_finding_is_still_a_candidate) ... ok
+test_findings_bind_to_callsite_not_delta_cartesian_product (tests.performance.test_evaluation_tooling.NormalizerTests.test_findings_bind_to_callsite_not_delta_cartesian_product) ... ok
+test_unbound_id_exact_nfc_whitespace_and_refs_preserved (tests.performance.test_evaluation_tooling.NormalizerTests.test_unbound_id_exact_nfc_whitespace_and_refs_preserved) ... ok
+test_outside_does_not_invent_zero_false_negatives (tests.performance.test_evaluation_tooling.OutsideAccountingTests.test_outside_does_not_invent_zero_false_negatives) ... ok
+test_archive_bytes_and_full_tracked_manifest_match_guide (tests.performance.test_evaluation_tooling.PacketIntegrationTests.test_archive_bytes_and_full_tracked_manifest_match_guide) ... ok
+test_denied_repository_is_refused_before_any_collect (tests.performance.test_evaluation_tooling.PacketIntegrationTests.test_denied_repository_is_refused_before_any_collect) ... ok
+test_packet_with_added_label_file_is_refused_even_if_hash_updated (tests.performance.test_evaluation_tooling.PacketIntegrationTests.test_packet_with_added_label_file_is_refused_even_if_hash_updated) ... ok
+test_real_core_packet_smoke_without_reference_access (tests.performance.test_evaluation_tooling.PacketIntegrationTests.test_real_core_packet_smoke_without_reference_access) ... ok
+test_timeout_keeps_immutable_attempt_envelope_and_no_overwrite (tests.performance.test_evaluation_tooling.PacketIntegrationTests.test_timeout_keeps_immutable_attempt_envelope_and_no_overwrite) ... ok
+test_authored_diagnostics_cannot_become_independent_success (tests.performance.test_evaluation_tooling.RegistrationTests.test_authored_diagnostics_cannot_become_independent_success) ... ok
+test_empty_freeze_is_not_registered_and_never_fills_humans (tests.performance.test_evaluation_tooling.RegistrationTests.test_empty_freeze_is_not_registered_and_never_fills_humans) ... ok
+test_statement_containment_not_arbitrary_line_tolerance (tests.performance.test_evaluation_tooling.RegistrationTests.test_statement_containment_not_arbitrary_line_tolerance) ... ok
+test_failed_and_superseded_outputs_never_primary_tp (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_failed_and_superseded_outputs_never_primary_tp) ... ok
+test_leak_cannot_also_receive_boundary_success (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_leak_cannot_also_receive_boundary_success) ... ok
+test_malformed_entry_does_not_erase_later_addressed_candidate (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_malformed_entry_does_not_erase_later_addressed_candidate) ... ok
+test_one_frozen_ledger_rejects_primary_reset_and_out_of_order (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_one_frozen_ledger_rejects_primary_reset_and_out_of_order) ... ok
+test_unused_raw_evidence_outside_rights_is_a_leak (tests.performance.test_evaluation_tooling.ReviewRegressionTests.test_unused_raw_evidence_outside_rights_is_a_leak) ... ok
+test_empty_hints_do_not_invent_search_query (tests.performance.test_evaluation_tooling.RunnerTests.test_empty_hints_do_not_invent_search_query) ... ok
+test_readme_lexical_hit_is_retained_without_ast_filter (tests.performance.test_evaluation_tooling.RunnerTests.test_readme_lexical_hit_is_retained_without_ast_filter) ... ok
+test_unregistered_run_cannot_be_mislabelled_heldout (tests.performance.test_evaluation_tooling.RunnerTests.test_unregistered_run_cannot_be_mislabelled_heldout) ... ok
+test_diagnostic_attempt_cannot_replace_primary (tests.performance.test_evaluation_tooling.ScoringTests.test_diagnostic_attempt_cannot_replace_primary) ... ok
+test_duplicate_bundles_do_not_increase_counts (tests.performance.test_evaluation_tooling.ScoringTests.test_duplicate_bundles_do_not_increase_counts) ... ok
+test_empty_is_na_precision_and_all_gold_fn (tests.performance.test_evaluation_tooling.ScoringTests.test_empty_is_na_precision_and_all_gold_fn) ... ok
+test_exact_pair_and_source_witness_required (tests.performance.test_evaluation_tooling.ScoringTests.test_exact_pair_and_source_witness_required) ... ok
+test_far_denominator_is_negative_cases_not_all40 (tests.performance.test_evaluation_tooling.ScoringTests.test_far_denominator_is_negative_cases_not_all40) ... ok
+test_invalid_output_keeps_candidates_but_never_true_positive (tests.performance.test_evaluation_tooling.ScoringTests.test_invalid_output_keeps_candidates_but_never_true_positive) ... ok
+test_unbound_bucket_deduplicates_by_consumer_not_arbitrary_id (tests.performance.test_evaluation_tooling.ScoringTests.test_unbound_bucket_deduplicates_by_consumer_not_arbitrary_id) ... ok
+test_unseen_plausible_key_requests_gold_audit (tests.performance.test_evaluation_tooling.ScoringTests.test_unseen_plausible_key_requests_gold_audit) ... ok
+test_unsigned_labels_rejected_outside_development (tests.performance.test_evaluation_tooling.ScoringTests.test_unsigned_labels_rejected_outside_development) ... ok
+test_failed_and_superseded_carry_no_claims (tests.graph.test_output_contracts.CodeTests.test_failed_and_superseded_carry_no_claims) ... ok
+test_partial_must_show_what_is_missing (tests.graph.test_output_contracts.CodeTests.test_partial_must_show_what_is_missing) ... ok
+test_reason_must_belong_to_status (tests.graph.test_output_contracts.CodeTests.test_reason_must_belong_to_status) ... ok
+test_unknown_delta_finding_usage_gap_and_status_codes_are_rejected (tests.graph.test_output_contracts.CodeTests.test_unknown_delta_finding_usage_gap_and_status_codes_are_rejected) ... ok
+test_fact_needs_authentic_sufficient_non_model_evidence (tests.graph.test_output_contracts.EvidenceTests.test_fact_needs_authentic_sufficient_non_model_evidence) ... ok
+test_jira_result_has_no_diff (tests.graph.test_output_contracts.EvidenceTests.test_jira_result_has_no_diff) ... ok
+test_model_hypothesis_cannot_declare_itself_sufficient (tests.graph.test_output_contracts.EvidenceTests.test_model_hypothesis_cannot_declare_itself_sufficient) ... ok
+test_owner_status_matches_teams (tests.graph.test_output_contracts.EvidenceTests.test_owner_status_matches_teams) ... ok
+test_references_must_exist_and_rejected_evidence_cannot_back_claims (tests.graph.test_output_contracts.EvidenceTests.test_references_must_exist_and_rejected_evidence_cannot_back_claims) ... ok
+test_snapshot_identity_and_worktree_marking (tests.graph.test_output_contracts.EvidenceTests.test_snapshot_identity_and_worktree_marking) ... ok
+test_operation_identity_matches_core_formula_and_separates_services (tests.graph.test_output_contracts.IdentityTests.test_operation_identity_matches_core_formula_and_separates_services) ... ok
+test_route_normalization (tests.graph.test_output_contracts.IdentityTests.test_route_normalization) ... ok
+test_diagnostics_never_echo_input (tests.graph.test_output_contracts.RequestTests.test_diagnostics_never_echo_input) ... ok
+test_pr_head_must_be_pinned_and_in_scope (tests.graph.test_output_contracts.RequestTests.test_pr_head_must_be_pinned_and_in_scope) ... ok
+test_trigger_kind_matches_payload (tests.graph.test_output_contracts.RequestTests.test_trigger_kind_matches_payload) ... ok
+test_committed_json_schema_matches_models (tests.graph.test_output_contracts.SchemaFileTests.test_committed_json_schema_matches_models) ... ok
+test_parse_does_not_mutate_input (tests.graph.test_output_contracts.SchemaFileTests.test_parse_does_not_mutate_input) ... ok
+test_shared_examples_parse_and_keep_their_status (tests.graph.test_output_contracts.SharedExampleTests.test_shared_examples_parse_and_keep_their_status) ... ok
+test_foreign_schema_is_rejected (tests.graph.test_output_contracts.VersionTests.test_foreign_schema_is_rejected) ... ok
+test_unknown_major_is_incompatible_and_not_green (tests.graph.test_output_contracts.VersionTests.test_unknown_major_is_incompatible_and_not_green) ... ok
+test_valid_request_and_result_round_trip (tests.graph.test_output_contracts.VersionTests.test_valid_request_and_result_round_trip) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_jira_before_diff_finds_consumers_without_claiming_a_break (tests.graph.test_results.JiraTests.test_jira_before_diff_finds_consumers_without_claiming_a_break) ... ok
+test_superseded_result_has_no_claims (tests.graph.test_results.JiraTests.test_superseded_result_has_no_claims) ... ok
+test_unknown_operation_abstains_as_unclear_intent (tests.graph.test_results.JiraTests.test_unknown_operation_abstains_as_unclear_intent) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_pr_result_names_the_consumer_risk_with_pinned_evidence (tests.graph.test_results.ResultTests.test_pr_result_names_the_consumer_risk_with_pinned_evidence) ... ok
+test_readme_only_change_abstains (tests.graph.test_results.ResultTests.test_readme_only_change_abstains) ... ok
+test_same_commit_map_gives_the_same_result_facts (tests.graph.test_results.ResultTests.test_same_commit_map_gives_the_same_result_facts) ... ok
+test_unavailable_pr_commit_fails_instead_of_using_another_commit (tests.graph.test_results.ResultTests.test_unavailable_pr_commit_fails_instead_of_using_another_commit) ... ok
+test_unclassified_change_is_partial_not_green (tests.graph.test_results.ResultTests.test_unclassified_change_is_partial_not_green) ... ok
+test_unknown_owner_is_shown_not_guessed (tests.graph.test_results.ResultTests.test_unknown_owner_is_shown_not_guessed) ... ok
+test_cli_writes_consistent_raw_artifacts_and_does_not_overwrite (tests.performance.test_benchmark_impactmap.CLITests.test_cli_writes_consistent_raw_artifacts_and_does_not_overwrite) ... ok
+test_invalid_manifest_never_exports_input_or_exception_text (tests.performance.test_benchmark_impactmap.CLITests.test_invalid_manifest_never_exports_input_or_exception_text) ... ok
+test_timeout_launch_and_invalid_json_preserve_failure_rows_and_summary (tests.performance.test_benchmark_impactmap.CLITests.test_timeout_launch_and_invalid_json_preserve_failure_rows_and_summary) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_instrumented_pipeline_preserves_results_facts_and_restores_functions (tests.performance.test_benchmark_impactmap.PipelineTests.test_instrumented_pipeline_preserves_results_facts_and_restores_functions) ... ok
+test_model_configuration_is_refused_before_analysis (tests.performance.test_benchmark_impactmap.PipelineTests.test_model_configuration_is_refused_before_analysis) ... ok
+test_partial_access_stays_visible_and_wrappers_restore_on_exception (tests.performance.test_benchmark_impactmap.PipelineTests.test_partial_access_stays_visible_and_wrappers_restore_on_exception) ... ok
+test_provenance_cannot_export_arbitrary_input (tests.performance.test_benchmark_impactmap.PipelineTests.test_provenance_cannot_export_arbitrary_input) ... ok
+test_sensitive_source_content_is_omitted_and_never_exported (tests.performance.test_benchmark_impactmap.PipelineTests.test_sensitive_source_content_is_omitted_and_never_exported) ... ok
+test_error_records_no_exception_message (tests.performance.test_benchmark_impactmap.SpanTests.test_error_records_no_exception_message) ... ok
+test_nested_spans_exclude_children_without_double_counting (tests.performance.test_benchmark_impactmap.SpanTests.test_nested_spans_exclude_children_without_double_counting) ... ok
+test_peak_rss_units_are_platform_specific (tests.performance.test_benchmark_impactmap.SpanTests.test_peak_rss_units_are_platform_specific) ... ok
+
+----------------------------------------------------------------------
+Ran 76 tests in 40.491s
+
+OK

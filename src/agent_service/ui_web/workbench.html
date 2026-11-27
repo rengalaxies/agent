@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="color-scheme" content="light"><title>Результаты · ImpactMap</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/ui/assets/workbench.css"><script src="/ui/assets/auth-events.js" defer></script><script src="/ui/assets/workbench.js" defer></script></head>
+<body>
+<a class="skip" href="#workspace">К результату</a>
+<header class="topbar"><a class="brand" href="/ui/changes">ImpactMap</a><span class="top-caption">Результаты анализа</span><span id="account" hidden></span><button id="logout" hidden>Выйти</button></header>
+<div class="toolbar"><button id="refresh">Обновить данные</button><label class="auto"><input id="auto-refresh" type="checkbox"> Обновлять каждые 30 с</label><span id="observation" class="muted"></span></div>
+<p id="message" role="status" aria-live="polite">Проверяем сессию…</p>
+<div class="shell" id="private" hidden>
+  <nav class="global-nav" aria-label="Разделы"><a href="/ui/changes" data-section="changes">Изменения</a><a href="/ui/operations" data-section="operations" data-operator hidden>Операции</a><a href="/ui/connections" data-section="connections" data-operator hidden>Подключения</a><p class="nav-footnote">Просмотр сохранённых данных.<br>Анализ и публикация отсюда не запускаются.</p></nav>
+  <aside id="changes-panel" class="changes-panel" aria-label="Список изменений"><h2>Изменения</h2><label class="search">Поиск в загруженном списке<input id="search" type="search" placeholder="ID ресурса или состояние" autocomplete="off"></label><div id="change-list"></div><p id="no-matches" hidden>Совпадений в загруженном списке нет. Это не весь архив.</p><div id="list-note"></div></aside>
+  <main id="workspace" tabindex="-1"></main>
+</div>
+<noscript><p>Для безопасного обновления сессии и результатов нужен JavaScript.</p></noscript>
+</body></html>

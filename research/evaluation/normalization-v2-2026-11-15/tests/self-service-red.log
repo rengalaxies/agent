@@ -1,0 +1,26 @@
+test_same_service_provider_declarations_are_not_caller_witnesses (tests.performance.test_normalization_binding.BindingTests.test_same_service_provider_declarations_are_not_caller_witnesses) ... FAIL
+test_same_service_without_caller_role_does_not_borrow_provider_quotes (tests.performance.test_normalization_binding.BindingTests.test_same_service_without_caller_role_does_not_borrow_provider_quotes) ... FAIL
+
+======================================================================
+FAIL: test_same_service_provider_declarations_are_not_caller_witnesses (tests.performance.test_normalization_binding.BindingTests.test_same_service_provider_declarations_are_not_caller_witnesses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 130, in test_same_service_provider_declarations_are_not_caller_witnesses
+    self.assertEqual({w['repository'] for c in p['candidates'] for w in c['witnesses']},{'c'})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'p'
+
+======================================================================
+FAIL: test_same_service_without_caller_role_does_not_borrow_provider_quotes (tests.performance.test_normalization_binding.BindingTests.test_same_service_without_caller_role_does_not_borrow_provider_quotes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_normalization_binding.py", line 136, in test_same_service_without_caller_role_does_not_borrow_provider_quotes
+    self.assertFalse(any(c['witnesses'] for c in p['candidates']))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.284s
+
+FAILED (failures=2)

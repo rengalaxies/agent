@@ -1,0 +1,74 @@
+{
+  "core_identity": {
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1",
+    "output_schema_version": "2.2",
+    "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1"
+  },
+  "source_sha": "fd3dbc37dd0a8452264989008214fc1ef01f8640",
+  "model": "OFF",
+  "source_execution": false,
+  "network": "NOT_RUN",
+  "cache_protocol": "fresh worker/state; OS caches uncontrolled",
+  "stage_runs": [
+    {
+      "corpus": "repos5-lines50k",
+      "repeats": 1,
+      "input_limits_omitted": true,
+      "effective_limits": {
+        "max_files": 2048,
+        "max_file_bytes": 65536,
+        "max_corpus_bytes": 8000000,
+        "scan_seconds": 60.0,
+        "freshness_seconds": 3600,
+        "max_model_steps": 4,
+        "max_tool_lines": 60,
+        "max_proposals": 24
+      },
+      "historical_manifest_sha256": "39fecbaa99f17696ad0c68e2d9aee286ab1fcd7d788199e3f49221ed2e387434",
+      "input_sha256": "d3d38f3982e8388a109f25dc5c7198ae7dcd3174a7322aa1d8e46a85ee7228b4",
+      "semantics_equal": true,
+      "previous_named_policy_facts_equal": true,
+      "previous_named_policy_results_equal": true
+    },
+    {
+      "corpus": "repos10-lines100k",
+      "repeats": 3,
+      "input_limits_omitted": true,
+      "effective_limits": {
+        "max_files": 2048,
+        "max_file_bytes": 65536,
+        "max_corpus_bytes": 8000000,
+        "scan_seconds": 60.0,
+        "freshness_seconds": 3600,
+        "max_model_steps": 4,
+        "max_tool_lines": 60,
+        "max_proposals": 24
+      },
+      "historical_manifest_sha256": "a8cccc21db5f09817cd70c7597b5992989063814f3c8f7b1d89aee8dbe26f8c7",
+      "input_sha256": "a980bd09a9c6cea25a2185cc6cee91baedbd3a34c9a2b7e3d94513d74361c44a",
+      "semantics_equal": true,
+      "previous_named_policy_facts_equal": true,
+      "previous_named_policy_results_equal": true
+    }
+  ],
+  "acceptance": [
+    {
+      "case": "queue-repos5-lines50k-independent_prs",
+      "passed": true
+    },
+    {
+      "case": "queue-repos10-lines100k-head_updates",
+      "passed": true
+    },
+    {
+      "case": "explicit_legacy_2mb",
+      "passed": true
+    },
+    {
+      "case": "partial_access_on_defaults",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

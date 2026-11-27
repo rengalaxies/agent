@@ -1,0 +1,51 @@
+{
+  "desktop": {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "bodyFont": 14,
+    "h1": 28
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390,
+    "bodyFont": 14,
+    "h1": 23
+  },
+  "anchor": {
+    "before": {
+      "extraGET": 2,
+      "focus": "H1",
+      "top": 2419.9765625
+    },
+    "after": {
+      "extraGET": 0,
+      "focus": "evidence-0",
+      "top": 20.0078125
+    }
+  },
+  "logoutBroadcast": {
+    "bothDocumentsVisible": true,
+    "sessionToWorkbench": true,
+    "workbenchToSession": true
+  },
+  "poll": [
+    {
+      "method": "GET",
+      "path": "/ui/api/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/ui/api/view",
+      "status": 200
+    }
+  ],
+  "authorFixture": true,
+  "expiry": {
+    "qa_idle_seconds": 10,
+    "redirect_to_login": true,
+    "private_dom_absent": true,
+    "account_dom_absent": true,
+    "console_errors": []
+  }
+}

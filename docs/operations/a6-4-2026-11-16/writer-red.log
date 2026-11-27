@@ -1,0 +1,13 @@
+======================================================================
+ERROR: test_service_and_publisher_notice_writers_stamp_actual_loaded_policy_scope (tests.service.test_ui_operator.OperatorTests.test_service_and_publisher_notice_writers_stamp_actual_loaded_policy_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_ui_operator.py", line 175, in test_service_and_publisher_notice_writers_stamp_actual_loaded_policy_scope
+    self.assertEqual(self.get()['notices'][0]['kind'],'analysis_not_connected')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+----------------------------------------------------------------------
+Ran 1 test in 0.027s
+
+FAILED (errors=1)

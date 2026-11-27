@@ -1,0 +1,532 @@
+[
+  {
+    "event_id": "independent-pr-01",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "5f2231c1340b02d76af0308737e71b1a1b885080",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#1",
+    "resource_version": "3515d40325293e8a593dc48e83dfc85a5f3f14f3db97d14d6f81c5b76ecca516",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "5f2231c1340b02d76af0308737e71b1a1b885080",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "40e2aa09bac80f81e1fb8ebf6acf20e98e219607"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-10",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "d76db91a337470fdca52615d29e21e31eaa58a0a",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#10",
+    "resource_version": "a5df3ea299053a61dfa55484b0f7f2b4974b6ca7a4dd3eed9e24bc5e4ea5acd5",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "d76db91a337470fdca52615d29e21e31eaa58a0a",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "cefb168fed34865fd3cd3d976983f28aa476bc0e"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-02",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "e45b2c19f590145eb28ff2e84519144f554c5abe",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#2",
+    "resource_version": "3ab68311c211d5d49a00eccf47e4958c2313807072f1d7b58bc77b07dfe18989",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "e45b2c19f590145eb28ff2e84519144f554c5abe",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "45fbe59d30d1ea155ec4f4b461a269910b2307e5"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-03",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "7e3cde878dbb7a75a83d9761eee10cd550e06b52",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#3",
+    "resource_version": "f6b5843e20282af139f48abb11aa734a73dda4bbfae99d35ced01dfd475acd39",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "7e3cde878dbb7a75a83d9761eee10cd550e06b52",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "bab51fffb1e7b120ff2260cfbc56e77f317de79f"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-04",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "c0032d5728ca2eedd05d74c8d59eda0ee5439d7f",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#4",
+    "resource_version": "c53c856ec62b7d755da17346e17a6ecc0d8fd3786aaac81ad3203f41461acd71",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "c0032d5728ca2eedd05d74c8d59eda0ee5439d7f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "e430450c6e6b4f96e43b175152a478b2816b633d"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-05",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "d139f2fe21bd7e58e63e49dbdb37939d527d91a9",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#5",
+    "resource_version": "eb5c38f1450c61ff0d1e3538426693d5c1089dfe9ef1d03cdcf2ed693a6c1715",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "d139f2fe21bd7e58e63e49dbdb37939d527d91a9",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "d90d42af99621bde256afe4dc384957f85905428"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-06",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "b53990d160647d48c2121792e0f23cd338046d0f",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#6",
+    "resource_version": "e83e05570e983777cefe24b02d4e70f77d15bb6cba55ce7566d0bd1efb28d000",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "b53990d160647d48c2121792e0f23cd338046d0f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "7247bb5ca345e6de6a373118468e60b02128d8f0"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-07",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "1c6c6aaa27ef13da2c7230f9fe7f8ed6ac4b7101",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#7",
+    "resource_version": "98fd85295a3faa59658852dc43dfd11ae02f3a266ca7d7771c6d9cc2f73fe354",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "1c6c6aaa27ef13da2c7230f9fe7f8ed6ac4b7101",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "d7afe4aceabfd06de51fad04342acab94e7083cd"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-08",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "59b72063b87d196e00bcc0f4d117234ee22a09fc",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#8",
+    "resource_version": "44875fe6b54a868da0d4f10a3f67d04a1530a9135e4d238989cd6079dde6b85f",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "59b72063b87d196e00bcc0f4d117234ee22a09fc",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "9f33c027bc7f22e4689c3abc58446944f9cc0e34"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  },
+  {
+    "event_id": "independent-pr-09",
+    "expected_provider_base": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+    "expected_provider_head": "52cbc1b2cda9f83c7ab1a4e2f0260115a25bbb5a",
+    "generation": 1,
+    "pins_match": true,
+    "resource_id": "bitbucket:scale/r00#9",
+    "resource_version": "0668e3367ac15615419e4aab2a16db829a262a8e3099b6743b27fb05ef7a6ff4",
+    "snapshots": [
+      {
+        "commit": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "base",
+        "tree": "b1f3ca36d237196f096eae296f03c80d416f6a04"
+      },
+      {
+        "commit": "52cbc1b2cda9f83c7ab1a4e2f0260115a25bbb5a",
+        "mode": "GIT_COMMIT",
+        "repository": "r00",
+        "role": "head",
+        "tree": "6215c512bed8a6370cdb33ed157c6f18639c5f86"
+      },
+      {
+        "commit": "a8c0d8622e6ee775897896d3f9acab6001575378",
+        "mode": "GIT_COMMIT",
+        "repository": "r01",
+        "role": "consumer",
+        "tree": "e02088722e96e3bb299ff46a7a8ff987d7256923"
+      },
+      {
+        "commit": "80e242834649a454530e28f1dd315d78d0915e3f",
+        "mode": "GIT_COMMIT",
+        "repository": "r02",
+        "role": "consumer",
+        "tree": "a9bff2c75bf770c0916a56e0f832e2bde8460568"
+      },
+      {
+        "commit": "3d47621f7036e02f4fee6538abd944f75556f188",
+        "mode": "GIT_COMMIT",
+        "repository": "r03",
+        "role": "consumer",
+        "tree": "164426a7c24a06837f5e2f9a59c939a9bb679d2f"
+      },
+      {
+        "commit": "7fbd28fd55002cd3dc7f018654f664727789fbfa",
+        "mode": "GIT_COMMIT",
+        "repository": "r04",
+        "role": "consumer",
+        "tree": "8fcf5c6f9a8987dc580177ffd2e0be7eb130d68d"
+      }
+    ]
+  }
+]

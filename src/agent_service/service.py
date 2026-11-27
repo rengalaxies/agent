@@ -24,8 +24,10 @@ TRIGGER = {"pr": "pr", "jira": "jira"}
 
 class Service:
     def __init__(self, *, store: ServiceStore, connectors: dict, analyzer, installation_id: str, environment: str,
-                 analysis_settings: dict | None = None, backends: dict | None = None, hook=None, worker_id=None, documentation=None):
+                 analysis_settings: dict | None = None, backends: dict | None = None, hook=None, worker_id=None, documentation=None,ui_metadata=None):
         self.store, self.connectors, self.analyzer = store, connectors, analyzer
+        self.ui_metadata=ui_metadata
+        self.ui_settings=None  # installed only after private UI configuration is validated
         self.documentation = documentation or getattr(connectors.get("bitbucket"), "documentation", None)
         self.installation_id, self.environment = installation_id, environment
         self.analysis_settings = analysis_settings or {}
@@ -35,10 +37,21 @@ class Service:
             bind = getattr(backend, "bind_store", None)
             if bind is not None:
                 bind(store)
-        self.publisher = Publisher(store, connectors, backends or connectors, hook=self.hook)
+        self.publisher = Publisher(store, connectors, backends or connectors, hook=self.hook,notice_scope=self._notice_scope)
         for provider, connector in connectors.items():
             if not getattr(connector, 'analysis_ready', True):
-                store.note('analysis_not_connected', provider, 'queue_only:git_core_not_connected')
+                self._note('analysis_not_connected', provider, 'queue_only:git_core_not_connected')
+
+    def _notice_scope(self):
+        from .ui_scope import scope_for_service
+        try:return scope_for_service(self)
+        except (ValueError,AttributeError):return None
+
+    def _note(self,kind,subject,detail):
+        return self.store.note(kind,subject,detail,ui_scope=self._notice_scope())
+
+    def _clear_notice(self,kind,subject):
+        return self.store.clear_notice(kind,subject,ui_scope=self._notice_scope())
 
     # -- receive ----------------------------------------------------------
 
@@ -111,21 +124,21 @@ class Service:
             self.store.finish_event(event, "IGNORED", exc.code)
             return "ingest:ignored"
         except AuthError as exc:
-            self.store.note("connection_unauthorized", event["provider"], f"{event['provider']}:{exc.status}")
+            self._note("connection_unauthorized", event["provider"], f"{event['provider']}:{exc.status}")
             self.store.defer_event(event, exc.code, AUTH_RETRY_SECONDS)
             return "ingest:deferred"
         except ClientError as exc:
             self.store.finish_event(event, "FAILED", exc.code)
-            self.store.note("provider_rejected", event["resource_id"], str(exc.status))
+            self._note("provider_rejected", event["resource_id"], str(exc.status))
             return "ingest:failed"
         except ConnectorError as exc:
             # 429/5xx/timeouts: bounded retries, then FAILED until the next reconciliation revives it.
             delay = exc.retry_after if isinstance(exc, RateLimited) else None
             state = self.store.defer_event(event, exc.code, delay)
             return "ingest:" + ("failed" if state == "FAILED" else "deferred")
-        self.store.clear_notice("connection_unauthorized", event["provider"])
-        self.store.clear_notice("postsend_check_failed", event["resource_id"])
-        self.store.clear_notice("provider_rejected", event["resource_id"])
+        self._clear_notice("connection_unauthorized", event["provider"])
+        self._clear_notice("postsend_check_failed", event["resource_id"])
+        self._clear_notice("provider_rejected", event["resource_id"])
         outcome = self._apply(snapshot, event["event_id"])
         self.store.finish_event(event, "COALESCED" if outcome["action"] == "coalesced" else "INGESTED",
                                 outcome["action"])
@@ -162,22 +175,26 @@ class Service:
                     revisions = mainline  # a Jira analysis reads the pinned branches
                 else:
                     prepared.attachments["mainline_revisions"] = mainline
+        except ResourceNotAllowed as exc:
+            # A narrowed source scope also fences jobs persisted by an older config.
+            self.store.complete_job(job, state="SUPERSEDED", result=None, reason=exc.code, intent=None)
+            return "analyze:superseded"
         except AuthError as exc:
-            self.store.note("connection_unauthorized", failing, f"{failing}:{exc.status}")
+            self._note("connection_unauthorized", failing, f"{failing}:{exc.status}")
             self.store.requeue_job(job, exc.code, count_attempt=False, delay=AUTH_RETRY_SECONDS)
             return "analyze:blocked"
         except NotFound:
             return self._give_up_or_retry(job, "source_unavailable")
         except ClientError as exc:
-            self.store.note("provider_rejected", job["resource_id"], str(exc.status))
+            self._note("provider_rejected", job["resource_id"], str(exc.status))
             self.store.complete_job(job, state="FAILED", result=None, reason=exc.code,
                                     intent=self._failure_intent(job, exc.code))
             return "analyze:failed"
         except ConnectorError as exc:
             return self._give_up_or_retry(job, exc.code, delay=exc.retry_after)
         for provider in {connector.provider, failing}:
-            self.store.clear_notice("connection_unauthorized", provider)
-        self.store.clear_notice("provider_rejected", job["resource_id"])
+            self._clear_notice("connection_unauthorized", provider)
+        self._clear_notice("provider_rejected", job["resource_id"])
         settings = dict(self.analysis_settings)
         describe = getattr(self.analyzer, "request_settings", None)
         if describe is not None:
@@ -193,10 +210,13 @@ class Service:
                 repository_revisions=revisions, settings=settings, deadline=iso(deadline))
         except ContractError as exc:
             # Configuration or input cannot form a valid request: a retry would not help.
-            self.store.note("invalid_analysis_request", job["resource_id"], exc.code)
+            self._note("invalid_analysis_request", job["resource_id"], exc.code)
             self.store.complete_job(job, state="FAILED", result=None, reason="invalid_analysis_request",
                                     intent=self._failure_intent(job, "invalid_analysis_request"))
             return "analyze:failed"
+
+        if not self.store.stamp_ui_scope(job,request):
+            return 'analyze:superseded'
 
         def cancelled() -> bool:
             return not self.store.job_is_current(job) or self.store.newer_event_pending(
@@ -217,7 +237,10 @@ class Service:
         view = view_from_result(result, request)
         earlier = since_previous(self.store.published_result(job["resource_id"], job["generation"]), result,
                                  view, job["resource_version"])
-        doc = result_doc(view, snapshot=job["snapshot"], kind=snapshot.kind, generation=job["generation"],
+        render_snapshot=dict(job['snapshot'])
+        if view.compatible and request.get('pr'):
+            render_snapshot.update(base_sha=request['pr']['base_sha'],head_sha=request['pr']['head_sha'])
+        doc = result_doc(view, snapshot=render_snapshot, kind=snapshot.kind, generation=job["generation"],
                          gaps=prepared.gaps, earlier=earlier)
         from .jira_presentation import summary_doc
         # Preserve the complete legacy model explanation until a dedicated
@@ -238,6 +261,11 @@ class Service:
             except ConnectorError as exc:
                 return self._give_up_or_retry(job, exc.code, delay=exc.retry_after)
             doc = with_documentation(doc, pages)
+        if self.ui_settings is not None:
+            from .ui_links import result_url
+            link = result_url(self.ui_settings, job['resource_id'])
+            if link:
+                doc['ui_result_url'] = link
         intent = {"kind": "result", "result_digest": digest(result) if isinstance(result, dict) else None,
                   "body": canonical(doc), "body_digest": doc_digest(doc),
                   "marker": resource_marker(self.installation_id, job["resource_id"])}
@@ -259,9 +287,9 @@ class Service:
             try:
                 candidates = connector.reconcile_candidates(float(since) if since else None)
             except ConnectorError as exc:
-                self.store.note("reconcile_failed", provider, f"{provider}:{exc.code}")
+                self._note("reconcile_failed", provider, f"{provider}:{exc.code}")
                 continue
-            self.store.clear_notice("reconcile_failed", provider)
+            self._clear_notice("reconcile_failed", provider)
             seen = set()
             for rid, version in candidates:
                 seen.add(rid)
@@ -309,9 +337,9 @@ class Service:
         if status is not None:
             model = status()
             if model.ok or model.reason_code == "model_not_configured":
-                self.store.clear_notice("model_disabled", None)
+                self._clear_notice("model_disabled", None)
             else:
-                self.store.note("model_disabled", None, model.reason_code)
+                self._note("model_disabled", None, model.reason_code)
         maintain = getattr(self.analyzer, "reconcile_graph", None)
         git = self.connectors.get("github")
         if maintain is None or git is None:
@@ -319,14 +347,14 @@ class Service:
         try:
             results = maintain(git.pin_revisions(None))
         except ConnectorError as exc:
-            self.store.note("graph_reconcile_failed", "github", exc.code)
+            self._note("graph_reconcile_failed", "github", exc.code)
             return None
-        self.store.clear_notice("graph_reconcile_failed", "github")
+        self._clear_notice("graph_reconcile_failed", "github")
         failed = [r for r in results if r.get("error") or r.get("status") == "UNAVAILABLE"]
         if failed:
-            self.store.note("graph_source_unavailable", None, ",".join(sorted(r["source"] for r in failed)))
+            self._note("graph_source_unavailable", None, ",".join(sorted(r["source"] for r in failed)))
         else:
-            self.store.clear_notice("graph_source_unavailable", None)
+            self._clear_notice("graph_source_unavailable", None)
         return results
 
     def _synthetic(self, provider, rid, event_id) -> int:

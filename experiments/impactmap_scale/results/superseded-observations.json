@@ -1,0 +1,38 @@
+[
+  {
+    "local_directory": "work/batch05/baseline-5x50k",
+    "observed_summary": {
+      "all_semantics_equal": true,
+      "external_publication": "NOT_RUN",
+      "independent_worker_processes": 3,
+      "network": "NOT_RUN_OFFLINE",
+      "observed_utc": "2026-11-14T14:47:45.973341+00:00",
+      "p95": null,
+      "p95_reason": "small repeated author corpus; no production quantile claim",
+      "performance_observations": 6,
+      "polling": "NOT_RUN_OFFLINE",
+      "schema_version": "impactmap-benchmark-summary-1",
+      "worker_errors": 0
+    },
+    "reason": "local profiles overlapped; not used for final timing comparison",
+    "status": "SUPERSEDED_CONCURRENT_PRELIMINARY"
+  },
+  {
+    "local_directory": "work/batch05/baseline-10x100k",
+    "observed_summary": {
+      "all_semantics_equal": true,
+      "external_publication": "NOT_RUN",
+      "independent_worker_processes": 3,
+      "network": "NOT_RUN_OFFLINE",
+      "observed_utc": "2026-11-14T14:49:35.957433+00:00",
+      "p95": null,
+      "p95_reason": "small repeated author corpus; no production quantile claim",
+      "performance_observations": 6,
+      "polling": "NOT_RUN_OFFLINE",
+      "schema_version": "impactmap-benchmark-summary-1",
+      "worker_errors": 0
+    },
+    "reason": "local profiles overlapped; not used for final timing comparison",
+    "status": "SUPERSEDED_CONCURRENT_PRELIMINARY"
+  }
+]

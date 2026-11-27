@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "uid": 1000,
+  "gid": 1002,
+  "stages": [
+    {
+      "name": "box-tests",
+      "returncode": 0,
+      "wall_s": 7.795,
+      "tests": 85
+    },
+    {
+      "name": "full-tests",
+      "returncode": 0,
+      "wall_s": 420.384,
+      "tests": 1365
+    },
+    {
+      "name": "artifact-verify",
+      "returncode": 0,
+      "wall_s": 0.115,
+      "tests": null
+    },
+    {
+      "name": "artifact-smoke",
+      "returncode": 0,
+      "wall_s": 2.727,
+      "tests": null
+    }
+  ],
+  "commit": "659185fa2ed9b9831759fc8cfdea83a839cc8c20",
+  "stage": "artifact-smoke"
+}

@@ -1,0 +1,49 @@
+{
+  "attestation": {
+    "confirmed_by_human": false,
+    "conflicts_of_interest": "",
+    "independent_before_outputs": false
+  },
+  "case_id": "DEV-0026",
+  "completed_at": null,
+  "disagreements": [],
+  "expert_id": null,
+  "keys": [
+    {
+      "expectation": null,
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/v26/items"
+      },
+      "label": "UNAFFECTED",
+      "rationale": "Authored contract expectation; not independent evidence",
+      "witnesses": [
+        {
+          "commit": "6869270a647595d8116eacda0ee65aab6407b90f",
+          "line_end": 4,
+          "line_start": 4,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "ef3973c695434403d490034b1887550f8ff93d53dbc13270d5fca91cf2035324",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "lifecycle": "draft",
+  "profile": {
+    "boundary": "none",
+    "membership": "IN_PROFILE",
+    "rationale": "Authored synthetic development fixture, not expert judgment"
+  },
+  "schema_version": "impactmap-reference-label-1.0",
+  "scope_completeness": {
+    "inventory_sha256": "719c0c910c06599078da22f16c091cfba62b2634639c448c142fa45639170214",
+    "rationale": "Known generated toy inventory; not an independent search",
+    "search_complete": true
+  },
+  "source_labels": [],
+  "stage": "adjudicated"
+}

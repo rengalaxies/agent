@@ -1,0 +1,78 @@
+{
+  "access_policy_sha256": null,
+  "attempt_ledger_ref": null,
+  "baseline": {
+    "argv_policy_sha256": "d59b5f4ea7297dd5834ae86b7942e6eedc6970c3613b51d5595f54271b0d4355",
+    "id": "LS1",
+    "implementation_sha": "99f032e9991c61f05049f3035b16dafbab168eba5161bc4e87a717bdcb1c90ef",
+    "rg_version": "ripgrep 15.2.0 (rev e89fff89ac)"
+  },
+  "budgets": {
+    "retry_policy_sha256": "3eb2ae8c4eb7d0989228f77dc7d5270c72bf415fcd59965a213ba384810d92dc",
+    "wall_time_cap_seconds": 60
+  },
+  "case_ids": [],
+  "closed_catalogue_sha256": null,
+  "closed_reference_bundle_sha256": null,
+  "core_identity": {
+    "core_digest": "5da058fd79a61384a9ff2b6ae0f130fb3cab078b0671e4e48e49089d90baab7e",
+    "output_schema_version": "2.2",
+    "profile": "http-requests-7",
+    "schema": "agent-graph-1"
+  },
+  "curator": null,
+  "dependency_lock_sha256": "16d778ddc6c497009577ada1fb943c57e91ea9fced16d8864aa7f53aba39d208",
+  "dependency_versions": {
+    "PyYAML": "6.0.3",
+    "annotated-types": "0.8.0",
+    "attrs": "26.1.0",
+    "jsonschema": "4.26.0",
+    "jsonschema-specifications": "2025.9.1",
+    "pydantic": "2.14.2",
+    "pydantic-core": "2.50.2",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.9.1",
+    "typing-extensions": "4.16.0",
+    "typing-inspection": "0.4.4"
+  },
+  "disclosure_log_ref": null,
+  "environment": {
+    "hardware": "arm64 / 8 logical CPUs",
+    "os": "macOS-15.0-arm64-arm-64bit-Mach-O",
+    "python": "3.13.9"
+  },
+  "evaluator_sha": "6e2b11786812d5aa11a0587948addef6ad2b2ae9dccf6a5fb78e5ef8a3c542b6",
+  "experts": [],
+  "gold_frozen_at": null,
+  "input_bundle_sha256": null,
+  "loaded_runtime_sha": null,
+  "method_case_order": [],
+  "model_mode": "OFF",
+  "normalizer_sha": "af768216a22c0c4d3444d05e2a7b7fffe2e258ec433ccbc1c826a7124b248368",
+  "primary_attempt_rule": "first_assigned_attempt",
+  "protocol_sha256": "8ebe7174d5ce6c117de3b3bb89f364729685204ca2f0a3b1302e0c31831bf2d6",
+  "protocol_version": "v1",
+  "public_case_sha256": {},
+  "random_seed": null,
+  "registered_at": null,
+  "schema_bundle_sha256": "9f77ef8c4d3e13b00486362897ccbd21a54e1ca09ae31f7c58f6b6c71fdbb45a",
+  "schema_version": "impactmap-freeze-design-1.0",
+  "scorer_sha": "3bde79a17f357aa7bd6526a20be39bb91eeea1571117133b93e080303ceea2ca",
+  "source_inventory_sha256": null,
+  "source_sha": "6bc5ca20c396883660bec12fbe366e6b2276cda3",
+  "status": "NOT_REGISTERED",
+  "thresholds": {
+    "access_leaks_max": 0,
+    "approved_at": null,
+    "approved_by": null,
+    "false_certainty_max": 0,
+    "negative_case_far_max": 0.1,
+    "outside_profile_boundary_success_required": 6,
+    "rationale_ref": null,
+    "status": "PROPOSED_NOT_APPROVED",
+    "strict_precision_min": 0.85,
+    "strict_recall_min": 0.9,
+    "supported_technical_errors_max": 0
+  },
+  "tooling_contract_version": "batch06-operational-1"
+}

@@ -98,6 +98,8 @@ def summary_doc(view, raw: dict, *, kind: str, gaps, earlier) -> dict:
         "FAILED": "Анализ не выполнен",
     }.get(view.status, "Результат анализа требует проверки")
     summary = REASONS.get(view.reason_code)
+    if view.status == "FAILED" and view.reason_code == "budget_exhausted" and view.summary:
+        summary = view.summary
     if summary is None:
         summary = (
             "Найдены потребители, которые могут зависеть от изменяемой операции."

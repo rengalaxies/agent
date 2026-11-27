@@ -1,0 +1,17 @@
+{
+  "harness": "author-only synthetic visibilitychange, real AuthStore/GET/logout API",
+  "before": {
+    "retry_visible": false,
+    "private_text": ""
+  },
+  "after": {
+    "retry_visible": true,
+    "private_text": "",
+    "confirmed_retry_to_login": true
+  },
+  "session_page_after": {
+    "retry_visible": true,
+    "username": "",
+    "confirmed_retry_to_login": true
+  }
+}

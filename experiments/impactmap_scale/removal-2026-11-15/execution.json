@@ -1,0 +1,22 @@
+{
+  "tested_core_commit": "2d13227a766ec7d8178143b005d077034e281897",
+  "before_commit": "0582cd8798a7c4ce3b7a2f38e753f600bd65ef9a",
+  "core_identity": {
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1",
+    "output_schema_version": "2.2",
+    "core_digest": "bbf94715b48f3f14c8c93d64b8e4c307ac15b19fc3c76834df6d9bd97cb6a88f"
+  },
+  "source_execution": false,
+  "model": "OFF",
+  "external_publication": "NONE",
+  "runtime_live_verification": "NOT_RUN_THIS_PACKAGE",
+  "installed_runtime_changed": false,
+  "independent_research": "NOT_REGISTERED / NOT_RUN",
+  "fresh_review": "PARTIAL_FINDINGS_THEN_USAGE_LIMIT",
+  "final_report_review": "AUTHOR_VERIFICATION",
+  "new_application_dependencies": false,
+  "private_originals": "work/batch05-removal",
+  "performance_order": "before7 then after9; each sequential; no tests/quality/acceptance overlap with stage timing",
+  "diagnostic_jobs": "queue/equality acceptance and author quality run in parallel after stage timing; their wall times are not controlled performance comparisons"
+}

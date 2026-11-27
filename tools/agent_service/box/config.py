@@ -8,6 +8,7 @@ nobody edits those by hand.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -29,6 +30,24 @@ class Strict(BaseModel):
 class Listen(Strict):
     host: str = "127.0.0.1"
     port: int = Field(default=8090, ge=1024, le=65535)
+
+
+class UIArea(Strict):
+    label: str
+    path_prefix: str
+
+
+class UI(Strict):
+    origin: str
+    path_prefix: str = "/ui"
+    areas: list[UIArea] = Field(default_factory=list, max_length=16)
+
+    @model_validator(mode="after")
+    def https_origin(self):
+        from agent_service.ui_auth import UISettings
+        UISettings(Path('/unused/auth.sqlite'), self.origin, path_prefix=self.path_prefix,
+                   areas=[a.model_dump() for a in self.areas])
+        return self
 
 
 class Repository(Strict):
@@ -134,6 +153,7 @@ class BoxConfig(Strict):
     installation_id: str = Field(pattern=r"^[a-zA-Z0-9_.-]{1,80}$")
     environment: str = Field(pattern=r"^[a-zA-Z0-9_.-]{1,80}$")
     listen: Listen = Field(default_factory=Listen)
+    ui: UI | None = None
     github: GitHub
     jira: Jira | None = None
     service_addresses: dict[str, str] = Field(default_factory=dict)  # service -> base URL its clients call
@@ -150,6 +170,8 @@ class BoxConfig(Strict):
 
     @model_validator(mode="after")
     def consistent(self):
+        if self.ui and self.listen.host != '127.0.0.1':
+            raise ValueError('ui_requires_loopback_backend')
         services = {r.service for r in self.github.repositories}
         unknown = sorted(set(self.service_addresses) - services)
         if unknown:
@@ -244,6 +266,14 @@ class BoxConfig(Strict):
                 jauth["email_env"] = j.auth.email_env
             config["jira"] = dict(base_url=j.base_url, project_keys=j.project_keys, bot_account_id=j.bot_account_id,
                                   webhook_secret_env=j.webhook_secret_env, auth=jauth)
+        if self.ui:
+            config['ui_config_path'] = str(state / 'ui' / 'ui.json')
+            # Root-owned activation identity; never read a service-controlled
+            # private file from the privileged manager to decide restart.
+            identity = self.ui.origin
+            if self.ui.path_prefix != '/ui' or self.ui.areas:
+                identity = json.dumps(self.ui.model_dump(mode='json'), sort_keys=True, separators=(',', ':'))
+            config['ui_origin_fingerprint'] = hashlib.sha256(identity.encode()).hexdigest()
         return config
 
 

@@ -1,0 +1,12 @@
+{
+  "author_run_v1": {
+    "reason": "Pre-review hashing/raw/first-attempt/failed-output contracts corrected before final package",
+    "status": "SUPERSEDED_TOOL_CONTRACT_ERRORS",
+    "summary_sha256": "a944b571ca1dd05c1f3dad1bd399db250bbdd13c1856c739a4f5ad32d5d7a76c"
+  },
+  "outside_audit_correction": {
+    "before_sha256": "6d461918426145e4dd20d23797b4d1851ba36864133ee912c27d8843a0037261",
+    "description": "O-visible alerts do not make primary S gold incomplete; TP/FP/FN/P/R/FAR unchanged; same 80 first assigned raw attempts retained",
+    "status": "DEVELOPMENT_SCORER_CORRECTION"
+  }
+}

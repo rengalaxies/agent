@@ -23,11 +23,12 @@ def _analyzer(spec: str | None, config: ServiceConfig):
 
 
 def _service(args) -> tuple[Service, ServiceConfig]:
+    from .ui_operator import metadata_for_config
     config = ServiceConfig.load(args.config)
     store, connectors, backends = build(config)
     service = Service(store=store, connectors=connectors, backends=backends,
                       analyzer=_analyzer(args.analyzer, config), installation_id=config.installation_id,
-                      environment=config.environment, analysis_settings=config.analysis)
+                      environment=config.environment, analysis_settings=config.analysis,ui_metadata=metadata_for_config(config))
     return service, config
 
 
@@ -61,8 +62,10 @@ def main(argv=None) -> int:
     parser.add_argument("--analyzer", help="trusted module:factory returning an Analyzer")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8090)
+    parser.add_argument("--ui-config", help="optional private UI auth configuration; serve only")
     parser.add_argument("--keep", help="smoke: keep the stand and state in this new directory")
     args = parser.parse_args(argv)
+    if args.ui_config and args.command!='serve':parser.error('--ui-config is only supported by serve')
     if args.command == "smoke":
         from .smoke import main as smoke
 
@@ -88,6 +91,19 @@ def main(argv=None) -> int:
     if args.command == "status":
         print(json.dumps(service.store.status(), ensure_ascii=False, indent=2))
         return 0
+    ui_settings=None
+    ui_config=args.ui_config or config.ui_config_path
+    if ui_config:
+        from .ui_auth import UISettings
+        from .ui_scope import validate_private_locations
+        try:
+            ui_settings=UISettings.load(ui_config)
+            ui_settings.validate_bind(args.host)
+            validate_private_locations(ui_settings,service,ui_config)
+        except (ValueError,KeyError,TypeError,OSError):
+            print('ui_configuration_invalid')
+            return 1
+    service.ui_settings=ui_settings
     if args.command == "reconcile":
         print(json.dumps(service.reconcile()))
         print(json.dumps(service.run_until_idle(10_000)))
@@ -96,12 +112,18 @@ def main(argv=None) -> int:
 
     from .api import create_app
 
+    try:
+        app=create_app(service,status_token=os.environ.get('AGENT_SERVICE_STATUS_TOKEN'),ui_settings=ui_settings)
+    except (ValueError,OSError):
+        if ui_settings is None:raise
+        print('ui_configuration_invalid')
+        return 1
+
     stop = threading.Event()
     worker = threading.Thread(target=worker_loop, args=(service, config.reconcile_seconds, stop), daemon=True)
     worker.start()
     try:
-        uvicorn.run(create_app(service, status_token=os.environ.get("AGENT_SERVICE_STATUS_TOKEN")),
-                    host=args.host, port=args.port, log_level="warning")
+        uvicorn.run(app,host=args.host,port=args.port,log_level='warning',proxy_headers=False)
     finally:
         stop.set()
         worker.join(timeout=30)

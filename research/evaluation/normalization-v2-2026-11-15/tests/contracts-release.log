@@ -1,0 +1,36 @@
+test_failed_and_superseded_carry_no_claims (tests.graph.test_output_contracts.CodeTests.test_failed_and_superseded_carry_no_claims) ... ok
+test_partial_must_show_what_is_missing (tests.graph.test_output_contracts.CodeTests.test_partial_must_show_what_is_missing) ... ok
+test_reason_must_belong_to_status (tests.graph.test_output_contracts.CodeTests.test_reason_must_belong_to_status) ... ok
+test_unknown_delta_finding_usage_gap_and_status_codes_are_rejected (tests.graph.test_output_contracts.CodeTests.test_unknown_delta_finding_usage_gap_and_status_codes_are_rejected) ... ok
+test_fact_needs_authentic_sufficient_non_model_evidence (tests.graph.test_output_contracts.EvidenceTests.test_fact_needs_authentic_sufficient_non_model_evidence) ... ok
+test_jira_result_has_no_diff (tests.graph.test_output_contracts.EvidenceTests.test_jira_result_has_no_diff) ... ok
+test_model_hypothesis_cannot_declare_itself_sufficient (tests.graph.test_output_contracts.EvidenceTests.test_model_hypothesis_cannot_declare_itself_sufficient) ... ok
+test_owner_status_matches_teams (tests.graph.test_output_contracts.EvidenceTests.test_owner_status_matches_teams) ... ok
+test_references_must_exist_and_rejected_evidence_cannot_back_claims (tests.graph.test_output_contracts.EvidenceTests.test_references_must_exist_and_rejected_evidence_cannot_back_claims) ... ok
+test_snapshot_identity_and_worktree_marking (tests.graph.test_output_contracts.EvidenceTests.test_snapshot_identity_and_worktree_marking) ... ok
+test_operation_identity_matches_core_formula_and_separates_services (tests.graph.test_output_contracts.IdentityTests.test_operation_identity_matches_core_formula_and_separates_services) ... ok
+test_route_normalization (tests.graph.test_output_contracts.IdentityTests.test_route_normalization) ... ok
+test_diagnostics_never_echo_input (tests.graph.test_output_contracts.RequestTests.test_diagnostics_never_echo_input) ... ok
+test_pr_head_must_be_pinned_and_in_scope (tests.graph.test_output_contracts.RequestTests.test_pr_head_must_be_pinned_and_in_scope) ... ok
+test_trigger_kind_matches_payload (tests.graph.test_output_contracts.RequestTests.test_trigger_kind_matches_payload) ... ok
+test_committed_json_schema_matches_models (tests.graph.test_output_contracts.SchemaFileTests.test_committed_json_schema_matches_models) ... ok
+test_parse_does_not_mutate_input (tests.graph.test_output_contracts.SchemaFileTests.test_parse_does_not_mutate_input) ... ok
+test_shared_examples_parse_and_keep_their_status (tests.graph.test_output_contracts.SharedExampleTests.test_shared_examples_parse_and_keep_their_status) ... ok
+test_foreign_schema_is_rejected (tests.graph.test_output_contracts.VersionTests.test_foreign_schema_is_rejected) ... ok
+test_unknown_major_is_incompatible_and_not_green (tests.graph.test_output_contracts.VersionTests.test_unknown_major_is_incompatible_and_not_green) ... ok
+test_valid_request_and_result_round_trip (tests.graph.test_output_contracts.VersionTests.test_valid_request_and_result_round_trip) ... ok
+test_catalog_has_forty_new_scenarios (tests.test_evaluation_catalog.EvaluationCatalogTest.test_catalog_has_forty_new_scenarios) ... ok
+test_clusters_group_scenarios_by_semantic_family (tests.test_evaluation_catalog.EvaluationCatalogTest.test_clusters_group_scenarios_by_semantic_family) ... ok
+test_each_scenario_changes_only_declared_dimensions (tests.test_evaluation_catalog.EvaluationCatalogTest.test_each_scenario_changes_only_declared_dimensions) ... ok
+test_family_distribution_matches_frozen_manifest (tests.test_evaluation_catalog.EvaluationCatalogTest.test_family_distribution_matches_frozen_manifest) ... ok
+test_no_exact_semantic_transition_is_reused_from_development (tests.test_evaluation_catalog.EvaluationCatalogTest.test_no_exact_semantic_transition_is_reused_from_development) ... ok
+test_oracle_consumer_keys_match_obligations (tests.test_evaluation_catalog.EvaluationCatalogTest.test_oracle_consumer_keys_match_obligations) ... ok
+test_oracle_is_balanced_and_complete (tests.test_evaluation_catalog.EvaluationCatalogTest.test_oracle_is_balanced_and_complete) ... ok
+test_scenarios_contain_no_labels_or_baseline_rules (tests.test_evaluation_catalog.EvaluationCatalogTest.test_scenarios_contain_no_labels_or_baseline_rules) ... ok
+test_template_groups_are_unique_and_evaluation_only (tests.test_evaluation_catalog.EvaluationCatalogTest.test_template_groups_are_unique_and_evaluation_only) ... ok
+test_working_protocol_versions_are_consistent (tests.test_evaluation_catalog.EvaluationCatalogTest.test_working_protocol_versions_are_consistent) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.159s
+
+OK

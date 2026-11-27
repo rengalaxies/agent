@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/linux_driver.py", line 80, in <module>
+    bootstrap() if a.mode=='bootstrap' else status(a.mode=='collect')
+    ~~~~~~~~~^^
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/linux_driver.py", line 67, in bootstrap
+    result=remote(code,payload.getvalue(),timeout=120);(LOCAL/'linux-start.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/work/batch10/linux_driver.py", line 54, in remote
+    if r.returncode:raise RuntimeError('remote_control_failed:'+str(r.returncode))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: remote_control_failed:255

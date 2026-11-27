@@ -1,0 +1,24 @@
+[Unit]
+Description=ImpactMap UI pilot (isolated, saved offline author pins)
+After=network.target
+[Service]
+Type=simple
+User=impactmap-ui
+Group=impactmap-ui
+WorkingDirectory=/var/lib/impactmap-ui-pilot
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=HOME=/var/lib/impactmap-ui-pilot
+Environment=TMPDIR=/var/lib/impactmap-ui-pilot/tmp
+ExecStart=/opt/impactmap-ui-pilot/releases/agent-service-0.1.0-g29ed2ad8fc2e-linux-x86_64-cp312/venv/bin/python -I -B /opt/impactmap-ui-pilot/releases/agent-service-0.1.0-g29ed2ad8fc2e-linux-x86_64-cp312/app/tools/agent_service/box/launch.py --config /etc/impactmap-ui-pilot/service.json --run /var/lib/impactmap-ui-pilot/run --host 127.0.0.1 --port 18092
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/var/lib/impactmap-ui-pilot
+ReadOnlyPaths=/var/lib/impactmap-ui-pilot/mirrors
+[Install]
+WantedBy=multi-user.target

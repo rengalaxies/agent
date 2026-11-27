@@ -1,0 +1,8 @@
+[Unit]
+Description=Renew ImpactMap public IP TLS certificate
+Wants=network-online.target
+After=network-online.target
+[Service]
+Type=oneshot
+UMask=0077
+ExecStart=/opt/impactmap-tls/venv/bin/certbot renew --quiet --config-dir /etc/letsencrypt-impactmap --work-dir /var/lib/impactmap-tls/work --logs-dir /var/lib/impactmap-tls/logs

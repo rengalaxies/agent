@@ -1,0 +1,20 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "case_id": "DEV-0039",
+  "error_code": null,
+  "finished_at": "2026-11-15T15:12:33.868405+00:00",
+  "method": "impactmap_static",
+  "payload_sha256": "00852a0307b4bb981a0486b2ef765f01ae665dd62220c85fc707420ffe733516",
+  "payload_utf8": "{\"affected\":[],\"checks\":[],\"claims\":[],\"code_version\":\"evaluation-static\",\"constitution_version\":\"agent-service-v1.0:100bcad3db9c\",\"correlation_id\":\"DEV-0039\",\"costs\":{\"completion_tokens\":0,\"currency\":null,\"model_calls\":0,\"prompt_tokens\":0,\"reserved_micro\":null},\"deltas\":[],\"environment\":\"offline\",\"event_id\":\"DEV-0039\",\"evidence\":[],\"findings\":[],\"gaps\":[{\"code\":\"commit_unavailable\",\"evidence_refs\":[],\"path\":null,\"repository\":\"provider\"},{\"code\":\"unmapped_call\",\"evidence_refs\":[],\"path\":\"client.py\",\"repository\":\"consumer\"}],\"graph_version\":\"graph-1\",\"impact_paths\":[],\"installation_id\":\"author-development\",\"kind\":\"analysis_result\",\"model\":null,\"profile\":\"http-requests-9\",\"reason_code\":\"commit_unavailable\",\"relationships\":[],\"request_id\":\"DEV-0039\",\"resource_version\":\"0f5dc383f1df73d3c58d5bd30c3e5fca3a97cd35bac39c717664298e5adcfda6\",\"schema\":\"agent-graph-output\",\"schema_version\":\"2.2\",\"snapshots\":[{\"commit\":null,\"mode\":\"WORKTREE\",\"repository\":\"provider\",\"role\":\"base\",\"tree\":null},{\"commit\":null,\"mode\":\"WORKTREE\",\"repository\":\"provider\",\"role\":\"head\",\"tree\":null},{\"commit\":\"b9a37c6af76fea80118c72b76d1f0f9fe5a0e15a\",\"mode\":\"GIT_COMMIT\",\"repository\":\"consumer\",\"role\":\"consumer\",\"tree\":\"1f88348402e39bc8e2696396ada809c4dde899ab\"}],\"source_freshness\":[{\"freshness\":{\"checked_at\":\"2026-11-15T15:12:33.829238Z\",\"reasons\":[\"source_unavailable\"],\"status\":\"UNKNOWN\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"provider\",\"source_kind\":\"git\"},{\"freshness\":{\"checked_at\":\"2026-11-15T15:12:33.829238Z\",\"reasons\":[],\"status\":\"CURRENT\",\"valid_from\":null,\"valid_until\":null},\"source_id\":\"consumer\",\"source_kind\":\"git\"}],\"status\":\"FAILED\",\"summary\":\"The PR base or head commit is not available from an allowed ref; nothing was analyzed.\",\"superseded_by\":null,\"timings\":{\"finished_at\":\"2026-11-15T15:12:33.829084Z\",\"seconds\":{\"analysis\":0.30637383300017973},\"started_at\":\"2026-11-15T15:12:33.522717Z\"},\"trigger_kind\":\"pr\",\"unknowns\":[],\"usefulness_confirmed\":false}\n",
+  "returncode": 0,
+  "started_at": "2026-11-15T15:12:32.862074+00:00",
+  "stderr": "",
+  "stderr_bytes_base64": "",
+  "stdout": "",
+  "stdout_bytes_base64": "",
+  "wall_s": 1.0063677910002298,
+  "wall_time_cap_seconds": 60
+}

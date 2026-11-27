@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "provenance": "AUTHORED_LOCAL_BITBUCKET_HTTP_AND_GIT_REAL_CORE_REAL_KAITEN",
+  "real_cloud_bitbucket": false,
+  "real_kaiten": true,
+  "model": "OFF",
+  "installation": "impactmap-batch08-authored-hybrid",
+  "target": {
+    "tenant": "https://rengalaxies.kaiten.ru",
+    "board_id": "1982649",
+    "card_id": "74759475"
+  },
+  "resource": "bitbucket:11111111-1111-1111-1111-111111111111/22222222-2222-2222-2222-222222222222#7",
+  "first": {
+    "generation": 1,
+    "status": "USEFUL",
+    "findings": [
+      "POSSIBLE_TRUNCATION"
+    ],
+    "head": "c2a7f1b742d52b190424a5d14472c39588e87efb",
+    "steps": []
+  },
+  "corrected": {
+    "generation": 2,
+    "status": "ABSTAINED",
+    "reason": "no_supported_delta",
+    "findings": [],
+    "head": "00e202ebb1f419f23135ae68a627d91e44f108ff",
+    "steps": [
+      "ingest:new_generation",
+      "publish:delivered",
+      "analyze:done",
+      "publish:delivered"
+    ]
+  },
+  "same_scoped_comment_id": "tracker-comment:v1:[\"kaiten\",\"https://rengalaxies.kaiten.ru\",\"74759475\",\"93785713\"]",
+  "native_comment_id": "93785713",
+  "owned_marker_count": 1,
+  "repeat_idle": true,
+  "store_reconstructed_idle": true,
+  "process_restart": false,
+  "production_deployment": false
+}

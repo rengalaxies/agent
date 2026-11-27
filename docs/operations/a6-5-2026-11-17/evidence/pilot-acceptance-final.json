@@ -1,0 +1,65 @@
+{
+  "profile": "ISOLATED_OFFLINE_UI_NOT_LIVE",
+  "checks": {
+    "public_api_allowlist": true,
+    "anonymous_deep_link_redirect": true,
+    "operator_results": 2,
+    "reviewer_operator403": true,
+    "secure_cookie_flags": true,
+    "restart_persisted_session": {
+      "before": "2358001",
+      "after": "2392574"
+    },
+    "verified_backup_scratch_restore": {
+      "name": "20261117T092754927562Z-a65-pilot",
+      "counts": {
+        "events": 0,
+        "resources": 2,
+        "jobs": 2,
+        "intents": 0,
+        "history": 6,
+        "delivered_comments": 0,
+        "graph_artifacts": 6,
+        "graph_proposals": 0,
+        "ui_users": 3
+      },
+      "files": [
+        "state/service/service.sqlite",
+        "state/core/graph.sqlite3",
+        "state/ui/auth.sqlite",
+        "config/box.yaml",
+        "config/service.json",
+        "config/policy.json"
+      ],
+      "restored_accounts_disabled": true
+    },
+    "legacy_worker": {
+      "pid": "60331",
+      "release": "/opt/agent-bitbucket/releases/agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312"
+    },
+    "bare_ui303": true
+  },
+  "loaded": {
+    "code_version": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312",
+    "commit": "29ed2ad8fc2e1b67917836cfc60aff0beb9cc28a",
+    "config": "/etc/impactmap-ui-pilot/service.json",
+    "constitution": "agent-service-v1.0:100bcad3db9c",
+    "constitution_default": "agent-service-v1.0:100bcad3db9c",
+    "constitution_path": "/opt/impactmap-ui-pilot/releases/agent-service-0.1.0-g659185fa2ed9-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+    "core": {
+      "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1",
+      "output_schema_version": "2.2",
+      "profile": "http-requests-9",
+      "schema": "agent-graph-1"
+    },
+    "launcher_pid": null,
+    "listen": "127.0.0.1:18092",
+    "manifest_sha256": "cf1fbab54a4b1da34c2f91121e84bfa5a8d2734a12f6c2670502eb0c7609a109",
+    "pid": 2392574,
+    "python": "3.12.3",
+    "release": "agent-service-0.1.0-g29ed2ad8fc2e-linux-x86_64-cp312",
+    "release_id": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312",
+    "started_at": "2026-11-17T09:27:54.210477+00:00"
+  },
+  "status": "PASS"
+}

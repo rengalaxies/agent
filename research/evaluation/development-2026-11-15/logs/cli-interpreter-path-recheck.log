@@ -1,0 +1,19 @@
+test_invalid_output_overflow_deadline_and_cancel_safe (tests.graph_demo.test_graph_cli.CLITests.test_invalid_output_overflow_deadline_and_cancel_safe) ... FAIL
+
+======================================================================
+FAIL: test_invalid_output_overflow_deadline_and_cancel_safe (tests.graph_demo.test_graph_cli.CLITests.test_invalid_output_overflow_deadline_and_cancel_safe)
+----------------------------------------------------------------------
+agent_graph_demo.contracts.DemoError: deadline_exceeded
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph_demo/test_graph_cli.py", line 178, in test_invalid_output_overflow_deadline_and_cancel_safe
+    with self.assertRaisesRegex(DemoError, expected):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "cli_invalid_json" does not match "deadline_exceeded"
+
+----------------------------------------------------------------------
+Ran 1 test in 0.456s
+
+FAILED (failures=1)

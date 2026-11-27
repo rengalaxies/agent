@@ -1,0 +1,2400 @@
+{
+  "base_revisions": {
+    "r00": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+    "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+    "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+    "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+    "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+    "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+    "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+    "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+    "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+    "r09": "137a0c5e279c317a47350baf195567847492376f"
+  },
+  "effective_limits": {
+    "max_corpus_bytes": 8000000,
+    "max_file_bytes": 65536,
+    "max_files": 2048,
+    "scan_seconds": 60.0
+  },
+  "generator": {
+    "seed": 20261114,
+    "sha256": "532f4c895f2f30efb779854aac5e9a833db7447a490b3a8c3e5bf14faf90c630",
+    "version": "1.0"
+  },
+  "known_dependency_callsites": 3,
+  "oracle_sha256": "3eaad6a2812ccd07998a46dc9c6924beb22421a178bc314b1ac7e9d326cd0ad4",
+  "parameters": {
+    "active_consumers": 3,
+    "calls_per_consumer": 1,
+    "operations": 8,
+    "python_lines": 100000,
+    "repositories": 10
+  },
+  "policy": {
+    "addresses": [
+      {
+        "base_url": "https://scale-provider.test",
+        "service": "provider"
+      }
+    ],
+    "capabilities": [
+      "read_context",
+      "maintain",
+      "propose",
+      "report_check"
+    ],
+    "environment": "offline",
+    "installation_id": "scale-controlled",
+    "limits": {
+      "max_corpus_bytes": 8000000,
+      "max_file_bytes": 65536,
+      "max_files": 2048,
+      "scan_seconds": 60.0
+    },
+    "repositories": [
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r00",
+        "include": [
+          "*.py"
+        ],
+        "revision": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+        "root": "repositories/r00",
+        "service": "provider",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r01",
+        "include": [
+          "*.py"
+        ],
+        "revision": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "root": "repositories/r01",
+        "service": "consumer_01",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r02",
+        "include": [
+          "*.py"
+        ],
+        "revision": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "root": "repositories/r02",
+        "service": "consumer_02",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r03",
+        "include": [
+          "*.py"
+        ],
+        "revision": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "root": "repositories/r03",
+        "service": "consumer_03",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r04",
+        "include": [
+          "*.py"
+        ],
+        "revision": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "root": "repositories/r04",
+        "service": "consumer_04",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r05",
+        "include": [
+          "*.py"
+        ],
+        "revision": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "root": "repositories/r05",
+        "service": "consumer_05",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r06",
+        "include": [
+          "*.py"
+        ],
+        "revision": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "root": "repositories/r06",
+        "service": "consumer_06",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r07",
+        "include": [
+          "*.py"
+        ],
+        "revision": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "root": "repositories/r07",
+        "service": "consumer_07",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r08",
+        "include": [
+          "*.py"
+        ],
+        "revision": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "root": "repositories/r08",
+        "service": "consumer_08",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r09",
+        "include": [
+          "*.py"
+        ],
+        "revision": "137a0c5e279c317a47350baf195567847492376f",
+        "root": "repositories/r09",
+        "service": "consumer_09",
+        "snapshot": "git"
+      }
+    ],
+    "subject": "scale-verifier"
+  },
+  "product_default_limits": {
+    "freshness_seconds": 3600,
+    "max_corpus_bytes": 2000000,
+    "max_file_bytes": 65536,
+    "max_files": 256,
+    "max_model_steps": 4,
+    "max_proposals": 24,
+    "max_tool_lines": 60,
+    "scan_seconds": 15.0
+  },
+  "profile": "http-requests-6",
+  "provenance": "controlled_generated",
+  "repositories": [
+    {
+      "bytes": 254328,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 829,
+          "path": "api.py",
+          "python_nonblank_noncomment_lines": 26,
+          "python_physical_lines": 35,
+          "sha256": "92898e6b59b8d76d0de1adbf6ebe3410011dcda6061aec710d65b5af4f55a6f5"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "57b3801baf81669d8faa67206287b8bf5212c8bbe738bea3054ed5625a2cf7bb"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6a72c9aac5530b4ea0754e680b52000e8dd412d8841209d7e33230eff009dfa8"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "4599965c556714380e58228d70ceee0ea6de10b5f61f668dff9a2ed2ebebc0f9"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0d8b8cc83e6c8395229db9173eb5a8a05bd980e20c6f600297542c4af6a8c36b"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "881e4109d9b4825fea51afbe5ee83a24bfe91b5720de3f93384bf448f4a8f0a8"
+        },
+        {
+          "bytes": 12159,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "df073e83e8fce25988c373e5c7cd10f2f87a458f7c48865f510ec0f930e312e3"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "ab6739377d9f393ab66874dcf37d41a7e370364ff8e55f56b0b066a3d1b9acde"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b14675badaad013d7e4f6980bce2d19042d35f353e7e6df971fa76c1eb507f9f"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "4709216cf78452821f795731a519b42cb71ce840d3804905d583d257d369cb8b"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a2e28ba3248ba77ce92d54fcc1a7222f6d9bcbc21b28d3df3cb550d05880d730"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "4caafb8be401078a0e4b72b71d77dd0bd79b1a796e969e29b7b9df5b9798f680"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "67bd738fc12ef53a26609fc244b2115992e4e23201c2232484b6b44f60595d0a"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6a58b7226cf901903645fd53967b6a5312b31fb03790aa7d51f93a874f841d2e"
+        },
+        {
+          "bytes": 12185,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d9ddbbcccaef5711ec6b10e0b4a6d9205244c17fa815655a6cf8db19215ebd25"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "775313244cce95a72205eff81466a392a6025a484223fa0e80d72f6d6fa3f92b"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "01f63c7fe71fa79dc5e0b27d553e4a58c5a19ed0e90c2ec7e99619def64b7d9f"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a4c7614235b3875f36d9c8be5fc20c066227dfbe471919b9303f12e4b2249e2a"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0f4e9255b97728330d80f085a0845839a6256735a18a7e0eeabf58684f2107f9"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a3967ff85cc743a2099e5f7f9b9d8253dad94b64c561cf92865a4aae4f380487"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0b6095f0ba61c74ad396c2234b49b38e297690f6fe2d3f3a750919fcfd3d89bc"
+        },
+        {
+          "bytes": 10010,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "436d86c280a672284d754b6608df6975e294bc887e1d4af88ff684afa4275dbb"
+        }
+      ],
+      "main_commit": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+      "main_tree": "8c8cb92a9e87ab7643c9b1ca6b981c66363c535b",
+      "python_nonblank_noncomment_lines": 10021,
+      "python_physical_lines": 10051,
+      "repository": "r00",
+      "root": "repositories/r00",
+      "service": "provider"
+    },
+    {
+      "bytes": 253645,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 164,
+          "path": "client.py",
+          "python_nonblank_noncomment_lines": 5,
+          "python_physical_lines": 7,
+          "sha256": "de2fa0cfbcff3595bfd43b8c9102837aa500d4f841686cf655a8173a260820a9"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "caece75fc429603913ee209f48906f2ab9f59891b49a8f01f9d4ae6c622b502b"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "25bc418d671927960ea34f514ac207bb5326cd15d85cdf1580a294bb45d10ea9"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "8c3b509887937f63c8a7196644e6dbcc65fecd81a2844672269c4bd255032af3"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "10c22a28f5da7c1c6a9874d3a218a835bed9a610ba72dff9802f5601fcb12d6d"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "55a72a3ee51b4dbe3b3e41bcb685ab2629b104dfed0769f579b7fc5100f125a1"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "490c640ced90be8afbb48685803c069678809764660001d8b973c94abe74a4c8"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "420f966f8043a9f597d499a6136c9d6035d5d8b7aea0f585165fa0a1ef1ef98c"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "3f6874ec32cbb3bf45295a5bb7010857c9d7e6e6dcccf6d3592f86127a25e5dc"
+        },
+        {
+          "bytes": 12162,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6b37a2eeabc7d55dbed057eaef92c5b83a5ace9d7d2b802a9fccedb1da71ff57"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e8df53ed77fbee31ad8be830d8d2dc905f002d8a20e1bc27e36cb7a022539135"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "226c6ed6d6fad5dc56184cbce317815c99f4a48608dd9b6144655a2ba2b53022"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "ef16f2faea64e085cfbf1f9881a0500ee81ae17817ec936966ef5ec988b1410b"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b5bbe731d9b64f4069d0a51034077217453c7519ca55b7f8767096c0e4747778"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "31dd3cadabb3e938fccaaca772fdc224d14e69d527d9140fa92c38652776ad76"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "72ae0a328b7780c7b5a93eb780f9dbf01e01655a3f51a54ea0580e89e547875b"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a993617c9d4b689793510031de81922abbb91ccd6a1dea17867e314d1eea3c7d"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d74419ec3353d5ef978dc159aa3e175cb9ebc81a56a06f779e859170f2718247"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "9a126bb5404fbe2e1ea0bfa85404f38bd683812b8c6c166b14d008fdebcc9a79"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a79e06d70a02c5d34129c4f40639492b9c30d42726d4dbb87eed2bc2b88bd61b"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "227c0c9da211b160634933b52fd938e4931b6c155c905cb4d01c746436c072ac"
+        },
+        {
+          "bytes": 10013,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "31fc3d6212909432b9712f31705f5efd97a88db0fff519d4cf3cdec3b5329e40"
+        }
+      ],
+      "main_commit": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+      "main_tree": "c9e2b1bf21039f8f394f54cc5ad77b2cb296179b",
+      "python_nonblank_noncomment_lines": 10000,
+      "python_physical_lines": 10023,
+      "repository": "r01",
+      "root": "repositories/r01",
+      "service": "consumer_01"
+    },
+    {
+      "bytes": 253691,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 164,
+          "path": "client.py",
+          "python_nonblank_noncomment_lines": 5,
+          "python_physical_lines": 7,
+          "sha256": "de2fa0cfbcff3595bfd43b8c9102837aa500d4f841686cf655a8173a260820a9"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e0c75e08349fa5bddc03844d509c2037bce08e74662fd33b484da4358442858f"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "39de9b528453fc1530ffdcedd56aa48057478045e64c9a06fe5ccc7c9457011a"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "9f1efdd496743400ea2c049af65e9edab87da2e149dcfc4c8f1514cf6060453e"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "63169d6b8a642fd4168b41984670957862cafb8f607578359e3026c7f8bef6fe"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7d23edfe628dd1763744361a2e00dc0ee854d7f4083e0c89d5a92f09d329982b"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "37f235d542c09bfe4c8fcb0b1b0013023705aa84312c37fcc3b56686939f2e2a"
+        },
+        {
+          "bytes": 12181,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e6dfb197a3199dd464e0ef04e2b4a3213a09d17636ddf3eece8523d7d0530449"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a657aa4352f058e38bc05af2c6f3d265b447f81ad5c91867b65eb38dc63e5846"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "05dfaa3f16ad19f869bd97beca6641029f584115f1cc97b2f1778ad922862539"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a3eb9db3d0ed731bc0215c8a653df505b450f9294d5fee3cfe5505d99203d861"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b89c2be7a4b1bd47efdfbb1bb3e78b652c1ef1351ca9e3fcd4d7e591beaedc00"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "87196b173f1b1f2de4feb7da5adcaa2febc8859fff9273ad47a020a287cf9e48"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "8bdcec31565ce09c8ef7825c5cd7ad3d10a9e4b686f713f8bbd4a37aa3721ba9"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a21162ce957edb86960ab65b6e0db224c5f44dcb65e5eab61ef52ca570e44d8a"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "730618832a0e5ef8f623daed8625d6d99f9305610a0e73db8caccde580cfce74"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "23bb49d36a4ef599b7373476e03afe327bbdf3dd6e74a41ed32b8b7c18c98382"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "5a13369254dd2a81c89625cf78f5cbd1847f730e12980e293bbbd7bbb3127141"
+        },
+        {
+          "bytes": 12187,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "ee1144887b8218fb43a311b0f01d73901f7e910b3e152a909481f96e8dda2287"
+        },
+        {
+          "bytes": 12165,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "2d679e410cbb3e14e2d475c8cd02214ddce91eca1ff44d8de3626dbb2a1a9293"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d35ea9d847898a7692cd4000641fdb770dcda2dac037c4b6c400119d34a89b70"
+        },
+        {
+          "bytes": 10015,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "1120705a435c2773294a3994acd83d203df4ea28dc43c1ccc543e64305a7f595"
+        }
+      ],
+      "main_commit": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+      "main_tree": "206fc59315032ca7b0939608de4a88c6c2d04cfd",
+      "python_nonblank_noncomment_lines": 10000,
+      "python_physical_lines": 10023,
+      "repository": "r02",
+      "root": "repositories/r02",
+      "service": "consumer_02"
+    },
+    {
+      "bytes": 253654,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 164,
+          "path": "client.py",
+          "python_nonblank_noncomment_lines": 5,
+          "python_physical_lines": 7,
+          "sha256": "de2fa0cfbcff3595bfd43b8c9102837aa500d4f841686cf655a8173a260820a9"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "cd02bf5114c10e4b4ee1dc366d890bcd3052c3f55dbc2763f80f6afd138f0865"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7ddf1eb10bded09b8e86fae68700da1b13de1443343fa7b0f7dd70bf79f85bd5"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "bda0315b5343ba4c4b9d4fc753380340fa2e54ca01d1e5e4a5eab11f0f6699e5"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "092fe83ff226a20192b693d160c49c0e57fcceb22d1a9c4b096be0793b760775"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c5ac80aaa9ac13873201be74a05889a1d42cc12c69b3630255e1807125726eba"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "caf5a6116de391fa6aec0eb9084c12e0ef60b2d8f660926d42ea1a0b0e7525fa"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "40b2558a40e7b5fa9982abb1c2ce9349496fc02b763569a53bf2e6c1b5e01ff9"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "35f7329306b19e20c91451b8f29c1c46bb47bf6373cf3af3dcbd2571b1a50f60"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "97ed7097064e63bd95df00db50930d7d44a040f3a0e178947dcfef030c561bb9"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "aab12b7e3ccec490e9d721000425efb34a22dd0444c9f6d007f15bbfc6bdea12"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a6b0003a615117a884b9a1fbdaf25d2d8d3c9d34542f139202653eb52cf4b8e6"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "5006bff72977cfb960fef762abed1bffebfcccf74b783207dbf9c7770188cd7f"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d88bade1104abf904588b34e6a9aaf752cabc5f6752ee67f205310a802c85f10"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b66821e749e8f8361fea7b7cabb6c9221ec58692c8c9c6064027799291213137"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "af68a3d121f799b345293a24b070c3eb60fd10401f2122446a2bdfe776808f35"
+        },
+        {
+          "bytes": 12163,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e4cd5775e9761b3ede23a1b7e4372c680a77d8d6f7464fe50ed856b63f657c7a"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0baf59b88461256d6a7996ac401b9a2382b1bfbdc50986d05b11480da38bfd31"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7d53a182cbbc272732d58da75e8fd0c3af5551b1674a047d053ead838fcd8fd5"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0004af9fec30bfd600b05a8866a47ab4054da2ff9988aac19ca15843d7209eb0"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e792634fd3435bd64d0120f0473e1f4368692830c224e7d25c54303ac0c51ddd"
+        },
+        {
+          "bytes": 10009,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "c5d34cde0aa500ce00efb674b8822c976a7efffd1bd8d8b37daad72a3ad00e1d"
+        }
+      ],
+      "main_commit": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+      "main_tree": "d4c886c109a7217c905e7cef69297571c42cb064",
+      "python_nonblank_noncomment_lines": 10000,
+      "python_physical_lines": 10023,
+      "repository": "r03",
+      "root": "repositories/r03",
+      "service": "consumer_03"
+    },
+    {
+      "bytes": 253555,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "46b9dc2989363b06f0eb25db6e26f9b479df0da7a5f848bd09bcac67a34866dd"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b17e85db0daa0026cc9b4fa01eb3a86f5796ba9f9e368c2541e229cc9108d74d"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e67d029f3326965fafdbc992a3d27357e424e1bbb8a2ac7469ef3d00b659bbf9"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "8a7a6f4a48a79efe2aaf0566c98e1f5edb18c84969355449bd9189af1dc1de42"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "3b704ea5fb36c1e962114d05c489d83233932f554f273b84b1e882724a6af663"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "df94e1ebfa38eacb62170097963cd48d5d09f08c0b78360a7ffb5ce11fc25e54"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7bb7a804adcd34b8eee975c5d183fa564581593f84a003fd4b0733b273c6727f"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c4b545386a86322d455b266601613b66deef94ae3ab1583d13fa36b980346855"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6f8a97db8874e157b88f87833946ea915e03a19283d761cdf536daeebe75e8fa"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "5d60efd898cd93a9b7753effccf6ff801efccb5e045ddb2334f0c62b5bc4823e"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "008ab58e6faaa671fce905d76df0dfe53e9a3e9fc4ef7748e7dd2028d8de21c0"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d63b58f09c083e5510485b19ebf4696dca6696c7dfac70135ca3d874cd300b47"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "88da89c7a66d3b0c0e44b9b8d38501c786b2eba56fa95c7707698b7b4f8541af"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "2e02d61b878d49b941d25f5cc309bc9ec16acd87a81a6caec9a799e151a8aaf4"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a69f341f9939d3c7fa5eb7655101c05bfbd0f970ba6f1609dc9561b9c626104e"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c1ce0cd5325279f9560720efe7722ebf69c9426938b51b923e3c888ef9a5b544"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "3bdb5c35f6047e5645bf1c95be5354d86e7686f1577d9687f2bcc01303f84a7e"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "68e9870b87b29752086c5f16221cd79d95af0f1b297387215c3b10ed0667d60f"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c5decad24897e6d4d7895bbd5a451881608d21f3a022fd36d1d327dc74c010e4"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c91a894e2a3a4610166ad3ad6c4f885b95519d561d76dc27317f4b975397aaac"
+        },
+        {
+          "bytes": 10018,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "ae061c1bd95f211f6d4fcffb3bc56a41c43098819579c67d265796e398b3a2fd"
+        }
+      ],
+      "main_commit": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+      "main_tree": "8345ce31d64121518be639b1748b7a04bf535d08",
+      "python_nonblank_noncomment_lines": 9997,
+      "python_physical_lines": 10018,
+      "repository": "r04",
+      "root": "repositories/r04",
+      "service": "consumer_04"
+    },
+    {
+      "bytes": 253512,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0c8733bb81156085b2af44ef3e610e6b328cb02789a37b8a370eef9efdff10d0"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "984d005f3f224b17c6f00057584539a7716ba3a9ab8f5d141686a2b1f5b6ccc5"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "bedbeec6059e8f510ebd10a2715d503d647242723a46f048812310eaeb4a4cd0"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b8cbb9f7c071b6208cd978b29f1edfe8ebfde1a0b04dc2fb65a894956cbdf738"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b914c07b6101c9da7c189514497c811c78761dade29ef25a11cfeaba8e155314"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "204c08b96c9acb0fe9cdeb5f4fe383859af809702e35d95727dac830725b4085"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "746b30a8e5064755feddc158ce0d7a57bb22c1588221cf50d2f6aca1bf14d393"
+        },
+        {
+          "bytes": 12181,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "768f3e88462d32e057fe809d82cc1222e6dbcabd0d33e9f3371d127a271fed89"
+        },
+        {
+          "bytes": 12166,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "ce00beccf75bd25dbe63aee71f12f03b859cc0f3677d9019c2c1f2831fdd96a4"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b9c90bf461693703cabf0fdd7114a9d0ac7cb70ced55bd998b933e5d5b71d1f1"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "f34ba961d814d86be3f5be24a9e2c12aff2fc1d5ce31492d7d6ee90ad4aaf299"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "eecf4c0dab4d17d2e09325472c6aa14709473a1f17a94ec6ab8054e112e8c4c0"
+        },
+        {
+          "bytes": 12157,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "544ed49d5e7ec2c0c7cff310a9db1d5d087b36b8334567e2481a57ea244bafb8"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "fd7fa3a37564d1c1a2914f88f40a7766b62b9f059c0627577fb67b954561883f"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c20a45dc1799ced7320d6c8a35fe837d742be31d5514a3ae6ae83b31eb99ffe6"
+        },
+        {
+          "bytes": 12166,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "084fac9e90acb91778892147064c4bcd30287feab1667b1b1fda6acc18d71ae3"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "ed631cf5dce79cfc1e22ee9698f89ae4f08744dae9d6a23916c7ea83fe39be30"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a36ecd34eea9d53f361b586758634babb5343b316dccb11d8632e28a7ea61978"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "242a1f76c7ed29dbb27a32c5dfe6366418f1dffbf07766f719c4b930a6aa3d92"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "49c3692398c76f7d1284275c2317df22ca289d8cac98ae980269526149557351"
+        },
+        {
+          "bytes": 10008,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "4e6c66644c2b2205b7bac4695318791a72d5f67625d46a062476dbb14cd174f0"
+        }
+      ],
+      "main_commit": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+      "main_tree": "9f37fe6615e078647e038a895cb92d4714f812c3",
+      "python_nonblank_noncomment_lines": 9997,
+      "python_physical_lines": 10018,
+      "repository": "r05",
+      "root": "repositories/r05",
+      "service": "consumer_05"
+    },
+    {
+      "bytes": 253520,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 12165,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0dd9cf0449fafeb99197d8c67a8d5a6f099cd7a0807c1686a45b43a30f520d65"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e1cafb504da123d9f067324cce68fc6bc1095885f8e7aa8f758fb0d58b667b47"
+        },
+        {
+          "bytes": 12166,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "4d0a3848a5af0e4739bf3f6a1000d30ca050ffd0db91a3739456869f908296c0"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "9642e9eb4bb0eb38fac5c92bb77baa893d78b355f0e670324df99167d8344626"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "cd28eebd9fe91fbe5b22159ef3f42ea86b192b0deafc114fc870c9e2744ea013"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "2268a9eede4db26e30f5f8c8db91e04d9d7e4e062f45c5375b76574f7ad11f97"
+        },
+        {
+          "bytes": 12166,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "51e71efb1fb8107a3349d2e628ca644d7304ff9a015e2da6ff61a506551490d2"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "f3dd8a9d059bb3f61b3ea0c4d94839c7921fefca23d9c74c912c1f49754d30c4"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "71f95bd4f3d53ad8bd06e5c0a09c855dd374dade8c96e251eaa989a5f068cda0"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "15805eec76b20341ed4e0a7d8ee30707f748001e4c643a83e1f2d8813482eb0e"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "896542cfd905226acbba7f77235e64b58bc63462af92ba578c3e5e9db8c8db9c"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "cc1ae77accc93167b358b6aa789987592b548e6ebef889ac0f18a1d175a324a3"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "3526dc13438df6d2368f6a82fc25475cd66e512cd210cf11179866d785118907"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "f54410927d11fcb42eb5b8f17aaebab3c9822d975e9df66275774723f4a7b800"
+        },
+        {
+          "bytes": 12166,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "75cdf12e63bc3f6997169e059eea7eda614c7786b8477eedee6c5de1029aa3a8"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b26356679a44d8db88aeef9e8a37c3df46b5c05d1fd7a5eb994785c0c10c0f9c"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "fa773f86f2ae2fe0ac5818e85bc5239df01876deb4350ce1cf32464c79687aa3"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d465bf1261a34a52fb8fe7eda47af56931fa00e4d5b6bde16bd02663f77695d9"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "76da9c412ceb91f94a76a20993437ab533635ea455700891e2dc750e3fb05a1c"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "88857f2e8008ec25f10756a734578cc2ed985672cf7a9626be63fc4477609afb"
+        },
+        {
+          "bytes": 10017,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 395,
+          "python_physical_lines": 396,
+          "sha256": "5d47dcd1b711466683d2fd1951a1403701c2644c3f7e72f7260690293cc2e816"
+        }
+      ],
+      "main_commit": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+      "main_tree": "c105e86b7381f816a6e8755b467d600afeb0d0ef",
+      "python_nonblank_noncomment_lines": 9997,
+      "python_physical_lines": 10018,
+      "repository": "r06",
+      "root": "repositories/r06",
+      "service": "consumer_06"
+    },
+    {
+      "bytes": 253525,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 12166,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "1d80e05bb353b692aacd513910f77a50a9955c7ef397c9017573e1c1cf87925c"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0cbf2ff465e2eb04307735045a054eb47dcbec0fb026f0cefe1803083a8d83e4"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "f7ff1adbc359c77c8fa90f829ef69c95dbf5e6d5ede8d74d5acfc1523e1d079a"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "039cb52d5d2f6267c2d41f8c0280f98c9340dcf5fbcfdd74d66ccade6d77b5f1"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "04bfc55a2e0ae216062277884e9e7e7415431c99f71a982c776991f65996c18a"
+        },
+        {
+          "bytes": 12178,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "9b017b11ef7b5fe3ed12a4fde8ef832982fe1219129dd5d9eb7c8e4517dd7e7f"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "3c2fb0f83ae46981973ca3b471da12c44a8387939f04d51344fd1ac390192158"
+        },
+        {
+          "bytes": 12157,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "666ccf9d4b842f0fa616ae2e6a8caea2ccac9f8025582ae24aab8d99308ce784"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "41d8c9b44092ee73b8a3870c9336c66f17ca0ee180ec031b2ad3610ff8774f10"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "74a8b3aecd61e64d09b4af1a6281c99bf3b38bf9929921020cc8bc3172afebe4"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7766983a9b9db93d4d4c6b2cecf18b6b59f6b8f3e25b41a87f78d9de186fb450"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "877340b878df7550430a7070d46b1887c9e0ce722a27b0daf07b5790322ee03f"
+        },
+        {
+          "bytes": 12181,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "dce110f7bf363f47607b239b3f24b85f292c4ba20f8b79eae41756acd3967578"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "43ce14a02bc5bce4226c851d26407d1ef769a8a4338e9817bb28aa330f91a7c5"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d96872be1fe0a8fe3f84215fcbcf99f321248a4e82885354b7a9773a61cb7f87"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "0657fce67a5f8cd81220d7599f0b540756979421e604ba8e19caad6e475809b5"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "27d492f73b726c667e98b30cca753da5841130cbec8994015a9bf6f08ceebaae"
+        },
+        {
+          "bytes": 12181,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "5feadc08255fa1f48e1c90a2049d618275983050ad4dd112507d869554bac161"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "c070f0e2f78d439ae66801678f1a7ce77e4440a3cbec6f99adeef0e8acd0d214"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "37794893bc4a6c485b358f928fd037452ca996e4116b4b1666698023bef531dc"
+        },
+        {
+          "bytes": 9993,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 394,
+          "python_physical_lines": 395,
+          "sha256": "b773b6020d1d20310c511ec9de562930e890da9f5c02a223d12c910655cff684"
+        }
+      ],
+      "main_commit": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+      "main_tree": "e3815935e495c61f13e6bd4c5ee2dfaa812dc6c4",
+      "python_nonblank_noncomment_lines": 9996,
+      "python_physical_lines": 10017,
+      "repository": "r07",
+      "root": "repositories/r07",
+      "service": "consumer_07"
+    },
+    {
+      "bytes": 253498,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "14bdb639bb99b79c8ae9e7e0fb63c68c9c62c09b1d58cd64754a72846fbe5b63"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b0495fe0a39d57b913eaf65368a15b806a49c02a27d9103bc09b5181acf84054"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d5981dbd6e2982baff82c0df5a0ba79ef7a227287ad6f0c02de48826523b7bf4"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "aeeafa32f7d2cd7891aa001029c12d845327757c4f08e8100c125470a42b8c87"
+        },
+        {
+          "bytes": 12173,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "54b7601eb4b2c4e55b56944a42ad4686fa0e17a4e769a141c82d975b8e44bc45"
+        },
+        {
+          "bytes": 12181,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "05ca9ce55a8a674fffd21b957c741ecddbde019602e52cd86145a532e1afb380"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "88788eaa6b7f421cfcf0642d9360322c8d711493380ced885c68afdba493deeb"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d145b872a98d8256477de02fa8a471dd3858d3f039535db5838dc21e2a2a2fbc"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "9032355511bbe3dda3ddf327daf34316ad397f08b749692a4a8a5fc91afc673c"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "ed421151a7c09958f92475a6ebab716b44dd52ee4ba832f32f8ef5b9a1d78ae1"
+        },
+        {
+          "bytes": 12167,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a1b8968d5788489651bfb232e65f8000fb68c98858587f6c431be499192a1413"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "8f65e7bbc5f9635f204e1b61aac82d764f5a88e3b5f877d026bfaade5c611ad6"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "b121f667effa39df08734947f29b269ac6abca387396b7d290de8c7c4f82b7d1"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6d5fe0691415784cfd2ba7269950574b8d7f9dc05312ce8e117fcb542f8c6a28"
+        },
+        {
+          "bytes": 12165,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a33c2dada920a9913802397cd655bc2218c0347222a75b50f07d0c2b935daf45"
+        },
+        {
+          "bytes": 12177,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "a924f9413af5a3db3924f8849a20af6735a0a356a96f7e20925c820c850d950b"
+        },
+        {
+          "bytes": 12163,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "2dea3a247e1d4dbb0c13797fab40ce9dc3c8cb58e337045737dea2a04397938a"
+        },
+        {
+          "bytes": 12172,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "1e75587a1eb0427d2c808e962c3d7f7252b3dff4937a18d61878c34a6b9b1374"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "4bc9952fa21e3778ec61e145a46b3521024e7f61368174222ee0144deb6a6811"
+        },
+        {
+          "bytes": 12182,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "1fb53d0316a9b496773f478972f86e81f17be40815f2df22f75a04fd145e09a1"
+        },
+        {
+          "bytes": 10001,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 394,
+          "python_physical_lines": 395,
+          "sha256": "feb2531733d2591368b5d56a84b2204f1ad66472b2999320978a23e4fdb6cd98"
+        }
+      ],
+      "main_commit": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+      "main_tree": "090bcabf319786597e623246650129fb04b68639",
+      "python_nonblank_noncomment_lines": 9996,
+      "python_physical_lines": 10017,
+      "repository": "r08",
+      "root": "repositories/r08",
+      "service": "consumer_08"
+    },
+    {
+      "bytes": 253530,
+      "files": 22,
+      "inventory": [
+        {
+          "bytes": 43,
+          "path": "extension.py",
+          "python_nonblank_noncomment_lines": 2,
+          "python_physical_lines": 2,
+          "sha256": "4e023d532005900aad321f72d38a1a83380398d6c070a5f373c38fbe04ddf468"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_000.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "e51ae121fae96039eb4e8877f3486ea6a298c2fd74ecdea436bcc6e9beab3923"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_001.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "45f073da1de01a4fc9282f205c896e35deaf7c6ba10a4484024a1833f1bb7d9a"
+        },
+        {
+          "bytes": 12165,
+          "path": "noise/part_002.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "905b3ede71ae71d29f0ff72d74d77973a7acf6d11635b250ff14c013c14fff70"
+        },
+        {
+          "bytes": 12181,
+          "path": "noise/part_003.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7dc683a2519314bc7b9d9570894ff10fb37c0fd8720b3bd83fc5705e0760a55e"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_004.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "688ec9c3b4cfb687aecdbf21cf355e3e21833cfdb046d570aae8b8674b0bdb98"
+        },
+        {
+          "bytes": 12183,
+          "path": "noise/part_005.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "3259205179c59a2b1a68194d04cd5bbe6f709ddc83c205e826cfb243e1518239"
+        },
+        {
+          "bytes": 12175,
+          "path": "noise/part_006.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "eb0f91d2b04bbc86ef5762509439557b94cab1520c6ef341ec974828de2db646"
+        },
+        {
+          "bytes": 12183,
+          "path": "noise/part_007.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "fb0ce041ccc36b7815299323bfbab511c27bd4e94770036a2f0eefff3a826847"
+        },
+        {
+          "bytes": 12168,
+          "path": "noise/part_008.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "314ebde896db703f6b0098cb46f787c344eb7536d87bacae0cd6c877f6d3217e"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_009.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6820b7a52c75a2f2f8066251495cc6106e525e1b8729ee16081eac2e27398d77"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_010.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "1a743547cf51e9f8335561725547832ac039399fb2bf1c9223b9506a5a2f58b6"
+        },
+        {
+          "bytes": 12176,
+          "path": "noise/part_011.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "14126d31fa5fa87141b78f46751590833a891e351245ad72e2fd281ff93d3a62"
+        },
+        {
+          "bytes": 12171,
+          "path": "noise/part_012.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "7206ee17ca0774609c775d5d47ff22850c123232271384aa1095a524b4e4e7f7"
+        },
+        {
+          "bytes": 12169,
+          "path": "noise/part_013.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d0ef164d4ed3e15739473e050c15bfdc763cc577ca3471d9378085c09ce950f6"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_014.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "06e84ab91754a599b700c9f81ad09c68658574f5d277dc1c930b380838f1af38"
+        },
+        {
+          "bytes": 12170,
+          "path": "noise/part_015.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "fa920bd25322dd0063901433ae67bff86b9eeb496b19c42221e19d0c8abe34ee"
+        },
+        {
+          "bytes": 12179,
+          "path": "noise/part_016.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "adb88a9116ae639b9a56ae3198a1e28867ce334fd0c0daad53ee8a961614f08e"
+        },
+        {
+          "bytes": 12180,
+          "path": "noise/part_017.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "4a09779ea179364fcb34cac7bfebf86f0f735ee0bdd8b67c4ef3ac961a6ff14e"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_018.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "6fb85b9d89a930c2d9fa9dae82c5dd29fa153ec0f529067c42f41f9c95438f1c"
+        },
+        {
+          "bytes": 12174,
+          "path": "noise/part_019.py",
+          "python_nonblank_noncomment_lines": 480,
+          "python_physical_lines": 481,
+          "sha256": "d16242b59f5cf4976d2e2a422fabe2a051683b3171deca6c9524f3f597aea809"
+        },
+        {
+          "bytes": 9997,
+          "path": "noise/part_020.py",
+          "python_nonblank_noncomment_lines": 394,
+          "python_physical_lines": 395,
+          "sha256": "bb22b207936d8758277e41a8478c4aee94dbe1ddace7d082ec3c3c502afcc791"
+        }
+      ],
+      "main_commit": "137a0c5e279c317a47350baf195567847492376f",
+      "main_tree": "4aa02b519d070eb25cb6a284daada754064b3a67",
+      "python_nonblank_noncomment_lines": 9996,
+      "python_physical_lines": 10017,
+      "repository": "r09",
+      "root": "repositories/r09",
+      "service": "consumer_09"
+    }
+  ],
+  "scenarios": {
+    "baseline": {
+      "head_revisions": {
+        "r00": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+        "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "r09": "137a0c5e279c317a47350baf195567847492376f"
+      }
+    },
+    "new_consumer": {
+      "head_revisions": {
+        "r00": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+        "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "r09": "f926b330d5f6e799ff9ceeaab61989edf76efd0a"
+      }
+    },
+    "operation_removed": {
+      "head_revisions": {
+        "r00": "a02ea818b55250dc407ef0c032df9da5dc48c45f",
+        "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "r09": "137a0c5e279c317a47350baf195567847492376f"
+      }
+    },
+    "partial_access": {
+      "fault": "configured source absent; not a credential revocation test",
+      "head_revisions": {
+        "r00": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+        "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "r09": "137a0c5e279c317a47350baf195567847492376f"
+      },
+      "unavailable_repository": "r01"
+    },
+    "removed_consumer": {
+      "head_revisions": {
+        "r00": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+        "r01": "69dfb6e1caae5294bbe24ec3e62d314ccba719dc",
+        "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "r09": "137a0c5e279c317a47350baf195567847492376f"
+      }
+    }
+  },
+  "schema_version": "impactmap-scale-corpus-1",
+  "streams": {
+    "head_updates": {
+      "1": [
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-01",
+          "head_sha": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        }
+      ],
+      "10": [
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-01",
+          "head_sha": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-02",
+          "head_sha": "9e461dfd6c09241d69a2d26696446bf54290bbcf",
+          "parent_sha": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-03",
+          "head_sha": "44ef5b324608e86fdf6a2da593c8d083f048f356",
+          "parent_sha": "9e461dfd6c09241d69a2d26696446bf54290bbcf",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-04",
+          "head_sha": "3edbc033911cd3ee0ae237144ae7749ed077e68c",
+          "parent_sha": "44ef5b324608e86fdf6a2da593c8d083f048f356",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-05",
+          "head_sha": "834d553a264d981e90c6ccdd7efa644f421b3635",
+          "parent_sha": "3edbc033911cd3ee0ae237144ae7749ed077e68c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 5
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-06",
+          "head_sha": "576240ca239fc70044842203d5b367fd21b0106b",
+          "parent_sha": "834d553a264d981e90c6ccdd7efa644f421b3635",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 6
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-07",
+          "head_sha": "3f24cf3fbe33af2772f27b6d0329ae00c8465f84",
+          "parent_sha": "576240ca239fc70044842203d5b367fd21b0106b",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 7
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-08",
+          "head_sha": "11506aaf7e7f312340e06583010b13986a143f7e",
+          "parent_sha": "3f24cf3fbe33af2772f27b6d0329ae00c8465f84",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 8
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-09",
+          "head_sha": "2f1163c299bed2a0c8a2c9892dad53c5637722e4",
+          "parent_sha": "11506aaf7e7f312340e06583010b13986a143f7e",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 9
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-10",
+          "head_sha": "3ad13273a0e404d7110fed5918de5cbb700e42f1",
+          "parent_sha": "2f1163c299bed2a0c8a2c9892dad53c5637722e4",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 10
+        }
+      ],
+      "5": [
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-01",
+          "head_sha": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-02",
+          "head_sha": "9e461dfd6c09241d69a2d26696446bf54290bbcf",
+          "parent_sha": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-03",
+          "head_sha": "44ef5b324608e86fdf6a2da593c8d083f048f356",
+          "parent_sha": "9e461dfd6c09241d69a2d26696446bf54290bbcf",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-04",
+          "head_sha": "3edbc033911cd3ee0ae237144ae7749ed077e68c",
+          "parent_sha": "44ef5b324608e86fdf6a2da593c8d083f048f356",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "head-update-05",
+          "head_sha": "834d553a264d981e90c6ccdd7efa644f421b3635",
+          "parent_sha": "3edbc033911cd3ee0ae237144ae7749ed077e68c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 5
+        }
+      ]
+    },
+    "independent_prs": {
+      "1": [
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-01",
+          "head_sha": "f59ef1de0d934b7f86a65e226a7c760da5b65bcd",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        }
+      ],
+      "10": [
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-01",
+          "head_sha": "f59ef1de0d934b7f86a65e226a7c760da5b65bcd",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-02",
+          "head_sha": "4c1eaba08c202c7c5cd055106dcf20edad4e0b94",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 2,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-03",
+          "head_sha": "084bf291e901a50c46c6018ec24a4a84dd5323c4",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 3,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-04",
+          "head_sha": "0d6848badce566c1f75ef21f67f62f74dfb3b4f1",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 4,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-05",
+          "head_sha": "b49648fe3dd6fd63d08192343c27630333be6d10",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 5,
+          "provider_repository": "r00",
+          "sequence": 5
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-06",
+          "head_sha": "e6e330363d500c07334689b1a6e20a963cbb7c50",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 6,
+          "provider_repository": "r00",
+          "sequence": 6
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-07",
+          "head_sha": "1d1087d12870c2a13ff5ad74ebd26df3c24e2104",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 7,
+          "provider_repository": "r00",
+          "sequence": 7
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-08",
+          "head_sha": "547f80428ca2cc054707a2fcc46c11ee490244e7",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 8,
+          "provider_repository": "r00",
+          "sequence": 8
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-09",
+          "head_sha": "97e24fc2f869604057e3fadee0d6a5c123c0c665",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 9,
+          "provider_repository": "r00",
+          "sequence": 9
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-10",
+          "head_sha": "c4df6308b781f8e9b929b55e960494c5e2b982bf",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 10,
+          "provider_repository": "r00",
+          "sequence": 10
+        }
+      ],
+      "5": [
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-01",
+          "head_sha": "f59ef1de0d934b7f86a65e226a7c760da5b65bcd",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 1,
+          "provider_repository": "r00",
+          "sequence": 1
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-02",
+          "head_sha": "4c1eaba08c202c7c5cd055106dcf20edad4e0b94",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 2,
+          "provider_repository": "r00",
+          "sequence": 2
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-03",
+          "head_sha": "084bf291e901a50c46c6018ec24a4a84dd5323c4",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 3,
+          "provider_repository": "r00",
+          "sequence": 3
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-04",
+          "head_sha": "0d6848badce566c1f75ef21f67f62f74dfb3b4f1",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 4,
+          "provider_repository": "r00",
+          "sequence": 4
+        },
+        {
+          "base_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "event_id": "independent-pr-05",
+          "head_sha": "b49648fe3dd6fd63d08192343c27630333be6d10",
+          "parent_sha": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+          "pr_id": 5,
+          "provider_repository": "r00",
+          "sequence": 5
+        }
+      ]
+    }
+  },
+  "totals": {
+    "bytes": 2536458,
+    "files": 220,
+    "python_nonblank_noncomment_lines": 100000,
+    "python_physical_lines": 100225
+  },
+  "versions": [
+    {
+      "branch": "change-01",
+      "commit": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+      "repository": "r00",
+      "tree": "5cb921d3de113008e6b8347d4592d02036890fda"
+    },
+    {
+      "branch": "pr-01",
+      "commit": "f59ef1de0d934b7f86a65e226a7c760da5b65bcd",
+      "repository": "r00",
+      "tree": "5cb921d3de113008e6b8347d4592d02036890fda"
+    },
+    {
+      "branch": "change-02",
+      "commit": "9e461dfd6c09241d69a2d26696446bf54290bbcf",
+      "repository": "r00",
+      "tree": "169b1b725c5578e8ad4e5728fbdb1e95e7f445d2"
+    },
+    {
+      "branch": "pr-02",
+      "commit": "4c1eaba08c202c7c5cd055106dcf20edad4e0b94",
+      "repository": "r00",
+      "tree": "169b1b725c5578e8ad4e5728fbdb1e95e7f445d2"
+    },
+    {
+      "branch": "change-03",
+      "commit": "44ef5b324608e86fdf6a2da593c8d083f048f356",
+      "repository": "r00",
+      "tree": "d515acb50210678599ddcf8ef364fbac52a1dc63"
+    },
+    {
+      "branch": "pr-03",
+      "commit": "084bf291e901a50c46c6018ec24a4a84dd5323c4",
+      "repository": "r00",
+      "tree": "d515acb50210678599ddcf8ef364fbac52a1dc63"
+    },
+    {
+      "branch": "change-04",
+      "commit": "3edbc033911cd3ee0ae237144ae7749ed077e68c",
+      "repository": "r00",
+      "tree": "c77d963411af41b0d6a2b374c9c4531a4761747e"
+    },
+    {
+      "branch": "pr-04",
+      "commit": "0d6848badce566c1f75ef21f67f62f74dfb3b4f1",
+      "repository": "r00",
+      "tree": "c77d963411af41b0d6a2b374c9c4531a4761747e"
+    },
+    {
+      "branch": "change-05",
+      "commit": "834d553a264d981e90c6ccdd7efa644f421b3635",
+      "repository": "r00",
+      "tree": "a6e8d2214f8c23b76098b5895a7c53c9d12429b7"
+    },
+    {
+      "branch": "pr-05",
+      "commit": "b49648fe3dd6fd63d08192343c27630333be6d10",
+      "repository": "r00",
+      "tree": "a6e8d2214f8c23b76098b5895a7c53c9d12429b7"
+    },
+    {
+      "branch": "change-06",
+      "commit": "576240ca239fc70044842203d5b367fd21b0106b",
+      "repository": "r00",
+      "tree": "07b5f198ed76e61eef2bf1720b7ca1b722fccf8b"
+    },
+    {
+      "branch": "pr-06",
+      "commit": "e6e330363d500c07334689b1a6e20a963cbb7c50",
+      "repository": "r00",
+      "tree": "07b5f198ed76e61eef2bf1720b7ca1b722fccf8b"
+    },
+    {
+      "branch": "change-07",
+      "commit": "3f24cf3fbe33af2772f27b6d0329ae00c8465f84",
+      "repository": "r00",
+      "tree": "a38cec8c2db7573976ad3f46656516a8e6b0aef1"
+    },
+    {
+      "branch": "pr-07",
+      "commit": "1d1087d12870c2a13ff5ad74ebd26df3c24e2104",
+      "repository": "r00",
+      "tree": "a38cec8c2db7573976ad3f46656516a8e6b0aef1"
+    },
+    {
+      "branch": "change-08",
+      "commit": "11506aaf7e7f312340e06583010b13986a143f7e",
+      "repository": "r00",
+      "tree": "5d7ccdaacc6d630f8fd4d25ffd3087f2c7d68c6b"
+    },
+    {
+      "branch": "pr-08",
+      "commit": "547f80428ca2cc054707a2fcc46c11ee490244e7",
+      "repository": "r00",
+      "tree": "5d7ccdaacc6d630f8fd4d25ffd3087f2c7d68c6b"
+    },
+    {
+      "branch": "change-09",
+      "commit": "2f1163c299bed2a0c8a2c9892dad53c5637722e4",
+      "repository": "r00",
+      "tree": "2ba085bcb1548a89a5099dbc511c004d253b3706"
+    },
+    {
+      "branch": "pr-09",
+      "commit": "97e24fc2f869604057e3fadee0d6a5c123c0c665",
+      "repository": "r00",
+      "tree": "2ba085bcb1548a89a5099dbc511c004d253b3706"
+    },
+    {
+      "branch": "change-10",
+      "commit": "3ad13273a0e404d7110fed5918de5cbb700e42f1",
+      "repository": "r00",
+      "tree": "878a6dbbea02e079765a69f81f241bf2e4170ebf"
+    },
+    {
+      "branch": "pr-10",
+      "commit": "c4df6308b781f8e9b929b55e960494c5e2b982bf",
+      "repository": "r00",
+      "tree": "878a6dbbea02e079765a69f81f241bf2e4170ebf"
+    },
+    {
+      "branch": "consumer-added",
+      "commit": "f926b330d5f6e799ff9ceeaab61989edf76efd0a",
+      "repository": "r09",
+      "tree": "e528f0a87aae988f913bb6f68569457826afafd1"
+    },
+    {
+      "branch": "consumer-removed",
+      "commit": "69dfb6e1caae5294bbe24ec3e62d314ccba719dc",
+      "repository": "r01",
+      "tree": "78c9a5fc86f960076e8e929dba8423973d785aa2"
+    },
+    {
+      "branch": "operation-removed",
+      "commit": "a02ea818b55250dc407ef0c032df9da5dc48c45f",
+      "repository": "r00",
+      "tree": "0c0036e96e689646dc12df1fee4152cd41ededb2"
+    }
+  ]
+}

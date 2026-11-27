@@ -12,9 +12,11 @@ class BitbucketQueueConnector:
     provider = 'bitbucket'
     analysis_ready = False
 
-    def __init__(self, reader, repositories, *, jira_project_keys=()):
+    def __init__(self, reader, repositories, *, jira_project_keys=(), pull_request_ids=None):
         self.reader, self.repositories = reader, repositories
         self.jira_project_keys = list(jira_project_keys)
+        self.pull_request_ids = (None if pull_request_ids is None else
+                                 {slug: frozenset(ids) for slug, ids in pull_request_ids.items()})
         self._by_uuid = {str(cfg.uuid): slug for slug, cfg in repositories.items()}
 
     def _repository(self, slug):
@@ -44,7 +46,10 @@ class BitbucketQueueConnector:
         number = int(match[3])
         if number >= 2**63:
             raise ResourceNotAllowed('invalid_resource_id')
-        repo = self._repository(self._by_uuid[match[2]])
+        slug = self._by_uuid[match[2]]
+        if self.pull_request_ids is not None and number not in self.pull_request_ids.get(slug, ()):
+            raise ResourceNotAllowed("bitbucket_pull_request_not_allowed")
+        repo = self._repository(slug)
         try:
             return self._snapshot(self.reader.pull_request(repo, number))
         except NotFound:
@@ -53,10 +58,14 @@ class BitbucketQueueConnector:
     def reconcile_candidates(self, since):
         candidates = []  # commit no partial listing/checkpoint if any repository fails
         for slug in sorted(self.repositories):
+            if self.pull_request_ids is not None and slug not in self.pull_request_ids:
+                continue
             repo = self._repository(slug)
             if repo.default_branch is None:
                 continue
             for pr in self.reader.open_pull_requests(repo):
+                if self.pull_request_ids is not None and pr.number not in self.pull_request_ids[slug]:
+                    continue
                 snapshot = self._snapshot(pr)
                 candidates.append((snapshot.resource_id, snapshot.version))
         return candidates

@@ -1,0 +1,15 @@
+test_recovered_latest_generation_cannot_hide_an_earlier_failed_analysis (tests.performance.test_load_impactmap.LoadTests.test_recovered_latest_generation_cannot_hide_an_earlier_failed_analysis) ... FAIL
+
+======================================================================
+FAIL: test_recovered_latest_generation_cannot_hide_an_earlier_failed_analysis (tests.performance.test_load_impactmap.LoadTests.test_recovered_latest_generation_cannot_hide_an_earlier_failed_analysis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/performance/test_load_impactmap.py", line 121, in test_recovered_latest_generation_cannot_hide_an_earlier_failed_analysis
+    self.assertFalse(r['passed'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 6.760s
+
+FAILED (failures=1)

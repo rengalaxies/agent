@@ -1,0 +1,29 @@
+{
+  "status": "READY",
+  "qa_accounts": "DISABLED_SESSIONS_REVOKED",
+  "server_initial_password_file": "REMOVED",
+  "owner": "PRESERVED_LOCAL0600_FILE",
+  "loaded": {
+    "code_version": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312",
+    "commit": "29ed2ad8fc2e1b67917836cfc60aff0beb9cc28a",
+    "config": "/etc/impactmap-ui-pilot/service.json",
+    "constitution": "agent-service-v1.0:100bcad3db9c",
+    "constitution_default": "agent-service-v1.0:100bcad3db9c",
+    "constitution_path": "/opt/impactmap-ui-pilot/releases/agent-service-0.1.0-g29ed2ad8fc2e-linux-x86_64-cp312/app/constitutions/agent-service-v1.yaml",
+    "core": {
+      "core_digest": "d4ffae30456713d3280e33278d4e9f3fa9aa33e88167b45c2592d44fe3af30a1",
+      "output_schema_version": "2.2",
+      "profile": "http-requests-9",
+      "schema": "agent-graph-1"
+    },
+    "launcher_pid": null,
+    "listen": "127.0.0.1:18092",
+    "manifest_sha256": "cf1fbab54a4b1da34c2f91121e84bfa5a8d2734a12f6c2670502eb0c7609a109",
+    "pid": 2423764,
+    "python": "3.12.3",
+    "release": "agent-service-0.1.0-g29ed2ad8fc2e-linux-x86_64-cp312",
+    "release_id": "0.1.0+g29ed2ad8fc2e.linux-x86_64-cp312",
+    "started_at": "2026-11-17T09:31:11.973294+00:00"
+  },
+  "legacy_pid": "60331"
+}

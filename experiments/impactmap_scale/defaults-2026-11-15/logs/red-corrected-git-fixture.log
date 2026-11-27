@@ -1,0 +1,74 @@
+test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment (tests.service.test_resource_limits.ResourceLimitsTests.test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment) ... FAIL
+test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) ... 
+  test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='file_count_limit') ... FAIL
+  test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='scan_timeout') ... FAIL
+  test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='inventory_limit') ... FAIL
+
+======================================================================
+FAIL: test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment (tests.service.test_resource_limits.ResourceLimitsTests.test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_resource_limits.py", line 61, in test_actual_corpus_refusal_has_safe_diagnosis_in_result_and_short_comment
+    self.assertEqual((result.status,result.reason_code),('FAILED','budget_exhausted'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('FAILED', 'internal_error') != ('FAILED', 'budget_exhausted')
+
+First differing element 1:
+'internal_error'
+'budget_exhausted'
+
+- ('FAILED', 'internal_error')
++ ('FAILED', 'budget_exhausted')
+
+======================================================================
+FAIL: test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='file_count_limit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_resource_limits.py", line 79, in test_file_time_and_inventory_refusals_are_not_internal_errors
+    self.assertEqual((raw['status'],raw['reason_code']),('FAILED','budget_exhausted'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('FAILED', 'internal_error') != ('FAILED', 'budget_exhausted')
+
+First differing element 1:
+'internal_error'
+'budget_exhausted'
+
+- ('FAILED', 'internal_error')
++ ('FAILED', 'budget_exhausted')
+
+======================================================================
+FAIL: test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='scan_timeout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_resource_limits.py", line 79, in test_file_time_and_inventory_refusals_are_not_internal_errors
+    self.assertEqual((raw['status'],raw['reason_code']),('FAILED','budget_exhausted'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('FAILED', 'internal_error') != ('FAILED', 'budget_exhausted')
+
+First differing element 1:
+'internal_error'
+'budget_exhausted'
+
+- ('FAILED', 'internal_error')
++ ('FAILED', 'budget_exhausted')
+
+======================================================================
+FAIL: test_file_time_and_inventory_refusals_are_not_internal_errors (tests.service.test_resource_limits.ResourceLimitsTests.test_file_time_and_inventory_refusals_are_not_internal_errors) (error='inventory_limit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_resource_limits.py", line 79, in test_file_time_and_inventory_refusals_are_not_internal_errors
+    self.assertEqual((raw['status'],raw['reason_code']),('FAILED','budget_exhausted'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('FAILED', 'internal_error') != ('FAILED', 'budget_exhausted')
+
+First differing element 1:
+'internal_error'
+'budget_exhausted'
+
+- ('FAILED', 'internal_error')
++ ('FAILED', 'budget_exhausted')
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.480s
+
+FAILED (failures=4)

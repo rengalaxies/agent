@@ -1,0 +1,27 @@
+/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_auth_precedes_input_validation_and_missing_token_fails_closed (tests.service.test_diagnostics.DiagnosticTests.test_auth_precedes_input_validation_and_missing_token_fails_closed) ... ok
+test_closed_and_same_version_rebuild_are_explicit (tests.service.test_diagnostics.DiagnosticTests.test_closed_and_same_version_rebuild_are_explicit) ... ok
+test_current_failed_analysis_is_visible_instead_of_older_useful (tests.service.test_diagnostics.DiagnosticTests.test_current_failed_analysis_is_visible_instead_of_older_useful) ... ERROR
+test_delivered_analysis_is_selected_with_safe_metadata_and_no_store (tests.service.test_diagnostics.DiagnosticTests.test_delivered_analysis_is_selected_with_safe_metadata_and_no_store) ... ok
+test_failed_current_job_does_not_present_old_success_as_current (tests.service.test_diagnostics.DiagnosticTests.test_failed_current_job_does_not_present_old_success_as_current) ... ok
+test_new_generation_marks_previous_output_stale_with_current_job (tests.service.test_diagnostics.DiagnosticTests.test_new_generation_marks_previous_output_stale_with_current_job) ... ok
+test_no_result_and_unknown_or_traversal_ids_never_read_a_file (tests.service.test_diagnostics.DiagnosticTests.test_no_result_and_unknown_or_traversal_ids_never_read_a_file) ... ok
+test_non_ascii_authorization_is_rejected_without_server_error (tests.service.test_diagnostics.DiagnosticTests.test_non_ascii_authorization_is_rejected_without_server_error) ... ok
+test_other_resources_cannot_change_a_selected_result (tests.service.test_diagnostics.DiagnosticTests.test_other_resources_cannot_change_a_selected_result) ... ok
+test_resource_listing_is_bounded_and_does_not_include_snapshot (tests.service.test_diagnostics.DiagnosticTests.test_resource_listing_is_bounded_and_does_not_include_snapshot) ... ok
+test_untrusted_incompatible_raw_is_not_exposed_as_analysis (tests.service.test_diagnostics.DiagnosticTests.test_untrusted_incompatible_raw_is_not_exposed_as_analysis) ... ok
+
+======================================================================
+ERROR: test_current_failed_analysis_is_visible_instead_of_older_useful (tests.service.test_diagnostics.DiagnosticTests.test_current_failed_analysis_is_visible_instead_of_older_useful)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_diagnostics.py", line 66, in test_current_failed_analysis_is_visible_instead_of_older_useful
+    self.assertEqual(data['analysis']['generation'],2);self.assertEqual(data['analysis']['raw']['status'],'FAILED')
+                                                                        ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.278s
+
+FAILED (errors=1)

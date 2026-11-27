@@ -1,0 +1,15 @@
+test_multiple_provider_declarations_all_constrain_default_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_multiple_provider_declarations_all_constrain_default_exemption) ... FAIL
+
+======================================================================
+FAIL: test_multiple_provider_declarations_all_constrain_default_exemption (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_multiple_provider_declarations_all_constrain_default_exemption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 176, in test_multiple_provider_declarations_all_constrain_default_exemption
+    self.assertTrue(result.findings, 'An unchanged JSON body must not hide a changed Python handler')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : An unchanged JSON body must not hide a changed Python handler
+
+----------------------------------------------------------------------
+Ran 1 test in 0.030s
+
+FAILED (failures=1)

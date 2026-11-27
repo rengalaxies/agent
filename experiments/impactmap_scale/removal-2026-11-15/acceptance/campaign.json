@@ -1,0 +1,53 @@
+{
+  "core_identity": {
+    "profile": "http-requests-9",
+    "schema": "agent-graph-1",
+    "output_schema_version": "2.2",
+    "core_digest": "bbf94715b48f3f14c8c93d64b8e4c307ac15b19fc3c76834df6d9bd97cb6a88f"
+  },
+  "source_sha": "2d13227a766ec7d8178143b005d077034e281897",
+  "results": [
+    {
+      "test": "defaults-5",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 0.4874509589990339
+    },
+    {
+      "test": "corpus-5",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 32.073419708000074
+    },
+    {
+      "test": "equivalence-5",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 44.84696587500002
+    },
+    {
+      "test": "defaults-10",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 1.517901458999404
+    },
+    {
+      "test": "corpus-10",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 67.66202241700012
+    },
+    {
+      "test": "equivalence-10",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 79.681745124999
+    },
+    {
+      "test": "queue-5-head10-burst",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 18.55647675
+    },
+    {
+      "test": "queue-10-pr1",
+      "passed": true,
+      "diagnostic_elapsed_seconds": 36.22608654200121
+    }
+  ],
+  "passed": true,
+  "execution": "sequential; diagnostic wall times only; no capacity comparison"
+}

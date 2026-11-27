@@ -1,0 +1,56 @@
+[
+  {
+    "profile": "repos5-lines50k",
+    "source": "final corpus-v1 pinned main Git sources",
+    "base_revisions": {
+      "r00": "8e03447f5ff19cbf2f0487b84c7daf6236bc364f",
+      "r01": "a8c0d8622e6ee775897896d3f9acab6001575378",
+      "r02": "80e242834649a454530e28f1dd315d78d0915e3f",
+      "r03": "3d47621f7036e02f4fee6538abd944f75556f188",
+      "r04": "7fbd28fd55002cd3dc7f018654f664727789fbfa"
+    },
+    "corpus_bytes": 1268477,
+    "default_limits": {
+      "max_files": 256,
+      "max_file_bytes": 65536,
+      "max_corpus_bytes": 2000000,
+      "scan_seconds": 15.0,
+      "freshness_seconds": 3600,
+      "max_model_steps": 4,
+      "max_tool_lines": 60,
+      "max_proposals": 24
+    },
+    "status": "READABLE_WITH_DEFAULT_COLLECTION_LIMITS",
+    "files_read": 110,
+    "bytes_read": 1268477
+  },
+  {
+    "profile": "repos10-lines100k",
+    "source": "final corpus-v1 pinned main Git sources",
+    "base_revisions": {
+      "r00": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+      "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+      "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+      "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+      "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+      "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+      "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+      "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+      "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+      "r09": "137a0c5e279c317a47350baf195567847492376f"
+    },
+    "corpus_bytes": 2536458,
+    "default_limits": {
+      "max_files": 256,
+      "max_file_bytes": 65536,
+      "max_corpus_bytes": 2000000,
+      "scan_seconds": 15.0,
+      "freshness_seconds": 3600,
+      "max_model_steps": 4,
+      "max_tool_lines": 60,
+      "max_proposals": 24
+    },
+    "status": "DEFAULT_LIMIT_ENCOUNTERED",
+    "error_code": "corpus_limit"
+  }
+]

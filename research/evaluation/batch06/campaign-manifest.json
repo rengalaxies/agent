@@ -1,0 +1,459 @@
+{
+  "components": {
+    "evaluator_sha": "d9ea63e0f7fe70b90bf2bf32fba7606597eeb384633097d7ff1c49e720d03290",
+    "normalizer_sha": "af768216a22c0c4d3444d05e2a7b7fffe2e258ec433ccbc1c826a7124b248368",
+    "protocol_sha256": "8ebe7174d5ce6c117de3b3bb89f364729685204ca2f0a3b1302e0c31831bf2d6",
+    "schema_bundle_sha256": "9f77ef8c4d3e13b00486362897ccbd21a54e1ca09ae31f7c58f6b6c71fdbb45a",
+    "scorer_sha": "3bde79a17f357aa7bd6526a20be39bb91eeea1571117133b93e080303ceea2ca"
+  },
+  "human_experts": 0,
+  "independent_cases": 0,
+  "inputs_sha256": {
+    "DEV-0001": "660d40abdbb68399cd93bd7a8be49ed8a838bf4da4898184318880dd0389edc0",
+    "DEV-0002": "f9a1cd498e19af398037943ff080f41c629156bbb2be6fcb8168586342ffd9a3",
+    "DEV-0003": "a37f8ffa4bbeb23c3adef241c4fa89a5a0533d7338140e2718bd2238c9e2b714",
+    "DEV-0004": "20f78d8fedc3bafd03f6cc476a4ae2125fde09b0a6a0ff1ee5204ca3d78388ac",
+    "DEV-0005": "3e2ffd6cd06bb1a6867d8d6e9e450f88b4beb7f42f161b831bb758a585d479b0",
+    "DEV-0006": "a97fce589f46c8d5e6ac07dbe64743372b8ebfe7c900c5f436d24d2856a76587",
+    "DEV-0007": "b8fb015beca57c949d5c97596d72100e669e5975bfdce7145eab74b77867d03a",
+    "DEV-0008": "6841f68f1bb19bba0a640b490885235a73c8c1c47b1496a8deda5c4b15fc6afc",
+    "DEV-0009": "9fd3817bd36f6bc7b7c4c854463b1ed8bffe6b2455084d97959dfa862fa92c55",
+    "DEV-0010": "6b763d66865561e09286a5e1509a427b2435d77befeb47c41a3cac14f422dda2",
+    "DEV-0011": "2211fa97cc8df21cc9b746130afaae8c40d0c64aa191843823f4ffe435096378",
+    "DEV-0012": "53f545c133eb6001b0ba182080dff3cd86356ca5531bd606a31c1d77e3614405",
+    "DEV-0013": "ef3d5489762ba243ba1ab80b937a5135a6f3bfd4c483b6b70c488161a59bc261",
+    "DEV-0014": "09cde874c2a1ed7f01851618f6a4bf8084938cc54b05e663feb1ae709f9e150f",
+    "DEV-0015": "960b582bd82debfde4c1149c6788041a283c128a12d46defe5e85b50371f48ed",
+    "DEV-0016": "8d5408e57199a90f1b9d62d2ee768b93b9690b0076b278af57b0c79f0337bc0d",
+    "DEV-0017": "93d4024b6c49327143bb27fa12647c124833a7ab658475c83ddddf69ef4c8c67",
+    "DEV-0018": "e185fe0fe230b651e86381b6007f25cbcf8ec57c39a5a08686ecd8a37a4d0677",
+    "DEV-0019": "439e33cedc4082d38174ad6c7338668cf2596ae040eee2b0cded5d9de567b00d",
+    "DEV-0020": "91c83e7f029b344dbbbc60a7375ab2a632ea8ae4c5a349e3e0a7c5c337ee91bf",
+    "DEV-0021": "93e608b3722aff1a677fbc30ab4a9dee8ebf03a5532e7e9c0ef69b88b03ddc69",
+    "DEV-0022": "fa7fe858716848bbc3df950fbca1803e1770af03230502521b412f2bf8fbbfb9",
+    "DEV-0023": "fb5a95570274b5994966023f25876a54e0d4bcaca217e0fdbea82620f2014236",
+    "DEV-0024": "6d5e35da7650d9a47b70fd95bb3eca20aa89e5b955782945168efe8aebba4fcf",
+    "DEV-0025": "0cbf2bcd51a54fc6a42f0cde2a5ee20b6e018420f8cfe1c03a629ef6750375c2",
+    "DEV-0026": "56d46bc5ec452f3c7d9ceb9bf9a3d4a9b796e31d35441be667f8d437c4e2abb2",
+    "DEV-0027": "03b5b678ccf7b192f7a382bf44c75a98fc854f70e85b29bfd9de268b2b80a0e1",
+    "DEV-0028": "c427b58760b8e367573ecb8df325ea165c0c43f6eca07c9811d6c0cce5339e3a",
+    "DEV-0029": "44743c4b970b0640e66101208989eb236ecddbb5d055fdeaa8f35d7886c74577",
+    "DEV-0030": "68fa0bb0ff76b3fd014f9472bd6efd206252921284ee6ab4846e2a40a1b28de0",
+    "DEV-0031": "2ca00e5944bd0a57980447155f43b45765cfe746d89c41702d3c70644769ec6e",
+    "DEV-0032": "38aa07d2efadc558fe67a221ae7361e2f3e63111f2ab95b009ada8b829d5338e",
+    "DEV-0033": "2337442835772c3841e97698de16209f94447a7b28e5ee2761ed4e2e97b0049e",
+    "DEV-0034": "722cb6ccc47bd0e6c759b520cf3de59f21a5e57214a01def5e8a76924fc42040",
+    "DEV-0035": "b37ea6bdb996f7c84381f44208a354da8e1cc16b713c6c94d8f813e4a20ac8c3",
+    "DEV-0036": "bbf7cdd4de049047568a4e354bb4d1cb361db54d65ebfe1aa3616e1518b0bb01",
+    "DEV-0037": "7137f864f70a103426c8d72d3c5873068d7baddd6fa6d9e658978990c6c5d0a8",
+    "DEV-0038": "c589a5c31e95596dfb6cb727974a2aadb986aa4123ca41a304aee4a1bb844e1b",
+    "DEV-0039": "745316c29b99d13a9ad8501ab6d57bd48f5779bf5afd1eb02c04bf0450a147ee",
+    "DEV-0040": "6d9a1f2721cccdf30872bb77558a5dbe885400072831da913a18f9204ee483c7"
+  },
+  "method_case_order": [
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0030",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0001",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0034",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0035",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0017",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0038",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0011",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0013",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0006",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0037",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0033",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0034",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0039",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0004",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0002",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0001",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0022",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0018",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0025",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0040",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0026",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0014",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0003",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0020",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0022",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0037",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0015",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0019",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0020",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0023",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0016",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0011",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0018",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0027",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0024",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0039",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0031",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0003",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0029",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0014",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0030",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0032",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0012",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0028",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0006",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0021",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0004",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0024",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0010",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0035",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0013",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0007",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0012",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0007",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0019",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0017",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0021",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0005",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0015",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0008",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0008",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0009",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0023",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0026",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0025",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0027",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0036",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0010",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0028",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0040",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0029",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0002",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0032",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0009",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0033",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0031",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0038",
+      "method": "lexical_search_ls1"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0036",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0016",
+      "method": "impactmap_static"
+    },
+    {
+      "attempt_id": 1,
+      "case_id": "DEV-0005",
+      "method": "impactmap_static"
+    }
+  ],
+  "seed": 20261114,
+  "source_execution": false,
+  "status": "AUTHOR_DEVELOPMENT_NOT_REGISTERED",
+  "wall_time_cap_seconds": 60
+}

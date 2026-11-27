@@ -1,0 +1,93 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "p",
+        "method": "GET",
+        "provider_service": "p",
+        "route": "/{resource}"
+      },
+      "notes": "All formulations retained in raw artifact; no gold-based filtering.",
+      "raw_refs": [
+        "/affected/0/rel:79623847e08f170fa6cab009767f9e6a09123c36",
+        "/checks/0",
+        "/findings/0"
+      ],
+      "witnesses": [
+        {
+          "commit": "17cc54e7bb5cc30663f4d1e83ebb204215ed33fc",
+          "line_end": 2,
+          "line_start": 2,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12",
+          "repository": "c"
+        },
+        {
+          "commit": "f3ea53aebf38b673b63613e758be18e245efc653",
+          "line_end": 5,
+          "line_start": 4,
+          "path": "api.py",
+          "phase": "head",
+          "quote_sha256": "fd1909e5996917ac763f92b4dcb94a321320dcd539d3c4eaf846785c7467ff61",
+          "repository": "p"
+        },
+        {
+          "commit": "8862c1af442bc1e22f22e2df498bb50a09ca78ff",
+          "line_end": 5,
+          "line_start": 4,
+          "path": "api.py",
+          "phase": "base",
+          "quote_sha256": "b90958dd607ee64f0ad5a1853524cb3293fd1df7532c2606f7d84edfa712bfc2",
+          "repository": "p"
+        },
+        {
+          "commit": "17cc54e7bb5cc30663f4d1e83ebb204215ed33fc",
+          "line_end": 1,
+          "line_start": 1,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d",
+          "repository": "c"
+        }
+      ]
+    }
+  ],
+  "case_id": "DEV-BINDING",
+  "configuration_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "unclassified_change",
+      "scope": "analysis"
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "scope": "analysis"
+    },
+    {
+      "code": "requirement_unknown",
+      "scope": "p"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "p"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "7d6a297b027b4dfbc8cd424692c73c7dbd7f1a20d1cb5607659dfea2c4ca69b7",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

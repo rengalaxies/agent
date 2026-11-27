@@ -1,0 +1,75 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "c",
+        "method": "GET",
+        "provider_service": "p",
+        "route": "/{resource}"
+      },
+      "notes": "All formulations retained in raw artifact; no gold-based filtering.",
+      "raw_refs": [
+        "/affected/0/rel:e2923c31358449b75ccbaba5b973897cb61a61b5",
+        "/checks/0",
+        "/findings/0"
+      ],
+      "witnesses": [
+        {
+          "commit": "1333f34bee9a1277be1ebd935619e1dcd528501f",
+          "line_end": 2,
+          "line_start": 2,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "41db9d06c38928248d1d65cf6d10b8c7b4491f790e09c143bf5601d89cc8dc12",
+          "repository": "c"
+        },
+        {
+          "commit": "1333f34bee9a1277be1ebd935619e1dcd528501f",
+          "line_end": 1,
+          "line_start": 1,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d",
+          "repository": "c"
+        }
+      ]
+    }
+  ],
+  "case_id": "DEV-BINDING",
+  "configuration_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "unclassified_change",
+      "scope": "analysis"
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "scope": "analysis"
+    },
+    {
+      "code": "requirement_unknown",
+      "scope": "c"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "c"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": true,
+  "raw_artifact_sha256": "74e31bb13124af3479767a56a67477efb79c9b138e3c7cc4b062298660d82625",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

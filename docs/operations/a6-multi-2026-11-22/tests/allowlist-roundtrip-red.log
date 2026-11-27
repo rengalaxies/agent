@@ -1,0 +1,28 @@
+test_default_config_round_trip_retains_unrestricted_scope (tests.service.test_bitbucket_allowlist.ConfigTest.test_default_config_round_trip_retains_unrestricted_scope) ... ERROR
+
+======================================================================
+ERROR: test_default_config_round_trip_retains_unrestricted_scope (tests.service.test_bitbucket_allowlist.ConfigTest.test_default_config_round_trip_retains_unrestricted_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/service/test_bitbucket_allowlist.py", line 28, in test_default_config_round_trip_retains_unrestricted_scope
+    self.assertIsNone(BitbucketConfig.model_validate(config.model_dump()).pull_request_ids)
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/user/Documents/ChatGPT/ВКР/.private/bitbucket-read-venv/lib/python3.13/site-packages/pydantic/main.py", line 792, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        obj,
+        ^^^^
+    ...<5 lines>...
+        by_name=by_name,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for BitbucketConfig
+pull_request_ids
+  Value error, invalid_bitbucket_pull_request_scope [type=value_error, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.14/v/value_error
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)

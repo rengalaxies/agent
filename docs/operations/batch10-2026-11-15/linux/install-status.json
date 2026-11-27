@@ -1,0 +1,15 @@
+{
+  "status": "FAILED",
+  "source_commit": "5d508a2e301dc8991672903f978c8c377ba8041d",
+  "supervisor": "process",
+  "external_live": false,
+  "returncode": 1,
+  "scenarios": [
+    {
+      "name": "fresh_install",
+      "result": "FAIL"
+    }
+  ],
+  "error_type": "AssertionError",
+  "isolated_service_stopped": true
+}

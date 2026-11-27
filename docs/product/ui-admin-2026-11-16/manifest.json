@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-16",
+  "source_commit": "c82dd59",
+  "scope": "local author fixtures only; no real tracker UI or login audit",
+  "selected_approach": "single application: results + operator section; selected by owner",
+  "prototype_built": false,
+  "server_shutdown": true,
+  "artifacts": {
+    "README.md": {
+      "bytes": 14368,
+      "sha256": "e40e43305634cf1e941b4df4a2eee246b6c85289c6f8d602540fb9317f1694cb"
+    },
+    "fixture-comment.txt": {
+      "bytes": 3615,
+      "sha256": "79d57638562f8c0cc062e77615dc8ddf8a96b4f88e40c4c0f9c5b3c1db10dcea"
+    },
+    "fixture-result.json": {
+      "bytes": 21245,
+      "sha256": "caaf6d9eaebd4e45dd17084dcb4d97b378b595dd610b5759e7eddc9a95ceb5fb"
+    },
+    "fixture-summary-ru.txt": {
+      "bytes": 1395,
+      "sha256": "5bb5a548df546a02f26a1aa94a9b87daa34ff58217a74935c858136f8a0b2652"
+    },
+    "reproduce/serve_audit.py": {
+      "bytes": 1746,
+      "sha256": "8ff86fdad7c56750f928e70cbc332f818ca308db7c271bdeb50cf03ac8bf16da"
+    },
+    "screenshots/01-demo-start.jpg": {
+      "bytes": 48768,
+      "sha256": "1be508f7af3a99d5e07e967e6806e477fef2559320474548d28ef80160a2e077"
+    },
+    "screenshots/02-demo-prepared-desktop.jpg": {
+      "bytes": 206330,
+      "sha256": "f3ecb235ccd1b1e40f81f78cbc2b593bcba108142a61be9f6ec391fcdcb5181a"
+    },
+    "screenshots/03-demo-change-evidence.jpg": {
+      "bytes": 226104,
+      "sha256": "56c2245adc8df7748b1745690d9c271800784025ee904c1649fd9ea161f47be3"
+    },
+    "screenshots/04-service-graph.jpg": {
+      "bytes": 119241,
+      "sha256": "c471984c3255345b1e69fd4dbfa700651199e040a525c83cbf0d9cf15004531f"
+    },
+    "screenshots/05-service-resources-json.jpg": {
+      "bytes": 27357,
+      "sha256": "eb2cffeb05f3dc1e69b5527bdf4cd1b599cc1dc3f78c13b1d572663e6813b32e"
+    },
+    "screenshots/06-service-result-json.jpg": {
+      "bytes": 452578,
+      "sha256": "9dfec3c243afe6337f1237f6c07d2718e5910707cb208c7713edfbe397f1de3d"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [],
+  "case_id": "DEV-0040",
+  "configuration_sha256": "eec564cb3657584ed3f30332829cd375d90905cda843965b7bb0f5ed07533d50",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "commit_unavailable",
+      "scope": "consumer"
+    }
+  ],
+  "method": "lexical_search_ls1",
+  "output_valid": true,
+  "raw_artifact_sha256": "fe648cad6e1a555834a1ccf6f6eeed79b7659b1fdd791a0681a03bcbe16d660f",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

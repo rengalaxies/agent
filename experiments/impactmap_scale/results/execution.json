@@ -1,0 +1,36 @@
+{
+  "core_changed": false,
+  "generated_source_and_private_state": "ignored work/batch05; no public copy",
+  "input_commit": "b0f5bd1398145c890bba970bbec7fc598f2ce2fc",
+  "pilot_environment": {
+    "child_cpu_scope": "RUSAGE_CHILDREN reaped descendants only",
+    "logical_cpus": 2,
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3",
+      "pydantic": "2.13.4"
+    },
+    "platform": "Linux-6.8.0-139-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "ram_bytes": 4106104832,
+    "rss_scope": "ru_maxrss lifetime high-water mark, not stage-local or summed process-tree RSS",
+    "system": "Linux",
+    "wall_scope": "perf_counter; includes instrumentation overhead; inventory_metrics separately visible"
+  },
+  "pilot_load_helper_sha256": "7a30ec304882cf12c45b96a3f62ae9a74d7c7a169d305cc99aae765678110b13",
+  "pilot_loaded_runtime": {
+    "core": {
+      "core_digest": "76f495463a158f62bcb7644750e073d6e7f53bd736c407f8329627d7841ab49c",
+      "output_schema_version": "2.2",
+      "profile": "http-requests-6",
+      "schema": "agent-graph-1"
+    },
+    "loaded_runtime_commit": "a02ffa7854dcc38cecc7fe5c5317466059926cd9",
+    "tool_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf"
+  },
+  "product_defaults_changed": false,
+  "recipe_sha256": "83bcc20e141e60109aeb9b697625c416ce9222dd6c4942ef012b131870ef9d90",
+  "runner_sha256": "a46a35e91329d789dff47f0c7fb624e7de0ac914622a219b9bdd0d9336943050",
+  "source_transfer": "NOT_PERFORMED",
+  "stage_tool_sha256": "c6de3d9cabc1f43661775187c6d4a3f7f8434852187dec8b9a265ebcbb14e9cf"
+}

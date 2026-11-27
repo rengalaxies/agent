@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "provenance": "REAL_KAITEN_API_REAL_SERVICE",
+  "primary_read": "PASS",
+  "bot_read": "PASS",
+  "unavailable_card": "74807549",
+  "http_status": 403,
+  "classification": "connection_unauthorized",
+  "unchanged_queue": true,
+  "steps": [],
+  "reconciled": {
+    "recovered": {
+      "jobs": 0,
+      "sending": 0,
+      "released": 0
+    },
+    "revived": 0,
+    "enqueued": 0,
+    "graph": null,
+    "reanalysed": 0
+  },
+  "notices": [
+    {
+      "kind": "reconcile_failed",
+      "resource_id": null
+    }
+  ],
+  "deletion_readback": "FORBIDDEN_NOT_404_NO_BLIND_DELETE_RETRY"
+}

@@ -1,0 +1,143 @@
+test_density_and_missing_source_inputs_keep_declared_shape (tests.performance.test_scale_corpora.CorpusTests.test_density_and_missing_source_inputs_keep_declared_shape) ... ok
+test_existing_output_and_invalid_size_are_refused (tests.performance.test_scale_corpora.CorpusTests.test_existing_output_and_invalid_size_are_refused) ... ok
+test_manifest_file_hash_mismatch_cannot_pass_on_counts_alone (tests.performance.test_scale_corpora.CorpusTests.test_manifest_file_hash_mismatch_cannot_pass_on_counts_alone) ... ok
+test_missing_existing_findings_cannot_pass_on_new_consumer_alone (tests.performance.test_scale_corpora.CorpusTests.test_missing_existing_findings_cannot_pass_on_new_consumer_alone) ... ok
+test_noise_does_not_change_located_findings (tests.performance.test_scale_corpora.CorpusTests.test_noise_does_not_change_located_findings) ... ok
+test_pinned_counts_equal_real_code_not_comments_and_oracle_stays_separate (tests.performance.test_scale_corpora.CorpusTests.test_pinned_counts_equal_real_code_not_comments_and_oracle_stays_separate) ... ok
+test_portable_root_cannot_escape_corpus (tests.performance.test_scale_corpora.CorpusTests.test_portable_root_cannot_escape_corpus) ... ok
+test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale (tests.performance.test_scale_corpora.CorpusTests.test_real_core_detects_new_consumer_retracts_call_and_keeps_unavailable_stale) ... ok
+test_returned_manifest_does_not_mutate_global_limits (tests.performance.test_scale_corpora.CorpusTests.test_returned_manifest_does_not_mutate_global_limits) ... ok
+test_same_seed_is_path_independent_and_different_seed_changes_sources (tests.performance.test_scale_corpora.CorpusTests.test_same_seed_is_path_independent_and_different_seed_changes_sources) ... ok
+test_streams_pin_one_pr_head_updates_and_distinct_pr_ids (tests.performance.test_scale_corpora.CorpusTests.test_streams_pin_one_pr_head_updates_and_distinct_pr_ids) ... ok
+test_suite_axes_hold_topology_and_non_target_dimension_fixed (tests.performance.test_scale_corpora.CorpusTests.test_suite_axes_hold_topology_and_non_target_dimension_fixed) ... ok
+test_cli_writes_consistent_raw_artifacts_and_does_not_overwrite (tests.performance.test_benchmark_impactmap.CLITests.test_cli_writes_consistent_raw_artifacts_and_does_not_overwrite) ... ok
+test_invalid_manifest_never_exports_input_or_exception_text (tests.performance.test_benchmark_impactmap.CLITests.test_invalid_manifest_never_exports_input_or_exception_text) ... ok
+test_timeout_launch_and_invalid_json_preserve_failure_rows_and_summary (tests.performance.test_benchmark_impactmap.CLITests.test_timeout_launch_and_invalid_json_preserve_failure_rows_and_summary) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_instrumented_pipeline_preserves_results_facts_and_restores_functions (tests.performance.test_benchmark_impactmap.PipelineTests.test_instrumented_pipeline_preserves_results_facts_and_restores_functions) ... ok
+test_model_configuration_is_refused_before_analysis (tests.performance.test_benchmark_impactmap.PipelineTests.test_model_configuration_is_refused_before_analysis) ... ok
+test_partial_access_stays_visible_and_wrappers_restore_on_exception (tests.performance.test_benchmark_impactmap.PipelineTests.test_partial_access_stays_visible_and_wrappers_restore_on_exception) ... ok
+test_provenance_cannot_export_arbitrary_input (tests.performance.test_benchmark_impactmap.PipelineTests.test_provenance_cannot_export_arbitrary_input) ... ok
+test_sensitive_source_content_is_omitted_and_never_exported (tests.performance.test_benchmark_impactmap.PipelineTests.test_sensitive_source_content_is_omitted_and_never_exported) ... ok
+test_error_records_no_exception_message (tests.performance.test_benchmark_impactmap.SpanTests.test_error_records_no_exception_message) ... ok
+test_nested_spans_exclude_children_without_double_counting (tests.performance.test_benchmark_impactmap.SpanTests.test_nested_spans_exclude_children_without_double_counting) ... ok
+test_peak_rss_units_are_platform_specific (tests.performance.test_benchmark_impactmap.SpanTests.test_peak_rss_units_are_platform_specific) ... ok
+test_changing_pins_cannot_silently_form_one_series (tests.performance.test_benchmark_vm.VMRunnerTests.test_changing_pins_cannot_silently_form_one_series) ... ok
+test_failed_remote_attempts_preserve_rows_without_stderr_contents (tests.performance.test_benchmark_vm.VMRunnerTests.test_failed_remote_attempts_preserve_rows_without_stderr_contents) ... ok
+test_frozen_pins_are_forwarded_to_remote_instead_of_following_live_pr (tests.performance.test_benchmark_vm.VMRunnerTests.test_frozen_pins_are_forwarded_to_remote_instead_of_following_live_pr) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_revoked_repository_disappears_from_graph_cache_counters_history_and_old_ids (tests.graph.test_graph_store.AccessTests.test_revoked_repository_disappears_from_graph_cache_counters_history_and_old_ids) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_adding_an_allowed_repository_keeps_earlier_knowledge (tests.graph.test_graph_store.KnowledgeTests.test_adding_an_allowed_repository_keeps_earlier_knowledge) ... ok
+test_reassigned_address_or_changed_requirement_makes_knowledge_stale (tests.graph.test_graph_store.KnowledgeTests.test_reassigned_address_or_changed_requirement_makes_knowledge_stale)
+2A review: sufficiency also depends on the address map and requirements. ... ok
+test_unrelated_edit_keeps_corrections_and_a_cited_change_makes_them_stale (tests.graph.test_graph_store.KnowledgeTests.test_unrelated_edit_keeps_corrections_and_a_cited_change_makes_them_stale) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_newer_store_schema_is_refused (tests.graph.test_graph_store.MigrationTests.test_newer_store_schema_is_refused) ... ok
+test_v1_state_migrates_with_backup_and_keeps_contexts_and_corrections (tests.graph.test_graph_store.MigrationTests.test_v1_state_migrates_with_backup_and_keeps_contexts_and_corrections) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_owner_change_keeps_history_and_unknown_or_conflicting_owner_is_never_named (tests.graph.test_graph_store.OwnershipTests.test_owner_change_keeps_history_and_unknown_or_conflicting_owner_is_never_named) ... ok
+test_unreadable_ownership_source_keeps_last_owner_and_turns_stale (tests.graph.test_graph_store.OwnershipTests.test_unreadable_ownership_source_keeps_last_owner_and_turns_stale) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_deleted_code_is_retracted_with_history_not_erased (tests.graph.test_graph_store.RecomputeTests.test_deleted_code_is_retracted_with_history_not_erased) ... ok
+test_full_and_incremental_builds_match_on_change_rename_and_deletion (tests.graph.test_graph_store.RecomputeTests.test_full_and_incremental_builds_match_on_change_rename_and_deletion) ... ok
+test_line_shift_above_a_call_keeps_the_callsite_and_its_basis (tests.graph.test_graph_store.RecomputeTests.test_line_shift_above_a_call_keeps_the_callsite_and_its_basis) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_unavailable_repository_keeps_last_snapshot_stale_and_reconcile_resumes (tests.graph.test_graph_store.RecoveryTests.test_unavailable_repository_keeps_last_snapshot_stale_and_reconcile_resumes) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_pr_default_change_finds_reporting_and_not_lookalikes (tests.graph.test_git_sources.ChangeTests.test_pr_default_change_finds_reporting_and_not_lookalikes) ... ok
+test_readme_edit_has_no_delta_and_removal_is_reported (tests.graph.test_git_sources.ChangeTests.test_readme_edit_has_no_delta_and_removal_is_reported) ... ok
+test_tracked_operation_change_outside_known_deltas_is_unclassified (tests.graph.test_git_sources.ChangeTests.test_tracked_operation_change_outside_known_deltas_is_unclassified) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_commit_must_be_reachable_from_an_allowed_ref (tests.graph.test_git_sources.CommitIdentityTests.test_commit_must_be_reachable_from_an_allowed_ref) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_missing_or_foreign_commit_is_a_gap_not_the_current_branch (tests.graph.test_git_sources.CommitIdentityTests.test_missing_or_foreign_commit_is_a_gap_not_the_current_branch) ... ok
+test_nested_branch_is_reachable_with_default_policy (tests.graph.test_git_sources.CommitIdentityTests.test_nested_branch_is_reachable_with_default_policy) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_revision_map_is_validated (tests.graph.test_git_sources.CommitIdentityTests.test_revision_map_is_validated) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_pinned_context_stays_current_without_rescanning (tests.graph.test_git_sources.ReproducibilityTests.test_pinned_context_stays_current_without_rescanning) ... ok
+test_repository_lost_after_prepare_is_not_current (tests.graph.test_git_sources.ReproducibilityTests.test_repository_lost_after_prepare_is_not_current) ... ok
+test_repository_unavailable_since_prepare_keeps_the_context_current (tests.graph.test_git_sources.ReproducibilityTests.test_repository_unavailable_since_prepare_keeps_the_context_current) ... ok
+test_same_commit_map_gives_same_facts_in_separate_stands_and_stores (tests.graph.test_git_sources.ReproducibilityTests.test_same_commit_map_gives_same_facts_in_separate_stands_and_stores) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_worktree_edit_does_not_change_a_pinned_snapshot (tests.graph.test_git_sources.ReproducibilityTests.test_worktree_edit_does_not_change_a_pinned_snapshot) ... ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+test_links_submodules_lfs_binary_and_large_files_are_visible_gaps (tests.graph.test_git_sources.SafeReadTests.test_links_submodules_lfs_binary_and_large_files_are_visible_gaps) ... ok
+test_object_whose_content_does_not_match_its_id_is_rejected (tests.graph.test_git_sources.SafeReadTests.test_object_whose_content_does_not_match_its_id_is_rejected) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_partial_fetch_missing_blob_is_a_gap (tests.graph.test_git_sources.SafeReadTests.test_partial_fetch_missing_blob_is_a_gap) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+test_repository_hooks_filters_and_fsmonitor_never_run (tests.graph.test_git_sources.SafeReadTests.test_repository_hooks_filters_and_fsmonitor_never_run) ... git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ok
+
+----------------------------------------------------------------------
+Ran 54 tests in 56.381s
+
+OK

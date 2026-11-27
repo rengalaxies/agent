@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-11-22T09:59:40.594326+00:00",
+  "units": {
+    "returncode": 0,
+    "stdout": "MainPID=2423764\nResult=success\nId=impactmap-ui-pilot.service\nActiveState=active\n\nMainPID=60331\nResult=success\nId=agent-bitbucket.service\nActiveState=active\n\nNextElapseUSecRealtime=Mon 2026-11-23 00:23:41 MSK\nLastTriggerUSec=Sun 2026-11-22 12:27:01 MSK\nResult=success\nId=impactmap-tls-renew.timer\nActiveState=active\n\nMainPID=0\nResult=success\nId=impactmap-tls-renew.service\nActiveState=inactive\n",
+    "stderr": ""
+  },
+  "certificate": {
+    "returncode": 0,
+    "stdout": "notBefore=Nov 20 20:17:37 2026 GMT\nnotAfter=Nov 27 12:17:36 2026 GMT\nserial=05F5E00855DE62A4AEBCC552E08BCC974D84\nissuer=C = US, O = Let's Encrypt, CN = YE2\nX509v3 Subject Alternative Name: critical\n    IP Address:82.202.141.50\n",
+    "stderr": ""
+  },
+  "renew_log": {
+    "returncode": 0,
+    "stdout": "Nov 18 12:13:35 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 19 00:05:36 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 19 00:05:37 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 19 00:05:37 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 19 12:29:53 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 19 12:29:54 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 19 12:29:54 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 20 00:20:36 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 20 00:20:37 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 20 00:20:37 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 20 12:06:00 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 20 12:06:01 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 20 12:06:01 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 21 00:13:16 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 21 00:16:10 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 21 00:16:10 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 21 12:23:57 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 21 12:23:58 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 21 12:23:58 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 22 00:07:37 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 22 00:07:38 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 22 00:07:38 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\nNov 22 12:27:01 dm-p1-ui systemd[1]: Starting impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate...\nNov 22 12:27:02 dm-p1-ui systemd[1]: impactmap-tls-renew.service: Deactivated successfully.\nNov 22 12:27:02 dm-p1-ui systemd[1]: Finished impactmap-tls-renew.service - Renew ImpactMap public IP TLS certificate.\n",
+    "stderr": ""
+  },
+  "legacy_release": "/opt/agent-bitbucket/releases/agent-service-0.1.0-ga02ffa7854dc-linux-x86_64-cp312",
+  "reload_proof": "2026-11-17T09:19:38Z\n2026-11-20T21:16:10Z\n"
+}

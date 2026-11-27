@@ -1,0 +1,179 @@
+{
+  "schema_version": "impactmap-benchmark-input-1",
+  "provenance": "controlled_generated",
+  "policy": {
+    "addresses": [
+      {
+        "base_url": "https://scale-provider.test",
+        "service": "provider"
+      }
+    ],
+    "capabilities": [
+      "read_context",
+      "maintain",
+      "propose",
+      "report_check"
+    ],
+    "environment": "offline",
+    "installation_id": "scale-controlled",
+    "repositories": [
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r00",
+        "include": [
+          "*.py"
+        ],
+        "revision": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+        "root": "<local-repository:r00>",
+        "service": "provider",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r01",
+        "include": [
+          "*.py"
+        ],
+        "revision": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+        "root": "<local-repository:r01>",
+        "service": "consumer_01",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r02",
+        "include": [
+          "*.py"
+        ],
+        "revision": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+        "root": "<local-repository:r02>",
+        "service": "consumer_02",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r03",
+        "include": [
+          "*.py"
+        ],
+        "revision": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+        "root": "<local-repository:r03>",
+        "service": "consumer_03",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r04",
+        "include": [
+          "*.py"
+        ],
+        "revision": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+        "root": "<local-repository:r04>",
+        "service": "consumer_04",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r05",
+        "include": [
+          "*.py"
+        ],
+        "revision": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+        "root": "<local-repository:r05>",
+        "service": "consumer_05",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r06",
+        "include": [
+          "*.py"
+        ],
+        "revision": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+        "root": "<local-repository:r06>",
+        "service": "consumer_06",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r07",
+        "include": [
+          "*.py"
+        ],
+        "revision": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+        "root": "<local-repository:r07>",
+        "service": "consumer_07",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r08",
+        "include": [
+          "*.py"
+        ],
+        "revision": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+        "root": "<local-repository:r08>",
+        "service": "consumer_08",
+        "snapshot": "git"
+      },
+      {
+        "allowed_refs": [
+          "refs/heads/*"
+        ],
+        "id": "r09",
+        "include": [
+          "*.py"
+        ],
+        "revision": "137a0c5e279c317a47350baf195567847492376f",
+        "root": "<local-repository:r09>",
+        "service": "consumer_09",
+        "snapshot": "git"
+      }
+    ],
+    "subject": "scale-verifier"
+  },
+  "base_revisions": {
+    "r00": "c30aa4e83de882143d164ac72e7e2e756e028a7c",
+    "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+    "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+    "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+    "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+    "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+    "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+    "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+    "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+    "r09": "137a0c5e279c317a47350baf195567847492376f"
+  },
+  "head_revisions": {
+    "r00": "5756163991acd2015fc03c15f10af4f5d3ee2b14",
+    "r01": "516add5bb4bd0f534b26a6ba49bcb3a0b0cf79f3",
+    "r02": "088e2d9771ed21c09ed3a00abbc44e8ec36cef31",
+    "r03": "b5ea9dc7c7753e82c6da97078ec17877901a5720",
+    "r04": "b08e99a5ccd49b9d772d8f1b971cbf435b8ec877",
+    "r05": "71e24f1027b860b06c52addd36d2cedbd78ada66",
+    "r06": "7d39225b34c2ada2ed70abd478d17d6fb4a8c20f",
+    "r07": "12ec5189c76bbe3e37ccc33b032cd30fed5b6585",
+    "r08": "09355bfa16a27d4f6fef2435580c7f2e08fee020",
+    "r09": "137a0c5e279c317a47350baf195567847492376f"
+  },
+  "provider_repository": "r00",
+  "pr_id": 1
+}

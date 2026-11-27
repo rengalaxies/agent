@@ -1,0 +1,191 @@
+{
+  "date": "2026-11-16",
+  "scope": "A6.1 author prototype only",
+  "selected_visual": 2,
+  "browser_viewports": [
+    [
+      1487,
+      1058
+    ],
+    [
+      1440,
+      1024
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "browser_dpr": 1,
+  "design_qa": "passed",
+  "independent_review": "one P2 route finding fixed and reproduced in browser",
+  "production_source_changed": false,
+  "runtime_dependencies_added": false,
+  "preview_url": "http://127.0.0.1:18087/#/changes/pr5",
+  "files": {
+    "README.md": {
+      "bytes": 3270,
+      "sha256": "59d55849062692d14c5a0eb49453fd3578c1a64cc43370a9f7022c13b619c861"
+    },
+    "app.js": {
+      "bytes": 17893,
+      "sha256": "0fe84696b10fcaaa8354d115b9bf2916e6d6ce04d1262a2d354293916313a763"
+    },
+    "assets/icons/LICENSE": {
+      "bytes": 1073,
+      "sha256": "b740a1d46122672da62833e97f7e7c8a13fa85cbc7445b584b297cc00dde93db"
+    },
+    "assets/icons/alert-triangle.svg": {
+      "bytes": 569,
+      "sha256": "25b1f0c39f34647017df84a0cdc9e691c697737094a5956c360ab448a7fd5bef"
+    },
+    "assets/icons/arrow-left.svg": {
+      "bytes": 433,
+      "sha256": "12af90f1bb49b7ae62792ecf38d2fa8b39daa4753e39ebc3520d07482a90704f"
+    },
+    "assets/icons/arrow-up-right.svg": {
+      "bytes": 430,
+      "sha256": "b7d952b0b6fbd089b110d85639ffffc001bb41fe53040e5e7f3e3f65ddc22595"
+    },
+    "assets/icons/chevron-down.svg": {
+      "bytes": 424,
+      "sha256": "5a2e5c2a155ce06264a3f7299073ed636142dfd0b324b747387d9cfbf9fb5e3e"
+    },
+    "assets/icons/circle-check.svg": {
+      "bytes": 455,
+      "sha256": "c4cb2e026be5f4c217c3ff9b0ccefb9a26b7a135bc82eef28a8bead0cc02a958"
+    },
+    "assets/icons/circle-help.svg": {
+      "bytes": 503,
+      "sha256": "c2ceac099c2cc1387661b0ddfb5be7fc8bc062d4b2f18c69ab9f07c7a72c5de9"
+    },
+    "assets/icons/clock.svg": {
+      "bytes": 445,
+      "sha256": "971b0b2d3b5b17ae240cd3aac1a09710ab680d8c41900f1a37a0e430994d7fda"
+    },
+    "assets/icons/file-code.svg": {
+      "bytes": 541,
+      "sha256": "d5ff36cdf06d2e4a701e1f717bae2ab5057abe9f0febc84420d655f0299ac350"
+    },
+    "assets/icons/git-pull-request.svg": {
+      "bytes": 629,
+      "sha256": "0288b91bc889b45e0f04e4bfea34927ec270f9f8d6e79fea17968beacf034fc0"
+    },
+    "assets/icons/player-play.svg": {
+      "bytes": 398,
+      "sha256": "e2bff69284f1dc77224c47c03798017206a29d4ef665549db724b0a4534d8e5c"
+    },
+    "assets/icons/search.svg": {
+      "bytes": 433,
+      "sha256": "3dd53b9606283dfa0adcb0b10a7d9a4432369d4bebcfacf67f80fbe358381c34"
+    },
+    "assets/icons/sources.json": {
+      "bytes": 2677,
+      "sha256": "eabb082bd09e26d6c4863eb20c8ae61b50e9aaed6966ec3d6140fb7aad4e3e70"
+    },
+    "assets/icons/stack-2.svg": {
+      "bytes": 451,
+      "sha256": "fbe45033ef093505d88dd56cc421290aebc51a5e9dd6c49b68bda588f4d952d9"
+    },
+    "assets/icons/x.svg": {
+      "bytes": 406,
+      "sha256": "9350785360414c39450c3505f17d1745e55a7534edace8548e30cf49e3727d43"
+    },
+    "design-qa.md": {
+      "bytes": 8168,
+      "sha256": "77d53479809358e97dc1acba16d3505d1aba633c2890140864f6b3f4b59a4a16"
+    },
+    "fixtures.js": {
+      "bytes": 6160,
+      "sha256": "df5eeb7cf9828d785850be061cd5c1fe86d1be997317660af184482505295666"
+    },
+    "index.html": {
+      "bytes": 3329,
+      "sha256": "56d38a2cece3625ff13a6e3fb85f18deae3d9524f9ba780e96e8db27f16b7866"
+    },
+    "qa/01-desktop-initial.jpg": {
+      "bytes": 142372,
+      "sha256": "16238ad0c2c5bb8189563151f24557c9d3789e73a45dc467bae0f22a1b5e33b6"
+    },
+    "qa/02-comparison-initial.jpg": {
+      "bytes": 281922,
+      "sha256": "dbab3a092142fc4c389344ff636c00be2ae25e5e2f42dec08fab6d5b060e52f6"
+    },
+    "qa/03-desktop-revised.jpg": {
+      "bytes": 141987,
+      "sha256": "3c68d839bf9468a068ad9aaa14e3859da0fec89a7c8a04cd094110d5fd50ba0a"
+    },
+    "qa/04-comparison-final.jpg": {
+      "bytes": 283262,
+      "sha256": "de108584796b5912c6939a566a1f4288dc7a2d52642d5e93bc672b71c356b078"
+    },
+    "qa/05-failed-stale.jpg": {
+      "bytes": 166350,
+      "sha256": "2b343ff20fe80774e5aaf88b8df82b6744c59e32a33a444f660f4950b1ccd72d"
+    },
+    "qa/06-connections-binding.jpg": {
+      "bytes": 161067,
+      "sha256": "399ad2a0a25626bbb778506ae35456eb07a1a2fb8791156e3bfa18f5e1968dba"
+    },
+    "qa/07-mobile-partial-before.jpg": {
+      "bytes": 119445,
+      "sha256": "41726389a248afc2c10c64136aba39b6f015b16d36b2491bfe6fa05c87678ec5"
+    },
+    "qa/07-mobile-partial.jpg": {
+      "bytes": 113297,
+      "sha256": "3d8535690f4fa65f12faac62353d5e16e68cffa4297d089b88ff33e738fe0c96"
+    },
+    "qa/08-mobile-fixed.jpg": {
+      "bytes": 102223,
+      "sha256": "9e04e01f322f33d9081984343a887d3c20880b2b4bd15174994d7cdd8b581389"
+    },
+    "qa/09-desktop-1440.jpg": {
+      "bytes": 138434,
+      "sha256": "f29a6e0c5fd622c0a8ec929debd0fbb66554c8b21bd5ab4b5599a74ee3e1829a"
+    },
+    "qa/10-operations-desktop.jpg": {
+      "bytes": 145330,
+      "sha256": "b1773fdbd0578de2501a725a9084a68ff485babbe29d325e933e8069d0111c73"
+    },
+    "qa/11-comparison-evidence.jpg": {
+      "bytes": 76532,
+      "sha256": "527f29e9ad2bcafd17a3308be1fa2981d632b4c6dacca486b5e9c8008b958574"
+    },
+    "qa/compare-final.html": {
+      "bytes": 273,
+      "sha256": "099a721baf34e550c1af8b7547ffd7e5ef072e53c0f02f40964ed19dbac1b5e8"
+    },
+    "qa/compare-focus.html": {
+      "bytes": 321,
+      "sha256": "d02b18e9ca83770f94c41f3d9e42c3b90ca51ce2814bbe6739739ccf6f1df14e"
+    },
+    "qa/compare-initial.html": {
+      "bytes": 273,
+      "sha256": "549d272934a2b0930f1bcf38fab066510c532a44b4c319af281e5767ea928b1b"
+    },
+    "qa/comparison.css": {
+      "bytes": 88,
+      "sha256": "5a64d255eef718b0d1aa0829211de9a4a49b780633404354f24ba908d2234e7a"
+    },
+    "qa/focus.css": {
+      "bytes": 173,
+      "sha256": "c01aeb56dd9f0bb8f3da4acb36f4031a2bed2eb7ae72dc79aaeca7cbd09443fa"
+    },
+    "qa/source-reference.png": {
+      "bytes": 1416581,
+      "sha256": "30708c7d11d250e9c8c4f3a8802a54be12f7e4c00323a7db3bdc00337b036d19"
+    },
+    "serve.py": {
+      "bytes": 1053,
+      "sha256": "b3745213081e82bb44576b15d61bc9c3468a69acd36679ece51e6822ddd94867"
+    },
+    "styles.css": {
+      "bytes": 14979,
+      "sha256": "33c912a4872286ceabdbc0e117798d6429e67c3782ec2c4f4ce88d38dc965f90"
+    }
+  },
+  "typography_revision": 2,
+  "typography_source_commit": "f3c38e6",
+  "current_visual_evidence": "../../docs/operations/a6-2-2026-11-16/",
+  "historical_qa_note": "qa/* records original larger typography; see design-qa.md revision2"
+}

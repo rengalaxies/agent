@@ -1,0 +1,401 @@
+{
+  "schema_id": "agent-graph-output",
+  "schema_version": "2.2",
+  "kind": "analysis_result",
+  "profile": "http-requests-9",
+  "code_version": "development-diagnostic",
+  "constitution_version": "agent-service-v1.0:test",
+  "installation_id": "synthetic-demo",
+  "environment": "test",
+  "request_id": "replacement",
+  "event_id": "replacement",
+  "resource_version": "v1",
+  "correlation_id": "replacement",
+  "trigger_kind": "pr",
+  "snapshots": [
+    {
+      "repository": "orders",
+      "mode": "GIT_COMMIT",
+      "commit": "94c3bf5fc4fb43bbadba7f0c7f53284bf4121c87",
+      "tree": "7b7a00f38963c3d0ee4a24767713cb32eee0beb6",
+      "role": "base"
+    },
+    {
+      "repository": "orders",
+      "mode": "GIT_COMMIT",
+      "commit": "7c7e454333ef67ec1939a12f69f984e9538f79d3",
+      "tree": "56acb10b08cfa8de3d34e06e56d35d07452cf552",
+      "role": "head"
+    },
+    {
+      "repository": "reporting",
+      "mode": "GIT_COMMIT",
+      "commit": "921d8dbad4d6429e5f1cc78448d1a49e1635ef6d",
+      "tree": "494dfd3514bbc5b5d6ba113b68fb3a60bb8f5370",
+      "role": "consumer"
+    },
+    {
+      "repository": "export",
+      "mode": "GIT_COMMIT",
+      "commit": "f5ee53796b14fc26d3cf17ac446b804321ea909d",
+      "tree": "e795329c8d5cdad29b44dd72c027ad397e30cd3d",
+      "role": "consumer"
+    },
+    {
+      "repository": "health",
+      "mode": "GIT_COMMIT",
+      "commit": "f5ee53796b14fc26d3cf17ac446b804321ea909d",
+      "tree": "e795329c8d5cdad29b44dd72c027ad397e30cd3d",
+      "role": "consumer"
+    }
+  ],
+  "graph_version": "graph-1",
+  "status": "PARTIAL",
+  "reason_code": "unclassified_change",
+  "superseded_by": null,
+  "usefulness_confirmed": false,
+  "summary": "A tracked operation changed in a way no classifier covers; its consumers need a recheck.",
+  "affected": [
+    {
+      "service": {
+        "kind": "service",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "reporting"
+      },
+      "owner": {
+        "status": "UNKNOWN",
+        "teams": [],
+        "source": null,
+        "source_version": null,
+        "checked_at": null
+      },
+      "relationship_refs": [
+        "rel:c7f4ab9ea02db4a26949bf160b3fac3be2ced43b"
+      ]
+    }
+  ],
+  "impact_paths": [
+    {
+      "relationship_refs": [
+        "rel:c7f4ab9ea02db4a26949bf160b3fac3be2ced43b"
+      ],
+      "summary": "reporting -> orders GET /{resource}"
+    }
+  ],
+  "checks": [
+    {
+      "consumer": {
+        "kind": "service",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "reporting"
+      },
+      "text": "Exercise the changed operation against this consumer's independent expectations",
+      "claim_refs": [
+        "claim:724a54fb81471489dd62e5dcd6621216dbed0f41",
+        "claim:f68f91a8a93017c9f369bfc60ed4b9ef7c020fcd"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:f68f91a8a93017c9f369bfc60ed4b9ef7c020fcd",
+      "kind": "fact",
+      "statement": "reporting calls GET /{resource} of orders at client.py:2; observed usage SINGLE_REQUEST_OBSERVED.",
+      "evidence_refs": [
+        "ev:5ead28e38c9172df34d6911f340c2abb355baf1b",
+        "ev:b2f93b530bdfec4655c9402d99a44a90b1ef1fc8",
+        "ev:f7b459c559730e543e0f3fba8cfcbee2cadc085f"
+      ],
+      "applicability": "Pinned snapshots only; static profile http-requests-9.",
+      "uncertainty": "LOW",
+      "unknowns": [],
+      "subject": null
+    },
+    {
+      "id": "claim:724a54fb81471489dd62e5dcd6621216dbed0f41",
+      "kind": "hypothesis",
+      "statement": "UNCLASSIFIED_CHANGE_RECHECK: The old declaration GET /orders was removed and this call now maps to a different declaration; compatibility is unclassified.",
+      "evidence_refs": [
+        "ev:5ead28e38c9172df34d6911f340c2abb355baf1b",
+        "ev:a8f61f019f74a529ec14da3938a946dc19f83c61",
+        "ev:b2f93b530bdfec4655c9402d99a44a90b1ef1fc8"
+      ],
+      "applicability": "Pinned snapshots only; static profile http-requests-9.",
+      "uncertainty": "HIGH",
+      "unknowns": [
+        "helper_semantics_unknown",
+        "unclassified_change"
+      ],
+      "subject": {
+        "kind": "operation",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "orders",
+        "method": "GET",
+        "route": "/orders"
+      }
+    }
+  ],
+  "deltas": [
+    {
+      "operation": {
+        "kind": "operation",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "orders",
+        "method": "GET",
+        "route": "/orders"
+      },
+      "code": "OPERATION_REMOVED",
+      "before": null,
+      "after": null,
+      "evidence_refs": [
+        "ev:a8f61f019f74a529ec14da3938a946dc19f83c61"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "code": "UNCLASSIFIED_CHANGE_RECHECK",
+      "consumer": {
+        "kind": "service",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "reporting"
+      },
+      "usage": "SINGLE_REQUEST_OBSERVED",
+      "callsite": {
+        "kind": "callsite",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "reporting",
+        "repository": "reporting",
+        "path": "client.py",
+        "line": 2
+      },
+      "dependency_freshness": "CURRENT",
+      "evidence_refs": [
+        "ev:5ead28e38c9172df34d6911f340c2abb355baf1b"
+      ],
+      "requirement_ids": [
+        "reporting-complete"
+      ],
+      "test_executed": false,
+      "compatibility_confirmed": false
+    }
+  ],
+  "gaps": [],
+  "unknowns": [
+    {
+      "code": "unclassified_change",
+      "subject": null
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "subject": null
+    },
+    {
+      "code": "owner_unknown",
+      "subject": "reporting"
+    }
+  ],
+  "source_freshness": [
+    {
+      "source_kind": "git",
+      "source_id": "orders",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      }
+    },
+    {
+      "source_kind": "git",
+      "source_id": "reporting",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      }
+    },
+    {
+      "source_kind": "git",
+      "source_id": "export",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      }
+    },
+    {
+      "source_kind": "git",
+      "source_id": "health",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev:a8f61f019f74a529ec14da3938a946dc19f83c61",
+      "provenance": "AUTHENTIC",
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      },
+      "visibility": [
+        "orders"
+      ],
+      "origin": "code",
+      "snapshot": "GIT_COMMIT",
+      "repository": "orders",
+      "commit": "94c3bf5fc4fb43bbadba7f0c7f53284bf4121c87",
+      "blob": "ae3de5c545d35fc092773e6ae25f0a00b66ac954",
+      "content_sha256": "e8bcec720735e21571c1599d956a495add9e95adec28b38d4dc30aa6efdbac1f",
+      "path": "api.py",
+      "start_line": 4,
+      "end_line": 5
+    },
+    {
+      "id": "ev:5ead28e38c9172df34d6911f340c2abb355baf1b",
+      "provenance": "AUTHENTIC",
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      },
+      "visibility": [
+        "reporting"
+      ],
+      "origin": "code",
+      "snapshot": "GIT_COMMIT",
+      "repository": "reporting",
+      "commit": "921d8dbad4d6429e5f1cc78448d1a49e1635ef6d",
+      "blob": "6987e1826d0b41f0fb2abe8e8b058ad515a2d7d1",
+      "content_sha256": "a96fc2f79b54835cb52d494917e29559c02e9ce01d37a02f124293613715f97f",
+      "path": "client.py",
+      "start_line": 2,
+      "end_line": 2
+    },
+    {
+      "id": "ev:b2f93b530bdfec4655c9402d99a44a90b1ef1fc8",
+      "provenance": "AUTHENTIC",
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      },
+      "visibility": [
+        "orders"
+      ],
+      "origin": "code",
+      "snapshot": "GIT_COMMIT",
+      "repository": "orders",
+      "commit": "7c7e454333ef67ec1939a12f69f984e9538f79d3",
+      "blob": "0ca30eaeea6e905222eae3558ecf3aaeeda9d216",
+      "content_sha256": "ebd443bcc7dea915e4f3d964e9715dfb3750c1b2e6dc861e173e95c599b76e62",
+      "path": "api.py",
+      "start_line": 4,
+      "end_line": 5
+    },
+    {
+      "id": "ev:f7b459c559730e543e0f3fba8cfcbee2cadc085f",
+      "provenance": "AUTHENTIC",
+      "sufficiency": "SUPPORTED_WITHIN_PROFILE",
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      },
+      "visibility": [
+        "reporting"
+      ],
+      "origin": "code",
+      "snapshot": "GIT_COMMIT",
+      "repository": "reporting",
+      "commit": "921d8dbad4d6429e5f1cc78448d1a49e1635ef6d",
+      "blob": "6987e1826d0b41f0fb2abe8e8b058ad515a2d7d1",
+      "content_sha256": "a96fc2f79b54835cb52d494917e29559c02e9ce01d37a02f124293613715f97f",
+      "path": "client.py",
+      "start_line": 1,
+      "end_line": 1
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel:c7f4ab9ea02db4a26949bf160b3fac3be2ced43b",
+      "kind": "calls",
+      "source": {
+        "kind": "service",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "reporting"
+      },
+      "target": {
+        "kind": "operation",
+        "installation_id": "synthetic-demo",
+        "environment": "test",
+        "service": "orders",
+        "method": "GET",
+        "route": "/{resource}"
+      },
+      "status": "ACTIVE",
+      "origins": [
+        "code"
+      ],
+      "evidence_refs": [
+        "ev:5ead28e38c9172df34d6911f340c2abb355baf1b",
+        "ev:b2f93b530bdfec4655c9402d99a44a90b1ef1fc8"
+      ],
+      "freshness": {
+        "status": "CURRENT",
+        "checked_at": "2026-11-15T14:56:42.649755Z",
+        "reasons": [],
+        "valid_from": null,
+        "valid_until": null
+      },
+      "change_origin": "code_scan",
+      "visibility": [
+        "orders",
+        "reporting"
+      ]
+    }
+  ],
+  "model": null,
+  "costs": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "reserved_micro": null,
+    "currency": null
+  },
+  "timings": {
+    "started_at": "2026-11-15T14:56:42.649805Z",
+    "finished_at": "2026-11-15T14:56:42.649811Z",
+    "seconds": {}
+  }
+}

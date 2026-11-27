@@ -1,0 +1,191 @@
+test_ambiguous_current_mapping_does_not_become_a_verified_removed_call (tests.graph.test_removal_mapping.RemovalMappingTests.test_ambiguous_current_mapping_does_not_become_a_verified_removed_call) ... ok
+test_current_replacement_route_is_not_forced_back_to_removed_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_current_replacement_route_is_not_forced_back_to_removed_declaration) ... FAIL
+test_deleted_call_is_not_warned_about_as_a_current_consumer (tests.graph.test_removal_mapping.RemovalMappingTests.test_deleted_call_is_not_warned_about_as_a_current_consumer) ... FAIL
+test_dynamic_parameters_revealed_during_remap_remain_visible (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_parameters_revealed_during_remap_remain_visible) ... FAIL
+test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial (tests.graph.test_removal_mapping.RemovalMappingTests.test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial) ... FAIL
+test_moved_call_uses_its_head_location_and_source_quote (tests.graph.test_removal_mapping.RemovalMappingTests.test_moved_call_uses_its_head_location_and_source_quote) ... FAIL
+test_new_consumer_in_another_repository_is_found_at_head (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_consumer_in_another_repository_is_found_at_head) ... FAIL
+test_new_head_consumer_of_removed_operation_is_not_omitted (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_head_consumer_of_removed_operation_is_not_omitted) ... FAIL
+test_opaque_caller_keeps_stale_base_evidence_and_visible_boundary (tests.graph.test_removal_mapping.RemovalMappingTests.test_opaque_caller_keeps_stale_base_evidence_and_visible_boundary) ... ok
+test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) ... 
+  test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) (call='requests.get("https://unknown.test/other")') ... FAIL
+  test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) (call='requests.post("https://orders.test/orders")') ... FAIL
+test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target) ... FAIL
+test_selected_scope_does_not_clear_other_removed_operation_gap (tests.graph.test_removal_mapping.RemovalMappingTests.test_selected_scope_does_not_clear_other_removed_operation_gap) ... ok
+test_template_call_can_be_verified_against_removed_base_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_template_call_can_be_verified_against_removed_base_declaration) ... FAIL
+test_unavailable_caller_keeps_stale_base_evidence (tests.graph.test_removal_mapping.RemovalMappingTests.test_unavailable_caller_keeps_stale_base_evidence) ... ok
+test_unparseable_provider_cannot_prove_operation_removal (tests.graph.test_removal_mapping.RemovalMappingTests.test_unparseable_provider_cannot_prove_operation_removal) ... ok
+
+======================================================================
+FAIL: test_current_replacement_route_is_not_forced_back_to_removed_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_current_replacement_route_is_not_forced_back_to_removed_declaration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 157, in test_current_replacement_route_is_not_forced_back_to_removed_declaration
+    self.assertEqual([f['code'] for f in analysis['findings']], ['UNCLASSIFIED_CHANGE_RECHECK'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['OPERATION_REMOVED'] != ['UNCLASSIFIED_CHANGE_RECHECK']
+
+First differing element 0:
+'OPERATION_REMOVED'
+'UNCLASSIFIED_CHANGE_RECHECK'
+
+- ['OPERATION_REMOVED']
++ ['UNCLASSIFIED_CHANGE_RECHECK']
+
+======================================================================
+FAIL: test_deleted_call_is_not_warned_about_as_a_current_consumer (tests.graph.test_removal_mapping.RemovalMappingTests.test_deleted_call_is_not_warned_about_as_a_current_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 82, in test_deleted_call_is_not_warned_about_as_a_current_consumer
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'OPERATION_REMOVED', 'dependency[1001 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'OPERATION_REMOVED', 'dependency_id': 'cb838ab4fb25b53bc8f0935f84d33620aa7cb1a483ea0d87d681422cc5a5c633', 'consumer': 'reporting', 'usage': 'SINGLE_REQUEST_OBSERVED', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'STALE', 'condition': 'If the changed declaration governs this call', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63', 'start_line': 4}, {'end_line': 2, 'quote': 'requests.get("https://orders.test/orders")', 'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 2}, {'end_line': 1, 'quote': 'import requests', 'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 1}], 'requirement_ids': ['reporting-complete'], 'check': "Exercise the changed operation against this consumer's independent expectations", 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1316 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_dynamic_parameters_revealed_during_remap_remain_visible (tests.graph.test_removal_mapping.RemovalMappingTests.test_dynamic_parameters_revealed_during_remap_remain_visible)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 176, in test_dynamic_parameters_revealed_during_remap_remain_visible
+    self.assertEqual([f['usage'] for f in analysis['findings']], ['UNKNOWN_USAGE'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['SINGLE_REQUEST_OBSERVED'] != ['UNKNOWN_USAGE']
+
+First differing element 0:
+'SINGLE_REQUEST_OBSERVED'
+'UNKNOWN_USAGE'
+
+- ['SINGLE_REQUEST_OBSERVED']
++ ['UNKNOWN_USAGE']
+
+======================================================================
+FAIL: test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial (tests.graph.test_removal_mapping.RemovalMappingTests.test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 56, in test_existing_call_is_verified_at_head_while_head_only_scan_stays_partial
+    self.assertEqual([f['dependency_freshness'] for f in analysis['findings']], ['CURRENT'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['STALE'] != ['CURRENT']
+
+First differing element 0:
+'STALE'
+'CURRENT'
+
+- ['STALE']
++ ['CURRENT']
+
+======================================================================
+FAIL: test_moved_call_uses_its_head_location_and_source_quote (tests.graph.test_removal_mapping.RemovalMappingTests.test_moved_call_uses_its_head_location_and_source_quote)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 86, in test_moved_call_uses_its_head_location_and_source_quote
+    self.assertEqual([f['callsite']['line'] for f in analysis['findings']], [4])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [2] != [4]
+
+First differing element 0:
+2
+4
+
+- [2]
++ [4]
+
+======================================================================
+FAIL: test_new_consumer_in_another_repository_is_found_at_head (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_consumer_in_another_repository_is_found_at_head)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 149, in test_new_consumer_in_another_repository_is_found_at_head
+    self.assertEqual([(f['consumer'], f['dependency_freshness']) for f in analysis['findings']], [('health', 'CURRENT')])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('health', 'CURRENT')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('health', 'CURRENT')
+
+- []
++ [('health', 'CURRENT')]
+
+======================================================================
+FAIL: test_new_head_consumer_of_removed_operation_is_not_omitted (tests.graph.test_removal_mapping.RemovalMappingTests.test_new_head_consumer_of_removed_operation_is_not_omitted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 72, in test_new_head_consumer_of_removed_operation_is_not_omitted
+    self.assertEqual([(f['consumer'], f['code']) for f in analysis['findings']], [('reporting', 'OPERATION_REMOVED')])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [('reporting', 'OPERATION_REMOVED')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('reporting', 'OPERATION_REMOVED')
+
+- []
++ [('reporting', 'OPERATION_REMOVED')]
+
+======================================================================
+FAIL: test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) (call='requests.get("https://unknown.test/other")')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 94, in test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'OPERATION_REMOVED', 'dependency[1001 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'OPERATION_REMOVED', 'dependency_id': 'cb838ab4fb25b53bc8f0935f84d33620aa7cb1a483ea0d87d681422cc5a5c633', 'consumer': 'reporting', 'usage': 'SINGLE_REQUEST_OBSERVED', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'STALE', 'condition': 'If the changed declaration governs this call', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63', 'start_line': 4}, {'end_line': 2, 'quote': 'requests.get("https://orders.test/orders")', 'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 2}, {'end_line': 1, 'quote': 'import requests', 'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 1}], 'requirement_ids': ['reporting-complete'], 'check': "Exercise the changed operation against this consumer's independent expectations", 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1316 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert (tests.graph.test_removal_mapping.RemovalMappingTests.test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert) (call='requests.post("https://orders.test/orders")')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 94, in test_retargeted_host_or_method_retains_its_unresolved_gap_without_old_alert
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'OPERATION_REMOVED', 'dependency[1001 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'OPERATION_REMOVED', 'dependency_id': 'cb838ab4fb25b53bc8f0935f84d33620aa7cb1a483ea0d87d681422cc5a5c633', 'consumer': 'reporting', 'usage': 'SINGLE_REQUEST_OBSERVED', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'STALE', 'condition': 'If the changed declaration governs this call', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders():\n    return []', 'source_id': 'bcc2f9a8e10c662cb0b095c53ca3c2f9686b79bca2e19dd464835e80c5eb9c63', 'start_line': 4}, {'end_line': 2, 'quote': 'requests.get("https://orders.test/orders")', 'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 2}, {'end_line': 1, 'quote': 'import requests', 'source_id': '3493d6a38517dbe419ec99fd97f374aca3222d9f1214449532f875c5c73ac1c7', 'start_line': 1}], 'requirement_ids': ['reporting-complete'], 'check': "Exercise the changed operation against this consumer's independent expectations", 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1316 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target (tests.graph.test_removal_mapping.RemovalMappingTests.test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 101, in test_same_line_unknown_call_is_not_cleared_with_the_resolved_removed_target
+    self.assertEqual([g['code'] for g in analysis['gaps']], ['unmapped_call'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['unmapped_call', 'unmapped_call'] != ['unmapped_call']
+
+First list contains 1 additional elements.
+First extra element 1:
+'unmapped_call'
+
+- ['unmapped_call', 'unmapped_call']
++ ['unmapped_call']
+
+======================================================================
+FAIL: test_template_call_can_be_verified_against_removed_base_declaration (tests.graph.test_removal_mapping.RemovalMappingTests.test_template_call_can_be_verified_against_removed_base_declaration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_removal_mapping.py", line 129, in test_template_call_can_be_verified_against_removed_base_declaration
+    self.assertEqual(analysis['findings'][0]['dependency_freshness'], 'CURRENT')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STALE' != 'CURRENT'
+- STALE
++ CURRENT
+
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.296s
+
+FAILED (failures=11)

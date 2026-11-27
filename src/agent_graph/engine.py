@@ -8,6 +8,8 @@ import uuid
 from . import PROFILE, SCHEMA
 from .contracts import Citation, ExternalCheck, GraphError, Policy, Proposal, digest
 from .discovery import extract
+from .change_scope import opaque_provider_basis
+from .removal_mapping import proven_removed_operations, remap_removed_calls
 from .sources import collect, pinned_freshness, pinned_only
 from .store import Store, cited_bases, scope_id
 
@@ -244,19 +246,41 @@ class Graph:
         current = self.prepare_context(task or base["task"], base.get("operation_id"), revisions)
         old_ops = {o["id"]: o for o in base["graph"]["operations"]}
         new_ops = {o["id"]: o for o in current["graph"]["operations"]}
-        findings, deltas = [], []
+        provider_repos = {base["sources"][e["source_id"]]["repository"]
+                          for op in old_ops.values() for e in op["evidence"]
+                          if not base.get("operation_id") or op["id"] == base["operation_id"]}
+        provider_services = {o['service'] for o in old_ops.values()
+                             if not base.get('operation_id') or o['id'] == base['operation_id']}
+        provider_repos.update(r.id for r in self.policy.repositories if r.service in provider_services)
+        old_opaque = opaque_provider_basis(base, provider_repos)
+        new_opaque = opaque_provider_basis(current, provider_repos)
+        opaque_changes = {repo for repo in provider_repos if old_opaque[repo] != new_opaque[repo]}
+        # A handler can also be called as a Python helper by another handler.
+        # Index all changes before applying the selected-operation filter.
+        operation_changes = {}
+        for op_id in old_ops.keys() | new_ops.keys():
+            before, after = old_ops.get(op_id), new_ops.get(op_id)
+            if before is None or after is None or before.get("tracked_basis") != after.get("tracked_basis"):
+                repos = set()
+                for ctx, op in ((base, before), (current, after)):
+                    if op:
+                        repos.update(ctx["sources"][e["source_id"]]["repository"] for e in op["evidence"])
+                operation_changes[op_id] = repos
+        # New/modified opaque code can hide a replacement registration. Pure
+        # deletion of a complete provider file is still a supported removal.
+        opaque_additions = {repo for repo in provider_repos
+                            if set(new_opaque[repo]) - set(old_opaque[repo])}
+        removed = proven_removed_operations(self.policy, base, current, opaque_additions)
+        remapped = remap_removed_calls(self.policy, base, current, removed)
+        findings, deltas, default_overrides = [], [], []
+        uncertain_default = False
         for id, old in old_ops.items():
             new = new_ops.get(id)
             if base.get("operation_id") and id != base["operation_id"]:
                 continue
             code = None
             if new is None:
-                provider_repos = {base["sources"][e["source_id"]]["repository"] for e in old["evidence"]}
-                uncertain = any(g.get("repository") in provider_repos
-                                or g.get("source_id") in {s["id"] for s in current["sources"].values()
-                                                         if s["repository"] in provider_repos}
-                                for g in current["graph"]["gaps"])
-                if uncertain:
+                if id not in removed:
                     continue  # missing/unparseable provider is not a proven removal
                 code = "OPERATION_REMOVED"
             elif (not old.get("default_conflict") and not new.get("default_conflict")
@@ -278,22 +302,35 @@ class Graph:
                 continue
             def default(op):
                 return op.get("page_size_default") if op["default_known"] else "UNRESOLVED"
+            op_repos = {base["sources"][e["source_id"]]["repository"] for e in old["evidence"]}
+            other_changes = code == "PAGE_DEFAULT_CHANGED" and (
+                not old.get("non_default_basis") or not new.get("non_default_basis")
+                or not old.get("default_override_supported") or not new.get("default_override_supported")
+                or sorted(old["non_default_basis"]) != sorted(new["non_default_basis"])
+                or bool(op_repos & opaque_changes)
+                or any(op_id != id and bool(repos & op_repos) for op_id, repos in operation_changes.items()))
+            uncertain_default |= other_changes
             unclassified = code == "UNCLASSIFIED_OPERATION_CHANGE"
             delta = dict(operation_id=id, code=code,
-                         before="TRACKED_BASIS_CHANGED" if unclassified
+                         before="TRACKED_BASIS_CHANGED" if code == "UNCLASSIFIED_OPERATION_CHANGE"
                          else default(old) if code == "PAGE_DEFAULT_UNRESOLVED" else old.get("page_size_default"),
-                         after="TRACKED_BASIS_CHANGED" if unclassified
+                         after="TRACKED_BASIS_CHANGED" if code == "UNCLASSIFIED_OPERATION_CHANGE"
                          else default(new) if code == "PAGE_DEFAULT_UNRESOLVED"
                          else new.get("page_size_default") if new else None,
                          evidence=old["evidence"] + (new["evidence"] if new else []))
             deltas.append(delta)
             # Current scan can discover a NEW consumer in a formerly irrelevant file.
             # Old callsites stay in the old immutable result, not as live risks
-            # after a repair/move. For a removed operation retain historical uses.
-            dep_context = base if code == "OPERATION_REMOVED" else current
-            deps = {d["id"]: d for d in dep_context["graph"]["dependencies"] if d["operation_id"] == id}
-            live_ids = {d["id"] for d in current["graph"]["dependencies"]}
+            # after a repair/move. Removed operations use verified current calls
+            # and retain historical evidence only for unverifiable callers.
+            source_deps = remapped["dependencies"] if code == "OPERATION_REMOVED" else current["graph"]["dependencies"]
+            deps = {d["id"]: d for d in source_deps if d["operation_id"] == id}
+            live_ids = set(remapped["current_ids"]) if code == "OPERATION_REMOVED" else {d["id"] for d in current["graph"]["dependencies"]}
             for dep in deps.values():
+                if code == "PAGE_DEFAULT_CHANGED" and not other_changes and dep.get("explicit_page_size"):
+                    default_overrides.append(dep["id"])
+                    continue
+                unclassified_call = unclassified or bool(dep.get("replacement_operation_id")) or (other_changes and dep.get("explicit_page_size", False))
                 live = dep["id"] in live_ids
                 after = delta["after"]
                 limited = type(after) is int and after > 0 and (delta["before"] is None
@@ -302,26 +339,35 @@ class Graph:
                 rules = [r for r in current["graph"]["requirements"]
                          if r["operation_id"] == id and r["consumer"] == dep["consumer"]]
                 findings.append(dict(
-                    code="UNCLASSIFIED_CHANGE_RECHECK" if unclassified
+                    code="UNCLASSIFIED_CHANGE_RECHECK" if unclassified_call
                     else "POSSIBLE_TRUNCATION" if risk and code != "OPERATION_REMOVED" else code if risk
                     else "RECHECK_REQUIRED",
                     dependency_id=dep["id"], consumer=dep["consumer"], usage=dep["usage"],
                     callsite=dict(repository=dep["repository"], path=dep["path"], line=dep["call_line"]),
                     dependency_freshness="CURRENT" if live else "STALE",
-                    condition=(f"If helper obeys page_size, result set exceeds {after}, and consumer needs complete data"
-                               if limited else "The tracked declaration changed in a way no classifier covers"
-                               if unclassified else "If the changed declaration governs this call"),
+                    replacement_operation_id=dep.get("replacement_operation_id"),
+                    condition=(f"The old declaration {old['method']} {old['path']} was removed and this call now maps to a different declaration; compatibility is unclassified"
+                               if dep.get("replacement_operation_id") else "Provider behavior changed outside the default-only classifier"
+                               if unclassified_call else f"If helper obeys page_size, result set exceeds {after}, and consumer needs complete data"
+                               if limited else "If the changed declaration governs this call"),
                     evidence_stage="STATIC", evidence=delta["evidence"] + dep["evidence"] + dep["usage_evidence"],
                     requirement_ids=[r["id"] for r in rules],
-                    check=(f"Run consumer with more than {after} records; compare full expected set, page traversal and explicit limits"
+                    check=("Exercise the changed operation against this consumer's independent expectations"
+                           if unclassified_call else f"Run consumer with more than {after} records; compare full expected set, page traversal and explicit limits"
                            if limited else "Exercise the changed operation against this consumer's independent expectations"),
                     test_executed=False, compatibility_confirmed=False))
         result = dict(schema=SCHEMA, run_id=uuid.uuid4().hex, created_at=now(),
                       base_context_id=base_context_id, context_requested_id=base_context_id,
                       context_used_id=current["id"], base_basis=base["basis"], head_basis=current["basis"],
                       base_snapshots=base.get("snapshots", []), head_snapshots=current["snapshots"],
-                      deltas=deltas, findings=findings, coverage=current["coverage"],
-                      gaps=current["graph"]["gaps"], conflicts=current["graph"]["conflicts"],
+                      deltas=deltas, findings=findings, default_overrides=default_overrides,
+                      semantic_uncertainty=bool(opaque_changes) or uncertain_default or any(
+                          d["code"] == "UNCLASSIFIED_OPERATION_CHANGE" for d in deltas) or any(
+                          f["code"] == "UNCLASSIFIED_CHANGE_RECHECK" for f in findings),
+                      coverage="PARTIAL" if remapped["gaps"] else "COMPLETE_WITHIN_PROFILE",
+                      head_coverage=current["coverage"], removed_dependencies=remapped["dependencies"],
+                      resolved_removed_calls=remapped["resolved"],
+                      gaps=remapped["gaps"], conflicts=current["graph"]["conflicts"],
                       freshness=self.freshness(current), release_decision=None,
                       unknowns=([] if deltas else ["no_supported_behavior_delta; arbitrary semantic changes are not classified"])
                       + (["unclassified_change; tracked declaration changed outside known classifiers, not a proven break; "

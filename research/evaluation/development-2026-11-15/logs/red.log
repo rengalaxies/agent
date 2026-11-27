@@ -1,0 +1,139 @@
+test_comment_only_helper_edit_does_not_invent_semantic_change (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_comment_only_helper_edit_does_not_invent_semantic_change) ... ok
+test_default_and_body_change_still_requires_explicit_consumer_review (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_default_and_body_change_still_requires_explicit_consumer_review) ... FAIL
+test_default_plus_opaque_change_does_not_exempt_explicit_call (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_default_plus_opaque_change_does_not_exempt_explicit_call) ... FAIL
+test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) ... 
+  test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='requests.get("https://orders.test/orders", params={"page_size": 40})') ... FAIL
+  test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='requests.get("https://orders.test/orders", {"page_size": 40})') ... FAIL
+  test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='requests.get("https://orders.test/orders?page_size=40")') ... FAIL
+  test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='for page in range(4):\n    requests.get("https://orders.test/orders", params={"page": page, "page_size": 40})') ... FAIL
+test_mixed_callsites_keep_only_implicit_call_alert (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_mixed_callsites_keep_only_implicit_call_alert) ... FAIL
+test_none_dynamic_and_loop_without_override_keep_alerts (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_none_dynamic_and_loop_without_override_keep_alerts) ... ok
+test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer) ... FAIL
+test_openapi_default_override_does_not_hide_response_contract_change (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_openapi_default_override_does_not_hide_response_contract_change) ... FAIL
+test_removal_alerts_even_when_consumer_sends_size (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_removal_alerts_even_when_consumer_sends_size) ... ok
+
+======================================================================
+FAIL: test_default_and_body_change_still_requires_explicit_consumer_review (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_default_and_body_change_still_requires_explicit_consumer_review)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 98, in test_default_and_body_change_still_requires_explicit_consumer_review
+    self.assertIn('unclassified_change', [u.code for u in self.result(analysis).unknowns])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unclassified_change' not found in ['owner_unknown']
+
+======================================================================
+FAIL: test_default_plus_opaque_change_does_not_exempt_explicit_call (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_default_plus_opaque_change_does_not_exempt_explicit_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 144, in test_default_plus_opaque_change_does_not_exempt_explicit_call
+    self.assertIn('helper_semantics_unknown', [u.code for u in result.unknowns])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'helper_semantics_unknown' not found in ['owner_unknown']
+
+======================================================================
+FAIL: test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='requests.get("https://orders.test/orders", params={"page_size": 40})')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 65, in test_explicit_size_exempts_only_the_default_delta_including_loop
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'RECHECK_REQUIRED', 'dependency_[1328 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'RECHECK_REQUIRED', 'dependency_id': 'ef9f4adda5065adfcfd291383f7e31c540a0ff5725a656d65647f8dba018d44a', 'consumer': 'reporting', 'usage': 'EXPLICIT_PAGE_SIZE', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'CURRENT', 'condition': 'If helper obeys page_size, result set exceeds 20, and consumer needs complete data', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders(page_size: int = 100):\n    return list(range(60))[:page_size]', 'source_id': '2c0f86a1b816cf77e336798b9d28effbccdc1914add37258af89fa23ca18449c', 'start_line': 4}, {'source_id': '0698a7ae4c673fda054b7dfad08248300fdb72186afdc513deb746de8eb66754', 'start_line': 4, 'end_line': 5, 'quote': 'def orders(page_size: int = 20):\n    return list(range(60))[:page_size]'}, {'source_id': 'b8440f58450c04d65138f7681c735f657b7cb6bbfac153fe490280dd83f73cbe', 'start_line': 2, 'end_line': 2, 'quote': 'requests.get("https://orders.test/orders", params={"page_size": 40})'}, {'source_id': 'b8440f58450c04d65138f7681c735f657b7cb6bbfac153fe490280dd83f73cbe', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': ['reporting-complete'], 'check': 'Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits', 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1824 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='requests.get("https://orders.test/orders", {"page_size": 40})')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 65, in test_explicit_size_exempts_only_the_default_delta_including_loop
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'RECHECK_REQUIRED', 'dependency_[1321 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'RECHECK_REQUIRED', 'dependency_id': 'ef9f4adda5065adfcfd291383f7e31c540a0ff5725a656d65647f8dba018d44a', 'consumer': 'reporting', 'usage': 'EXPLICIT_PAGE_SIZE', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'CURRENT', 'condition': 'If helper obeys page_size, result set exceeds 20, and consumer needs complete data', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders(page_size: int = 100):\n    return list(range(60))[:page_size]', 'source_id': '2c0f86a1b816cf77e336798b9d28effbccdc1914add37258af89fa23ca18449c', 'start_line': 4}, {'source_id': '0698a7ae4c673fda054b7dfad08248300fdb72186afdc513deb746de8eb66754', 'start_line': 4, 'end_line': 5, 'quote': 'def orders(page_size: int = 20):\n    return list(range(60))[:page_size]'}, {'source_id': 'd69ac36fa93fc347fe4faab4565116d16ae4f08d83b31023fc3fbff73284ef4e', 'start_line': 2, 'end_line': 2, 'quote': 'requests.get("https://orders.test/orders", {"page_size": 40})'}, {'source_id': 'd69ac36fa93fc347fe4faab4565116d16ae4f08d83b31023fc3fbff73284ef4e', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': ['reporting-complete'], 'check': 'Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits', 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1817 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='requests.get("https://orders.test/orders?page_size=40")')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 65, in test_explicit_size_exempts_only_the_default_delta_including_loop
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'RECHECK_REQUIRED', 'dependency_[1315 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'RECHECK_REQUIRED', 'dependency_id': 'ef9f4adda5065adfcfd291383f7e31c540a0ff5725a656d65647f8dba018d44a', 'consumer': 'reporting', 'usage': 'EXPLICIT_PAGE_SIZE', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'CURRENT', 'condition': 'If helper obeys page_size, result set exceeds 20, and consumer needs complete data', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders(page_size: int = 100):\n    return list(range(60))[:page_size]', 'source_id': '2c0f86a1b816cf77e336798b9d28effbccdc1914add37258af89fa23ca18449c', 'start_line': 4}, {'source_id': '0698a7ae4c673fda054b7dfad08248300fdb72186afdc513deb746de8eb66754', 'start_line': 4, 'end_line': 5, 'quote': 'def orders(page_size: int = 20):\n    return list(range(60))[:page_size]'}, {'source_id': 'd0555b7e162c7c9d5403a504064d470d8f7fe3d927de344ea419039c82673182', 'start_line': 2, 'end_line': 2, 'quote': 'requests.get("https://orders.test/orders?page_size=40")'}, {'source_id': 'd0555b7e162c7c9d5403a504064d470d8f7fe3d927de344ea419039c82673182', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': ['reporting-complete'], 'check': 'Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits', 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1781 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_explicit_size_exempts_only_the_default_delta_including_loop (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_explicit_size_exempts_only_the_default_delta_including_loop) (call='for page in range(4):\n    requests.get("https://orders.test/orders", params={"page": page, "page_size": 40})')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 65, in test_explicit_size_exempts_only_the_default_delta_including_loop
+    self.assertEqual(analysis['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'RECHECK_REQUIRED', 'dependency_[1341 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'RECHECK_REQUIRED', 'dependency_id': 'a8122c49b8666a8dd691cc0f445c6f79342b5252ae20d2681cd3246e0401724b', 'consumer': 'reporting', 'usage': 'UNKNOWN_USAGE', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 3}, 'dependency_freshness': 'CURRENT', 'condition': 'If helper obeys page_size, result set exceeds 20, and consumer needs complete data', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 5, 'quote': 'def orders(page_size: int = 100):\n    return list(range(60))[:page_size]', 'source_id': '2c0f86a1b816cf77e336798b9d28effbccdc1914add37258af89fa23ca18449c', 'start_line': 4}, {'source_id': '0698a7ae4c673fda054b7dfad08248300fdb72186afdc513deb746de8eb66754', 'start_line': 4, 'end_line': 5, 'quote': 'def orders(page_size: int = 20):\n    return list(range(60))[:page_size]'}, {'source_id': '6e73418259842f5e7370ac2a4ae7f67434c3e06b5276442454e1c2c2c7c38a9d', 'start_line': 3, 'end_line': 3, 'quote': '    requests.get("https://orders.test/orders", params={"page": page, "page_size": 40})'}, {'source_id': '6e73418259842f5e7370ac2a4ae7f67434c3e06b5276442454e1c2c2c7c38a9d', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': ['reporting-complete'], 'check': 'Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits', 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 1837 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_mixed_callsites_keep_only_implicit_call_alert (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_mixed_callsites_keep_only_implicit_call_alert)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 111, in test_mixed_callsites_keep_only_implicit_call_alert
+    self.assertEqual([f['callsite']['line'] for f in analysis['findings']], [3])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [3, 2] != [3]
+
+First list contains 1 additional elements.
+First extra element 1:
+2
+
+- [3, 2]
++ [3]
+
+======================================================================
+FAIL: test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 122, in test_opaque_helper_edit_is_semantic_boundary_without_invented_consumer
+    self.assertEqual(result.status, 'PARTIAL')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ABSTAINED' != 'PARTIAL'
+- ABSTAINED
++ PARTIAL
+
+
+======================================================================
+FAIL: test_openapi_default_override_does_not_hide_response_contract_change (tests.graph.test_default_change_scope.DefaultChangeScopeTests.test_openapi_default_override_does_not_hide_response_contract_change)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/user/.codex/worktrees/impactmap-batch-00/agent-bitbucket-read/tests/graph/test_default_change_scope.py", line 158, in test_openapi_default_override_does_not_hide_response_contract_change
+    self.assertEqual(self.graph.analyze_change(base['id'])['findings'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'code': 'RECHECK_REQUIRED', 'dependency_[1584 chars]lse}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'code': 'RECHECK_REQUIRED', 'dependency_id': 'ef9f4adda5065adfcfd291383f7e31c540a0ff5725a656d65647f8dba018d44a', 'consumer': 'reporting', 'usage': 'EXPLICIT_PAGE_SIZE', 'callsite': {'repository': 'reporting', 'path': 'client.py', 'line': 2}, 'dependency_freshness': 'CURRENT', 'condition': 'If helper obeys page_size, result set exceeds 20, and consumer needs complete data', 'evidence_stage': 'STATIC', 'evidence': [{'end_line': 1, 'quote': '{"openapi": "3.0.0", "paths": {"/orders": {"get": {"parameters": [{"name": "page_size", "in": "query", "schema": {"type": "integer", "default": 100}}], "responses": {"200": {"description": "rows"}}}}}}', 'source_id': '3ab2ab4c04da54448fa51643b6ac878cf57f2739268a50fd3ad6b164ca840bff', 'start_line': 1}, {'source_id': 'f7cedee53d7b235ea87592d2237014c458933dd802d552559ac2f6d52e3413ca', 'start_line': 1, 'end_line': 1, 'quote': '{"openapi": "3.0.0", "paths": {"/orders": {"get": {"parameters": [{"name": "page_size", "in": "query", "schema": {"type": "integer", "default": 20}}], "responses": {"200": {"description": "rows"}}}}}}'}, {'source_id': 'b8440f58450c04d65138f7681c735f657b7cb6bbfac153fe490280dd83f73cbe', 'start_line': 2, 'end_line': 2, 'quote': 'requests.get("https://orders.test/orders", params={"page_size": 40})'}, {'source_id': 'b8440f58450c04d65138f7681c735f657b7cb6bbfac153fe490280dd83f73cbe', 'start_line': 1, 'end_line': 1, 'quote': 'import requests'}], 'requirement_ids': ['reporting-complete'], 'check': 'Run consumer with more than 20 records; compare full expected set, page traversal and explicit limits', 'test_executed': False, 'compatibility_confirmed': False}
+
+Diff is 2200 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.266s
+
+FAILED (failures=9)

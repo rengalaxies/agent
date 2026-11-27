@@ -1,0 +1,71 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "reporting",
+        "method": "GET",
+        "provider_service": "orders",
+        "route": "/{resource}"
+      },
+      "notes": "All formulations retained in raw artifact; no gold-based filtering.",
+      "raw_refs": [
+        "/affected/0/rel:c7f4ab9ea02db4a26949bf160b3fac3be2ced43b",
+        "/checks/0",
+        "/findings/0"
+      ],
+      "witnesses": [
+        {
+          "commit": "921d8dbad4d6429e5f1cc78448d1a49e1635ef6d",
+          "line_end": 2,
+          "line_start": 2,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "e181b822e358a121126d0642851666ba215d789dfa626b9a38c43576c9e32b1f",
+          "repository": "reporting"
+        },
+        {
+          "commit": "921d8dbad4d6429e5f1cc78448d1a49e1635ef6d",
+          "line_end": 1,
+          "line_start": 1,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "06185522e4085460db5f973d6987f2c5f42519fccd56836e5e5ed9842962de8d",
+          "repository": "reporting"
+        }
+      ]
+    }
+  ],
+  "case_id": "DEV-REPLACEMENT",
+  "configuration_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "error_code": "invalid_analysis_document",
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [
+    {
+      "code": "unclassified_change",
+      "scope": "analysis"
+    },
+    {
+      "code": "helper_semantics_unknown",
+      "scope": "analysis"
+    },
+    {
+      "code": "owner_unknown",
+      "scope": "reporting"
+    }
+  ],
+  "method": "impactmap_static",
+  "output_valid": false,
+  "raw_artifact_sha256": "ff77b58b99b35827b5bb5c5ce6e6e668191fd28be18392a5eac2752abde5374a",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "PARTIAL"
+}

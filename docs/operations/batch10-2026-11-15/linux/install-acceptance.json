@@ -1,0 +1,28 @@
+{
+  "supervisor": "process",
+  "scenarios": [
+    {
+      "scenario": "fresh_install",
+      "result": "FAIL",
+      "error": "box install --config /var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand/box.yaml --json exit 1, expected 0:\n{\n  \"command\": \"install\",\n  \"finished_at\": \"2026-11-15T21:12:36Z\",\n  \"id\": \"54af4e6af9d5\",\n  \"machine_seconds\": 0.0,\n  \"phases\": [\n    {\n      \"phase\": \"validate\",\n      \"seconds\": 0.05,\n      \"state\": \"FAILED\"\n    }\n  ],\n  \"problems\": [\n    \"Нет файла секретов /var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-prefix/etc/agent-service/secrets.env. Создайте его (права 600) со строками: GITHUB_WEBHOOK_SECRET=..., GITHUB_TOKEN=..., JIRA_WEBHOOK_SECRET=..., JIRA_API_TOKEN=..., JIRA_EMAIL=...\"\n  ],\n  \"release\": \"agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312\",\n  \"started_at\": \"2026-11-15T21:12:36Z\",\n  \"state\": \"FAILED\"\n}\n",
+      "trace": "Traceback (most recent call last):\n  File \"/var/tmp/impactmap-batch10-5d508a2e301d-20261115/app/tools/agent_service/box/acceptance.py\", line 168, in scenario\n    entry[\"detail\"] = fn() or {}\n                      ^^^^\n  File \"/var/tmp/impactmap-batch10-5d508a2e301d-20261115/app/tools/agent_service/box/acceptance.py\", line 185, in fresh_install\n    run = self.box_json(A, \"install\", \"--config\", self.stand[\"box_config\"])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/impactmap-batch10-5d508a2e301d-20261115/app/tools/agent_service/box/acceptance.py\", line 115, in box_json\n    _, text = self.box(release, *args, \"--json\", expect=expect)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/tmp/impactmap-batch10-5d508a2e301d-20261115/app/tools/agent_service/box/acceptance.py\", line 111, in box\n    raise Check(f\"box {' '.join(args)} exit {returncode}, expected {expect}:\\n{text[-3000:]}\")\nCheck: box install --config /var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand/box.yaml --json exit 1, expected 0:\n{\n  \"command\": \"install\",\n  \"finished_at\": \"2026-11-15T21:12:36Z\",\n  \"id\": \"54af4e6af9d5\",\n  \"machine_seconds\": 0.0,\n  \"phases\": [\n    {\n      \"phase\": \"validate\",\n      \"seconds\": 0.05,\n      \"state\": \"FAILED\"\n    }\n  ],\n  \"problems\": [\n    \"Нет файла секретов /var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-prefix/etc/agent-service/secrets.env. Создайте его (права 600) со строками: GITHUB_WEBHOOK_SECRET=..., GITHUB_TOKEN=..., JIRA_WEBHOOK_SECRET=..., JIRA_API_TOKEN=..., JIRA_EMAIL=...\"\n  ],\n  \"release\": \"agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312\",\n  \"started_at\": \"2026-11-15T21:12:36Z\",\n  \"state\": \"FAILED\"\n}\n\n",
+      "seconds": 1.6
+    }
+  ],
+  "box_calls": [
+    {
+      "args": [
+        "agent-service-0.1.0-g5d508a2e301d-linux-x86_64-cp312",
+        "install",
+        "--config",
+        "/var/tmp/impactmap-batch10-5d508a2e301d-20261115/install-stand/box.yaml",
+        "--json"
+      ],
+      "exit": 1,
+      "seconds": 1.57
+    }
+  ],
+  "started_at": "2026-11-15T21:12:35Z",
+  "finished_at": "2026-11-15T21:12:36Z",
+  "passed": false
+}
