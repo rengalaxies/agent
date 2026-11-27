@@ -1,0 +1,50 @@
+{
+  "sections": [
+    {
+      "items": [
+        "Потребители не названы (no_consumer_found_within_profile). Это не доказывает отсутствие влияния."
+      ],
+      "title": "Что может затронуть"
+    },
+    {
+      "items": [
+        "Изменение provider GET /audit/6/records: PAGE_DEFAULT_CHANGED 60 -> 15"
+      ],
+      "title": "Почему и через какой путь"
+    },
+    {
+      "items": [
+        "Изменения вне поддерживаемого профиля сервис не классифицирует: их проверяет обычный review."
+      ],
+      "title": "Что проверить"
+    },
+    {
+      "items": [
+        "runtime_not_observed",
+        "git:provider: CURRENT, проверено 2026-11-27T13:59:02.207072Z",
+        "git:consumer: CURRENT, проверено 2026-11-27T13:59:02.207072Z"
+      ],
+      "title": "Неизвестные и свежесть"
+    },
+    {
+      "items": [
+        "PR None#1: base 4de5fdb3ce3b, head 884675eec97c",
+        "Поколение анализа: 1",
+        "code_version: evaluation-static",
+        "constitution_version: agent-service-v1.0:100bcad3db9c",
+        "correlation_id: AUD-0006",
+        "graph_version: graph-1",
+        "model: Детерминированный результат (модельный отчёт не представлен)",
+        "profile: http-requests-9",
+        "schema_version: 2.2",
+        "снимок consumer (consumer): 69c9ea10e614",
+        "снимок provider (base): 4de5fdb3ce3b",
+        "снимок provider (head): 884675eec97c",
+        "Статус: ABSTAINED, код: no_consumer_found_within_profile"
+      ],
+      "title": "Версии"
+    }
+  ],
+  "status_line": "The operation changed, but no consumer was found within the static profile. Absence is not proven.",
+  "title": "Вывод о влиянии не сделан"
+}

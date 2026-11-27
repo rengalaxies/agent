@@ -1,0 +1,151 @@
+{
+  "attempts": "one first attempt per method, 60 seconds each; no product tuning",
+  "cases": [
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/1/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0001",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/1/records\").json()\n",
+      "expected": "AFFECTED",
+      "group": "removed",
+      "route": "/audit/1/records",
+      "stratum": "BREAKING_IN_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/2/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/2/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0002",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/2/records\").json()\n",
+      "expected": "AFFECTED",
+      "group": "default_decrease",
+      "route": "/audit/2/records",
+      "stratum": "BREAKING_IN_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/3/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/3/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0003",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/3/records\").json()[:45]\n",
+      "expected": "AFFECTED",
+      "group": "default_decrease",
+      "route": "/audit/3/records",
+      "stratum": "BREAKING_IN_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/4/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/4/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0004",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/4/records\", params={\"page_size\": 60}).json()\n",
+      "expected": "UNAFFECTED",
+      "group": "explicit_limit",
+      "route": "/audit/4/records",
+      "stratum": "COMPATIBLE_IN_PROFILE"
+    },
+    {
+      "after": {
+        "README.md": "Address /audit/5/records has new documentation.\n",
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/5/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/5/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0005",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/5/records\").json()\n",
+      "expected": "UNAFFECTED",
+      "group": "documentation_only",
+      "route": "/audit/5/records",
+      "stratum": "COMPATIBLE_IN_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/6/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/6/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0006",
+      "client": "def local_rows():\n    return []\n",
+      "expected": "UNAFFECTED",
+      "group": "no_consumer",
+      "route": "/audit/6/records",
+      "stratum": "NO_CONSUMERS_IN_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/7/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/7/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0007",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://another-provider.test/audit/7/records\").json()\n",
+      "expected": "UNAFFECTED",
+      "group": "different_host",
+      "route": "/audit/7/records",
+      "stratum": "NO_CONSUMERS_IN_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/8/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/8/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0008",
+      "client": "import httpx\ndef consume():\n    return httpx.get(\"https://dev-provider.test/audit/8/records\").json()\n",
+      "expected": "OUT_OF_PROFILE",
+      "group": "httpx",
+      "route": "/audit/8/records",
+      "stratum": "OUT_OF_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/9/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/9/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0009",
+      "client": "import requests, os\ndef consume():\n    return requests.get(os.environ[\"REMOTE_URL\"]).json()\n",
+      "expected": "OUT_OF_PROFILE",
+      "group": "dynamic_url",
+      "route": "/audit/9/records",
+      "stratum": "OUT_OF_PROFILE"
+    },
+    {
+      "after": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/10/records\")\ndef entries(page_size: int = 15, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "before": {
+        "api.py": "from fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/audit/10/records\")\ndef entries(page_size: int = 60, page: int = 1):\n    return list(range(60))[(page-1)*page_size:page*page_size]\n"
+      },
+      "case_id": "AUD-0010",
+      "client": "import requests\ndef consume():\n    return requests.get(\"https://dev-provider.test/audit/10/records\").json()\n",
+      "expected": "OUT_OF_PROFILE",
+      "group": "missing_provider",
+      "route": "/audit/10/records",
+      "stratum": "OUT_OF_PROFILE"
+    }
+  ],
+  "decision": "Descriptive per-case assessment. Independent H1 and user-effect hypotheses remain open.",
+  "human_experts": 0,
+  "independent_cases": 0,
+  "source_snapshot": "f50cdf255c5da36fcfc5882ffb1638c1348e190c",
+  "status": "AUTHORED_TECHNICAL_DIAGNOSTIC"
+}

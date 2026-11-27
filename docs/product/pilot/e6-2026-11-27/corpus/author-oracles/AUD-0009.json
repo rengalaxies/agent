@@ -1,0 +1,26 @@
+{
+  "attestation": {
+    "confirmed_by_human": false,
+    "conflicts_of_interest": "",
+    "independent_before_outputs": false
+  },
+  "case_id": "AUD-0009",
+  "completed_at": null,
+  "disagreements": [],
+  "expert_id": null,
+  "keys": [],
+  "lifecycle": "draft",
+  "profile": {
+    "boundary": "grammar",
+    "membership": "OUT_OF_PROFILE",
+    "rationale": "Authored technical diagnostic declared before outputs"
+  },
+  "schema_version": "impactmap-reference-label-1.0",
+  "scope_completeness": {
+    "inventory_sha256": "638605444e08787f66f871329bedf4570e754b0fd73701b63ef30dcc5f065c33",
+    "rationale": "Controlled authored toy inventory",
+    "search_complete": false
+  },
+  "source_labels": [],
+  "stage": "adjudicated"
+}

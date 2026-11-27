@@ -1,0 +1,38 @@
+{
+  "access_scope": {
+    "repositories": [
+      "consumer",
+      "provider"
+    ],
+    "runtime_sources": [],
+    "view_id": "ac90247348056d11179f6ee786ec6095e76d7b09c2a30130d95b7fc88d56bca3"
+  },
+  "constitution_version": "agent-service-v1.0:100bcad3db9c",
+  "deadline": "2026-11-27T13:59:57.219753+00:00",
+  "environment": "offline",
+  "graph_version": "graph-1",
+  "installation_id": "audit-diagnostic",
+  "jira": null,
+  "kind": "analysis_request",
+  "model_configuration_id": null,
+  "pr": {
+    "base_sha": "ba86cc9116e69a8afa4241d761de8ca8d0121126",
+    "head_sha": "35b5d3694a03ea233a65f10d9f0ee0ce0758d4c1",
+    "pr_id": 1,
+    "provider": "bitbucket",
+    "repository": "provider"
+  },
+  "replay_of": null,
+  "repository_revisions": {
+    "consumer": "60fc6a15a48aa35737f402ed86358913c3b213ab",
+    "provider": "35b5d3694a03ea233a65f10d9f0ee0ce0758d4c1"
+  },
+  "request_id": "AUD-0005",
+  "schema": "agent-graph-output",
+  "schema_version": "2.2",
+  "source_event": {
+    "event_id": "AUD-0005",
+    "resource_version": "d18a981da00a6fd1e70ee8bb12d86eec8b3833db8b9c955ab4b8f546fcb6e289"
+  },
+  "trigger_kind": "pr"
+}

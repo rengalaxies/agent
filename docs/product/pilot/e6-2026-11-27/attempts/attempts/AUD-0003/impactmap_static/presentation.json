@@ -1,0 +1,55 @@
+{
+  "sections": [
+    {
+      "items": [
+        "consumer: команда не определена"
+      ],
+      "title": "Что может затронуть"
+    },
+    {
+      "items": [
+        "Изменение provider GET /audit/3/records: PAGE_DEFAULT_CHANGED 60 -> 15",
+        "Находка POSSIBLE_TRUNCATION у consumer: вызов consumer:client.py:3, использование SINGLE_REQUEST_OBSERVED, связь CURRENT, требование не задано",
+        "Факт в пределах профиля: consumer calls GET /audit/3/records of provider at client.py:3; observed usage SINGLE_REQUEST_OBSERVED. Применимость: Pinned snapshots only; static profile http-requests-9. Неопределённость: LOW. Основания: код consumer@cdf0857381ec:client.py#L2-3; код provider@878884634673:api.py#L4-5; код consumer@cdf0857381ec:client.py#L3-3",
+        "Гипотеза: POSSIBLE_TRUNCATION: If helper obeys page_size, result set exceeds 15, and consumer needs complete data. Применимость: Pinned snapshots only; static profile http-requests-9. Неопределённость: MEDIUM. Основания: код provider@f468ede3b308:api.py#L4-5; код provider@878884634673:api.py#L4-5; код consumer@cdf0857381ec:client.py#L3-3",
+        "Путь: consumer -> provider GET /audit/3/records. Основания: код provider@878884634673:api.py#L4-5; код consumer@cdf0857381ec:client.py#L3-3"
+      ],
+      "title": "Почему и через какой путь"
+    },
+    {
+      "items": [
+        "consumer: Run consumer with more than 15 records; compare full expected set, page traversal and explicit limits"
+      ],
+      "title": "Что проверить"
+    },
+    {
+      "items": [
+        "requirement_unknown (consumer)",
+        "owner_unknown (consumer)",
+        "git:provider: CURRENT, проверено 2026-11-27T13:59:07.724880Z",
+        "git:consumer: CURRENT, проверено 2026-11-27T13:59:07.724880Z"
+      ],
+      "title": "Неизвестные и свежесть"
+    },
+    {
+      "items": [
+        "PR None#1: base f468ede3b308, head 878884634673",
+        "Поколение анализа: 1",
+        "code_version: evaluation-static",
+        "constitution_version: agent-service-v1.0:100bcad3db9c",
+        "correlation_id: AUD-0003",
+        "graph_version: graph-1",
+        "model: Детерминированный результат (модельный отчёт не представлен)",
+        "profile: http-requests-9",
+        "schema_version: 2.2",
+        "снимок consumer (consumer): cdf0857381ec",
+        "снимок provider (base): f468ede3b308",
+        "снимок provider (head): 878884634673",
+        "Статус: USEFUL, код: impact_found_within_profile"
+      ],
+      "title": "Версии"
+    }
+  ],
+  "status_line": "1 consumer(s) of the changed operation(s); 1 with a classified risk. Static profile; tests not executed.",
+  "title": "Возможное влияние изменения"
+}

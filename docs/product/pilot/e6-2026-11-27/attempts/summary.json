@@ -1,0 +1,1603 @@
+{
+  "authored_cases": 10,
+  "comparison": {
+    "gold_key_hits": {
+      "both": 3
+    },
+    "metric_differences": {
+      "false_alert_case_rate": -0.75,
+      "precision": 0.5,
+      "recall": 0.0
+    },
+    "statistical_superiority_claim": false
+  },
+  "disclosures": [
+    "Author created cases, expectations and tools; family copies correlated; not independent evidence.",
+    "No real project/expert/buyer represented. Human attestations remain false.",
+    "Fixed 60s common cap and first assigned attempts; no post-hoc tuning of core."
+  ],
+  "independent_research_status": "NOT_REGISTERED / NOT_RUN",
+  "methods": {
+    "impactmap_static": {
+      "access_leaks": 0,
+      "by_provenance": {
+        "controlled_author": {
+          "cases": 10,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 3
+          }
+        }
+      },
+      "by_stratum": {
+        "BREAKING_IN_PROFILE": {
+          "cases": 3,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 3
+          }
+        },
+        "COMPATIBLE_IN_PROFILE": {
+          "cases": 2,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          }
+        },
+        "NO_CONSUMERS_IN_PROFILE": {
+          "cases": 2,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          }
+        },
+        "OUT_OF_PROFILE": {
+          "cases": 3,
+          "counts": null
+        }
+      },
+      "case_count": 10,
+      "complete_positive_case": {
+        "denominator": 3,
+        "numerator": 3
+      },
+      "decision": "NOT_REGISTERED",
+      "decision_reason": "Registration and human custody/approval are separate; author diagnostics never establish independent criteria.",
+      "f1": 1.0,
+      "false_alert_case_rate": 0.0,
+      "false_alert_cases": 0,
+      "false_certainty": 0,
+      "full_abstentions": 7,
+      "gold_audits": 0,
+      "human_output_audit": "NOT_PERFORMED_BY_TOOL",
+      "identity": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 3
+        },
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "leave_one_origin_group_out": [
+        {
+          "excluded_origin_group": "removed",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "default_decrease",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "explicit_limit",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "documentation_only",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "no_consumer",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "different_host",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "httpx",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "dynamic_url",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "missing_provider",
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      ],
+      "macro_recall_defined_cases": 3,
+      "macro_recall_positive": 1.0,
+      "manual_audits": 0,
+      "negative_cases": 4,
+      "origin_groups": 9,
+      "outside_boundary_success": 2,
+      "outside_cases": 3,
+      "partial": 0,
+      "per_case": [
+        {
+          "access_leak": false,
+          "case_id": "AUD-0001",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "ad2ae6070be7864077cef77da0b690bd702128ba",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "7bd215a17c7027bd55122dafb7052f7916cb9ead4d9fc6d8738d698e0a0d9180",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/1/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:d64c4630c86891a25ef135d53c8d045ecd6e4ccf",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "ad2ae6070be7864077cef77da0b690bd702128ba",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "7bd215a17c7027bd55122dafb7052f7916cb9ead4d9fc6d8738d698e0a0d9180",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0002",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "5db8919304567e252a1a66ecd3a7a94ca5dd86ce",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "24d23a7fad4c1e9b77f0249d48a96dfd34131facbad0e7455e9095577fe8193b",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/2/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:fcfe0979b56a8ae6bdcfffd07f30450224511069",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "5db8919304567e252a1a66ecd3a7a94ca5dd86ce",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "24d23a7fad4c1e9b77f0249d48a96dfd34131facbad0e7455e9095577fe8193b",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0003",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 2,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "cdf0857381ec131618b87fca0d2c70ea8dd075f5",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "abc65da09122f733ea127679170b61f76d740c43f1c2f12321f001661c8be5ec",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/3/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/affected/0/rel:df179066ce7ae51d00cda4fea8e124a3037ee3bf",
+                "/checks/0",
+                "/findings/0"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "cdf0857381ec131618b87fca0d2c70ea8dd075f5",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "abc65da09122f733ea127679170b61f76d740c43f1c2f12321f001661c8be5ec",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0004",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0005",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0006",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0007",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0008",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0009",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0010",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "impactmap_static",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "access",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": false,
+          "status": "FAILED",
+          "strict": null,
+          "technical_error": true,
+          "unbound_count": 0,
+          "unseen_keys": []
+        }
+      ],
+      "population_ci": null,
+      "positive_case_hit": {
+        "denominator": 3,
+        "numerator": 3
+      },
+      "precision": 1.0,
+      "proposed_numeric_gates": true,
+      "protocol_issues": [
+        "catalogue_quotas"
+      ],
+      "recall": 1.0,
+      "strict": {
+        "fn": 0,
+        "fp": 0,
+        "tp": 3
+      },
+      "supported_cases": 7,
+      "technical_errors_all": 1,
+      "technical_errors_supported": 0
+    },
+    "lexical_search_ls1": {
+      "access_leaks": 0,
+      "by_provenance": {
+        "controlled_author": {
+          "cases": 10,
+          "counts": {
+            "fn": 0,
+            "fp": 3,
+            "tp": 3
+          }
+        }
+      },
+      "by_stratum": {
+        "BREAKING_IN_PROFILE": {
+          "cases": 3,
+          "counts": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 3
+          }
+        },
+        "COMPATIBLE_IN_PROFILE": {
+          "cases": 2,
+          "counts": {
+            "fn": 0,
+            "fp": 2,
+            "tp": 0
+          }
+        },
+        "NO_CONSUMERS_IN_PROFILE": {
+          "cases": 2,
+          "counts": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          }
+        },
+        "OUT_OF_PROFILE": {
+          "cases": 3,
+          "counts": null
+        }
+      },
+      "case_count": 10,
+      "complete_positive_case": {
+        "denominator": 3,
+        "numerator": 3
+      },
+      "decision": "NOT_REGISTERED",
+      "decision_reason": "Registration and human custody/approval are separate; author diagnostics never establish independent criteria.",
+      "f1": 0.6666666666666666,
+      "false_alert_case_rate": 0.75,
+      "false_alert_cases": 3,
+      "false_certainty": 0,
+      "full_abstentions": 2,
+      "gold_audits": 0,
+      "human_output_audit": "NOT_PERFORMED_BY_TOOL",
+      "identity": {
+        "counts": {
+          "fn": 0,
+          "fp": 3,
+          "tp": 3
+        },
+        "f1": 0.6666666666666666,
+        "precision": 0.5,
+        "recall": 1.0
+      },
+      "leave_one_origin_group_out": [
+        {
+          "excluded_origin_group": "removed",
+          "f1": 0.5714285714285714,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "default_decrease",
+          "f1": 0.4,
+          "precision": 0.25,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "explicit_limit",
+          "f1": 0.75,
+          "precision": 0.6,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "documentation_only",
+          "f1": 0.75,
+          "precision": 0.6,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "no_consumer",
+          "f1": 0.6666666666666666,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "different_host",
+          "f1": 0.75,
+          "precision": 0.6,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "httpx",
+          "f1": 0.6666666666666666,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "dynamic_url",
+          "f1": 0.6666666666666666,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        {
+          "excluded_origin_group": "missing_provider",
+          "f1": 0.6666666666666666,
+          "precision": 0.5,
+          "recall": 1.0
+        }
+      ],
+      "macro_recall_defined_cases": 3,
+      "macro_recall_positive": 1.0,
+      "manual_audits": 0,
+      "negative_cases": 4,
+      "origin_groups": 9,
+      "outside_boundary_success": 1,
+      "outside_cases": 3,
+      "partial": 1,
+      "per_case": [
+        {
+          "access_leak": false,
+          "case_id": "AUD-0001",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "ad2ae6070be7864077cef77da0b690bd702128ba",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "7bd215a17c7027bd55122dafb7052f7916cb9ead4d9fc6d8738d698e0a0d9180",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/1/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "ad2ae6070be7864077cef77da0b690bd702128ba",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "7bd215a17c7027bd55122dafb7052f7916cb9ead4d9fc6d8738d698e0a0d9180",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0002",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "5db8919304567e252a1a66ecd3a7a94ca5dd86ce",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "24d23a7fad4c1e9b77f0249d48a96dfd34131facbad0e7455e9095577fe8193b",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/2/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "5db8919304567e252a1a66ecd3a7a94ca5dd86ce",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "24d23a7fad4c1e9b77f0249d48a96dfd34131facbad0e7455e9095577fe8193b",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0003",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 1,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "cdf0857381ec131618b87fca0d2c70ea8dd075f5",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "abc65da09122f733ea127679170b61f76d740c43f1c2f12321f001661c8be5ec",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": true,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/3/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": true,
+              "valid_witnesses": [
+                {
+                  "commit": "cdf0857381ec131618b87fca0d2c70ea8dd075f5",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "abc65da09122f733ea127679170b61f76d740c43f1c2f12321f001661c8be5ec",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 1
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0004",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "a704bcab0f850e76932d0b44469ae018bf5f1238",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "b8741cbdf68815198f8cb8daf685bb5c4efb1b55c540bb1093d334695d79aef9",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": false,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/4/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": false,
+              "valid_witnesses": [
+                {
+                  "commit": "a704bcab0f850e76932d0b44469ae018bf5f1238",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "b8741cbdf68815198f8cb8daf685bb5c4efb1b55c540bb1093d334695d79aef9",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0005",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "60fc6a15a48aa35737f402ed86358913c3b213ab",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d50420db016bf14f01f12570fa4efb470e635fec33bddcc1d7fb52bc45ebdec4",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": false,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/5/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": false,
+              "valid_witnesses": [
+                {
+                  "commit": "60fc6a15a48aa35737f402ed86358913c3b213ab",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "d50420db016bf14f01f12570fa4efb470e635fec33bddcc1d7fb52bc45ebdec4",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0006",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "ABSTAINED",
+          "strict": {
+            "fn": 0,
+            "fp": 0,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0007",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "5d252dbb7a140ac1c37909c180734918e051f76a",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "e441a27b1b867ac10d6651d6467a5346d4a2d4365b4c9a01f4df2d6b7b21783c",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": false,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/7/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": false,
+              "valid_witnesses": [
+                {
+                  "commit": "5d252dbb7a140ac1c37909c180734918e051f76a",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "e441a27b1b867ac10d6651d6467a5346d4a2d4365b4c9a01f4df2d6b7b21783c",
+                  "repository": "consumer"
+                }
+              ]
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": true,
+          "reference_profile": {
+            "boundary": "none",
+            "membership": "IN_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": true,
+          "status": "USEFUL",
+          "strict": {
+            "fn": 0,
+            "fp": 1,
+            "tp": 0
+          },
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0008",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "77f5f625d640e1cb760a6b846591d30139339af0",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "37b28876850699ccfbdd4addad4cc2714ccd0aaef3b3a1d41f066ea822363125",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": false,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/8/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": false,
+              "valid_witnesses": []
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": false,
+          "status": "USEFUL",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": [
+            [
+              "provider",
+              "GET",
+              "/audit/8/records",
+              "consumer"
+            ]
+          ]
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0009",
+          "citation_validity": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": true,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": false,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [],
+          "predicted_count": 0,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "grammar",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": false,
+          "status": "ABSTAINED",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": []
+        },
+        {
+          "access_leak": false,
+          "case_id": "AUD-0010",
+          "citation_validity": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "development": true,
+          "duplicates": 0,
+          "false_certainty": false,
+          "full_abstention": false,
+          "gold_audit_required": false,
+          "gold_count": 0,
+          "identity": null,
+          "limited_result_success": true,
+          "localization": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "manual_audit_required": false,
+          "method": "lexical_search_ls1",
+          "missing_gold_keys": [],
+          "normalization_errors": [],
+          "per_key": [
+            {
+              "all_witnesses": [
+                {
+                  "commit": "8a8823adedb57f1473759921f8e49826c122b961",
+                  "line_end": 3,
+                  "line_start": 3,
+                  "path": "client.py",
+                  "phase": "head",
+                  "quote_sha256": "3aba02fba5be5e579a459a657d1df3ed0a2648b2810d82b7a821f112052be225",
+                  "repository": "consumer"
+                }
+              ],
+              "identity_correct": false,
+              "key": [
+                "provider",
+                "GET",
+                "/audit/10/records",
+                "consumer"
+              ],
+              "raw_refs": [
+                "/runs/0/line/3/consumer/client.py"
+              ],
+              "strict_match": false,
+              "valid_witnesses": []
+            }
+          ],
+          "predicted_count": 1,
+          "primary_eligible": false,
+          "reference_profile": {
+            "boundary": "access",
+            "membership": "OUT_OF_PROFILE",
+            "rationale": "Authored technical diagnostic declared before outputs"
+          },
+          "search_complete": false,
+          "status": "PARTIAL",
+          "strict": null,
+          "technical_error": false,
+          "unbound_count": 0,
+          "unseen_keys": [
+            [
+              "provider",
+              "GET",
+              "/audit/10/records",
+              "consumer"
+            ]
+          ]
+        }
+      ],
+      "population_ci": null,
+      "positive_case_hit": {
+        "denominator": 3,
+        "numerator": 3
+      },
+      "precision": 0.5,
+      "proposed_numeric_gates": false,
+      "protocol_issues": [
+        "catalogue_quotas"
+      ],
+      "recall": 1.0,
+      "strict": {
+        "fn": 0,
+        "fp": 3,
+        "tp": 3
+      },
+      "supported_cases": 7,
+      "technical_errors_all": 0,
+      "technical_errors_supported": 0
+    }
+  },
+  "origin_groups": 9,
+  "real_experts": 0,
+  "status": "AUTHOR_DIAGNOSTIC_ONLY",
+  "strata": {
+    "BREAKING_IN_PROFILE": 3,
+    "COMPATIBLE_IN_PROFILE": 2,
+    "NO_CONSUMERS_IN_PROFILE": 2,
+    "OUT_OF_PROFILE": 3
+  }
+}

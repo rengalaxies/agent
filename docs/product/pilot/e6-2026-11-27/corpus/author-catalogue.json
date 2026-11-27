@@ -1,0 +1,72 @@
+[
+  {
+    "case_id": "AUD-0001",
+    "origin_group": "removed",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "BREAKING_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0002",
+    "origin_group": "default_decrease",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "BREAKING_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0003",
+    "origin_group": "default_decrease",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "BREAKING_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0004",
+    "origin_group": "explicit_limit",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "COMPATIBLE_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0005",
+    "origin_group": "documentation_only",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "COMPATIBLE_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0006",
+    "origin_group": "no_consumer",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "NO_CONSUMERS_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0007",
+    "origin_group": "different_host",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "NO_CONSUMERS_IN_PROFILE"
+  },
+  {
+    "case_id": "AUD-0008",
+    "origin_group": "httpx",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "OUT_OF_PROFILE"
+  },
+  {
+    "case_id": "AUD-0009",
+    "origin_group": "dynamic_url",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "OUT_OF_PROFILE"
+  },
+  {
+    "case_id": "AUD-0010",
+    "origin_group": "missing_provider",
+    "provenance": "controlled_author",
+    "split": "development",
+    "stratum": "OUT_OF_PROFILE"
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "attempt": {
+    "id": 1,
+    "kind": "primary"
+  },
+  "candidates": [
+    {
+      "key": {
+        "consumer_service": "consumer",
+        "method": "GET",
+        "provider_service": "provider",
+        "route": "/audit/5/records"
+      },
+      "notes": "Literal hit; no claim this is an HTTP call or a broken consumer.",
+      "raw_refs": [
+        "/runs/0/line/3/consumer/client.py"
+      ],
+      "witnesses": [
+        {
+          "commit": "60fc6a15a48aa35737f402ed86358913c3b213ab",
+          "line_end": 3,
+          "line_start": 3,
+          "path": "client.py",
+          "phase": "head",
+          "quote_sha256": "d50420db016bf14f01f12570fa4efb470e635fec33bddcc1d7fb52bc45ebdec4",
+          "repository": "consumer"
+        }
+      ]
+    }
+  ],
+  "case_id": "AUD-0005",
+  "configuration_sha256": "ca72ea79d6eb13b877b95a3d231c79a32d6f485db6497652b5ec9677bf5db26b",
+  "error_code": null,
+  "explicit_claims": {
+    "compatibility_confirmed": false,
+    "no_consumers": false,
+    "tests_executed": false
+  },
+  "invalid_candidates": [],
+  "lifecycle": "complete",
+  "limitations": [],
+  "method": "lexical_search_ls1",
+  "output_valid": true,
+  "raw_artifact_sha256": "d9d956ec25d59d192042274eea481695e49296e448c3d31b45b2b1d0bb802626",
+  "schema_version": "impactmap-normalized-prediction-1.0",
+  "status": "USEFUL"
+}

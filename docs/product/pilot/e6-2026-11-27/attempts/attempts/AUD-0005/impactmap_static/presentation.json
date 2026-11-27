@@ -1,0 +1,49 @@
+{
+  "sections": [
+    {
+      "items": [
+        "Потребители не названы (no_supported_delta). Это не доказывает отсутствие влияния."
+      ],
+      "title": "Что может затронуть"
+    },
+    {
+      "items": [
+        "Путь влияния не построен."
+      ],
+      "title": "Почему и через какой путь"
+    },
+    {
+      "items": [
+        "Изменения вне поддерживаемого профиля сервис не классифицирует: их проверяет обычный review."
+      ],
+      "title": "Что проверить"
+    },
+    {
+      "items": [
+        "git:provider: CURRENT, проверено 2026-11-27T13:58:57.567945Z",
+        "git:consumer: CURRENT, проверено 2026-11-27T13:58:57.567945Z"
+      ],
+      "title": "Неизвестные и свежесть"
+    },
+    {
+      "items": [
+        "PR None#1: base ba86cc9116e6, head 35b5d3694a03",
+        "Поколение анализа: 1",
+        "code_version: evaluation-static",
+        "constitution_version: agent-service-v1.0:100bcad3db9c",
+        "correlation_id: AUD-0005",
+        "graph_version: graph-1",
+        "model: Детерминированный результат (модельный отчёт не представлен)",
+        "profile: http-requests-9",
+        "schema_version: 2.2",
+        "снимок consumer (consumer): 60fc6a15a48a",
+        "снимок provider (base): ba86cc9116e6",
+        "снимок provider (head): 35b5d3694a03",
+        "Статус: ABSTAINED, код: no_supported_delta"
+      ],
+      "title": "Версии"
+    }
+  ],
+  "status_line": "No supported behavior change was found; arbitrary semantic changes are not classified.",
+  "title": "Вывод о влиянии не сделан"
+}

@@ -1,0 +1,42 @@
+{
+  "status": "ADDITIONAL_AUTHORED_DIAGNOSTIC",
+  "source_commit": "f50cdf255c5da36fcfc5882ffb1638c1348e190c",
+  "independent_cases": 0,
+  "human_experts": 0,
+  "cases": 10,
+  "in_profile_cases": 7,
+  "outside_cases": 3,
+  "plan_sha256": "97f8c6a315fc1d29c7b46c5535b4e5e5b28d478534fe4d6899f598a0c7811954",
+  "methods": {
+    "impactmap_static": {
+      "identity": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 3
+        },
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "negative_cases": 4,
+      "false_alert_cases": 0,
+      "outside_boundary_success": 2
+    },
+    "lexical_search_ls1": {
+      "identity": {
+        "counts": {
+          "fn": 0,
+          "fp": 3,
+          "tp": 3
+        },
+        "f1": 0.6666666666666666,
+        "precision": 0.5,
+        "recall": 1.0
+      },
+      "negative_cases": 4,
+      "false_alert_cases": 3,
+      "outside_boundary_success": 1
+    }
+  }
+}
