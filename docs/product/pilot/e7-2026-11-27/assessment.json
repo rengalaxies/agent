@@ -115,7 +115,15 @@
       "grading": "preliminary_assistant_rubric_assessment",
       "independent_human_review": "NOT_RUN",
       "unassisted_task_success": "UNDETERMINED",
-      "qualitative_speed": "QUICK_REPORTED"
+      "qualitative_speed": "QUICK_REPORTED",
+      "followup_review": {
+        "date": "2026-11-27",
+        "score_changed": false,
+        "status": "PRELIMINARY_INTERPRETATION_RETAINED",
+        "product_requirement": "IM-FB-03",
+        "rationale": "Проверка маршрутизации предложена верно. Условие выпуска требует уточнения: неподтверждённая связь и отсутствие клиентов в логах не устанавливают отсутствие влияния без границ покрытия, периода и версии маршрутизации.",
+        "independent_review": "NOT_RUN"
+      }
     }
   ],
   "execution_clarification_date": "2026-11-27"
